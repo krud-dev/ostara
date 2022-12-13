@@ -5,45 +5,25 @@ export type ActuatorPlaygroundProps = {
 };
 function ActuatorPlayground({ url }: ActuatorPlaygroundProps) {
   const [returnData, setReturnData] = useState<string>('');
-
+  const [loading, setLoading] = useState<boolean>(false);
   return (
     <div>
       <h1>Actuator Playground</h1>
       <p>URL: {url}</p>
+      <p>Loading: {`${loading}`}</p>
       <div>
         <button
           type="button"
-          onClick={() =>
-            setReturnData(
-              JSON.stringify(window.electron.actuator.health(url), null, 2)
-            )
-          }
+          onClick={() => {
+            setLoading(true);
+            window.actuator
+              .health(url)
+              .then((data) => setReturnData(JSON.stringify(data, null, 2)))
+              .catch((err) => setReturnData(err.message))
+              .finally(() => setLoading(false));
+          }}
         >
           Health
-        </button>
-      </div>
-      <div>
-        <button
-          type="button"
-          onClick={() =>
-            setReturnData(
-              JSON.stringify(window.electron.actuator.info(url), null, 2)
-            )
-          }
-        >
-          Info
-        </button>
-      </div>
-      <div>
-        <button
-          type="button"
-          onClick={() =>
-            setReturnData(
-              JSON.stringify(window.electron.actuator.loggers(url), null, 2)
-            )
-          }
-        >
-          Loggers
         </button>
       </div>
       <pre>

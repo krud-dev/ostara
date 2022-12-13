@@ -1,11 +1,9 @@
 import { contextBridge, ipcRenderer, IpcRendererEvent } from 'electron';
-import { actuatorFacade } from '../infra/actuator/renderer';
+import { actuatorBridge } from '../infra/actuator/renderer';
 import { configurationStoreFacade } from '../infra/configuration/renderer';
 
 export type Channels = 'ipc-example';
-
 contextBridge.exposeInMainWorld('electron', {
-  actuator: actuatorFacade,
   configurationStore: configurationStoreFacade,
   ipcRenderer: {
     sendMessage(channel: Channels, args: unknown[]) {
@@ -25,3 +23,4 @@ contextBridge.exposeInMainWorld('electron', {
     },
   },
 });
+contextBridge.exposeInMainWorld('actuator', actuatorBridge);
