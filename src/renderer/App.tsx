@@ -1,6 +1,7 @@
 import { MemoryRouter as Router, Route, Routes } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import ActuatorPlayground from './ActuatorPlayground';
+import Config from './Config';
 
 const Sample = () => {
   const [inputValue, setInputValue] = useState<string>('');
@@ -20,16 +21,9 @@ const Sample = () => {
 
   return (
     <div>
-      <ActuatorPlayground url={'http://localhost:18080/actuator'} />
+      <ActuatorPlayground url="https://sbclient.krud.dev/actuator" />
       <hr />
-      <div>Current value: darkMode = {JSON.stringify(value)}</div>
-      <input
-        value={inputValue}
-        onChange={(e) => setInputValue(e.target.value)}
-      />
-      <button type="button" onClick={() => setRemote()}>
-        Save
-      </button>
+      <Config />
     </div>
   );
 };
