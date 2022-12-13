@@ -1,1 +1,2 @@
 import './configurationStore';
+import './main';

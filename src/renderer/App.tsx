@@ -1,5 +1,6 @@
 import { MemoryRouter as Router, Route, Routes } from 'react-router-dom';
 import { useEffect, useState } from 'react';
+import ActuatorPlayground from './ActuatorPlayground';
 
 const Sample = () => {
   const [inputValue, setInputValue] = useState<string>('');
@@ -7,6 +8,7 @@ const Sample = () => {
   function refreshValue() {
     setValue(window.electron.configurationStore.get('darkMode'));
   }
+
   function setRemote() {
     window.electron.configurationStore.set('darkMode', inputValue);
     refreshValue();
@@ -18,6 +20,8 @@ const Sample = () => {
 
   return (
     <div>
+      <ActuatorPlayground url={'http://localhost:18080/actuator'} />
+      <hr />
       <div>Current value: darkMode = {JSON.stringify(value)}</div>
       <input
         value={inputValue}
