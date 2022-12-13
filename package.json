@@ -109,6 +109,7 @@
     }
   },
   "dependencies": {
+    "axios": "^1.2.1",
     "electron-debug": "^3.2.0",
     "electron-log": "^4.4.8",
     "electron-store": "^8.1.0",
