@@ -8,10 +8,9 @@ import {
   isApplication,
   isFolder,
   isInstance,
-  Item,
+  Item
 } from './model/configuration';
 import { configurationStore } from './configurationStore';
-import configuration from '../../../.erb/configs/webpack.config.base';
 
 export class ConfigurationService {
   /**

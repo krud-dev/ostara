@@ -2,7 +2,9 @@ import {
   Application,
   Configuration,
   Folder,
-  HierarchicalItem, Instance, Item
+  HierarchicalItem,
+  Instance,
+  Item,
 } from './model/configuration';
 
 declare global {
@@ -18,10 +20,10 @@ declare global {
     /**
      * Folder operations
      */
-    createFolder: (folder: Omit<Folder, 'uuid'>) => Promise<Folder>;
+    createFolder: (folder: Omit<Folder, 'uuid' | 'type'>) => Promise<Folder>;
     updateFolder: (
       uuid: string,
-      folder: Omit<Folder, 'uuid'>
+      folder: Omit<Folder, 'uuid' | 'type'>
     ) => Promise<Folder>;
     deleteFolder: (uuid: string) => Promise<void>;
     getFolderChildren: (uuid: string) => Promise<HierarchicalItem[]>;
@@ -30,11 +32,11 @@ declare global {
      * Application operations
      */
     createApplication: (
-      application: Omit<Application, 'uuid'>
+      application: Omit<Application, 'uuid' | 'type'>
     ) => Promise<Application>;
     updateApplication: (
       uuid: string,
-      application: Omit<Application, 'uuid'>
+      application: Omit<Application, 'uuid' | 'type'>
     ) => Promise<Application>;
     deleteApplication: (uuid: string) => Promise<void>;
     moveApplication: (uuid: string, parentUuid: string) => Promise<Application>;
@@ -42,10 +44,12 @@ declare global {
     /**
      * Instance operations
      */
-    createInstance: (instance: Omit<Instance, 'uuid'>) => Promise<Instance>;
+    createInstance: (
+      instance: Omit<Instance, 'uuid' | 'type'>
+    ) => Promise<Instance>;
     updateInstance: (
       uuid: string,
-      instance: Omit<Instance, 'uuid'>
+      instance: Omit<Instance, 'uuid' | 'type'>
     ) => Promise<Instance>;
     deleteInstance: (uuid: string) => Promise<void>;
     moveInstance: (uuid: string, parentUuid: string) => Promise<void>;

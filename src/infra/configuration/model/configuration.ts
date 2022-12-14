@@ -15,7 +15,6 @@ export interface OrderedItem extends Item {
 
 export interface Instance extends OrderedItem {
   type: 'instance';
-  uuid: string;
   applicationUuid: string;
   alias: string;
   actuatorUrl: string;
