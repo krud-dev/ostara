@@ -13,8 +13,11 @@ module.exports = {
     'promise/catch-or-return': 'off',
     '@typescript-eslint/ban-types': 'off',
     '@typescript-eslint/no-empty-interface': 'off',
+    '@typescript-eslint/no-use-before-defined': 'off',
+    '@typescript-eslint/return-await': 'off',
     'no-empty-pattern': 'off',
     'prefer-default-export': 'off',
+    'spaced-comment': 'off',
     'import/order': 'off',
   },
   parserOptions: {

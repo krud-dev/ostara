@@ -3,10 +3,7 @@ import { Outlet } from 'react-router-dom';
 import { experimentalStyled as styled, useTheme } from '@mui/material/styles';
 import NavigatorNavbar from 'renderer/layout/navigator/components/NavigatorNavbar';
 import NavigatorSidebar from 'renderer/layout/navigator/components/NavigatorSidebar';
-import {
-  NAVBAR_DESKTOP_HEIGHT,
-  NAVBAR_MOBILE_HEIGHT,
-} from '../../constants/ui';
+import { NAVBAR_HEIGHT } from '../../constants/ui';
 
 const RootStyle = styled('div')({
   display: 'flex',
@@ -18,13 +15,8 @@ const MainStyle = styled('div')(({ theme }) => ({
   flexGrow: 1,
   overflow: 'auto',
   minHeight: '100%',
-  paddingTop: NAVBAR_MOBILE_HEIGHT + 24,
+  paddingTop: NAVBAR_HEIGHT + 24,
   paddingBottom: theme.spacing(5),
-  [theme.breakpoints.up('lg')]: {
-    paddingTop: NAVBAR_DESKTOP_HEIGHT + 24,
-    paddingLeft: theme.spacing(2),
-    paddingRight: theme.spacing(2),
-  },
 }));
 
 type NavigatorLayoutProps = {};

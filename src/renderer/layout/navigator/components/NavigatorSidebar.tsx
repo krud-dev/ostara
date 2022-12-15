@@ -1,10 +1,12 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useLocation } from 'react-router-dom';
 import { experimentalStyled as styled } from '@mui/material/styles';
-import { Drawer, Stack } from '@mui/material';
+import { Box, Drawer } from '@mui/material';
 import { SIDEBAR_DRAWER_WIDTH } from 'renderer/constants/ui';
 import MHidden from 'renderer/components/layout/MHidden';
 import PerfectScrollbar from 'react-perfect-scrollbar';
+import NavigatorTree from 'renderer/layout/navigator/components/tree/NavigatorTree';
+import SearchTextField from 'renderer/components/input/SearchTextField';
 
 const RootStyle = styled('div')(({ theme }) => ({
   [theme.breakpoints.up('lg')]: {
@@ -13,7 +15,7 @@ const RootStyle = styled('div')(({ theme }) => ({
   },
 }));
 
-type AppSidebarProps = {
+type NavigatorSidebarProps = {
   isOpenSidebar: boolean;
   onCloseSidebar: VoidFunction;
 };
@@ -21,8 +23,10 @@ type AppSidebarProps = {
 export default function NavigatorSidebar({
   isOpenSidebar,
   onCloseSidebar,
-}: AppSidebarProps) {
+}: NavigatorSidebarProps) {
   const { pathname } = useLocation();
+
+  const [search, setSearch] = useState<string>('');
 
   useEffect(() => {
     if (isOpenSidebar) {
@@ -31,18 +35,14 @@ export default function NavigatorSidebar({
   }, [pathname]);
 
   const renderContent = (
-    <PerfectScrollbar
-      options={{ suppressScrollX: true, wheelPropagation: false }}
-    >
-      <Stack
-        spacing={3}
-        sx={{
-          px: 2.5,
-          pt: 3,
-          pb: 2,
-        }}
-      />
-    </PerfectScrollbar>
+    <Box sx={{ height: '100%', display: 'flex', flexDirection: 'column' }}>
+      <SearchTextField size={'small'} onChangeValue={setSearch} />
+      <Box sx={{ flexGrow: 1, overflow: 'hidden' }}>
+        <PerfectScrollbar options={{ wheelPropagation: false }}>
+          <NavigatorTree search={search} />
+        </PerfectScrollbar>
+      </Box>
+    </Box>
   );
 
   return (

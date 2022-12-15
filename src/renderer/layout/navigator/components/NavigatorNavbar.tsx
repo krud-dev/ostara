@@ -1,11 +1,7 @@
 import { alpha, experimentalStyled as styled } from '@mui/material/styles';
 import { AppBar, Box, IconButton, Stack, Toolbar } from '@mui/material';
 import LanguagePopover from 'renderer/layout/navigator/components/LanguagePopover';
-import {
-  NAVBAR_DESKTOP_HEIGHT,
-  NAVBAR_MOBILE_HEIGHT,
-  SIDEBAR_DRAWER_WIDTH,
-} from 'renderer/constants/ui';
+import { NAVBAR_HEIGHT, SIDEBAR_DRAWER_WIDTH } from 'renderer/constants/ui';
 import MHidden from 'renderer/components/layout/MHidden';
 import { MenuOutlined } from '@mui/icons-material';
 
@@ -20,11 +16,7 @@ const RootStyle = styled(AppBar)(({ theme }) => ({
 }));
 
 const ToolbarStyle = styled(Toolbar)(({ theme }) => ({
-  minHeight: NAVBAR_MOBILE_HEIGHT,
-  [theme.breakpoints.up('lg')]: {
-    minHeight: NAVBAR_DESKTOP_HEIGHT,
-    padding: theme.spacing(0, 5),
-  },
+  minHeight: NAVBAR_HEIGHT,
 }));
 
 // ----------------------------------------------------------------------

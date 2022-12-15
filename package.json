@@ -128,6 +128,7 @@
     "lodash": "^4.17.21",
     "notistack": "^2.0.8",
     "react": "^18.2.0",
+    "react-arborist": "^2.1.1",
     "react-dom": "^18.2.0",
     "react-hook-form": "^7.40.0",
     "react-intl": "^6.2.5",
