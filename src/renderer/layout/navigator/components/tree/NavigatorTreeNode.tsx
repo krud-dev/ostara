@@ -4,6 +4,7 @@ import {
   ListItem,
   ListItemIcon,
   ListItemText,
+  TextField,
 } from '@mui/material';
 import {
   alpha,
@@ -19,6 +20,7 @@ import {
   FolderOutlined,
   KeyboardArrowDown,
   KeyboardArrowRight,
+  MoreVert,
   SvgIconComponent,
 } from '@mui/icons-material';
 import {
@@ -84,7 +86,6 @@ const ListItemStyle = styled(ListItem<'div'>)(({ theme }) => ({
   height: NAVIGATOR_ITEM_HEIGHT,
   position: 'relative',
   textTransform: 'capitalize',
-  color: theme.palette.text.secondary,
   '&:before': {
     top: 0,
     left: 0,
@@ -97,15 +98,22 @@ const ListItemStyle = styled(ListItem<'div'>)(({ theme }) => ({
     borderBottomLeftRadius: 4,
     backgroundColor: theme.palette.primary.main,
   },
+  '& .menu-toggle': {
+    visibility: 'hidden',
+  },
+  '&:hover .menu-toggle': {
+    visibility: 'visible',
+  },
 }));
 
-const ListItemIconStyle = styled(ListItemIcon)({
+const ListItemIconStyle = styled(ListItemIcon)(({ theme }) => ({
   width: 22,
   height: 22,
   display: 'flex',
   alignItems: 'center',
   justifyContent: 'center',
-});
+  color: theme.palette.text.secondary,
+}));
 
 export default function NavigatorTreeNode({
   style,
@@ -115,8 +123,6 @@ export default function NavigatorTreeNode({
   preview,
 }: NavigatorTreeNodeProps) {
   const theme = useTheme();
-
-  const isActiveRoot = node.isFocused;
 
   const ToggleIcon = useMemo<SvgIconComponent>(() => {
     return node.isOpen ? KeyboardArrowDown : KeyboardArrowRight;
@@ -133,8 +139,7 @@ export default function NavigatorTreeNode({
   }, [node.data]);
 
   const activeRootStyle = {
-    color: 'primary.main',
-    // fontWeight: 'fontWeightMedium',
+    // color: 'primary.main',
     bgcolor: alpha(
       theme.palette.primary.main,
       theme.palette.action.selectedOpacity
@@ -142,15 +147,22 @@ export default function NavigatorTreeNode({
     '&:before': { display: 'block' },
   };
 
-  const activeSubStyle = {
-    color: 'text.primary',
-    fontWeight: 'fontWeightMedium',
+  const focusRootStyle = {
+    outline: `1px solid ${theme.palette.primary.lighter}`,
+    outlineOffset: '-1px',
   };
 
   const onArrowClick = useCallback(
     (event: React.MouseEvent): void => {
       event.stopPropagation();
       node.toggle();
+    },
+    [node]
+  );
+
+  const onMenuClick = useCallback(
+    (event: React.MouseEvent): void => {
+      event.stopPropagation();
     },
     [node]
   );
@@ -162,36 +174,71 @@ export default function NavigatorTreeNode({
       disableGutters
       disablePadding
       sx={{
-        ...(isActiveRoot && activeRootStyle),
+        ...(node.isFocused &&
+          (!node.isSelected || !node.isOnlySelection) &&
+          focusRootStyle),
+        ...(node.isSelected && activeRootStyle),
       }}
       style={style}
     >
-      {/*{!node.isLeaf && (*/}
       <IconButton
         onClick={onArrowClick}
         sx={{
-          p: 0.5,
+          p: 0.25,
           mr: 0.5,
           ml: 1,
+          color: 'text.primary',
           ...(node.isLeaf ? { visibility: 'hidden' } : {}),
         }}
       >
         <ToggleIcon fontSize="small" />
       </IconButton>
-      {/*)}*/}
       <ListItemIconStyle sx={{ mr: 1, ml: 0 }}>
         <TypeIcon fontSize="small" />
       </ListItemIconStyle>
-      <ListItemText
-        disableTypography
-        primary={node.data.alias}
+      {!node.isEditing ? (
+        <ListItemText
+          disableTypography
+          primary={node.data.alias}
+          sx={{
+            whiteSpace: 'nowrap',
+            overflow: 'hidden',
+            textOverflow: 'ellipsis',
+          }}
+        />
+      ) : (
+        <TextField
+          autoFocus
+          type={'text'}
+          defaultValue={node.data.alias}
+          size={'small'}
+          variant={'outlined'}
+          margin={'none'}
+          InputProps={{
+            onFocus: (e) => e.currentTarget.select(),
+            onBlur: () => node.reset(),
+            onKeyDown: (e) => {
+              if (e.key === 'Escape') node.reset();
+              if (e.key === 'Enter') node.submit(e.currentTarget.value);
+            },
+            sx: {
+              height: NAVIGATOR_ITEM_HEIGHT - 6,
+              fontSize: '12px',
+            },
+          }}
+        />
+      )}
+      <IconButton
+        onClick={onMenuClick}
         sx={{
-          whiteSpace: 'nowrap',
-          overflow: 'hidden',
-          textOverflow: 'ellipsis',
+          p: 0.25,
+          mr: 0.5,
+          ml: 0.5,
         }}
-      />
-      {/*{info && info}*/}
+        className={'menu-toggle'}
+      >
+        <MoreVert fontSize="small" />
+      </IconButton>
     </ListItemStyle>
   );
 }

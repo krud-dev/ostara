@@ -1,12 +1,17 @@
 import { useEffect, useState } from 'react';
 import { useLocation } from 'react-router-dom';
 import { experimentalStyled as styled } from '@mui/material/styles';
-import { Box, Drawer } from '@mui/material';
+import { Box, Divider, Drawer, IconButton, Stack } from '@mui/material';
 import { SIDEBAR_DRAWER_WIDTH } from 'renderer/constants/ui';
 import MHidden from 'renderer/components/layout/MHidden';
 import PerfectScrollbar from 'react-perfect-scrollbar';
 import NavigatorTree from 'renderer/layout/navigator/components/tree/NavigatorTree';
 import SearchTextField from 'renderer/components/input/SearchTextField';
+import {
+  AddOutlined,
+  FilterListOutlined,
+  MoreVertOutlined,
+} from '@mui/icons-material';
 
 const RootStyle = styled('div')(({ theme }) => ({
   [theme.breakpoints.up('lg')]: {
@@ -36,7 +41,31 @@ export default function NavigatorSidebar({
 
   const renderContent = (
     <Box sx={{ height: '100%', display: 'flex', flexDirection: 'column' }}>
-      <SearchTextField size={'small'} onChangeValue={setSearch} />
+      <Stack
+        direction={'row'}
+        spacing={0.5}
+        alignItems={'center'}
+        sx={{ px: 0.5, py: 1 }}
+      >
+        <Box>
+          <IconButton size={'small'}>
+            <AddOutlined fontSize={'small'} />
+          </IconButton>
+        </Box>
+        <SearchTextField
+          size={'small'}
+          icon={FilterListOutlined}
+          onChangeValue={setSearch}
+        />
+        <Box>
+          <IconButton size={'small'}>
+            <MoreVertOutlined fontSize={'small'} />
+          </IconButton>
+        </Box>
+      </Stack>
+
+      <Divider />
+
       <Box sx={{ flexGrow: 1, overflow: 'hidden' }}>
         <PerfectScrollbar options={{ wheelPropagation: false }}>
           <NavigatorTree search={search} />

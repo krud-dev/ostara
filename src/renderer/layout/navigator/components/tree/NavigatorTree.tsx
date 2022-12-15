@@ -16,6 +16,13 @@ import {
   NAVIGATOR_ITEM_HEIGHT,
   SIDEBAR_DRAWER_WIDTH,
 } from 'renderer/constants/ui';
+import { experimentalStyled as styled } from '@mui/material/styles';
+
+const TreeStyle = styled(Tree<TreeItem>)(({ theme }) => ({
+  '& [role="treeitem"]': {
+    outline: 'none',
+  },
+}));
 
 type NavigatorTreeProps = {
   search?: string;
@@ -175,7 +182,7 @@ export default function NavigatorTree({ search }: NavigatorTreeProps) {
   }, [data]);
 
   const height = useMemo<number>(
-    () => getOpenItemsCount() * NAVIGATOR_ITEM_HEIGHT,
+    () => getOpenItemsCount() * NAVIGATOR_ITEM_HEIGHT + 12,
     [toggleFlag]
   );
 
@@ -228,7 +235,7 @@ export default function NavigatorTree({ search }: NavigatorTreeProps) {
       {!data ? (
         <CircularProgress />
       ) : (
-        <Tree
+        <TreeStyle
           ref={treeRef}
           idAccessor={'uuid'}
           data={data}
@@ -247,7 +254,7 @@ export default function NavigatorTree({ search }: NavigatorTreeProps) {
           disableDrop={disableDrop}
         >
           {NavigatorTreeNode}
-        </Tree>
+        </TreeStyle>
       )}
     </>
   );

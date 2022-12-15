@@ -37,7 +37,7 @@ export default function NavigatorNavbar({
             size={'large'}
             sx={{ mr: 1, color: 'text.primary' }}
           >
-            <MenuOutlined />
+            <MenuOutlined fontSize={'large'} />
           </IconButton>
         </MHidden>
 
