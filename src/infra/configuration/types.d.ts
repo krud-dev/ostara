@@ -13,46 +13,49 @@ declare global {
      * Generic operations
      */
     getConfiguration: () => Promise<Configuration>;
-    getItem: (uuid: string) => Promise<BaseItem | undefined>;
-    getItemOrThrow: (uuid: string) => Promise<BaseItem>;
-    itemExistsOrThrow: (uuid: string) => Promise<void>;
-    reorderItem: (uuid: string, order: number) => Promise<void>;
+    getItem: (id: string) => Promise<BaseItem | undefined>;
+    getItemOrThrow: (id: string) => Promise<BaseItem>;
+    itemExistsOrThrow: (id: string) => Promise<void>;
+    reorderItem: (id: string, order: number) => Promise<void>;
     /**
      * Folder operations
      */
-    createFolder: (folder: Omit<Folder, 'uuid' | 'type'>) => Promise<Folder>;
+    createFolder: (folder: Omit<Folder, 'id' | 'type'>) => Promise<Folder>;
     updateFolder: (
-      uuid: string,
-      folder: Omit<Folder, 'uuid' | 'type'>
+      id: string,
+      folder: Omit<Folder, 'id' | 'type'>
     ) => Promise<Folder>;
-    deleteFolder: (uuid: string) => Promise<void>;
-    getFolderChildren: (uuid: string) => Promise<HierarchicalItem[]>;
-    moveFolder: (uuid: string, parentUuid: string) => Promise<Folder>;
+    deleteFolder: (id: string) => Promise<void>;
+    getFolderChildren: (id: string) => Promise<HierarchicalItem[]>;
+    moveFolder: (id: string, newParentFolderId: string) => Promise<Folder>;
     /**
      * Application operations
      */
     createApplication: (
-      application: Omit<Application, 'uuid' | 'type'>
+      application: Omit<Application, 'id' | 'type'>
     ) => Promise<Application>;
     updateApplication: (
-      uuid: string,
-      application: Omit<Application, 'uuid' | 'type'>
+      id: string,
+      application: Omit<Application, 'id' | 'type'>
     ) => Promise<Application>;
-    deleteApplication: (uuid: string) => Promise<void>;
-    moveApplication: (uuid: string, parentUuid: string) => Promise<Application>;
-    getApplicationInstances: (uuid: string) => Promise<Instance[]>;
+    deleteApplication: (id: string) => Promise<void>;
+    moveApplication: (
+      id: string,
+      newParentFolderId: string
+    ) => Promise<Application>;
+    getApplicationInstances: (id: string) => Promise<Instance[]>;
     /**
      * Instance operations
      */
     createInstance: (
-      instance: Omit<Instance, 'uuid' | 'type'>
+      instance: Omit<Instance, 'id' | 'type'>
     ) => Promise<Instance>;
     updateInstance: (
-      uuid: string,
-      instance: Omit<Instance, 'uuid' | 'type'>
+      id: string,
+      instance: Omit<Instance, 'id' | 'type'>
     ) => Promise<Instance>;
-    deleteInstance: (uuid: string) => Promise<void>;
-    moveInstance: (uuid: string, parentUuid: string) => Promise<void>;
+    deleteInstance: (id: string) => Promise<void>;
+    moveInstance: (id: string, newParentFolderId: string) => Promise<void>;
   };
 
   interface Window {

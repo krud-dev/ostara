@@ -36,102 +36,95 @@ export const configurationServiceBridge = {
   /**
    * Generic operations
    */
-  getItem(uuid: string): Promise<BaseItem | undefined> {
-    return ipcRenderer.invoke('configurationService:getItem', uuid);
+  getItem(id: string): Promise<BaseItem | undefined> {
+    return ipcRenderer.invoke('configurationService:getItem', id);
   },
-  getItemOrThrow(uuid: string): Promise<BaseItem> {
-    return ipcRenderer.invoke('configurationService:getItemOrThrow', uuid);
+  getItemOrThrow(id: string): Promise<BaseItem> {
+    return ipcRenderer.invoke('configurationService:getItemOrThrow', id);
   },
-  itemExistsOrThrow(uuid: string): Promise<void> {
-    return ipcRenderer.invoke('configurationService:itemExistsOrThrow', uuid);
+  itemExistsOrThrow(id: string): Promise<void> {
+    return ipcRenderer.invoke('configurationService:itemExistsOrThrow', id);
   },
-  reorderItem(uuid: string, order: number): Promise<void> {
-    return ipcRenderer.invoke('configurationService:reorderItem', uuid, order);
+  reorderItem(id: string, order: number): Promise<void> {
+    return ipcRenderer.invoke('configurationService:reorderItem', id, order);
   },
   /**
    * Folder operations
    */
-  createFolder(folder: Omit<Folder, 'uuid'>): Promise<Folder> {
+  createFolder(folder: Omit<Folder, 'id'>): Promise<Folder> {
     return ipcRenderer.invoke('configurationService:createFolder', folder);
   },
-  updateFolder(uuid: string, folder: Omit<Folder, 'uuid'>): Promise<void> {
-    return ipcRenderer.invoke(
-      'configurationService:updateFolder',
-      uuid,
-      folder
-    );
+  updateFolder(id: string, folder: Omit<Folder, 'id'>): Promise<void> {
+    return ipcRenderer.invoke('configurationService:updateFolder', id, folder);
   },
-  deleteFolder(uuid: string): Promise<void> {
-    return ipcRenderer.invoke('configurationService:deleteFolder', uuid);
+  deleteFolder(id: string): Promise<void> {
+    return ipcRenderer.invoke('configurationService:deleteFolder', id);
   },
-  getFolderChildren(uuid: string): Promise<HierarchicalItem[]> {
-    return ipcRenderer.invoke('configurationService:getFolderChildren', uuid);
+  getFolderChildren(id: string): Promise<HierarchicalItem[]> {
+    return ipcRenderer.invoke('configurationService:getFolderChildren', id);
   },
-  moveFolder(uuid: string, parentUuid: string): Promise<void> {
+  moveFolder(id: string, newParentFolderId: string): Promise<void> {
     return ipcRenderer.invoke(
       'configurationService:moveFolder',
-      uuid,
-      parentUuid
+      id,
+      newParentFolderId
     );
   },
   /**
    * Application operations
    */
   createApplication(
-    application: Omit<Application, 'uuid'>
+    application: Omit<Application, 'id'>
   ): Promise<Application> {
     return ipcRenderer.invoke(
       'configurationService:createApplication',
       application
     );
   },
-  updateApplication(uuid: string, application: Omit<Application, 'uuid'>) {
+  updateApplication(id: string, application: Omit<Application, 'id'>) {
     return ipcRenderer.invoke(
       'configurationService:updateApplication',
-      uuid,
+      id,
       application
     );
   },
-  deleteApplication(uuid: string): Promise<void> {
-    return ipcRenderer.invoke('configurationService:deleteApplication', uuid);
+  deleteApplication(id: string): Promise<void> {
+    return ipcRenderer.invoke('configurationService:deleteApplication', id);
   },
-  moveApplication(uuid: string, parentUuid: string): Promise<void> {
+  moveApplication(id: string, newParentFolderId: string): Promise<void> {
     return ipcRenderer.invoke(
       'configurationService:moveApplication',
-      uuid,
-      parentUuid
+      id,
+      newParentFolderId
     );
   },
-  getApplicationInstances(uuid: string): Promise<Instance[]> {
+  getApplicationInstances(id: string): Promise<Instance[]> {
     return ipcRenderer.invoke(
       'configurationService:getApplicationInstances',
-      uuid
+      id
     );
   },
   /**
    * Instance operations
    */
-  createInstance(instance: Omit<Instance, 'uuid'>): Promise<Instance> {
+  createInstance(instance: Omit<Instance, 'id'>): Promise<Instance> {
     return ipcRenderer.invoke('configurationService:createInstance', instance);
   },
-  updateInstance(
-    uuid: string,
-    instance: Omit<Instance, 'uuid'>
-  ): Promise<void> {
+  updateInstance(id: string, instance: Omit<Instance, 'id'>): Promise<void> {
     return ipcRenderer.invoke(
       'configurationService:updateInstance',
-      uuid,
+      id,
       instance
     );
   },
-  deleteInstance(uuid: string): Promise<void> {
-    return ipcRenderer.invoke('configurationService:deleteInstance', uuid);
+  deleteInstance(id: string): Promise<void> {
+    return ipcRenderer.invoke('configurationService:deleteInstance', id);
   },
-  moveInstance(uuid: string, parentUuid: string): Promise<void> {
+  moveInstance(id: string, newParentApplicationId: string): Promise<void> {
     return ipcRenderer.invoke(
       'configurationService:moveInstance',
-      uuid,
-      parentUuid
+      id,
+      newParentApplicationId
     );
   },
 };

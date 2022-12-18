@@ -1,6 +1,7 @@
 import { v4 as uuidv4 } from 'uuid';
 import {
   Application,
+  BaseItem,
   Configuration,
   Folder,
   HierarchicalItem,
@@ -8,7 +9,6 @@ import {
   isApplication,
   isFolder,
   isInstance,
-  BaseItem
 } from './model/configuration';
 import { configurationStore } from './configurationStore';
 
@@ -20,96 +20,91 @@ export class ConfigurationService {
     return configurationStore.store;
   }
 
-  static getItem(uuid: string): BaseItem | undefined {
-    return configurationStore.get('items')[uuid];
+  static getItem(id: string): BaseItem | undefined {
+    return configurationStore.get('items')[id];
   }
 
-  static getItemOrThrow(uuid: string): BaseItem {
-    const item = this.getItem(uuid);
+  static getItemOrThrow(id: string): BaseItem {
+    const item = this.getItem(id);
     if (item == null) {
-      throw new Error(`Item with uuid ${uuid} not found`);
+      throw new Error(`Item with id ${id} not found`);
     }
     return item;
   }
 
-  static itemExistsOrThrow(uuid: string): void {
-    if (!configurationStore.has(`items.${uuid}`)) {
-      throw new Error(`Item with uuid ${uuid} not found`);
+  static itemExistsOrThrow(id: string): void {
+    if (!configurationStore.has(`items.${id}`)) {
+      throw new Error(`Item with id ${id} not found`);
     }
   }
 
-  static reorderItem(uuid: string, order?: number): void {
-    this.itemExistsOrThrow(uuid);
-    configurationStore.set(`items.${uuid}.order`, order);
+  static reorderItem(id: string, order?: number): void {
+    this.itemExistsOrThrow(id);
+    configurationStore.set(`items.${id}.order`, order);
   }
 
   /**
    * Folder operations
    */
 
-  static createFolder(folder: Omit<Folder, 'uuid' | 'type'>): Folder {
-    const uuid = this.generateUuid();
+  static createFolder(folder: Omit<Folder, 'id' | 'type'>): Folder {
+    const id = this.generateId();
     const newFolder: Folder = {
       ...folder,
       type: 'folder',
-      uuid,
+      id,
     };
-    configurationStore.set(`items.${uuid}`, newFolder);
+    configurationStore.set(`items.${id}`, newFolder);
     return newFolder;
   }
 
-  static updateFolder(
-    uuid: string,
-    folder: Omit<Folder, 'uuid' | 'type'>
-  ): Folder {
-    const target = this.getItemOrThrow(uuid);
+  static updateFolder(id: string, folder: Omit<Folder, 'id' | 'type'>): Folder {
+    const target = this.getItemOrThrow(id);
     if (!isFolder(target)) {
-      throw new Error(`Item with UUID ${uuid} is not a folder`);
+      throw new Error(`Item with id ${id} is not a folder`);
     }
-    configurationStore.set(`items.${uuid}`, folder);
-    return { ...folder, type: 'folder', uuid };
+    configurationStore.set(`items.${id}`, folder);
+    return { ...folder, type: 'folder', id };
   }
 
-  static deleteFolder(uuid: string): void {
-    const target = this.getItemOrThrow(uuid);
+  static deleteFolder(id: string): void {
+    const target = this.getItemOrThrow(id);
     if (!isFolder(target)) {
-      throw new Error(`Item with UUID ${uuid} is not a folder`);
+      throw new Error(`Item with id ${id} is not a folder`);
     }
-    const children = this.getFolderChildren(uuid);
+    const children = this.getFolderChildren(id);
     children.forEach((child) => {
       if (isFolder(child)) {
-        this.deleteFolder(child.uuid);
+        this.deleteFolder(child.id);
       } else {
-        this.deleteApplication(child.uuid);
+        this.deleteApplication(child.id);
       }
     });
-    configurationStore.delete(`items.${uuid}` as any);
+    configurationStore.delete(`items.${id}` as any);
   }
 
-  static getFolderChildren(uuid: string): HierarchicalItem[] {
-    const folder = this.getItemOrThrow(uuid);
+  static getFolderChildren(id: string): HierarchicalItem[] {
+    const folder = this.getItemOrThrow(id);
     if (!isFolder(folder)) {
-      throw new Error(`Item with UUID ${uuid} is not a folder`);
+      throw new Error(`Item with id ${id} is not a folder`);
     }
     return Object.values(configurationStore.get('items')).filter(
       (item) =>
-        (isFolder(item) || isApplication(item)) && item.parentUuid === uuid
+        (isFolder(item) || isApplication(item)) && item.parentFolderId === id
     );
   }
 
-  static moveFolder(uuid: string, parentUuid?: string): Folder {
-    const target = this.getItemOrThrow(uuid);
+  static moveFolder(id: string, newParentFolderId: string): Folder {
+    const target = this.getItemOrThrow(id);
     if (!isFolder(target)) {
-      throw new Error(`Item with UUID ${uuid} is not a folder`);
+      throw new Error(`Item with id ${id} is not a folder`);
     }
-    if (parentUuid) {
-      const folder = this.getItemOrThrow(parentUuid);
-      if (!isFolder(folder)) {
-        throw new Error(`Item with UUID ${parentUuid} is not a folder`);
-      }
+    const newParentFolder = this.getItemOrThrow(newParentFolderId);
+    if (!isFolder(newParentFolder)) {
+      throw new Error(`Item with id ${newParentFolderId} is not a folder`);
     }
-    configurationStore.set(`items.${uuid}.parentUuid`, parentUuid);
-    return { ...target, parentUuid };
+    configurationStore.set(`items.${id}.parentFolderId`, newParentFolderId);
+    return { ...target, parentFolderId: newParentFolderId };
   }
 
   /**
@@ -117,62 +112,60 @@ export class ConfigurationService {
    */
 
   static createApplication(
-    application: Omit<Application, 'uuid' | 'type'>
+    application: Omit<Application, 'id' | 'type'>
   ): Application {
-    const uuid = this.generateUuid();
+    const id = this.generateId();
     const newApplication: Application = {
       ...application,
       type: 'application',
-      uuid,
+      id,
     };
-    configurationStore.set(`items.${uuid}`, newApplication);
+    configurationStore.set(`items.${id}`, newApplication);
     return newApplication;
   }
 
   static updateApplication(
-    uuid: string,
-    application: Omit<Application, 'uuid' | 'type'>
+    id: string,
+    application: Omit<Application, 'id' | 'type'>
   ): Application {
-    const target = this.getItemOrThrow(uuid);
+    const target = this.getItemOrThrow(id);
     if (!isApplication(target)) {
-      throw new Error(`Item with UUID ${uuid} is not an application`);
+      throw new Error(`Item with id ${id} is not an application`);
     }
-    configurationStore.set(`items.${uuid}`, application);
-    return { ...application, type: 'application', uuid };
+    configurationStore.set(`items.${id}`, application);
+    return { ...application, type: 'application', id };
   }
 
-  static deleteApplication(uuid: string): void {
-    const target = this.getItemOrThrow(uuid);
+  static deleteApplication(id: string): void {
+    const target = this.getItemOrThrow(id);
     if (!isApplication(target)) {
-      throw new Error(`Item with UUID ${uuid} is not an application`);
+      throw new Error(`Item with id ${id} is not an application`);
     }
-    const instances = this.getApplicationInstances(uuid);
-    instances.forEach((instance) => this.deleteInstance(instance.uuid));
-    configurationStore.delete(`items.${uuid}` as any);
+    const instances = this.getApplicationInstances(id);
+    instances.forEach((instance) => this.deleteInstance(instance.id));
+    configurationStore.delete(`items.${id}` as any);
   }
 
-  static moveApplication(uuid: string, parentUuid?: string): Application {
-    const target = this.getItemOrThrow(uuid);
+  static moveApplication(id: string, parentFolderId: string): Application {
+    const target = this.getItemOrThrow(id);
     if (!isApplication(target)) {
-      throw new Error(`Item with UUID ${uuid} is not an application`);
+      throw new Error(`Item with id ${id} is not an application`);
     }
-    if (parentUuid) {
-      const folder = this.getItemOrThrow(parentUuid);
-      if (!isFolder(folder)) {
-        throw new Error(`Item with UUID ${parentUuid} is not a folder`);
-      }
+    const newParentFolder = this.getItemOrThrow(parentFolderId);
+    if (!isFolder(newParentFolder)) {
+      throw new Error(`Item with id ${parentFolderId} is not a folder`);
     }
-    configurationStore.set(`items.${uuid}.parentUuid`, parentUuid);
-    return { ...target, parentUuid };
+    configurationStore.set(`items.${id}.parentFolderId`, parentFolderId);
+    return { ...target, parentFolderId };
   }
 
-  static getApplicationInstances(uuid: string): Instance[] {
-    const application = this.getItemOrThrow(uuid);
+  static getApplicationInstances(id: string): Instance[] {
+    const application = this.getItemOrThrow(id);
     if (!isApplication(application)) {
-      throw new Error(`Item with UUID ${uuid} is not an application`);
+      throw new Error(`Item with id ${id} is not an application`);
     }
     return Object.values(configurationStore.get('items')).filter(
-      (item) => isInstance(item) && item.applicationUuid === uuid
+      (item) => isInstance(item) && item.parentApplicationId === id
     ) as Instance[];
   }
 
@@ -180,61 +173,64 @@ export class ConfigurationService {
    * Instance operations
    */
 
-  static createInstance(instance: Omit<Instance, 'uuid' | 'type'>): Instance {
-    const uuid = this.generateUuid();
+  static createInstance(instance: Omit<Instance, 'id' | 'type'>): Instance {
+    const id = this.generateId();
     const newInstance: Instance = {
       ...instance,
       type: 'instance',
-      uuid,
+      id,
     };
-    configurationStore.set(`items.${uuid}`, newInstance);
+    configurationStore.set(`items.${id}`, newInstance);
     return newInstance;
   }
 
   static updateInstance(
-    uuid: string,
-    instance: Omit<Instance, 'uuid' | 'type'>
+    id: string,
+    instance: Omit<Instance, 'id' | 'type'>
   ): Instance {
-    const target = this.getItemOrThrow(uuid);
+    const target = this.getItemOrThrow(id);
     if (!isInstance(target)) {
-      throw new Error(`Item with UUID ${uuid} is not an instance`);
+      throw new Error(`Item with id ${id} is not an instance`);
     }
-    configurationStore.set(`items.${uuid}`, instance);
-    return { ...instance, type: 'instance', uuid };
+    configurationStore.set(`items.${id}`, instance);
+    return { ...instance, type: 'instance', id };
   }
 
-  static deleteInstance(uuid: string): void {
-    const target = this.getItemOrThrow(uuid);
+  static deleteInstance(id: string): void {
+    const target = this.getItemOrThrow(id);
     if (!isInstance(target)) {
-      throw new Error(`Item with UUID ${uuid} is not an instance`);
+      throw new Error(`Item with id ${id} is not an instance`);
     }
-    configurationStore.delete(`items.${uuid}` as any);
+    configurationStore.delete(`items.${id}` as any);
   }
 
-  static moveInstance(uuid: string, newApplicationUuid: string): Instance {
-    const target = this.getItemOrThrow(uuid);
+  static moveInstance(id: string, newParentApplicationId: string): Instance {
+    const target = this.getItemOrThrow(id);
     if (!isInstance(target)) {
-      throw new Error(`Item with UUID ${uuid} is not an instance`);
+      throw new Error(`Item with id ${id} is not an instance`);
     }
-    const application = this.getItemOrThrow(newApplicationUuid);
+    const application = this.getItemOrThrow(newParentApplicationId);
     if (!isApplication(application)) {
       throw new Error(
-        `Item with UUID ${newApplicationUuid} is not an application`
+        `Item with id ${newParentApplicationId} is not an application`
       );
     }
-    configurationStore.set(`items.${uuid}.applicationUuid`, newApplicationUuid);
-    return { ...target, applicationUuid: newApplicationUuid };
+    configurationStore.set(
+      `items.${id}.parentApplicationId`,
+      newParentApplicationId
+    );
+    return { ...target, parentApplicationId: newParentApplicationId };
   }
 
   /**
    * Misc
    */
 
-  private static generateUuid(): string {
-    let uuid = uuidv4();
-    while (configurationStore.has(`items.${uuid}`)) {
-      uuid = uuidv4();
+  private static generateId(): string {
+    let id = uuidv4();
+    while (configurationStore.has(`items.${id}`)) {
+      id = uuidv4();
     }
-    return uuid;
+    return id;
   }
 }

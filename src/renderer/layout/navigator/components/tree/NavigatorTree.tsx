@@ -36,56 +36,56 @@ export default function NavigatorTree({ search }: NavigatorTreeProps) {
   useEffect(() => {
     setData([
       {
-        uuid: uuidv4(),
+        id: uuidv4(),
         type: 'folder',
         alias: 'Project 1',
         children: [
           {
-            uuid: uuidv4(),
+            id: uuidv4(),
             type: 'folder',
             alias: 'Frontend',
             children: [
               {
-                uuid: uuidv4(),
+                id: uuidv4(),
                 type: 'application',
                 applicationType: 'SpringBoot',
                 alias: 'Frontend Application',
                 children: [
                   {
-                    uuid: uuidv4(),
+                    id: uuidv4(),
                     type: 'instance',
                     alias: 'Frontend Instance 1',
                     actuatorUrl: 'http://localhost:8080/actuator',
-                    applicationUuid: 'uuid',
+                    parentApplicationId: 'uuid',
                   },
                   {
-                    uuid: uuidv4(),
+                    id: uuidv4(),
                     type: 'instance',
                     alias: 'Frontend Instance 2',
                     actuatorUrl: 'http://localhost:8080/actuator',
-                    applicationUuid: 'uuid',
+                    parentApplicationId: 'uuid',
                   },
                 ],
               },
             ],
           },
           {
-            uuid: uuidv4(),
+            id: uuidv4(),
             type: 'folder',
             alias: 'Backend',
             children: [
               {
-                uuid: uuidv4(),
+                id: uuidv4(),
                 type: 'application',
                 applicationType: 'SpringBoot',
                 alias: 'Backend Application',
                 children: [
                   {
-                    uuid: uuidv4(),
+                    id: uuidv4(),
                     type: 'instance',
                     alias: 'Backend Instance',
                     actuatorUrl: 'http://localhost:8080/actuator',
-                    applicationUuid: 'uuid',
+                    parentApplicationId: 'uuid',
                   },
                 ],
               },
@@ -94,42 +94,42 @@ export default function NavigatorTree({ search }: NavigatorTreeProps) {
         ],
       },
       {
-        uuid: uuidv4(),
+        id: uuidv4(),
         type: 'folder',
         alias: 'Project 2',
         children: [
           {
-            uuid: uuidv4(),
+            id: uuidv4(),
             type: 'folder',
             alias: 'Project 2 1',
             children: [
               {
-                uuid: uuidv4(),
+                id: uuidv4(),
                 type: 'folder',
                 alias: 'Project 2 1 1',
                 children: [
                   {
-                    uuid: uuidv4(),
+                    id: uuidv4(),
                     type: 'folder',
                     alias: 'Project 2 1 1 1',
                     children: [
                       {
-                        uuid: uuidv4(),
+                        id: uuidv4(),
                         type: 'folder',
                         alias: 'Project 2 1 1 1 1',
                         children: [
                           {
-                            uuid: uuidv4(),
+                            id: uuidv4(),
                             type: 'folder',
                             alias: 'Project 2 1 1 1 1 1',
                             children: [
                               {
-                                uuid: uuidv4(),
+                                id: uuidv4(),
                                 type: 'folder',
                                 alias: 'Project 2 1 1 1 1 1 1',
                                 children: [
                                   {
-                                    uuid: uuidv4(),
+                                    id: uuidv4(),
                                     type: 'folder',
                                     alias: 'Project 2 1 1 1 1 1 1 1',
                                     children: [],
@@ -148,7 +148,7 @@ export default function NavigatorTree({ search }: NavigatorTreeProps) {
           },
         ],
       },
-      { uuid: uuidv4(), type: 'folder', alias: 'Project 3', children: [] },
+      { id: uuidv4(), type: 'folder', alias: 'Project 3', children: [] },
     ]);
   }, []);
 
@@ -164,7 +164,7 @@ export default function NavigatorTree({ search }: NavigatorTreeProps) {
 
     const sizeHelper = (treeItem: TreeItem): number =>
       1 +
-      (treeApi.isOpen(treeItem.uuid)
+      (treeApi.isOpen(treeItem.id)
         ? treeItem.children
             ?.map((t) => sizeHelper(t))
             .reduce((a, b) => a + b, 0) ?? 0

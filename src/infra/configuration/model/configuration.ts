@@ -2,12 +2,12 @@ export type ApplicationType = 'SpringBoot';
 
 type Item = Instance | Application | Folder;
 export type BaseItem = {
-  uuid: string;
+  id: string;
   type: 'folder' | 'application' | 'instance';
 };
 
 export type HierarchicalItem = BaseItem & {
-  parentUuid?: string;
+  parentFolderId?: string;
 };
 
 export type OrderedItem = BaseItem & {
@@ -16,7 +16,7 @@ export type OrderedItem = BaseItem & {
 
 export type Instance = OrderedItem & {
   type: 'instance';
-  applicationUuid: string;
+  parentApplicationId: string;
   alias: string;
   actuatorUrl: string;
 };
