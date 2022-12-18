@@ -1,4 +1,4 @@
-export interface UrlInfo {
+export type UrlInfo = {
   url: string;
   path: string;
 }

@@ -1,4 +1,4 @@
-export interface ActuatorMetric {
+export type ActuatorMetric = {
   name: string;
   description?: string;
   baseUnit?: string;
@@ -10,10 +10,10 @@ export interface ActuatorMetric {
     tag: string;
     values: string[];
   }[];
-}
+};
 
-export interface ActuatorMetricsResponse {
+export type ActuatorMetricsResponse = {
   names: string[];
-}
+};
 
 export type ActuatorMetricResponse = ActuatorMetric;

@@ -1,4 +1,4 @@
-export interface ActuatorThreadDumpStackTraceFrame {
+export type ActuatorThreadDumpStackTraceFrame = {
   classLoaderName?: string;
   moduleName: string;
   moduleVersion: string;
@@ -7,18 +7,18 @@ export interface ActuatorThreadDumpStackTraceFrame {
   methodName: string;
   lineNumber: number;
   nativeMethod: boolean;
-}
-export interface ActuatorThreadDumpLockedMonitor {
+};
+export type ActuatorThreadDumpLockedMonitor = {
   className: string;
   identityHashCode: number;
   lockedStackDepth: number;
   lockedStackFrame: ActuatorThreadDumpStackTraceFrame;
-}
-export interface ActuatorThreadDumpLockedSynchronizer {
+};
+export type ActuatorThreadDumpLockedSynchronizer = {
   className: string;
   identityHashCode: number;
-}
-export interface ActuatorThreadDumpThread {
+};
+export type ActuatorThreadDumpThread = {
   threadName: string;
   threadId: number;
   blockedTime: number;
@@ -36,8 +36,8 @@ export interface ActuatorThreadDumpThread {
   stackTrace: ActuatorThreadDumpStackTraceFrame[];
   lockedMonitors: ActuatorThreadDumpLockedMonitor[];
   lockedSynchronizers: ActuatorThreadDumpLockedSynchronizer[];
-}
+};
 
-export interface ActuatorThreadDumpResponse {
+export type ActuatorThreadDumpResponse = {
   threads: ActuatorThreadDumpThread[];
-}
+};

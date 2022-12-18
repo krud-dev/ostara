@@ -1,6 +1,6 @@
 import { Localization } from '@mui/material/locale';
 
-export interface LocaleInfo {
+export type LocaleInfo = {
   id: string;
   locale: string;
   messages: { [key: string]: string };

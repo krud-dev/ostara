@@ -1,23 +1,23 @@
-export interface ActuatorGitInfo {
+export type ActuatorGitInfo = {
   branch: string;
 
   commit: {
     id: string;
     time: number;
   };
-}
+};
 
-export interface ActuatorBuildInfo {
+export type ActuatorBuildInfo = {
   artifact: string;
   name: string;
   time: number;
   version: string;
   group: string;
-}
+};
 
-export interface ActuatorInfoResponse {
+export type ActuatorInfoResponse = {
   git?: ActuatorGitInfo;
   build?: ActuatorBuildInfo;
 
   [key: string]: object | undefined;
-}
+};

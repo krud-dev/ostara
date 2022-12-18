@@ -1,17 +1,17 @@
-export interface ActuatorCache {
+export type ActuatorCache = {
   target: string;
-}
+};
 
-export interface ActuatorCacheManager {
+export type ActuatorCacheManager = {
   caches: { [key: string]: ActuatorCache };
-}
+};
 
-export interface ActuatorCachesResponse {
+export type ActuatorCachesResponse = {
   cacheManagers: { [key: string]: ActuatorCacheManager };
-}
+};
 
-export interface ActuatorCacheResponse {
+export type ActuatorCacheResponse = {
   name: string;
   target: string;
   cacheManager: string;
-}
+};

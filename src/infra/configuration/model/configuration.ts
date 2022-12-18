@@ -1,44 +1,46 @@
 export type ApplicationType = 'SpringBoot';
 
 type Item = Instance | Application | Folder;
-export interface BaseItem {
+export type BaseItem = {
   uuid: string;
   type: 'folder' | 'application' | 'instance';
-}
+};
 
-export interface HierarchicalItem extends BaseItem {
+export type HierarchicalItem = BaseItem & {
   parentUuid?: string;
-}
+};
 
-export interface OrderedItem extends BaseItem {
+export type OrderedItem = BaseItem & {
   order?: number;
-}
+};
 
-export interface Instance extends OrderedItem {
+export type Instance = OrderedItem & {
   type: 'instance';
   applicationUuid: string;
   alias: string;
   actuatorUrl: string;
-}
+};
 
-export interface Application extends HierarchicalItem, OrderedItem {
-  type: 'application';
-  applicationType: ApplicationType;
-  alias: string;
-  description?: string;
-  icon?: string;
-}
+export type Application = HierarchicalItem &
+  OrderedItem & {
+    type: 'application';
+    applicationType: ApplicationType;
+    alias: string;
+    description?: string;
+    icon?: string;
+  };
 
-export interface Folder extends HierarchicalItem, OrderedItem {
-  type: 'folder';
-  alias: string;
-  description?: string;
-  icon?: string;
-}
+export type Folder = HierarchicalItem &
+  OrderedItem & {
+    type: 'folder';
+    alias: string;
+    description?: string;
+    icon?: string;
+  };
 
-export interface Configuration {
+export type Configuration = {
   items: { [key: string]: Item };
-}
+};
 
 export function isApplication(item: BaseItem): item is Application {
   return item.type === 'application';

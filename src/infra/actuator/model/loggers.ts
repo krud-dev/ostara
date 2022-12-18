@@ -6,17 +6,17 @@ export type ActuatorLogLevel =
   | 'DEBUG'
   | 'TRACE'
   | 'ALL';
-export interface ActuatorLogger {
+export type ActuatorLogger = {
   configuredLevel?: ActuatorLogLevel;
   effectiveLevel: ActuatorLogLevel;
-}
+};
 
-export interface ActuatorLoggerGroup {
+export type ActuatorLoggerGroup = {
   configuredLevel?: ActuatorLogLevel;
   members: string[];
-}
+};
 
-export interface ActuatorLoggersResponse {
+export type ActuatorLoggersResponse = {
   levels: ActuatorLogLevel[];
   loggers: {
     [key: string]: ActuatorLogger;
@@ -24,6 +24,6 @@ export interface ActuatorLoggersResponse {
   groups: {
     [key: string]: ActuatorLoggerGroup;
   };
-}
+};
 
 export type ActuatorLoggerResponse = ActuatorLogger | ActuatorLoggerGroup;

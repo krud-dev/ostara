@@ -9,7 +9,7 @@ import useConfigurationStoreState from 'renderer/hooks/useConfigurationStoreStat
 import { LocaleInfo } from 'renderer/lang/lang';
 import locales from 'renderer/lang';
 
-export interface UiContextProps {
+export type UiContextProps = {
   darkMode: boolean;
   toggleDarkMode: () => void;
   localeInfo: LocaleInfo;
