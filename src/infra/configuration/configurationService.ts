@@ -8,7 +8,7 @@ import {
   isApplication,
   isFolder,
   isInstance,
-  Item
+  BaseItem
 } from './model/configuration';
 import { configurationStore } from './configurationStore';
 
@@ -20,11 +20,11 @@ export class ConfigurationService {
     return configurationStore.store;
   }
 
-  static getItem(uuid: string): Item | undefined {
+  static getItem(uuid: string): BaseItem | undefined {
     return configurationStore.get('items')[uuid];
   }
 
-  static getItemOrThrow(uuid: string): Item {
+  static getItemOrThrow(uuid: string): BaseItem {
     const item = this.getItem(uuid);
     if (item == null) {
       throw new Error(`Item with uuid ${uuid} not found`);

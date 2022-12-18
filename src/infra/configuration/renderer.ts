@@ -5,7 +5,7 @@ import {
   Folder,
   HierarchicalItem,
   Instance,
-  Item,
+  BaseItem,
 } from './model/configuration';
 
 export const configurationStoreBridge = {
@@ -36,10 +36,10 @@ export const configurationServiceBridge = {
   /**
    * Generic operations
    */
-  getItem(uuid: string): Promise<Item | undefined> {
+  getItem(uuid: string): Promise<BaseItem | undefined> {
     return ipcRenderer.invoke('configurationService:getItem', uuid);
   },
-  getItemOrThrow(uuid: string): Promise<Item> {
+  getItemOrThrow(uuid: string): Promise<BaseItem> {
     return ipcRenderer.invoke('configurationService:getItemOrThrow', uuid);
   },
   itemExistsOrThrow(uuid: string): Promise<void> {

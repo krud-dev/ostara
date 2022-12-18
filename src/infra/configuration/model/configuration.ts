@@ -1,15 +1,16 @@
 export type ApplicationType = 'SpringBoot';
 
-export interface Item {
+type Item = Instance | Application | Folder;
+export interface BaseItem {
   uuid: string;
   type: 'folder' | 'application' | 'instance';
 }
 
-export interface HierarchicalItem extends Item {
+export interface HierarchicalItem extends BaseItem {
   parentUuid?: string;
 }
 
-export interface OrderedItem extends Item {
+export interface OrderedItem extends BaseItem {
   order?: number;
 }
 
@@ -39,14 +40,14 @@ export interface Configuration {
   items: { [key: string]: Item };
 }
 
-export function isApplication(item: Item): item is Application {
+export function isApplication(item: BaseItem): item is Application {
   return item.type === 'application';
 }
 
-export function isFolder(item: Item): item is Folder {
+export function isFolder(item: BaseItem): item is Folder {
   return item.type === 'folder';
 }
 
-export function isInstance(item: Item): item is Instance {
+export function isInstance(item: BaseItem): item is Instance {
   return item.type === 'instance';
 }

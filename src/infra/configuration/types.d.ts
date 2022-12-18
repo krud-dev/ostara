@@ -4,7 +4,7 @@ import {
   Folder,
   HierarchicalItem,
   Instance,
-  Item,
+  BaseItem,
 } from './model/configuration';
 
 declare global {
@@ -13,8 +13,8 @@ declare global {
      * Generic operations
      */
     getConfiguration: () => Promise<Configuration>;
-    getItem: (uuid: string) => Promise<Item | undefined>;
-    getItemOrThrow: (uuid: string) => Promise<Item>;
+    getItem: (uuid: string) => Promise<BaseItem | undefined>;
+    getItemOrThrow: (uuid: string) => Promise<BaseItem>;
     itemExistsOrThrow: (uuid: string) => Promise<void>;
     reorderItem: (uuid: string, order: number) => Promise<void>;
     /**
