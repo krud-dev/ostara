@@ -18,7 +18,10 @@ module.exports = {
     'no-empty-pattern': 'off',
     'prefer-default-export': 'off',
     'spaced-comment': 'off',
+    'no-empty': 'off',
+    'object-shorthand': 'off',
     'import/order': 'off',
+    'import/prefer-default-export': 'off',
   },
   parserOptions: {
     ecmaVersion: 2020,

@@ -1,9 +1,12 @@
 export type ApplicationType = 'SpringBoot';
 
-type Item = Instance | Application | Folder;
+export type Item = Instance | Application | Folder;
+
+export type ItemType = 'instance' | 'application' | 'folder';
+
 export type BaseItem = {
   id: string;
-  type: 'folder' | 'application' | 'instance';
+  type: ItemType;
 };
 
 export type HierarchicalItem = BaseItem & {

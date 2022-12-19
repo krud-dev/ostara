@@ -6,18 +6,18 @@ import {
   ListItemText,
   MenuItem,
 } from '@mui/material';
-import locales from '../../../lang';
+import locales from 'renderer/lang';
 import { map } from 'lodash';
 import { useUi } from 'renderer/contexts/UiContext';
 import MenuPopover from 'renderer/components/menu/MenuPopover';
 
-export default function LanguagePopover() {
+export default function LanguageMenu() {
   const { localeInfo, setLocale } = useUi();
 
   const anchorRef = useRef<HTMLButtonElement | null>(null);
   const [open, setOpen] = useState<boolean>(false);
 
-  const handleChangeLocale = useCallback(
+  const changeLocaleHandler = useCallback(
     (locale: string): void => {
       setLocale(locale);
     },
@@ -58,32 +58,27 @@ export default function LanguagePopover() {
         onClose={() => setOpen(false)}
         anchorEl={anchorRef.current}
       >
-        <Box sx={{ py: 1 }}>
-          {map(locales, (l) => (
-            <MenuItem
-              key={l.id}
-              selected={l.id === localeInfo.id}
-              onClick={() => {
-                handleChangeLocale(l.id);
-                setOpen(false);
-              }}
-              sx={{ py: 1, px: 2.5 }}
-            >
-              <ListItemIcon>
-                <Box
-                  component="img"
-                  alt={l.name}
-                  src={l.icon}
-                  sx={{ width: '28px', borderRadius: '3px' }}
-                />
-              </ListItemIcon>
+        {map(locales, (l) => (
+          <MenuItem
+            key={l.id}
+            selected={l.id === localeInfo.id}
+            onClick={() => {
+              changeLocaleHandler(l.id);
+              setOpen(false);
+            }}
+          >
+            <ListItemIcon>
+              <Box
+                component="img"
+                alt={l.name}
+                src={l.icon}
+                sx={{ width: '28px', borderRadius: '3px' }}
+              />
+            </ListItemIcon>
 
-              <ListItemText primaryTypographyProps={{ variant: 'body2' }}>
-                {l.name}
-              </ListItemText>
-            </MenuItem>
-          ))}
-        </Box>
+            <ListItemText>{l.name}</ListItemText>
+          </MenuItem>
+        ))}
       </MenuPopover>
     </>
   );

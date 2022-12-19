@@ -1,6 +1,6 @@
 import { alpha, experimentalStyled as styled } from '@mui/material/styles';
 import { AppBar, Box, IconButton, Stack, Toolbar } from '@mui/material';
-import LanguagePopover from 'renderer/layout/navigator/components/LanguagePopover';
+import LanguageMenu from 'renderer/layout/navigator/components/navbar/LanguageMenu';
 import { NAVBAR_HEIGHT, SIDEBAR_DRAWER_WIDTH } from 'renderer/constants/ui';
 import MHidden from 'renderer/components/layout/MHidden';
 import { MenuOutlined } from '@mui/icons-material';
@@ -44,7 +44,7 @@ export default function NavigatorNavbar({
         <Box sx={{ flexGrow: 1 }} />
 
         <Stack direction="row" spacing={{ xs: 0.5, sm: 1.5 }}>
-          <LanguagePopover />
+          <LanguageMenu />
         </Stack>
       </ToolbarStyle>
     </RootStyle>

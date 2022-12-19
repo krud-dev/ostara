@@ -6,9 +6,8 @@ export default function Lists(theme: Theme): Components {
     MuiListItemIcon: {
       styleOverrides: {
         root: {
-          color: 'inherit',
+          color: theme.palette.text.secondary,
           minWidth: 'auto',
-          marginRight: theme.spacing(2),
         },
       },
     },
@@ -21,6 +20,11 @@ export default function Lists(theme: Theme): Components {
       },
     },
     MuiListItemText: {
+      defaultProps: {
+        primaryTypographyProps: {
+          variant: 'body2',
+        },
+      },
       styleOverrides: {
         root: {
           marginTop: 0,
