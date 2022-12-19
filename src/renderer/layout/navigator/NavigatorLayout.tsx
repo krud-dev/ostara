@@ -4,6 +4,7 @@ import { experimentalStyled as styled, useTheme } from '@mui/material/styles';
 import NavigatorNavbar from 'renderer/layout/navigator/components/NavigatorNavbar';
 import NavigatorSidebar from 'renderer/layout/navigator/components/NavigatorSidebar';
 import { NAVBAR_HEIGHT } from '../../constants/ui';
+import PerfectScrollbar from 'react-perfect-scrollbar';
 
 const RootStyle = styled('div')({
   display: 'flex',
@@ -13,10 +14,12 @@ const RootStyle = styled('div')({
 
 const MainStyle = styled('div')(({ theme }) => ({
   flexGrow: 1,
-  overflow: 'auto',
-  minHeight: '100%',
-  paddingTop: NAVBAR_HEIGHT + 24,
-  paddingBottom: theme.spacing(5),
+  height: '100vh',
+  overflow: 'hidden',
+}));
+
+const ContentStyle = styled('div')(({ theme }) => ({
+  paddingTop: NAVBAR_HEIGHT,
 }));
 
 type NavigatorLayoutProps = {};
@@ -40,7 +43,16 @@ export default function NavigatorLayout({}: NavigatorLayoutProps) {
           }),
         }}
       >
-        <Outlet />
+        <PerfectScrollbar
+          options={{
+            wheelPropagation: false,
+            minScrollbarLength: NAVBAR_HEIGHT * 2,
+          }}
+        >
+          <ContentStyle>
+            <Outlet />
+          </ContentStyle>
+        </PerfectScrollbar>
       </MainStyle>
     </RootStyle>
   );
