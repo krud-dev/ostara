@@ -18,10 +18,6 @@ const MainStyle = styled('div')(({ theme }) => ({
   overflow: 'hidden',
 }));
 
-const ContentStyle = styled('div')(({ theme }) => ({
-  paddingTop: NAVBAR_HEIGHT,
-}));
-
 type NavigatorLayoutProps = {};
 
 export default function NavigatorLayout({}: NavigatorLayoutProps) {
@@ -38,6 +34,7 @@ export default function NavigatorLayout({}: NavigatorLayoutProps) {
       />
       <MainStyle
         sx={{
+          paddingTop: `${NAVBAR_HEIGHT}px`,
           transition: theme.transitions.create('margin', {
             duration: theme.transitions.duration.complex,
           }),
@@ -46,12 +43,9 @@ export default function NavigatorLayout({}: NavigatorLayoutProps) {
         <PerfectScrollbar
           options={{
             wheelPropagation: false,
-            minScrollbarLength: NAVBAR_HEIGHT * 2,
           }}
         >
-          <ContentStyle>
-            <Outlet />
-          </ContentStyle>
+          <Outlet />
         </PerfectScrollbar>
       </MainStyle>
     </RootStyle>

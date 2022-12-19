@@ -5,4 +5,6 @@ export default {
   name: 'Name',
   create: 'Create',
   addYourFirstInstance: 'Add your first actuator instance',
+  collapseAll: 'Collapse All',
+  expandAll: 'Expand All',
 };

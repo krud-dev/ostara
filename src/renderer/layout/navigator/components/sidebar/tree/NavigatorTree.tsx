@@ -42,7 +42,8 @@ type NavigatorTreeProps = {
 };
 
 export default function NavigatorTree({ search }: NavigatorTreeProps) {
-  const { data, isLoading, isEmpty, hasData, getItem } = useNavigatorTree();
+  const { data, isLoading, isEmpty, hasData, action, getItem } =
+    useNavigatorTree();
 
   const treeRef = useRef<TreeApi<TreeItem> | null>(null);
 
@@ -82,6 +83,25 @@ export default function NavigatorTree({ search }: NavigatorTreeProps) {
   useEffect(() => {
     setToggleFlag((prevToggleFlag) => prevToggleFlag + 1);
   }, [data, search]);
+
+  useEffect(() => {
+    if (!action) {
+      return;
+    }
+
+    switch (action) {
+      case 'collapseAll':
+        treeRef.current?.closeAll();
+        break;
+      case 'expandAll':
+        treeRef.current?.openAll();
+        break;
+      default:
+        break;
+    }
+
+    setToggleFlag((prevToggleFlag) => prevToggleFlag + 1);
+  }, [action]);
 
   const height = useMemo<number>(
     () => getOpenItemsCount() * NAVIGATOR_ITEM_HEIGHT + 12,

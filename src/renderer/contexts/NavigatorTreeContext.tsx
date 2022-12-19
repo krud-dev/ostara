@@ -16,11 +16,15 @@ import {
 import { TreeItem } from 'renderer/layout/navigator/components/sidebar/tree/tree';
 import { forEach } from 'lodash';
 
+type NavigatorTreeAction = 'expandAll' | 'collapseAll';
+
 export type NavigatorTreeContextProps = {
   data: TreeItem[] | undefined;
   isLoading: boolean;
   isEmpty: boolean;
   hasData: boolean;
+  action: NavigatorTreeAction | undefined;
+  performAction: (action: NavigatorTreeAction) => void;
   getItem: (id: string) => Item | undefined;
   reloadTree: () => Promise<void>;
 };
@@ -35,6 +39,9 @@ const NavigatorTreeProvider: FunctionComponent<NavigatorTreeProviderProps> = ({
   children,
 }) => {
   const [data, setData] = useState<TreeItem[] | undefined>(undefined);
+  const [action, setAction] = useState<NavigatorTreeAction | undefined>(
+    undefined
+  );
 
   const isLoading = useMemo<boolean>(() => !data, [data]);
   const isEmpty = useMemo<boolean>(() => data?.length === 0, [data]);
@@ -76,9 +83,15 @@ const NavigatorTreeProvider: FunctionComponent<NavigatorTreeProviderProps> = ({
     }
   }, [configurationState.data]);
 
-  const reloadTree = useCallback(async (): Promise<void> => {
-    await configurationState.refetch();
+  const performAction = useCallback((actionToPerform: NavigatorTreeAction) => {
+    setAction(actionToPerform);
   }, []);
+
+  useEffect(() => {
+    if (action) {
+      setAction(undefined);
+    }
+  }, [action]);
 
   const getItem = useCallback(
     (id: string): Item | undefined => {
@@ -87,6 +100,10 @@ const NavigatorTreeProvider: FunctionComponent<NavigatorTreeProviderProps> = ({
     [configurationState.data]
   );
 
+  const reloadTree = useCallback(async (): Promise<void> => {
+    await configurationState.refetch();
+  }, []);
+
   return (
     <NavigatorTreeContext.Provider
       value={{
@@ -94,6 +111,8 @@ const NavigatorTreeProvider: FunctionComponent<NavigatorTreeProviderProps> = ({
         isLoading,
         isEmpty,
         hasData,
+        action,
+        performAction,
         getItem,
         reloadTree,
       }}
