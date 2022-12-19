@@ -18,6 +18,7 @@ module.exports = {
     '@typescript-eslint/no-non-null-assertion': 'off',
     'no-empty-pattern': 'off',
     'prefer-default-export': 'off',
+    'class-methods-use-this': 'off',
     'spaced-comment': 'off',
     'no-empty': 'off',
     'object-shorthand': 'off',
