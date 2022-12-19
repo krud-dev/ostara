@@ -24,7 +24,6 @@ import { NAVIGATOR_ITEM_HEIGHT } from 'renderer/constants/ui';
 import { getItemTypeIcon } from 'renderer/utils/itemUtils';
 import FolderContextMenu from 'renderer/layout/navigator/components/sidebar/tree/menus/FolderContextMenu';
 import { isFolder, Item } from 'infra/configuration/model/configuration';
-import { PopoverPosition } from '@mui/material/Popover/Popover';
 
 type NavigatorTreeNodeProps = NodeRendererProps<TreeItem>;
 
@@ -76,8 +75,8 @@ export default function NavigatorTreeNode({
   const theme = useTheme();
 
   const contextMenuAnchorRef = useRef<HTMLButtonElement | null>(null);
-  const [contextMenuPosition, setContextMenuPosition] = useState<
-    PopoverPosition | undefined
+  const [contextMenuAnchor, setContextMenuAnchor] = useState<
+    Element | undefined
   >(undefined);
   const [contextMenuOpen, setContextMenuOpen] = useState<boolean>(false);
 
@@ -86,10 +85,18 @@ export default function NavigatorTreeNode({
       if (event) {
         event.preventDefault();
         node.select();
-        setContextMenuPosition({
-          top: event.clientY,
-          left: event.clientX,
-        });
+
+        const virtualElement: any = {
+          getBoundingClientRect: () => ({
+            width: 0,
+            height: 0,
+            top: event.clientY,
+            right: event.clientX,
+            bottom: event.clientY,
+            left: event.clientX,
+          }),
+        };
+        setContextMenuAnchor(virtualElement);
       }
       setContextMenuOpen(true);
     },
@@ -97,7 +104,7 @@ export default function NavigatorTreeNode({
   );
 
   const closeContextMenu = useCallback((): void => {
-    setContextMenuPosition(undefined);
+    setContextMenuAnchor(undefined);
     setContextMenuOpen(false);
   }, []);
 
@@ -153,8 +160,7 @@ export default function NavigatorTreeNode({
         <FolderContextMenu
           item={node.data}
           open={contextMenuOpen}
-          anchorEl={contextMenuAnchorRef.current}
-          anchorPosition={contextMenuPosition}
+          anchorEl={contextMenuAnchor || contextMenuAnchorRef.current}
           onClose={closeContextMenu}
           onCreated={onChildItemCreated}
         />

@@ -46,6 +46,14 @@ export default function NavigatorTree({ search }: NavigatorTreeProps) {
 
   const treeRef = useRef<TreeApi<TreeItem> | null>(null);
 
+  useEffect(() => {
+    const listEl = treeRef.current?.listEl?.current;
+    if (listEl) {
+      // Solves the bug where the scrollbar is showing on search
+      listEl.style.overflow = 'hidden';
+    }
+  }, [hasData]);
+
   const getOpenItemsCount = useCallback((): number => {
     if (!data) {
       return 0;
@@ -73,7 +81,7 @@ export default function NavigatorTree({ search }: NavigatorTreeProps) {
 
   useEffect(() => {
     setToggleFlag((prevToggleFlag) => prevToggleFlag + 1);
-  }, [data]);
+  }, [data, search]);
 
   const height = useMemo<number>(
     () => getOpenItemsCount() * NAVIGATOR_ITEM_HEIGHT + 12,
@@ -195,7 +203,9 @@ export default function NavigatorTree({ search }: NavigatorTreeProps) {
           indent={12}
           rowHeight={NAVIGATOR_ITEM_HEIGHT}
           searchTerm={search}
-          searchMatch={(node, term) => node.data.alias.includes(term)}
+          searchMatch={(node, term) =>
+            node.data.alias.toLowerCase().includes(term.toLowerCase())
+          }
           onCreate={onCreate}
           onRename={onRename}
           onMove={onMove}

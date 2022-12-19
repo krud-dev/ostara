@@ -1,19 +1,17 @@
 import { useCallback, useMemo } from 'react';
 import { ListItemIcon, ListItemText, MenuItem } from '@mui/material';
-import MenuPopover from 'renderer/components/menu/MenuPopover';
 import { SvgIconComponent } from '@mui/icons-material';
 import { FormattedMessage } from 'react-intl';
 import { getItemTypeIcon } from 'renderer/utils/itemUtils';
 import NiceModal from '@ebay/nice-modal-react';
 import CreateFolderDialog from 'renderer/layout/navigator/components/sidebar/create/CreateFolderDialog';
 import { Folder, Item } from 'infra/configuration/model/configuration';
-import { PopoverPosition } from '@mui/material/Popover/Popover';
+import ContextMenuPopper from 'renderer/components/menu/ContextMenuPopper';
 
 type FolderContextMenuProps = {
   item: Folder;
   open: boolean;
   anchorEl?: Element | null;
-  anchorPosition?: PopoverPosition;
   onClose?: () => void;
   onCreated?: (item: Item) => void;
 };
@@ -22,15 +20,9 @@ export default function FolderContextMenu({
   item,
   open,
   anchorEl,
-  anchorPosition,
   onClose,
   onCreated,
 }: FolderContextMenuProps) {
-  const anchorReference = useMemo<'anchorEl' | 'anchorPosition' | undefined>(
-    () => (anchorPosition ? 'anchorPosition' : 'anchorEl'),
-    [anchorPosition, anchorEl]
-  );
-
   const createFolderHandler = useCallback((): void => {
     NiceModal.show<Folder | undefined>(CreateFolderDialog, {
       parentFolderId: item.id,
@@ -61,13 +53,7 @@ export default function FolderContextMenu({
   );
 
   return (
-    <MenuPopover
-      open={open}
-      onClose={onClose}
-      anchorEl={anchorEl}
-      anchorPosition={anchorPosition}
-      anchorReference={anchorReference}
-    >
+    <ContextMenuPopper open={open} onClose={onClose} anchorEl={anchorEl}>
       <MenuItem onClick={createFolderHandler}>
         <ListItemIcon>
           <FolderIcon fontSize="small" />
@@ -92,6 +78,6 @@ export default function FolderContextMenu({
           <FormattedMessage id={'createInstance'} />
         </ListItemText>
       </MenuItem>
-    </MenuPopover>
+    </ContextMenuPopper>
   );
 }
