@@ -1,15 +1,18 @@
 import { useCallback, useMemo } from 'react';
-import { ListItemIcon, ListItemText, MenuItem } from '@mui/material';
-import { SvgIconComponent } from '@mui/icons-material';
+import { Divider, ListItemIcon, ListItemText, MenuItem } from '@mui/material';
+import { DeleteOutlined, SvgIconComponent } from '@mui/icons-material';
 import { FormattedMessage } from 'react-intl';
 import { getItemTypeIcon } from 'renderer/utils/itemUtils';
 import NiceModal from '@ebay/nice-modal-react';
 import CreateFolderDialog from 'renderer/layout/navigator/components/sidebar/create/CreateFolderDialog';
 import { Folder, Item } from 'infra/configuration/model/configuration';
 import ContextMenuPopper from 'renderer/components/menu/ContextMenuPopper';
+import ConfirmationDialog from 'renderer/components/dialog/ConfirmationDialog';
+import { useDeleteFolder } from 'renderer/apis/configuration/deleteFolder';
+import { chain } from 'lodash';
 
 type FolderContextMenuProps = {
-  item: Folder;
+  item: Folder & { children?: Item[] };
   open: boolean;
   anchorEl?: Element | null;
   onClose?: () => void;
@@ -26,6 +29,12 @@ export default function FolderContextMenu({
   const createFolderHandler = useCallback((): void => {
     NiceModal.show<Folder | undefined>(CreateFolderDialog, {
       parentFolderId: item.id,
+      order: item.children?.length
+        ? chain(item.children)
+            .map<number>((c) => c.order ?? 0)
+            .max()
+            .value() + 1
+        : 1,
       onCreated: onCreated,
     });
     onClose?.();
@@ -38,6 +47,25 @@ export default function FolderContextMenu({
   const createInstanceHandler = useCallback((): void => {
     onClose?.();
   }, [onClose]);
+
+  const deleteFolderState = useDeleteFolder();
+
+  const deleteFolderHandler = useCallback(async (): Promise<void> => {
+    onClose?.();
+
+    const confirm = await NiceModal.show<boolean>(ConfirmationDialog, {
+      title: <FormattedMessage id={'delete'} />,
+      text: <FormattedMessage id={'areYouSure'} />,
+      continueText: <FormattedMessage id={'delete'} />,
+    });
+    if (!confirm) {
+      return;
+    }
+
+    try {
+      await deleteFolderState.mutateAsync({ id: item.id });
+    } catch (e) {}
+  }, [onClose, item]);
 
   const FolderIcon = useMemo<SvgIconComponent>(
     () => getItemTypeIcon('folder'),
@@ -76,6 +104,15 @@ export default function FolderContextMenu({
         </ListItemIcon>
         <ListItemText>
           <FormattedMessage id={'createInstance'} />
+        </ListItemText>
+      </MenuItem>
+      <Divider />
+      <MenuItem onClick={deleteFolderHandler} sx={{ color: 'error.main' }}>
+        <ListItemIcon>
+          <DeleteOutlined fontSize="small" />
+        </ListItemIcon>
+        <ListItemText>
+          <FormattedMessage id={'delete'} />
         </ListItemText>
       </MenuItem>
     </ContextMenuPopper>

@@ -12,17 +12,30 @@ import { getItemTypeIcon } from 'renderer/utils/itemUtils';
 import NiceModal from '@ebay/nice-modal-react';
 import CreateFolderDialog from 'renderer/layout/navigator/components/sidebar/create/CreateFolderDialog';
 import { Folder } from 'infra/configuration/model/configuration';
+import { useNavigatorTree } from 'renderer/contexts/NavigatorTreeContext';
+import { chain } from 'lodash';
 
 export default function CreateItemMenu() {
+  const { data } = useNavigatorTree();
+
   const anchorRef = useRef<HTMLButtonElement | null>(null);
   const [open, setOpen] = useState<boolean>(false);
 
   const createFolderHandler = useCallback((): void => {
+    if (!data) {
+      return;
+    }
     NiceModal.show<Folder | undefined>(CreateFolderDialog, {
+      order: data.length
+        ? chain(data)
+            .map<number>((item) => item.order ?? 0)
+            .max()
+            .value() + 1
+        : 1,
       onCreated: (item: Folder) => {},
     });
     setOpen(false);
-  }, [setOpen]);
+  }, [data, setOpen]);
 
   const createApplicationHandler = useCallback((): void => {
     setOpen(false);

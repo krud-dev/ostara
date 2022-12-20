@@ -42,6 +42,8 @@ const ConfirmationDialog: FunctionComponent<
       TransitionProps={{
         onExited: () => modal.remove(),
       }}
+      fullWidth
+      maxWidth={'xs'}
     >
       <DialogTitleEnhanced onClose={cancelHandler}>{title}</DialogTitleEnhanced>
       <DialogContent>

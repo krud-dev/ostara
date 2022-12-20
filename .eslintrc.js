@@ -15,6 +15,7 @@ module.exports = {
     '@typescript-eslint/no-empty-interface': 'off',
     '@typescript-eslint/no-use-before-defined': 'off',
     '@typescript-eslint/return-await': 'off',
+    '@typescript-eslint/no-non-null-assertion': 'off',
     'no-empty-pattern': 'off',
     'prefer-default-export': 'off',
     'spaced-comment': 'off',

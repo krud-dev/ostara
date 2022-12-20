@@ -17,6 +17,7 @@ import { useCreateFolder } from 'renderer/apis/configuration/createFolder';
 
 export type CreateFolderDialogProps = {
   parentFolderId?: string;
+  order?: number;
   onCreated?: (item: Folder) => void;
 };
 
@@ -26,7 +27,7 @@ type FormValues = {
 
 const CreateFolderDialog: FunctionComponent<
   CreateFolderDialogProps & NiceModalHocProps
-> = NiceModal.create(({ parentFolderId, onCreated }) => {
+> = NiceModal.create(({ parentFolderId, order, onCreated }) => {
   const modal = useModal();
   const intl = useIntl();
 
@@ -38,6 +39,7 @@ const CreateFolderDialog: FunctionComponent<
     const folderToCreate: Omit<Folder, 'id' | 'type'> = {
       alias: data.alias,
       parentFolderId: parentFolderId,
+      order: order ?? 1,
     };
     try {
       const result = await createFolderState.mutateAsync({

@@ -8,11 +8,7 @@ import React, {
   useState,
 } from 'react';
 import { useGetConfigurationQuery } from 'renderer/apis/configuration/getConfiguration';
-import {
-  Configuration,
-  isInstance,
-  Item,
-} from 'infra/configuration/model/configuration';
+import { Configuration, isInstance, Item } from 'infra/configuration/model/configuration';
 import { TreeItem } from 'renderer/layout/navigator/components/sidebar/tree/tree';
 import { forEach } from 'lodash';
 
@@ -29,19 +25,13 @@ export type NavigatorTreeContextProps = {
   reloadTree: () => Promise<void>;
 };
 
-const NavigatorTreeContext = React.createContext<NavigatorTreeContextProps>(
-  undefined!
-);
+const NavigatorTreeContext = React.createContext<NavigatorTreeContextProps>(undefined!);
 
 interface NavigatorTreeProviderProps extends PropsWithChildren<any> {}
 
-const NavigatorTreeProvider: FunctionComponent<NavigatorTreeProviderProps> = ({
-  children,
-}) => {
+const NavigatorTreeProvider: FunctionComponent<NavigatorTreeProviderProps> = ({ children }) => {
   const [data, setData] = useState<TreeItem[] | undefined>(undefined);
-  const [action, setAction] = useState<NavigatorTreeAction | undefined>(
-    undefined
-  );
+  const [action, setAction] = useState<NavigatorTreeAction | undefined>(undefined);
 
   const isLoading = useMemo<boolean>(() => !data, [data]);
   const isEmpty = useMemo<boolean>(() => data?.length === 0, [data]);
@@ -50,6 +40,8 @@ const NavigatorTreeProvider: FunctionComponent<NavigatorTreeProviderProps> = ({
   const configurationState = useGetConfigurationQuery({});
 
   const buildTree = useCallback((configuration: Configuration): TreeItem[] => {
+    const sortByOrder = (items: Item[]) => items.sort((a, b) => (a.order ?? 0) - (b.order ?? 0));
+
     const hashMap = new Map<string, TreeItem>();
     forEach(configuration.items, (item) => {
       hashMap.set(item.id, { ...item, children: [] });
@@ -60,19 +52,29 @@ const NavigatorTreeProvider: FunctionComponent<NavigatorTreeProviderProps> = ({
       if (isInstance(item)) {
         const treeItem = hashMap.get(item.id);
         if (treeItem) {
-          hashMap.get(item.parentApplicationId)?.children?.push(treeItem);
+          const parentChildren = hashMap.get(item.parentApplicationId)?.children;
+          if (parentChildren) {
+            parentChildren.push(treeItem);
+            sortByOrder(parentChildren);
+          }
         }
       } else {
         const treeItem = hashMap.get(item.id);
         if (treeItem) {
           if (item.parentFolderId) {
-            hashMap.get(item.parentFolderId)?.children?.push(treeItem);
+            const parentChildren = hashMap.get(item.parentFolderId)?.children;
+            if (parentChildren) {
+              parentChildren.push(treeItem);
+              sortByOrder(parentChildren);
+            }
           } else {
             dataTree.push(treeItem);
           }
         }
       }
     });
+
+    sortByOrder(dataTree);
     return dataTree;
   }, []);
 
@@ -125,10 +127,7 @@ const NavigatorTreeProvider: FunctionComponent<NavigatorTreeProviderProps> = ({
 const useNavigatorTree = (): NavigatorTreeContextProps => {
   const context = useContext(NavigatorTreeContext);
 
-  if (!context)
-    throw new Error(
-      'NavigatorTreeContext must be used inside NavigatorTreeProvider'
-    );
+  if (!context) throw new Error('NavigatorTreeContext must be used inside NavigatorTreeProvider');
 
   return context;
 };

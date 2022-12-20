@@ -7,4 +7,6 @@ export default {
   addYourFirstInstance: 'Add your first actuator instance',
   collapseAll: 'Collapse All',
   expandAll: 'Expand All',
+  delete: 'Delete',
+  areYouSure: 'Are you sure?',
 };
