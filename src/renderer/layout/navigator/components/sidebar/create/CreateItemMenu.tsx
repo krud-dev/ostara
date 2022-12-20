@@ -1,10 +1,5 @@
 import { useCallback, useMemo, useRef, useState } from 'react';
-import {
-  IconButton,
-  ListItemIcon,
-  ListItemText,
-  MenuItem,
-} from '@mui/material';
+import { IconButton, ListItemIcon, ListItemText, MenuItem } from '@mui/material';
 import MenuPopover from 'renderer/components/menu/MenuPopover';
 import { AddOutlined, SvgIconComponent } from '@mui/icons-material';
 import { FormattedMessage } from 'react-intl';
@@ -14,6 +9,7 @@ import CreateFolderDialog from 'renderer/layout/navigator/components/sidebar/cre
 import { Folder } from 'infra/configuration/model/configuration';
 import { useNavigatorTree } from 'renderer/contexts/NavigatorTreeContext';
 import { chain } from 'lodash';
+import CreateApplicationDialog from 'renderer/layout/navigator/components/sidebar/create/CreateApplicationDialog';
 
 export default function CreateItemMenu() {
   const { data } = useNavigatorTree();
@@ -21,54 +17,55 @@ export default function CreateItemMenu() {
   const anchorRef = useRef<HTMLButtonElement | null>(null);
   const [open, setOpen] = useState<boolean>(false);
 
-  const createFolderHandler = useCallback((): void => {
+  const openHandler = useCallback((): void => {
     if (!data) {
       return;
     }
-    NiceModal.show<Folder | undefined>(CreateFolderDialog, {
-      order: data.length
-        ? chain(data)
-            .map<number>((item) => item.order ?? 0)
-            .max()
-            .value() + 1
-        : 1,
-      onCreated: (item: Folder) => {},
-    });
-    setOpen(false);
+    setOpen(true);
   }, [data, setOpen]);
 
-  const createApplicationHandler = useCallback((): void => {
+  const closeHandler = useCallback((): void => {
     setOpen(false);
   }, [setOpen]);
+
+  const getNewItemOrder = useCallback((): number => {
+    return data?.length
+      ? chain(data)
+          .map<number>((item) => item.order ?? 0)
+          .max()
+          .value() + 1
+      : 1;
+  }, [data]);
+
+  const createFolderHandler = useCallback((): void => {
+    NiceModal.show<Folder | undefined>(CreateFolderDialog, {
+      order: getNewItemOrder(),
+    });
+    closeHandler();
+  }, [getNewItemOrder, closeHandler]);
+
+  const createApplicationHandler = useCallback((): void => {
+    NiceModal.show<Folder | undefined>(CreateApplicationDialog, {
+      order: getNewItemOrder(),
+    });
+    closeHandler();
+  }, [getNewItemOrder, closeHandler]);
 
   const createInstanceHandler = useCallback((): void => {
-    setOpen(false);
-  }, [setOpen]);
+    closeHandler();
+  }, [closeHandler]);
 
-  const FolderIcon = useMemo<SvgIconComponent>(
-    () => getItemTypeIcon('folder'),
-    []
-  );
-  const ApplicationIcon = useMemo<SvgIconComponent>(
-    () => getItemTypeIcon('application'),
-    []
-  );
-  const InstanceIcon = useMemo<SvgIconComponent>(
-    () => getItemTypeIcon('instance'),
-    []
-  );
+  const FolderIcon = useMemo<SvgIconComponent>(() => getItemTypeIcon('folder'), []);
+  const ApplicationIcon = useMemo<SvgIconComponent>(() => getItemTypeIcon('application'), []);
+  const InstanceIcon = useMemo<SvgIconComponent>(() => getItemTypeIcon('instance'), []);
 
   return (
     <>
-      <IconButton size={'small'} ref={anchorRef} onClick={() => setOpen(true)}>
+      <IconButton size={'small'} ref={anchorRef} onClick={openHandler}>
         <AddOutlined fontSize={'small'} />
       </IconButton>
 
-      <MenuPopover
-        open={open}
-        onClose={() => setOpen(false)}
-        anchorEl={anchorRef.current}
-      >
+      <MenuPopover open={open} onClose={closeHandler} anchorEl={anchorRef.current}>
         <MenuItem onClick={createFolderHandler}>
           <ListItemIcon>
             <FolderIcon fontSize="small" />

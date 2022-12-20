@@ -1,8 +1,4 @@
-import {
-  BaseMutationOptions,
-  BaseUseMutationResult,
-  useBaseMutation,
-} from 'renderer/apis/base/useBaseMutation';
+import { BaseMutationOptions, BaseUseMutationResult, useBaseMutation } from 'renderer/apis/base/useBaseMutation';
 
 type Variables = {
   id: string;

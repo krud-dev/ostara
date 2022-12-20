@@ -1,6 +1,6 @@
 import { useCallback, useMemo } from 'react';
 import { Divider, ListItemIcon, ListItemText, MenuItem } from '@mui/material';
-import { DeleteOutlined, SvgIconComponent } from '@mui/icons-material';
+import { DeleteOutlined, EditOutlined, SvgIconComponent } from '@mui/icons-material';
 import { FormattedMessage } from 'react-intl';
 import { getItemTypeIcon } from 'renderer/utils/itemUtils';
 import NiceModal from '@ebay/nice-modal-react';
@@ -8,29 +8,25 @@ import CreateFolderDialog from 'renderer/layout/navigator/components/sidebar/cre
 import { Folder, Item } from 'infra/configuration/model/configuration';
 import ContextMenuPopper from 'renderer/components/menu/ContextMenuPopper';
 import ConfirmationDialog from 'renderer/components/dialog/ConfirmationDialog';
-import { useDeleteFolder } from 'renderer/apis/configuration/deleteFolder';
+import { useDeleteFolder } from 'renderer/apis/configuration/folder/deleteFolder';
 import { chain } from 'lodash';
+import { NodeApi } from 'react-arborist';
+import { TreeItem } from 'renderer/layout/navigator/components/sidebar/tree/tree';
 
 type FolderContextMenuProps = {
-  item: Folder & { children?: Item[] };
+  node: NodeApi<TreeItem>;
   open: boolean;
   anchorEl?: Element | null;
   onClose?: () => void;
   onCreated?: (item: Item) => void;
 };
 
-export default function FolderContextMenu({
-  item,
-  open,
-  anchorEl,
-  onClose,
-  onCreated,
-}: FolderContextMenuProps) {
+export default function FolderContextMenu({ node, open, anchorEl, onClose, onCreated }: FolderContextMenuProps) {
   const createFolderHandler = useCallback((): void => {
     NiceModal.show<Folder | undefined>(CreateFolderDialog, {
-      parentFolderId: item.id,
-      order: item.children?.length
-        ? chain(item.children)
+      parentFolderId: node.data.id,
+      order: node.data.children?.length
+        ? chain(node.data.children)
             .map<number>((c) => c.order ?? 0)
             .max()
             .value() + 1
@@ -48,9 +44,13 @@ export default function FolderContextMenu({
     onClose?.();
   }, [onClose]);
 
-  const deleteFolderState = useDeleteFolder();
+  const renameHandler = useCallback(async (): Promise<void> => {
+    await node.edit();
+  }, [node]);
 
-  const deleteFolderHandler = useCallback(async (): Promise<void> => {
+  const deleteState = useDeleteFolder();
+
+  const deleteHandler = useCallback(async (): Promise<void> => {
     onClose?.();
 
     const confirm = await NiceModal.show<boolean>(ConfirmationDialog, {
@@ -63,22 +63,13 @@ export default function FolderContextMenu({
     }
 
     try {
-      await deleteFolderState.mutateAsync({ id: item.id });
+      await deleteState.mutateAsync({ id: node.data.id });
     } catch (e) {}
-  }, [onClose, item]);
+  }, [onClose, node.data]);
 
-  const FolderIcon = useMemo<SvgIconComponent>(
-    () => getItemTypeIcon('folder'),
-    []
-  );
-  const ApplicationIcon = useMemo<SvgIconComponent>(
-    () => getItemTypeIcon('application'),
-    []
-  );
-  const InstanceIcon = useMemo<SvgIconComponent>(
-    () => getItemTypeIcon('instance'),
-    []
-  );
+  const FolderIcon = useMemo<SvgIconComponent>(() => getItemTypeIcon('folder'), []);
+  const ApplicationIcon = useMemo<SvgIconComponent>(() => getItemTypeIcon('application'), []);
+  const InstanceIcon = useMemo<SvgIconComponent>(() => getItemTypeIcon('instance'), []);
 
   return (
     <ContextMenuPopper open={open} onClose={onClose} anchorEl={anchorEl}>
@@ -87,7 +78,7 @@ export default function FolderContextMenu({
           <FolderIcon fontSize="small" />
         </ListItemIcon>
         <ListItemText>
-          <FormattedMessage id={'createFolder'} />
+          <FormattedMessage id={'addFolder'} />
         </ListItemText>
       </MenuItem>
       <MenuItem onClick={createApplicationHandler}>
@@ -95,7 +86,7 @@ export default function FolderContextMenu({
           <ApplicationIcon fontSize="small" />
         </ListItemIcon>
         <ListItemText>
-          <FormattedMessage id={'createApplication'} />
+          <FormattedMessage id={'addApplication'} />
         </ListItemText>
       </MenuItem>
       <MenuItem onClick={createInstanceHandler}>
@@ -103,11 +94,19 @@ export default function FolderContextMenu({
           <InstanceIcon fontSize="small" />
         </ListItemIcon>
         <ListItemText>
-          <FormattedMessage id={'createInstance'} />
+          <FormattedMessage id={'addInstance'} />
         </ListItemText>
       </MenuItem>
       <Divider />
-      <MenuItem onClick={deleteFolderHandler} sx={{ color: 'error.main' }}>
+      <MenuItem onClick={renameHandler}>
+        <ListItemIcon>
+          <EditOutlined fontSize="small" />
+        </ListItemIcon>
+        <ListItemText>
+          <FormattedMessage id={'rename'} />
+        </ListItemText>
+      </MenuItem>
+      <MenuItem onClick={deleteHandler} sx={{ color: 'error.main' }}>
         <ListItemIcon>
           <DeleteOutlined fontSize="small" />
         </ListItemIcon>

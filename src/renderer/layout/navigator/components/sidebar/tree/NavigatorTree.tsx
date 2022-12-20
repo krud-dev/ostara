@@ -8,8 +8,8 @@ import { NAVIGATOR_ITEM_HEIGHT, SIDEBAR_DRAWER_WIDTH } from 'renderer/constants/
 import { experimentalStyled as styled } from '@mui/material/styles';
 import { FormattedMessage } from 'react-intl';
 import { useNavigatorTree } from 'renderer/contexts/NavigatorTreeContext';
-import { useUpdateFolder } from 'renderer/apis/configuration/updateFolder';
-import { useDeleteFolder } from 'renderer/apis/configuration/deleteFolder';
+import { useUpdateFolder } from 'renderer/apis/configuration/folder/updateFolder';
+import { useDeleteFolder } from 'renderer/apis/configuration/folder/deleteFolder';
 import NiceModal from '@ebay/nice-modal-react';
 import ConfirmationDialog from 'renderer/components/dialog/ConfirmationDialog';
 
@@ -96,7 +96,7 @@ export default function NavigatorTree({ search }: NavigatorTreeProps) {
         if (isFolder(item)) {
           return await updateFolderState.mutateAsync({
             id: item.id,
-            folder: item,
+            item: item,
           });
         }
         if (isApplication(item)) {

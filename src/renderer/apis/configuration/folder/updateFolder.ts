@@ -1,22 +1,15 @@
 import { Folder } from 'infra/configuration/model/configuration';
-import {
-  BaseMutationOptions,
-  BaseUseMutationResult,
-  useBaseMutation,
-} from 'renderer/apis/base/useBaseMutation';
+import { BaseMutationOptions, BaseUseMutationResult, useBaseMutation } from 'renderer/apis/base/useBaseMutation';
 
 type Variables = {
   id: string;
-  folder: Omit<Folder, 'id' | 'type'>;
+  item: Omit<Folder, 'id' | 'type'>;
 };
 
 type Data = Folder;
 
 export const updateFolder = async (variables: Variables): Promise<Data> => {
-  return await window.configuration.updateFolder(
-    variables.id,
-    variables.folder
-  );
+  return await window.configuration.updateFolder(variables.id, variables.item);
 };
 
 export const useUpdateFolder = (

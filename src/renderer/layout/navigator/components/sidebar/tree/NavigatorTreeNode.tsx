@@ -1,25 +1,10 @@
 import { NodeRendererProps } from 'react-arborist';
-import {
-  IconButton,
-  ListItem,
-  ListItemIcon,
-  ListItemText,
-  TextField,
-} from '@mui/material';
-import {
-  alpha,
-  experimentalStyled as styled,
-  useTheme,
-} from '@mui/material/styles';
+import { IconButton, ListItem, ListItemIcon, ListItemText, TextField } from '@mui/material';
+import { alpha, experimentalStyled as styled, useTheme } from '@mui/material/styles';
 import React, { useCallback, useMemo, useRef, useState } from 'react';
 import { TreeItem } from 'renderer/layout/navigator/components/sidebar/tree/tree';
 import typography from 'renderer/theme/config/typography';
-import {
-  KeyboardArrowDown,
-  KeyboardArrowRight,
-  MoreVert,
-  SvgIconComponent,
-} from '@mui/icons-material';
+import { KeyboardArrowDown, KeyboardArrowRight, MoreVert, SvgIconComponent } from '@mui/icons-material';
 import { NAVIGATOR_ITEM_HEIGHT } from 'renderer/constants/ui';
 import { getItemTypeIcon } from 'renderer/utils/itemUtils';
 import FolderContextMenu from 'renderer/layout/navigator/components/sidebar/tree/menus/FolderContextMenu';
@@ -65,43 +50,32 @@ const ListItemIconStyle = styled(ListItemIcon)(({ theme }) => ({
   color: theme.palette.text.secondary,
 }));
 
-export default function NavigatorTreeNode({
-  style,
-  node,
-  tree,
-  dragHandle,
-  preview,
-}: NavigatorTreeNodeProps) {
+export default function NavigatorTreeNode({ style, node, tree, dragHandle, preview }: NavigatorTreeNodeProps) {
   const theme = useTheme();
 
   const contextMenuAnchorRef = useRef<HTMLButtonElement | null>(null);
-  const [contextMenuAnchor, setContextMenuAnchor] = useState<
-    Element | undefined
-  >(undefined);
+  const [contextMenuAnchor, setContextMenuAnchor] = useState<Element | undefined>(undefined);
   const [contextMenuOpen, setContextMenuOpen] = useState<boolean>(false);
 
-  const openContextMenu = useCallback(
-    (event?: React.MouseEvent<Element>): void => {
-      if (event) {
-        event.preventDefault();
-        node.select();
+  const openContextMenu = useCallback((event?: React.MouseEvent<Element>): void => {
+    if (event) {
+      event.preventDefault();
+      node.select();
 
-        const virtualElement: any = {
-          getBoundingClientRect: () => ({
-            width: 0,
-            height: 0,
-            top: event.clientY,
-            right: event.clientX,
-            bottom: event.clientY,
-            left: event.clientX,
-          }),
-        };
-        setContextMenuAnchor(virtualElement);
-      }
-      setContextMenuOpen(true);
-    },
-    []
-  );
+      const virtualElement: any = {
+        getBoundingClientRect: () => ({
+          width: 0,
+          height: 0,
+          top: event.clientY,
+          right: event.clientX,
+          bottom: event.clientY,
+          left: event.clientX,
+        }),
+      };
+      setContextMenuAnchor(virtualElement);
+    }
+    setContextMenuOpen(true);
+  }, []);
 
   const closeContextMenu = useCallback((): void => {
     setContextMenuAnchor(undefined);
@@ -112,17 +86,11 @@ export default function NavigatorTreeNode({
     return node.isOpen ? KeyboardArrowDown : KeyboardArrowRight;
   }, [node.isOpen]);
 
-  const TypeIcon = useMemo<SvgIconComponent>(
-    () => getItemTypeIcon(node.data.type),
-    [node.data]
-  );
+  const TypeIcon = useMemo<SvgIconComponent>(() => getItemTypeIcon(node.data.type), [node.data]);
 
   const activeRootStyle = {
     // color: 'primary.main',
-    bgcolor: alpha(
-      theme.palette.primary.main,
-      theme.palette.action.selectedOpacity
-    ),
+    bgcolor: alpha(theme.palette.primary.main, theme.palette.action.selectedOpacity),
     '&:before': { display: 'block' },
   };
 
@@ -158,7 +126,7 @@ export default function NavigatorTreeNode({
     <>
       {isFolder(node.data) && (
         <FolderContextMenu
-          item={node.data}
+          node={node}
           open={contextMenuOpen}
           anchorEl={contextMenuAnchor || contextMenuAnchorRef.current}
           onClose={closeContextMenu}
@@ -172,9 +140,7 @@ export default function NavigatorTreeNode({
         disableGutters
         disablePadding
         sx={{
-          ...(node.isFocused &&
-            (!node.isSelected || !node.isOnlySelection) &&
-            focusRootStyle),
+          ...(node.isFocused && (!node.isSelected || !node.isOnlySelection) && focusRootStyle),
           ...(node.isSelected && activeRootStyle),
         }}
         style={style}
