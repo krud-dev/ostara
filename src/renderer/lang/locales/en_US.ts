@@ -8,6 +8,7 @@ export default {
   name: 'Name',
   create: 'Create',
   rename: 'Rename',
+  select: 'Select',
   addYourFirstInstance: 'Add your first actuator instance',
   collapseAll: 'Collapse All',
   expandAll: 'Expand All',
@@ -15,4 +16,6 @@ export default {
   areYouSureYouWantToDelete: 'Are you sure you want to delete "{name}"?',
   actuatorUrl: 'Actuator URL',
   requiredField: 'Required field',
+  setColor: 'Set Color',
+  chooseColor: 'Choose Color',
 };

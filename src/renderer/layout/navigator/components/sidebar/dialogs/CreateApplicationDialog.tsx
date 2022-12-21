@@ -8,7 +8,7 @@ import { Application } from 'infra/configuration/model/configuration';
 import { LoadingButton } from '@mui/lab';
 import { useCreateApplication } from 'renderer/apis/configuration/application/createApplication';
 
-export type CreateFolderDialogProps = {
+export type CreateApplicationDialogProps = {
   parentFolderId?: string;
   order?: number;
   onCreated?: (item: Application) => void;
@@ -18,7 +18,7 @@ type FormValues = {
   alias: string;
 };
 
-const CreateFolderDialog: FunctionComponent<CreateFolderDialogProps & NiceModalHocProps> = NiceModal.create(
+const CreateApplicationDialog: FunctionComponent<CreateApplicationDialogProps & NiceModalHocProps> = NiceModal.create(
   ({ parentFolderId, order, onCreated }) => {
     const modal = useModal();
     const intl = useIntl();
@@ -108,4 +108,4 @@ const CreateFolderDialog: FunctionComponent<CreateFolderDialogProps & NiceModalH
   }
 );
 
-export default CreateFolderDialog;
+export default CreateApplicationDialog;

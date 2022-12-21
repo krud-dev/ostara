@@ -7,6 +7,7 @@ export type ItemType = 'instance' | 'application' | 'folder';
 export type BaseItem = {
   id: string;
   type: ItemType;
+  color?: string;
 };
 
 export type HierarchicalItem = BaseItem & {

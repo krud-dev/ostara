@@ -8,8 +8,8 @@ import PerfectScrollbar from 'react-perfect-scrollbar';
 import NavigatorTree from 'renderer/layout/navigator/components/sidebar/tree/NavigatorTree';
 import SearchTextField from 'renderer/components/input/SearchTextField';
 import { FilterListOutlined } from '@mui/icons-material';
-import CreateItemMenu from 'renderer/layout/navigator/components/sidebar/create/CreateItemMenu';
-import SearchItemMenu from 'renderer/layout/navigator/components/sidebar/SearchItemMenu';
+import CreateItemMenu from 'renderer/layout/navigator/components/sidebar/menus/CreateItemMenu';
+import SearchItemMenu from 'renderer/layout/navigator/components/sidebar/menus/SearchItemMenu';
 import { NavigatorTreeProvider } from 'renderer/contexts/NavigatorTreeContext';
 
 const RootStyle = styled('div')(({ theme }) => ({

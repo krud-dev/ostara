@@ -8,7 +8,7 @@ import { Application, isFolder, Item } from 'infra/configuration/model/configura
 import { getItemTypeIcon } from 'renderer/utils/itemUtils';
 import NiceModal from '@ebay/nice-modal-react';
 import { getNewItemOrder } from 'renderer/utils/treeUtils';
-import CreateApplicationDialog from 'renderer/layout/navigator/components/sidebar/create/CreateApplicationDialog';
+import CreateApplicationDialog from 'renderer/layout/navigator/components/sidebar/dialogs/CreateApplicationDialog';
 
 type AddApplicationMenuItemProps = {
   node: NodeApi<TreeItem>;

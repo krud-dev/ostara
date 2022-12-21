@@ -6,7 +6,7 @@ import { NodeApi } from 'react-arborist';
 import { TreeItem } from 'renderer/layout/navigator/components/sidebar/tree/tree';
 import NiceModal from '@ebay/nice-modal-react';
 import { Instance, isApplication, isFolder, Item } from 'infra/configuration/model/configuration';
-import CreateInstanceDialog from 'renderer/layout/navigator/components/sidebar/create/CreateInstanceDialog';
+import CreateInstanceDialog from 'renderer/layout/navigator/components/sidebar/dialogs/CreateInstanceDialog';
 import { getNewItemOrder } from 'renderer/utils/treeUtils';
 import { getItemTypeIcon } from 'renderer/utils/itemUtils';
 

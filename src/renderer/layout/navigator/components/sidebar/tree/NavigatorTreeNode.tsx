@@ -49,7 +49,6 @@ const ListItemIconStyle = styled(ListItemIcon)(({ theme }) => ({
   display: 'flex',
   alignItems: 'center',
   justifyContent: 'center',
-  color: theme.palette.text.secondary,
 }));
 
 export default function NavigatorTreeNode({ style, node, tree, dragHandle, preview }: NavigatorTreeNodeProps) {
@@ -91,6 +90,8 @@ export default function NavigatorTreeNode({ style, node, tree, dragHandle, previ
   const TypeIcon = useMemo<SvgIconComponent>(() => getItemTypeIcon(node.data.type), [node.data]);
 
   const showToggle = useMemo<boolean>(() => isFolder(node.data) || isApplication(node.data), [node.data]);
+
+  const color = useMemo<string>(() => node.data.color || theme.palette.text.secondary, [node.data, theme.palette]);
 
   const activeRootStyle = {
     // color: 'primary.main',
@@ -180,7 +181,7 @@ export default function NavigatorTreeNode({ style, node, tree, dragHandle, previ
         >
           <ToggleIcon fontSize="small" />
         </IconButton>
-        <ListItemIconStyle sx={{ mr: 1, ml: 0 }}>
+        <ListItemIconStyle sx={{ color: color, mr: 1, ml: 0 }}>
           <TypeIcon fontSize="small" />
         </ListItemIconStyle>
         {!node.isEditing ? (

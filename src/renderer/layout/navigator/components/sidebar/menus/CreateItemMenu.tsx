@@ -5,12 +5,12 @@ import { AddOutlined, SvgIconComponent } from '@mui/icons-material';
 import { FormattedMessage } from 'react-intl';
 import { getItemTypeIcon } from 'renderer/utils/itemUtils';
 import NiceModal from '@ebay/nice-modal-react';
-import CreateFolderDialog from 'renderer/layout/navigator/components/sidebar/create/CreateFolderDialog';
+import CreateFolderDialog from 'renderer/layout/navigator/components/sidebar/dialogs/CreateFolderDialog';
 import { Folder } from 'infra/configuration/model/configuration';
 import { useNavigatorTree } from 'renderer/contexts/NavigatorTreeContext';
 import { chain } from 'lodash';
-import CreateApplicationDialog from 'renderer/layout/navigator/components/sidebar/create/CreateApplicationDialog';
-import CreateInstanceDialog from 'renderer/layout/navigator/components/sidebar/create/CreateInstanceDialog';
+import CreateApplicationDialog from 'renderer/layout/navigator/components/sidebar/dialogs/CreateApplicationDialog';
+import CreateInstanceDialog from 'renderer/layout/navigator/components/sidebar/dialogs/CreateInstanceDialog';
 
 export default function CreateItemMenu() {
   const { data } = useNavigatorTree();

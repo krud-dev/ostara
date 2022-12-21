@@ -4,12 +4,14 @@ import { TreeItemContextMenuProps } from 'renderer/layout/navigator/components/s
 import DeleteMenuItem from 'renderer/layout/navigator/components/sidebar/tree/menus/items/DeleteMenuItem';
 import RenameMenuItem from 'renderer/layout/navigator/components/sidebar/tree/menus/items/RenameMenuItem';
 import AddInstanceMenuItem from 'renderer/layout/navigator/components/sidebar/tree/menus/items/AddInstanceMenuItem';
+import SetColorMenuItem from 'renderer/layout/navigator/components/sidebar/tree/menus/items/SetColorMenuItem';
 
 export default function ApplicationContextMenu({ node, open, anchorEl, onClose, onCreated }: TreeItemContextMenuProps) {
   return (
     <ContextMenuPopper open={open} onClose={onClose} anchorEl={anchorEl}>
       <AddInstanceMenuItem node={node} onClose={onClose} onCreated={onCreated} />
       <Divider />
+      <SetColorMenuItem node={node} onClose={onClose} />
       <RenameMenuItem node={node} onClose={onClose} />
       <DeleteMenuItem node={node} onClose={onClose} />
     </ContextMenuPopper>
