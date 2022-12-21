@@ -8,10 +8,9 @@ import { NAVIGATOR_ITEM_HEIGHT, SIDEBAR_DRAWER_WIDTH } from 'renderer/constants/
 import { experimentalStyled as styled } from '@mui/material/styles';
 import { FormattedMessage } from 'react-intl';
 import { useNavigatorTree } from 'renderer/contexts/NavigatorTreeContext';
-import { useUpdateFolder } from 'renderer/apis/configuration/folder/updateFolder';
-import { useDeleteFolder } from 'renderer/apis/configuration/folder/deleteFolder';
-import NiceModal from '@ebay/nice-modal-react';
-import ConfirmationDialog from 'renderer/components/dialog/ConfirmationDialog';
+import { useUpdateItem } from 'renderer/apis/configuration/item/updateItem';
+import { useDeleteItem } from 'renderer/apis/configuration/item/deleteItem';
+import { showDeleteConfirmationDialog } from 'renderer/utils/dialogUtils';
 
 const TreeStyle = styled(Tree<TreeItem>)(({ theme }) => ({
   '& [role="treeitem"]': {
@@ -86,44 +85,27 @@ export default function NavigatorTree({ search }: NavigatorTreeProps) {
     return null;
   }, []);
 
-  const updateFolderState = useUpdateFolder();
+  const updateItemState = useUpdateItem();
 
   const updateItem = useCallback(
     async (item: Item): Promise<Item | undefined> => {
       try {
-        if (isFolder(item)) {
-          return await updateFolderState.mutateAsync({
-            id: item.id,
-            item: item,
-          });
-        }
-        if (isApplication(item)) {
-          // updateApplication({ ...item, alias: name });
-        }
-        if (isInstance(item)) {
-          // updateInstance({ ...item, alias: name });
-        }
+        return await updateItemState.mutateAsync({ item });
       } catch (e) {}
       return undefined;
     },
-    [updateFolderState]
+    [updateItemState]
   );
 
-  const deleteFolderState = useDeleteFolder();
+  const deleteItemState = useDeleteItem();
 
   const deleteItem = useCallback(
     async (item: Item): Promise<void> => {
       try {
-        if (isFolder(item)) {
-          await deleteFolderState.mutateAsync({ id: item.id });
-        } else if (isApplication(item)) {
-          // await deleteApplicationState.mutateAsync({ id: item.id });
-        } else if (isInstance(item)) {
-          // await deleteInstanceState.mutateAsync({ id: item.id });
-        }
+        await deleteItemState.mutateAsync({ item });
       } catch (e) {}
     },
-    [deleteFolderState]
+    [deleteItemState]
   );
 
   const onRename: RenameHandler<TreeItem> = useCallback(
@@ -143,17 +125,26 @@ export default function NavigatorTree({ search }: NavigatorTreeProps) {
   const onMove: MoveHandler<TreeItem> = useCallback(
     ({ parentId, index, parentNode, dragNodes, dragIds }) => {
       if (parentNode && isInstance(parentNode.data)) {
+        // TODO: Show snackbar
         console.log('Cannot move to instance');
         return;
       }
 
       if (dragNodes.some((node) => isInstance(node.data)) && dragNodes.some((node) => !isInstance(node.data))) {
+        // TODO: Show snackbar
         console.log('Cannot mix instances and non-instances');
         return;
       }
 
       if (dragNodes.some((node) => isInstance(node.data)) && (!parentNode || !isApplication(parentNode.data))) {
-        console.log("Cannot move instance to folder that isn't application");
+        // TODO: Show snackbar
+        console.log("Cannot move instance to item that isn't application");
+        return;
+      }
+
+      if (dragNodes.some((node) => isApplication(node.data)) && parentNode && !isFolder(parentNode.data)) {
+        // TODO: Show snackbar
+        console.log("Cannot move application to item that isn't folder");
         return;
       }
 
@@ -194,15 +185,12 @@ export default function NavigatorTree({ search }: NavigatorTreeProps) {
   );
 
   const onDelete: DeleteHandler<TreeItem> = useCallback(async ({ ids, nodes }): Promise<void> => {
-    const confirm = await NiceModal.show<boolean>(ConfirmationDialog, {
-      title: <FormattedMessage id={'delete'} />,
-      text: <FormattedMessage id={'areYouSure'} />,
-      continueText: <FormattedMessage id={'delete'} />,
-    });
+    const items = nodes.map((node) => node.data);
+    const confirm = await showDeleteConfirmationDialog(items);
     if (!confirm) {
       return;
     }
-    nodes.forEach((node) => deleteItem(node.data));
+    items.forEach((item) => deleteItem(item));
   }, []);
 
   const onToggle = useCallback((): void => {

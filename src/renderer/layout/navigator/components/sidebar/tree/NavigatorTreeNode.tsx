@@ -8,7 +8,9 @@ import { KeyboardArrowDown, KeyboardArrowRight, MoreVert, SvgIconComponent } fro
 import { NAVIGATOR_ITEM_HEIGHT } from 'renderer/constants/ui';
 import { getItemTypeIcon } from 'renderer/utils/itemUtils';
 import FolderContextMenu from 'renderer/layout/navigator/components/sidebar/tree/menus/FolderContextMenu';
-import { isFolder, Item } from 'infra/configuration/model/configuration';
+import { isApplication, isFolder, isInstance, Item } from 'infra/configuration/model/configuration';
+import InstanceContextMenu from 'renderer/layout/navigator/components/sidebar/tree/menus/InstanceContextMenu';
+import ApplicationContextMenu from 'renderer/layout/navigator/components/sidebar/tree/menus/ApplicationContextMenu';
 
 type NavigatorTreeNodeProps = NodeRendererProps<TreeItem>;
 
@@ -88,6 +90,8 @@ export default function NavigatorTreeNode({ style, node, tree, dragHandle, previ
 
   const TypeIcon = useMemo<SvgIconComponent>(() => getItemTypeIcon(node.data.type), [node.data]);
 
+  const showToggle = useMemo<boolean>(() => isFolder(node.data) || isApplication(node.data), [node.data]);
+
   const activeRootStyle = {
     // color: 'primary.main',
     bgcolor: alpha(theme.palette.primary.main, theme.palette.action.selectedOpacity),
@@ -133,6 +137,24 @@ export default function NavigatorTreeNode({ style, node, tree, dragHandle, previ
           onCreated={onChildItemCreated}
         />
       )}
+      {isApplication(node.data) && (
+        <ApplicationContextMenu
+          node={node}
+          open={contextMenuOpen}
+          anchorEl={contextMenuAnchor || contextMenuAnchorRef.current}
+          onClose={closeContextMenu}
+          onCreated={onChildItemCreated}
+        />
+      )}
+      {isInstance(node.data) && (
+        <InstanceContextMenu
+          node={node}
+          open={contextMenuOpen}
+          anchorEl={contextMenuAnchor || contextMenuAnchorRef.current}
+          onClose={closeContextMenu}
+          onCreated={onChildItemCreated}
+        />
+      )}
 
       <ListItemStyle
         ref={dragHandle}
@@ -153,7 +175,7 @@ export default function NavigatorTreeNode({ style, node, tree, dragHandle, previ
             mr: 0.5,
             ml: 1,
             color: 'text.primary',
-            ...(node.isLeaf ? { visibility: 'hidden' } : {}),
+            ...(showToggle ? {} : { visibility: 'hidden' }),
           }}
         >
           <ToggleIcon fontSize="small" />

@@ -4,37 +4,64 @@ import { Controller, useForm } from 'react-hook-form';
 import { Box, Button, Dialog, DialogActions, DialogContent, TextField } from '@mui/material';
 import NiceModal, { NiceModalHocProps, useModal } from '@ebay/nice-modal-react';
 import DialogTitleEnhanced from 'renderer/components/dialog/DialogTitleEnhanced';
-import { Folder } from 'infra/configuration/model/configuration';
+import { Application, Instance } from 'infra/configuration/model/configuration';
 import { LoadingButton } from '@mui/lab';
-import { useCreateFolder } from 'renderer/apis/configuration/folder/createFolder';
+import { useCreateApplication } from 'renderer/apis/configuration/application/createApplication';
+import { useCreateInstance } from 'renderer/apis/configuration/instance/createInstance';
 
-export type CreateFolderDialogProps = {
+export type CreateInstanceDialogProps = {
+  parentApplicationId?: string;
   parentFolderId?: string;
   order?: number;
-  onCreated?: (item: Folder) => void;
+  onCreated?: (item: Instance) => void;
 };
 
 type FormValues = {
   alias: string;
+  actuatorUrl: string;
 };
 
-const CreateFolderDialog: FunctionComponent<CreateFolderDialogProps & NiceModalHocProps> = NiceModal.create(
-  ({ parentFolderId, order, onCreated }) => {
+const CreateInstanceDialog: FunctionComponent<CreateInstanceDialogProps & NiceModalHocProps> = NiceModal.create(
+  ({ parentApplicationId, parentFolderId, order, onCreated }) => {
     const modal = useModal();
     const intl = useIntl();
 
     const { control, handleSubmit } = useForm<FormValues>();
 
-    const createState = useCreateFolder();
+    const createApplicationState = useCreateApplication();
+    const createInstanceState = useCreateInstance();
 
     const submitHandler = handleSubmit(async (data): Promise<void> => {
-      const itemToCreate: Omit<Folder, 'id' | 'type'> = {
-        alias: data.alias,
-        parentFolderId: parentFolderId,
-        order: order ?? 1,
-      };
       try {
-        const result = await createState.mutateAsync({ item: itemToCreate });
+        let instanceParentApplicationId = parentApplicationId;
+        let instanceOrder = order ?? 1;
+
+        if (!instanceParentApplicationId) {
+          const applicationToCreate: Omit<Application, 'id' | 'type'> = {
+            alias: data.alias,
+            applicationType: 'SpringBoot',
+            parentFolderId: parentFolderId,
+            order: order ?? 1,
+          };
+
+          const application = await createApplicationState.mutateAsync({
+            item: applicationToCreate,
+          });
+
+          instanceParentApplicationId = application.id;
+          instanceOrder = 1;
+        }
+
+        const instanceToCreate: Omit<Instance, 'id' | 'type'> = {
+          alias: data.alias,
+          actuatorUrl: data.actuatorUrl,
+          parentApplicationId: instanceParentApplicationId,
+          order: instanceOrder,
+        };
+
+        const result = await createInstanceState.mutateAsync({
+          item: instanceToCreate,
+        });
         if (result) {
           onCreated?.(result);
 
@@ -60,7 +87,7 @@ const CreateFolderDialog: FunctionComponent<CreateFolderDialogProps & NiceModalH
         maxWidth={'xs'}
       >
         <DialogTitleEnhanced onClose={cancelHandler}>
-          <FormattedMessage id={'createFolder'} />
+          <FormattedMessage id={'createInstance'} />
         </DialogTitleEnhanced>
         <DialogContent>
           <Box component="form" onSubmit={submitHandler} noValidate sx={{ mt: 1 }}>
@@ -85,6 +112,30 @@ const CreateFolderDialog: FunctionComponent<CreateFolderDialogProps & NiceModalH
                     autoFocus
                     error={invalid}
                     helperText={error?.message}
+                  />
+                );
+              }}
+            />
+            <Controller
+              name="actuatorUrl"
+              rules={{
+                required: intl.formatMessage({ id: 'requiredField' }),
+              }}
+              control={control}
+              defaultValue=""
+              render={({ field: { ref, ...field }, fieldState: { invalid, error } }) => {
+                return (
+                  <TextField
+                    {...field}
+                    inputRef={ref}
+                    margin="normal"
+                    required
+                    fullWidth
+                    label={<FormattedMessage id="actuatorUrl" />}
+                    type="url"
+                    autoComplete="off"
+                    error={invalid}
+                    helperText={error?.message}
                     sx={{ mb: 0 }}
                   />
                 );
@@ -105,4 +156,4 @@ const CreateFolderDialog: FunctionComponent<CreateFolderDialogProps & NiceModalH
   }
 );
 
-export default CreateFolderDialog;
+export default CreateInstanceDialog;

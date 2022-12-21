@@ -12,5 +12,7 @@ export default {
   collapseAll: 'Collapse All',
   expandAll: 'Expand All',
   delete: 'Delete',
-  areYouSure: 'Are you sure?',
+  areYouSureYouWantToDelete: 'Are you sure you want to delete "{name}"?',
+  actuatorUrl: 'Actuator URL',
+  requiredField: 'Required field',
 };

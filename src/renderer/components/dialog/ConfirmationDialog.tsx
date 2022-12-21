@@ -3,17 +3,19 @@ import React, { FunctionComponent, ReactNode, useCallback } from 'react';
 import { Button, Dialog, DialogActions, DialogContent, DialogContentText } from '@mui/material';
 import DialogTitleEnhanced from './DialogTitleEnhanced';
 import NiceModal, { NiceModalHocProps, useModal } from '@ebay/nice-modal-react';
+import { ColorSchema } from 'renderer/theme/config/palette';
 
 export type ConfirmationDialogProps = {
   title: ReactNode;
   text: ReactNode;
   continueText?: ReactNode;
+  continueColor?: ColorSchema;
   cancelText?: ReactNode;
   onConfirm?: () => void;
 };
 
 const ConfirmationDialog: FunctionComponent<ConfirmationDialogProps & NiceModalHocProps> = NiceModal.create(
-  ({ title, text, continueText, cancelText, onConfirm }) => {
+  ({ title, text, continueText, continueColor, cancelText, onConfirm }) => {
     const modal = useModal();
 
     const confirmHandler = useCallback((): void => {
@@ -46,7 +48,7 @@ const ConfirmationDialog: FunctionComponent<ConfirmationDialogProps & NiceModalH
           <Button variant="outlined" color="primary" onClick={cancelHandler}>
             {cancelText || <FormattedMessage id={'cancel'} />}
           </Button>
-          <Button variant="contained" color="primary" onClick={confirmHandler}>
+          <Button variant="contained" color={continueColor || 'primary'} onClick={confirmHandler}>
             {continueText || <FormattedMessage id={'continue'} />}
           </Button>
         </DialogActions>

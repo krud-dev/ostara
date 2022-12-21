@@ -4,14 +4,10 @@ import { TreeItemContextMenuProps } from 'renderer/layout/navigator/components/s
 import DeleteMenuItem from 'renderer/layout/navigator/components/sidebar/tree/menus/items/DeleteMenuItem';
 import RenameMenuItem from 'renderer/layout/navigator/components/sidebar/tree/menus/items/RenameMenuItem';
 import AddInstanceMenuItem from 'renderer/layout/navigator/components/sidebar/tree/menus/items/AddInstanceMenuItem';
-import AddApplicationMenuItem from 'renderer/layout/navigator/components/sidebar/tree/menus/items/AddApplicationMenuItem';
-import AddFolderMenuItem from 'renderer/layout/navigator/components/sidebar/tree/menus/items/AddFolderMenuItem';
 
-export default function FolderContextMenu({ node, open, anchorEl, onClose, onCreated }: TreeItemContextMenuProps) {
+export default function ApplicationContextMenu({ node, open, anchorEl, onClose, onCreated }: TreeItemContextMenuProps) {
   return (
     <ContextMenuPopper open={open} onClose={onClose} anchorEl={anchorEl}>
-      <AddFolderMenuItem node={node} onClose={onClose} onCreated={onCreated} />
-      <AddApplicationMenuItem node={node} onClose={onClose} onCreated={onCreated} />
       <AddInstanceMenuItem node={node} onClose={onClose} onCreated={onCreated} />
       <Divider />
       <RenameMenuItem node={node} onClose={onClose} />

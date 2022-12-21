@@ -1,7 +1,7 @@
 import { FormattedMessage, useIntl } from 'react-intl';
 import React, { FunctionComponent, useCallback } from 'react';
 import { Controller, useForm } from 'react-hook-form';
-import { Box, Button, Dialog, DialogActions, DialogContent, DialogContentText, TextField } from '@mui/material';
+import { Box, Button, Dialog, DialogActions, DialogContent, TextField } from '@mui/material';
 import NiceModal, { NiceModalHocProps, useModal } from '@ebay/nice-modal-react';
 import DialogTitleEnhanced from 'renderer/components/dialog/DialogTitleEnhanced';
 import { Application } from 'infra/configuration/model/configuration';
@@ -63,13 +63,9 @@ const CreateFolderDialog: FunctionComponent<CreateFolderDialogProps & NiceModalH
         maxWidth={'xs'}
       >
         <DialogTitleEnhanced onClose={cancelHandler}>
-          <FormattedMessage id={'createFolder'} />
+          <FormattedMessage id={'createApplication'} />
         </DialogTitleEnhanced>
         <DialogContent>
-          <DialogContentText>
-            <FormattedMessage id={'createFolder'} />
-          </DialogContentText>
-
           <Box component="form" onSubmit={submitHandler} noValidate sx={{ mt: 1 }}>
             <Controller
               name="alias"

@@ -10,6 +10,7 @@ import { Folder } from 'infra/configuration/model/configuration';
 import { useNavigatorTree } from 'renderer/contexts/NavigatorTreeContext';
 import { chain } from 'lodash';
 import CreateApplicationDialog from 'renderer/layout/navigator/components/sidebar/create/CreateApplicationDialog';
+import CreateInstanceDialog from 'renderer/layout/navigator/components/sidebar/create/CreateInstanceDialog';
 
 export default function CreateItemMenu() {
   const { data } = useNavigatorTree();
@@ -38,22 +39,28 @@ export default function CreateItemMenu() {
   }, [data]);
 
   const createFolderHandler = useCallback((): void => {
+    closeHandler();
+
     NiceModal.show<Folder | undefined>(CreateFolderDialog, {
       order: getNewItemOrder(),
     });
-    closeHandler();
-  }, [getNewItemOrder, closeHandler]);
+  }, [closeHandler, getNewItemOrder]);
 
   const createApplicationHandler = useCallback((): void => {
+    closeHandler();
+
     NiceModal.show<Folder | undefined>(CreateApplicationDialog, {
       order: getNewItemOrder(),
     });
-    closeHandler();
-  }, [getNewItemOrder, closeHandler]);
+  }, [closeHandler, getNewItemOrder]);
 
   const createInstanceHandler = useCallback((): void => {
     closeHandler();
-  }, [closeHandler]);
+
+    NiceModal.show<Folder | undefined>(CreateInstanceDialog, {
+      order: getNewItemOrder(),
+    });
+  }, [closeHandler, getNewItemOrder]);
 
   const FolderIcon = useMemo<SvgIconComponent>(() => getItemTypeIcon('folder'), []);
   const ApplicationIcon = useMemo<SvgIconComponent>(() => getItemTypeIcon('application'), []);

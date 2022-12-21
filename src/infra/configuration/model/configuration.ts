@@ -45,14 +45,14 @@ export type Configuration = {
   items: { [key: string]: Item };
 };
 
-export function isApplication(item: BaseItem): item is Application {
+export function isApplication(item: Omit<BaseItem, 'id'>): item is Application {
   return item.type === 'application';
 }
 
-export function isFolder(item: BaseItem): item is Folder {
+export function isFolder(item: Omit<BaseItem, 'id'>): item is Folder {
   return item.type === 'folder';
 }
 
-export function isInstance(item: BaseItem): item is Instance {
+export function isInstance(item: Omit<BaseItem, 'id'>): item is Instance {
   return item.type === 'instance';
 }
