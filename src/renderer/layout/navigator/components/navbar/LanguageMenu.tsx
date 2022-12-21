@@ -1,11 +1,5 @@
 import { useCallback, useRef, useState } from 'react';
-import {
-  Box,
-  IconButton,
-  ListItemIcon,
-  ListItemText,
-  MenuItem,
-} from '@mui/material';
+import { Box, IconButton, ListItemIcon, ListItemText, MenuItem } from '@mui/material';
 import locales from 'renderer/lang';
 import { map } from 'lodash';
 import { useUi } from 'renderer/contexts/UiContext';
@@ -53,11 +47,7 @@ export default function LanguageMenu() {
         </IconButton>
       </Box>
 
-      <MenuPopover
-        open={open}
-        onClose={() => setOpen(false)}
-        anchorEl={anchorRef.current}
-      >
+      <MenuPopover open={open} onClose={() => setOpen(false)} anchorEl={anchorRef.current}>
         {map(locales, (l) => (
           <MenuItem
             key={l.id}
@@ -68,12 +58,7 @@ export default function LanguageMenu() {
             }}
           >
             <ListItemIcon>
-              <Box
-                component="img"
-                alt={l.name}
-                src={l.icon}
-                sx={{ width: '28px', borderRadius: '3px' }}
-              />
+              <Box component="img" alt={l.name} src={l.icon} sx={{ width: '28px', borderRadius: '3px' }} />
             </ListItemIcon>
 
             <ListItemText>{l.name}</ListItemText>

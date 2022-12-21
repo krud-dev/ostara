@@ -6,19 +6,12 @@ import {
   useQueryClient,
 } from '@tanstack/react-query';
 
-export type BaseMutationOptions<Data, Variables> = Omit<
-  UseMutationOptions<Data, unknown, Variables>,
-  'mutationFn'
-> & {
+export type BaseMutationOptions<Data, Variables> = Omit<UseMutationOptions<Data, unknown, Variables>, 'mutationFn'> & {
   refetchNone?: boolean;
   invalidateQueriesKeyFn?: (data: Data, variables: Variables) => unknown[];
 };
 
-export type BaseUseMutationResult<Data, Variables> = UseMutationResult<
-  Data,
-  unknown,
-  Variables
->;
+export type BaseUseMutationResult<Data, Variables> = UseMutationResult<Data, unknown, Variables>;
 
 export const useBaseMutation = <Data, Variables>(
   mutationFn: MutationFunction<Data, Variables>,

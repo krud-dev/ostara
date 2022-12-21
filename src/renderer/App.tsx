@@ -27,10 +27,7 @@ export default function App() {
                 throw err;
               }}
             >
-              <LocalizationProvider
-                dateAdapter={AdapterDateFns}
-                adapterLocale={localeInfo.dateLocalization}
-              >
+              <LocalizationProvider dateAdapter={AdapterDateFns} adapterLocale={localeInfo.dateLocalization}>
                 <ThemeConfig
                   isDarkMode={darkMode}
                   isRtl={localeInfo.direction === 'rtl'}

@@ -1,11 +1,4 @@
-export type ActuatorLogLevel =
-  | 'OFF'
-  | 'ERROR'
-  | 'WARN'
-  | 'INFO'
-  | 'DEBUG'
-  | 'TRACE'
-  | 'ALL';
+export type ActuatorLogLevel = 'OFF' | 'ERROR' | 'WARN' | 'INFO' | 'DEBUG' | 'TRACE' | 'ALL';
 export type ActuatorLogger = {
   configuredLevel?: ActuatorLogLevel;
   effectiveLevel: ActuatorLogLevel;

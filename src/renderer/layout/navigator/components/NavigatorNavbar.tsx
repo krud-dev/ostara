@@ -25,18 +25,12 @@ type NavigatorNavbarProps = {
   onOpenSidebar: VoidFunction;
 };
 
-export default function NavigatorNavbar({
-  onOpenSidebar,
-}: NavigatorNavbarProps) {
+export default function NavigatorNavbar({ onOpenSidebar }: NavigatorNavbarProps) {
   return (
     <RootStyle>
       <ToolbarStyle>
         <MHidden width="lgUp">
-          <IconButton
-            onClick={onOpenSidebar}
-            size={'large'}
-            sx={{ mr: 1, color: 'text.primary' }}
-          >
+          <IconButton onClick={onOpenSidebar} size={'large'} sx={{ mr: 1, color: 'text.primary' }}>
             <MenuOutlined fontSize={'large'} />
           </IconButton>
         </MHidden>

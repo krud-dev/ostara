@@ -1,9 +1,4 @@
-import {
-  CloudOutlined,
-  DnsOutlined,
-  FolderOutlined,
-  SvgIconComponent,
-} from '@mui/icons-material';
+import { CloudOutlined, DnsOutlined, FolderOutlined, SvgIconComponent } from '@mui/icons-material';
 import { ItemType } from 'infra/configuration/model/configuration';
 
 export const getItemTypeIcon = (itemType: ItemType): SvgIconComponent => {

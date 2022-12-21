@@ -77,9 +77,7 @@ type NotistackProviderProps = {
   children: ReactNode;
 };
 
-export default function NotistackProvider({
-  children,
-}: NotistackProviderProps) {
+export default function NotistackProvider({ children }: NotistackProviderProps) {
   return (
     <>
       <SnackbarStyles />

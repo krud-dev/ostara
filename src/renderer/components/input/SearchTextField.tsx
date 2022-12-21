@@ -13,19 +13,10 @@ export type SearchTextFieldProps = TextFieldProps & {
   onChangeValue?: (value: string) => void;
 };
 
-const SearchTextField = ({
-  value,
-  onChange,
-  icon,
-  onChangeValue,
-  ...props
-}: SearchTextFieldProps) => {
+const SearchTextField = ({ value, onChange, icon, onChangeValue, ...props }: SearchTextFieldProps) => {
   const intl = useIntl();
 
-  const Icon = useMemo<ComponentType<SvgIconProps>>(
-    () => icon || SearchOutlined,
-    [icon]
-  );
+  const Icon = useMemo<ComponentType<SvgIconProps>>(() => icon || SearchOutlined, [icon]);
 
   return (
     <TextField
@@ -48,10 +39,7 @@ const SearchTextField = ({
         endAdornment: value ? (
           <InputAdornment position="end">
             <IconButton onClick={() => onChangeValue?.('')}>
-              <CloseOutlined
-                fontSize={'small'}
-                sx={{ color: 'text.disabled' }}
-              />
+              <CloseOutlined fontSize={'small'} sx={{ color: 'text.disabled' }} />
             </IconButton>
           </InputAdornment>
         ) : undefined,

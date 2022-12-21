@@ -28,10 +28,7 @@ export default function NavigatorLayout({}: NavigatorLayoutProps) {
   return (
     <RootStyle>
       <NavigatorNavbar onOpenSidebar={() => setOpen(true)} />
-      <NavigatorSidebar
-        isOpenSidebar={open}
-        onCloseSidebar={() => setOpen(false)}
-      />
+      <NavigatorSidebar isOpenSidebar={open} onCloseSidebar={() => setOpen(false)} />
       <MainStyle
         sx={{
           paddingTop: `${NAVBAR_HEIGHT}px`,

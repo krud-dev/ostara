@@ -89,8 +89,7 @@ export class ConfigurationService {
       throw new Error(`Item with id ${id} is not a folder`);
     }
     return Object.values(configurationStore.get('items')).filter(
-      (item) =>
-        (isFolder(item) || isApplication(item)) && item.parentFolderId === id
+      (item) => (isFolder(item) || isApplication(item)) && item.parentFolderId === id
     );
   }
 
@@ -111,9 +110,7 @@ export class ConfigurationService {
    * Application operations
    */
 
-  static createApplication(
-    application: Omit<Application, 'id' | 'type'>
-  ): Application {
+  static createApplication(application: Omit<Application, 'id' | 'type'>): Application {
     const id = this.generateId();
     const newApplication: Application = {
       ...application,
@@ -124,10 +121,7 @@ export class ConfigurationService {
     return newApplication;
   }
 
-  static updateApplication(
-    id: string,
-    application: Omit<Application, 'id' | 'type'>
-  ): Application {
+  static updateApplication(id: string, application: Omit<Application, 'id' | 'type'>): Application {
     const target = this.getItemOrThrow(id);
     if (!isApplication(target)) {
       throw new Error(`Item with id ${id} is not an application`);
@@ -184,10 +178,7 @@ export class ConfigurationService {
     return newInstance;
   }
 
-  static updateInstance(
-    id: string,
-    instance: Omit<Instance, 'id' | 'type'>
-  ): Instance {
+  static updateInstance(id: string, instance: Omit<Instance, 'id' | 'type'>): Instance {
     const target = this.getItemOrThrow(id);
     if (!isInstance(target)) {
       throw new Error(`Item with id ${id} is not an instance`);
@@ -211,14 +202,9 @@ export class ConfigurationService {
     }
     const application = this.getItemOrThrow(newParentApplicationId);
     if (!isApplication(application)) {
-      throw new Error(
-        `Item with id ${newParentApplicationId} is not an application`
-      );
+      throw new Error(`Item with id ${newParentApplicationId} is not an application`);
     }
-    configurationStore.set(
-      `items.${id}.parentApplicationId`,
-      newParentApplicationId
-    );
+    configurationStore.set(`items.${id}.parentApplicationId`, newParentApplicationId);
     return { ...target, parentApplicationId: newParentApplicationId };
   }
 

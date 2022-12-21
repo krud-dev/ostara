@@ -9,21 +9,12 @@ interface IProps extends PropsWithChildren<any> {
   sx?: SxProps<Theme>;
 }
 
-const DialogTitleEnhanced: FunctionComponent<IProps> = ({
-  onClose,
-  sx,
-  children,
-}) => {
+const DialogTitleEnhanced: FunctionComponent<IProps> = ({ onClose, sx, children }) => {
   return (
     <>
       <DialogTitle sx={sx}>
         {onClose ? (
-          <IconButton
-            aria-label="close"
-            size="small"
-            onClick={onClose}
-            sx={{ float: 'right' }}
-          >
+          <IconButton aria-label="close" size="small" onClick={onClose} sx={{ float: 'right' }}>
             <CloseOutlined />
           </IconButton>
         ) : null}

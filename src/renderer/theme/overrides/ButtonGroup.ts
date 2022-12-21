@@ -3,9 +3,7 @@ import { Theme } from '@mui/material/styles';
 // ----------------------------------------------------------------------
 
 export default function ButtonGroup(theme: Theme) {
-  const styleContained = (
-    color: 'primary' | 'secondary' | 'info' | 'success' | 'warning' | 'error'
-  ) => ({
+  const styleContained = (color: 'primary' | 'secondary' | 'info' | 'success' | 'warning' | 'error') => ({
     props: { variant: 'contained', color },
     style: { boxShadow: theme.customShadows[color] },
   });

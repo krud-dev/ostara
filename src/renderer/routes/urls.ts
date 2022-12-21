@@ -1,7 +1,7 @@
 export type UrlInfo = {
   url: string;
   path: string;
-}
+};
 
 function asUrlInfos<T extends { [key: string]: UrlInfo }>(arg: T): T {
   return arg;

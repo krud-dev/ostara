@@ -19,17 +19,8 @@ export default function ContextMenuPopper({
   };
 
   return (
-    <Popper
-      id={id}
-      placement={'bottom-start'}
-      disablePortal={false}
-      sx={{ zIndex: 10000 }}
-      {...other}
-    >
-      <ClickAwayListener
-        onClickAway={clickAwayHandler}
-        mouseEvent={'onMouseDown'}
-      >
+    <Popper id={id} placement={'bottom-start'} disablePortal={false} sx={{ zIndex: 10000 }} {...other}>
+      <ClickAwayListener onClickAway={clickAwayHandler} mouseEvent={'onMouseDown'}>
         <Paper
           sx={{
             py: 1,

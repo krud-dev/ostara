@@ -1,10 +1,4 @@
-import React, {
-  FunctionComponent,
-  PropsWithChildren,
-  useCallback,
-  useContext,
-  useMemo,
-} from 'react';
+import React, { FunctionComponent, PropsWithChildren, useCallback, useContext, useMemo } from 'react';
 import useConfigurationStoreState from 'renderer/hooks/useConfigurationStoreState';
 import { LocaleInfo } from 'renderer/lang/lang';
 import locales from 'renderer/lang';
@@ -14,21 +8,15 @@ export type UiContextProps = {
   toggleDarkMode: () => void;
   localeInfo: LocaleInfo;
   setLocale: (locale: string) => void;
-}
+};
 
 const UiContext = React.createContext<UiContextProps>(undefined!);
 
 interface UiProviderProps extends PropsWithChildren<any> {}
 
 const UiProvider: FunctionComponent<UiProviderProps> = ({ children }) => {
-  const [darkMode, setDarkMode] = useConfigurationStoreState<boolean>(
-    'darkMode',
-    true
-  );
-  const [locale, setLocaleInternal] = useConfigurationStoreState<string>(
-    'locale',
-    'en'
-  );
+  const [darkMode, setDarkMode] = useConfigurationStoreState<boolean>('darkMode', true);
+  const [locale, setLocaleInternal] = useConfigurationStoreState<string>('locale', 'en');
   const localeInfo = useMemo<LocaleInfo>(() => locales[locale], [locale]);
 
   const toggleDarkMode = useCallback((): void => {

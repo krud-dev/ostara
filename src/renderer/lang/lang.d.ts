@@ -10,4 +10,4 @@ export type LocaleInfo = {
   direction: 'ltr' | 'rtl';
   materialUiLocalization: Localization;
   dateLocalization: Locale;
-}
+};

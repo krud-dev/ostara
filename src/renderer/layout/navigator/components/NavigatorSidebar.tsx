@@ -24,10 +24,7 @@ type NavigatorSidebarProps = {
   onCloseSidebar: VoidFunction;
 };
 
-export default function NavigatorSidebar({
-  isOpenSidebar,
-  onCloseSidebar,
-}: NavigatorSidebarProps) {
+export default function NavigatorSidebar({ isOpenSidebar, onCloseSidebar }: NavigatorSidebarProps) {
   const { pathname } = useLocation();
 
   const [search, setSearch] = useState<string>('');
@@ -41,20 +38,11 @@ export default function NavigatorSidebar({
   const renderContent = (
     <NavigatorTreeProvider>
       <Box sx={{ height: '100%', display: 'flex', flexDirection: 'column' }}>
-        <Stack
-          direction={'row'}
-          spacing={0.5}
-          alignItems={'center'}
-          sx={{ px: 0.5, py: 1 }}
-        >
+        <Stack direction={'row'} spacing={0.5} alignItems={'center'} sx={{ px: 0.5, py: 1 }}>
           <Box>
             <CreateItemMenu />
           </Box>
-          <SearchTextField
-            size={'small'}
-            icon={FilterListOutlined}
-            onChangeValue={setSearch}
-          />
+          <SearchTextField size={'small'} icon={FilterListOutlined} onChangeValue={setSearch} />
           <Box>
             <SearchItemMenu />
           </Box>

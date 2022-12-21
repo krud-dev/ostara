@@ -1,12 +1,5 @@
 import { ipcRenderer } from 'electron';
-import {
-  Application,
-  Configuration,
-  Folder,
-  HierarchicalItem,
-  Instance,
-  BaseItem,
-} from './model/configuration';
+import { Application, Configuration, Folder, HierarchicalItem, Instance, BaseItem } from './model/configuration';
 
 export const configurationStoreBridge = {
   get<T>(key: string): T {
@@ -64,45 +57,25 @@ export const configurationServiceBridge = {
     return ipcRenderer.invoke('configurationService:getFolderChildren', id);
   },
   moveFolder(id: string, newParentFolderId: string): Promise<void> {
-    return ipcRenderer.invoke(
-      'configurationService:moveFolder',
-      id,
-      newParentFolderId
-    );
+    return ipcRenderer.invoke('configurationService:moveFolder', id, newParentFolderId);
   },
   /**
    * Application operations
    */
-  createApplication(
-    application: Omit<Application, 'id'>
-  ): Promise<Application> {
-    return ipcRenderer.invoke(
-      'configurationService:createApplication',
-      application
-    );
+  createApplication(application: Omit<Application, 'id'>): Promise<Application> {
+    return ipcRenderer.invoke('configurationService:createApplication', application);
   },
   updateApplication(id: string, application: Omit<Application, 'id'>) {
-    return ipcRenderer.invoke(
-      'configurationService:updateApplication',
-      id,
-      application
-    );
+    return ipcRenderer.invoke('configurationService:updateApplication', id, application);
   },
   deleteApplication(id: string): Promise<void> {
     return ipcRenderer.invoke('configurationService:deleteApplication', id);
   },
   moveApplication(id: string, newParentFolderId: string): Promise<void> {
-    return ipcRenderer.invoke(
-      'configurationService:moveApplication',
-      id,
-      newParentFolderId
-    );
+    return ipcRenderer.invoke('configurationService:moveApplication', id, newParentFolderId);
   },
   getApplicationInstances(id: string): Promise<Instance[]> {
-    return ipcRenderer.invoke(
-      'configurationService:getApplicationInstances',
-      id
-    );
+    return ipcRenderer.invoke('configurationService:getApplicationInstances', id);
   },
   /**
    * Instance operations
@@ -111,20 +84,12 @@ export const configurationServiceBridge = {
     return ipcRenderer.invoke('configurationService:createInstance', instance);
   },
   updateInstance(id: string, instance: Omit<Instance, 'id'>): Promise<void> {
-    return ipcRenderer.invoke(
-      'configurationService:updateInstance',
-      id,
-      instance
-    );
+    return ipcRenderer.invoke('configurationService:updateInstance', id, instance);
   },
   deleteInstance(id: string): Promise<void> {
     return ipcRenderer.invoke('configurationService:deleteInstance', id);
   },
   moveInstance(id: string, newParentApplicationId: string): Promise<void> {
-    return ipcRenderer.invoke(
-      'configurationService:moveInstance',
-      id,
-      newParentApplicationId
-    );
+    return ipcRenderer.invoke('configurationService:moveInstance', id, newParentApplicationId);
   },
 };

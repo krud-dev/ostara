@@ -1,15 +1,7 @@
 import { FormattedMessage, useIntl } from 'react-intl';
 import React, { FunctionComponent, ReactNode, useCallback } from 'react';
 import { Controller, useForm } from 'react-hook-form';
-import {
-  Box,
-  Button,
-  Dialog,
-  DialogActions,
-  DialogContent,
-  DialogContentText,
-  TextField,
-} from '@mui/material';
+import { Box, Button, Dialog, DialogActions, DialogContent, DialogContentText, TextField } from '@mui/material';
 import DialogTitleEnhanced from './DialogTitleEnhanced';
 import NiceModal, { NiceModalHocProps, useModal } from '@ebay/nice-modal-react';
 
@@ -26,9 +18,7 @@ type FormValues = {
   confirm: string;
 };
 
-const ConfirmationTypingDialog: FunctionComponent<
-  ConfirmationTypingDialogProps & NiceModalHocProps
-> = NiceModal.create(
+const ConfirmationTypingDialog: FunctionComponent<ConfirmationTypingDialogProps & NiceModalHocProps> = NiceModal.create(
   ({ title, text, continueText, cancelText, confirmText, onConfirm }) => {
     const modal = useModal();
     const intl = useIntl();
@@ -47,23 +37,18 @@ const ConfirmationTypingDialog: FunctionComponent<
       modal.hide();
     }, [modal]);
 
-    const validateContains = useCallback(
-      (value: string, textToContain: string): string | undefined => {
-        if (!textToContain) {
-          return undefined;
-        }
-        if (!value) {
-          return intl.formatMessage({ id: 'requiredField' });
-        }
-        if (value.toLowerCase().indexOf(textToContain.toLowerCase()) < 0) {
-          return intl
-            .formatMessage({ id: 'typeToConfirm' })
-            .replace('{confirm}', textToContain);
-        }
+    const validateContains = useCallback((value: string, textToContain: string): string | undefined => {
+      if (!textToContain) {
         return undefined;
-      },
-      []
-    );
+      }
+      if (!value) {
+        return intl.formatMessage({ id: 'requiredField' });
+      }
+      if (value.toLowerCase().indexOf(textToContain.toLowerCase()) < 0) {
+        return intl.formatMessage({ id: 'typeToConfirm' }).replace('{confirm}', textToContain);
+      }
+      return undefined;
+    }, []);
 
     return (
       <>
@@ -74,18 +59,11 @@ const ConfirmationTypingDialog: FunctionComponent<
             onExited: () => modal.remove(),
           }}
         >
-          <DialogTitleEnhanced onClose={cancelHandler}>
-            {title}
-          </DialogTitleEnhanced>
+          <DialogTitleEnhanced onClose={cancelHandler}>{title}</DialogTitleEnhanced>
           <DialogContent>
             <DialogContentText>{text}</DialogContentText>
 
-            <Box
-              component="form"
-              onSubmit={submitHandler}
-              noValidate
-              sx={{ mt: 1 }}
-            >
+            <Box component="form" onSubmit={submitHandler} noValidate sx={{ mt: 1 }}>
               <Controller
                 name="confirm"
                 rules={{
@@ -94,10 +72,7 @@ const ConfirmationTypingDialog: FunctionComponent<
                 }}
                 control={control}
                 defaultValue=""
-                render={({
-                  field: { ref, ...field },
-                  fieldState: { invalid, error },
-                }) => {
+                render={({ field: { ref, ...field }, fieldState: { invalid, error } }) => {
                   return (
                     <TextField
                       {...field}
@@ -105,12 +80,7 @@ const ConfirmationTypingDialog: FunctionComponent<
                       margin="normal"
                       required
                       fullWidth
-                      label={
-                        <FormattedMessage
-                          id="typeToConfirm"
-                          values={{ confirm: confirmText }}
-                        />
-                      }
+                      label={<FormattedMessage id="typeToConfirm" values={{ confirm: confirmText }} />}
                       type="text"
                       autoComplete="off"
                       autoFocus

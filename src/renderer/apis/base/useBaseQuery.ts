@@ -1,7 +1,4 @@
-import {
-  UseQueryOptions,
-  UseQueryResult,
-} from '@tanstack/react-query/src/types';
+import { UseQueryOptions, UseQueryResult } from '@tanstack/react-query/src/types';
 import { QueryKey, useQuery } from '@tanstack/react-query';
 import { useMemo } from 'react';
 
@@ -20,10 +17,7 @@ export const useBaseQuery = <Data, Variables>(
   variables: Variables,
   options?: BaseQueryOptions<Data, Variables>
 ): BaseUseQueryResult<Data> => {
-  const queryFnInternal = useMemo<() => Promise<Data>>(
-    () => () => queryFn(variables),
-    [queryFn, variables]
-  );
+  const queryFnInternal = useMemo<() => Promise<Data>>(() => () => queryFn(variables), [queryFn, variables]);
 
   return useQuery<Data, unknown, Data>({
     ...options,

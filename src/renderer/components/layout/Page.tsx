@@ -5,13 +5,11 @@ interface PageProps extends BoxProps {
   children: ReactNode;
 }
 
-const Page = forwardRef<HTMLDivElement, PageProps>(
-  ({ children, ...other }, ref) => {
-    return (
-      <Box ref={ref} {...other}>
-        {children}
-      </Box>
-    );
-  }
-);
+const Page = forwardRef<HTMLDivElement, PageProps>(({ children, ...other }, ref) => {
+  return (
+    <Box ref={ref} {...other}>
+      {children}
+    </Box>
+  );
+});
 export default Page;

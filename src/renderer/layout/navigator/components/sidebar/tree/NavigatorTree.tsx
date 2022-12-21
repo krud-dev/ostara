@@ -26,8 +26,6 @@ type NavigatorTreeProps = {
 export default function NavigatorTree({ search }: NavigatorTreeProps) {
   const { data, isLoading, isEmpty, hasData, action, getItem } = useNavigatorTree();
 
-  console.log('data', data);
-
   const treeRef = useRef<TreeApi<TreeItem> | null>(null);
 
   useEffect(() => {

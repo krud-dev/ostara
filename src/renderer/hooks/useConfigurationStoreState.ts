@@ -1,10 +1,7 @@
 import { Dispatch, SetStateAction, useState } from 'react';
 import { isFunction, isNil } from 'lodash';
 
-const useConfigurationStoreState = <S>(
-  key: string,
-  initialState: S | (() => S)
-): [S, Dispatch<SetStateAction<S>>] => {
+const useConfigurationStoreState = <S>(key: string, initialState: S | (() => S)): [S, Dispatch<SetStateAction<S>>] => {
   const [item, setInnerValue] = useState<S>((): S => {
     const valueItem = window.electron.configurationStore.get(key);
     if (!isNil(valueItem)) {

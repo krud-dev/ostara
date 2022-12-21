@@ -1,14 +1,6 @@
 import React, { FunctionComponent, ReactNode, useCallback } from 'react';
 import { Controller, useForm } from 'react-hook-form';
-import {
-  Box,
-  Button,
-  Dialog,
-  DialogActions,
-  DialogContent,
-  DialogContentText,
-  TextField,
-} from '@mui/material';
+import { Box, Button, Dialog, DialogActions, DialogContent, DialogContentText, TextField } from '@mui/material';
 import DialogTitleEnhanced from './DialogTitleEnhanced';
 import { FormattedMessage, useIntl } from 'react-intl';
 import NiceModal, { NiceModalHocProps, useModal } from '@ebay/nice-modal-react';
@@ -26,17 +18,8 @@ type FormValues = {
   password: string;
 };
 
-const PasswordDialog: FunctionComponent<
-  PasswordDialogProps & NiceModalHocProps
-> = NiceModal.create(
-  ({
-    title,
-    text,
-    continueText,
-    cancelText,
-    onPassword,
-    onPasswordDismissed,
-  }) => {
+const PasswordDialog: FunctionComponent<PasswordDialogProps & NiceModalHocProps> = NiceModal.create(
+  ({ title, text, continueText, cancelText, onPassword, onPasswordDismissed }) => {
     const modal = useModal();
     const intl = useIntl();
 
@@ -64,18 +47,11 @@ const PasswordDialog: FunctionComponent<
           onExited: () => modal.remove(),
         }}
       >
-        <DialogTitleEnhanced onClose={cancelHandler}>
-          {title}
-        </DialogTitleEnhanced>
+        <DialogTitleEnhanced onClose={cancelHandler}>{title}</DialogTitleEnhanced>
         <DialogContent>
           <DialogContentText>{text}</DialogContentText>
 
-          <Box
-            component="form"
-            onSubmit={submitHandler}
-            noValidate
-            sx={{ mt: 1 }}
-          >
+          <Box component="form" onSubmit={submitHandler} noValidate sx={{ mt: 1 }}>
             <Controller
               name="password"
               rules={{
@@ -83,10 +59,7 @@ const PasswordDialog: FunctionComponent<
               }}
               control={control}
               defaultValue=""
-              render={({
-                field: { ref, ...field },
-                fieldState: { invalid, error },
-              }) => {
+              render={({ field: { ref, ...field }, fieldState: { invalid, error } }) => {
                 return (
                   <TextField
                     {...field}

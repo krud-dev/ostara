@@ -1,16 +1,7 @@
 import { useCallback, useRef, useState } from 'react';
-import {
-  IconButton,
-  ListItemIcon,
-  ListItemText,
-  MenuItem,
-} from '@mui/material';
+import { IconButton, ListItemIcon, ListItemText, MenuItem } from '@mui/material';
 import MenuPopover from 'renderer/components/menu/MenuPopover';
-import {
-  MoreVertOutlined,
-  UnfoldLessDoubleOutlined,
-  UnfoldMoreDoubleOutlined,
-} from '@mui/icons-material';
+import { MoreVertOutlined, UnfoldLessDoubleOutlined, UnfoldMoreDoubleOutlined } from '@mui/icons-material';
 import { FormattedMessage } from 'react-intl';
 import { useNavigatorTree } from 'renderer/contexts/NavigatorTreeContext';
 
@@ -44,11 +35,7 @@ export default function SearchItemMenu() {
         <MoreVertOutlined fontSize={'small'} />
       </IconButton>
 
-      <MenuPopover
-        open={open}
-        onClose={closeHandler}
-        anchorEl={anchorRef.current}
-      >
+      <MenuPopover open={open} onClose={closeHandler} anchorEl={anchorRef.current}>
         <MenuItem onClick={collapseAllHandler}>
           <ListItemIcon>
             <UnfoldLessDoubleOutlined fontSize="small" />

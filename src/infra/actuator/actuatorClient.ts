@@ -26,9 +26,7 @@ export class ActuatorClient {
     return response.data;
   }
 
-  async healthComponent<T>(
-    ...name: string[]
-  ): Promise<ActuatorHealthComponentResponse<T>> {
+  async healthComponent<T>(...name: string[]): Promise<ActuatorHealthComponentResponse<T>> {
     const path = `health/${name.join('/')}`;
     const response = await this.axios.get(path);
     return response.data;
@@ -92,10 +90,7 @@ export class ActuatorClient {
     return response.data;
   }
 
-  async metric(
-    name: string,
-    tags: { [key: string]: string }
-  ): Promise<ActuatorMetricResponse> {
+  async metric(name: string, tags: { [key: string]: string }): Promise<ActuatorMetricResponse> {
     const params = {
       tag: Object.keys(tags).map((key) => `${key}:${tags[key]}`),
     };
@@ -154,10 +149,7 @@ export class ActuatorClient {
     return response.data;
   }
 
-  async updateLogger(
-    loggerOrGroupName: string,
-    level: ActuatorLogLevel
-  ): Promise<void> {
+  async updateLogger(loggerOrGroupName: string, level: ActuatorLogLevel): Promise<void> {
     await this.axios.post(`loggers/${loggerOrGroupName}`, {
       configuredLevel: level,
     });

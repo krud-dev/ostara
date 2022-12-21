@@ -19,17 +19,10 @@ type ThemeConfigProps = {
   children: ReactNode;
 };
 
-export default function ThemeConfig({
-  isDarkMode,
-  isRtl,
-  localization,
-  children,
-}: ThemeConfigProps) {
+export default function ThemeConfig({ isDarkMode, isRtl, localization, children }: ThemeConfigProps) {
   const themeOptions: ThemeOptions = useMemo(
     () => ({
-      palette: isDarkMode
-        ? { ...palette.dark, mode: 'dark' }
-        : { ...palette.light, mode: 'light' },
+      palette: isDarkMode ? { ...palette.dark, mode: 'dark' } : { ...palette.light, mode: 'light' },
       shape,
       typography,
       breakpoints,

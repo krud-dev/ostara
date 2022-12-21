@@ -23,6 +23,8 @@ type FolderContextMenuProps = {
 
 export default function FolderContextMenu({ node, open, anchorEl, onClose, onCreated }: FolderContextMenuProps) {
   const createFolderHandler = useCallback((): void => {
+    onClose?.();
+
     NiceModal.show<Folder | undefined>(CreateFolderDialog, {
       parentFolderId: node.data.id,
       order: node.data.children?.length
@@ -33,7 +35,6 @@ export default function FolderContextMenu({ node, open, anchorEl, onClose, onCre
         : 1,
       onCreated: onCreated,
     });
-    onClose?.();
   }, [onClose]);
 
   const createApplicationHandler = useCallback((): void => {
@@ -45,8 +46,10 @@ export default function FolderContextMenu({ node, open, anchorEl, onClose, onCre
   }, [onClose]);
 
   const renameHandler = useCallback(async (): Promise<void> => {
+    onClose?.();
+
     await node.edit();
-  }, [node]);
+  }, [node, onClose]);
 
   const deleteState = useDeleteFolder();
 
