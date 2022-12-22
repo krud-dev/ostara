@@ -19,5 +19,5 @@ export type ActuatorInfoResponse = {
   git?: ActuatorGitInfo;
   build?: ActuatorBuildInfo;
 
-  [key: string]: object | undefined;
+  [key: string]: unknown;
 };
