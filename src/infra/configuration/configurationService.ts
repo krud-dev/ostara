@@ -12,19 +12,19 @@ import {
 } from './model/configuration';
 import { configurationStore } from './configurationStore';
 
-export class ConfigurationService {
+class ConfigurationService {
   /**
    * Generic operations
    */
-  static getConfiguration(): Configuration {
+  getConfiguration(): Configuration {
     return configurationStore.store;
   }
 
-  static getItem(id: string): BaseItem | undefined {
+  getItem(id: string): BaseItem | undefined {
     return configurationStore.get('items')[id];
   }
 
-  static getItemOrThrow(id: string): BaseItem {
+  getItemOrThrow(id: string): BaseItem {
     const item = this.getItem(id);
     if (item == null) {
       throw new Error(`Item with id ${id} not found`);
@@ -32,13 +32,13 @@ export class ConfigurationService {
     return item;
   }
 
-  static itemExistsOrThrow(id: string): void {
+  itemExistsOrThrow(id: string): void {
     if (!configurationStore.has(`items.${id}`)) {
       throw new Error(`Item with id ${id} not found`);
     }
   }
 
-  static reorderItem(id: string, order?: number): void {
+  reorderItem(id: string, order?: number): void {
     this.itemExistsOrThrow(id);
     configurationStore.set(`items.${id}.order`, order);
   }
@@ -47,7 +47,7 @@ export class ConfigurationService {
    * Folder operations
    */
 
-  static createFolder(folder: Omit<Folder, 'id' | 'type'>): Folder {
+  createFolder(folder: Omit<Folder, 'id' | 'type'>): Folder {
     const id = this.generateId();
     const newFolder: Folder = {
       ...folder,
@@ -58,7 +58,7 @@ export class ConfigurationService {
     return newFolder;
   }
 
-  static updateFolder(id: string, folder: Omit<Folder, 'id' | 'type'>): Folder {
+  updateFolder(id: string, folder: Omit<Folder, 'id' | 'type'>): Folder {
     const target = this.getItemOrThrow(id);
     if (!isFolder(target)) {
       throw new Error(`Item with id ${id} is not a folder`);
@@ -67,7 +67,7 @@ export class ConfigurationService {
     return { ...folder, type: 'folder', id };
   }
 
-  static deleteFolder(id: string): void {
+  deleteFolder(id: string): void {
     const target = this.getItemOrThrow(id);
     if (!isFolder(target)) {
       throw new Error(`Item with id ${id} is not a folder`);
@@ -83,7 +83,7 @@ export class ConfigurationService {
     configurationStore.delete(`items.${id}` as any);
   }
 
-  static getFolderChildren(id: string): HierarchicalItem[] {
+  getFolderChildren(id: string): HierarchicalItem[] {
     const folder = this.getItemOrThrow(id);
     if (!isFolder(folder)) {
       throw new Error(`Item with id ${id} is not a folder`);
@@ -93,7 +93,7 @@ export class ConfigurationService {
     );
   }
 
-  static moveFolder(id: string, newParentFolderId: string): Folder {
+  moveFolder(id: string, newParentFolderId: string): Folder {
     const target = this.getItemOrThrow(id);
     if (!isFolder(target)) {
       throw new Error(`Item with id ${id} is not a folder`);
@@ -110,7 +110,7 @@ export class ConfigurationService {
    * Application operations
    */
 
-  static createApplication(application: Omit<Application, 'id' | 'type'>): Application {
+  createApplication(application: Omit<Application, 'id' | 'type'>): Application {
     const id = this.generateId();
     const newApplication: Application = {
       ...application,
@@ -121,7 +121,7 @@ export class ConfigurationService {
     return newApplication;
   }
 
-  static updateApplication(id: string, application: Omit<Application, 'id' | 'type'>): Application {
+  updateApplication(id: string, application: Omit<Application, 'id' | 'type'>): Application {
     const target = this.getItemOrThrow(id);
     if (!isApplication(target)) {
       throw new Error(`Item with id ${id} is not an application`);
@@ -130,7 +130,7 @@ export class ConfigurationService {
     return { ...application, type: 'application', id };
   }
 
-  static deleteApplication(id: string): void {
+  deleteApplication(id: string): void {
     const target = this.getItemOrThrow(id);
     if (!isApplication(target)) {
       throw new Error(`Item with id ${id} is not an application`);
@@ -140,7 +140,7 @@ export class ConfigurationService {
     configurationStore.delete(`items.${id}` as any);
   }
 
-  static moveApplication(id: string, parentFolderId: string): Application {
+  moveApplication(id: string, parentFolderId: string): Application {
     const target = this.getItemOrThrow(id);
     if (!isApplication(target)) {
       throw new Error(`Item with id ${id} is not an application`);
@@ -153,7 +153,7 @@ export class ConfigurationService {
     return { ...target, parentFolderId };
   }
 
-  static getApplicationInstances(id: string): Instance[] {
+  getApplicationInstances(id: string): Instance[] {
     const application = this.getItemOrThrow(id);
     if (!isApplication(application)) {
       throw new Error(`Item with id ${id} is not an application`);
@@ -167,7 +167,11 @@ export class ConfigurationService {
    * Instance operations
    */
 
-  static createInstance(instance: Omit<Instance, 'id' | 'type'>): Instance {
+  getInstances(): Instance[] {
+    return Object.values(configurationStore.get('items')).filter(isInstance);
+  }
+
+  createInstance(instance: Omit<Instance, 'id' | 'type'>): Instance {
     const id = this.generateId();
     const newInstance: Instance = {
       ...instance,
@@ -178,7 +182,7 @@ export class ConfigurationService {
     return newInstance;
   }
 
-  static updateInstance(id: string, instance: Omit<Instance, 'id' | 'type'>): Instance {
+  updateInstance(id: string, instance: Omit<Instance, 'id' | 'type'>): Instance {
     const target = this.getItemOrThrow(id);
     if (!isInstance(target)) {
       throw new Error(`Item with id ${id} is not an instance`);
@@ -187,7 +191,7 @@ export class ConfigurationService {
     return { ...instance, type: 'instance', id };
   }
 
-  static deleteInstance(id: string): void {
+  deleteInstance(id: string): void {
     const target = this.getItemOrThrow(id);
     if (!isInstance(target)) {
       throw new Error(`Item with id ${id} is not an instance`);
@@ -195,7 +199,7 @@ export class ConfigurationService {
     configurationStore.delete(`items.${id}` as any);
   }
 
-  static moveInstance(id: string, newParentApplicationId: string): Instance {
+  moveInstance(id: string, newParentApplicationId: string): Instance {
     const target = this.getItemOrThrow(id);
     if (!isInstance(target)) {
       throw new Error(`Item with id ${id} is not an instance`);
@@ -212,7 +216,7 @@ export class ConfigurationService {
    * Misc
    */
 
-  private static generateId(): string {
+  private generateId(): string {
     let id = uuidv4();
     while (configurationStore.has(`items.${id}`)) {
       id = uuidv4();
@@ -220,3 +224,5 @@ export class ConfigurationService {
     return id;
   }
 }
+
+export const configurationService = new ConfigurationService();

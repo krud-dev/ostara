@@ -1,6 +1,6 @@
 import { ipcMain } from 'electron';
 import { configurationStore } from './configurationStore';
-import { ConfigurationService } from './configurationService';
+import { configurationService } from './configurationService';
 
 ipcMain.on('configurationStore:get', async (event, val) => {
   event.returnValue = configurationStore.get(val);
@@ -33,23 +33,23 @@ ipcMain.on('configurationStore:clear', async () => {
  * Generic operations
  */
 ipcMain.handle('configurationService:getConfiguration', async () => {
-  return ConfigurationService.getConfiguration();
+  return configurationService.getConfiguration();
 });
 
 ipcMain.handle('configurationService:getItem', async (event, id) => {
-  return ConfigurationService.getItem(id);
+  return configurationService.getItem(id);
 });
 
 ipcMain.handle('configurationService:getItemOrThrow', async (event, id) => {
-  return ConfigurationService.getItemOrThrow(id);
+  return configurationService.getItemOrThrow(id);
 });
 
 ipcMain.handle('configurationService:itemExistsOrThrow', async (event, id) => {
-  return ConfigurationService.itemExistsOrThrow(id);
+  return configurationService.itemExistsOrThrow(id);
 });
 
 ipcMain.handle('configurationService:reorderItem', async (event, id, order) => {
-  return ConfigurationService.reorderItem(id, order);
+  return configurationService.reorderItem(id, order);
 });
 
 /**
@@ -57,23 +57,23 @@ ipcMain.handle('configurationService:reorderItem', async (event, id, order) => {
  */
 
 ipcMain.handle('configurationService:createFolder', async (event, folder) => {
-  return ConfigurationService.createFolder(folder);
+  return configurationService.createFolder(folder);
 });
 
 ipcMain.handle('configurationService:updateFolder', async (event, id, folder) => {
-  return ConfigurationService.updateFolder(id, folder);
+  return configurationService.updateFolder(id, folder);
 });
 
 ipcMain.handle('configurationService:deleteFolder', async (event, id) => {
-  return ConfigurationService.deleteFolder(id);
+  return configurationService.deleteFolder(id);
 });
 
 ipcMain.handle('configurationService:getFolderChildren', async (event, id) => {
-  return ConfigurationService.getFolderChildren(id);
+  return configurationService.getFolderChildren(id);
 });
 
 ipcMain.handle('configurationService:moveFolder', async (event, id, parentUuid) => {
-  return ConfigurationService.moveFolder(id, parentUuid);
+  return configurationService.moveFolder(id, parentUuid);
 });
 
 /**
@@ -81,23 +81,23 @@ ipcMain.handle('configurationService:moveFolder', async (event, id, parentUuid) 
  */
 
 ipcMain.handle('configurationService:createApplication', async (event, application) => {
-  return ConfigurationService.createApplication(application);
+  return configurationService.createApplication(application);
 });
 
 ipcMain.handle('configurationService:updateApplication', async (event, id, application) => {
-  return ConfigurationService.updateApplication(id, application);
+  return configurationService.updateApplication(id, application);
 });
 
 ipcMain.handle('configurationService:deleteApplication', async (event, id) => {
-  return ConfigurationService.deleteApplication(id);
+  return configurationService.deleteApplication(id);
 });
 
 ipcMain.handle('configurationService:moveApplication', async (event, id, parentUuid) => {
-  return ConfigurationService.moveApplication(id, parentUuid);
+  return configurationService.moveApplication(id, parentUuid);
 });
 
 ipcMain.handle('configurationService:getApplicationInstances', async (event, id) => {
-  return ConfigurationService.getApplicationInstances(id);
+  return configurationService.getApplicationInstances(id);
 });
 
 /**
@@ -105,17 +105,17 @@ ipcMain.handle('configurationService:getApplicationInstances', async (event, id)
  */
 
 ipcMain.handle('configurationService:createInstance', async (event, instance) => {
-  return ConfigurationService.createInstance(instance);
+  return configurationService.createInstance(instance);
 });
 
 ipcMain.handle('configurationService:updateInstance', async (event, id, instance) => {
-  return ConfigurationService.updateInstance(id, instance);
+  return configurationService.updateInstance(id, instance);
 });
 
 ipcMain.handle('configurationService:deleteInstance', async (event, id) => {
-  return ConfigurationService.deleteInstance(id);
+  return configurationService.deleteInstance(id);
 });
 
 ipcMain.handle('configurationService:moveInstance', async (event, id, parentUuid) => {
-  return ConfigurationService.moveInstance(id, parentUuid);
+  return configurationService.moveInstance(id, parentUuid);
 });
