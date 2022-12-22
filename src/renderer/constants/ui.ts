@@ -1,4 +1,4 @@
-export const SIDEBAR_DRAWER_WIDTH = 280;
+export const SIDEBAR_DEFAULT_WIDTH = 280;
 
 export const NAVBAR_HEIGHT = 60;
 

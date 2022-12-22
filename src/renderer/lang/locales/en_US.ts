@@ -11,6 +11,7 @@ export default {
   create: 'Create',
   rename: 'Rename',
   select: 'Select',
+  search: 'Search',
   addYourFirstInstance: 'Add your first actuator instance',
   collapseAll: 'Collapse All',
   expandAll: 'Expand All',

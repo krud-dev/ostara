@@ -1,9 +1,7 @@
-import { useEffect, useState } from 'react';
-import { useLocation } from 'react-router-dom';
+import { useState } from 'react';
 import { experimentalStyled as styled } from '@mui/material/styles';
 import { Box, Divider, Drawer, Stack } from '@mui/material';
-import { NAVBAR_HEIGHT, SIDEBAR_DRAWER_WIDTH } from 'renderer/constants/ui';
-import MHidden from 'renderer/components/layout/MHidden';
+import { NAVBAR_HEIGHT } from 'renderer/constants/ui';
 import PerfectScrollbar from 'react-perfect-scrollbar';
 import NavigatorTree from 'renderer/layout/navigator/components/sidebar/tree/NavigatorTree';
 import SearchTextField from 'renderer/components/input/SearchTextField';
@@ -13,88 +11,52 @@ import SearchItemMenu from 'renderer/layout/navigator/components/sidebar/menus/S
 import { NavigatorTreeProvider } from 'renderer/contexts/NavigatorTreeContext';
 
 const RootStyle = styled('div')(({ theme }) => ({
-  [theme.breakpoints.up('lg')]: {
-    flexShrink: 0,
-    width: SIDEBAR_DRAWER_WIDTH,
-  },
+  flexShrink: 0,
 }));
 
 type NavigatorSidebarProps = {
-  isOpenSidebar: boolean;
-  onCloseSidebar: VoidFunction;
+  width: number;
 };
 
-export default function NavigatorSidebar({ isOpenSidebar, onCloseSidebar }: NavigatorSidebarProps) {
-  const { pathname } = useLocation();
-
+export default function NavigatorSidebar({ width }: NavigatorSidebarProps) {
   const [search, setSearch] = useState<string>('');
 
-  useEffect(() => {
-    if (isOpenSidebar) {
-      onCloseSidebar();
-    }
-  }, [pathname]);
-
-  const renderContent = (
-    <NavigatorTreeProvider>
-      <Box sx={{ height: '100%', display: 'flex', flexDirection: 'column' }}>
-        <Box sx={{ height: NAVBAR_HEIGHT, display: 'flex', flexDirection: 'column' }}>
-          <Stack direction={'row'} spacing={0.5} alignItems={'center'} sx={{ flexGrow: 1, px: 0.5 }}>
-            <Box>
-              <CreateItemMenu />
-            </Box>
-            <SearchTextField size={'small'} icon={FilterListOutlined} onChangeValue={setSearch} />
-            <Box>
-              <SearchItemMenu />
-            </Box>
-          </Stack>
-
-          <Divider />
-        </Box>
-
-        <Box sx={{ flexGrow: 1, overflow: 'hidden' }}>
-          <PerfectScrollbar options={{ wheelPropagation: false }}>
-            <NavigatorTree search={search} />
-          </PerfectScrollbar>
-        </Box>
-      </Box>
-    </NavigatorTreeProvider>
-  );
-
   return (
-    <RootStyle
-      sx={{
-        width: {
-          lg: SIDEBAR_DRAWER_WIDTH,
-        },
-      }}
-    >
-      <MHidden width="lgUp">
-        <Drawer
-          open={isOpenSidebar}
-          onClose={onCloseSidebar}
-          PaperProps={{
-            sx: { width: SIDEBAR_DRAWER_WIDTH },
-          }}
-        >
-          {renderContent}
-        </Drawer>
-      </MHidden>
-
-      <MHidden width="lgDown">
+    <NavigatorTreeProvider>
+      <RootStyle>
         <Drawer
           open
           variant="persistent"
           PaperProps={{
             sx: {
-              width: SIDEBAR_DRAWER_WIDTH,
+              width: width,
               bgcolor: 'background.default',
             },
           }}
         >
-          {renderContent}
+          <Box sx={{ height: '100%', display: 'flex', flexDirection: 'column' }}>
+            <Box sx={{ height: NAVBAR_HEIGHT, display: 'flex', flexDirection: 'column' }}>
+              <Stack direction={'row'} spacing={0.5} alignItems={'center'} sx={{ flexGrow: 1, px: 0.5 }}>
+                <Box>
+                  <CreateItemMenu />
+                </Box>
+                <SearchTextField size={'small'} icon={FilterListOutlined} onChangeValue={setSearch} />
+                <Box>
+                  <SearchItemMenu />
+                </Box>
+              </Stack>
+
+              <Divider />
+            </Box>
+
+            <Box sx={{ flexGrow: 1, overflow: 'hidden' }}>
+              <PerfectScrollbar options={{ wheelPropagation: false }}>
+                <NavigatorTree width={width} search={search} />
+              </PerfectScrollbar>
+            </Box>
+          </Box>
         </Drawer>
-      </MHidden>
-    </RootStyle>
+      </RootStyle>
+    </NavigatorTreeProvider>
   );
 }

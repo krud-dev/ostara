@@ -56,6 +56,15 @@ export default function GlobalStyles() {
 
         img: { display: 'block', maxWidth: '100%' },
 
+        // Allotment
+        ':root': {
+          '--focus-border': theme.palette.primary.main,
+          '--separator-border': theme.palette.divider,
+        },
+        '.sash-mac': {
+          zIndex: 1210,
+        },
+
         // Perfect Scrollbar
         '.ps__thumb-y, .ps__thumb-x': {
           backgroundColor: alpha(theme.palette.grey[600], 0.48),

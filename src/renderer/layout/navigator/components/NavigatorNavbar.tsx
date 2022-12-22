@@ -1,37 +1,35 @@
-import { experimentalStyled as styled } from '@mui/material/styles';
 import { AppBar, Box, Divider, IconButton, Stack, Toolbar } from '@mui/material';
 import LanguageMenu from 'renderer/layout/navigator/components/navbar/LanguageMenu';
-import { NAVBAR_HEIGHT, SIDEBAR_DRAWER_WIDTH } from 'renderer/constants/ui';
-import MHidden from 'renderer/components/layout/MHidden';
-import { MenuOutlined } from '@mui/icons-material';
+import { NAVBAR_HEIGHT } from 'renderer/constants/ui';
+import { HomeOutlined } from '@mui/icons-material';
 import AccountMenu from 'renderer/layout/navigator/components/navbar/AccountMenu';
-
-const RootStyle = styled(AppBar)(({ theme }) => ({
-  minHeight: NAVBAR_HEIGHT,
-  display: 'flex',
-  backgroundColor: theme.palette.background.default,
-  [theme.breakpoints.up('lg')]: {
-    width: `calc(100% - ${SIDEBAR_DRAWER_WIDTH + 1}px)`,
-  },
-}));
-
-const ToolbarStyle = styled(Toolbar)(({ theme }) => ({
-  flexGrow: 1,
-}));
+import { useCallback } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 type NavigatorNavbarProps = {
-  onOpenSidebar: VoidFunction;
+  sidebarWidth: number;
 };
 
-export default function NavigatorNavbar({ onOpenSidebar }: NavigatorNavbarProps) {
+export default function NavigatorNavbar({ sidebarWidth }: NavigatorNavbarProps) {
+  const navigate = useNavigate();
+
+  const homeHandler = useCallback(() => {
+    navigate('/');
+  }, [navigate]);
+
   return (
-    <RootStyle>
-      <ToolbarStyle>
-        <MHidden width="lgUp">
-          <IconButton onClick={onOpenSidebar} size={'medium'} sx={{ mr: 1, color: 'text.primary' }}>
-            <MenuOutlined fontSize={'large'} />
-          </IconButton>
-        </MHidden>
+    <AppBar
+      sx={{
+        minHeight: NAVBAR_HEIGHT,
+        display: 'flex',
+        backgroundColor: (theme) => theme.palette.background.default,
+        width: `calc(100% - ${sidebarWidth + 1}px)`,
+      }}
+    >
+      <Toolbar sx={{ flexGrow: 1 }}>
+        <IconButton size={'medium'} onClick={homeHandler} sx={{ mr: 1, color: 'text.primary' }}>
+          <HomeOutlined fontSize={'large'} />
+        </IconButton>
 
         <Box sx={{ flexGrow: 1 }} />
 
@@ -39,8 +37,8 @@ export default function NavigatorNavbar({ onOpenSidebar }: NavigatorNavbarProps)
           <LanguageMenu />
           <AccountMenu />
         </Stack>
-      </ToolbarStyle>
+      </Toolbar>
       <Divider />
-    </RootStyle>
+    </AppBar>
   );
 }

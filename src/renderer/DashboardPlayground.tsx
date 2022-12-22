@@ -33,7 +33,7 @@ function DashboardPlayground(value: any) {
       <h1>Dashboard Playground</h1>
       <div>
         <p>{metric}</p>
-        <p>
+        <div>
           <button type="button" onClick={doSubscribe}>
             Subscribe
           </button>
@@ -41,7 +41,7 @@ function DashboardPlayground(value: any) {
             Unsubscribe
           </button>
           <p>Current value: {currentValue}</p>
-        </p>
+        </div>
       </div>
     </>
   );

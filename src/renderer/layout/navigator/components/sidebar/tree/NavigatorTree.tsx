@@ -4,7 +4,7 @@ import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { Box, Button, CircularProgress, Typography } from '@mui/material';
 import NavigatorTreeNode from 'renderer/layout/navigator/components/sidebar/tree/NavigatorTreeNode';
 import { TreeItem } from 'renderer/layout/navigator/components/sidebar/tree/tree';
-import { NAVIGATOR_ITEM_HEIGHT, SIDEBAR_DRAWER_WIDTH } from 'renderer/constants/ui';
+import { NAVIGATOR_ITEM_HEIGHT } from 'renderer/constants/ui';
 import { experimentalStyled as styled } from '@mui/material/styles';
 import { FormattedMessage } from 'react-intl';
 import { useNavigatorTree } from 'renderer/contexts/NavigatorTreeContext';
@@ -19,10 +19,11 @@ const TreeStyle = styled(Tree<TreeItem>)(({ theme }) => ({
 }));
 
 type NavigatorTreeProps = {
+  width: number;
   search?: string;
 };
 
-export default function NavigatorTree({ search }: NavigatorTreeProps) {
+export default function NavigatorTree({ width, search }: NavigatorTreeProps) {
   const { data, isLoading, isEmpty, hasData, action, getItem } = useNavigatorTree();
 
   const treeRef = useRef<TreeApi<TreeItem> | null>(null);
@@ -77,7 +78,7 @@ export default function NavigatorTree({ search }: NavigatorTreeProps) {
     setToggleFlag((prevToggleFlag) => prevToggleFlag + 1);
   }, [action]);
 
-  const height = useMemo<number>(() => getOpenItemsCount() * NAVIGATOR_ITEM_HEIGHT + 12, [toggleFlag]);
+  const height = useMemo<number>(() => getOpenItemsCount() * NAVIGATOR_ITEM_HEIGHT + 12, [toggleFlag, data]);
 
   const createInstanceHandler = useCallback((): void => {}, []);
 
@@ -240,7 +241,7 @@ export default function NavigatorTree({ search }: NavigatorTreeProps) {
           idAccessor={'id'}
           data={data}
           openByDefault={false}
-          width={SIDEBAR_DRAWER_WIDTH - 1}
+          width={width - 1}
           height={height}
           indent={12}
           rowHeight={NAVIGATOR_ITEM_HEIGHT}
