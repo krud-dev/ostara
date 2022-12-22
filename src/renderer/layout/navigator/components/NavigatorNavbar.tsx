@@ -4,6 +4,7 @@ import LanguageMenu from 'renderer/layout/navigator/components/navbar/LanguageMe
 import { NAVBAR_HEIGHT, SIDEBAR_DRAWER_WIDTH } from 'renderer/constants/ui';
 import MHidden from 'renderer/components/layout/MHidden';
 import { MenuOutlined } from '@mui/icons-material';
+import AccountMenu from 'renderer/layout/navigator/components/navbar/AccountMenu';
 
 const RootStyle = styled(AppBar)(({ theme }) => ({
   minHeight: NAVBAR_HEIGHT,
@@ -17,8 +18,6 @@ const RootStyle = styled(AppBar)(({ theme }) => ({
 const ToolbarStyle = styled(Toolbar)(({ theme }) => ({
   flexGrow: 1,
 }));
-
-// ----------------------------------------------------------------------
 
 type NavigatorNavbarProps = {
   onOpenSidebar: VoidFunction;
@@ -38,6 +37,7 @@ export default function NavigatorNavbar({ onOpenSidebar }: NavigatorNavbarProps)
 
         <Stack direction="row" spacing={{ xs: 0.5, sm: 1.5 }}>
           <LanguageMenu />
+          <AccountMenu />
         </Stack>
       </ToolbarStyle>
       <Divider />

@@ -1,12 +1,13 @@
 import { useCallback, useRef, useState } from 'react';
 import { Box, IconButton, ListItemIcon, ListItemText, MenuItem } from '@mui/material';
-import locales from 'renderer/lang';
-import { map } from 'lodash';
 import { useUi } from 'renderer/contexts/UiContext';
 import MenuPopover from 'renderer/components/menu/MenuPopover';
+import { DarkModeOutlined, LightModeOutlined } from '@mui/icons-material';
+import { FormattedMessage } from 'react-intl';
+import MAvatar from 'renderer/components/menu/MAvatar';
 
-export default function LanguageMenu() {
-  const { localeInfo, setLocale } = useUi();
+export default function AccountMenu() {
+  const { darkMode, toggleDarkMode } = useUi();
 
   const anchorRef = useRef<HTMLButtonElement | null>(null);
   const [open, setOpen] = useState<boolean>(false);
@@ -19,13 +20,10 @@ export default function LanguageMenu() {
     setOpen(false);
   }, [setOpen]);
 
-  const changeLocaleHandler = useCallback(
-    (locale: string): void => {
-      setLocale(locale);
-      closeHandler();
-    },
-    [setLocale, closeHandler]
-  );
+  const toggleDarkModeHandler = useCallback((): void => {
+    toggleDarkMode();
+    closeHandler();
+  }, [toggleDarkMode, closeHandler]);
 
   return (
     <>
@@ -47,25 +45,21 @@ export default function LanguageMenu() {
             ...(open && { bgcolor: 'action.selected' }),
           }}
         >
-          <Box
-            component="img"
-            src={localeInfo.icon}
-            alt={localeInfo.name}
-            sx={{ width: '28px', borderRadius: '3px' }}
-          />
+          <MAvatar variant={'circular'} color={'primary'}>
+            {'SB'}
+          </MAvatar>
         </IconButton>
       </Box>
 
       <MenuPopover open={open} onClose={closeHandler} direction={'right'} anchorEl={anchorRef.current}>
-        {map(locales, (l) => (
-          <MenuItem key={l.id} selected={l.id === localeInfo.id} onClick={() => changeLocaleHandler(l.id)}>
-            <ListItemIcon>
-              <Box component="img" alt={l.name} src={l.icon} sx={{ width: '28px', borderRadius: '3px' }} />
-            </ListItemIcon>
-
-            <ListItemText>{l.name}</ListItemText>
-          </MenuItem>
-        ))}
+        <MenuItem onClick={toggleDarkModeHandler}>
+          <ListItemIcon>
+            {darkMode ? <LightModeOutlined fontSize="small" /> : <DarkModeOutlined fontSize="small" />}
+          </ListItemIcon>
+          <ListItemText>
+            <FormattedMessage id={darkMode ? 'lightMode' : 'darkMode'} />
+          </ListItemText>
+        </MenuItem>
       </MenuPopover>
     </>
   );

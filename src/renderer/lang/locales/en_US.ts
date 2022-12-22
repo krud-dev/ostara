@@ -1,4 +1,6 @@
 export default {
+  lightMode: 'Light Mode',
+  darkMode: 'Dark Mode',
   createFolder: 'Create Folder',
   createApplication: 'Create Application',
   createInstance: 'Create Instance',

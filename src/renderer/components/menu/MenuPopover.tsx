@@ -1,15 +1,19 @@
 import { Popover, PopoverProps } from '@mui/material';
 
-export default function MenuPopover({ children, sx, ...other }: PopoverProps) {
+type MenuPopoverProps = {
+  direction?: 'left' | 'right';
+} & PopoverProps;
+
+export default function MenuPopover({ children, direction = 'left', sx, ...other }: MenuPopoverProps) {
   return (
     <Popover
       anchorOrigin={{
         vertical: 'bottom',
-        horizontal: 'left',
+        horizontal: direction,
       }}
       transformOrigin={{
         vertical: 'top',
-        horizontal: 'left',
+        horizontal: direction,
       }}
       PaperProps={{
         sx: {
