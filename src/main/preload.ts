@@ -2,6 +2,7 @@ import { contextBridge, ipcRenderer, IpcRendererEvent } from 'electron';
 import { actuatorBridge } from '../infra/actuator/renderer';
 import { configurationServiceBridge, configurationStoreBridge } from '../infra/configuration/renderer';
 import { metricsServiceBridge } from '../infra/metrics/renderer';
+import { utilsBridge } from '../infra/rendererUtils/renderer';
 
 export type Channels = 'ipc-example';
 contextBridge.exposeInMainWorld('electron', {
@@ -26,3 +27,4 @@ contextBridge.exposeInMainWorld('electron', {
 contextBridge.exposeInMainWorld('actuator', actuatorBridge);
 contextBridge.exposeInMainWorld('configuration', configurationServiceBridge);
 contextBridge.exposeInMainWorld('metrics', metricsServiceBridge);
+contextBridge.exposeInMainWorld('utils', utilsBridge);

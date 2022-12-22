@@ -18,6 +18,11 @@ export type ApplicationMetricValueDTO = {
   timestamp: Date;
 };
 
+export type MetricSubscription = {
+  metricName: string;
+  instanceId: string;
+};
+
 class MetricsService {
   async getMetrics(instanceId: string, metricName: string, from: Date, to: Date): Promise<ApplicationMetricDTO> {
     const valueRepository = dataSource.getRepository(ApplicationMetricValue);
