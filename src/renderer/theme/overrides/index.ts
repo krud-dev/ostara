@@ -1,5 +1,6 @@
 import { merge } from 'lodash';
 import { Theme } from '@mui/material/styles';
+import AppBar from './AppBar';
 import Fab from './Fab';
 import Card from './Card';
 import Chip from './Chip';
@@ -48,6 +49,7 @@ import LoadingButton from './LoadingButton';
 
 export default function ComponentsOverrides(theme: Theme) {
   return merge(
+    AppBar(theme),
     Fab(theme),
     Tabs(theme),
     Chip(theme),

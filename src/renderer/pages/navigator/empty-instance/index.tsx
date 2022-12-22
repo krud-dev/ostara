@@ -6,7 +6,7 @@ import Page from 'renderer/components/layout/Page';
 const EmptyInstance: FunctionComponent = () => {
   return (
     <Page>
-      <Container>
+      <Container disableGutters>
         <Sample />
       </Container>
     </Page>

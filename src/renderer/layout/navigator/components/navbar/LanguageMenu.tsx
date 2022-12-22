@@ -33,8 +33,8 @@ export default function LanguageMenu() {
           onClick={() => setOpen(true)}
           sx={{
             padding: 0,
-            width: 44,
-            height: 44,
+            width: 48,
+            height: 48,
             ...(open && { bgcolor: 'action.selected' }),
           }}
         >

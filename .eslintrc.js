@@ -13,7 +13,7 @@ module.exports = {
     'promise/catch-or-return': 'off',
     '@typescript-eslint/ban-types': 'off',
     '@typescript-eslint/no-empty-interface': 'off',
-    '@typescript-eslint/no-use-before-defined': 'off',
+    '@typescript-eslint/no-use-before-define': 'off',
     '@typescript-eslint/return-await': 'off',
     '@typescript-eslint/no-non-null-assertion': 'off',
     'no-empty-pattern': 'off',

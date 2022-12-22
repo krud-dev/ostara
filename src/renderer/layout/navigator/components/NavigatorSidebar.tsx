@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { useLocation } from 'react-router-dom';
 import { experimentalStyled as styled } from '@mui/material/styles';
 import { Box, Divider, Drawer, Stack } from '@mui/material';
-import { SIDEBAR_DRAWER_WIDTH } from 'renderer/constants/ui';
+import { NAVBAR_HEIGHT, SIDEBAR_DRAWER_WIDTH } from 'renderer/constants/ui';
 import MHidden from 'renderer/components/layout/MHidden';
 import PerfectScrollbar from 'react-perfect-scrollbar';
 import NavigatorTree from 'renderer/layout/navigator/components/sidebar/tree/NavigatorTree';
@@ -38,17 +38,19 @@ export default function NavigatorSidebar({ isOpenSidebar, onCloseSidebar }: Navi
   const renderContent = (
     <NavigatorTreeProvider>
       <Box sx={{ height: '100%', display: 'flex', flexDirection: 'column' }}>
-        <Stack direction={'row'} spacing={0.5} alignItems={'center'} sx={{ px: 0.5, py: 1 }}>
-          <Box>
-            <CreateItemMenu />
-          </Box>
-          <SearchTextField size={'small'} icon={FilterListOutlined} onChangeValue={setSearch} />
-          <Box>
-            <SearchItemMenu />
-          </Box>
-        </Stack>
+        <Box sx={{ height: NAVBAR_HEIGHT, display: 'flex', flexDirection: 'column' }}>
+          <Stack direction={'row'} spacing={0.5} alignItems={'center'} sx={{ flexGrow: 1, px: 0.5 }}>
+            <Box>
+              <CreateItemMenu />
+            </Box>
+            <SearchTextField size={'small'} icon={FilterListOutlined} onChangeValue={setSearch} />
+            <Box>
+              <SearchItemMenu />
+            </Box>
+          </Stack>
 
-        <Divider />
+          <Divider />
+        </Box>
 
         <Box sx={{ flexGrow: 1, overflow: 'hidden' }}>
           <PerfectScrollbar options={{ wheelPropagation: false }}>
