@@ -18,4 +18,8 @@ export default {
   requiredField: 'Required field',
   setColor: 'Set Color',
   chooseColor: 'Choose Color',
+  testConnection: 'Test Connection',
+  testConnectionToInstanceHealthy: 'Connection to instance is healthy',
+  testConnectionToInstanceFailed: 'Connection to instance failed',
+  testConnectionToInstanceUnhealthy: 'Connection to instance is unhealthy',
 };

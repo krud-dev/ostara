@@ -8,6 +8,8 @@ import { Application, Instance } from 'infra/configuration/model/configuration';
 import { LoadingButton } from '@mui/lab';
 import { useCreateApplication } from 'renderer/apis/configuration/application/createApplication';
 import { useCreateInstance } from 'renderer/apis/configuration/instance/createInstance';
+import { useGetActuatorUrlHealth } from 'renderer/apis/actuator/instance/getActuatorUrlHealth';
+import { useSnackbar } from 'notistack';
 
 export type CreateInstanceDialogProps = {
   parentApplicationId?: string;
@@ -25,8 +27,9 @@ const CreateInstanceDialog: FunctionComponent<CreateInstanceDialogProps & NiceMo
   ({ parentApplicationId, parentFolderId, order, onCreated }) => {
     const modal = useModal();
     const intl = useIntl();
+    const { enqueueSnackbar } = useSnackbar();
 
-    const { control, handleSubmit } = useForm<FormValues>();
+    const { control, handleSubmit, watch } = useForm<FormValues>();
 
     const createApplicationState = useCreateApplication();
     const createInstanceState = useCreateInstance();
@@ -75,6 +78,22 @@ const CreateInstanceDialog: FunctionComponent<CreateInstanceDialogProps & NiceMo
       modal.resolve(undefined);
       modal.hide();
     }, [modal]);
+
+    const getActuatorHealthState = useGetActuatorUrlHealth();
+    const actuatorUrl = watch('actuatorUrl');
+
+    const testConnectionHandler = useCallback(async (): Promise<void> => {
+      try {
+        const result = await getActuatorHealthState.mutateAsync({ actuatorUrl });
+        if (result.status === 'UP') {
+          enqueueSnackbar(<FormattedMessage id="testConnectionToInstanceHealthy" />, { variant: 'success' });
+        } else {
+          enqueueSnackbar(<FormattedMessage id="testConnectionToInstanceUnhealthy" />, { variant: 'warning' });
+        }
+      } catch (e) {
+        enqueueSnackbar(<FormattedMessage id="testConnectionToInstanceFailed" />, { variant: 'error' });
+      }
+    }, [getActuatorHealthState, actuatorUrl]);
 
     return (
       <Dialog
@@ -144,6 +163,15 @@ const CreateInstanceDialog: FunctionComponent<CreateInstanceDialogProps & NiceMo
           </Box>
         </DialogContent>
         <DialogActions>
+          <LoadingButton
+            variant="text"
+            color="primary"
+            loading={getActuatorHealthState.isLoading}
+            onClick={testConnectionHandler}
+          >
+            <FormattedMessage id={'testConnection'} />
+          </LoadingButton>
+          <Box sx={{ flexGrow: 1 }} />
           <Button variant="outlined" color="primary" onClick={cancelHandler}>
             <FormattedMessage id={'cancel'} />
           </Button>
