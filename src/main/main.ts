@@ -17,6 +17,7 @@ import MenuBuilder from './menu';
 import { resolveHtmlPath } from './util';
 import '../infra';
 import { dataSource } from '../infra/dataSource';
+import { taskService } from '../infra/tasks/taskService';
 
 class AppUpdater {
   constructor() {
@@ -72,6 +73,7 @@ const createWindow = async () => {
   };
 
   await dataSource.initialize();
+  await taskService.initialize();
 
   mainWindow = new BrowserWindow({
     show: false,
