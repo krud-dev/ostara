@@ -7,7 +7,7 @@ export class ApplicationMetric {
   id!: number;
 
   @Column()
-  metric!: string;
+  name!: string;
 
   @Column({ nullable: true })
   description?: string;

@@ -13,7 +13,7 @@ export class ApplicationMetricValue {
   instanceId!: string;
 
   @PrimaryColumn()
-  applicationMetricId!: string;
+  applicationMetricId!: number;
 
   @ManyToOne('ApplicationMetric', 'applicationMetricValues')
   applicationMetric!: ApplicationMetric;

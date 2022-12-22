@@ -6,7 +6,7 @@ import { metricsService } from '../metrics/metricsService';
 taskService.declareTask({
   name: 'Query Instances Metrics',
   description: 'Query the actuator API for instance metrics',
-  defaultCron: '*/10 * * * * *',
+  defaultCron: '* * * * *',
   function: async () => {
     const instances = configurationService.getInstances();
     await Promise.all(
