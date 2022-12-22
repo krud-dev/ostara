@@ -15,6 +15,6 @@ export class ApplicationMetricValue {
   @PrimaryColumn()
   applicationMetricId!: number;
 
-  @ManyToOne('ApplicationMetric', 'applicationMetricValues')
+  @ManyToOne('ApplicationMetric', 'applicationMetricValues', { eager: true })
   applicationMetric!: ApplicationMetric;
 }
