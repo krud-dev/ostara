@@ -1,5 +1,5 @@
 import { CreateHandler, DeleteHandler, MoveHandler, RenameHandler, Tree, TreeApi } from 'react-arborist';
-import { isApplication, isFolder, isInstance, Item } from 'infra/configuration/model/configuration';
+import { isApplication, isFolder, isInstance, Item, ItemType } from 'infra/configuration/model/configuration';
 import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { Box, Button, CircularProgress, Typography } from '@mui/material';
 import NavigatorTreeNode from 'renderer/layout/navigator/components/sidebar/tree/NavigatorTreeNode';
@@ -11,6 +11,7 @@ import { useNavigatorTree } from 'renderer/contexts/NavigatorTreeContext';
 import { useUpdateItem } from 'renderer/apis/configuration/item/updateItem';
 import { useDeleteItem } from 'renderer/apis/configuration/item/deleteItem';
 import { showDeleteConfirmationDialog } from 'renderer/utils/dialogUtils';
+import { useMoveItem } from 'renderer/apis/configuration/item/moveItem';
 
 const TreeStyle = styled(Tree<TreeItem>)(({ theme }) => ({
   '& [role="treeitem"]': {
@@ -98,6 +99,18 @@ export default function NavigatorTree({ width, search }: NavigatorTreeProps) {
     [updateItemState]
   );
 
+  const moveItemState = useMoveItem();
+
+  const moveItem = useCallback(
+    async (id: string, type: ItemType, parentId: string, order: number): Promise<Item | undefined> => {
+      try {
+        return await moveItemState.mutateAsync({ id, type, parentId, order });
+      } catch (e) {}
+      return undefined;
+    },
+    [moveItemState]
+  );
+
   const deleteItemState = useDeleteItem();
 
   const deleteItem = useCallback(
@@ -167,19 +180,7 @@ export default function NavigatorTree({ width, search }: NavigatorTreeProps) {
           newOrder = nodeIndex + 1;
         }
 
-        if (isInstance(item)) {
-          updateItem({
-            ...item,
-            order: newOrder,
-            parentApplicationId: parentId!,
-          });
-        } else {
-          updateItem({
-            ...item,
-            order: newOrder,
-            parentFolderId: parentId || undefined,
-          });
-        }
+        moveItem(item.id, item.type, parentId!, newOrder);
       });
     },
     [data]

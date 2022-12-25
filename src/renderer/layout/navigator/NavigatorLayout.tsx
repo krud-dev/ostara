@@ -31,7 +31,7 @@ export default function NavigatorLayout({}: NavigatorLayoutProps) {
     <RootStyle>
       <NavigatorNavbar sidebarWidth={sidebarWidth} />
       <Allotment defaultSizes={defaultSizes} onChange={(sizes) => setSidebarWidth(sizes[0])}>
-        <Allotment.Pane minSize={200} maxSize={500}>
+        <Allotment.Pane minSize={200} maxSize={500} snap>
           <NavigatorSidebar width={sidebarWidth} />
         </Allotment.Pane>
         <Allotment.Pane>

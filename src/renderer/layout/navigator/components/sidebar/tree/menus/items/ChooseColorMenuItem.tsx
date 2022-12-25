@@ -2,10 +2,10 @@ import { useCallback, useMemo, useState } from 'react';
 import { Box, MenuItem, Stack } from '@mui/material';
 import { NodeApi } from 'react-arborist';
 import { TreeItem } from 'renderer/layout/navigator/components/sidebar/tree/tree';
-import { useUpdateItem } from 'renderer/apis/configuration/item/updateItem';
 import { experimentalStyled as styled, useTheme } from '@mui/material/styles';
 import { amber, blue, green, indigo, orange, pink, purple, red, yellow } from '@mui/material/colors';
 import { CheckOutlined } from '@mui/icons-material';
+import { useSetItemColor } from 'renderer/apis/configuration/item/setItemColor';
 
 const MenuItemStyle = styled(MenuItem)(({ theme }) => ({
   cursor: 'default',
@@ -24,16 +24,16 @@ export default function ChooseColorMenuItem({ node, onClose }: ChooseColorMenuIt
 
   const [selectedColor, setSelectedColor] = useState<string | undefined>(node.data.color);
 
-  const updateItemState = useUpdateItem();
+  const setItemColorState = useSetItemColor();
 
-  const updateColorHandler = useCallback(
+  const setColorHandler = useCallback(
     async (newColor: string | undefined): Promise<void> => {
       setSelectedColor(newColor);
       try {
-        await updateItemState.mutateAsync({ item: { ...node.data, color: newColor } });
+        await setItemColorState.mutateAsync({ id: node.data.id, color: newColor });
       } catch (e) {}
     },
-    [onClose, node.data, updateItemState]
+    [onClose, node.data, setItemColorState]
   );
 
   const defaultColor = useMemo<string>(() => theme.palette.text.secondary, []);
@@ -65,7 +65,7 @@ export default function ChooseColorMenuItem({ node, onClose }: ChooseColorMenuIt
               fillColor={color.value || 'transparent'}
               value={color.value}
               selected={selected}
-              onClick={updateColorHandler}
+              onClick={setColorHandler}
               key={color.color}
             />
           );

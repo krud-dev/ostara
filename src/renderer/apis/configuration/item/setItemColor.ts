@@ -2,19 +2,19 @@ import { BaseMutationOptions, BaseUseMutationResult, useBaseMutation } from 'ren
 
 type Variables = {
   id: string;
-  order: number;
+  color?: string;
 };
 
 type Data = void;
 
-export const reorderItem = async (variables: Variables): Promise<Data> => {
-  return await window.configuration.reorderItem(variables.id, variables.order);
+export const setItemColor = async (variables: Variables): Promise<Data> => {
+  return await window.configuration.setColor(variables.id, variables.color);
 };
 
-export const useReorderItem = (
+export const useSetItemColor = (
   options?: BaseMutationOptions<Data, Variables>
 ): BaseUseMutationResult<Data, Variables> =>
-  useBaseMutation<Data, Variables>(reorderItem, {
+  useBaseMutation<Data, Variables>(setItemColor, {
     ...options,
     invalidateQueriesKeyFn: (data, variables) => ['configuration'],
   });
