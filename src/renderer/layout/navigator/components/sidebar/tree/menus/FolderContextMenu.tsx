@@ -7,6 +7,7 @@ import AddInstanceMenuItem from 'renderer/layout/navigator/components/sidebar/tr
 import AddApplicationMenuItem from 'renderer/layout/navigator/components/sidebar/tree/menus/items/AddApplicationMenuItem';
 import AddFolderMenuItem from 'renderer/layout/navigator/components/sidebar/tree/menus/items/AddFolderMenuItem';
 import ChooseColorMenuItem from 'renderer/layout/navigator/components/sidebar/tree/menus/items/ChooseColorMenuItem';
+import UpdateMenuItem from 'renderer/layout/navigator/components/sidebar/tree/menus/items/UpdateMenuItem';
 
 export default function FolderContextMenu({ node, open, anchorEl, onClose, onCreated }: TreeItemContextMenuProps) {
   return (
@@ -17,6 +18,7 @@ export default function FolderContextMenu({ node, open, anchorEl, onClose, onCre
       <Divider />
       <ChooseColorMenuItem node={node} onClose={onClose} />
       <Divider />
+      <UpdateMenuItem node={node} onClose={onClose} />
       <RenameMenuItem node={node} onClose={onClose} />
       <DeleteMenuItem node={node} onClose={onClose} />
     </ContextMenuPopper>

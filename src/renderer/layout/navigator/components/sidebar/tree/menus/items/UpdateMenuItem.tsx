@@ -1,29 +1,30 @@
 import { useCallback } from 'react';
 import { ListItemIcon, ListItemText, MenuItem } from '@mui/material';
-import { EditOutlined, TextFieldsOutlined } from '@mui/icons-material';
+import { EditOutlined } from '@mui/icons-material';
 import { FormattedMessage } from 'react-intl';
 import { NodeApi } from 'react-arborist';
 import { TreeItem } from 'renderer/layout/navigator/components/sidebar/tree/tree';
+import { updateItem } from 'renderer/utils/itemUtils';
 
-type RenameMenuItemProps = {
+type UpdateMenuItemProps = {
   node: NodeApi<TreeItem>;
   onClose?: () => void;
 };
 
-export default function RenameMenuItem({ node, onClose }: RenameMenuItemProps) {
-  const renameHandler = useCallback(async (): Promise<void> => {
+export default function UpdateMenuItem({ node, onClose }: UpdateMenuItemProps) {
+  const updateHandler = useCallback(async (): Promise<void> => {
     onClose?.();
 
-    await node.edit();
+    await updateItem(node.data);
   }, [node, onClose]);
 
   return (
-    <MenuItem onClick={renameHandler}>
+    <MenuItem onClick={updateHandler}>
       <ListItemIcon>
-        <TextFieldsOutlined fontSize="small" />
+        <EditOutlined fontSize="small" />
       </ListItemIcon>
       <ListItemText>
-        <FormattedMessage id={'rename'} />
+        <FormattedMessage id={'update'} />
       </ListItemText>
     </MenuItem>
   );

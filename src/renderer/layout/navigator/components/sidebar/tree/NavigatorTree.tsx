@@ -13,7 +13,7 @@ import { useDeleteItem } from 'renderer/apis/configuration/item/deleteItem';
 import { showDeleteConfirmationDialog } from 'renderer/utils/dialogUtils';
 import { useMoveItem } from 'renderer/apis/configuration/item/moveItem';
 import NiceModal from '@ebay/nice-modal-react';
-import CreateInstanceDialog from 'renderer/layout/navigator/components/sidebar/dialogs/CreateInstanceDialog';
+import CreateInstanceDialog from 'renderer/components/item/dialogs/create/CreateInstanceDialog';
 
 const TreeStyle = styled(Tree<TreeItem>)(({ theme }) => ({
   '& [role="treeitem"]': {

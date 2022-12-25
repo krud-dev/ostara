@@ -7,7 +7,7 @@ import { TreeItem } from 'renderer/layout/navigator/components/sidebar/tree/tree
 import { Folder, isFolder, Item } from 'infra/configuration/model/configuration';
 import { getItemTypeIcon } from 'renderer/utils/itemUtils';
 import NiceModal from '@ebay/nice-modal-react';
-import CreateFolderDialog from 'renderer/layout/navigator/components/sidebar/dialogs/CreateFolderDialog';
+import CreateFolderDialog from 'renderer/components/item/dialogs/create/CreateFolderDialog';
 import { getNewItemOrder } from 'renderer/utils/treeUtils';
 
 type AddFolderMenuItemProps = {

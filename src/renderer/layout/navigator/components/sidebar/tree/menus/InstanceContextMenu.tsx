@@ -4,12 +4,14 @@ import DeleteMenuItem from 'renderer/layout/navigator/components/sidebar/tree/me
 import RenameMenuItem from 'renderer/layout/navigator/components/sidebar/tree/menus/items/RenameMenuItem';
 import ChooseColorMenuItem from 'renderer/layout/navigator/components/sidebar/tree/menus/items/ChooseColorMenuItem';
 import { Divider } from '@mui/material';
+import UpdateMenuItem from 'renderer/layout/navigator/components/sidebar/tree/menus/items/UpdateMenuItem';
 
 export default function InstanceContextMenu({ node, open, anchorEl, onClose, onCreated }: TreeItemContextMenuProps) {
   return (
     <ContextMenuPopper open={open} onClose={onClose} anchorEl={anchorEl}>
       <ChooseColorMenuItem node={node} onClose={onClose} />
       <Divider />
+      <UpdateMenuItem node={node} onClose={onClose} />
       <RenameMenuItem node={node} onClose={onClose} />
       <DeleteMenuItem node={node} onClose={onClose} />
     </ContextMenuPopper>

@@ -72,10 +72,11 @@ export default function NavigatorTreeNode({ style, node, tree, dragHandle, previ
   const [contextMenuAnchor, setContextMenuAnchor] = useState<Element | undefined>(undefined);
   const [contextMenuOpen, setContextMenuOpen] = useState<boolean>(false);
 
-  const openContextMenu = useCallback((event?: React.MouseEvent<Element>): void => {
+  const openContextMenu = useCallback((event?: React.MouseEvent): void => {
     if (event) {
       event.preventDefault();
-      node.select();
+
+      node.focus();
 
       const virtualElement: any = {
         getBoundingClientRect: () => ({
@@ -98,7 +99,8 @@ export default function NavigatorTreeNode({ style, node, tree, dragHandle, previ
   }, []);
 
   const itemClickHandler = useCallback(
-    (event: React.MouseEvent): void => {
+    (event?: React.MouseEvent): void => {
+      node.select();
       navigate(getItemUrl(node.data));
     },
     [node]
@@ -134,11 +136,14 @@ export default function NavigatorTreeNode({ style, node, tree, dragHandle, previ
   );
   const showToggle = useMemo<boolean>(() => isFolder(node.data) || isApplication(node.data), [node.data]);
   const color = useMemo<string>(() => node.data.color || theme.palette.text.secondary, [node.data, theme.palette]);
-  const isFocused = useMemo<boolean>(
-    () => node.isFocused && (!node.isSelected || !node.isOnlySelection),
-    [node.isFocused, node.isSelected, node.isOnlySelection]
+  const isSelected = useMemo<boolean>(
+    () => matchPath({ path: getItemUrl(node.data), end: false }, pathname) !== null,
+    [node.data, pathname]
   );
-  const isSelected = useMemo<boolean>(() => node.isSelected, [node.isSelected]);
+  const isFocused = useMemo<boolean>(
+    () => node.isFocused && (!isSelected || !node.isOnlySelection),
+    [isSelected, node.isFocused, node.isOnlySelection]
+  );
 
   const focusRootStyle = useMemo<SxProps<Theme>>(
     () => ({
