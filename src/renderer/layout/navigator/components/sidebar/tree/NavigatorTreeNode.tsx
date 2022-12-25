@@ -1,7 +1,7 @@
 import { NodeRendererProps } from 'react-arborist';
 import { IconButton, ListItem, ListItemIcon, ListItemText, TextField } from '@mui/material';
 import { alpha, experimentalStyled as styled, Theme, useTheme } from '@mui/material/styles';
-import React, { useCallback, useMemo, useRef, useState } from 'react';
+import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { TreeItem } from 'renderer/layout/navigator/components/sidebar/tree/tree';
 import typography from 'renderer/theme/config/typography';
 import { KeyboardArrowDown, KeyboardArrowRight, MoreVert, SvgIconComponent } from '@mui/icons-material';
@@ -12,7 +12,7 @@ import { isApplication, isFolder, isInstance, Item } from 'infra/configuration/m
 import InstanceContextMenu from 'renderer/layout/navigator/components/sidebar/tree/menus/InstanceContextMenu';
 import ApplicationContextMenu from 'renderer/layout/navigator/components/sidebar/tree/menus/ApplicationContextMenu';
 import { SxProps } from '@mui/system';
-import { useNavigate } from 'react-router-dom';
+import { matchPath, useLocation, useNavigate } from 'react-router-dom';
 
 type NavigatorTreeNodeProps = NodeRendererProps<TreeItem>;
 
@@ -20,7 +20,6 @@ const ListItemStyle = styled(ListItem<'div'>)(({ theme }) => ({
   ...typography.body2,
   height: NAVIGATOR_ITEM_HEIGHT,
   position: 'relative',
-  textTransform: 'capitalize',
   '&:before': {
     top: 0,
     left: 0,
@@ -29,8 +28,8 @@ const ListItemStyle = styled(ListItem<'div'>)(({ theme }) => ({
     content: "''",
     display: 'none',
     position: 'absolute',
-    borderTopLeftRadius: 4,
-    borderBottomLeftRadius: 4,
+    borderTopRightRadius: 4,
+    borderBottomRightRadius: 4,
     backgroundColor: theme.palette.primary.main,
   },
   '& .menu-toggle': {
@@ -56,6 +55,18 @@ const ListItemIconStyle = styled(ListItemIcon)(({ theme }) => ({
 export default function NavigatorTreeNode({ style, node, tree, dragHandle, preview }: NavigatorTreeNodeProps) {
   const theme = useTheme();
   const navigate = useNavigate();
+  const { pathname } = useLocation();
+
+  useEffect(() => {
+    const itemPath = getItemUrl(node.data);
+    const isActive = matchPath({ path: itemPath, end: false }, pathname) !== null;
+    if (isActive && !isSelected) {
+      node.select();
+      node.openParents();
+    } else if (!isActive && isSelected) {
+      node.deselect();
+    }
+  }, [pathname]);
 
   const contextMenuAnchorRef = useRef<HTMLButtonElement | null>(null);
   const [contextMenuAnchor, setContextMenuAnchor] = useState<Element | undefined>(undefined);
@@ -123,6 +134,11 @@ export default function NavigatorTreeNode({ style, node, tree, dragHandle, previ
   );
   const showToggle = useMemo<boolean>(() => isFolder(node.data) || isApplication(node.data), [node.data]);
   const color = useMemo<string>(() => node.data.color || theme.palette.text.secondary, [node.data, theme.palette]);
+  const isFocused = useMemo<boolean>(
+    () => node.isFocused && (!node.isSelected || !node.isOnlySelection),
+    [node.isFocused, node.isSelected, node.isOnlySelection]
+  );
+  const isSelected = useMemo<boolean>(() => node.isSelected, [node.isSelected]);
 
   const focusRootStyle = useMemo<SxProps<Theme>>(
     () => ({
@@ -142,10 +158,10 @@ export default function NavigatorTreeNode({ style, node, tree, dragHandle, previ
 
   const stateStyle = useMemo<SxProps<Theme>>(
     () => ({
-      ...(node.isFocused && (!node.isSelected || !node.isOnlySelection) && focusRootStyle),
-      ...(node.isSelected && activeRootStyle),
+      ...(isFocused && focusRootStyle),
+      ...(isSelected && activeRootStyle),
     }),
-    [node, focusRootStyle, activeRootStyle]
+    [isFocused, isSelected, focusRootStyle, activeRootStyle]
   );
 
   return (
@@ -181,8 +197,11 @@ export default function NavigatorTreeNode({ style, node, tree, dragHandle, previ
       <ListItemStyle
         ref={dragHandle}
         component="div"
+        // @ts-ignore
+        button
         disableGutters
         disablePadding
+        selected={isSelected}
         sx={stateStyle}
         style={style}
         onClick={itemClickHandler}

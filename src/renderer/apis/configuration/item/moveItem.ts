@@ -4,7 +4,7 @@ import { Item } from 'infra/configuration/model/configuration';
 type Variables = {
   id: string;
   type: string;
-  parentId: string;
+  parentId: string | undefined;
   order: number;
 };
 
@@ -17,9 +17,13 @@ export const moveItem = async (variables: Variables): Promise<Item> => {
     case 'application':
       return await window.configuration.moveApplication(variables.id, variables.parentId, variables.order);
     case 'instance':
+      if (!variables.parentId) {
+        throw new Error('Instance must have a parent');
+      }
       return await window.configuration.moveInstance(variables.id, variables.parentId, variables.order);
+    default:
+      throw new Error('Unknown item type');
   }
-  throw new Error('Unknown item type');
 };
 
 export const useMoveItem = (options?: BaseMutationOptions<Data, Variables>): BaseUseMutationResult<Data, Variables> =>

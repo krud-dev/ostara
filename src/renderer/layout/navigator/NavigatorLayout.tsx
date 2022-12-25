@@ -7,6 +7,7 @@ import { NAVBAR_HEIGHT, SIDEBAR_DEFAULT_WIDTH } from 'renderer/constants/ui';
 import PerfectScrollbar from 'react-perfect-scrollbar';
 import { Outlet } from 'react-router-dom';
 import useConfigurationStoreState from 'renderer/hooks/useConfigurationStoreState';
+import { NavigatorTreeProvider } from 'renderer/contexts/NavigatorTreeContext';
 
 const RootStyle = styled('div')({
   height: '100%',
@@ -28,27 +29,33 @@ export default function NavigatorLayout({}: NavigatorLayoutProps) {
   const defaultSizes = useMemo<number[]>(() => [sidebarWidth, window.innerWidth - sidebarWidth], []);
 
   return (
-    <RootStyle>
-      <NavigatorNavbar sidebarWidth={sidebarWidth} />
-      <Allotment defaultSizes={defaultSizes} proportionalLayout={false} onChange={(sizes) => setSidebarWidth(sizes[0])}>
-        <Allotment.Pane minSize={200} maxSize={500} snap>
-          <NavigatorSidebar width={sidebarWidth} />
-        </Allotment.Pane>
-        <Allotment.Pane priority={LayoutPriority.High}>
-          <MainStyle
-            sx={{
-              paddingTop: `${NAVBAR_HEIGHT}px`,
-              transition: theme.transitions.create('margin', {
-                duration: theme.transitions.duration.complex,
-              }),
-            }}
-          >
-            <PerfectScrollbar options={{ wheelPropagation: false }}>
-              <Outlet />
-            </PerfectScrollbar>
-          </MainStyle>
-        </Allotment.Pane>
-      </Allotment>
-    </RootStyle>
+    <NavigatorTreeProvider>
+      <RootStyle>
+        <NavigatorNavbar sidebarWidth={sidebarWidth} />
+        <Allotment
+          defaultSizes={defaultSizes}
+          proportionalLayout={false}
+          onChange={(sizes) => setSidebarWidth(sizes[0])}
+        >
+          <Allotment.Pane minSize={200} maxSize={500} snap>
+            <NavigatorSidebar width={sidebarWidth} />
+          </Allotment.Pane>
+          <Allotment.Pane priority={LayoutPriority.High}>
+            <MainStyle
+              sx={{
+                paddingTop: `${NAVBAR_HEIGHT}px`,
+                transition: theme.transitions.create('margin', {
+                  duration: theme.transitions.duration.complex,
+                }),
+              }}
+            >
+              <PerfectScrollbar options={{ wheelPropagation: false }}>
+                <Outlet />
+              </PerfectScrollbar>
+            </MainStyle>
+          </Allotment.Pane>
+        </Allotment>
+      </RootStyle>
+    </NavigatorTreeProvider>
   );
 }

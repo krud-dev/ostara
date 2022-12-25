@@ -57,7 +57,7 @@ const CreateInstanceDialog: FunctionComponent<CreateInstanceDialogProps & NiceMo
         }
 
         const instanceToCreate: Omit<Instance, 'id' | 'type'> = {
-          dataCollectionMode: 'on',
+          dataCollectionMode: 'inherited',
           alias: data.alias,
           actuatorUrl: data.actuatorUrl,
           parentApplicationId: instanceParentApplicationId,

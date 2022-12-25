@@ -7,7 +7,6 @@ function asUrlInfos<T extends { [key: string]: UrlInfo }>(arg: T): T {
   return arg;
 }
 
-// Also update urls in firebase-messaging-sw.js
 export const urls = asUrlInfos({
   // Error Root
   error: {
@@ -34,5 +33,41 @@ export const urls = asUrlInfos({
   instance: {
     url: '/navigator/instance/:id',
     path: 'instance/:id',
+  },
+  instanceDashboard: {
+    url: '/navigator/instance/:id/dashboard',
+    path: 'dashboard',
+  },
+  instanceMetrics: {
+    url: '/navigator/instance/:id/metrics',
+    path: 'metrics',
+  },
+  instanceQuartz: {
+    url: '/navigator/instance/:id/quartz',
+    path: 'quartz',
+  },
+  instanceEnvironment: {
+    url: '/navigator/instance/:id/environment',
+    path: 'environment',
+  },
+  instanceBeans: {
+    url: '/navigator/instance/:id/beans',
+    path: 'beans',
+  },
+  instanceLoggers: {
+    url: '/navigator/instance/:id/loggers',
+    path: 'loggers',
+  },
+  instanceCaches: {
+    url: '/navigator/instance/:id/caches',
+    path: 'caches',
+  },
+  instanceThreadDump: {
+    url: '/navigator/instance/:id/thread-dump',
+    path: 'thread-dump',
+  },
+  instanceHeapDump: {
+    url: '/navigator/instance/:id/heap-dump',
+    path: 'heap-dump',
   },
 });

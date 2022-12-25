@@ -16,6 +16,7 @@ module.exports = {
     '@typescript-eslint/no-use-before-define': 'off',
     '@typescript-eslint/return-await': 'off',
     '@typescript-eslint/no-non-null-assertion': 'off',
+    '@typescript-eslint/ban-ts-comment': 'off',
     'no-empty-pattern': 'off',
     'prefer-default-export': 'off',
     'class-methods-use-this': 'off',

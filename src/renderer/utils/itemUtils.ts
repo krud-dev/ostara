@@ -18,11 +18,11 @@ export const getItemTypeIcon = (itemType: ItemType): SvgIconComponent => {
 export const getItemUrl = (item: Item): string => {
   switch (item.type) {
     case 'folder':
-      return generatePath(urls.folder.path, { id: item.id });
+      return generatePath(urls.folder.url, { id: item.id });
     case 'application':
-      return generatePath(urls.application.path, { id: item.id });
+      return generatePath(urls.application.url, { id: item.id });
     case 'instance':
     default:
-      return generatePath(urls.instance.path, { id: item.id });
+      return generatePath(urls.instance.url, { id: item.id });
   }
 };

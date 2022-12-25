@@ -4,9 +4,10 @@ import { urls } from './urls';
 import NavigatorLayout from 'renderer/layout/navigator/NavigatorLayout';
 import Home from 'renderer/pages/navigator/home';
 import Error from 'renderer/pages/general/error';
-import InstancePage from 'renderer/pages/navigator/instance';
+import InstanceDashboard from 'renderer/pages/navigator/instance/dashboard';
 import FolderPage from 'renderer/pages/navigator/folder';
 import ApplicationPage from 'renderer/pages/navigator/application';
+import InstanceLayout from 'renderer/layout/instance/InstanceLayout';
 
 export default function Router() {
   return useRoutes([
@@ -35,7 +36,46 @@ export default function Router() {
         },
         {
           path: urls.instance.path,
-          element: <InstancePage />,
+          element: <InstanceLayout />,
+          children: [
+            { path: '', element: <Navigate to={urls.instanceDashboard.path} replace /> },
+            {
+              path: urls.instanceDashboard.path,
+              element: <InstanceDashboard />,
+            },
+            {
+              path: urls.instanceMetrics.path,
+              element: <InstanceDashboard />,
+            },
+            {
+              path: urls.instanceQuartz.path,
+              element: <InstanceDashboard />,
+            },
+            {
+              path: urls.instanceEnvironment.path,
+              element: <InstanceDashboard />,
+            },
+            {
+              path: urls.instanceBeans.path,
+              element: <InstanceDashboard />,
+            },
+            {
+              path: urls.instanceLoggers.path,
+              element: <InstanceDashboard />,
+            },
+            {
+              path: urls.instanceCaches.path,
+              element: <InstanceDashboard />,
+            },
+            {
+              path: urls.instanceThreadDump.path,
+              element: <InstanceDashboard />,
+            },
+            {
+              path: urls.instanceHeapDump.path,
+              element: <InstanceDashboard />,
+            },
+          ],
         },
         { path: '*', element: <Navigate to={urls.error.url} replace /> },
       ],

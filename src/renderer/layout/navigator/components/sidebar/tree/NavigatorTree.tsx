@@ -106,7 +106,7 @@ export default function NavigatorTree({ width, search }: NavigatorTreeProps) {
   const moveItemState = useMoveItem();
 
   const moveItem = useCallback(
-    async (id: string, type: ItemType, parentId: string, order: number): Promise<Item | undefined> => {
+    async (id: string, type: ItemType, parentId: string | undefined, order: number): Promise<Item | undefined> => {
       try {
         return await moveItemState.mutateAsync({ id, type, parentId, order });
       } catch (e) {}
@@ -127,7 +127,7 @@ export default function NavigatorTree({ width, search }: NavigatorTreeProps) {
   );
 
   const onRename: RenameHandler<TreeItem> = useCallback(
-    ({ id, name }) => {
+    ({ id, name, node }) => {
       const item = getItem(id);
       if (!item) {
         return;
@@ -184,7 +184,7 @@ export default function NavigatorTree({ width, search }: NavigatorTreeProps) {
           newOrder = nodeIndex + 1;
         }
 
-        moveItem(item.id, item.type, parentId!, newOrder);
+        moveItem(item.id, item.type, parentId || undefined, newOrder);
       });
     },
     [data]
@@ -246,7 +246,7 @@ export default function NavigatorTree({ width, search }: NavigatorTreeProps) {
           idAccessor={'id'}
           data={data}
           openByDefault={false}
-          width={width - 1}
+          width={width}
           height={height}
           indent={12}
           rowHeight={NAVIGATOR_ITEM_HEIGHT}

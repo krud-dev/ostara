@@ -8,7 +8,7 @@ import React, {
   useState,
 } from 'react';
 import { useGetConfigurationQuery } from 'renderer/apis/configuration/getConfiguration';
-import { Configuration, isInstance, Item } from 'infra/configuration/model/configuration';
+import { Configuration, Instance, isInstance, Item } from 'infra/configuration/model/configuration';
 import { TreeItem } from 'renderer/layout/navigator/components/sidebar/tree/tree';
 import { forEach } from 'lodash';
 import { useNavigate, useParams } from 'react-router-dom';
@@ -18,6 +18,7 @@ type NavigatorTreeAction = 'expandAll' | 'collapseAll';
 
 export type NavigatorTreeContextProps = {
   data: TreeItem[] | undefined;
+  selectedItem: Item | undefined;
   isLoading: boolean;
   isEmpty: boolean;
   hasData: boolean;
@@ -118,10 +119,22 @@ const NavigatorTreeProvider: FunctionComponent<NavigatorTreeProviderProps> = ({ 
     await configurationState.refetch();
   }, []);
 
+  const selectedItem = useMemo<Item | undefined>(() => {
+    if (!params.id) {
+      return undefined;
+    }
+    const item = getItem(params.id);
+    if (!item) {
+      return undefined;
+    }
+    return item;
+  }, [configurationState.data, params.id]);
+
   return (
     <NavigatorTreeContext.Provider
       value={{
         data,
+        selectedItem,
         isLoading,
         isEmpty,
         hasData,
