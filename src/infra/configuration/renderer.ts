@@ -38,9 +38,6 @@ export const configurationServiceBridge: ConfigurationServiceBridge = {
   itemExistsOrThrow(id: string): Promise<void> {
     return ipcRenderer.invoke('configurationService:itemExistsOrThrow', id);
   },
-  reorderItem(id: string, order: number): Promise<void> {
-    return ipcRenderer.invoke('configurationService:reorderItem', id, order);
-  },
   setColor(id: string, color?: string): Promise<void> {
     return ipcRenderer.invoke('configurationService:setColor', id, color);
   },

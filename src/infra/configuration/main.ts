@@ -48,10 +48,6 @@ ipcMain.handle('configurationService:itemExistsOrThrow', async (event, id) => {
   return configurationService.itemExistsOrThrow(id);
 });
 
-ipcMain.handle('configurationService:reorderItem', async (event, id, order) => {
-  return configurationService.reorderItem(id, order);
-});
-
 ipcMain.handle('configurationService:setColor', async (event, id, color) => {
   return configurationService.setColor(id, color);
 });

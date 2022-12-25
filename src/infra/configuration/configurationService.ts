@@ -38,11 +38,6 @@ class ConfigurationService {
     }
   }
 
-  reorderItem(id: string, order?: number): void {
-    this.itemExistsOrThrow(id);
-    configurationStore.set(`items.${id}.order`, order);
-  }
-
   setColor(id: string, color?: string) {
     this.itemExistsOrThrow(id);
     configurationStore.set(`items.${id}.color`, color);
