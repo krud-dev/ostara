@@ -8,7 +8,7 @@ taskService.declareTask({
   description: 'Query the actuator API for instance metrics',
   defaultCron: '* * * * *',
   function: async () => {
-    const instances = configurationService.getInstances();
+    const instances = configurationService.getInstancesForDataCollection();
     await Promise.all(
       instances.map(async (instance) => {
         log.info(`Querying metrics for instance ${instance.id}`);

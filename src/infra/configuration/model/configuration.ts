@@ -23,6 +23,7 @@ export type Instance = OrderedItem & {
   parentApplicationId: string;
   alias: string;
   actuatorUrl: string;
+  dataCollectionMode: 'inherited' | 'on' | 'off';
 };
 
 export type Application = HierarchicalItem &
@@ -32,6 +33,7 @@ export type Application = HierarchicalItem &
     alias: string;
     description?: string;
     icon?: string;
+    dataCollectionMode: 'on' | 'off';
   };
 
 export type Folder = HierarchicalItem &

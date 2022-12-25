@@ -173,6 +173,26 @@ class ConfigurationService {
     return Object.values(configurationStore.get('items')).filter(isInstance);
   }
 
+  getInstancesForDataCollection(): Instance[] {
+    return this.getInstances().filter((instance) => {
+      const { dataCollectionMode } = instance;
+      switch (dataCollectionMode) {
+        case 'inherited': {
+          const application = this.getItem(instance.parentApplicationId);
+          if (application == null || !isApplication(application)) {
+            return false;
+          }
+          return application.dataCollectionMode === 'on';
+        }
+        case 'on': {
+          return true;
+        }
+        default:
+          return false;
+      }
+    });
+  }
+
   createInstance(instance: Omit<Instance, 'id' | 'type'>): Instance {
     const id = this.generateId();
     const newInstance: Instance = {
