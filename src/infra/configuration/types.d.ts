@@ -10,6 +10,7 @@ declare global {
     getItemOrThrow: (id: string) => Promise<BaseItem>;
     itemExistsOrThrow: (id: string) => Promise<void>;
     reorderItem: (id: string, order: number) => Promise<void>;
+    setColor: (id: string, color?: string) => Promise<void>;
     /**
      * Folder operations
      */

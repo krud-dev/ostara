@@ -52,6 +52,10 @@ ipcMain.handle('configurationService:reorderItem', async (event, id, order) => {
   return configurationService.reorderItem(id, order);
 });
 
+ipcMain.handle('configurationService:setColor', async (event, id, color) => {
+  return configurationService.setColor(id, color);
+});
+
 /**
  * Folder operations
  */
