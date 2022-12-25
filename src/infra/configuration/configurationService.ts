@@ -93,7 +93,7 @@ class ConfigurationService {
     );
   }
 
-  moveFolder(id: string, newParentFolderId: string): Folder {
+  moveFolder(id: string, newParentFolderId: string, newOrder: number): Folder {
     const target = this.getItemOrThrow(id);
     if (!isFolder(target)) {
       throw new Error(`Item with id ${id} is not a folder`);
@@ -103,6 +103,7 @@ class ConfigurationService {
       throw new Error(`Item with id ${newParentFolderId} is not a folder`);
     }
     configurationStore.set(`items.${id}.parentFolderId`, newParentFolderId);
+    configurationStore.set(`items.${id}.order`, newOrder);
     return { ...target, parentFolderId: newParentFolderId };
   }
 
@@ -140,7 +141,7 @@ class ConfigurationService {
     configurationStore.delete(`items.${id}` as any);
   }
 
-  moveApplication(id: string, parentFolderId: string): Application {
+  moveApplication(id: string, parentFolderId: string, newOrder: number): Application {
     const target = this.getItemOrThrow(id);
     if (!isApplication(target)) {
       throw new Error(`Item with id ${id} is not an application`);
@@ -150,6 +151,7 @@ class ConfigurationService {
       throw new Error(`Item with id ${parentFolderId} is not a folder`);
     }
     configurationStore.set(`items.${id}.parentFolderId`, parentFolderId);
+    configurationStore.set(`items.${id}.order`, newOrder);
     return { ...target, parentFolderId };
   }
 
@@ -199,7 +201,7 @@ class ConfigurationService {
     configurationStore.delete(`items.${id}` as any);
   }
 
-  moveInstance(id: string, newParentApplicationId: string): Instance {
+  moveInstance(id: string, newParentApplicationId: string, newOrder: number): Instance {
     const target = this.getItemOrThrow(id);
     if (!isInstance(target)) {
       throw new Error(`Item with id ${id} is not an instance`);
@@ -209,6 +211,7 @@ class ConfigurationService {
       throw new Error(`Item with id ${newParentApplicationId} is not an application`);
     }
     configurationStore.set(`items.${id}.parentApplicationId`, newParentApplicationId);
+    configurationStore.set(`items.${id}.order`, newOrder);
     return { ...target, parentApplicationId: newParentApplicationId };
   }
 

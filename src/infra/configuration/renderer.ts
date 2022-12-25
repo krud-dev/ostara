@@ -56,8 +56,8 @@ export const configurationServiceBridge: ConfigurationServiceBridge = {
   getFolderChildren(id: string): Promise<HierarchicalItem[]> {
     return ipcRenderer.invoke('configurationService:getFolderChildren', id);
   },
-  moveFolder(id: string, newParentFolderId: string): Promise<Folder> {
-    return ipcRenderer.invoke('configurationService:moveFolder', id, newParentFolderId);
+  moveFolder(id: string, newParentFolderId: string, newOrder: number): Promise<Folder> {
+    return ipcRenderer.invoke('configurationService:moveFolder', id, newParentFolderId, newOrder);
   },
   /**
    * Application operations
@@ -71,8 +71,8 @@ export const configurationServiceBridge: ConfigurationServiceBridge = {
   deleteApplication(id: string): Promise<void> {
     return ipcRenderer.invoke('configurationService:deleteApplication', id);
   },
-  moveApplication(id: string, newParentFolderId: string): Promise<Application> {
-    return ipcRenderer.invoke('configurationService:moveApplication', id, newParentFolderId);
+  moveApplication(id: string, newParentFolderId: string, newOrder: number): Promise<Application> {
+    return ipcRenderer.invoke('configurationService:moveApplication', id, newParentFolderId, newOrder);
   },
   getApplicationInstances(id: string): Promise<Instance[]> {
     return ipcRenderer.invoke('configurationService:getApplicationInstances', id);
@@ -89,7 +89,7 @@ export const configurationServiceBridge: ConfigurationServiceBridge = {
   deleteInstance(id: string): Promise<void> {
     return ipcRenderer.invoke('configurationService:deleteInstance', id);
   },
-  moveInstance(id: string, newParentApplicationId: string): Promise<void> {
-    return ipcRenderer.invoke('configurationService:moveInstance', id, newParentApplicationId);
+  moveInstance(id: string, newParentApplicationId: string, newOrder: number): Promise<void> {
+    return ipcRenderer.invoke('configurationService:moveInstance', id, newParentApplicationId, newOrder);
   },
 };

@@ -17,14 +17,14 @@ declare global {
     updateFolder: (id: string, folder: Omit<Folder, 'id' | 'type'>) => Promise<Folder>;
     deleteFolder: (id: string) => Promise<void>;
     getFolderChildren: (id: string) => Promise<HierarchicalItem[]>;
-    moveFolder: (id: string, newParentFolderId: string) => Promise<Folder>;
+    moveFolder: (id: string, newParentFolderId: string, newOrder: number) => Promise<Folder>;
     /**
      * Application operations
      */
     createApplication: (application: Omit<Application, 'id' | 'type'>) => Promise<Application>;
     updateApplication: (id: string, application: Omit<Application, 'id' | 'type'>) => Promise<Application>;
     deleteApplication: (id: string) => Promise<void>;
-    moveApplication: (id: string, newParentFolderId: string) => Promise<Application>;
+    moveApplication: (id: string, newParentFolderId: string, newOrder: number) => Promise<Application>;
     getApplicationInstances: (id: string) => Promise<Instance[]>;
     /**
      * Instance operations
@@ -32,7 +32,7 @@ declare global {
     createInstance: (instance: Omit<Instance, 'id' | 'type'>) => Promise<Instance>;
     updateInstance: (id: string, instance: Omit<Instance, 'id' | 'type'>) => Promise<Instance>;
     deleteInstance: (id: string) => Promise<void>;
-    moveInstance: (id: string, newParentFolderId: string) => Promise<void>;
+    moveInstance: (id: string, newParentFolderId: string, newOrder: number) => Promise<void>;
   };
 
   interface Window {
