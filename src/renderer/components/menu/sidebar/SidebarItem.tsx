@@ -30,7 +30,7 @@ const ListItemStyle = styled(ListItem)(({ theme }) => ({
 const ListItemIconStyle = styled(ListItemIcon)(({ theme }) => ({
   width: 22,
   height: 22,
-  marginRight: theme.spacing(1),
+  marginRight: theme.spacing(1.5),
   display: 'flex',
   alignItems: 'center',
   justifyContent: 'center',

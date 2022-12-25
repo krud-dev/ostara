@@ -33,13 +33,13 @@ const ListItemStyle = styled(ListItem<'div'>)(({ theme }) => ({
     backgroundColor: theme.palette.primary.main,
   },
   '& .menu-toggle': {
-    visibility: 'hidden',
+    display: 'none',
   },
   '&:hover .menu-toggle': {
-    visibility: 'visible',
+    display: 'flex',
   },
   '& .menu-open': {
-    visibility: 'visible',
+    display: 'flex',
     color: theme.palette.primary.main,
   },
 }));
@@ -224,7 +224,7 @@ export default function NavigatorTreeNode({ style, node, tree, dragHandle, previ
         >
           <ToggleIcon fontSize="small" />
         </IconButton>
-        <ListItemIconStyle sx={{ color: color, mr: 1, ml: 0 }}>
+        <ListItemIconStyle sx={{ color: color, mr: 1.5, ml: 0 }}>
           <TypeIcon fontSize="small" />
         </ListItemIconStyle>
         {!node.isEditing ? (
