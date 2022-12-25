@@ -7,16 +7,28 @@ import AddInstanceMenuItem from 'renderer/layout/navigator/components/sidebar/tr
 import ChooseColorMenuItem from 'renderer/layout/navigator/components/sidebar/tree/menus/items/ChooseColorMenuItem';
 import UpdateMenuItem from 'renderer/layout/navigator/components/sidebar/tree/menus/items/UpdateMenuItem';
 
-export default function ApplicationContextMenu({ node, open, anchorEl, onClose, onCreated }: TreeItemContextMenuProps) {
+export default function ApplicationContextMenu({
+  item,
+  node,
+  open,
+  anchorEl,
+  onClose,
+  onCreated,
+  sx,
+}: TreeItemContextMenuProps) {
   return (
-    <ContextMenuPopper open={open} onClose={onClose} anchorEl={anchorEl}>
-      <AddInstanceMenuItem node={node} onClose={onClose} onCreated={onCreated} />
+    <ContextMenuPopper open={open} onClose={onClose} anchorEl={anchorEl} sx={sx}>
+      {node && (
+        <>
+          <AddInstanceMenuItem node={node} onClose={onClose} onCreated={onCreated} />
+          <Divider />
+        </>
+      )}
+      <ChooseColorMenuItem item={item} onClose={onClose} />
       <Divider />
-      <ChooseColorMenuItem node={node} onClose={onClose} />
-      <Divider />
-      <UpdateMenuItem node={node} onClose={onClose} />
-      <RenameMenuItem node={node} onClose={onClose} />
-      <DeleteMenuItem node={node} onClose={onClose} />
+      <UpdateMenuItem item={item} onClose={onClose} />
+      <RenameMenuItem item={item} node={node} onClose={onClose} />
+      <DeleteMenuItem item={item} onClose={onClose} />
     </ContextMenuPopper>
   );
 }

@@ -81,10 +81,10 @@ const PasswordDialog: FunctionComponent<PasswordDialogProps & NiceModalHocProps>
           </Box>
         </DialogContent>
         <DialogActions>
-          <Button variant="outlined" color="primary" onClick={cancelHandler}>
+          <Button variant="outlined" color="inherit" onClick={cancelHandler}>
             {cancelText || <FormattedMessage id={'cancel'} />}
           </Button>
-          <Button variant="contained" color="primary" onClick={submitHandler}>
+          <Button variant="contained" color="inherit" onClick={submitHandler}>
             {continueText || <FormattedMessage id={'continue'} />}
           </Button>
         </DialogActions>

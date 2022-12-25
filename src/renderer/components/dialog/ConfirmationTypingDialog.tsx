@@ -4,11 +4,13 @@ import { Controller, useForm } from 'react-hook-form';
 import { Box, Button, Dialog, DialogActions, DialogContent, DialogContentText, TextField } from '@mui/material';
 import DialogTitleEnhanced from './DialogTitleEnhanced';
 import NiceModal, { NiceModalHocProps, useModal } from '@ebay/nice-modal-react';
+import { ColorSchema } from 'renderer/theme/config/palette';
 
 export type ConfirmationTypingDialogProps = {
   title: ReactNode;
   text: ReactNode;
   continueText?: ReactNode;
+  continueColor?: ColorSchema;
   cancelText?: ReactNode;
   confirmText: string;
   onConfirm?: () => void;
@@ -19,7 +21,7 @@ type FormValues = {
 };
 
 const ConfirmationTypingDialog: FunctionComponent<ConfirmationTypingDialogProps & NiceModalHocProps> = NiceModal.create(
-  ({ title, text, continueText, cancelText, confirmText, onConfirm }) => {
+  ({ title, text, continueText, continueColor, cancelText, confirmText, onConfirm }) => {
     const modal = useModal();
     const intl = useIntl();
 
@@ -94,10 +96,10 @@ const ConfirmationTypingDialog: FunctionComponent<ConfirmationTypingDialogProps 
             </Box>
           </DialogContent>
           <DialogActions>
-            <Button variant="outlined" color="primary" onClick={cancelHandler}>
+            <Button variant="outlined" color="inherit" onClick={cancelHandler}>
               {cancelText || <FormattedMessage id={'cancel'} />}
             </Button>
-            <Button variant="contained" color="primary" onClick={submitHandler}>
+            <Button variant="contained" color={continueColor || 'inherit'} onClick={submitHandler}>
               {continueText || <FormattedMessage id={'continue'} />}
             </Button>
           </DialogActions>

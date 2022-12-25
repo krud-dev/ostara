@@ -2,21 +2,20 @@ import { useCallback } from 'react';
 import { ListItemIcon, ListItemText, MenuItem } from '@mui/material';
 import { EditOutlined } from '@mui/icons-material';
 import { FormattedMessage } from 'react-intl';
-import { NodeApi } from 'react-arborist';
-import { TreeItem } from 'renderer/layout/navigator/components/sidebar/tree/tree';
 import { updateItem } from 'renderer/utils/itemUtils';
+import { Item } from 'infra/configuration/model/configuration';
 
 type UpdateMenuItemProps = {
-  node: NodeApi<TreeItem>;
+  item: Item;
   onClose?: () => void;
 };
 
-export default function UpdateMenuItem({ node, onClose }: UpdateMenuItemProps) {
+export default function UpdateMenuItem({ item, onClose }: UpdateMenuItemProps) {
   const updateHandler = useCallback(async (): Promise<void> => {
     onClose?.();
 
-    await updateItem(node.data);
-  }, [node, onClose]);
+    await updateItem(item);
+  }, [item, onClose]);
 
   return (
     <MenuItem onClick={updateHandler}>

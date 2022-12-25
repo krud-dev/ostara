@@ -94,8 +94,8 @@ export default function NavigatorTreeNode({ style, node, tree, dragHandle, previ
   }, []);
 
   const closeContextMenu = useCallback((): void => {
-    setContextMenuAnchor(undefined);
     setContextMenuOpen(false);
+    setContextMenuAnchor(undefined);
   }, []);
 
   const itemClickHandler = useCallback(
@@ -173,6 +173,7 @@ export default function NavigatorTreeNode({ style, node, tree, dragHandle, previ
     <>
       {isFolder(node.data) && (
         <FolderContextMenu
+          item={node.data}
           node={node}
           open={contextMenuOpen}
           anchorEl={contextMenuAnchor || contextMenuAnchorRef.current}
@@ -182,6 +183,7 @@ export default function NavigatorTreeNode({ style, node, tree, dragHandle, previ
       )}
       {isApplication(node.data) && (
         <ApplicationContextMenu
+          item={node.data}
           node={node}
           open={contextMenuOpen}
           anchorEl={contextMenuAnchor || contextMenuAnchorRef.current}
@@ -191,6 +193,7 @@ export default function NavigatorTreeNode({ style, node, tree, dragHandle, previ
       )}
       {isInstance(node.data) && (
         <InstanceContextMenu
+          item={node.data}
           node={node}
           open={contextMenuOpen}
           anchorEl={contextMenuAnchor || contextMenuAnchorRef.current}

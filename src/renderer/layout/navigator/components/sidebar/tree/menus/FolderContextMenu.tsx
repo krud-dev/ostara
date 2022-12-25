@@ -9,18 +9,30 @@ import AddFolderMenuItem from 'renderer/layout/navigator/components/sidebar/tree
 import ChooseColorMenuItem from 'renderer/layout/navigator/components/sidebar/tree/menus/items/ChooseColorMenuItem';
 import UpdateMenuItem from 'renderer/layout/navigator/components/sidebar/tree/menus/items/UpdateMenuItem';
 
-export default function FolderContextMenu({ node, open, anchorEl, onClose, onCreated }: TreeItemContextMenuProps) {
+export default function FolderContextMenu({
+  item,
+  node,
+  open,
+  anchorEl,
+  onClose,
+  onCreated,
+  sx,
+}: TreeItemContextMenuProps) {
   return (
-    <ContextMenuPopper open={open} onClose={onClose} anchorEl={anchorEl}>
-      <AddFolderMenuItem node={node} onClose={onClose} onCreated={onCreated} />
-      <AddApplicationMenuItem node={node} onClose={onClose} onCreated={onCreated} />
-      <AddInstanceMenuItem node={node} onClose={onClose} onCreated={onCreated} />
+    <ContextMenuPopper open={open} onClose={onClose} anchorEl={anchorEl} sx={sx}>
+      {node && (
+        <>
+          <AddFolderMenuItem node={node} onClose={onClose} onCreated={onCreated} />
+          <AddApplicationMenuItem node={node} onClose={onClose} onCreated={onCreated} />
+          <AddInstanceMenuItem node={node} onClose={onClose} onCreated={onCreated} />
+          <Divider />
+        </>
+      )}
+      <ChooseColorMenuItem item={item} onClose={onClose} />
       <Divider />
-      <ChooseColorMenuItem node={node} onClose={onClose} />
-      <Divider />
-      <UpdateMenuItem node={node} onClose={onClose} />
-      <RenameMenuItem node={node} onClose={onClose} />
-      <DeleteMenuItem node={node} onClose={onClose} />
+      <UpdateMenuItem item={item} onClose={onClose} />
+      <RenameMenuItem item={item} node={node} onClose={onClose} />
+      <DeleteMenuItem item={item} onClose={onClose} />
     </ContextMenuPopper>
   );
 }
