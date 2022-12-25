@@ -19,8 +19,20 @@ export const urls = asUrlInfos({
     url: '/navigator',
     path: 'navigator',
   },
-  emptyInstance: {
-    url: '/navigator/empty-instance',
-    path: 'empty-instance',
+  home: {
+    url: '/navigator/home',
+    path: 'home',
+  },
+  folder: {
+    url: '/navigator/folder/:id',
+    path: 'folder/:id',
+  },
+  application: {
+    url: '/navigator/application/:id',
+    path: 'application/:id',
+  },
+  instance: {
+    url: '/navigator/instance/:id',
+    path: 'instance/:id',
   },
 });

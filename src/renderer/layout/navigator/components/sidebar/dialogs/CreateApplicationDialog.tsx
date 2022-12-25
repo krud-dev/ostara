@@ -29,6 +29,7 @@ const CreateApplicationDialog: FunctionComponent<CreateApplicationDialogProps & 
 
     const submitHandler = handleSubmit(async (data): Promise<void> => {
       const itemToCreate: Omit<Application, 'id' | 'type'> = {
+        dataCollectionMode: 'on',
         alias: data.alias,
         applicationType: 'SpringBoot',
         parentFolderId: parentFolderId,

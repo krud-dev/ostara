@@ -1,5 +1,5 @@
 import { CreateHandler, DeleteHandler, MoveHandler, RenameHandler, Tree, TreeApi } from 'react-arborist';
-import { isApplication, isFolder, isInstance, Item, ItemType } from 'infra/configuration/model/configuration';
+import { Instance, isApplication, isFolder, isInstance, Item, ItemType } from 'infra/configuration/model/configuration';
 import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { Box, Button, CircularProgress, Typography } from '@mui/material';
 import NavigatorTreeNode from 'renderer/layout/navigator/components/sidebar/tree/NavigatorTreeNode';
@@ -12,6 +12,8 @@ import { useUpdateItem } from 'renderer/apis/configuration/item/updateItem';
 import { useDeleteItem } from 'renderer/apis/configuration/item/deleteItem';
 import { showDeleteConfirmationDialog } from 'renderer/utils/dialogUtils';
 import { useMoveItem } from 'renderer/apis/configuration/item/moveItem';
+import NiceModal from '@ebay/nice-modal-react';
+import CreateInstanceDialog from 'renderer/layout/navigator/components/sidebar/dialogs/CreateInstanceDialog';
 
 const TreeStyle = styled(Tree<TreeItem>)(({ theme }) => ({
   '& [role="treeitem"]': {
@@ -81,7 +83,9 @@ export default function NavigatorTree({ width, search }: NavigatorTreeProps) {
 
   const height = useMemo<number>(() => getOpenItemsCount() * NAVIGATOR_ITEM_HEIGHT + 12, [toggleFlag, data]);
 
-  const createInstanceHandler = useCallback((): void => {}, []);
+  const createInstanceHandler = useCallback((): void => {
+    NiceModal.show<Instance | undefined>(CreateInstanceDialog, {});
+  }, []);
 
   const onCreate: CreateHandler<TreeItem> = useCallback(({ parentId, index, parentNode, type }) => {
     return null;

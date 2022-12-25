@@ -5,6 +5,7 @@ import { HomeOutlined } from '@mui/icons-material';
 import AccountMenu from 'renderer/layout/navigator/components/navbar/AccountMenu';
 import { useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { urls } from 'renderer/routes/urls';
 
 type NavigatorNavbarProps = {
   sidebarWidth: number;
@@ -14,7 +15,7 @@ export default function NavigatorNavbar({ sidebarWidth }: NavigatorNavbarProps) 
   const navigate = useNavigate();
 
   const homeHandler = useCallback(() => {
-    navigate('/');
+    navigate(urls.home.url);
   }, [navigate]);
 
   return (

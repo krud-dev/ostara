@@ -41,6 +41,7 @@ const CreateInstanceDialog: FunctionComponent<CreateInstanceDialogProps & NiceMo
 
         if (!instanceParentApplicationId) {
           const applicationToCreate: Omit<Application, 'id' | 'type'> = {
+            dataCollectionMode: 'on',
             alias: data.alias,
             applicationType: 'SpringBoot',
             parentFolderId: parentFolderId,
@@ -56,6 +57,7 @@ const CreateInstanceDialog: FunctionComponent<CreateInstanceDialogProps & NiceMo
         }
 
         const instanceToCreate: Omit<Instance, 'id' | 'type'> = {
+          dataCollectionMode: 'on',
           alias: data.alias,
           actuatorUrl: data.actuatorUrl,
           parentApplicationId: instanceParentApplicationId,

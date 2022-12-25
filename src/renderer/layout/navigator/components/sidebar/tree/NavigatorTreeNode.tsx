@@ -1,16 +1,18 @@
 import { NodeRendererProps } from 'react-arborist';
 import { IconButton, ListItem, ListItemIcon, ListItemText, TextField } from '@mui/material';
-import { alpha, experimentalStyled as styled, useTheme } from '@mui/material/styles';
+import { alpha, experimentalStyled as styled, Theme, useTheme } from '@mui/material/styles';
 import React, { useCallback, useMemo, useRef, useState } from 'react';
 import { TreeItem } from 'renderer/layout/navigator/components/sidebar/tree/tree';
 import typography from 'renderer/theme/config/typography';
 import { KeyboardArrowDown, KeyboardArrowRight, MoreVert, SvgIconComponent } from '@mui/icons-material';
 import { NAVIGATOR_ITEM_HEIGHT } from 'renderer/constants/ui';
-import { getItemTypeIcon } from 'renderer/utils/itemUtils';
+import { getItemTypeIcon, getItemUrl } from 'renderer/utils/itemUtils';
 import FolderContextMenu from 'renderer/layout/navigator/components/sidebar/tree/menus/FolderContextMenu';
 import { isApplication, isFolder, isInstance, Item } from 'infra/configuration/model/configuration';
 import InstanceContextMenu from 'renderer/layout/navigator/components/sidebar/tree/menus/InstanceContextMenu';
 import ApplicationContextMenu from 'renderer/layout/navigator/components/sidebar/tree/menus/ApplicationContextMenu';
+import { SxProps } from '@mui/system';
+import { useNavigate } from 'react-router-dom';
 
 type NavigatorTreeNodeProps = NodeRendererProps<TreeItem>;
 
@@ -53,6 +55,7 @@ const ListItemIconStyle = styled(ListItemIcon)(({ theme }) => ({
 
 export default function NavigatorTreeNode({ style, node, tree, dragHandle, preview }: NavigatorTreeNodeProps) {
   const theme = useTheme();
+  const navigate = useNavigate();
 
   const contextMenuAnchorRef = useRef<HTMLButtonElement | null>(null);
   const [contextMenuAnchor, setContextMenuAnchor] = useState<Element | undefined>(undefined);
@@ -83,28 +86,14 @@ export default function NavigatorTreeNode({ style, node, tree, dragHandle, previ
     setContextMenuOpen(false);
   }, []);
 
-  const ToggleIcon = useMemo<SvgIconComponent>(() => {
-    return node.isOpen ? KeyboardArrowDown : KeyboardArrowRight;
-  }, [node.isOpen]);
+  const itemClickHandler = useCallback(
+    (event: React.MouseEvent): void => {
+      navigate(getItemUrl(node.data));
+    },
+    [node]
+  );
 
-  const TypeIcon = useMemo<SvgIconComponent>(() => getItemTypeIcon(node.data.type), [node.data]);
-
-  const showToggle = useMemo<boolean>(() => isFolder(node.data) || isApplication(node.data), [node.data]);
-
-  const color = useMemo<string>(() => node.data.color || theme.palette.text.secondary, [node.data, theme.palette]);
-
-  const activeRootStyle = {
-    // color: 'primary.main',
-    bgcolor: alpha(theme.palette.primary.main, theme.palette.action.selectedOpacity),
-    '&:before': { display: 'block' },
-  };
-
-  const focusRootStyle = {
-    outline: `1px solid ${theme.palette.primary.lighter}`,
-    outlineOffset: '-1px',
-  };
-
-  const onArrowClick = useCallback(
+  const arrowIconClickHandler = useCallback(
     (event: React.MouseEvent): void => {
       event.stopPropagation();
       node.toggle();
@@ -112,7 +101,7 @@ export default function NavigatorTreeNode({ style, node, tree, dragHandle, previ
     [node]
   );
 
-  const onMenuClick = useCallback(
+  const menuIconClickHandler = useCallback(
     (event: React.MouseEvent): void => {
       event.stopPropagation();
       openContextMenu();
@@ -120,11 +109,43 @@ export default function NavigatorTreeNode({ style, node, tree, dragHandle, previ
     [openContextMenu]
   );
 
-  const onChildItemCreated = useCallback(
+  const childItemCreatedHandler = useCallback(
     (item: Item): void => {
       node.open();
     },
     [node]
+  );
+
+  const TypeIcon = useMemo<SvgIconComponent>(() => getItemTypeIcon(node.data.type), [node.data]);
+  const ToggleIcon = useMemo<SvgIconComponent>(
+    () => (node.isOpen ? KeyboardArrowDown : KeyboardArrowRight),
+    [node.isOpen]
+  );
+  const showToggle = useMemo<boolean>(() => isFolder(node.data) || isApplication(node.data), [node.data]);
+  const color = useMemo<string>(() => node.data.color || theme.palette.text.secondary, [node.data, theme.palette]);
+
+  const focusRootStyle = useMemo<SxProps<Theme>>(
+    () => ({
+      outline: `1px solid ${theme.palette.primary.lighter}`,
+      outlineOffset: '-1px',
+    }),
+    [theme]
+  );
+
+  const activeRootStyle = useMemo<SxProps<Theme>>(
+    () => ({
+      bgcolor: alpha(theme.palette.primary.main, theme.palette.action.selectedOpacity),
+      '&:before': { display: 'block' },
+    }),
+    [theme]
+  );
+
+  const stateStyle = useMemo<SxProps<Theme>>(
+    () => ({
+      ...(node.isFocused && (!node.isSelected || !node.isOnlySelection) && focusRootStyle),
+      ...(node.isSelected && activeRootStyle),
+    }),
+    [node, focusRootStyle, activeRootStyle]
   );
 
   return (
@@ -135,7 +156,7 @@ export default function NavigatorTreeNode({ style, node, tree, dragHandle, previ
           open={contextMenuOpen}
           anchorEl={contextMenuAnchor || contextMenuAnchorRef.current}
           onClose={closeContextMenu}
-          onCreated={onChildItemCreated}
+          onCreated={childItemCreatedHandler}
         />
       )}
       {isApplication(node.data) && (
@@ -144,7 +165,7 @@ export default function NavigatorTreeNode({ style, node, tree, dragHandle, previ
           open={contextMenuOpen}
           anchorEl={contextMenuAnchor || contextMenuAnchorRef.current}
           onClose={closeContextMenu}
-          onCreated={onChildItemCreated}
+          onCreated={childItemCreatedHandler}
         />
       )}
       {isInstance(node.data) && (
@@ -153,7 +174,7 @@ export default function NavigatorTreeNode({ style, node, tree, dragHandle, previ
           open={contextMenuOpen}
           anchorEl={contextMenuAnchor || contextMenuAnchorRef.current}
           onClose={closeContextMenu}
-          onCreated={onChildItemCreated}
+          onCreated={childItemCreatedHandler}
         />
       )}
 
@@ -162,15 +183,13 @@ export default function NavigatorTreeNode({ style, node, tree, dragHandle, previ
         component="div"
         disableGutters
         disablePadding
-        sx={{
-          ...(node.isFocused && (!node.isSelected || !node.isOnlySelection) && focusRootStyle),
-          ...(node.isSelected && activeRootStyle),
-        }}
+        sx={stateStyle}
         style={style}
+        onClick={itemClickHandler}
         onContextMenu={openContextMenu}
       >
         <IconButton
-          onClick={onArrowClick}
+          onClick={arrowIconClickHandler}
           sx={{
             p: 0.25,
             mr: 0.5,
@@ -218,7 +237,7 @@ export default function NavigatorTreeNode({ style, node, tree, dragHandle, previ
         )}
         <IconButton
           ref={contextMenuAnchorRef}
-          onClick={onMenuClick}
+          onClick={menuIconClickHandler}
           sx={{
             p: 0.25,
             mr: 0.5,

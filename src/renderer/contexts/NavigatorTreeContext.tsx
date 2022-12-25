@@ -11,6 +11,8 @@ import { useGetConfigurationQuery } from 'renderer/apis/configuration/getConfigu
 import { Configuration, isInstance, Item } from 'infra/configuration/model/configuration';
 import { TreeItem } from 'renderer/layout/navigator/components/sidebar/tree/tree';
 import { forEach } from 'lodash';
+import { useNavigate, useParams } from 'react-router-dom';
+import { urls } from 'renderer/routes/urls';
 
 type NavigatorTreeAction = 'expandAll' | 'collapseAll';
 
@@ -30,6 +32,9 @@ const NavigatorTreeContext = React.createContext<NavigatorTreeContextProps>(unde
 interface NavigatorTreeProviderProps extends PropsWithChildren<any> {}
 
 const NavigatorTreeProvider: FunctionComponent<NavigatorTreeProviderProps> = ({ children }) => {
+  const navigate = useNavigate();
+  const params = useParams<{ id?: string }>();
+
   const [data, setData] = useState<TreeItem[] | undefined>(undefined);
   const [action, setAction] = useState<NavigatorTreeAction | undefined>(undefined);
 
@@ -82,6 +87,13 @@ const NavigatorTreeProvider: FunctionComponent<NavigatorTreeProviderProps> = ({ 
     const result = configurationState.data;
     if (result) {
       setData(buildTree(result));
+
+      if (params.id) {
+        const item = result.items?.[params.id];
+        if (!item) {
+          navigate(urls.home.url);
+        }
+      }
     }
   }, [configurationState.data]);
 

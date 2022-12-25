@@ -3,7 +3,7 @@ import { Container } from '@mui/material';
 import Sample from 'renderer/demo/Sample';
 import Page from 'renderer/components/layout/Page';
 
-const EmptyInstance: FunctionComponent = () => {
+const Home: FunctionComponent = () => {
   return (
     <Page>
       <Container disableGutters>
@@ -13,4 +13,4 @@ const EmptyInstance: FunctionComponent = () => {
   );
 };
 
-export default EmptyInstance;
+export default Home;

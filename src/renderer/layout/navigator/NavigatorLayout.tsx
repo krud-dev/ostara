@@ -1,6 +1,6 @@
 import { experimentalStyled as styled, useTheme } from '@mui/material/styles';
 import NavigatorNavbar from 'renderer/layout/navigator/components/NavigatorNavbar';
-import { Allotment } from 'allotment';
+import { Allotment, LayoutPriority } from 'allotment';
 import NavigatorSidebar from 'renderer/layout/navigator/components/NavigatorSidebar';
 import { useMemo } from 'react';
 import { NAVBAR_HEIGHT, SIDEBAR_DEFAULT_WIDTH } from 'renderer/constants/ui';
@@ -30,11 +30,11 @@ export default function NavigatorLayout({}: NavigatorLayoutProps) {
   return (
     <RootStyle>
       <NavigatorNavbar sidebarWidth={sidebarWidth} />
-      <Allotment defaultSizes={defaultSizes} onChange={(sizes) => setSidebarWidth(sizes[0])}>
+      <Allotment defaultSizes={defaultSizes} proportionalLayout={false} onChange={(sizes) => setSidebarWidth(sizes[0])}>
         <Allotment.Pane minSize={200} maxSize={500} snap>
           <NavigatorSidebar width={sidebarWidth} />
         </Allotment.Pane>
-        <Allotment.Pane>
+        <Allotment.Pane priority={LayoutPriority.High}>
           <MainStyle
             sx={{
               paddingTop: `${NAVBAR_HEIGHT}px`,

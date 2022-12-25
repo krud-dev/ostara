@@ -15,12 +15,14 @@ export const mockTree: TreeItem[] = [
           {
             id: uuidv4(),
             type: 'application',
+            dataCollectionMode: 'off',
             applicationType: 'SpringBoot',
             alias: 'Frontend Application',
             children: [
               {
                 id: uuidv4(),
                 type: 'instance',
+                dataCollectionMode: 'off',
                 alias: 'Frontend Instance 1',
                 actuatorUrl: 'http://localhost:8080/actuator',
                 parentApplicationId: 'uuid',
@@ -28,6 +30,7 @@ export const mockTree: TreeItem[] = [
               {
                 id: uuidv4(),
                 type: 'instance',
+                dataCollectionMode: 'off',
                 alias: 'Frontend Instance 2',
                 actuatorUrl: 'http://localhost:8080/actuator',
                 parentApplicationId: 'uuid',
@@ -44,12 +47,14 @@ export const mockTree: TreeItem[] = [
           {
             id: uuidv4(),
             type: 'application',
+            dataCollectionMode: 'off',
             applicationType: 'SpringBoot',
             alias: 'Backend Application',
             children: [
               {
                 id: uuidv4(),
                 type: 'instance',
+                dataCollectionMode: 'off',
                 alias: 'Backend Instance',
                 actuatorUrl: 'http://localhost:8080/actuator',
                 parentApplicationId: 'uuid',

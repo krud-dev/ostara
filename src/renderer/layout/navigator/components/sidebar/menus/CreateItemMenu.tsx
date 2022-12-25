@@ -6,7 +6,7 @@ import { FormattedMessage } from 'react-intl';
 import { getItemTypeIcon } from 'renderer/utils/itemUtils';
 import NiceModal from '@ebay/nice-modal-react';
 import CreateFolderDialog from 'renderer/layout/navigator/components/sidebar/dialogs/CreateFolderDialog';
-import { Folder } from 'infra/configuration/model/configuration';
+import { Application, Folder, Instance } from 'infra/configuration/model/configuration';
 import { useNavigatorTree } from 'renderer/contexts/NavigatorTreeContext';
 import { chain } from 'lodash';
 import CreateApplicationDialog from 'renderer/layout/navigator/components/sidebar/dialogs/CreateApplicationDialog';
@@ -49,7 +49,7 @@ export default function CreateItemMenu() {
   const createApplicationHandler = useCallback((): void => {
     closeHandler();
 
-    NiceModal.show<Folder | undefined>(CreateApplicationDialog, {
+    NiceModal.show<Application | undefined>(CreateApplicationDialog, {
       order: getNewItemOrder(),
     });
   }, [closeHandler, getNewItemOrder]);
@@ -57,7 +57,7 @@ export default function CreateItemMenu() {
   const createInstanceHandler = useCallback((): void => {
     closeHandler();
 
-    NiceModal.show<Folder | undefined>(CreateInstanceDialog, {
+    NiceModal.show<Instance | undefined>(CreateInstanceDialog, {
       order: getNewItemOrder(),
     });
   }, [closeHandler, getNewItemOrder]);
