@@ -16,7 +16,7 @@ export default function ItemHeader({ item }: InstanceSidebarProps) {
 
   return (
     <Box sx={{ height: NAVIGATOR_ITEM_HEIGHT * 2, px: 2.5, display: 'flex', alignItems: 'center' }}>
-      <Avatar variant={'circular'} sx={{ backgroundColor: color, color: 'text.primary' }}>
+      <Avatar variant={'circular'} sx={{ backgroundColor: color, color: 'white' }}>
         <TypeIcon fontSize={'medium'} />
       </Avatar>
       <Box sx={{ ml: 2, overflow: 'hidden' }}>

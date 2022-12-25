@@ -22,7 +22,13 @@ export default function NavigatorSidebar({ width }: NavigatorSidebarProps) {
           <Box>
             <CreateItemMenu />
           </Box>
-          <SearchTextField size={'small'} icon={FilterListOutlined} onChangeValue={setSearch} />
+          <SearchTextField
+            size={'small'}
+            icon={FilterListOutlined}
+            placeholder={''}
+            value={search}
+            onChangeValue={setSearch}
+          />
           <Box>
             <SearchItemMenu />
           </Box>

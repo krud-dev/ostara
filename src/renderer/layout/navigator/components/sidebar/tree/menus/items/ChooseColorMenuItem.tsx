@@ -3,7 +3,7 @@ import { Box, MenuItem, Stack } from '@mui/material';
 import { NodeApi } from 'react-arborist';
 import { TreeItem } from 'renderer/layout/navigator/components/sidebar/tree/tree';
 import { experimentalStyled as styled, useTheme } from '@mui/material/styles';
-import { amber, blue, green, indigo, orange, pink, purple, red, yellow } from '@mui/material/colors';
+import { amber, blue, deepOrange, green, indigo, orange, pink, purple, red, yellow } from '@mui/material/colors';
 import { CheckOutlined } from '@mui/icons-material';
 import { useSetItemColor } from 'renderer/apis/configuration/item/setItemColor';
 
@@ -47,9 +47,9 @@ export default function ChooseColorMenuItem({ node, onClose }: ChooseColorMenuIt
       { color: indigo[500], value: indigo[500] },
       { color: blue[500], value: blue[500] },
       { color: green[500], value: green[500] },
-      { color: yellow[500], value: yellow[500] },
       { color: amber[500], value: amber[500] },
       { color: orange[500], value: orange[500] },
+      { color: deepOrange[500], value: deepOrange[500] },
     ],
     []
   );
