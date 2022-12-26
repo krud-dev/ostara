@@ -11,6 +11,7 @@ import shadows, { customShadows } from 'renderer/theme/config/shadows';
 import { enUS, Localization } from '@mui/material/locale';
 import RtlLayout from 'renderer/theme/RtlLayout';
 import GlobalStyles from 'renderer/theme/GlobalStyles';
+import ChartStyle from 'renderer/components/chart/ChartStyle';
 
 type ThemeConfigProps = {
   isDarkMode?: boolean;
@@ -41,6 +42,7 @@ export default function ThemeConfig({ isDarkMode, isRtl, localization, children 
       <ThemeProvider theme={theme}>
         <CssBaseline />
         <GlobalStyles />
+        <ChartStyle />
         <RtlLayout>{children}</RtlLayout>
       </ThemeProvider>
     </StyledEngineProvider>

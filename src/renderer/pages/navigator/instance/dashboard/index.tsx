@@ -1,18 +1,38 @@
 import React, { FunctionComponent, useMemo } from 'react';
 import Page from 'renderer/components/layout/Page';
 import { useNavigatorTree } from 'renderer/contexts/NavigatorTreeContext';
-import { Instance } from 'infra/configuration/model/configuration';
+import { EnrichedInstance } from 'infra/configuration/model/configuration';
+import { springBootWidgets } from 'infra/dashboard/widgets';
+import { Widget } from 'infra/dashboard/model';
+import { values } from 'lodash';
+import DashboardWidget from 'renderer/components/widget/DashboardWidget';
+import { Stack } from '@mui/material';
 
 const InstanceDashboard: FunctionComponent = () => {
   const { selectedItem } = useNavigatorTree();
 
-  const item = useMemo<Instance | undefined>(() => selectedItem as Instance | undefined, [selectedItem]);
+  const item = useMemo<EnrichedInstance | undefined>(
+    () => selectedItem as EnrichedInstance | undefined,
+    [selectedItem]
+  );
+
+  const widgets = useMemo<Widget[]>(() => values(springBootWidgets), []);
 
   if (!item) {
     return null;
   }
 
-  return <Page sx={{ width: '100%', height: '100%' }}>{`Instance ${item.alias}`}</Page>;
+  return (
+    <Page sx={{ width: '100%', p: 2.5 }}>
+      <Stack direction={'column'} spacing={2.5}>
+        {widgets
+          .filter((w) => w.type === 'progress-circle')
+          .map((widget) => (
+            <DashboardWidget widget={widget} item={item} key={widget.id} />
+          ))}
+      </Stack>
+    </Page>
+  );
 };
 
 export default InstanceDashboard;

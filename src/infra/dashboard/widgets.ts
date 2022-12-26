@@ -2,6 +2,7 @@ import { DataBarWidget, ProgressCircleWidget, StackedTimelineWidget } from './mo
 
 export const springBootWidgets = {
   threadCount: <StackedTimelineWidget>{
+    id: 'thread-count',
     type: 'stacked-timeline',
     title: 'Thread Count',
     description: 'Thread Count',
@@ -21,6 +22,7 @@ export const springBootWidgets = {
     ],
   },
   memoryUse: <StackedTimelineWidget>{
+    id: 'memory-use-timeline',
     type: 'stacked-timeline',
     title: 'Memory Use',
     description: 'Shows the memory usage',
@@ -40,13 +42,16 @@ export const springBootWidgets = {
     ],
   },
   memoryUseCircle: <ProgressCircleWidget>{
+    id: 'memory-use-circle',
     type: 'progress-circle',
     title: 'Memory Use',
     description: 'Shows the memory usage',
     maxMetricName: 'jvm.memory.max[VALUE]',
     currentMetricName: 'jvm.memory.used[VALUE]',
+    color: '#00ff00',
   },
   processWidget: <DataBarWidget>{
+    id: 'process-widget',
     type: 'data-bar',
     title: 'Process',
     description: 'Shows the process information',

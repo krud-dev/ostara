@@ -8,7 +8,7 @@ export default function Dialog(theme: Theme): Components {
     MuiDialog: {
       styleOverrides: {
         paper: {
-          boxShadow: theme.customShadows.z24,
+          boxShadow: theme.customShadows.dialog,
           '&.MuiPaper-rounded': {
             borderRadius: theme.shape.borderRadiusMd,
           },

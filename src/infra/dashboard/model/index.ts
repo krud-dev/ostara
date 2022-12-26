@@ -1,4 +1,5 @@
 export type BaseWidgetDefinition = {
+  id: string;
   type: string;
   title: string;
   description: string;

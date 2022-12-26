@@ -1,6 +1,7 @@
 import { BaseMutationOptions, BaseUseMutationResult, useBaseMutation } from 'renderer/apis/base/useBaseMutation';
 import { ActuatorHealthResponse } from 'infra/actuator/model/health';
 import { BaseQueryOptions, BaseUseQueryResult, useBaseQuery } from 'renderer/apis/base/useBaseQuery';
+import { actuatorKeys } from 'renderer/apis/actuator/actuatorKeys';
 
 type Variables = { actuatorUrl: string };
 
@@ -18,4 +19,4 @@ export const useGetActuatorUrlHealthQuery = (
   variables: Variables,
   options?: BaseQueryOptions<Data, Variables>
 ): BaseUseQueryResult<Data> =>
-  useBaseQuery<Data, Variables>(['configuration'], getActuatorUrlHealth, variables, options);
+  useBaseQuery<Data, Variables>(actuatorKeys.health(variables.actuatorUrl), getActuatorUrlHealth, variables, options);

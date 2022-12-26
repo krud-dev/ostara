@@ -7,6 +7,7 @@ import useConfigurationStoreState from 'renderer/hooks/useConfigurationStoreStat
 import { useNavigatorTree } from 'renderer/contexts/NavigatorTreeContext';
 import { Instance } from 'infra/configuration/model/configuration';
 import InstanceSidebar from 'renderer/layout/instance/components/InstanceSidebar';
+import PerfectScrollbar from 'react-perfect-scrollbar';
 
 const InstanceLayout: FunctionComponent = () => {
   const { selectedItem } = useNavigatorTree();
@@ -31,7 +32,11 @@ const InstanceLayout: FunctionComponent = () => {
           <InstanceSidebar item={item} width={sidebarWidth} />
         </Allotment.Pane>
         <Allotment.Pane priority={LayoutPriority.High}>
-          <Outlet />
+          <Box sx={{ height: '100%', overflow: 'hidden' }}>
+            <PerfectScrollbar options={{ wheelPropagation: false }}>
+              <Outlet />
+            </PerfectScrollbar>
+          </Box>
         </Allotment.Pane>
       </Allotment>
     </Box>
