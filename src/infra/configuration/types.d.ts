@@ -28,14 +28,18 @@ declare global {
     updateFolder: (id: string, folder: Omit<Folder, 'id' | 'type'>) => Promise<EnrichedFolder>;
     deleteFolder: (id: string) => Promise<void>;
     getFolderChildren: (id: string) => Promise<Exclude<EnrichedItem, EnrichedInstance>[]>;
-    moveFolder: (id: string, newParentFolderId: string, newOrder: number) => Promise<EnrichedFolder>;
+    moveFolder: (id: string, newParentFolderId: string | undefined, newOrder: number) => Promise<EnrichedFolder>;
     /**
      * Application operations
      */
     createApplication: (application: Omit<Application, 'id' | 'type'>) => Promise<EnrichedApplication>;
     updateApplication: (id: string, application: Omit<Application, 'id' | 'type'>) => Promise<EnrichedApplication>;
     deleteApplication: (id: string) => Promise<void>;
-    moveApplication: (id: string, newParentFolderId: string, newOrder: number) => Promise<EnrichedApplication>;
+    moveApplication: (
+      id: string,
+      newParentFolderId: string | undefined,
+      newOrder: number
+    ) => Promise<EnrichedApplication>;
     getApplicationInstances: (id: string) => Promise<EnrichedInstance[]>;
     /**
      * Instance operations

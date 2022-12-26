@@ -1,7 +1,6 @@
 import { ipcRenderer } from 'electron';
 import {
   Application,
-  BaseItem,
   Configuration,
   EnrichedApplication,
   EnrichedFolder,
@@ -69,7 +68,7 @@ export const configurationServiceBridge: ConfigurationServiceBridge = {
   getFolderChildren(id: string): Promise<Exclude<EnrichedItem, EnrichedInstance>[]> {
     return ipcRenderer.invoke('configurationService:getFolderChildren', id);
   },
-  moveFolder(id: string, newParentFolderId: string, newOrder: number): Promise<EnrichedFolder> {
+  moveFolder(id: string, newParentFolderId: string | undefined, newOrder: number): Promise<EnrichedFolder> {
     return ipcRenderer.invoke('configurationService:moveFolder', id, newParentFolderId, newOrder);
   },
   /**
@@ -84,7 +83,7 @@ export const configurationServiceBridge: ConfigurationServiceBridge = {
   deleteApplication(id: string): Promise<void> {
     return ipcRenderer.invoke('configurationService:deleteApplication', id);
   },
-  moveApplication(id: string, newParentFolderId: string, newOrder: number): Promise<EnrichedApplication> {
+  moveApplication(id: string, newParentFolderId: string | undefined, newOrder: number): Promise<EnrichedApplication> {
     return ipcRenderer.invoke('configurationService:moveApplication', id, newParentFolderId, newOrder);
   },
   getApplicationInstances(id: string): Promise<EnrichedInstance[]> {

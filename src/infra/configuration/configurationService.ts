@@ -109,16 +109,20 @@ class ConfigurationService {
       .map((item) => this.enrichItem(item)) as Exclude<EnrichedItem, EnrichedInstance>[];
   }
 
-  moveFolder(id: string, newParentFolderId: string, newOrder: number): EnrichedFolder {
+  moveFolder(id: string, newParentFolderId: string | undefined, newOrder: number): EnrichedFolder {
     const target = this.getItemOrThrow(id);
     if (!isFolder(target)) {
       throw new Error(`Item with id ${id} is not a folder`);
     }
-    const newParentFolder = this.getItemOrThrow(newParentFolderId);
-    if (!isFolder(newParentFolder)) {
-      throw new Error(`Item with id ${newParentFolderId} is not a folder`);
+    if (newParentFolderId) {
+      const parent = this.getItemOrThrow(newParentFolderId);
+      if (!isFolder(parent)) {
+        throw new Error(`Item with id ${newParentFolderId} is not a folder`);
+      }
+      configurationStore.set(`items.${id}.parentFolderId`, newParentFolderId);
+    } else {
+      configurationStore.delete(`items.${id}.parentFolderId` as any);
     }
-    configurationStore.set(`items.${id}.parentFolderId`, newParentFolderId);
     configurationStore.set(`items.${id}.order`, newOrder);
     return this.enrichFolder(<Folder>this.getItem(id));
   }
@@ -157,16 +161,20 @@ class ConfigurationService {
     configurationStore.delete(`items.${id}` as any);
   }
 
-  moveApplication(id: string, parentFolderId: string, newOrder: number): EnrichedApplication {
+  moveApplication(id: string, parentFolderId: string | undefined, newOrder: number): EnrichedApplication {
     const target = this.getItemOrThrow(id);
     if (!isApplication(target)) {
       throw new Error(`Item with id ${id} is not an application`);
     }
-    const newParentFolder = this.getItemOrThrow(parentFolderId);
-    if (!isFolder(newParentFolder)) {
-      throw new Error(`Item with id ${parentFolderId} is not a folder`);
+    if (parentFolderId) {
+      const newParentFolder = this.getItemOrThrow(parentFolderId);
+      if (!isFolder(newParentFolder)) {
+        throw new Error(`Item with id ${parentFolderId} is not a folder`);
+      }
+      configurationStore.set(`items.${id}.parentFolderId`, parentFolderId);
+    } else {
+      configurationStore.delete(`items.${id}.parentFolderId` as any);
     }
-    configurationStore.set(`items.${id}.parentFolderId`, parentFolderId);
     configurationStore.set(`items.${id}.order`, newOrder);
     return this.enrichApplication(<Application>this.getItem(id));
   }
@@ -245,8 +253,9 @@ class ConfigurationService {
     if (!isInstance(target)) {
       throw new Error(`Item with id ${id} is not an instance`);
     }
-    const application = this.getItemOrThrow(newParentApplicationId);
-    if (!isApplication(application)) {
+
+    const newParentApplication = this.getItemOrThrow(newParentApplicationId);
+    if (!isApplication(newParentApplication)) {
       throw new Error(`Item with id ${newParentApplicationId} is not an application`);
     }
     configurationStore.set(`items.${id}.parentApplicationId`, newParentApplicationId);
