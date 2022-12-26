@@ -89,7 +89,7 @@ export const configurationServiceBridge: ConfigurationServiceBridge = {
   deleteInstance(id: string): Promise<void> {
     return ipcRenderer.invoke('configurationService:deleteInstance', id);
   },
-  moveInstance(id: string, newParentApplicationId: string, newOrder: number): Promise<void> {
+  moveInstance(id: string, newParentApplicationId: string, newOrder: number): Promise<Instance> {
     return ipcRenderer.invoke('configurationService:moveInstance', id, newParentApplicationId, newOrder);
   },
 };
