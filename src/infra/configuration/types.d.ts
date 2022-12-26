@@ -32,7 +32,7 @@ declare global {
     createInstance: (instance: Omit<Instance, 'id' | 'type'>) => Promise<Instance>;
     updateInstance: (id: string, instance: Omit<Instance, 'id' | 'type'>) => Promise<Instance>;
     deleteInstance: (id: string) => Promise<void>;
-    moveInstance: (id: string, newApplicationId: string, newOrder: number) => Promise<Instance>;
+    moveInstance: (id: string, newParentApplicationId: string, newOrder: number) => Promise<Instance>;
   };
 
   interface Window {
