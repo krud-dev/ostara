@@ -8,7 +8,7 @@ import {
   Instance,
   isApplication,
   isFolder,
-  isInstance,
+  isInstance
 } from './model/configuration';
 import { configurationStore } from './configurationStore';
 
@@ -40,7 +40,11 @@ class ConfigurationService {
 
   setColor(id: string, color?: string) {
     this.itemExistsOrThrow(id);
-    configurationStore.set(`items.${id}.color`, color);
+    if (!color) {
+      configurationStore.delete(`items.${id}.color` as any);
+    } else {
+      configurationStore.set(`items.${id}.color`, color);
+    }
   }
 
   /**
