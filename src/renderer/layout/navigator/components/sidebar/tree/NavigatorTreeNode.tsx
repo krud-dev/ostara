@@ -1,12 +1,12 @@
 import { NodeRendererProps } from 'react-arborist';
-import { IconButton, ListItem, ListItemIcon, ListItemText, TextField } from '@mui/material';
+import { Badge, IconButton, ListItem, ListItemIcon, ListItemText, TextField } from '@mui/material';
 import { alpha, experimentalStyled as styled, Theme, useTheme } from '@mui/material/styles';
 import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { TreeItem } from 'renderer/layout/navigator/components/sidebar/tree/tree';
 import typography from 'renderer/theme/config/typography';
 import { KeyboardArrowDown, KeyboardArrowRight, MoreVert, SvgIconComponent } from '@mui/icons-material';
 import { NAVIGATOR_ITEM_HEIGHT } from 'renderer/constants/ui';
-import { getItemTypeIcon, getItemUrl } from 'renderer/utils/itemUtils';
+import { getItemHealthStatusColor, getItemTypeIcon, getItemUrl } from 'renderer/utils/itemUtils';
 import FolderContextMenu from 'renderer/layout/navigator/components/sidebar/tree/menus/FolderContextMenu';
 import { isApplication, isFolder, isInstance, Item } from 'infra/configuration/model/configuration';
 import InstanceContextMenu from 'renderer/layout/navigator/components/sidebar/tree/menus/InstanceContextMenu';
@@ -131,6 +131,7 @@ export default function NavigatorTreeNode({ style, node, tree, dragHandle, previ
   );
 
   const color = useItemColor(node.data);
+  const healthStatusColor = useMemo<string | undefined>(() => getItemHealthStatusColor(node.data), [node.data]);
   const TypeIcon = useMemo<SvgIconComponent>(() => getItemTypeIcon(node.data.type), [node.data]);
   const ToggleIcon = useMemo<SvgIconComponent>(
     () => (node.isOpen ? KeyboardArrowDown : KeyboardArrowRight),
@@ -229,7 +230,21 @@ export default function NavigatorTreeNode({ style, node, tree, dragHandle, previ
           <ToggleIcon fontSize="small" />
         </IconButton>
         <ListItemIconStyle sx={{ color: color, mr: 1.5, ml: 0 }}>
-          <TypeIcon fontSize="small" />
+          <Badge
+            variant={'dot'}
+            overlap={'circular'}
+            anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
+            sx={{
+              '& .MuiBadge-badge': {
+                width: 8,
+                height: 8,
+                backgroundColor: healthStatusColor,
+              },
+            }}
+            invisible={!healthStatusColor}
+          >
+            <TypeIcon fontSize="small" />
+          </Badge>
         </ListItemIconStyle>
         {!node.isEditing ? (
           <ListItemText

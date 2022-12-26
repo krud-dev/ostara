@@ -1,11 +1,12 @@
 import { CloudOutlined, DnsOutlined, FolderOutlined, SvgIconComponent } from '@mui/icons-material';
-import { Application, Folder, Instance, Item, ItemType } from 'infra/configuration/model/configuration';
+import { Application, EnrichedItem, Folder, Instance, Item, ItemType } from 'infra/configuration/model/configuration';
 import { generatePath } from 'react-router-dom';
 import { urls } from 'renderer/routes/urls';
 import NiceModal from '@ebay/nice-modal-react';
 import UpdateApplicationDialog from 'renderer/components/item/dialogs/update/UpdateApplicationDialog';
 import UpdateInstanceDialog from 'renderer/components/item/dialogs/update/UpdateInstanceDialog';
 import UpdateFolderDialog from 'renderer/components/item/dialogs/update/UpdateFolderDialog';
+import { green, pink, red, yellow } from '@mui/material/colors';
 
 export const getItemTypeIcon = (itemType: ItemType): SvgIconComponent => {
   switch (itemType) {
@@ -50,4 +51,45 @@ export const updateItem = async (item: Item): Promise<Item | undefined> => {
     default:
       throw new Error(`Unknown item type`);
   }
+};
+
+export const getItemHealthStatusColor = (item: EnrichedItem): string | undefined => {
+  const colorsIndex = 600;
+  if (item.type === 'instance') {
+    switch (item.health.status) {
+      case 'UP':
+        return green[colorsIndex];
+      case 'DOWN':
+        return red[colorsIndex];
+      case 'OUT_OF_SERVICE':
+        return yellow[colorsIndex];
+      case 'UNREACHABLE':
+        return pink[colorsIndex];
+      case 'UNKNOWN':
+      case 'PENDING':
+      default:
+        return undefined;
+    }
+  }
+  return undefined;
+};
+
+export const getItemHealthStatusTextId = (item: EnrichedItem): string | undefined => {
+  if (item.type === 'instance') {
+    switch (item.health.status) {
+      case 'UP':
+        return 'up';
+      case 'DOWN':
+        return 'down';
+      case 'OUT_OF_SERVICE':
+        return 'outOfService';
+      case 'UNREACHABLE':
+        return 'unreachable';
+      case 'UNKNOWN':
+      case 'PENDING':
+      default:
+        return undefined;
+    }
+  }
+  return undefined;
 };

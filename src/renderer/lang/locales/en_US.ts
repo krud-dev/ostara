@@ -50,4 +50,8 @@ export default {
   copyToClipboardSuccess: 'Copied to clipboard',
   copyToClipboardFailed: 'Failed to copy to clipboard',
   copyId: 'Copy ID',
+  up: 'Up',
+  down: 'Down',
+  outOfService: 'Out of Service',
+  unreachable: 'Unreachable',
 };

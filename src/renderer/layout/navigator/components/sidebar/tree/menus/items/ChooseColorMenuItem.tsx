@@ -39,22 +39,22 @@ export default function ChooseColorMenuItem({ item, onClose }: ChooseColorMenuIt
   const noColor = useMemo<string>(() => theme.palette.text.primary, []);
   const defaultColor = useMemo<string>(() => theme.palette.text.secondary, []);
 
-  const colors = useMemo<{ color: string; fillColor: string; value: string | undefined }[]>(
-    () => [
+  const colors = useMemo<{ color: string; fillColor: string; value: string | undefined }[]>(() => {
+    const colorsIndex = 400;
+    return [
       { color: noColor, fillColor: 'transparent', value: undefined },
       { color: defaultColor, fillColor: defaultColor, value: DEFAULT_COLOR_VALUE },
-      { color: red[500], fillColor: red[500], value: red[500] },
-      { color: pink[500], fillColor: pink[500], value: pink[500] },
-      { color: purple[500], fillColor: purple[500], value: purple[500] },
-      { color: indigo[500], fillColor: indigo[500], value: indigo[500] },
-      { color: blue[500], fillColor: blue[500], value: blue[500] },
-      { color: green[500], fillColor: green[500], value: green[500] },
-      { color: amber[500], fillColor: amber[500], value: amber[500] },
-      { color: orange[500], fillColor: orange[500], value: orange[500] },
-      { color: deepOrange[500], fillColor: deepOrange[500], value: deepOrange[500] },
-    ],
-    []
-  );
+      { color: red[colorsIndex], fillColor: red[colorsIndex], value: red[colorsIndex] },
+      { color: pink[colorsIndex], fillColor: pink[colorsIndex], value: pink[colorsIndex] },
+      { color: purple[colorsIndex], fillColor: purple[colorsIndex], value: purple[colorsIndex] },
+      { color: indigo[colorsIndex], fillColor: indigo[colorsIndex], value: indigo[colorsIndex] },
+      { color: blue[colorsIndex], fillColor: blue[colorsIndex], value: blue[colorsIndex] },
+      { color: green[colorsIndex], fillColor: green[colorsIndex], value: green[colorsIndex] },
+      { color: amber[colorsIndex], fillColor: amber[colorsIndex], value: amber[colorsIndex] },
+      { color: orange[colorsIndex], fillColor: orange[colorsIndex], value: orange[colorsIndex] },
+      { color: deepOrange[colorsIndex], fillColor: deepOrange[colorsIndex], value: deepOrange[colorsIndex] },
+    ];
+  }, []);
 
   return (
     <MenuItemStyle disableRipple>
