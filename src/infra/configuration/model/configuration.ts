@@ -4,6 +4,8 @@ export type Item = Instance | Application | Folder;
 
 export type ItemType = 'instance' | 'application' | 'folder';
 
+export type InstanceHealthStatus = 'UP' | 'DOWN' | 'UNKNOWN' | 'OUT_OF_SERVICE';
+
 export type BaseItem = {
   id: string;
   type: ItemType;
@@ -24,6 +26,11 @@ export type Instance = OrderedItem & {
   alias: string;
   actuatorUrl: string;
   dataCollectionMode: 'inherited' | 'on' | 'off';
+};
+
+export type EnrichedInstance = Instance & {
+  effectiveColor?: string;
+  healthStatus: InstanceHealthStatus;
 };
 
 export type Application = HierarchicalItem &

@@ -1,5 +1,13 @@
 import { ipcRenderer } from 'electron';
-import { Application, BaseItem, Configuration, Folder, HierarchicalItem, Instance } from './model/configuration';
+import {
+  Application,
+  BaseItem,
+  Configuration,
+  EnrichedInstance,
+  Folder,
+  HierarchicalItem,
+  Instance,
+} from './model/configuration';
 
 export const configurationStoreBridge = {
   get<T>(key: string): T {
@@ -74,22 +82,22 @@ export const configurationServiceBridge: ConfigurationServiceBridge = {
   moveApplication(id: string, newParentFolderId: string, newOrder: number): Promise<Application> {
     return ipcRenderer.invoke('configurationService:moveApplication', id, newParentFolderId, newOrder);
   },
-  getApplicationInstances(id: string): Promise<Instance[]> {
+  getApplicationInstances(id: string): Promise<EnrichedInstance[]> {
     return ipcRenderer.invoke('configurationService:getApplicationInstances', id);
   },
   /**
    * Instance operations
    */
-  createInstance(instance: Omit<Instance, 'id' | 'type'>): Promise<Instance> {
+  createInstance(instance: Omit<Instance, 'id' | 'type'>): Promise<EnrichedInstance> {
     return ipcRenderer.invoke('configurationService:createInstance', instance);
   },
-  updateInstance(id: string, instance: Omit<Instance, 'id' | 'type'>): Promise<Instance> {
+  updateInstance(id: string, instance: Omit<Instance, 'id' | 'type'>): Promise<EnrichedInstance> {
     return ipcRenderer.invoke('configurationService:updateInstance', id, instance);
   },
   deleteInstance(id: string): Promise<void> {
     return ipcRenderer.invoke('configurationService:deleteInstance', id);
   },
-  moveInstance(id: string, newParentApplicationId: string, newOrder: number): Promise<Instance> {
+  moveInstance(id: string, newParentApplicationId: string, newOrder: number): Promise<EnrichedInstance> {
     return ipcRenderer.invoke('configurationService:moveInstance', id, newParentApplicationId, newOrder);
   },
 };

@@ -1,4 +1,12 @@
-import { Application, Configuration, Folder, HierarchicalItem, Instance, BaseItem } from './model/configuration';
+import {
+  Application,
+  BaseItem,
+  Configuration,
+  EnrichedInstance,
+  Folder,
+  HierarchicalItem,
+  Instance
+} from './model/configuration';
 
 declare global {
   type ConfigurationServiceBridge = {
@@ -25,14 +33,14 @@ declare global {
     updateApplication: (id: string, application: Omit<Application, 'id' | 'type'>) => Promise<Application>;
     deleteApplication: (id: string) => Promise<void>;
     moveApplication: (id: string, newParentFolderId: string, newOrder: number) => Promise<Application>;
-    getApplicationInstances: (id: string) => Promise<Instance[]>;
+    getApplicationInstances: (id: string) => Promise<EnrichedInstance[]>;
     /**
      * Instance operations
      */
-    createInstance: (instance: Omit<Instance, 'id' | 'type'>) => Promise<Instance>;
-    updateInstance: (id: string, instance: Omit<Instance, 'id' | 'type'>) => Promise<Instance>;
+    createInstance: (instance: Omit<Instance, 'id' | 'type'>) => Promise<EnrichedInstance>;
+    updateInstance: (id: string, instance: Omit<Instance, 'id' | 'type'>) => Promise<EnrichedInstance>;
     deleteInstance: (id: string) => Promise<void>;
-    moveInstance: (id: string, newParentApplicationId: string, newOrder: number) => Promise<Instance>;
+    moveInstance: (id: string, newParentApplicationId: string, newOrder: number) => Promise<EnrichedInstance>;
   };
 
   interface Window {

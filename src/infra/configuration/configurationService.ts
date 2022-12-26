@@ -6,9 +6,11 @@ import {
   Folder,
   HierarchicalItem,
   Instance,
+  InstanceHealthStatus,
+  EnrichedInstance,
   isApplication,
   isFolder,
-  isInstance
+  isInstance,
 } from './model/configuration';
 import { configurationStore } from './configurationStore';
 
@@ -20,7 +22,7 @@ class ConfigurationService {
     return configurationStore.store;
   }
 
-  getItem(id: string): BaseItem | undefined {
+  getItem<T extends BaseItem>(id: string): BaseItem | undefined {
     return configurationStore.get('items')[id];
   }
 
@@ -159,22 +161,24 @@ class ConfigurationService {
     return this.getItem(id) as Application;
   }
 
-  getApplicationInstances(id: string): Instance[] {
+  getApplicationInstances(id: string): EnrichedInstance[] {
     const application = this.getItemOrThrow(id);
     if (!isApplication(application)) {
       throw new Error(`Item with id ${id} is not an application`);
     }
-    return Object.values(configurationStore.get('items')).filter(
-      (item) => isInstance(item) && item.parentApplicationId === id
-    ) as Instance[];
+    return Object.values(configurationStore.get('items'))
+      .filter((item) => isInstance(item) && item.parentApplicationId === id)
+      .map((item) => this.enrichInstance(<Instance>item));
   }
 
   /**
    * Instance operations
    */
 
-  getInstances(): Instance[] {
-    return Object.values(configurationStore.get('items')).filter(isInstance);
+  getInstances(): EnrichedInstance[] {
+    return Object.values(configurationStore.get('items'))
+      .filter(isInstance)
+      .map((instance) => this.enrichInstance(instance));
   }
 
   getInstancesForDataCollection(): Instance[] {
@@ -197,7 +201,7 @@ class ConfigurationService {
     });
   }
 
-  createInstance(instance: Omit<Instance, 'id' | 'type'>): Instance {
+  createInstance(instance: Omit<Instance, 'id' | 'type'>): EnrichedInstance {
     const id = this.generateId();
     const newInstance: Instance = {
       ...instance,
@@ -205,16 +209,16 @@ class ConfigurationService {
       id,
     };
     configurationStore.set(`items.${id}`, newInstance);
-    return this.getItem(id) as Instance;
+    return this.enrichInstance(this.getItem(id) as Instance);
   }
 
-  updateInstance(id: string, instance: Omit<Instance, 'id' | 'type'>): Instance {
+  updateInstance(id: string, instance: Omit<Instance, 'id' | 'type'>): EnrichedInstance {
     const target = this.getItemOrThrow(id);
     if (!isInstance(target)) {
       throw new Error(`Item with id ${id} is not an instance`);
     }
     configurationStore.set(`items.${id}`, instance);
-    return this.getItem(id) as Instance;
+    return this.enrichInstance(this.getItem(id) as Instance);
   }
 
   deleteInstance(id: string): void {
@@ -225,7 +229,7 @@ class ConfigurationService {
     configurationStore.delete(`items.${id}` as any);
   }
 
-  moveInstance(id: string, newParentApplicationId: string, newOrder: number): Instance {
+  moveInstance(id: string, newParentApplicationId: string, newOrder: number): EnrichedInstance {
     const target = this.getItemOrThrow(id);
     if (!isInstance(target)) {
       throw new Error(`Item with id ${id} is not an instance`);
@@ -236,12 +240,22 @@ class ConfigurationService {
     }
     configurationStore.set(`items.${id}.parentApplicationId`, newParentApplicationId);
     configurationStore.set(`items.${id}.order`, newOrder);
-    return this.getItem(id) as Instance;
+    return this.enrichInstance(this.getItem(id) as Instance);
   }
 
   /**
    * Misc
    */
+
+  private enrichInstance(instance: Instance): EnrichedInstance {
+    const effectiveColor = instance.color ?? this.getItem(instance.parentApplicationId)?.color;
+    const healthStatus: InstanceHealthStatus = 'UP';
+    return {
+      ...instance,
+      effectiveColor,
+      healthStatus,
+    };
+  }
 
   private generateId(): string {
     let id = uuidv4();
