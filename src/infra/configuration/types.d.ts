@@ -1,11 +1,13 @@
 import {
   Application,
   BaseItem,
-  Configuration, EnrichedApplication, EnrichedFolder,
+  Configuration,
+  EnrichedApplication,
+  EnrichedFolder,
   EnrichedInstance,
+  EnrichedItem,
   Folder,
-  HierarchicalItem,
-  Instance
+  Instance,
 } from './model/configuration';
 
 declare global {
@@ -14,8 +16,9 @@ declare global {
      * Generic operations
      */
     getConfiguration: () => Promise<Configuration>;
-    getItem: (id: string) => Promise<BaseItem | undefined>;
-    getItemOrThrow: (id: string) => Promise<BaseItem>;
+    getItems: () => Promise<EnrichedItem[]>;
+    getItem: (id: string) => Promise<EnrichedItem | undefined>;
+    getItemOrThrow: (id: string) => Promise<EnrichedItem>;
     itemExistsOrThrow: (id: string) => Promise<void>;
     setColor: (id: string, color?: string) => Promise<void>;
     /**
@@ -24,7 +27,7 @@ declare global {
     createFolder: (folder: Omit<Folder, 'id' | 'type'>) => Promise<EnrichedFolder>;
     updateFolder: (id: string, folder: Omit<Folder, 'id' | 'type'>) => Promise<EnrichedFolder>;
     deleteFolder: (id: string) => Promise<void>;
-    getFolderChildren: (id: string) => Promise<HierarchicalItem[]>;
+    getFolderChildren: (id: string) => Promise<Exclude<EnrichedItem, EnrichedInstance>[]>;
     moveFolder: (id: string, newParentFolderId: string, newOrder: number) => Promise<EnrichedFolder>;
     /**
      * Application operations

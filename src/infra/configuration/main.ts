@@ -36,6 +36,10 @@ ipcMain.handle('configurationService:getConfiguration', async () => {
   return configurationService.getConfiguration();
 });
 
+ipcMain.handle('configurationService:getItems', async () => {
+  return configurationService.getItems();
+});
+
 ipcMain.handle('configurationService:getItem', async (event, id) => {
   return configurationService.getItem(id);
 });

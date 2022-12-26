@@ -3,16 +3,17 @@ import {
   Application,
   BaseItem,
   Configuration,
+  EnrichedApplication,
+  EnrichedFolder,
+  EnrichedInstance,
+  EnrichedItem,
   Folder,
-  HierarchicalItem,
   Instance,
   InstanceHealthStatus,
-  EnrichedInstance,
   isApplication,
   isFolder,
   isInstance,
-  EnrichedApplication,
-  EnrichedFolder,
+  Item,
 } from './model/configuration';
 import { configurationStore } from './configurationStore';
 
@@ -24,14 +25,22 @@ class ConfigurationService {
     return configurationStore.store;
   }
 
-  getItem<T extends BaseItem>(id: string): BaseItem | undefined {
-    return configurationStore.get('items')[id];
+  getItems(): EnrichedItem[] {
+    return Object.values(configurationStore.get('items')).map((item) => this.enrichItem(item));
   }
 
-  getItemOrThrow(id: string): BaseItem {
+  getItem(id: string): EnrichedItem | undefined {
+    const item = configurationStore.get('items')[id];
+    if (!item) {
+      return undefined;
+    }
+    return this.enrichItem(item);
+  }
+
+  getItemOrThrow(id: string): EnrichedItem {
     const item = this.getItem(id);
-    if (item == null) {
-      throw new Error(`Item with id ${id} not found`);
+    if (!item) {
+      throw new Error(`Item with ID ${id} not found`);
     }
     return item;
   }
@@ -91,22 +100,14 @@ class ConfigurationService {
     configurationStore.delete(`items.${id}` as any);
   }
 
-  getFolderChildren(id: string): HierarchicalItem[] {
+  getFolderChildren(id: string): Exclude<EnrichedItem, EnrichedInstance>[] {
     const folder = this.getItemOrThrow(id);
     if (!isFolder(folder)) {
       throw new Error(`Item with id ${id} is not a folder`);
     }
     return Object.values(configurationStore.get('items'))
       .filter((item) => (isFolder(item) || isApplication(item)) && item.parentFolderId === id)
-      .map((item) => {
-        if (isFolder(item)) {
-          return this.enrichFolder(item);
-        }
-        if (isApplication(item)) {
-          return this.enrichApplication(item);
-        }
-        return item;
-      });
+      .map((item) => this.enrichItem(item)) as Exclude<EnrichedItem, EnrichedInstance>[];
   }
 
   moveFolder(id: string, newParentFolderId: string, newOrder: number): EnrichedFolder {
@@ -191,7 +192,7 @@ class ConfigurationService {
       .map((instance) => this.enrichInstance(instance));
   }
 
-  getInstancesForDataCollection(): Instance[] {
+  getInstancesForDataCollection(): EnrichedInstance[] {
     return this.getInstances().filter((instance) => {
       const { dataCollectionMode } = instance;
       switch (dataCollectionMode) {
@@ -257,6 +258,19 @@ class ConfigurationService {
    * Misc
    */
 
+  private enrichItem(item: BaseItem): EnrichedItem {
+    if (isFolder(item)) {
+      return this.enrichFolder(item);
+    }
+    if (isApplication(item)) {
+      return this.enrichApplication(item);
+    }
+    if (isInstance(item)) {
+      return this.enrichInstance(item);
+    }
+    throw new Error(`Unknown item type ${item.type}`);
+  }
+
   private enrichInstance(instance: Instance): EnrichedInstance {
     const effectiveColor = this.getInstanceEffectiveColor(instance);
     const healthStatus: InstanceHealthStatus = 'UP';
@@ -268,7 +282,7 @@ class ConfigurationService {
   }
 
   private enrichApplication(application: Application): EnrichedApplication {
-    const effectiveColor = this.getHierarchicalItemEffectiveColor(application);
+    const effectiveColor = this.getApplicationEffectiveColor(application);
     return {
       ...application,
       effectiveColor,
@@ -276,7 +290,7 @@ class ConfigurationService {
   }
 
   private enrichFolder(folder: Folder): EnrichedFolder {
-    const effectiveColor = this.getHierarchicalItemEffectiveColor(folder);
+    const effectiveColor = this.getFolderEffectiveColor(folder);
     return {
       ...folder,
       effectiveColor,
@@ -286,15 +300,24 @@ class ConfigurationService {
   private getInstanceEffectiveColor(instance: Instance): string | undefined {
     return (
       instance.color ??
-      this.getHierarchicalItemEffectiveColor(<Application>this.getItemOrThrow(instance.parentApplicationId))
+      this.getApplicationEffectiveColor(<Application>this.getItemOrThrow(instance.parentApplicationId))
     );
   }
 
-  private getHierarchicalItemEffectiveColor(item: HierarchicalItem): string | undefined {
-    if (!item.parentFolderId) {
-      return item.color;
+  private getApplicationEffectiveColor(application: Application): string | undefined {
+    if (!application.parentFolderId) {
+      return application.color;
     }
-    return item.color ?? this.getHierarchicalItemEffectiveColor(<Folder>this.getItemOrThrow(item.parentFolderId));
+    return (
+      application.color ?? this.getFolderEffectiveColor(<EnrichedFolder>this.getItemOrThrow(application.parentFolderId))
+    );
+  }
+
+  private getFolderEffectiveColor(folder: Folder): string | undefined {
+    if (!folder.parentFolderId) {
+      return folder.color;
+    }
+    return folder.color ?? this.getFolderEffectiveColor(<EnrichedFolder>this.getItemOrThrow(folder.parentFolderId));
   }
 
   private generateId(): string {

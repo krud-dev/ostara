@@ -2,11 +2,13 @@ import { ipcRenderer } from 'electron';
 import {
   Application,
   BaseItem,
-  Configuration, EnrichedApplication, EnrichedFolder,
+  Configuration,
+  EnrichedApplication,
+  EnrichedFolder,
   EnrichedInstance,
+  EnrichedItem,
   Folder,
-  HierarchicalItem,
-  Instance
+  Instance,
 } from './model/configuration';
 
 export const configurationStoreBridge = {
@@ -37,10 +39,13 @@ export const configurationServiceBridge: ConfigurationServiceBridge = {
   /**
    * Generic operations
    */
-  getItem(id: string): Promise<BaseItem | undefined> {
+  getItem(id: string): Promise<EnrichedItem | undefined> {
     return ipcRenderer.invoke('configurationService:getItem', id);
   },
-  getItemOrThrow(id: string): Promise<BaseItem> {
+  getItems(): Promise<EnrichedItem[]> {
+    return ipcRenderer.invoke('configurationService:getItems');
+  },
+  getItemOrThrow(id: string): Promise<EnrichedItem> {
     return ipcRenderer.invoke('configurationService:getItemOrThrow', id);
   },
   itemExistsOrThrow(id: string): Promise<void> {
@@ -61,7 +66,7 @@ export const configurationServiceBridge: ConfigurationServiceBridge = {
   deleteFolder(id: string): Promise<void> {
     return ipcRenderer.invoke('configurationService:deleteFolder', id);
   },
-  getFolderChildren(id: string): Promise<HierarchicalItem[]> {
+  getFolderChildren(id: string): Promise<Exclude<EnrichedItem, EnrichedInstance>[]> {
     return ipcRenderer.invoke('configurationService:getFolderChildren', id);
   },
   moveFolder(id: string, newParentFolderId: string, newOrder: number): Promise<EnrichedFolder> {
