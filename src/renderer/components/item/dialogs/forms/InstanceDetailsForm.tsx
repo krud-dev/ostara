@@ -4,8 +4,9 @@ import { Controller, useForm } from 'react-hook-form';
 import { Box, Button, DialogActions, DialogContent, TextField } from '@mui/material';
 import { useModal } from '@ebay/nice-modal-react';
 import { LoadingButton } from '@mui/lab';
-import { useGetActuatorUrlHealth } from 'renderer/apis/actuator/instance/getActuatorUrlHealth';
 import { useSnackbar } from 'notistack';
+import { useTestActuatorUrlConnection } from 'renderer/apis/actuator/instance/testActuatorUrlConnection';
+import { getErrorMessage } from 'renderer/utils/errorUtils';
 
 export type InstanceDetailsFormProps = {
   defaultValues?: InstanceFormValues;
@@ -37,21 +38,23 @@ const InstanceDetailsForm: FunctionComponent<InstanceDetailsFormProps> = ({
     onCancel();
   }, [modal]);
 
-  const getActuatorHealthState = useGetActuatorUrlHealth();
+  const testConnectionState = useTestActuatorUrlConnection();
   const actuatorUrl = watch('actuatorUrl');
 
   const testConnectionHandler = useCallback(async (): Promise<void> => {
     try {
-      const result = await getActuatorHealthState.mutateAsync({ actuatorUrl });
-      if (result.status === 'UP') {
-        enqueueSnackbar(<FormattedMessage id="testConnectionToInstanceHealthy" />, { variant: 'success' });
+      const result = await testConnectionState.mutateAsync({ actuatorUrl });
+      if (result.success) {
+        enqueueSnackbar(<FormattedMessage id="testConnectionToInstanceSuccess" />, { variant: 'success' });
       } else {
-        enqueueSnackbar(<FormattedMessage id="testConnectionToInstanceUnhealthy" />, { variant: 'warning' });
+        enqueueSnackbar(<TestConnectionError message={result.statusText} statusCode={result.statusCode} />, {
+          variant: 'error',
+        });
       }
     } catch (e) {
-      enqueueSnackbar(<FormattedMessage id="testConnectionToInstanceFailed" />, { variant: 'error' });
+      enqueueSnackbar(<TestConnectionError message={getErrorMessage(e)} />, { variant: 'error' });
     }
-  }, [getActuatorHealthState, actuatorUrl]);
+  }, [testConnectionState, actuatorUrl]);
 
   return (
     <>
@@ -113,7 +116,7 @@ const InstanceDetailsForm: FunctionComponent<InstanceDetailsFormProps> = ({
         <LoadingButton
           variant="text"
           color="primary"
-          loading={getActuatorHealthState.isLoading}
+          loading={testConnectionState.isLoading}
           onClick={testConnectionHandler}
         >
           <FormattedMessage id={'testConnection'} />
@@ -129,5 +132,35 @@ const InstanceDetailsForm: FunctionComponent<InstanceDetailsFormProps> = ({
     </>
   );
 };
-
 export default InstanceDetailsForm;
+
+type TestConnectionErrorProps = {
+  message?: string;
+  statusCode?: number;
+};
+
+const TestConnectionError: FunctionComponent<TestConnectionErrorProps> = ({
+  message,
+  statusCode,
+}: TestConnectionErrorProps) => {
+  return (
+    <>
+      <FormattedMessage id="testConnectionToInstanceFailed" />
+      {'.'}
+      {statusCode && (
+        <>
+          {' '}
+          <FormattedMessage id={'statusCode'} />
+          {`: ${statusCode}.`}
+        </>
+      )}
+      {message && (
+        <>
+          {' '}
+          <FormattedMessage id={'message'} />
+          {`: ${message}.`}
+        </>
+      )}
+    </>
+  );
+};
