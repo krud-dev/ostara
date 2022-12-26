@@ -5,9 +5,11 @@ import { ActuatorMetricResponse, ActuatorMetricsResponse } from './model/metrics
 import { ActuatorEnvPropertyResponse, ActuatorEnvResponse } from './model/env';
 import { ActuatorThreadDumpResponse } from './model/threadDump';
 import { ActuatorLoggerResponse, ActuatorLoggersResponse } from './model/loggers';
+import { ActuatorTestConnectionResponse } from './model/base';
 
 declare global {
   type ActuatorBridge = {
+    testConnection: (url: string) => Promise<ActuatorTestConnectionResponse>;
     health: (url: string) => Promise<ActuatorHealthResponse>;
     healthComponent: <T>(url: string, name: string) => Promise<ActuatorHealthComponentResponse<T>>;
     info: (url: string) => Promise<ActuatorInfoResponse>;

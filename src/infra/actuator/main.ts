@@ -1,6 +1,10 @@
 import { ipcMain } from 'electron';
 import { ActuatorClient } from './actuatorClient';
 
+ipcMain.handle('actuator:testConnection', async (event, url) => {
+  const client = new ActuatorClient(url);
+  return client.testConnection();
+});
 ipcMain.handle('actuator:health', async (event, url) => {
   const client = new ActuatorClient(url);
   return client.health();

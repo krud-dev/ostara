@@ -25,6 +25,7 @@ module.exports = {
     'object-shorthand': 'off',
     'import/order': 'off',
     'import/prefer-default-export': 'off',
+    'no-underscore-dangle': 'off',
   },
   parserOptions: {
     ecmaVersion: 2020,

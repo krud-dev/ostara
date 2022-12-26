@@ -1,4 +1,5 @@
 import axios, { Axios } from 'axios';
+import log from 'electron-log';
 import { ActuatorHealthComponentResponse, ActuatorHealthResponse } from './model/health';
 import { ActuatorInfoResponse } from './model/info';
 import { ActuatorCacheResponse, ActuatorCachesResponse } from './model/caches';
@@ -6,6 +7,7 @@ import { ActuatorMetricResponse, ActuatorMetricsResponse } from './model/metrics
 import { ActuatorEnvPropertyResponse, ActuatorEnvResponse } from './model/env';
 import { ActuatorLoggerResponse, ActuatorLoggersResponse, ActuatorLogLevel } from './model/loggers';
 import { ActuatorThreadDumpResponse } from './model/threadDump';
+import { ActuatorMainResponse, ActuatorTestConnectionResponse } from './model/base';
 
 export class ActuatorClient {
   readonly axios: Axios;
@@ -15,6 +17,39 @@ export class ActuatorClient {
     this.axios = axios.create({
       baseURL: url,
     });
+  }
+
+  async testConnection(): Promise<ActuatorTestConnectionResponse> {
+    const response = await this.axios.get('');
+    try {
+      const data = <ActuatorMainResponse>response.data;
+      if (data._links && data._links.health) {
+        return {
+          statusCode: response.status,
+          statusText: response.statusText,
+          success: true,
+        };
+      }
+      return {
+        statusCode: response.status,
+        statusText: 'Did not receive expected response from an actuator endpoint',
+        success: false,
+      };
+    } catch (e: unknown) {
+      if (axios.isAxiosError(e)) {
+        return {
+          statusCode: e.response?.status ?? 0,
+          statusText: e.response?.statusText ?? '',
+          success: false,
+        };
+      }
+      log.error("Couldn't parse actuator response", e);
+      return {
+        statusCode: 0,
+        statusText: 'Unknown error',
+        success: false,
+      };
+    }
   }
 
   /**
