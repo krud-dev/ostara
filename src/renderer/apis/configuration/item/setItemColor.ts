@@ -1,4 +1,5 @@
 import { BaseMutationOptions, BaseUseMutationResult, useBaseMutation } from 'renderer/apis/base/useBaseMutation';
+import { configurationKeys } from 'renderer/apis/configuration/configurationKeys';
 
 type Variables = {
   id: string;
@@ -16,5 +17,5 @@ export const useSetItemColor = (
 ): BaseUseMutationResult<Data, Variables> =>
   useBaseMutation<Data, Variables>(setItemColor, {
     ...options,
-    invalidateQueriesKeyFn: (data, variables) => ['configuration'],
+    invalidateQueriesKeyFn: (data, variables) => configurationKeys.items(),
   });

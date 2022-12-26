@@ -1,6 +1,7 @@
 import { BaseQueryOptions, BaseUseQueryResult, useBaseQuery } from '../base/useBaseQuery';
 import { Configuration } from 'infra/configuration/model/configuration';
 import { BaseMutationOptions, BaseUseMutationResult, useBaseMutation } from 'renderer/apis/base/useBaseMutation';
+import { configurationKeys } from 'renderer/apis/configuration/configurationKeys';
 
 type Variables = {};
 
@@ -17,4 +18,5 @@ export const useGetConfiguration = (
 export const useGetConfigurationQuery = (
   variables: Variables,
   options?: BaseQueryOptions<Data, Variables>
-): BaseUseQueryResult<Data> => useBaseQuery<Data, Variables>(['configuration'], getConfiguration, variables, options);
+): BaseUseQueryResult<Data> =>
+  useBaseQuery<Data, Variables>(configurationKeys.configuration(), getConfiguration, variables, options);

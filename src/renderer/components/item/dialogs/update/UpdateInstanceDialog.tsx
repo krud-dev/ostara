@@ -3,13 +3,13 @@ import React, { FunctionComponent, useCallback } from 'react';
 import { Dialog } from '@mui/material';
 import NiceModal, { NiceModalHocProps, useModal } from '@ebay/nice-modal-react';
 import DialogTitleEnhanced from 'renderer/components/dialog/DialogTitleEnhanced';
-import { Instance } from 'infra/configuration/model/configuration';
+import { EnrichedInstance, Instance } from 'infra/configuration/model/configuration';
 import InstanceDetailsForm, { InstanceFormValues } from 'renderer/components/item/dialogs/forms/InstanceDetailsForm';
 import { useUpdateInstance } from 'renderer/apis/configuration/instance/updateInstance';
 
 export type UpdateInstanceDialogProps = {
   item: Instance;
-  onUpdated?: (item: Instance) => void;
+  onUpdated?: (item: EnrichedInstance) => void;
 };
 
 const UpdateInstanceDialog: FunctionComponent<UpdateInstanceDialogProps & NiceModalHocProps> = NiceModal.create(

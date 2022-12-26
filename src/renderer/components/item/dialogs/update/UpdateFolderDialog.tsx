@@ -3,19 +3,14 @@ import React, { FunctionComponent, useCallback } from 'react';
 import { Dialog } from '@mui/material';
 import NiceModal, { NiceModalHocProps, useModal } from '@ebay/nice-modal-react';
 import DialogTitleEnhanced from 'renderer/components/dialog/DialogTitleEnhanced';
-import { Application, Folder, Instance } from 'infra/configuration/model/configuration';
-import InstanceDetailsForm, { InstanceFormValues } from 'renderer/components/item/dialogs/forms/InstanceDetailsForm';
-import { useUpdateInstance } from 'renderer/apis/configuration/instance/updateInstance';
-import { useUpdateApplication } from 'renderer/apis/configuration/application/updateApplication';
-import ApplicationDetailsForm, {
-  ApplicationFormValues,
-} from 'renderer/components/item/dialogs/forms/ApplicationDetailsForm';
+import { EnrichedFolder, Folder } from 'infra/configuration/model/configuration';
+import ApplicationDetailsForm from 'renderer/components/item/dialogs/forms/ApplicationDetailsForm';
 import { useUpdateFolder } from 'renderer/apis/configuration/folder/updateFolder';
 import { FolderFormValues } from 'renderer/components/item/dialogs/forms/FolderDetailsForm';
 
 export type UpdateFolderDialogProps = {
   item: Folder;
-  onUpdated?: (item: Folder) => void;
+  onUpdated?: (item: EnrichedFolder) => void;
 };
 
 const UpdateFolderDialog: FunctionComponent<UpdateFolderDialogProps & NiceModalHocProps> = NiceModal.create(

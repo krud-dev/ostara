@@ -3,7 +3,7 @@ import React, { FunctionComponent, useCallback } from 'react';
 import { Dialog } from '@mui/material';
 import NiceModal, { NiceModalHocProps, useModal } from '@ebay/nice-modal-react';
 import DialogTitleEnhanced from 'renderer/components/dialog/DialogTitleEnhanced';
-import { Application } from 'infra/configuration/model/configuration';
+import { Application, EnrichedApplication } from 'infra/configuration/model/configuration';
 import { useUpdateApplication } from 'renderer/apis/configuration/application/updateApplication';
 import ApplicationDetailsForm, {
   ApplicationFormValues,
@@ -11,7 +11,7 @@ import ApplicationDetailsForm, {
 
 export type UpdateApplicationDialogProps = {
   item: Application;
-  onUpdated?: (item: Application) => void;
+  onUpdated?: (item: EnrichedApplication) => void;
 };
 
 const UpdateApplicationDialog: FunctionComponent<UpdateApplicationDialogProps & NiceModalHocProps> = NiceModal.create(

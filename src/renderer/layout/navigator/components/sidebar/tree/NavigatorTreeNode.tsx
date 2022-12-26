@@ -13,6 +13,7 @@ import InstanceContextMenu from 'renderer/layout/navigator/components/sidebar/tr
 import ApplicationContextMenu from 'renderer/layout/navigator/components/sidebar/tree/menus/ApplicationContextMenu';
 import { SxProps } from '@mui/system';
 import { matchPath, useLocation, useNavigate } from 'react-router-dom';
+import useItemColor from 'renderer/hooks/useItemColor';
 
 type NavigatorTreeNodeProps = NodeRendererProps<TreeItem>;
 
@@ -129,13 +130,13 @@ export default function NavigatorTreeNode({ style, node, tree, dragHandle, previ
     [node]
   );
 
+  const color = useItemColor(node.data);
   const TypeIcon = useMemo<SvgIconComponent>(() => getItemTypeIcon(node.data.type), [node.data]);
   const ToggleIcon = useMemo<SvgIconComponent>(
     () => (node.isOpen ? KeyboardArrowDown : KeyboardArrowRight),
     [node.isOpen]
   );
   const showToggle = useMemo<boolean>(() => isFolder(node.data) || isApplication(node.data), [node.data]);
-  const color = useMemo<string>(() => node.data.color || theme.palette.text.secondary, [node.data, theme.palette]);
   const isSelected = useMemo<boolean>(
     () => matchPath({ path: getItemUrl(node.data), end: false }, pathname) !== null,
     [node.data, pathname]
@@ -256,7 +257,7 @@ export default function NavigatorTreeNode({ style, node, tree, dragHandle, previ
                 if (e.key === 'Enter') node.submit(e.currentTarget.value);
               },
               sx: {
-                height: NAVIGATOR_ITEM_HEIGHT - 6,
+                height: NAVIGATOR_ITEM_HEIGHT - 8,
                 fontSize: '12px',
               },
             }}

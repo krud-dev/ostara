@@ -1,12 +1,13 @@
-import { Folder } from 'infra/configuration/model/configuration';
+import { EnrichedFolder, Folder } from 'infra/configuration/model/configuration';
 import { BaseMutationOptions, BaseUseMutationResult, useBaseMutation } from 'renderer/apis/base/useBaseMutation';
+import { configurationKeys } from 'renderer/apis/configuration/configurationKeys';
 
 type Variables = {
   id: string;
   item: Omit<Folder, 'id' | 'type'>;
 };
 
-type Data = Folder;
+type Data = EnrichedFolder;
 
 export const updateFolder = async (variables: Variables): Promise<Data> => {
   return await window.configuration.updateFolder(variables.id, variables.item);
@@ -17,5 +18,5 @@ export const useUpdateFolder = (
 ): BaseUseMutationResult<Data, Variables> =>
   useBaseMutation<Data, Variables>(updateFolder, {
     ...options,
-    invalidateQueriesKeyFn: (data, variables) => ['configuration'],
+    invalidateQueriesKeyFn: (data, variables) => configurationKeys.items(),
   });

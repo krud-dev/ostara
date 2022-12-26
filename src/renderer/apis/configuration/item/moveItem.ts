@@ -1,5 +1,6 @@
 import { BaseMutationOptions, BaseUseMutationResult, useBaseMutation } from 'renderer/apis/base/useBaseMutation';
-import { Item } from 'infra/configuration/model/configuration';
+import { EnrichedItem } from 'infra/configuration/model/configuration';
+import { configurationKeys } from 'renderer/apis/configuration/configurationKeys';
 
 type Variables = {
   id: string;
@@ -8,9 +9,9 @@ type Variables = {
   order: number;
 };
 
-type Data = Item;
+type Data = EnrichedItem;
 
-export const moveItem = async (variables: Variables): Promise<Item> => {
+export const moveItem = async (variables: Variables): Promise<Data> => {
   switch (variables.type) {
     case 'folder':
       return await window.configuration.moveFolder(variables.id, variables.parentId, variables.order);
@@ -29,5 +30,5 @@ export const moveItem = async (variables: Variables): Promise<Item> => {
 export const useMoveItem = (options?: BaseMutationOptions<Data, Variables>): BaseUseMutationResult<Data, Variables> =>
   useBaseMutation<Data, Variables>(moveItem, {
     ...options,
-    invalidateQueriesKeyFn: (data, variables) => ['configuration'],
+    invalidateQueriesKeyFn: (data, variables) => configurationKeys.items(),
   });

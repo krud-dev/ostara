@@ -3,14 +3,14 @@ import React, { FunctionComponent, useCallback } from 'react';
 import { Dialog } from '@mui/material';
 import NiceModal, { NiceModalHocProps, useModal } from '@ebay/nice-modal-react';
 import DialogTitleEnhanced from 'renderer/components/dialog/DialogTitleEnhanced';
-import { Folder } from 'infra/configuration/model/configuration';
+import { EnrichedFolder, Folder } from 'infra/configuration/model/configuration';
 import { useCreateFolder } from 'renderer/apis/configuration/folder/createFolder';
 import FolderDetailsForm, { FolderFormValues } from 'renderer/components/item/dialogs/forms/FolderDetailsForm';
 
 export type CreateFolderDialogProps = {
   parentFolderId?: string;
   order?: number;
-  onCreated?: (item: Folder) => void;
+  onCreated?: (item: EnrichedFolder) => void;
 };
 
 const CreateFolderDialog: FunctionComponent<CreateFolderDialogProps & NiceModalHocProps> = NiceModal.create(

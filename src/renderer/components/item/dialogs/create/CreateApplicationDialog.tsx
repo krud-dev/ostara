@@ -3,7 +3,7 @@ import React, { FunctionComponent, useCallback } from 'react';
 import { Dialog } from '@mui/material';
 import NiceModal, { NiceModalHocProps, useModal } from '@ebay/nice-modal-react';
 import DialogTitleEnhanced from 'renderer/components/dialog/DialogTitleEnhanced';
-import { Application } from 'infra/configuration/model/configuration';
+import { Application, EnrichedApplication } from 'infra/configuration/model/configuration';
 import { useCreateApplication } from 'renderer/apis/configuration/application/createApplication';
 import ApplicationDetailsForm, {
   ApplicationFormValues,
@@ -12,7 +12,7 @@ import ApplicationDetailsForm, {
 export type CreateApplicationDialogProps = {
   parentFolderId?: string;
   order?: number;
-  onCreated?: (item: Application) => void;
+  onCreated?: (item: EnrichedApplication) => void;
 };
 
 const CreateApplicationDialog: FunctionComponent<CreateApplicationDialogProps & NiceModalHocProps> = NiceModal.create(

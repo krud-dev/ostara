@@ -1,24 +1,22 @@
 import { SvgIconComponent } from '@mui/icons-material';
 import React, { useCallback, useMemo, useRef, useState } from 'react';
-import { isApplication, isFolder, isInstance, Item } from 'infra/configuration/model/configuration';
+import { EnrichedItem, isApplication, isFolder, isInstance } from 'infra/configuration/model/configuration';
 import { Avatar, Box, IconButton, Typography } from '@mui/material';
-import { useTheme } from '@mui/material/styles';
 import { getItemTypeIcon } from 'renderer/utils/itemUtils';
 import { NAVIGATOR_ITEM_HEIGHT } from 'renderer/constants/ui';
 import FolderContextMenu from 'renderer/layout/navigator/components/sidebar/tree/menus/FolderContextMenu';
 import ApplicationContextMenu from 'renderer/layout/navigator/components/sidebar/tree/menus/ApplicationContextMenu';
 import InstanceContextMenu from 'renderer/layout/navigator/components/sidebar/tree/menus/InstanceContextMenu';
+import useItemColor from 'renderer/hooks/useItemColor';
 
-type InstanceSidebarProps = { item: Item };
+type ItemHeaderProps = { item: EnrichedItem };
 
-export default function ItemHeader({ item }: InstanceSidebarProps) {
-  const theme = useTheme();
-
+export default function ItemHeader({ item }: ItemHeaderProps) {
   const menuAnchorRef = useRef<HTMLButtonElement | null>(null);
   const [menuOpen, setMenuOpen] = useState<boolean>(false);
 
+  const color = useItemColor(item);
   const TypeIcon = useMemo<SvgIconComponent>(() => getItemTypeIcon(item.type), [item]);
-  const color = useMemo<string>(() => item.color || theme.palette.text.secondary, [item, theme.palette]);
 
   const openMenuHandler = useCallback(
     (event: React.MouseEvent): void => {

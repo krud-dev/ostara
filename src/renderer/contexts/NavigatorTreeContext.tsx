@@ -7,18 +7,18 @@ import React, {
   useMemo,
   useState,
 } from 'react';
-import { useGetConfigurationQuery } from 'renderer/apis/configuration/getConfiguration';
-import { Configuration, Instance, isInstance, Item } from 'infra/configuration/model/configuration';
+import { EnrichedItem, isInstance, Item } from 'infra/configuration/model/configuration';
 import { TreeItem } from 'renderer/layout/navigator/components/sidebar/tree/tree';
 import { forEach } from 'lodash';
 import { useNavigate, useParams } from 'react-router-dom';
 import { urls } from 'renderer/routes/urls';
+import { useGetItemsQuery } from 'renderer/apis/configuration/item/getItems';
 
 type NavigatorTreeAction = 'expandAll' | 'collapseAll';
 
 export type NavigatorTreeContextProps = {
   data: TreeItem[] | undefined;
-  selectedItem: Item | undefined;
+  selectedItem: EnrichedItem | undefined;
   isLoading: boolean;
   isEmpty: boolean;
   hasData: boolean;
@@ -43,18 +43,18 @@ const NavigatorTreeProvider: FunctionComponent<NavigatorTreeProviderProps> = ({ 
   const isEmpty = useMemo<boolean>(() => data?.length === 0, [data]);
   const hasData = useMemo<boolean>(() => !!data && data.length > 0, [data]);
 
-  const configurationState = useGetConfigurationQuery({});
+  const getItemsState = useGetItemsQuery({});
 
-  const buildTree = useCallback((configuration: Configuration): TreeItem[] => {
-    const sortByOrder = (items: Item[]) => items.sort((a, b) => (a.order ?? 0) - (b.order ?? 0));
+  const buildTree = useCallback((items: EnrichedItem[]): TreeItem[] => {
+    const sortByOrder = (itemsToSort: EnrichedItem[]) => itemsToSort.sort((a, b) => (a.order ?? 0) - (b.order ?? 0));
 
     const hashMap = new Map<string, TreeItem>();
-    forEach(configuration.items, (item) => {
+    forEach(items, (item) => {
       hashMap.set(item.id, { ...item, children: [] });
     });
 
     const dataTree: TreeItem[] = [];
-    forEach(configuration.items, (item) => {
+    forEach(items, (item) => {
       if (isInstance(item)) {
         const treeItem = hashMap.get(item.id);
         if (treeItem) {
@@ -85,18 +85,18 @@ const NavigatorTreeProvider: FunctionComponent<NavigatorTreeProviderProps> = ({ 
   }, []);
 
   useEffect(() => {
-    const result = configurationState.data;
+    const result = getItemsState.data;
     if (result) {
       setData(buildTree(result));
 
       if (params.id) {
-        const item = result.items?.[params.id];
+        const item = result.find((i) => i.id === params.id);
         if (!item) {
           navigate(urls.home.url);
         }
       }
     }
-  }, [configurationState.data]);
+  }, [getItemsState.data]);
 
   const performAction = useCallback((actionToPerform: NavigatorTreeAction) => {
     setAction(actionToPerform);
@@ -109,17 +109,17 @@ const NavigatorTreeProvider: FunctionComponent<NavigatorTreeProviderProps> = ({ 
   }, [action]);
 
   const getItem = useCallback(
-    (id: string): Item | undefined => {
-      return configurationState.data?.items?.[id];
+    (id: string): EnrichedItem | undefined => {
+      return getItemsState.data?.find((i) => i.id === id);
     },
-    [configurationState.data]
+    [getItemsState.data]
   );
 
   const reloadTree = useCallback(async (): Promise<void> => {
-    await configurationState.refetch();
+    await getItemsState.refetch();
   }, []);
 
-  const selectedItem = useMemo<Item | undefined>(() => {
+  const selectedItem = useMemo<EnrichedItem | undefined>(() => {
     if (!params.id) {
       return undefined;
     }
@@ -128,7 +128,7 @@ const NavigatorTreeProvider: FunctionComponent<NavigatorTreeProviderProps> = ({ 
       return undefined;
     }
     return item;
-  }, [configurationState.data, params.id]);
+  }, [getItemsState.data, params.id]);
 
   return (
     <NavigatorTreeContext.Provider
