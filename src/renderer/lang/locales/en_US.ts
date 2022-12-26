@@ -1,6 +1,9 @@
 export default {
   lightMode: 'Light Mode',
   darkMode: 'Dark Mode',
+  developerMode: 'Developer Mode',
+  on: 'On',
+  off: 'Off',
   createFolder: 'Create Folder',
   createApplication: 'Create Application',
   createInstance: 'Create Instance',
@@ -43,4 +46,7 @@ export default {
   testConnectionToInstanceHealthy: 'Connection to instance is healthy',
   testConnectionToInstanceFailed: 'Connection to instance failed',
   testConnectionToInstanceUnhealthy: 'Connection to instance is unhealthy',
+  copyToClipboardSuccess: 'Copied to clipboard',
+  copyToClipboardFailed: 'Failed to copy to clipboard',
+  copyId: 'Copy ID',
 };

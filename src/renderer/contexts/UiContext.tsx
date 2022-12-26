@@ -4,6 +4,8 @@ import { LocaleInfo } from 'renderer/lang/lang';
 import locales from 'renderer/lang';
 
 export type UiContextProps = {
+  developerMode: boolean;
+  toggleDeveloperMode: () => void;
   darkMode: boolean;
   toggleDarkMode: () => void;
   localeInfo: LocaleInfo;
@@ -15,12 +17,17 @@ const UiContext = React.createContext<UiContextProps>(undefined!);
 interface UiProviderProps extends PropsWithChildren<any> {}
 
 const UiProvider: FunctionComponent<UiProviderProps> = ({ children }) => {
+  const [developerMode, setDeveloperMode] = useConfigurationStoreState<boolean>('developerMode', false);
   const [darkMode, setDarkMode] = useConfigurationStoreState<boolean>('darkMode', true);
   const [locale, setLocaleInternal] = useConfigurationStoreState<string>('locale', 'en');
   const localeInfo = useMemo<LocaleInfo>(() => locales[locale], [locale]);
 
+  const toggleDeveloperMode = useCallback((): void => {
+    setDeveloperMode((prev) => !prev);
+  }, [setDeveloperMode]);
+
   const toggleDarkMode = useCallback((): void => {
-    setDarkMode((currentDarkMode) => !currentDarkMode);
+    setDarkMode((prev) => !prev);
   }, [setDarkMode]);
 
   const setLocale = useCallback(
@@ -35,6 +42,8 @@ const UiProvider: FunctionComponent<UiProviderProps> = ({ children }) => {
   return (
     <UiContext.Provider
       value={{
+        developerMode,
+        toggleDeveloperMode,
         darkMode,
         toggleDarkMode,
         localeInfo,

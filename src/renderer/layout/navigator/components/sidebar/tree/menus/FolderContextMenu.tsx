@@ -8,6 +8,7 @@ import AddApplicationMenuItem from 'renderer/layout/navigator/components/sidebar
 import AddFolderMenuItem from 'renderer/layout/navigator/components/sidebar/tree/menus/items/AddFolderMenuItem';
 import ChooseColorMenuItem from 'renderer/layout/navigator/components/sidebar/tree/menus/items/ChooseColorMenuItem';
 import UpdateMenuItem from 'renderer/layout/navigator/components/sidebar/tree/menus/items/UpdateMenuItem';
+import CopyIdToClipboardMenuItem from 'renderer/layout/navigator/components/sidebar/tree/menus/items/CopyIdToClipboardMenuItem';
 
 export default function FolderContextMenu({
   item,
@@ -30,6 +31,7 @@ export default function FolderContextMenu({
       )}
       <ChooseColorMenuItem item={item} onClose={onClose} />
       <Divider />
+      <CopyIdToClipboardMenuItem item={item} onClose={onClose} />
       <UpdateMenuItem item={item} onClose={onClose} />
       <RenameMenuItem item={item} node={node} onClose={onClose} />
       <DeleteMenuItem item={item} onClose={onClose} />

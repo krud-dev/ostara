@@ -123,6 +123,7 @@
     "allotment": "^1.17.1",
     "apexcharts": "^3.36.3",
     "axios": "^1.2.1",
+    "copy-to-clipboard": "^3.3.3",
     "date-fns": "^2.29.3",
     "electron-debug": "^3.2.0",
     "electron-log": "^4.4.8",
