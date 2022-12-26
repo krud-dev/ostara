@@ -9,13 +9,12 @@ import {
   EnrichedItem,
   Folder,
   Instance,
-  InstanceHealthStatus,
   isApplication,
   isFolder,
   isInstance,
-  Item,
 } from './model/configuration';
 import { configurationStore } from './configurationStore';
+import { instanceHealthService } from '../instance/InstanceHealthService';
 
 class ConfigurationService {
   /**
@@ -229,6 +228,7 @@ class ConfigurationService {
       throw new Error(`Item with id ${id} is not an instance`);
     }
     configurationStore.set(`items.${id}`, instance);
+    instanceHealthService.invalidateInstance(id);
     return this.enrichInstance(this.getItem(id) as Instance);
   }
 
@@ -273,11 +273,11 @@ class ConfigurationService {
 
   private enrichInstance(instance: Instance): EnrichedInstance {
     const effectiveColor = this.getInstanceEffectiveColor(instance);
-    const healthStatus: InstanceHealthStatus = 'UP';
+    const health = instanceHealthService.getCachedInstanceHealth(instance);
     return {
       ...instance,
       effectiveColor,
-      healthStatus,
+      health,
     };
   }
 

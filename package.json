@@ -128,6 +128,7 @@
     "electron-store": "^8.1.0",
     "electron-updater": "^5.2.3",
     "lodash": "^4.17.21",
+    "node-cache": "^5.1.2",
     "node-schedule": "^2.1.0",
     "notistack": "^2.0.8",
     "react": "^18.2.0",

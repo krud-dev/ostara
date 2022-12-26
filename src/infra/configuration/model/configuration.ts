@@ -1,3 +1,5 @@
+import { InstanceHealth } from '../../instance/InstanceHealthService';
+
 export type ApplicationType = 'SpringBoot';
 
 export type Item = Instance | Application | Folder;
@@ -6,7 +8,7 @@ export type EnrichedItem = EnrichedInstance | EnrichedApplication | EnrichedFold
 
 export type ItemType = 'instance' | 'application' | 'folder';
 
-export type InstanceHealthStatus = 'UP' | 'DOWN' | 'UNKNOWN' | 'OUT_OF_SERVICE';
+export type InstanceHealthStatus = 'UP' | 'DOWN' | 'UNKNOWN' | 'OUT_OF_SERVICE' | 'UNREACHABLE' | 'PENDING';
 
 export type BaseItem = {
   readonly id: string;
@@ -25,7 +27,7 @@ export type Instance = BaseItem & {
 
 export type EnrichedInstance = Instance & {
   readonly effectiveColor?: string;
-  readonly healthStatus: InstanceHealthStatus;
+  readonly health: InstanceHealth;
 };
 
 export type Application = BaseItem & {

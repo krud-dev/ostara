@@ -1,16 +1,16 @@
 import { useEffect, useState } from 'react';
-import { Configuration } from '../infra/configuration/model/configuration';
+import { Configuration, EnrichedItem } from '../infra/configuration/model/configuration';
 
 function Config() {
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<string>('');
-  const [config, setConfig] = useState<Configuration | null>(null);
+  const [enrichedItems, setEnrichedItems] = useState<EnrichedItem[] | null>(null);
 
   function refreshConfig() {
     setLoading(true);
     window.configuration
-      .getConfiguration()
-      .then(setConfig)
+      .getItems()
+      .then(setEnrichedItems)
       .catch(setError)
       .finally(() => setLoading(false));
   }
@@ -26,7 +26,7 @@ function Config() {
       <button type="button" onClick={refreshConfig}>
         Refresh
       </button>
-      <pre>{JSON.stringify(config?.items, null, 2)}</pre>;
+      <pre>{JSON.stringify(enrichedItems, null, 2)}</pre>;
     </div>
   );
 }
