@@ -55,7 +55,7 @@ class ConfigurationService {
       id,
     };
     configurationStore.set(`items.${id}`, newFolder);
-    return newFolder;
+    return this.getItem(id) as Folder;
   }
 
   updateFolder(id: string, folder: Omit<Folder, 'id' | 'type'>): Folder {
@@ -64,7 +64,7 @@ class ConfigurationService {
       throw new Error(`Item with id ${id} is not a folder`);
     }
     configurationStore.set(`items.${id}`, folder);
-    return { ...folder, type: 'folder', id };
+    return this.getItem(id) as Folder;
   }
 
   deleteFolder(id: string): void {
@@ -104,7 +104,7 @@ class ConfigurationService {
     }
     configurationStore.set(`items.${id}.parentFolderId`, newParentFolderId);
     configurationStore.set(`items.${id}.order`, newOrder);
-    return { ...target, parentFolderId: newParentFolderId };
+    return this.getItem(id) as Folder;
   }
 
   /**
@@ -119,7 +119,7 @@ class ConfigurationService {
       id,
     };
     configurationStore.set(`items.${id}`, newApplication);
-    return newApplication;
+    return this.getItem(id) as Application;
   }
 
   updateApplication(id: string, application: Omit<Application, 'id' | 'type'>): Application {
@@ -128,7 +128,7 @@ class ConfigurationService {
       throw new Error(`Item with id ${id} is not an application`);
     }
     configurationStore.set(`items.${id}`, application);
-    return { ...application, type: 'application', id };
+    return this.getItem(id) as Application;
   }
 
   deleteApplication(id: string): void {
@@ -152,7 +152,7 @@ class ConfigurationService {
     }
     configurationStore.set(`items.${id}.parentFolderId`, parentFolderId);
     configurationStore.set(`items.${id}.order`, newOrder);
-    return { ...target, parentFolderId };
+    return this.getItem(id) as Application;
   }
 
   getApplicationInstances(id: string): Instance[] {
@@ -201,7 +201,7 @@ class ConfigurationService {
       id,
     };
     configurationStore.set(`items.${id}`, newInstance);
-    return newInstance;
+    return this.getItem(id) as Instance;
   }
 
   updateInstance(id: string, instance: Omit<Instance, 'id' | 'type'>): Instance {
@@ -210,7 +210,7 @@ class ConfigurationService {
       throw new Error(`Item with id ${id} is not an instance`);
     }
     configurationStore.set(`items.${id}`, instance);
-    return { ...instance, type: 'instance', id };
+    return this.getItem(id) as Instance;
   }
 
   deleteInstance(id: string): void {
@@ -232,7 +232,7 @@ class ConfigurationService {
     }
     configurationStore.set(`items.${id}.parentApplicationId`, newParentApplicationId);
     configurationStore.set(`items.${id}.order`, newOrder);
-    return { ...target, parentApplicationId: newParentApplicationId };
+    return this.getItem(id) as Instance;
   }
 
   /**
