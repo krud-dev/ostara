@@ -9,7 +9,7 @@ export type StackedTimelineWidget = BaseWidgetDefinition & {
   metrics: {
     name: string;
     title: string;
-    sort: number;
+    order: number;
     color: string;
   }[];
 };
@@ -19,7 +19,7 @@ export type DataBarWidget = BaseWidgetDefinition & {
   metrics: {
     name: string;
     title: string;
-    sort: number;
+    order: number;
   }[];
 };
 

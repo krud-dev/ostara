@@ -9,13 +9,13 @@ export const springBootWidgets = {
       {
         name: 'jvm.threads.live[VALUE]',
         title: 'Live Thread Count',
-        sort: 0,
+        order: 0,
         color: '#ff0000',
       },
       {
         name: 'jvm.threads.daemon[VALUE]',
         title: 'Daemon Thread Count',
-        sort: 1,
+        order: 1,
         color: '#00ff00',
       },
     ],
@@ -28,13 +28,13 @@ export const springBootWidgets = {
       {
         name: 'jvm.memory.used[VALUE]',
         title: 'Memory Used',
-        sort: 0,
+        order: 0,
         color: '#ff0000',
       },
       {
         name: 'jvm.memory.committed[VALUE]',
         title: 'Memory Committed',
-        sort: 1,
+        order: 1,
         color: '#00ff00',
       },
     ],
@@ -54,17 +54,17 @@ export const springBootWidgets = {
       {
         name: 'process.uptime[VALUE]',
         title: 'Uptime',
-        sort: 0,
+        order: 0,
       },
       {
         name: 'process.cpu.usage[VALUE]',
         title: 'CPU Usage',
-        sort: 1,
+        order: 1,
       },
       {
         name: 'system.cpu.count[VALUE]',
         title: 'CPU Count',
-        sort: 2,
+        order: 2,
       },
     ],
   },
