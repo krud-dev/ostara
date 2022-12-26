@@ -2,11 +2,11 @@ import { ipcRenderer } from 'electron';
 import {
   Application,
   BaseItem,
-  Configuration,
+  Configuration, EnrichedApplication, EnrichedFolder,
   EnrichedInstance,
   Folder,
   HierarchicalItem,
-  Instance,
+  Instance
 } from './model/configuration';
 
 export const configurationStoreBridge = {
@@ -52,10 +52,10 @@ export const configurationServiceBridge: ConfigurationServiceBridge = {
   /**
    * Folder operations
    */
-  createFolder(folder: Omit<Folder, 'id' | 'type'>): Promise<Folder> {
+  createFolder(folder: Omit<Folder, 'id' | 'type'>): Promise<EnrichedFolder> {
     return ipcRenderer.invoke('configurationService:createFolder', folder);
   },
-  updateFolder(id: string, folder: Omit<Folder, 'id' | 'type'>): Promise<Folder> {
+  updateFolder(id: string, folder: Omit<Folder, 'id' | 'type'>): Promise<EnrichedFolder> {
     return ipcRenderer.invoke('configurationService:updateFolder', id, folder);
   },
   deleteFolder(id: string): Promise<void> {
@@ -64,13 +64,13 @@ export const configurationServiceBridge: ConfigurationServiceBridge = {
   getFolderChildren(id: string): Promise<HierarchicalItem[]> {
     return ipcRenderer.invoke('configurationService:getFolderChildren', id);
   },
-  moveFolder(id: string, newParentFolderId: string, newOrder: number): Promise<Folder> {
+  moveFolder(id: string, newParentFolderId: string, newOrder: number): Promise<EnrichedFolder> {
     return ipcRenderer.invoke('configurationService:moveFolder', id, newParentFolderId, newOrder);
   },
   /**
    * Application operations
    */
-  createApplication(application: Omit<Application, 'id' | 'type'>): Promise<Application> {
+  createApplication(application: Omit<Application, 'id' | 'type'>): Promise<EnrichedApplication> {
     return ipcRenderer.invoke('configurationService:createApplication', application);
   },
   updateApplication(id: string, application: Omit<Application, 'id' | 'type'>) {
@@ -79,7 +79,7 @@ export const configurationServiceBridge: ConfigurationServiceBridge = {
   deleteApplication(id: string): Promise<void> {
     return ipcRenderer.invoke('configurationService:deleteApplication', id);
   },
-  moveApplication(id: string, newParentFolderId: string, newOrder: number): Promise<Application> {
+  moveApplication(id: string, newParentFolderId: string, newOrder: number): Promise<EnrichedApplication> {
     return ipcRenderer.invoke('configurationService:moveApplication', id, newParentFolderId, newOrder);
   },
   getApplicationInstances(id: string): Promise<EnrichedInstance[]> {

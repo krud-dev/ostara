@@ -11,6 +11,8 @@ import {
   isApplication,
   isFolder,
   isInstance,
+  EnrichedApplication,
+  EnrichedFolder,
 } from './model/configuration';
 import { configurationStore } from './configurationStore';
 
@@ -53,7 +55,7 @@ class ConfigurationService {
    * Folder operations
    */
 
-  createFolder(folder: Omit<Folder, 'id' | 'type'>): Folder {
+  createFolder(folder: Omit<Folder, 'id' | 'type'>): EnrichedFolder {
     const id = this.generateId();
     const newFolder: Folder = {
       ...folder,
@@ -61,16 +63,16 @@ class ConfigurationService {
       id,
     };
     configurationStore.set(`items.${id}`, newFolder);
-    return this.getItem(id) as Folder;
+    return this.enrichFolder(<Folder>this.getItem(id));
   }
 
-  updateFolder(id: string, folder: Omit<Folder, 'id' | 'type'>): Folder {
+  updateFolder(id: string, folder: Omit<Folder, 'id' | 'type'>): EnrichedFolder {
     const target = this.getItemOrThrow(id);
     if (!isFolder(target)) {
       throw new Error(`Item with id ${id} is not a folder`);
     }
     configurationStore.set(`items.${id}`, folder);
-    return this.getItem(id) as Folder;
+    return this.enrichFolder(<Folder>this.getItem(id));
   }
 
   deleteFolder(id: string): void {
@@ -94,12 +96,20 @@ class ConfigurationService {
     if (!isFolder(folder)) {
       throw new Error(`Item with id ${id} is not a folder`);
     }
-    return Object.values(configurationStore.get('items')).filter(
-      (item) => (isFolder(item) || isApplication(item)) && item.parentFolderId === id
-    );
+    return Object.values(configurationStore.get('items'))
+      .filter((item) => (isFolder(item) || isApplication(item)) && item.parentFolderId === id)
+      .map((item) => {
+        if (isFolder(item)) {
+          return this.enrichFolder(item);
+        }
+        if (isApplication(item)) {
+          return this.enrichApplication(item);
+        }
+        return item;
+      });
   }
 
-  moveFolder(id: string, newParentFolderId: string, newOrder: number): Folder {
+  moveFolder(id: string, newParentFolderId: string, newOrder: number): EnrichedFolder {
     const target = this.getItemOrThrow(id);
     if (!isFolder(target)) {
       throw new Error(`Item with id ${id} is not a folder`);
@@ -110,14 +120,14 @@ class ConfigurationService {
     }
     configurationStore.set(`items.${id}.parentFolderId`, newParentFolderId);
     configurationStore.set(`items.${id}.order`, newOrder);
-    return this.getItem(id) as Folder;
+    return this.enrichFolder(<Folder>this.getItem(id));
   }
 
   /**
    * Application operations
    */
 
-  createApplication(application: Omit<Application, 'id' | 'type'>): Application {
+  createApplication(application: Omit<Application, 'id' | 'type'>): EnrichedApplication {
     const id = this.generateId();
     const newApplication: Application = {
       ...application,
@@ -125,16 +135,16 @@ class ConfigurationService {
       id,
     };
     configurationStore.set(`items.${id}`, newApplication);
-    return this.getItem(id) as Application;
+    return this.enrichApplication(<Application>this.getItem(id));
   }
 
-  updateApplication(id: string, application: Omit<Application, 'id' | 'type'>): Application {
+  updateApplication(id: string, application: Omit<Application, 'id' | 'type'>): EnrichedApplication {
     const target = this.getItemOrThrow(id);
     if (!isApplication(target)) {
       throw new Error(`Item with id ${id} is not an application`);
     }
     configurationStore.set(`items.${id}`, application);
-    return this.getItem(id) as Application;
+    return this.enrichApplication(<Application>this.getItem(id));
   }
 
   deleteApplication(id: string): void {
@@ -147,7 +157,7 @@ class ConfigurationService {
     configurationStore.delete(`items.${id}` as any);
   }
 
-  moveApplication(id: string, parentFolderId: string, newOrder: number): Application {
+  moveApplication(id: string, parentFolderId: string, newOrder: number): EnrichedApplication {
     const target = this.getItemOrThrow(id);
     if (!isApplication(target)) {
       throw new Error(`Item with id ${id} is not an application`);
@@ -158,7 +168,7 @@ class ConfigurationService {
     }
     configurationStore.set(`items.${id}.parentFolderId`, parentFolderId);
     configurationStore.set(`items.${id}.order`, newOrder);
-    return this.getItem(id) as Application;
+    return this.enrichApplication(<Application>this.getItem(id));
   }
 
   getApplicationInstances(id: string): EnrichedInstance[] {
@@ -248,13 +258,43 @@ class ConfigurationService {
    */
 
   private enrichInstance(instance: Instance): EnrichedInstance {
-    const effectiveColor = instance.color ?? this.getItem(instance.parentApplicationId)?.color;
+    const effectiveColor = this.getInstanceEffectiveColor(instance);
     const healthStatus: InstanceHealthStatus = 'UP';
     return {
       ...instance,
       effectiveColor,
       healthStatus,
     };
+  }
+
+  private enrichApplication(application: Application): EnrichedApplication {
+    const effectiveColor = this.getHierarchicalItemEffectiveColor(application);
+    return {
+      ...application,
+      effectiveColor,
+    };
+  }
+
+  private enrichFolder(folder: Folder): EnrichedFolder {
+    const effectiveColor = this.getHierarchicalItemEffectiveColor(folder);
+    return {
+      ...folder,
+      effectiveColor,
+    };
+  }
+
+  private getInstanceEffectiveColor(instance: Instance): string | undefined {
+    return (
+      instance.color ??
+      this.getHierarchicalItemEffectiveColor(<Application>this.getItemOrThrow(instance.parentApplicationId))
+    );
+  }
+
+  private getHierarchicalItemEffectiveColor(item: HierarchicalItem): string | undefined {
+    if (!item.parentFolderId) {
+      return item.color;
+    }
+    return item.color ?? this.getHierarchicalItemEffectiveColor(<Folder>this.getItemOrThrow(item.parentFolderId));
   }
 
   private generateId(): string {

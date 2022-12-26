@@ -43,6 +43,10 @@ export type Application = HierarchicalItem &
     dataCollectionMode: 'on' | 'off';
   };
 
+export type EnrichedApplication = Application & {
+  effectiveColor?: string;
+};
+
 export type Folder = HierarchicalItem &
   OrderedItem & {
     type: 'folder';
@@ -50,6 +54,10 @@ export type Folder = HierarchicalItem &
     description?: string;
     icon?: string;
   };
+
+export type EnrichedFolder = Folder & {
+  effectiveColor?: string;
+};
 
 export type Configuration = {
   items: { [key: string]: Item };

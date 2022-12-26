@@ -1,7 +1,7 @@
 import {
   Application,
   BaseItem,
-  Configuration,
+  Configuration, EnrichedApplication, EnrichedFolder,
   EnrichedInstance,
   Folder,
   HierarchicalItem,
@@ -21,18 +21,18 @@ declare global {
     /**
      * Folder operations
      */
-    createFolder: (folder: Omit<Folder, 'id' | 'type'>) => Promise<Folder>;
-    updateFolder: (id: string, folder: Omit<Folder, 'id' | 'type'>) => Promise<Folder>;
+    createFolder: (folder: Omit<Folder, 'id' | 'type'>) => Promise<EnrichedFolder>;
+    updateFolder: (id: string, folder: Omit<Folder, 'id' | 'type'>) => Promise<EnrichedFolder>;
     deleteFolder: (id: string) => Promise<void>;
     getFolderChildren: (id: string) => Promise<HierarchicalItem[]>;
-    moveFolder: (id: string, newParentFolderId: string, newOrder: number) => Promise<Folder>;
+    moveFolder: (id: string, newParentFolderId: string, newOrder: number) => Promise<EnrichedFolder>;
     /**
      * Application operations
      */
-    createApplication: (application: Omit<Application, 'id' | 'type'>) => Promise<Application>;
-    updateApplication: (id: string, application: Omit<Application, 'id' | 'type'>) => Promise<Application>;
+    createApplication: (application: Omit<Application, 'id' | 'type'>) => Promise<EnrichedApplication>;
+    updateApplication: (id: string, application: Omit<Application, 'id' | 'type'>) => Promise<EnrichedApplication>;
     deleteApplication: (id: string) => Promise<void>;
-    moveApplication: (id: string, newParentFolderId: string, newOrder: number) => Promise<Application>;
+    moveApplication: (id: string, newParentFolderId: string, newOrder: number) => Promise<EnrichedApplication>;
     getApplicationInstances: (id: string) => Promise<EnrichedInstance[]>;
     /**
      * Instance operations
