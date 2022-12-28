@@ -67,6 +67,7 @@ export const getItemHealthStatusColor = (item: EnrichedItem): string | undefined
         return pink[colorsIndex];
       case 'UNKNOWN':
       case 'PENDING':
+        return 'text.secondary';
       default:
         return undefined;
     }
@@ -86,10 +87,19 @@ export const getItemHealthStatusTextId = (item: EnrichedItem): string | undefine
       case 'UNREACHABLE':
         return 'unreachable';
       case 'UNKNOWN':
+        return 'unknown';
       case 'PENDING':
+        return 'loading';
       default:
         return undefined;
     }
   }
   return undefined;
+};
+
+export const isItemLoading = (item: EnrichedItem): boolean => {
+  if (item.type === 'instance' && item.health.status === 'PENDING') {
+    return true;
+  }
+  return false;
 };

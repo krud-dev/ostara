@@ -9,10 +9,11 @@ import React, {
 } from 'react';
 import { EnrichedItem, isInstance, Item } from 'infra/configuration/model/configuration';
 import { TreeItem } from 'renderer/layout/navigator/components/sidebar/tree/tree';
-import { forEach } from 'lodash';
+import { forEach, some } from 'lodash';
 import { useNavigate, useParams } from 'react-router-dom';
 import { urls } from 'renderer/routes/urls';
 import { useGetItemsQuery } from 'renderer/apis/configuration/item/getItems';
+import { isItemLoading } from 'renderer/utils/itemUtils';
 
 type NavigatorTreeAction = 'expandAll' | 'collapseAll';
 
@@ -25,7 +26,6 @@ export type NavigatorTreeContextProps = {
   action: NavigatorTreeAction | undefined;
   performAction: (action: NavigatorTreeAction) => void;
   getItem: (id: string) => Item | undefined;
-  reloadTree: () => Promise<void>;
 };
 
 const NavigatorTreeContext = React.createContext<NavigatorTreeContextProps>(undefined!);
@@ -98,6 +98,21 @@ const NavigatorTreeProvider: FunctionComponent<NavigatorTreeProviderProps> = ({ 
     }
   }, [getItemsState.data]);
 
+  const [refreshTreeFlag, setRefreshTreeFlag] = useState<number>(0);
+
+  useEffect(() => {
+    let timer: NodeJS.Timeout;
+    if (!getItemsState.data || some(getItemsState.data, (item) => isItemLoading(item))) {
+      if (!getItemsState.isLoading) {
+        getItemsState.refetch();
+      }
+      timer = setTimeout(() => {
+        setRefreshTreeFlag((prev) => prev + 1);
+      }, 2000);
+    }
+    return () => clearTimeout(timer);
+  }, [refreshTreeFlag]);
+
   const performAction = useCallback((actionToPerform: NavigatorTreeAction) => {
     setAction(actionToPerform);
   }, []);
@@ -114,10 +129,6 @@ const NavigatorTreeProvider: FunctionComponent<NavigatorTreeProviderProps> = ({ 
     },
     [getItemsState.data]
   );
-
-  const reloadTree = useCallback(async (): Promise<void> => {
-    await getItemsState.refetch();
-  }, []);
 
   const selectedItem = useMemo<EnrichedItem | undefined>(() => {
     if (!params.id) {
@@ -141,7 +152,6 @@ const NavigatorTreeProvider: FunctionComponent<NavigatorTreeProviderProps> = ({ 
         action,
         performAction,
         getItem,
-        reloadTree,
       }}
     >
       {children}
