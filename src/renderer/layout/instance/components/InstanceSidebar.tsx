@@ -2,7 +2,7 @@ import Sidebar from 'renderer/components/menu/sidebar/Sidebar';
 import { SidebarConfig } from 'renderer/components/menu/sidebar/SidebarSection';
 import {
   AccessTimeOutlined,
-  AssessmentOutlined,
+  BarChartOutlined,
   ClassOutlined,
   DataUsageOutlined,
   DeviceHubOutlined,
@@ -14,11 +14,11 @@ import {
 import { urls } from 'renderer/routes/urls';
 import { useMemo } from 'react';
 import { FormattedMessage } from 'react-intl';
-import { Instance } from 'infra/configuration/model/configuration';
+import { EnrichedInstance } from 'infra/configuration/model/configuration';
 import { generatePath } from 'react-router-dom';
 import ItemHeader from 'renderer/components/item/ItemHeader';
 
-type InstanceSidebarProps = { item: Instance; width: number };
+type InstanceSidebarProps = { item: EnrichedInstance; width: number };
 
 export default function InstanceSidebar({ item, width }: InstanceSidebarProps) {
   const navConfig = useMemo<SidebarConfig>(
@@ -29,7 +29,7 @@ export default function InstanceSidebar({ item, width }: InstanceSidebarProps) {
         items: [
           {
             id: 'dashboard',
-            icon: <AssessmentOutlined />,
+            icon: <BarChartOutlined />,
             label: <FormattedMessage id={'dashboard'} />,
             to: generatePath(urls.instanceDashboard.url, { id: item.id }),
           },

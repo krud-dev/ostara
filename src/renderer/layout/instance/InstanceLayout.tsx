@@ -5,14 +5,17 @@ import { Allotment, LayoutPriority } from 'allotment';
 import { SIDEBAR_DEFAULT_WIDTH } from 'renderer/constants/ui';
 import useConfigurationStoreState from 'renderer/hooks/useConfigurationStoreState';
 import { useNavigatorTree } from 'renderer/contexts/NavigatorTreeContext';
-import { Instance } from 'infra/configuration/model/configuration';
+import { EnrichedInstance } from 'infra/configuration/model/configuration';
 import InstanceSidebar from 'renderer/layout/instance/components/InstanceSidebar';
 import PerfectScrollbar from 'react-perfect-scrollbar';
 
 const InstanceLayout: FunctionComponent = () => {
   const { selectedItem } = useNavigatorTree();
 
-  const item = useMemo<Instance | undefined>(() => selectedItem as Instance | undefined, [selectedItem]);
+  const item = useMemo<EnrichedInstance | undefined>(
+    () => selectedItem as EnrichedInstance | undefined,
+    [selectedItem]
+  );
 
   const [sidebarWidth, setSidebarWidth] = useConfigurationStoreState<number>(
     'instanceSidebarWidth',
