@@ -25,11 +25,9 @@ const InstanceDashboard: FunctionComponent = () => {
   return (
     <Page sx={{ width: '100%', p: 2.5 }}>
       <Stack direction={'column'} spacing={2.5}>
-        {widgets
-          .filter((w) => w.type === 'progress-circle')
-          .map((widget) => (
-            <DashboardWidget widget={widget} item={item} key={widget.id} />
-          ))}
+        {widgets.map((widget) => (
+          <DashboardWidget widget={widget} item={item} key={widget.id} />
+        ))}
       </Stack>
     </Page>
   );

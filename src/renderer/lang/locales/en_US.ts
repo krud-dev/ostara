@@ -54,4 +54,9 @@ export default {
   down: 'Down',
   outOfService: 'Out of Service',
   unreachable: 'Unreachable',
+  notSupported: 'Not Supported',
+  daysShort: 'd',
+  hoursShort: 'h',
+  minutesShort: 'm',
+  secondsShort: 's',
 };

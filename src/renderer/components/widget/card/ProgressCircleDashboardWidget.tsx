@@ -34,8 +34,8 @@ const ProgressCircleDashboardWidget: FunctionComponent<DashboardWidgetCardProps<
 
   const currentMetricState = useGetLatestMetric();
   const maxMetricState = useGetLatestMetric();
-  const currentSubscribeToMetric = useSubscribeToMetric();
-  const maxSubscribeToMetric = useSubscribeToMetric();
+  const currentSubscribeToMetricState = useSubscribeToMetric();
+  const maxSubscribeToMetricState = useSubscribeToMetric();
 
   useEffect(() => {
     (async () => {
@@ -65,7 +65,7 @@ const ProgressCircleDashboardWidget: FunctionComponent<DashboardWidgetCardProps<
     let unsubscribe: () => void;
     (async () => {
       try {
-        unsubscribe = await currentSubscribeToMetric.mutateAsync({
+        unsubscribe = await currentSubscribeToMetricState.mutateAsync({
           instanceId: item.id,
           metricName: widget.currentMetricName,
           listener: (event, metric) => setData((prev) => ({ ...prev, current: metric.values[0].value })),
@@ -81,7 +81,7 @@ const ProgressCircleDashboardWidget: FunctionComponent<DashboardWidgetCardProps<
     let unsubscribe: () => void;
     (async () => {
       try {
-        unsubscribe = await maxSubscribeToMetric.mutateAsync({
+        unsubscribe = await maxSubscribeToMetricState.mutateAsync({
           instanceId: item.id,
           metricName: widget.maxMetricName,
           listener: (event, metric) => setData((prev) => ({ ...prev, max: metric.values[0].value })),

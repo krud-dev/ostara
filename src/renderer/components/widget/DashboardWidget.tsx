@@ -1,8 +1,11 @@
 import React, { ComponentType, FunctionComponent, useMemo } from 'react';
 import { Widget } from 'infra/dashboard/model';
-import ProgressCircleDashboardWidget from 'renderer/components/widget/card/ProgressCircleDashboardWidget';
-import { DashboardWidgetCardProps } from 'renderer/components/widget/widget';
 import { Item } from 'infra/configuration/model/configuration';
+import { DashboardWidgetCardProps } from 'renderer/components/widget/widget';
+import NotSupportedDashboardWidget from 'renderer/components/widget/card/NotSupportedDashboardWidget';
+import ProgressCircleDashboardWidget from 'renderer/components/widget/card/ProgressCircleDashboardWidget';
+import StackedTimelineDashboardWidget from 'renderer/components/widget/card/StackedTimelineDashboardWidget';
+import DataBarDashboardWidget from 'renderer/components/widget/card/DataBarDashboardWidget';
 
 interface DashboardWidgetProps {
   widget: Widget;
@@ -11,12 +14,15 @@ interface DashboardWidgetProps {
 
 const DashboardWidget: FunctionComponent<DashboardWidgetProps> = ({ widget, item }) => {
   const DashboardCard = useMemo<ComponentType<DashboardWidgetCardProps<any>>>(() => {
-    return ProgressCircleDashboardWidget;
     switch (widget.type) {
       case 'progress-circle':
         return ProgressCircleDashboardWidget;
+      case 'stacked-timeline':
+        return StackedTimelineDashboardWidget;
+      case 'data-bar':
+        return DataBarDashboardWidget;
       default:
-        throw new Error(`Unknown widget type: ${widget.type}`);
+        return NotSupportedDashboardWidget;
     }
   }, [widget]);
 
