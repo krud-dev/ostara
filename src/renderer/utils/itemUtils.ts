@@ -16,6 +16,7 @@ import UpdateInstanceDialog from 'renderer/components/item/dialogs/update/Update
 import UpdateFolderDialog from 'renderer/components/item/dialogs/update/UpdateFolderDialog';
 import { green, pink, red, yellow } from '@mui/material/colors';
 import { ColorSchema } from 'renderer/theme/config/palette';
+import blueGrey from '@mui/material/colors/blueGrey';
 
 export const getItemTypeIcon = (itemType: ItemType): SvgIconComponent => {
   switch (itemType) {
@@ -75,6 +76,7 @@ export const getItemHealthStatusColor = (item: EnrichedItem): string | undefined
       case 'UNREACHABLE':
         return pink[colorsIndex];
       case 'UNKNOWN':
+        return blueGrey[colorsIndex];
       case 'PENDING':
         return 'text.secondary';
       default:
