@@ -56,9 +56,13 @@ export default {
   unreachable: 'Unreachable',
   unknown: 'Unknown',
   loading: 'Loading',
+  dataCollection: 'Data Collection',
   notSupported: 'Not Supported',
   daysShort: 'd',
   hoursShort: 'h',
   minutesShort: 'm',
   secondsShort: 's',
+  dataCollectionModeOn: 'Data collection from actuator instances is enabled',
+  dataCollectionModeOff: 'Data collection from actuator instances is disabled',
+  dataCollectionModeInherited: 'Inherited from parent application',
 };

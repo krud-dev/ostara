@@ -10,6 +10,10 @@ export type ItemType = 'instance' | 'application' | 'folder';
 
 export type InstanceHealthStatus = 'UP' | 'DOWN' | 'UNKNOWN' | 'OUT_OF_SERVICE' | 'UNREACHABLE' | 'PENDING';
 
+export type DataCollectionMode = 'on' | 'off';
+
+export type InstanceDataCollectionMode = DataCollectionMode | 'inherited';
+
 export type BaseItem = {
   readonly id: string;
   readonly type: ItemType;
@@ -22,11 +26,12 @@ export type Instance = BaseItem & {
   parentApplicationId: string;
   alias: string;
   actuatorUrl: string;
-  dataCollectionMode: 'inherited' | 'on' | 'off';
+  dataCollectionMode: InstanceDataCollectionMode;
 };
 
 export type EnrichedInstance = Instance & {
   readonly effectiveColor?: string;
+  readonly effectiveDataCollectionMode: DataCollectionMode;
   readonly health: InstanceHealth;
 };
 
@@ -37,7 +42,7 @@ export type Application = BaseItem & {
   alias: string;
   description?: string;
   icon?: string;
-  dataCollectionMode: 'on' | 'off';
+  dataCollectionMode: DataCollectionMode;
 };
 
 export type EnrichedApplication = Application & {

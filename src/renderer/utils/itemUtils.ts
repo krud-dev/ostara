@@ -1,5 +1,13 @@
 import { CloudOutlined, DnsOutlined, FolderOutlined, SvgIconComponent } from '@mui/icons-material';
-import { Application, EnrichedItem, Folder, Instance, Item, ItemType } from 'infra/configuration/model/configuration';
+import {
+  Application,
+  DataCollectionMode,
+  EnrichedItem,
+  Folder,
+  Instance,
+  Item,
+  ItemType,
+} from 'infra/configuration/model/configuration';
 import { generatePath } from 'react-router-dom';
 import { urls } from 'renderer/routes/urls';
 import NiceModal from '@ebay/nice-modal-react';
@@ -7,6 +15,7 @@ import UpdateApplicationDialog from 'renderer/components/item/dialogs/update/Upd
 import UpdateInstanceDialog from 'renderer/components/item/dialogs/update/UpdateInstanceDialog';
 import UpdateFolderDialog from 'renderer/components/item/dialogs/update/UpdateFolderDialog';
 import { green, pink, red, yellow } from '@mui/material/colors';
+import { ColorSchema } from 'renderer/theme/config/palette';
 
 export const getItemTypeIcon = (itemType: ItemType): SvgIconComponent => {
   switch (itemType) {
@@ -95,6 +104,28 @@ export const getItemHealthStatusTextId = (item: EnrichedItem): string | undefine
     }
   }
   return undefined;
+};
+
+export const getDataCollectionModeColor = (dataCollectionMode: DataCollectionMode): ColorSchema => {
+  switch (dataCollectionMode) {
+    case 'on':
+      return 'success';
+    case 'off':
+      return 'error';
+    default:
+      return 'primary';
+  }
+};
+
+export const getDataCollectionModeTextId = (dataCollectionMode: DataCollectionMode): string => {
+  switch (dataCollectionMode) {
+    case 'on':
+      return 'on';
+    case 'off':
+      return 'off';
+    default:
+      return 'notAvailable';
+  }
 };
 
 export const isItemLoading = (item: EnrichedItem): boolean => {

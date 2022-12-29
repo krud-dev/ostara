@@ -17,6 +17,8 @@ import { FormattedMessage } from 'react-intl';
 import { EnrichedInstance } from 'infra/configuration/model/configuration';
 import { generatePath } from 'react-router-dom';
 import ItemHeader from 'renderer/components/item/ItemHeader';
+import { Box, Divider } from '@mui/material';
+import InstanceDataCollectionToggle from 'renderer/components/item/InstanceDataCollectionToggle';
 
 type InstanceSidebarProps = { item: EnrichedInstance; width: number };
 
@@ -99,5 +101,11 @@ export default function InstanceSidebar({ item, width }: InstanceSidebarProps) {
     [item]
   );
 
-  return <Sidebar sidebarConfig={navConfig} width={width} header={<ItemHeader item={item} />} />;
+  return (
+    <Box sx={{ width: width, height: '100%', display: 'flex', flexDirection: 'column' }}>
+      <Sidebar sidebarConfig={navConfig} header={<ItemHeader item={item} />} sx={{ flexGrow: 1 }} />
+      <Divider />
+      <InstanceDataCollectionToggle item={item} />
+    </Box>
+  );
 }

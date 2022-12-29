@@ -3,6 +3,7 @@ import {
   Application,
   BaseItem,
   Configuration,
+  DataCollectionMode,
   EnrichedApplication,
   EnrichedFolder,
   EnrichedInstance,
@@ -282,10 +283,12 @@ class ConfigurationService {
 
   private enrichInstance(instance: Instance): EnrichedInstance {
     const effectiveColor = this.getInstanceEffectiveColor(instance);
+    const effectiveDataCollectionMode = this.getInstanceEffectiveDataCollectionMode(instance);
     const health = instanceHealthService.getCachedInstanceHealth(instance);
     return {
       ...instance,
       effectiveColor,
+      effectiveDataCollectionMode,
       health,
     };
   }
@@ -327,6 +330,12 @@ class ConfigurationService {
       return folder.color;
     }
     return folder.color ?? this.getFolderEffectiveColor(<EnrichedFolder>this.getItemOrThrow(folder.parentFolderId));
+  }
+
+  private getInstanceEffectiveDataCollectionMode(instance: Instance): DataCollectionMode {
+    return instance.dataCollectionMode !== 'inherited'
+      ? instance.dataCollectionMode
+      : (<Application>this.getItemOrThrow(instance.parentApplicationId)).dataCollectionMode;
   }
 
   private generateId(): string {

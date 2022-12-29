@@ -11,6 +11,7 @@ export default function Tooltip(theme: Theme): Components {
       },
       styleOverrides: {
         tooltip: {
+          textAlign: 'center',
           backgroundColor: theme.palette.grey[isLight ? 800 : 700],
         },
         arrow: {
