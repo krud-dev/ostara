@@ -42,7 +42,6 @@ export type Application = BaseItem & {
   applicationType: ApplicationType;
   alias: string;
   description?: string;
-  icon?: string;
   dataCollectionMode: DataCollectionMode;
 };
 
@@ -55,7 +54,6 @@ export type Folder = BaseItem & {
   parentFolderId?: string;
   alias: string;
   description?: string;
-  icon?: string;
 };
 
 export type EnrichedFolder = Folder & {
