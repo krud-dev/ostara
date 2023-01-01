@@ -1,5 +1,5 @@
 import { SvgIconComponent } from '@mui/icons-material';
-import React, { useCallback, useMemo, useRef, useState } from 'react';
+import React, { useCallback, useMemo } from 'react';
 import { EnrichedItem, isApplication, isFolder, isInstance } from 'infra/configuration/model/configuration';
 import { Avatar, Badge, Box, IconButton, Typography } from '@mui/material';
 import { getItemHealthStatusColor, getItemHealthStatusTextId, getItemTypeIcon } from 'renderer/utils/itemUtils';
@@ -9,12 +9,12 @@ import ApplicationContextMenu from 'renderer/layout/navigator/components/sidebar
 import InstanceContextMenu from 'renderer/layout/navigator/components/sidebar/tree/menus/InstanceContextMenu';
 import useItemColor from 'renderer/hooks/useItemColor';
 import { FormattedMessage } from 'react-intl';
+import { bindMenu, usePopupState } from 'material-ui-popup-state/hooks';
 
 type ItemHeaderProps = { item: EnrichedItem };
 
 export default function ItemHeader({ item }: ItemHeaderProps) {
-  const menuAnchorRef = useRef<HTMLButtonElement | null>(null);
-  const [menuOpen, setMenuOpen] = useState<boolean>(false);
+  const menuState = usePopupState({ variant: 'popper' });
 
   const color = useItemColor(item);
   const healthStatusColor = useMemo<string | undefined>(() => getItemHealthStatusColor(item), [item]);
@@ -24,50 +24,22 @@ export default function ItemHeader({ item }: ItemHeaderProps) {
   const openMenuHandler = useCallback(
     (event: React.MouseEvent): void => {
       event.preventDefault();
-      setMenuOpen(true);
+      menuState.open();
     },
-    [setMenuOpen]
+    [menuState]
   );
-
-  const closeMenuHandler = useCallback((): void => {
-    setMenuOpen(false);
-  }, [setMenuOpen]);
 
   return (
     <>
-      {isFolder(item) && (
-        <FolderContextMenu
-          item={item}
-          open={menuOpen}
-          anchorEl={menuAnchorRef.current}
-          onClose={closeMenuHandler}
-          sx={{ mt: 0.5 }}
-        />
-      )}
-      {isApplication(item) && (
-        <ApplicationContextMenu
-          item={item}
-          open={menuOpen}
-          anchorEl={menuAnchorRef.current}
-          onClose={closeMenuHandler}
-          sx={{ mt: 0.5 }}
-        />
-      )}
-      {isInstance(item) && (
-        <InstanceContextMenu
-          item={item}
-          open={menuOpen}
-          anchorEl={menuAnchorRef.current}
-          onClose={closeMenuHandler}
-          sx={{ mt: 0.5 }}
-        />
-      )}
+      {isFolder(item) && <FolderContextMenu item={item} sx={{ mt: 0.5 }} {...bindMenu(menuState)} />}
+      {isApplication(item) && <ApplicationContextMenu item={item} sx={{ mt: 0.5 }} {...bindMenu(menuState)} />}
+      {isInstance(item) && <InstanceContextMenu item={item} sx={{ mt: 0.5 }} {...bindMenu(menuState)} />}
 
       <Box sx={{ height: NAVIGATOR_ITEM_HEIGHT * 2, px: 2.5, display: 'flex', alignItems: 'center' }}>
         <IconButton
           size={'small'}
           sx={{ p: 0 }}
-          ref={menuAnchorRef}
+          ref={menuState.setAnchorEl}
           onClick={openMenuHandler}
           onContextMenu={openMenuHandler}
         >

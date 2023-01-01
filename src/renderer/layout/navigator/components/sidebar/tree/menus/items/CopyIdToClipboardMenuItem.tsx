@@ -6,6 +6,7 @@ import { Item } from 'infra/configuration/model/configuration';
 import { useSnackbar } from 'notistack';
 import copy from 'copy-to-clipboard';
 import { useUi } from 'renderer/contexts/UiContext';
+import CustomMenuItem from 'renderer/components/menu/item/CustomMenuItem';
 
 type CopyIdToClipboardMenuItemProps = {
   item: Item;
@@ -29,14 +30,5 @@ export default function CopyIdToClipboardMenuItem({ item, onClose }: CopyIdToCli
     return null;
   }
 
-  return (
-    <MenuItem onClick={copyHandler}>
-      <ListItemIcon>
-        <ContentCopyOutlined fontSize="small" />
-      </ListItemIcon>
-      <ListItemText>
-        <FormattedMessage id={'copyId'} />
-      </ListItemText>
-    </MenuItem>
-  );
+  return <CustomMenuItem Icon={ContentCopyOutlined} text={<FormattedMessage id={'copyId'} />} onClick={copyHandler} />;
 }

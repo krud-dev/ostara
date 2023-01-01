@@ -1,7 +1,7 @@
 import { NodeRendererProps } from 'react-arborist';
 import { Badge, IconButton, ListItem, ListItemIcon, ListItemText, TextField } from '@mui/material';
 import { alpha, experimentalStyled as styled, Theme, useTheme } from '@mui/material/styles';
-import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import React, { useCallback, useEffect, useMemo, useRef } from 'react';
 import { TreeItem } from 'renderer/layout/navigator/components/sidebar/tree/tree';
 import typography from 'renderer/theme/config/typography';
 import { KeyboardArrowDown, KeyboardArrowRight, MoreVert, SvgIconComponent } from '@mui/icons-material';
@@ -14,6 +14,7 @@ import ApplicationContextMenu from 'renderer/layout/navigator/components/sidebar
 import { SxProps } from '@mui/system';
 import { matchPath, useLocation, useNavigate } from 'react-router-dom';
 import useItemColor from 'renderer/hooks/useItemColor';
+import { bindMenu, usePopupState } from 'material-ui-popup-state/hooks';
 
 type NavigatorTreeNodeProps = NodeRendererProps<TreeItem>;
 
@@ -69,35 +70,34 @@ export default function NavigatorTreeNode({ style, node, tree, dragHandle, previ
     }
   }, [pathname]);
 
+  const contextMenuState = usePopupState({ variant: 'popper' });
   const contextMenuAnchorRef = useRef<HTMLButtonElement | null>(null);
-  const [contextMenuAnchor, setContextMenuAnchor] = useState<Element | undefined>(undefined);
-  const [contextMenuOpen, setContextMenuOpen] = useState<boolean>(false);
 
-  const openContextMenu = useCallback((event?: React.MouseEvent): void => {
-    if (event) {
-      event.preventDefault();
+  const openContextMenu = useCallback(
+    (event?: React.MouseEvent): void => {
+      if (event) {
+        event.preventDefault();
 
-      node.focus();
+        node.focus();
 
-      const virtualElement: any = {
-        getBoundingClientRect: () => ({
-          width: 0,
-          height: 0,
-          top: event.clientY,
-          right: event.clientX,
-          bottom: event.clientY,
-          left: event.clientX,
-        }),
-      };
-      setContextMenuAnchor(virtualElement);
-    }
-    setContextMenuOpen(true);
-  }, []);
-
-  const closeContextMenu = useCallback((): void => {
-    setContextMenuOpen(false);
-    setContextMenuAnchor(undefined);
-  }, []);
+        const virtualElement: any = {
+          getBoundingClientRect: () => ({
+            width: 0,
+            height: 0,
+            top: event.clientY,
+            right: event.clientX,
+            bottom: event.clientY,
+            left: event.clientX,
+          }),
+        };
+        contextMenuState.setAnchorEl(virtualElement);
+      } else {
+        contextMenuState.setAnchorEl(contextMenuAnchorRef.current);
+      }
+      contextMenuState.open();
+    },
+    [node, contextMenuState]
+  );
 
   const itemClickHandler = useCallback(
     (event?: React.MouseEvent): void => {
@@ -177,30 +177,24 @@ export default function NavigatorTreeNode({ style, node, tree, dragHandle, previ
         <FolderContextMenu
           item={node.data}
           node={node}
-          open={contextMenuOpen}
-          anchorEl={contextMenuAnchor || contextMenuAnchorRef.current}
-          onClose={closeContextMenu}
           onCreated={childItemCreatedHandler}
+          {...bindMenu(contextMenuState)}
         />
       )}
       {isApplication(node.data) && (
         <ApplicationContextMenu
           item={node.data}
           node={node}
-          open={contextMenuOpen}
-          anchorEl={contextMenuAnchor || contextMenuAnchorRef.current}
-          onClose={closeContextMenu}
           onCreated={childItemCreatedHandler}
+          {...bindMenu(contextMenuState)}
         />
       )}
       {isInstance(node.data) && (
         <InstanceContextMenu
           item={node.data}
           node={node}
-          open={contextMenuOpen}
-          anchorEl={contextMenuAnchor || contextMenuAnchorRef.current}
-          onClose={closeContextMenu}
           onCreated={childItemCreatedHandler}
+          {...bindMenu(contextMenuState)}
         />
       )}
 
@@ -286,7 +280,7 @@ export default function NavigatorTreeNode({ style, node, tree, dragHandle, previ
             mr: 0.5,
             ml: 0.5,
           }}
-          className={`menu-toggle ${contextMenuOpen ? 'menu-open' : ''}`}
+          className={`menu-toggle ${contextMenuState.isOpen ? 'menu-open' : ''}`}
         >
           <MoreVert fontSize="small" />
         </IconButton>

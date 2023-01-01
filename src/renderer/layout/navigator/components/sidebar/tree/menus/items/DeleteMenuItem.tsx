@@ -1,10 +1,11 @@
 import { useCallback } from 'react';
 import { ListItemIcon, ListItemText, MenuItem } from '@mui/material';
-import { DeleteOutlined } from '@mui/icons-material';
+import { ContentCopyOutlined, DeleteOutlined } from '@mui/icons-material';
 import { FormattedMessage } from 'react-intl';
 import { useDeleteItem } from 'renderer/apis/configuration/item/deleteItem';
 import { showDeleteConfirmationDialog } from 'renderer/utils/dialogUtils';
 import { Item } from 'infra/configuration/model/configuration';
+import CustomMenuItem from 'renderer/components/menu/item/CustomMenuItem';
 
 type DeleteMenuItemProps = {
   item: Item;
@@ -28,13 +29,11 @@ export default function DeleteMenuItem({ item, onClose }: DeleteMenuItemProps) {
   }, [onClose, item]);
 
   return (
-    <MenuItem onClick={deleteHandler} sx={{ color: 'error.main' }}>
-      <ListItemIcon>
-        <DeleteOutlined fontSize="small" />
-      </ListItemIcon>
-      <ListItemText>
-        <FormattedMessage id={'delete'} />
-      </ListItemText>
-    </MenuItem>
+    <CustomMenuItem
+      Icon={DeleteOutlined}
+      text={<FormattedMessage id={'delete'} />}
+      onClick={deleteHandler}
+      color={'error.main'}
+    />
   );
 }

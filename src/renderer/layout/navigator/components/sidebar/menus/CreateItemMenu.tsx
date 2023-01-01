@@ -1,6 +1,6 @@
-import { useCallback, useMemo, useRef, useState } from 'react';
-import { IconButton, ListItemIcon, ListItemText, MenuItem } from '@mui/material';
-import MenuPopover from 'renderer/components/menu/MenuPopover';
+import { useCallback, useMemo } from 'react';
+import { IconButton } from '@mui/material';
+import MenuPopover from 'renderer/components/menu/popup/MenuPopover';
 import { AddOutlined, SvgIconComponent } from '@mui/icons-material';
 import { FormattedMessage } from 'react-intl';
 import { getItemTypeIcon } from 'renderer/utils/itemUtils';
@@ -11,23 +11,20 @@ import { useNavigatorTree } from 'renderer/contexts/NavigatorTreeContext';
 import { chain } from 'lodash';
 import CreateApplicationDialog from 'renderer/components/item/dialogs/create/CreateApplicationDialog';
 import CreateInstanceDialog from 'renderer/components/item/dialogs/create/CreateInstanceDialog';
+import { bindMenu, usePopupState } from 'material-ui-popup-state/hooks';
+import CustomMenuItem from 'renderer/components/menu/item/CustomMenuItem';
 
 export default function CreateItemMenu() {
   const { data } = useNavigatorTree();
 
-  const anchorRef = useRef<HTMLButtonElement | null>(null);
-  const [open, setOpen] = useState<boolean>(false);
+  const menuState = usePopupState({ variant: 'popover' });
 
   const openHandler = useCallback((): void => {
     if (!data) {
       return;
     }
-    setOpen(true);
-  }, [data, setOpen]);
-
-  const closeHandler = useCallback((): void => {
-    setOpen(false);
-  }, [setOpen]);
+    menuState.open();
+  }, [data, menuState]);
 
   const getNewItemOrder = useCallback((): number => {
     return data?.length
@@ -39,28 +36,28 @@ export default function CreateItemMenu() {
   }, [data]);
 
   const createFolderHandler = useCallback((): void => {
-    closeHandler();
+    menuState.close();
 
     NiceModal.show<Folder | undefined>(CreateFolderDialog, {
       order: getNewItemOrder(),
     });
-  }, [closeHandler, getNewItemOrder]);
+  }, [menuState, getNewItemOrder]);
 
   const createApplicationHandler = useCallback((): void => {
-    closeHandler();
+    menuState.close();
 
     NiceModal.show<Application | undefined>(CreateApplicationDialog, {
       order: getNewItemOrder(),
     });
-  }, [closeHandler, getNewItemOrder]);
+  }, [menuState, getNewItemOrder]);
 
   const createInstanceHandler = useCallback((): void => {
-    closeHandler();
+    menuState.close();
 
     NiceModal.show<Instance | undefined>(CreateInstanceDialog, {
       order: getNewItemOrder(),
     });
-  }, [closeHandler, getNewItemOrder]);
+  }, [menuState, getNewItemOrder]);
 
   const FolderIcon = useMemo<SvgIconComponent>(() => getItemTypeIcon('folder'), []);
   const ApplicationIcon = useMemo<SvgIconComponent>(() => getItemTypeIcon('application'), []);
@@ -68,35 +65,26 @@ export default function CreateItemMenu() {
 
   return (
     <>
-      <IconButton size={'small'} ref={anchorRef} onClick={openHandler}>
+      <IconButton size={'small'} ref={menuState.setAnchorEl} onClick={openHandler}>
         <AddOutlined fontSize={'small'} />
       </IconButton>
 
-      <MenuPopover open={open} onClose={closeHandler} anchorEl={anchorRef.current}>
-        <MenuItem onClick={createFolderHandler}>
-          <ListItemIcon>
-            <FolderIcon fontSize="small" />
-          </ListItemIcon>
-          <ListItemText>
-            <FormattedMessage id={'createFolder'} />
-          </ListItemText>
-        </MenuItem>
-        <MenuItem onClick={createApplicationHandler}>
-          <ListItemIcon>
-            <ApplicationIcon fontSize="small" />
-          </ListItemIcon>
-          <ListItemText>
-            <FormattedMessage id={'createApplication'} />
-          </ListItemText>
-        </MenuItem>
-        <MenuItem onClick={createInstanceHandler}>
-          <ListItemIcon>
-            <InstanceIcon fontSize="small" />
-          </ListItemIcon>
-          <ListItemText>
-            <FormattedMessage id={'createInstance'} />
-          </ListItemText>
-        </MenuItem>
+      <MenuPopover {...bindMenu(menuState)}>
+        <CustomMenuItem
+          Icon={FolderIcon}
+          text={<FormattedMessage id={'createFolder'} />}
+          onClick={createFolderHandler}
+        />
+        <CustomMenuItem
+          Icon={ApplicationIcon}
+          text={<FormattedMessage id={'createApplication'} />}
+          onClick={createApplicationHandler}
+        />
+        <CustomMenuItem
+          Icon={InstanceIcon}
+          text={<FormattedMessage id={'createInstance'} />}
+          onClick={createInstanceHandler}
+        />
       </MenuPopover>
     </>
   );

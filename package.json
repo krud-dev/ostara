@@ -130,6 +130,7 @@
     "electron-store": "^8.1.0",
     "electron-updater": "^5.2.3",
     "lodash": "^4.17.21",
+    "material-ui-popup-state": "^5.0.4",
     "node-cache": "^5.1.2",
     "node-schedule": "^2.1.0",
     "notistack": "^2.0.8",

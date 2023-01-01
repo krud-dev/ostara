@@ -1,30 +1,26 @@
-import { useCallback, useRef, useState } from 'react';
+import { useCallback } from 'react';
 import { Box, IconButton, ListItemIcon, ListItemText, MenuItem } from '@mui/material';
 import locales from 'renderer/lang';
 import { map } from 'lodash';
 import { useUi } from 'renderer/contexts/UiContext';
-import MenuPopover from 'renderer/components/menu/MenuPopover';
+import MenuPopover from 'renderer/components/menu/popup/MenuPopover';
+import { bindMenu, usePopupState } from 'material-ui-popup-state/hooks';
 
 export default function LanguageMenu() {
-  const { localeInfo, setLocale } = useUi();
+  const { localeInfo, setLocale, isRtl } = useUi();
 
-  const anchorRef = useRef<HTMLButtonElement | null>(null);
-  const [open, setOpen] = useState<boolean>(false);
+  const menuState = usePopupState({ variant: 'popover' });
 
   const openHandler = useCallback((): void => {
-    setOpen(true);
-  }, [setOpen]);
-
-  const closeHandler = useCallback((): void => {
-    setOpen(false);
-  }, [setOpen]);
+    menuState.open();
+  }, [menuState]);
 
   const changeLocaleHandler = useCallback(
     (locale: string): void => {
       setLocale(locale);
-      closeHandler();
+      menuState.close();
     },
-    [setLocale, closeHandler]
+    [setLocale, menuState]
   );
 
   return (
@@ -38,13 +34,13 @@ export default function LanguageMenu() {
         }}
       >
         <IconButton
-          ref={anchorRef}
+          ref={menuState.setAnchorEl}
           onClick={openHandler}
           sx={{
             padding: 0,
             width: 48,
             height: 48,
-            ...(open && { bgcolor: 'action.selected' }),
+            ...(menuState.isOpen && { bgcolor: 'action.selected' }),
           }}
         >
           <Box
@@ -56,7 +52,7 @@ export default function LanguageMenu() {
         </IconButton>
       </Box>
 
-      <MenuPopover open={open} onClose={closeHandler} direction={'right'} anchorEl={anchorRef.current}>
+      <MenuPopover direction={isRtl ? 'left' : 'right'} {...bindMenu(menuState)}>
         {map(locales, (l) => (
           <MenuItem key={l.id} selected={l.id === localeInfo.id} onClick={() => changeLocaleHandler(l.id)}>
             <ListItemIcon>

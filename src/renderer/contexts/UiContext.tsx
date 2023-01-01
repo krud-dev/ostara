@@ -10,6 +10,7 @@ export type UiContextProps = {
   toggleDarkMode: () => void;
   localeInfo: LocaleInfo;
   setLocale: (locale: string) => void;
+  isRtl: boolean;
 };
 
 const UiContext = React.createContext<UiContextProps>(undefined!);
@@ -39,6 +40,8 @@ const UiProvider: FunctionComponent<UiProviderProps> = ({ children }) => {
     [setLocaleInternal]
   );
 
+  const isRtl = useMemo<boolean>(() => localeInfo.direction === 'rtl', [localeInfo]);
+
   return (
     <UiContext.Provider
       value={{
@@ -48,6 +51,7 @@ const UiProvider: FunctionComponent<UiProviderProps> = ({ children }) => {
         toggleDarkMode,
         localeInfo,
         setLocale,
+        isRtl,
       }}
     >
       {children}

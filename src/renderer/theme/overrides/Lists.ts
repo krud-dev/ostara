@@ -3,6 +3,13 @@ import { Components } from '@mui/material/styles/components';
 
 export default function Lists(theme: Theme): Components {
   return {
+    MuiList: {
+      styleOverrides: {
+        root: {
+          padding: 0,
+        },
+      },
+    },
     MuiListItemIcon: {
       styleOverrides: {
         root: {

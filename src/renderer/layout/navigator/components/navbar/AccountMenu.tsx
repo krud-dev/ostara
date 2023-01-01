@@ -1,34 +1,31 @@
-import { useCallback, useRef, useState } from 'react';
-import { Box, IconButton, ListItemIcon, ListItemText, MenuItem } from '@mui/material';
+import { useCallback } from 'react';
+import { Box, IconButton } from '@mui/material';
 import { useUi } from 'renderer/contexts/UiContext';
-import MenuPopover from 'renderer/components/menu/MenuPopover';
+import MenuPopover from 'renderer/components/menu/popup/MenuPopover';
 import { DarkModeOutlined, DeveloperModeOutlined, LightModeOutlined } from '@mui/icons-material';
 import { FormattedMessage } from 'react-intl';
 import MAvatar from 'renderer/components/menu/MAvatar';
+import { bindMenu, usePopupState } from 'material-ui-popup-state/hooks';
+import CustomMenuItem from 'renderer/components/menu/item/CustomMenuItem';
 
 export default function AccountMenu() {
-  const { developerMode, toggleDeveloperMode, darkMode, toggleDarkMode } = useUi();
+  const { developerMode, toggleDeveloperMode, darkMode, toggleDarkMode, isRtl } = useUi();
 
-  const anchorRef = useRef<HTMLButtonElement | null>(null);
-  const [open, setOpen] = useState<boolean>(false);
+  const menuState = usePopupState({ variant: 'popover' });
 
   const openHandler = useCallback((): void => {
-    setOpen(true);
-  }, [setOpen]);
-
-  const closeHandler = useCallback((): void => {
-    setOpen(false);
-  }, [setOpen]);
+    menuState.open();
+  }, [menuState]);
 
   const toggleDeveloperModeHandler = useCallback((): void => {
     toggleDeveloperMode();
-    closeHandler();
-  }, [toggleDeveloperMode, closeHandler]);
+    menuState.close();
+  }, [toggleDeveloperMode, menuState]);
 
   const toggleDarkModeHandler = useCallback((): void => {
     toggleDarkMode();
-    closeHandler();
-  }, [toggleDarkMode, closeHandler]);
+    menuState.close();
+  }, [toggleDarkMode, menuState]);
 
   return (
     <>
@@ -41,13 +38,13 @@ export default function AccountMenu() {
         }}
       >
         <IconButton
-          ref={anchorRef}
+          ref={menuState.setAnchorEl}
           onClick={openHandler}
           sx={{
             padding: 0,
             width: 48,
             height: 48,
-            ...(open && { bgcolor: 'action.selected' }),
+            ...(menuState.isOpen && { bgcolor: 'action.selected' }),
           }}
         >
           <MAvatar variant={'circular'} color={'primary'}>
@@ -56,23 +53,21 @@ export default function AccountMenu() {
         </IconButton>
       </Box>
 
-      <MenuPopover open={open} onClose={closeHandler} direction={'right'} anchorEl={anchorRef.current}>
-        <MenuItem onClick={toggleDeveloperModeHandler}>
-          <ListItemIcon>
-            <DeveloperModeOutlined fontSize="small" />
-          </ListItemIcon>
-          <ListItemText>
-            <FormattedMessage id={'developerMode'} /> <FormattedMessage id={developerMode ? 'on' : 'off'} />
-          </ListItemText>
-        </MenuItem>
-        <MenuItem onClick={toggleDarkModeHandler}>
-          <ListItemIcon>
-            {darkMode ? <LightModeOutlined fontSize="small" /> : <DarkModeOutlined fontSize="small" />}
-          </ListItemIcon>
-          <ListItemText>
-            <FormattedMessage id={darkMode ? 'lightMode' : 'darkMode'} />
-          </ListItemText>
-        </MenuItem>
+      <MenuPopover direction={isRtl ? 'left' : 'right'} {...bindMenu(menuState)}>
+        <CustomMenuItem
+          Icon={DeveloperModeOutlined}
+          text={
+            <>
+              <FormattedMessage id={'developerMode'} /> <FormattedMessage id={developerMode ? 'on' : 'off'} />
+            </>
+          }
+          onClick={toggleDeveloperModeHandler}
+        />
+        <CustomMenuItem
+          Icon={darkMode ? LightModeOutlined : DarkModeOutlined}
+          text={<FormattedMessage id={darkMode ? 'lightMode' : 'darkMode'} />}
+          onClick={toggleDarkModeHandler}
+        />
       </MenuPopover>
     </>
   );

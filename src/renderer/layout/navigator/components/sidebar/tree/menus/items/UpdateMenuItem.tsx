@@ -1,9 +1,10 @@
 import { useCallback } from 'react';
 import { ListItemIcon, ListItemText, MenuItem } from '@mui/material';
-import { EditOutlined } from '@mui/icons-material';
+import { EditOutlined, TextFieldsOutlined } from '@mui/icons-material';
 import { FormattedMessage } from 'react-intl';
 import { updateItem } from 'renderer/utils/itemUtils';
 import { Item } from 'infra/configuration/model/configuration';
+import CustomMenuItem from 'renderer/components/menu/item/CustomMenuItem';
 
 type UpdateMenuItemProps = {
   item: Item;
@@ -17,14 +18,5 @@ export default function UpdateMenuItem({ item, onClose }: UpdateMenuItemProps) {
     await updateItem(item);
   }, [item, onClose]);
 
-  return (
-    <MenuItem onClick={updateHandler}>
-      <ListItemIcon>
-        <EditOutlined fontSize="small" />
-      </ListItemIcon>
-      <ListItemText>
-        <FormattedMessage id={'update'} />
-      </ListItemText>
-    </MenuItem>
-  );
+  return <CustomMenuItem Icon={EditOutlined} text={<FormattedMessage id={'update'} />} onClick={updateHandler} />;
 }

@@ -6,6 +6,7 @@ import { NodeApi } from 'react-arborist';
 import { TreeItem } from 'renderer/layout/navigator/components/sidebar/tree/tree';
 import { Item } from 'infra/configuration/model/configuration';
 import { updateItem } from 'renderer/utils/itemUtils';
+import CustomMenuItem from 'renderer/components/menu/item/CustomMenuItem';
 
 type RenameMenuItemProps = {
   item: Item;
@@ -24,14 +25,5 @@ export default function RenameMenuItem({ item, node, onClose }: RenameMenuItemPr
     }
   }, [item, node, onClose]);
 
-  return (
-    <MenuItem onClick={renameHandler}>
-      <ListItemIcon>
-        <TextFieldsOutlined fontSize="small" />
-      </ListItemIcon>
-      <ListItemText>
-        <FormattedMessage id={'rename'} />
-      </ListItemText>
-    </MenuItem>
-  );
+  return <CustomMenuItem Icon={TextFieldsOutlined} text={<FormattedMessage id={'rename'} />} onClick={renameHandler} />;
 }

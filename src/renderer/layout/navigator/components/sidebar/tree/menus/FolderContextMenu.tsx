@@ -1,5 +1,5 @@
 import { Divider } from '@mui/material';
-import ContextMenuPopper from 'renderer/components/menu/ContextMenuPopper';
+import ContextMenuPopper from 'renderer/components/menu/popup/ContextMenuPopper';
 import { TreeItemContextMenuProps } from 'renderer/layout/navigator/components/sidebar/tree/tree';
 import DeleteMenuItem from 'renderer/layout/navigator/components/sidebar/tree/menus/items/DeleteMenuItem';
 import RenameMenuItem from 'renderer/layout/navigator/components/sidebar/tree/menus/items/RenameMenuItem';

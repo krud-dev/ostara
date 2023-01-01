@@ -9,6 +9,7 @@ import { Instance, isApplication, isFolder, Item } from 'infra/configuration/mod
 import CreateInstanceDialog from 'renderer/components/item/dialogs/create/CreateInstanceDialog';
 import { getNewItemOrder } from 'renderer/utils/treeUtils';
 import { getItemTypeIcon } from 'renderer/utils/itemUtils';
+import CustomMenuItem from 'renderer/components/menu/item/CustomMenuItem';
 
 type AddInstanceMenuItemProps = {
   node: NodeApi<TreeItem>;
@@ -38,13 +39,10 @@ export default function AddInstanceMenuItem({ node, onClose, onCreated }: AddIns
   const InstanceIcon = useMemo<SvgIconComponent>(() => getItemTypeIcon('instance'), []);
 
   return (
-    <MenuItem onClick={createInstanceHandler}>
-      <ListItemIcon>
-        <InstanceIcon fontSize="small" />
-      </ListItemIcon>
-      <ListItemText>
-        <FormattedMessage id={'addInstance'} />
-      </ListItemText>
-    </MenuItem>
+    <CustomMenuItem
+      Icon={InstanceIcon}
+      text={<FormattedMessage id={'addInstance'} />}
+      onClick={createInstanceHandler}
+    />
   );
 }

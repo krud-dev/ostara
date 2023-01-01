@@ -9,6 +9,7 @@ import { getItemTypeIcon } from 'renderer/utils/itemUtils';
 import NiceModal from '@ebay/nice-modal-react';
 import CreateFolderDialog from 'renderer/components/item/dialogs/create/CreateFolderDialog';
 import { getNewItemOrder } from 'renderer/utils/treeUtils';
+import CustomMenuItem from 'renderer/components/menu/item/CustomMenuItem';
 
 type AddFolderMenuItemProps = {
   node: NodeApi<TreeItem>;
@@ -34,13 +35,6 @@ export default function AddFolderMenuItem({ node, onClose, onCreated }: AddFolde
   const FolderIcon = useMemo<SvgIconComponent>(() => getItemTypeIcon('folder'), []);
 
   return (
-    <MenuItem onClick={createFolderHandler}>
-      <ListItemIcon>
-        <FolderIcon fontSize="small" />
-      </ListItemIcon>
-      <ListItemText>
-        <FormattedMessage id={'addFolder'} />
-      </ListItemText>
-    </MenuItem>
+    <CustomMenuItem Icon={FolderIcon} text={<FormattedMessage id={'addFolder'} />} onClick={createFolderHandler} />
   );
 }

@@ -1,12 +1,19 @@
-import { Popover, PopoverProps } from '@mui/material';
+import { Menu, PopoverProps } from '@mui/material';
+import { useMenuPaperStyle } from 'renderer/components/menu/popup/useMenuPaperStyle';
+import { useMemo } from 'react';
+import { SxProps } from '@mui/system';
+import { Theme } from '@mui/material/styles';
 
 type MenuPopoverProps = {
   direction?: 'left' | 'right';
 } & PopoverProps;
 
 export default function MenuPopover({ children, direction = 'left', sx, ...other }: MenuPopoverProps) {
+  const paperStyle = useMenuPaperStyle();
+  const paperAggregatedStyle = useMemo<SxProps<Theme>>(() => ({ ...paperStyle, ...sx }), [paperStyle, sx]);
+
   return (
-    <Popover
+    <Menu
       anchorOrigin={{
         vertical: 'bottom',
         horizontal: direction,
@@ -18,17 +25,12 @@ export default function MenuPopover({ children, direction = 'left', sx, ...other
       PaperProps={{
         sx: {
           mt: 1,
-          py: 1,
-          overflow: 'inherit',
-          boxShadow: (theme) => theme.customShadows.z20,
-          border: (theme) => `solid 1px ${theme.palette.grey[500_8]}`,
-          minWidth: 200,
-          ...sx,
+          ...paperAggregatedStyle,
         },
       }}
       {...other}
     >
       {children}
-    </Popover>
+    </Menu>
   );
 }

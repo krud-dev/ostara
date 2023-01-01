@@ -1,5 +1,6 @@
 import { ClickAwayListener, Paper, Popper, PopperProps } from '@mui/material';
-import { PropsWithChildren } from 'react';
+import { PropsWithChildren, useCallback } from 'react';
+import { useMenuPaperStyle } from 'renderer/components/menu/popup/useMenuPaperStyle';
 
 type ContextMenuPopperProps = PopperProps &
   PropsWithChildren<any> & {
@@ -14,25 +15,19 @@ export default function ContextMenuPopper({
   sx,
   ...other
 }: ContextMenuPopperProps) {
-  const clickAwayHandler = (event: MouseEvent | TouchEvent) => {
-    onClose?.();
-  };
+  const clickAwayHandler = useCallback(
+    (event: MouseEvent | TouchEvent) => {
+      onClose?.();
+    },
+    [onClose]
+  );
+
+  const paperStyle = useMenuPaperStyle();
 
   return (
     <Popper id={id} placement={'bottom-start'} disablePortal={false} sx={{ zIndex: 10000 }} {...other}>
       <ClickAwayListener onClickAway={clickAwayHandler} mouseEvent={'onMouseDown'}>
-        <Paper
-          sx={{
-            py: 1,
-            overflow: 'inherit',
-            boxShadow: (theme) => theme.customShadows.z20,
-            border: (theme) => `solid 1px ${theme.palette.grey[500_8]}`,
-            minWidth: 200,
-            ...sx,
-          }}
-        >
-          {children}
-        </Paper>
+        <Paper sx={{ ...paperStyle, ...sx }}>{children}</Paper>
       </ClickAwayListener>
     </Popper>
   );
