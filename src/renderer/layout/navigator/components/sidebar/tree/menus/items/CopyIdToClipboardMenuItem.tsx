@@ -1,6 +1,4 @@
 import { useCallback } from 'react';
-import { ListItemIcon, ListItemText, MenuItem } from '@mui/material';
-import { ContentCopyOutlined, DeleteOutlined } from '@mui/icons-material';
 import { FormattedMessage } from 'react-intl';
 import { Item } from 'infra/configuration/model/configuration';
 import { useSnackbar } from 'notistack';
@@ -30,5 +28,7 @@ export default function CopyIdToClipboardMenuItem({ item, onClose }: CopyIdToCli
     return null;
   }
 
-  return <CustomMenuItem Icon={ContentCopyOutlined} text={<FormattedMessage id={'copyId'} />} onClick={copyHandler} />;
+  return (
+    <CustomMenuItem icon={'ContentCopyOutlined'} text={<FormattedMessage id={'copyId'} />} onClick={copyHandler} />
+  );
 }

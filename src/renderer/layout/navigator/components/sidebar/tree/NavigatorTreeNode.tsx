@@ -6,7 +6,7 @@ import { TreeItem } from 'renderer/layout/navigator/components/sidebar/tree/tree
 import typography from 'renderer/theme/config/typography';
 import { KeyboardArrowDown, KeyboardArrowRight, MoreVert, SvgIconComponent } from '@mui/icons-material';
 import { NAVIGATOR_ITEM_HEIGHT } from 'renderer/constants/ui';
-import { getItemHealthStatusColor, getItemTypeIcon, getItemUrl } from 'renderer/utils/itemUtils';
+import { getItemHealthStatusColor, getItemUrl } from 'renderer/utils/itemUtils';
 import FolderContextMenu from 'renderer/layout/navigator/components/sidebar/tree/menus/FolderContextMenu';
 import { isApplication, isFolder, isInstance, Item } from 'infra/configuration/model/configuration';
 import InstanceContextMenu from 'renderer/layout/navigator/components/sidebar/tree/menus/InstanceContextMenu';
@@ -15,6 +15,8 @@ import { SxProps } from '@mui/system';
 import { matchPath, useLocation, useNavigate } from 'react-router-dom';
 import useItemColor from 'renderer/hooks/useItemColor';
 import { bindMenu, usePopupState } from 'material-ui-popup-state/hooks';
+import { IconViewer } from 'renderer/components/icon/IconViewer';
+import useItemIcon from 'renderer/hooks/useItemIcon';
 
 type NavigatorTreeNodeProps = NodeRendererProps<TreeItem>;
 
@@ -132,7 +134,7 @@ export default function NavigatorTreeNode({ style, node, tree, dragHandle, previ
 
   const color = useItemColor(node.data);
   const healthStatusColor = useMemo<string | undefined>(() => getItemHealthStatusColor(node.data), [node.data]);
-  const TypeIcon = useMemo<SvgIconComponent>(() => getItemTypeIcon(node.data.type), [node.data]);
+  const itemIcon = useItemIcon(node.data);
   const ToggleIcon = useMemo<SvgIconComponent>(
     () => (node.isOpen ? KeyboardArrowDown : KeyboardArrowRight),
     [node.isOpen]
@@ -237,7 +239,7 @@ export default function NavigatorTreeNode({ style, node, tree, dragHandle, previ
             }}
             invisible={!healthStatusColor}
           >
-            <TypeIcon fontSize="small" />
+            <IconViewer icon={itemIcon} fontSize="small" />
           </Badge>
         </ListItemIconStyle>
         {!node.isEditing ? (

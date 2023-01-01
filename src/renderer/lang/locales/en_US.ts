@@ -65,4 +65,5 @@ export default {
   dataCollectionModeOn: 'Data collection from actuator instances is enabled',
   dataCollectionModeOff: 'Data collection from actuator instances is disabled',
   dataCollectionModeInherited: 'Inherited from parent application',
+  changeIcon: 'Change Icon',
 };

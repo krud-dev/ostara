@@ -34,12 +34,12 @@ export default function SearchItemMenu() {
 
       <MenuPopover {...bindMenu(menuState)}>
         <CustomMenuItem
-          Icon={UnfoldLessDoubleOutlined}
+          icon={'UnfoldLessDoubleOutlined'}
           text={<FormattedMessage id={'collapseAll'} />}
           onClick={collapseAllHandler}
         />
         <CustomMenuItem
-          Icon={UnfoldMoreDoubleOutlined}
+          icon={'UnfoldMoreDoubleOutlined'}
           text={<FormattedMessage id={'expandAll'} />}
           onClick={expandAllHandler}
         />

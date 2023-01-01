@@ -1,6 +1,4 @@
 import { useCallback, useMemo } from 'react';
-import { ListItemIcon, ListItemText, MenuItem } from '@mui/material';
-import { DarkModeOutlined, LightModeOutlined, SvgIconComponent } from '@mui/icons-material';
 import { FormattedMessage } from 'react-intl';
 import { NodeApi } from 'react-arborist';
 import { TreeItem } from 'renderer/layout/navigator/components/sidebar/tree/tree';
@@ -10,6 +8,7 @@ import NiceModal from '@ebay/nice-modal-react';
 import { getNewItemOrder } from 'renderer/utils/treeUtils';
 import CreateApplicationDialog from 'renderer/components/item/dialogs/create/CreateApplicationDialog';
 import CustomMenuItem from 'renderer/components/menu/item/CustomMenuItem';
+import { MUIconType } from 'renderer/components/icon/IconViewer';
 
 type AddApplicationMenuItemProps = {
   node: NodeApi<TreeItem>;
@@ -32,11 +31,11 @@ export default function AddApplicationMenuItem({ node, onClose, onCreated }: Add
     });
   }, [onClose, node, onCreated]);
 
-  const ApplicationIcon = useMemo<SvgIconComponent>(() => getItemTypeIcon('application'), []);
+  const applicationIcon = useMemo<MUIconType>(() => getItemTypeIcon('application'), []);
 
   return (
     <CustomMenuItem
-      Icon={ApplicationIcon}
+      icon={applicationIcon}
       text={<FormattedMessage id={'addApplication'} />}
       onClick={createApplicationHandler}
     />

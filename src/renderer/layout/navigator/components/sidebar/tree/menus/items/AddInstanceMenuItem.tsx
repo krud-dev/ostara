@@ -1,6 +1,4 @@
 import { useCallback, useMemo } from 'react';
-import { ListItemIcon, ListItemText, MenuItem } from '@mui/material';
-import { SvgIconComponent } from '@mui/icons-material';
 import { FormattedMessage } from 'react-intl';
 import { NodeApi } from 'react-arborist';
 import { TreeItem } from 'renderer/layout/navigator/components/sidebar/tree/tree';
@@ -10,6 +8,7 @@ import CreateInstanceDialog from 'renderer/components/item/dialogs/create/Create
 import { getNewItemOrder } from 'renderer/utils/treeUtils';
 import { getItemTypeIcon } from 'renderer/utils/itemUtils';
 import CustomMenuItem from 'renderer/components/menu/item/CustomMenuItem';
+import { MUIconType } from 'renderer/components/icon/IconViewer';
 
 type AddInstanceMenuItemProps = {
   node: NodeApi<TreeItem>;
@@ -36,11 +35,11 @@ export default function AddInstanceMenuItem({ node, onClose, onCreated }: AddIns
     });
   }, [onClose, node, onCreated]);
 
-  const InstanceIcon = useMemo<SvgIconComponent>(() => getItemTypeIcon('instance'), []);
+  const instanceIcon = useMemo<MUIconType>(() => getItemTypeIcon('instance'), []);
 
   return (
     <CustomMenuItem
-      Icon={InstanceIcon}
+      icon={instanceIcon}
       text={<FormattedMessage id={'addInstance'} />}
       onClick={createInstanceHandler}
     />

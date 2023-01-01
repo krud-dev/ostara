@@ -1,4 +1,3 @@
-import { CloudOutlined, DnsOutlined, FolderOutlined, SvgIconComponent } from '@mui/icons-material';
 import {
   Application,
   DataCollectionMode,
@@ -17,15 +16,16 @@ import UpdateFolderDialog from 'renderer/components/item/dialogs/update/UpdateFo
 import { green, pink, red, yellow } from '@mui/material/colors';
 import { ColorSchema } from 'renderer/theme/config/palette';
 import blueGrey from '@mui/material/colors/blueGrey';
+import { MUIconType } from 'renderer/components/icon/IconViewer';
 
-export const getItemTypeIcon = (itemType: ItemType): SvgIconComponent => {
+export const getItemTypeIcon = (itemType: ItemType): MUIconType => {
   switch (itemType) {
     case 'folder':
-      return FolderOutlined;
+      return 'FolderOutlined';
     case 'application':
-      return CloudOutlined;
+      return 'CloudOutlined';
     case 'instance':
-      return DnsOutlined;
+      return 'DnsOutlined';
     default:
       throw new Error(`Unknown item type`);
   }

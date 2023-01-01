@@ -1,15 +1,16 @@
 import { SvgIconComponent } from '@mui/icons-material';
 import React, { ReactNode } from 'react';
 import { ListItemIcon, ListItemText, MenuItem, MenuItemProps } from '@mui/material';
+import { IconViewer, MUIconType } from 'renderer/components/icon/IconViewer';
 
 export type CustomMenuItemProps = {
-  Icon?: SvgIconComponent;
+  icon?: MUIconType;
   text?: ReactNode;
   color?: string;
   info?: ReactNode;
 } & MenuItemProps;
 
-export default function CustomMenuItem({ Icon, text, color, info, sx, children, ...props }: CustomMenuItemProps) {
+export default function CustomMenuItem({ icon, text, color, info, sx, children, ...props }: CustomMenuItemProps) {
   return (
     <MenuItem
       {...props}
@@ -21,9 +22,9 @@ export default function CustomMenuItem({ Icon, text, color, info, sx, children, 
         ...sx,
       }}
     >
-      {Icon && (
+      {icon && (
         <ListItemIcon>
-          <Icon fontSize="small" />
+          <IconViewer icon={icon} fontSize="small" />
         </ListItemIcon>
       )}
       <ListItemText>

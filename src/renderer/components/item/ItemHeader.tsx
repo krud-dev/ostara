@@ -1,8 +1,7 @@
-import { SvgIconComponent } from '@mui/icons-material';
 import React, { useCallback, useMemo } from 'react';
 import { EnrichedItem, isApplication, isFolder, isInstance } from 'infra/configuration/model/configuration';
 import { Avatar, Badge, Box, IconButton, Typography } from '@mui/material';
-import { getItemHealthStatusColor, getItemHealthStatusTextId, getItemTypeIcon } from 'renderer/utils/itemUtils';
+import { getItemHealthStatusColor, getItemHealthStatusTextId } from 'renderer/utils/itemUtils';
 import { NAVIGATOR_ITEM_HEIGHT } from 'renderer/constants/ui';
 import FolderContextMenu from 'renderer/layout/navigator/components/sidebar/tree/menus/FolderContextMenu';
 import ApplicationContextMenu from 'renderer/layout/navigator/components/sidebar/tree/menus/ApplicationContextMenu';
@@ -10,6 +9,8 @@ import InstanceContextMenu from 'renderer/layout/navigator/components/sidebar/tr
 import useItemColor from 'renderer/hooks/useItemColor';
 import { FormattedMessage } from 'react-intl';
 import { bindMenu, usePopupState } from 'material-ui-popup-state/hooks';
+import { IconViewer } from 'renderer/components/icon/IconViewer';
+import useItemIcon from 'renderer/hooks/useItemIcon';
 
 type ItemHeaderProps = { item: EnrichedItem };
 
@@ -19,7 +20,7 @@ export default function ItemHeader({ item }: ItemHeaderProps) {
   const color = useItemColor(item);
   const healthStatusColor = useMemo<string | undefined>(() => getItemHealthStatusColor(item), [item]);
   const healthTextId = useMemo<string | undefined>(() => getItemHealthStatusTextId(item), [item]);
-  const TypeIcon = useMemo<SvgIconComponent>(() => getItemTypeIcon(item.type), [item]);
+  const itemIcon = useItemIcon(item);
 
   const openMenuHandler = useCallback(
     (event: React.MouseEvent): void => {
@@ -55,7 +56,7 @@ export default function ItemHeader({ item }: ItemHeaderProps) {
             invisible={!healthStatusColor}
           >
             <Avatar variant={'circular'} sx={{ backgroundColor: color, color: 'white' }}>
-              <TypeIcon fontSize={'medium'} />
+              <IconViewer icon={itemIcon} fontSize={'medium'} />
             </Avatar>
           </Badge>
         </IconButton>

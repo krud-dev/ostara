@@ -7,6 +7,7 @@ import AddInstanceMenuItem from 'renderer/layout/navigator/components/sidebar/tr
 import ChooseColorMenuItem from 'renderer/layout/navigator/components/sidebar/tree/menus/items/ChooseColorMenuItem';
 import UpdateMenuItem from 'renderer/layout/navigator/components/sidebar/tree/menus/items/UpdateMenuItem';
 import CopyIdToClipboardMenuItem from 'renderer/layout/navigator/components/sidebar/tree/menus/items/CopyIdToClipboardMenuItem';
+import ChooseIconMenuItem from 'renderer/layout/navigator/components/sidebar/tree/menus/items/ChooseIconMenuItem';
 
 export default function ApplicationContextMenu({
   item,
@@ -30,6 +31,7 @@ export default function ApplicationContextMenu({
       <CopyIdToClipboardMenuItem item={item} onClose={onClose} />
       <UpdateMenuItem item={item} onClose={onClose} />
       <RenameMenuItem item={item} node={node} onClose={onClose} />
+      <ChooseIconMenuItem item={item} onClose={onClose} />
       <DeleteMenuItem item={item} onClose={onClose} />
     </ContextMenuPopper>
   );

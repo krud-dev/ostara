@@ -4,7 +4,7 @@ import { useUi } from 'renderer/contexts/UiContext';
 import MenuPopover from 'renderer/components/menu/popup/MenuPopover';
 import { DarkModeOutlined, DeveloperModeOutlined, LightModeOutlined } from '@mui/icons-material';
 import { FormattedMessage } from 'react-intl';
-import MAvatar from 'renderer/components/menu/MAvatar';
+import MAvatar from 'renderer/components/icon/MAvatar';
 import { bindMenu, usePopupState } from 'material-ui-popup-state/hooks';
 import CustomMenuItem from 'renderer/components/menu/item/CustomMenuItem';
 
@@ -55,7 +55,7 @@ export default function AccountMenu() {
 
       <MenuPopover direction={isRtl ? 'left' : 'right'} {...bindMenu(menuState)}>
         <CustomMenuItem
-          Icon={DeveloperModeOutlined}
+          icon={'DeveloperModeOutlined'}
           text={
             <>
               <FormattedMessage id={'developerMode'} /> <FormattedMessage id={developerMode ? 'on' : 'off'} />
@@ -64,7 +64,7 @@ export default function AccountMenu() {
           onClick={toggleDeveloperModeHandler}
         />
         <CustomMenuItem
-          Icon={darkMode ? LightModeOutlined : DarkModeOutlined}
+          icon={darkMode ? 'LightModeOutlined' : 'DarkModeOutlined'}
           text={<FormattedMessage id={darkMode ? 'lightMode' : 'darkMode'} />}
           onClick={toggleDarkModeHandler}
         />

@@ -1,7 +1,7 @@
 import { useCallback, useMemo } from 'react';
 import { IconButton } from '@mui/material';
 import MenuPopover from 'renderer/components/menu/popup/MenuPopover';
-import { AddOutlined, SvgIconComponent } from '@mui/icons-material';
+import { AddOutlined } from '@mui/icons-material';
 import { FormattedMessage } from 'react-intl';
 import { getItemTypeIcon } from 'renderer/utils/itemUtils';
 import NiceModal from '@ebay/nice-modal-react';
@@ -13,6 +13,7 @@ import CreateApplicationDialog from 'renderer/components/item/dialogs/create/Cre
 import CreateInstanceDialog from 'renderer/components/item/dialogs/create/CreateInstanceDialog';
 import { bindMenu, usePopupState } from 'material-ui-popup-state/hooks';
 import CustomMenuItem from 'renderer/components/menu/item/CustomMenuItem';
+import { MUIconType } from 'renderer/components/icon/IconViewer';
 
 export default function CreateItemMenu() {
   const { data } = useNavigatorTree();
@@ -59,9 +60,9 @@ export default function CreateItemMenu() {
     });
   }, [menuState, getNewItemOrder]);
 
-  const FolderIcon = useMemo<SvgIconComponent>(() => getItemTypeIcon('folder'), []);
-  const ApplicationIcon = useMemo<SvgIconComponent>(() => getItemTypeIcon('application'), []);
-  const InstanceIcon = useMemo<SvgIconComponent>(() => getItemTypeIcon('instance'), []);
+  const folderIcon = useMemo<MUIconType>(() => getItemTypeIcon('folder'), []);
+  const applicationIcon = useMemo<MUIconType>(() => getItemTypeIcon('application'), []);
+  const instanceIcon = useMemo<MUIconType>(() => getItemTypeIcon('instance'), []);
 
   return (
     <>
@@ -71,17 +72,17 @@ export default function CreateItemMenu() {
 
       <MenuPopover {...bindMenu(menuState)}>
         <CustomMenuItem
-          Icon={FolderIcon}
+          icon={folderIcon}
           text={<FormattedMessage id={'createFolder'} />}
           onClick={createFolderHandler}
         />
         <CustomMenuItem
-          Icon={ApplicationIcon}
+          icon={applicationIcon}
           text={<FormattedMessage id={'createApplication'} />}
           onClick={createApplicationHandler}
         />
         <CustomMenuItem
-          Icon={InstanceIcon}
+          icon={instanceIcon}
           text={<FormattedMessage id={'createInstance'} />}
           onClick={createInstanceHandler}
         />

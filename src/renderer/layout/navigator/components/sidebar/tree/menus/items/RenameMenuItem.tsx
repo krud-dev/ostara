@@ -1,6 +1,4 @@
 import { useCallback } from 'react';
-import { ListItemIcon, ListItemText, MenuItem } from '@mui/material';
-import { TextFieldsOutlined } from '@mui/icons-material';
 import { FormattedMessage } from 'react-intl';
 import { NodeApi } from 'react-arborist';
 import { TreeItem } from 'renderer/layout/navigator/components/sidebar/tree/tree';
@@ -25,5 +23,7 @@ export default function RenameMenuItem({ item, node, onClose }: RenameMenuItemPr
     }
   }, [item, node, onClose]);
 
-  return <CustomMenuItem Icon={TextFieldsOutlined} text={<FormattedMessage id={'rename'} />} onClick={renameHandler} />;
+  return (
+    <CustomMenuItem icon={'TextFieldsOutlined'} text={<FormattedMessage id={'rename'} />} onClick={renameHandler} />
+  );
 }

@@ -18,6 +18,7 @@ export type BaseItem = {
   readonly id: string;
   readonly type: ItemType;
   color?: string;
+  icon?: string;
   order?: number;
 };
 
