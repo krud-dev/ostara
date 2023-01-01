@@ -37,7 +37,9 @@ export default function InstanceDataCollectionToggle({ item }: InstanceDataColle
               />
             </Box>
             <Box sx={{ color: 'text.secondary' }}>
+              {'*'}
               <FormattedMessage id="dataCollectionModeInherited" />
+              {'*'}
             </Box>
           </>
         );

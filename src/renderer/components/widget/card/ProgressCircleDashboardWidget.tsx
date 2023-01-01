@@ -1,4 +1,4 @@
-import React, { FunctionComponent, useEffect, useMemo, useState } from 'react';
+import React, { FunctionComponent, useCallback, useMemo, useState } from 'react';
 import { ProgressCircleWidget } from 'infra/dashboard/model';
 import { DashboardWidgetCardProps } from 'renderer/components/widget/widget';
 import DashboardGenericCard from 'renderer/components/widget/card/DashboardGenericCard';
@@ -7,8 +7,9 @@ import { lighten, styled } from '@mui/material/styles';
 import ReactApexChart from 'react-apexcharts';
 import BaseOptionChart from 'renderer/components/chart/BaseOptionChart';
 import { ApexOptions } from 'apexcharts';
-import { useGetLatestMetric } from 'renderer/apis/metrics/getLatestMetric';
-import { useSubscribeToMetric } from 'renderer/apis/metrics/subscribeToMetric';
+import { ApplicationMetricDTO } from 'infra/metrics/metricsService';
+import UseWidgetLatestMetrics from 'renderer/components/widget/hooks/useWidgetLatestMetrics';
+import useWidgetSubscribeToMetrics from 'renderer/components/widget/hooks/useWidgetSubscribeToMetrics';
 
 const CHART_HEIGHT = 300;
 
@@ -32,66 +33,21 @@ const ProgressCircleDashboardWidget: FunctionComponent<DashboardWidgetCardProps<
     [data]
   );
 
-  const currentMetricState = useGetLatestMetric();
-  const maxMetricState = useGetLatestMetric();
-  const currentSubscribeToMetricState = useSubscribeToMetric();
-  const maxSubscribeToMetricState = useSubscribeToMetric();
+  const onMetricUpdate = useCallback(
+    (metricDto: ApplicationMetricDTO) => {
+      if (metricDto.name === widget.currentMetricName) {
+        setData((prev) => ({ ...prev, current: metricDto.values[0].value }));
+      } else {
+        setData((prev) => ({ ...prev, max: metricDto.values[0].value }));
+      }
+    },
+    [widget, setData]
+  );
 
-  useEffect(() => {
-    (async () => {
-      try {
-        const result = await currentMetricState.mutateAsync({
-          instanceId: item.id,
-          metricName: widget.currentMetricName,
-        });
-        setData((prev) => ({ ...prev, current: result.values[0].value }));
-      } catch (e) {}
-    })();
-  }, [item, widget]);
+  const metricNames = useMemo<string[]>(() => [widget.maxMetricName, widget.currentMetricName], [widget]);
 
-  useEffect(() => {
-    (async () => {
-      try {
-        const result = await maxMetricState.mutateAsync({
-          instanceId: item.id,
-          metricName: widget.maxMetricName,
-        });
-        setData((prev) => ({ ...prev, max: result.values[0].value }));
-      } catch (e) {}
-    })();
-  }, [item, widget]);
-
-  useEffect(() => {
-    let unsubscribe: () => void;
-    (async () => {
-      try {
-        unsubscribe = await currentSubscribeToMetricState.mutateAsync({
-          instanceId: item.id,
-          metricName: widget.currentMetricName,
-          listener: (event, metric) => setData((prev) => ({ ...prev, current: metric.values[0].value })),
-        });
-      } catch (e) {}
-    })();
-    return () => {
-      unsubscribe?.();
-    };
-  }, [item, widget]);
-
-  useEffect(() => {
-    let unsubscribe: () => void;
-    (async () => {
-      try {
-        unsubscribe = await maxSubscribeToMetricState.mutateAsync({
-          instanceId: item.id,
-          metricName: widget.maxMetricName,
-          listener: (event, metric) => setData((prev) => ({ ...prev, max: metric.values[0].value })),
-        });
-      } catch (e) {}
-    })();
-    return () => {
-      unsubscribe?.();
-    };
-  }, [item, widget]);
+  UseWidgetLatestMetrics(item.id, metricNames, (metricDtos) => metricDtos.forEach(onMetricUpdate));
+  useWidgetSubscribeToMetrics(item.id, metricNames, onMetricUpdate);
 
   const chartData = useMemo<
     {

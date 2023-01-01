@@ -1,4 +1,4 @@
-import React, { FunctionComponent, useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import React, { FunctionComponent, useCallback, useMemo, useRef, useState } from 'react';
 import { StackedTimelineWidget } from 'infra/dashboard/model';
 import { DashboardWidgetCardProps } from 'renderer/components/widget/widget';
 import DashboardGenericCard from 'renderer/components/widget/card/DashboardGenericCard';
@@ -7,11 +7,10 @@ import { styled } from '@mui/material/styles';
 import ReactApexChart from 'react-apexcharts';
 import BaseOptionChart from 'renderer/components/chart/BaseOptionChart';
 import { ApexOptions } from 'apexcharts';
-import { useGetLatestMetric } from 'renderer/apis/metrics/getLatestMetric';
-import { useSubscribeToMetric } from 'renderer/apis/metrics/subscribeToMetric';
-import { every, isEmpty, takeRight } from 'lodash';
-import { ApplicationMetricDTO } from 'infra/metrics/metricsService';
+import { chain, every, isEmpty, isNaN, isNil, takeRight } from 'lodash';
 import { useIntl } from 'react-intl';
+import useWidgetSubscribeToMetrics from 'renderer/components/widget/hooks/useWidgetSubscribeToMetrics';
+import useWidgetMetricsHistory from 'renderer/components/widget/hooks/useWidgetMetricsHistory';
 
 const CHART_HEIGHT = 364;
 const MAX_DATA_POINTS = 50;
@@ -27,6 +26,8 @@ const ChartWrapperStyle = styled('div')(({ theme }) => ({
   padding: theme.spacing(0, 2),
 }));
 
+type DataPoint = { values: number[]; timestamp: number };
+
 const StackedTimelineDashboardWidget: FunctionComponent<DashboardWidgetCardProps<StackedTimelineWidget>> = ({
   widget,
   item,
@@ -38,80 +39,70 @@ const StackedTimelineDashboardWidget: FunctionComponent<DashboardWidgetCardProps
   );
   const [chartLabels, setChartLabels] = useState<string[]>([]);
 
-  const dataPoint = useRef<number[]>([]);
-  const lastDataPointTime = useRef<number>(0);
+  const dataPoint = useRef<DataPoint>({ values: [], timestamp: 0 });
+  const lastDataPointTimestamp = useRef<number>(0);
 
   const isLoading = useMemo<boolean>(() => isEmpty(chartLabels), [chartLabels]);
 
-  const getMetricState = useGetLatestMetric();
-  const subscribeToMetricState = useSubscribeToMetric();
+  const metrics = useMemo<{ name: string; title: string; color: string }[]>(
+    () =>
+      chain(widget.metrics)
+        .sortBy('order')
+        .map((metric) => ({ name: metric.name, title: metric.title, color: metric.color }))
+        .value(),
+    [widget]
+  );
 
-  useEffect(() => {
-    (async () => {
-      try {
-        const results = await Promise.all(
-          widget.metrics.map(
-            async (metric): Promise<ApplicationMetricDTO> =>
-              await getMetricState.mutateAsync({
-                instanceId: item.id,
-                metricName: metric.name,
-              })
-          )
-        );
+  const metricNames = useMemo<string[]>(() => metrics.map((metric) => metric.name), [metrics]);
 
-        const initialDataPoint = results.map((result) => result.values[0].value);
-        addDataPoint(initialDataPoint);
-      } catch (e) {}
-    })();
-  }, []);
+  useWidgetMetricsHistory(
+    item.id,
+    metricNames,
+    new Date(Date.now() - MAX_DATA_POINTS * MIN_SECONDS_BETWEEN_DATA_POINTS * 1000),
+    new Date(),
+    (metricDtos) => {
+      chain(metricDtos)
+        .map((metricDto) => metricDto.values)
+        .unzip()
+        .map((values) => ({ values: values.map((v) => v.value), timestamp: values[0].timestamp.getTime() }))
+        .filter(
+          (historyDataPoint) =>
+            historyDataPoint.values.length === metrics.length && every(historyDataPoint.values, isValidValue)
+        )
+        .value()
+        .forEach(addDataPoint);
+    }
+  );
+  useWidgetSubscribeToMetrics(item.id, metricNames, (metricDto) => {
+    const index = metrics.findIndex((metric) => metric.name === metricDto.name);
+    dataPoint.current.values[index] = metricDto.values[0].value;
+    dataPoint.current.timestamp = metricDto.values[0].timestamp.getTime();
+    if (dataPoint.current.values.length === metrics.length && every(dataPoint.current.values, isValidValue)) {
+      addDataPoint(dataPoint.current);
+      dataPoint.current = { values: [], timestamp: 0 };
+    }
+  });
 
-  useEffect(() => {
-    let unsubscribes: (() => void)[];
-    (async () => {
-      try {
-        unsubscribes = await Promise.all(
-          widget.metrics.map(
-            async (metric, index): Promise<() => void> =>
-              await subscribeToMetricState.mutateAsync({
-                instanceId: item.id,
-                metricName: metric.name,
-                listener: (event, value) => {
-                  dataPoint.current[index] = value.values[0].value;
-                  if (
-                    dataPoint.current.length === widget.metrics.length &&
-                    every(dataPoint.current, (v) => v !== undefined)
-                  ) {
-                    addDataPoint(dataPoint.current);
-                    dataPoint.current = [];
-                  }
-                },
-              })
-          )
-        );
-      } catch (e) {}
-    })();
-    return () => {
-      unsubscribes?.forEach((unsubscribe) => unsubscribe());
-    };
-  }, [item, widget]);
-
-  const addDataPoint = useCallback((dataPointToAdd: number[]): void => {
-    const now = Date.now();
-    if (now - lastDataPointTime.current < MIN_SECONDS_BETWEEN_DATA_POINTS * 1000) {
+  const addDataPoint = useCallback((dataPointToAdd: DataPoint): void => {
+    if (dataPointToAdd.timestamp - lastDataPointTimestamp.current < MIN_SECONDS_BETWEEN_DATA_POINTS * 1000) {
       return;
     }
-    lastDataPointTime.current = now;
+    lastDataPointTimestamp.current = dataPointToAdd.timestamp;
 
     setData((prev) =>
       prev.map((series, index) => ({
         ...series,
-        data: takeRight([...series.data, dataPointToAdd[index]], MAX_DATA_POINTS),
+        data: takeRight([...series.data, dataPointToAdd.values[index]], MAX_DATA_POINTS),
       }))
     );
-    setChartLabels((prev) => takeRight([...prev, intl.formatTime(now, { timeStyle: 'medium' })], MAX_DATA_POINTS));
+    setChartLabels((prev) =>
+      takeRight([...prev, intl.formatTime(dataPointToAdd.timestamp, { timeStyle: 'medium' })], MAX_DATA_POINTS)
+    );
   }, []);
 
-  const chartColors = useMemo<string[]>(() => widget.metrics.map((m) => m.color), [widget]);
+  const isValidValue = useCallback((value: number) => !isNil(value) && !isNaN(value), []);
+
+  const chartColors = useMemo<string[]>(() => metrics.map((m) => m.color), [metrics]);
 
   const overrideOptions = useMemo<Partial<ApexOptions>>(
     () => ({
