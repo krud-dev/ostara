@@ -4,8 +4,13 @@ import log from 'electron-log';
 import { metricsService } from '../metrics/metricsService';
 import { instanceHealthService } from '../instance/InstanceHealthService';
 
+const TASK_NAMES = {
+  QUERY_INSTANCES_HEALTH: 'QUERY_INSTANCES_HEALTH',
+}
+
 taskService.declareTask({
-  name: 'Query Instance Metrics',
+  name: 'queryInstanceMetrics',
+  alias: 'Query Instance Metrics',
   description: 'Query the actuator API for instance metrics',
   defaultCron: '* * * * *',
   function: async () => {
@@ -20,7 +25,8 @@ taskService.declareTask({
 });
 
 taskService.declareTask({
-  name: 'Query Instance Health',
+  name: 'queryInstanceHealth',
+  alias: 'Query Instance Health',
   description: 'Query the actuator API for instance health',
   defaultCron: '* * * * *',
   function: async () => {

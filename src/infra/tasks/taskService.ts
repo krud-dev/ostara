@@ -1,12 +1,6 @@
 import schedule from 'node-schedule';
 import log from 'electron-log';
-
-export type TaskDefinition = {
-  name: string;
-  description: string;
-  defaultCron: string;
-  function: () => Promise<void>;
-};
+import { EffectiveTaskDefinition, TaskDefinition, TaskDefinitionDisplay } from './types';
 
 class TaskService {
   private readonly tasks: TaskDefinition[] = [];
@@ -19,9 +13,33 @@ class TaskService {
     this.tasks.push(task);
   }
 
+  getTasks(): EffectiveTaskDefinition[] {
+    return this.tasks.map((task) => this.getEffectiveTaskDefinition(task));
+  }
+
+  getTask(name: string): EffectiveTaskDefinition | undefined {
+    const task = this.getTasks().find((t) => t.name === name);
+    if (!task) {
+      return undefined;
+    }
+    return task;
+  }
+
+  getTasksForDisplay(): TaskDefinitionDisplay[] {
+    return this.tasks.map((task) => this.getTaskDefinitionDisplay(task));
+  }
+
+  getTaskForDisplay(name: string): TaskDefinitionDisplay | undefined {
+    const task = this.getTask(name);
+    if (!task) {
+      return undefined;
+    }
+    return this.getTaskDefinitionDisplay(task);
+  }
+
   initialize() {
     this.tasks.forEach((task) => {
-      schedule.scheduleJob(task.defaultCron, () => {
+      schedule.scheduleJob(task.name, task.defaultCron, () => {
         const start = Date.now();
         log.info(`Running task '${task.name}'`);
         task
@@ -34,6 +52,27 @@ class TaskService {
           });
       });
     });
+  }
+
+  private getTaskDefinitionDisplay(task: TaskDefinition): TaskDefinitionDisplay {
+    const effectiveTaskDefinition = this.getEffectiveTaskDefinition(task);
+    return {
+      name: effectiveTaskDefinition.name,
+      alias: effectiveTaskDefinition.alias,
+      description: effectiveTaskDefinition.description,
+      defaultCron: effectiveTaskDefinition.defaultCron,
+      cron: effectiveTaskDefinition.cron,
+      active: effectiveTaskDefinition.active,
+      nextRun: schedule.scheduledJobs[task.name]?.nextInvocation()?.getTime() ?? -1,
+    };
+  }
+
+  private getEffectiveTaskDefinition(task: TaskDefinition): EffectiveTaskDefinition {
+    return {
+      ...task,
+      cron: task.defaultCron, // todo: get from config
+      active: true,
+    };
   }
 }
 
