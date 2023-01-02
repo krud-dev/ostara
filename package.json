@@ -142,6 +142,7 @@
     "react-intl": "^6.2.5",
     "react-perfect-scrollbar": "^1.5.8",
     "react-router-dom": "^6.4.5",
+    "react-use": "^17.4.0",
     "reflect-metadata": "^0.1.13",
     "stylis-plugin-rtl": "^2.1.1",
     "typeorm": "^0.3.11",
