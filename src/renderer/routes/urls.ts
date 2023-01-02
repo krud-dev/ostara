@@ -30,6 +30,7 @@ export const urls = asUrlInfos({
     url: '/navigator/application/:id',
     path: 'application/:id',
   },
+  // Instance Root
   instance: {
     url: '/navigator/instance/:id',
     path: 'instance/:id',
@@ -69,5 +70,14 @@ export const urls = asUrlInfos({
   instanceHeapDump: {
     url: '/navigator/instance/:id/heap-dump',
     path: 'heap-dump',
+  },
+  // Settings Root
+  settings: {
+    url: '/settings',
+    path: 'settings',
+  },
+  tasks: {
+    url: '/settings/tasks',
+    path: 'tasks',
   },
 });

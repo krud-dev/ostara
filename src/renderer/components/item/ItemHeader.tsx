@@ -2,7 +2,7 @@ import React, { useCallback, useMemo } from 'react';
 import { EnrichedItem, isApplication, isFolder, isInstance } from 'infra/configuration/model/configuration';
 import { Avatar, Badge, Box, IconButton, Typography } from '@mui/material';
 import { getItemHealthStatusColor, getItemHealthStatusTextId } from 'renderer/utils/itemUtils';
-import { NAVIGATOR_ITEM_HEIGHT } from 'renderer/constants/ui';
+import { COMPONENTS_SPACING, NAVIGATOR_ITEM_HEIGHT } from 'renderer/constants/ui';
 import FolderContextMenu from 'renderer/layout/navigator/components/sidebar/tree/menus/FolderContextMenu';
 import ApplicationContextMenu from 'renderer/layout/navigator/components/sidebar/tree/menus/ApplicationContextMenu';
 import InstanceContextMenu from 'renderer/layout/navigator/components/sidebar/tree/menus/InstanceContextMenu';
@@ -42,7 +42,7 @@ export default function ItemHeader({ item }: ItemHeaderProps) {
         <InstanceContextMenu item={item} placement={'bottom-start'} sx={{ mt: 0.5 }} {...bindMenu(menuState)} />
       )}
 
-      <Box sx={{ height: NAVIGATOR_ITEM_HEIGHT * 2, px: 2.5, display: 'flex', alignItems: 'center' }}>
+      <Box sx={{ height: NAVIGATOR_ITEM_HEIGHT * 2, px: COMPONENTS_SPACING, display: 'flex', alignItems: 'center' }}>
         <IconButton
           size={'small'}
           sx={{ p: 0 }}

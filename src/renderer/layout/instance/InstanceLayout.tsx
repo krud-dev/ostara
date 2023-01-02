@@ -2,7 +2,7 @@ import React, { FunctionComponent, useMemo } from 'react';
 import { Box } from '@mui/material';
 import { Outlet } from 'react-router-dom';
 import { Allotment, LayoutPriority } from 'allotment';
-import { SIDEBAR_DEFAULT_WIDTH } from 'renderer/constants/ui';
+import { INTERNAL_SIDEBAR_MAX_WIDTH, INTERNAL_SIDEBAR_MIN_WIDTH, SIDEBAR_DEFAULT_WIDTH } from 'renderer/constants/ui';
 import useConfigurationStoreState from 'renderer/hooks/useConfigurationStoreState';
 import { useNavigatorTree } from 'renderer/contexts/NavigatorTreeContext';
 import { EnrichedInstance } from 'infra/configuration/model/configuration';
@@ -31,7 +31,7 @@ const InstanceLayout: FunctionComponent = () => {
   return (
     <Box sx={{ width: '100%', height: '100%' }}>
       <Allotment defaultSizes={defaultSizes} proportionalLayout={false} onChange={(sizes) => setSidebarWidth(sizes[0])}>
-        <Allotment.Pane minSize={180} maxSize={360} snap>
+        <Allotment.Pane minSize={INTERNAL_SIDEBAR_MIN_WIDTH} maxSize={INTERNAL_SIDEBAR_MAX_WIDTH} snap>
           <InstanceSidebar item={item} width={sidebarWidth} />
         </Allotment.Pane>
         <Allotment.Pane priority={LayoutPriority.High}>

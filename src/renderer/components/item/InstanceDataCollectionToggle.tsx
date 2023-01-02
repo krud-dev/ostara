@@ -9,6 +9,7 @@ import { FormattedMessage } from 'react-intl';
 import { getDataCollectionModeColor, getDataCollectionModeTextId } from 'renderer/utils/itemUtils';
 import { ColorSchema } from 'renderer/theme/config/palette';
 import { useUpdateItem } from 'renderer/apis/configuration/item/updateItem';
+import { COMPONENTS_SPACING } from 'renderer/constants/ui';
 
 type InstanceDataCollectionToggleProps = { item: EnrichedInstance };
 
@@ -74,7 +75,12 @@ export default function InstanceDataCollectionToggle({ item }: InstanceDataColle
   );
 
   return (
-    <Stack direction={'row'} alignItems={'center'} justifyContent={'space-between'} sx={{ height: 60, px: 2.5 }}>
+    <Stack
+      direction={'row'}
+      alignItems={'center'}
+      justifyContent={'space-between'}
+      sx={{ height: 60, px: COMPONENTS_SPACING }}
+    >
       <Typography
         variant={'body2'}
         sx={{ color: 'text.secondary', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}

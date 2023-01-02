@@ -2,14 +2,16 @@ import { useCallback } from 'react';
 import { Box, IconButton } from '@mui/material';
 import { useUi } from 'renderer/contexts/UiContext';
 import MenuPopover from 'renderer/components/menu/popup/MenuPopover';
-import { DarkModeOutlined, DeveloperModeOutlined, LightModeOutlined } from '@mui/icons-material';
 import { FormattedMessage } from 'react-intl';
 import MAvatar from 'renderer/components/icon/MAvatar';
 import { bindMenu, usePopupState } from 'material-ui-popup-state/hooks';
 import CustomMenuItem from 'renderer/components/menu/item/CustomMenuItem';
+import { useNavigate } from 'react-router-dom';
+import { urls } from 'renderer/routes/urls';
 
 export default function AccountMenu() {
   const { developerMode, toggleDeveloperMode, darkMode, toggleDarkMode, isRtl } = useUi();
+  const navigate = useNavigate();
 
   const menuState = usePopupState({ variant: 'popover' });
 
@@ -26,6 +28,11 @@ export default function AccountMenu() {
     toggleDarkMode();
     menuState.close();
   }, [toggleDarkMode, menuState]);
+
+  const settingsHandler = useCallback((): void => {
+    navigate(urls.settings.url);
+    menuState.close();
+  }, [navigate, menuState]);
 
   return (
     <>
@@ -67,6 +74,11 @@ export default function AccountMenu() {
           icon={darkMode ? 'LightModeOutlined' : 'DarkModeOutlined'}
           text={<FormattedMessage id={darkMode ? 'lightMode' : 'darkMode'} />}
           onClick={toggleDarkModeHandler}
+        />
+        <CustomMenuItem
+          icon={'SettingsOutlined'}
+          text={<FormattedMessage id={'settings'} />}
+          onClick={settingsHandler}
         />
       </MenuPopover>
     </>

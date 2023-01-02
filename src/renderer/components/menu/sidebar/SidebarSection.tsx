@@ -4,7 +4,7 @@ import SidebarItem, { SidebarItemProps } from 'renderer/components/menu/sidebar/
 import { ListSubheaderProps } from '@mui/material/ListSubheader/ListSubheader';
 import typography from 'renderer/theme/config/typography';
 import { ReactNode } from 'react';
-import { NAVIGATOR_ITEM_HEIGHT } from 'renderer/constants/ui';
+import { COMPONENTS_SPACING, NAVIGATOR_ITEM_HEIGHT } from 'renderer/constants/ui';
 
 const ListSubheaderStyle = styled((props) => (
   <ListSubheader disableSticky disableGutters {...props} />
@@ -12,7 +12,7 @@ const ListSubheaderStyle = styled((props) => (
   ...typography.overline,
   height: NAVIGATOR_ITEM_HEIGHT,
   lineHeight: `${NAVIGATOR_ITEM_HEIGHT}px`,
-  paddingLeft: theme.spacing(2.5),
+  paddingLeft: theme.spacing(COMPONENTS_SPACING),
   color: theme.palette.text.primary,
 }));
 

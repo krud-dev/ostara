@@ -7,6 +7,7 @@ import { Widget } from 'infra/dashboard/model';
 import { values } from 'lodash';
 import DashboardWidget from 'renderer/components/widget/DashboardWidget';
 import { Stack } from '@mui/material';
+import { COMPONENTS_SPACING } from 'renderer/constants/ui';
 
 const InstanceDashboard: FunctionComponent = () => {
   const { selectedItem } = useNavigatorTree();
@@ -23,8 +24,8 @@ const InstanceDashboard: FunctionComponent = () => {
   }
 
   return (
-    <Page sx={{ width: '100%', p: 2.5 }}>
-      <Stack direction={'column'} spacing={2.5}>
+    <Page sx={{ width: '100%', p: COMPONENTS_SPACING }}>
+      <Stack direction={'column'} spacing={COMPONENTS_SPACING}>
         {widgets.map((widget) => (
           <DashboardWidget widget={widget} item={item} key={widget.id} />
         ))}

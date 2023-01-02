@@ -1,17 +1,17 @@
 import { AppBar, Box, Divider, IconButton, Stack, Toolbar } from '@mui/material';
-import LanguageMenu from 'renderer/layout/navigator/components/navbar/LanguageMenu';
-import { NAVBAR_HEIGHT } from 'renderer/constants/ui';
+import LanguageMenu from 'renderer/layout/common/navbar/LanguageMenu';
+import { COMPONENTS_SPACING, NAVBAR_HEIGHT } from 'renderer/constants/ui';
 import { HomeOutlined } from '@mui/icons-material';
-import AccountMenu from 'renderer/layout/navigator/components/navbar/AccountMenu';
+import AccountMenu from 'renderer/layout/common/navbar/AccountMenu';
 import { useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { urls } from 'renderer/routes/urls';
 
-type NavigatorNavbarProps = {
+type MainNavbarProps = {
   sidebarWidth: number;
 };
 
-export default function NavigatorNavbar({ sidebarWidth }: NavigatorNavbarProps) {
+export default function MainNavbar({ sidebarWidth }: MainNavbarProps) {
   const navigate = useNavigate();
 
   const homeHandler = useCallback(() => {
@@ -27,7 +27,7 @@ export default function NavigatorNavbar({ sidebarWidth }: NavigatorNavbarProps) 
         width: `calc(100% - ${sidebarWidth + 1}px)`,
       }}
     >
-      <Toolbar sx={{ flexGrow: 1 }}>
+      <Toolbar disableGutters sx={{ flexGrow: 1, px: COMPONENTS_SPACING }}>
         <IconButton size={'medium'} onClick={homeHandler} sx={{ mr: 1, color: 'text.primary' }}>
           <HomeOutlined fontSize={'large'} />
         </IconButton>

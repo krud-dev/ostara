@@ -4,15 +4,15 @@ import { alpha, experimentalStyled as styled, useTheme } from '@mui/material/sty
 import { Box, Collapse, IconButton, List, ListItem, ListItemIcon, ListItemText } from '@mui/material';
 import typography from 'renderer/theme/config/typography';
 import { KeyboardArrowDown, KeyboardArrowRight, SvgIconComponent } from '@mui/icons-material';
-import { NAVIGATOR_ITEM_HEIGHT } from 'renderer/constants/ui';
+import { COMPONENTS_SPACING, NAVIGATOR_ITEM_HEIGHT } from 'renderer/constants/ui';
 
 const ListItemStyle = styled(ListItem)(({ theme }) => ({
   ...typography.body2,
   height: NAVIGATOR_ITEM_HEIGHT,
   position: 'relative',
   textTransform: 'capitalize',
-  paddingLeft: theme.spacing(2.5),
-  paddingRight: theme.spacing(2.5),
+  paddingLeft: theme.spacing(COMPONENTS_SPACING),
+  paddingRight: theme.spacing(COMPONENTS_SPACING),
   '&:before': {
     top: 0,
     left: 0,

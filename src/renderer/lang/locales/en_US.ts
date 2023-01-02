@@ -58,6 +58,9 @@ export default {
   loading: 'Loading',
   dataCollection: 'Data Collection',
   notSupported: 'Not Supported',
+  settings: 'Settings',
+  general: 'General',
+  tasks: 'Tasks',
   daysShort: 'd',
   hoursShort: 'h',
   minutesShort: 'm',
@@ -65,5 +68,4 @@ export default {
   dataCollectionModeOn: 'Data collection from actuator instances is enabled',
   dataCollectionModeOff: 'Data collection from actuator instances is disabled',
   dataCollectionModeInherited: 'Inherited from parent application',
-  changeIcon: 'Change Icon',
 };

@@ -8,6 +8,8 @@ import InstanceDashboard from 'renderer/pages/navigator/instance/dashboard';
 import FolderPage from 'renderer/pages/navigator/folder';
 import ApplicationPage from 'renderer/pages/navigator/application';
 import InstanceLayout from 'renderer/layout/instance/InstanceLayout';
+import SettingsLayout from 'renderer/layout/settings/SettingsLayout';
+import TasksPage from 'renderer/pages/navigator/settings/tasks';
 
 export default function Router() {
   return useRoutes([
@@ -78,6 +80,19 @@ export default function Router() {
           ],
         },
         { path: '*', element: <Navigate to={urls.error.url} replace /> },
+      ],
+    },
+
+    // Settings Routes
+    {
+      path: urls.settings.path,
+      element: <SettingsLayout />,
+      children: [
+        { path: '', element: <Navigate to={urls.tasks.path} replace /> },
+        {
+          path: urls.tasks.path,
+          element: <TasksPage />,
+        },
       ],
     },
 
