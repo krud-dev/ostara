@@ -6,7 +6,6 @@ import ChooseColorMenuItem from 'renderer/layout/navigator/components/sidebar/tr
 import { Divider } from '@mui/material';
 import UpdateMenuItem from 'renderer/layout/navigator/components/sidebar/tree/menus/items/UpdateMenuItem';
 import CopyIdToClipboardMenuItem from 'renderer/layout/navigator/components/sidebar/tree/menus/items/CopyIdToClipboardMenuItem';
-import ChooseIconMenuItem from 'renderer/layout/navigator/components/sidebar/tree/menus/items/ChooseIconMenuItem';
 
 export default function InstanceContextMenu({
   item,
@@ -24,7 +23,6 @@ export default function InstanceContextMenu({
       <CopyIdToClipboardMenuItem item={item} onClose={onClose} />
       <UpdateMenuItem item={item} onClose={onClose} />
       <RenameMenuItem item={item} node={node} onClose={onClose} />
-      <ChooseIconMenuItem item={item} onClose={onClose} />
       <DeleteMenuItem item={item} onClose={onClose} />
     </ContextMenuPopper>
   );

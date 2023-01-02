@@ -1,18 +1,6 @@
-import {
-  Application,
-  DataCollectionMode,
-  EnrichedItem,
-  Folder,
-  Instance,
-  Item,
-  ItemType,
-} from 'infra/configuration/model/configuration';
+import { DataCollectionMode, EnrichedItem, Item, ItemType } from 'infra/configuration/model/configuration';
 import { generatePath } from 'react-router-dom';
 import { urls } from 'renderer/routes/urls';
-import NiceModal from '@ebay/nice-modal-react';
-import UpdateApplicationDialog from 'renderer/components/item/dialogs/update/UpdateApplicationDialog';
-import UpdateInstanceDialog from 'renderer/components/item/dialogs/update/UpdateInstanceDialog';
-import UpdateFolderDialog from 'renderer/components/item/dialogs/update/UpdateFolderDialog';
 import { green, pink, red, yellow } from '@mui/material/colors';
 import { ColorSchema } from 'renderer/theme/config/palette';
 import blueGrey from '@mui/material/colors/blueGrey';
@@ -39,25 +27,6 @@ export const getItemUrl = (item: Item): string => {
       return generatePath(urls.application.url, { id: item.id });
     case 'instance':
       return generatePath(urls.instance.url, { id: item.id });
-    default:
-      throw new Error(`Unknown item type`);
-  }
-};
-
-export const updateItem = async (item: Item): Promise<Item | undefined> => {
-  switch (item.type) {
-    case 'folder':
-      return await NiceModal.show<Folder | undefined>(UpdateFolderDialog, {
-        item: item,
-      });
-    case 'application':
-      return await NiceModal.show<Application | undefined>(UpdateApplicationDialog, {
-        item: item,
-      });
-    case 'instance':
-      return await NiceModal.show<Instance | undefined>(UpdateInstanceDialog, {
-        item: item,
-      });
     default:
       throw new Error(`Unknown item type`);
   }

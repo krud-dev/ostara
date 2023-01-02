@@ -6,7 +6,7 @@ import DialogTitleEnhanced from 'renderer/components/dialog/DialogTitleEnhanced'
 import { EnrichedFolder, Folder } from 'infra/configuration/model/configuration';
 import ApplicationDetailsForm from 'renderer/components/item/dialogs/forms/ApplicationDetailsForm';
 import { useUpdateFolder } from 'renderer/apis/configuration/folder/updateFolder';
-import { FolderFormValues } from 'renderer/components/item/dialogs/forms/FolderDetailsForm';
+import FolderDetailsForm, { FolderFormValues } from 'renderer/components/item/dialogs/forms/FolderDetailsForm';
 
 export type UpdateFolderDialogProps = {
   item: Folder;
@@ -52,7 +52,7 @@ const UpdateFolderDialog: FunctionComponent<UpdateFolderDialogProps & NiceModalH
         <DialogTitleEnhanced onClose={cancelHandler}>
           <FormattedMessage id={'updateFolder'} />
         </DialogTitleEnhanced>
-        <ApplicationDetailsForm defaultValues={item} onSubmit={submitHandler} onCancel={cancelHandler} />
+        <FolderDetailsForm defaultValues={item} onSubmit={submitHandler} onCancel={cancelHandler} />
       </Dialog>
     );
   }

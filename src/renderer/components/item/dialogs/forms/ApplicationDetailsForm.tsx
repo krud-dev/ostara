@@ -1,9 +1,11 @@
 import { FormattedMessage, useIntl } from 'react-intl';
 import React, { FunctionComponent, useCallback } from 'react';
-import { Controller, useForm } from 'react-hook-form';
+import { Controller, FormProvider, useForm } from 'react-hook-form';
 import { Box, Button, DialogActions, DialogContent, TextField } from '@mui/material';
 import { useModal } from '@ebay/nice-modal-react';
 import { LoadingButton } from '@mui/lab';
+import InputAdornment from '@mui/material/InputAdornment';
+import ItemIconFormField from 'renderer/components/item/dialogs/forms/fields/ItemIconFormField';
 
 export type ApplicationDetailsFormProps = {
   defaultValues?: ApplicationFormValues;
@@ -13,6 +15,7 @@ export type ApplicationDetailsFormProps = {
 
 export type ApplicationFormValues = {
   alias: string;
+  icon?: string;
 };
 
 const ApplicationDetailsForm: FunctionComponent<ApplicationDetailsFormProps> = ({
@@ -23,7 +26,8 @@ const ApplicationDetailsForm: FunctionComponent<ApplicationDetailsFormProps> = (
   const modal = useModal();
   const intl = useIntl();
 
-  const { control, handleSubmit } = useForm<ApplicationFormValues>({ defaultValues });
+  const methods = useForm<ApplicationFormValues>({ defaultValues });
+  const { control, handleSubmit } = methods;
 
   const submitHandler = handleSubmit(async (data): Promise<void> => {
     onSubmit?.(data);
@@ -34,7 +38,7 @@ const ApplicationDetailsForm: FunctionComponent<ApplicationDetailsFormProps> = (
   }, [modal]);
 
   return (
-    <>
+    <FormProvider {...methods}>
       <DialogContent>
         <Box component="form" onSubmit={submitHandler} noValidate sx={{ mt: 1 }}>
           <Controller
@@ -58,6 +62,13 @@ const ApplicationDetailsForm: FunctionComponent<ApplicationDetailsFormProps> = (
                   autoFocus
                   error={invalid}
                   helperText={error?.message}
+                  InputProps={{
+                    startAdornment: (
+                      <InputAdornment position="start">
+                        <ItemIconFormField type={'application'} />
+                      </InputAdornment>
+                    ),
+                  }}
                 />
               );
             }}
@@ -73,7 +84,7 @@ const ApplicationDetailsForm: FunctionComponent<ApplicationDetailsFormProps> = (
           <FormattedMessage id={'save'} />
         </LoadingButton>
       </DialogActions>
-    </>
+    </FormProvider>
   );
 };
 

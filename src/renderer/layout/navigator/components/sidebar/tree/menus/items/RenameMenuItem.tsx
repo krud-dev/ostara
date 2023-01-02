@@ -3,8 +3,8 @@ import { FormattedMessage } from 'react-intl';
 import { NodeApi } from 'react-arborist';
 import { TreeItem } from 'renderer/layout/navigator/components/sidebar/tree/tree';
 import { Item } from 'infra/configuration/model/configuration';
-import { updateItem } from 'renderer/utils/itemUtils';
 import CustomMenuItem from 'renderer/components/menu/item/CustomMenuItem';
+import { showUpdateItemDialog } from 'renderer/utils/dialogUtils';
 
 type RenameMenuItemProps = {
   item: Item;
@@ -19,7 +19,7 @@ export default function RenameMenuItem({ item, node, onClose }: RenameMenuItemPr
     if (node) {
       await node.edit();
     } else {
-      await updateItem(item);
+      await showUpdateItemDialog(item);
     }
   }, [item, node, onClose]);
 

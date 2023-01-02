@@ -1,12 +1,15 @@
 import { FormattedMessage, useIntl } from 'react-intl';
 import React, { FunctionComponent, useCallback } from 'react';
-import { Controller, useForm } from 'react-hook-form';
+import { Controller, FormProvider, useForm } from 'react-hook-form';
 import { Box, Button, DialogActions, DialogContent, TextField } from '@mui/material';
 import { useModal } from '@ebay/nice-modal-react';
 import { LoadingButton } from '@mui/lab';
 import { useSnackbar } from 'notistack';
 import { useTestActuatorUrlConnection } from 'renderer/apis/actuator/instance/testActuatorUrlConnection';
 import { getErrorMessage } from 'renderer/utils/errorUtils';
+import { FolderFormValues } from 'renderer/components/item/dialogs/forms/FolderDetailsForm';
+import InputAdornment from '@mui/material/InputAdornment';
+import ItemIconFormField from 'renderer/components/item/dialogs/forms/fields/ItemIconFormField';
 
 export type InstanceDetailsFormProps = {
   defaultValues?: InstanceFormValues;
@@ -16,6 +19,7 @@ export type InstanceDetailsFormProps = {
 
 export type InstanceFormValues = {
   alias: string;
+  icon?: string;
   actuatorUrl: string;
 };
 
@@ -28,7 +32,8 @@ const InstanceDetailsForm: FunctionComponent<InstanceDetailsFormProps> = ({
   const intl = useIntl();
   const { enqueueSnackbar } = useSnackbar();
 
-  const { control, handleSubmit, watch } = useForm<InstanceFormValues>({ defaultValues });
+  const methods = useForm<InstanceFormValues>({ defaultValues });
+  const { control, handleSubmit, watch } = methods;
 
   const submitHandler = handleSubmit(async (data): Promise<void> => {
     onSubmit?.(data);
@@ -57,7 +62,7 @@ const InstanceDetailsForm: FunctionComponent<InstanceDetailsFormProps> = ({
   }, [testConnectionState, actuatorUrl]);
 
   return (
-    <>
+    <FormProvider {...methods}>
       <DialogContent>
         <Box component="form" onSubmit={submitHandler} noValidate sx={{ mt: 1 }}>
           <Controller
@@ -81,6 +86,13 @@ const InstanceDetailsForm: FunctionComponent<InstanceDetailsFormProps> = ({
                   autoFocus
                   error={invalid}
                   helperText={error?.message}
+                  InputProps={{
+                    startAdornment: (
+                      <InputAdornment position="start">
+                        <ItemIconFormField type={'instance'} />
+                      </InputAdornment>
+                    ),
+                  }}
                 />
               );
             }}
@@ -129,7 +141,7 @@ const InstanceDetailsForm: FunctionComponent<InstanceDetailsFormProps> = ({
           <FormattedMessage id={'save'} />
         </LoadingButton>
       </DialogActions>
-    </>
+    </FormProvider>
   );
 };
 export default InstanceDetailsForm;
