@@ -10,6 +10,7 @@ type ContextMenuPopperProps = PopperProps &
 
 export default function ContextMenuPopper({
   id = 'context-menu-popper',
+  placement,
   onClose,
   children,
   sx,
@@ -25,7 +26,14 @@ export default function ContextMenuPopper({
   const paperStyle = useMenuPaperStyle();
 
   return (
-    <Popper id={id} placement={'bottom-start'} disablePortal={false} sx={{ zIndex: 10000 }} {...other}>
+    <Popper
+      id={id}
+      placement={placement || 'auto-start'}
+      disablePortal={false}
+      popperOptions={{ strategy: 'fixed' }}
+      sx={{ zIndex: 10000 }}
+      {...other}
+    >
       <ClickAwayListener onClickAway={clickAwayHandler} mouseEvent={'onMouseDown'}>
         <Paper sx={{ ...paperStyle, ...sx }}>{children}</Paper>
       </ClickAwayListener>

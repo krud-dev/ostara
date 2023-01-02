@@ -15,12 +15,13 @@ export default function FolderContextMenu({
   node,
   open,
   anchorEl,
+  placement,
   onClose,
   onCreated,
   sx,
 }: TreeItemContextMenuProps) {
   return (
-    <ContextMenuPopper open={open} onClose={onClose} anchorEl={anchorEl} sx={sx}>
+    <ContextMenuPopper open={open} onClose={onClose} anchorEl={anchorEl} placement={placement} sx={sx}>
       {node && (
         <>
           <AddFolderMenuItem node={node} onClose={onClose} onCreated={onCreated} />

@@ -32,9 +32,15 @@ export default function ItemHeader({ item }: ItemHeaderProps) {
 
   return (
     <>
-      {isFolder(item) && <FolderContextMenu item={item} sx={{ mt: 0.5 }} {...bindMenu(menuState)} />}
-      {isApplication(item) && <ApplicationContextMenu item={item} sx={{ mt: 0.5 }} {...bindMenu(menuState)} />}
-      {isInstance(item) && <InstanceContextMenu item={item} sx={{ mt: 0.5 }} {...bindMenu(menuState)} />}
+      {isFolder(item) && (
+        <FolderContextMenu item={item} placement={'bottom-start'} sx={{ mt: 0.5 }} {...bindMenu(menuState)} />
+      )}
+      {isApplication(item) && (
+        <ApplicationContextMenu item={item} placement={'bottom-start'} sx={{ mt: 0.5 }} {...bindMenu(menuState)} />
+      )}
+      {isInstance(item) && (
+        <InstanceContextMenu item={item} placement={'bottom-start'} sx={{ mt: 0.5 }} {...bindMenu(menuState)} />
+      )}
 
       <Box sx={{ height: NAVIGATOR_ITEM_HEIGHT * 2, px: 2.5, display: 'flex', alignItems: 'center' }}>
         <IconButton

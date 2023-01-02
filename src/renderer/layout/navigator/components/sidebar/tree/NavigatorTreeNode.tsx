@@ -179,6 +179,7 @@ export default function NavigatorTreeNode({ style, node, tree, dragHandle, previ
         <FolderContextMenu
           item={node.data}
           node={node}
+          placement={contextMenuState.anchorEl === contextMenuAnchorRef.current ? 'bottom-start' : undefined}
           onCreated={childItemCreatedHandler}
           {...bindMenu(contextMenuState)}
         />
@@ -187,6 +188,7 @@ export default function NavigatorTreeNode({ style, node, tree, dragHandle, previ
         <ApplicationContextMenu
           item={node.data}
           node={node}
+          placement={contextMenuState.anchorEl === contextMenuAnchorRef.current ? 'bottom-start' : undefined}
           onCreated={childItemCreatedHandler}
           {...bindMenu(contextMenuState)}
         />
@@ -195,6 +197,7 @@ export default function NavigatorTreeNode({ style, node, tree, dragHandle, previ
         <InstanceContextMenu
           item={node.data}
           node={node}
+          placement={contextMenuState.anchorEl === contextMenuAnchorRef.current ? 'bottom-start' : undefined}
           onCreated={childItemCreatedHandler}
           {...bindMenu(contextMenuState)}
         />

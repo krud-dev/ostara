@@ -13,12 +13,13 @@ export default function ApplicationContextMenu({
   node,
   open,
   anchorEl,
+  placement,
   onClose,
   onCreated,
   sx,
 }: TreeItemContextMenuProps) {
   return (
-    <ContextMenuPopper open={open} onClose={onClose} anchorEl={anchorEl} sx={sx}>
+    <ContextMenuPopper open={open} onClose={onClose} anchorEl={anchorEl} placement={placement} sx={sx}>
       {node && (
         <>
           <AddInstanceMenuItem node={node} onClose={onClose} onCreated={onCreated} />

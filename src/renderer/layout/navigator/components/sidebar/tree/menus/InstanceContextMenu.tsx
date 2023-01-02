@@ -12,12 +12,13 @@ export default function InstanceContextMenu({
   node,
   open,
   anchorEl,
+  placement,
   onClose,
   onCreated,
   sx,
 }: TreeItemContextMenuProps) {
   return (
-    <ContextMenuPopper open={open} onClose={onClose} anchorEl={anchorEl} sx={sx}>
+    <ContextMenuPopper open={open} onClose={onClose} anchorEl={anchorEl} placement={placement} sx={sx}>
       <ChooseColorMenuItem item={item} onClose={onClose} />
       <Divider />
       <CopyIdToClipboardMenuItem item={item} onClose={onClose} />
