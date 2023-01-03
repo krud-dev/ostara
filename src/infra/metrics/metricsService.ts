@@ -25,7 +25,7 @@ export type MetricSubscription = {
 };
 
 class MetricsService {
-  async getMetrics(instanceId: string, metricName: string, from: Date, to: Date): Promise<ApplicationMetricDTO> {
+  async getMetrics(instanceId: string, metricName: string, from: Date, to: Date): Promise<ApplicationMetricDTO | undefined> {
     const valueRepository = dataSource.getRepository(ApplicationMetricValue);
     const applicationMetricValues = await valueRepository.findBy({
       instanceId,
@@ -36,7 +36,7 @@ class MetricsService {
     });
 
     if (applicationMetricValues.length === 0) {
-      throw new Error(`No metric ${metricName} for instance ${instanceId}`);
+      return undefined;
     }
 
     return {
@@ -50,7 +50,7 @@ class MetricsService {
     };
   }
 
-  async getLatestMetric(instanceId: string, metricName: string): Promise<ApplicationMetricDTO> {
+  async getLatestMetric(instanceId: string, metricName: string): Promise<ApplicationMetricDTO | undefined> {
     const valueRepository = dataSource.getRepository(ApplicationMetricValue);
     const applicationMetricValue = await valueRepository.findOne({
       where: {
@@ -65,7 +65,7 @@ class MetricsService {
     });
 
     if (!applicationMetricValue) {
-      throw new Error(`No metric ${metricName} for instance ${instanceId}`);
+      return undefined;
     }
 
     return {
