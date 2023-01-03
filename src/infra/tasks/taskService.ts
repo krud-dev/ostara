@@ -41,14 +41,14 @@ class TaskService {
     this.tasks.forEach((task) => {
       schedule.scheduleJob(task.name, task.defaultCron, () => {
         const start = Date.now();
-        log.info(`Running task '${task.name}'`);
+        log.debug(`Running task '${task.name}'`);
         task
           .function()
           .catch((error) => {
             log.error(`Error running task '${task.name}'`, error);
           })
           .finally(() => {
-            log.info(`Task '${task.name}' concluded in ${Date.now() - start}ms`);
+            log.debug(`Task '${task.name}' concluded in ${Date.now() - start}ms`);
           });
       });
     });

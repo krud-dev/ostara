@@ -225,7 +225,7 @@ class ConfigurationService {
           return true;
         }
         const { dataCollectionIntervalSeconds } = instance;
-        return (currentTime - dataCollectionIntervalSeconds ?? 60) / 1000 > dataCollectionIntervalSeconds * 1000;
+        return currentTime - lastDataCollectionTime > (dataCollectionIntervalSeconds ?? 60) * 1000;
       });
   }
 
