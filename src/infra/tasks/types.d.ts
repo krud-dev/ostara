@@ -1,4 +1,4 @@
-export type TaskName = 'queryInstanceMetrics' | 'queryInstanceHealth';
+export type TaskName = 'queryInstanceMetrics' | 'queryInstanceHealth' | 'queryInstanceEndpoints';
 
 export type TaskDefinition = {
   alias: string;

@@ -2,6 +2,7 @@ import { ipcRenderer } from 'electron';
 
 export const actuatorBridge: ActuatorBridge = {
   testConnection: (url: string) => ipcRenderer.invoke('actuator:testConnection', url),
+  endpoints: (url: string) => ipcRenderer.invoke('actuator:endpoints', url),
   health: (url: string) => ipcRenderer.invoke('actuator:health', url),
   healthComponent: (url: string, name: string) => ipcRenderer.invoke('actuator:healthComponent', url, name),
   info: (url: string) => ipcRenderer.invoke('actuator:info', url),

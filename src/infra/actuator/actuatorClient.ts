@@ -7,7 +7,12 @@ import { ActuatorMetricResponse, ActuatorMetricsResponse } from './model/metrics
 import { ActuatorEnvPropertyResponse, ActuatorEnvResponse } from './model/env';
 import { ActuatorLoggerResponse, ActuatorLoggersResponse, ActuatorLogLevel } from './model/loggers';
 import { ActuatorThreadDumpResponse } from './model/threadDump';
-import { ActuatorMainResponse, ActuatorTestConnectionResponse } from './model/base';
+import {
+  ActuatorEndpoint,
+  ActuatorEndpointsResponse,
+  ActuatorMainResponse,
+  ActuatorTestConnectionResponse,
+} from './model/base';
 
 export class ActuatorClient {
   readonly axios: Axios;
@@ -51,6 +56,16 @@ export class ActuatorClient {
         success: false,
       };
     }
+  }
+
+  /**
+   * Capabilities
+   */
+
+  async endpoints(): Promise<string[]> {
+    const response = await this.axios.get('');
+    const data = <ActuatorMainResponse>response.data;
+    return Object.keys(data._links).filter((key) => key !== 'self');
   }
 
   /**

@@ -5,6 +5,10 @@ ipcMain.handle('actuator:testConnection', async (event, url) => {
   const client = new ActuatorClient(url);
   return client.testConnection();
 });
+ipcMain.handle('actuator:endpoints', async (event, url) => {
+  const client = new ActuatorClient(url);
+  return client.endpoints();
+});
 ipcMain.handle('actuator:health', async (event, url) => {
   const client = new ActuatorClient(url);
   return client.health();

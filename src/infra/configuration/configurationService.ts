@@ -16,7 +16,7 @@ import {
   isInstance,
 } from './model/configuration';
 import { configurationStore } from './configurationStore';
-import { instanceHealthService } from '../instance/InstanceHealthService';
+import { instanceInfoService } from '../instance/InstanceInfoService';
 import { instanceMetadataStore } from './instanceMetadataStore';
 
 class ConfigurationService {
@@ -246,7 +246,7 @@ class ConfigurationService {
       throw new Error(`Item with id ${id} is not an instance`);
     }
     configurationStore.set(`items.${id}`, instance);
-    instanceHealthService.invalidateInstance(id);
+    instanceInfoService.invalidateInstance(id);
     return <EnrichedInstance>this.getItem(id);
   }
 
@@ -312,12 +312,14 @@ class ConfigurationService {
   private enrichInstance(instance: Instance): EnrichedInstance {
     const effectiveColor = this.getInstanceEffectiveColor(instance);
     const effectiveDataCollectionMode = this.getInstanceEffectiveDataCollectionMode(instance);
-    const health = instanceHealthService.getCachedInstanceHealth(instance);
+    const health = instanceInfoService.getCachedInstanceHealth(instance);
+    const endpoints = instanceInfoService.getCachedInstanceEndpoints(instance);
     return {
       ...instance,
       effectiveColor,
       effectiveDataCollectionMode,
       health,
+      endpoints,
       lastDataCollectionTime: this.getInstanceMetadata(instance).lastDataCollectionTime,
     };
   }

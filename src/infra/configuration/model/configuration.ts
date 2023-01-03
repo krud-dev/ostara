@@ -1,4 +1,4 @@
-import { InstanceHealth } from '../../instance/InstanceHealthService';
+import { InstanceHealth } from '../../instance/models/health';
 
 export type ApplicationType = 'SpringBoot';
 
@@ -39,6 +39,7 @@ export type EnrichedInstance = Instance & {
   readonly effectiveColor?: string;
   readonly effectiveDataCollectionMode: DataCollectionMode;
   readonly health: InstanceHealth;
+  readonly endpoints: string[] | undefined;
   readonly lastDataCollectionTime?: number;
 };
 
