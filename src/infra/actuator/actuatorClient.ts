@@ -76,7 +76,11 @@ export class ActuatorClient {
    */
 
   async health(): Promise<ActuatorHealthResponse> {
-    const response = await this.axios.get('health');
+    const response = await this.axios.get<ActuatorHealthResponse>('health');
+    if (!response.data.status) {
+      // Todo: replace with a guard
+      throw new Error('Invalid actuator response');
+    }
     return response.data;
   }
 

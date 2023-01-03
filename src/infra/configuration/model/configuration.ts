@@ -1,5 +1,3 @@
-import { InstanceHealth } from '../../instance/models/health';
-
 export type ApplicationType = 'SpringBoot';
 
 export type Item = Instance | Application | Folder;
@@ -10,12 +8,24 @@ export type ItemType = 'instance' | 'application' | 'folder';
 
 export type InstanceHealthStatus = 'UP' | 'DOWN' | 'UNKNOWN' | 'OUT_OF_SERVICE' | 'UNREACHABLE' | 'PENDING';
 
+export type ApplicationHealthStatus = 'ALL_UP' | 'ALL_DOWN' | 'SOME_DOWN' | 'UNKNOWN' | 'PENDING';
+
 export type DataCollectionMode = 'on' | 'off';
 
 export type InstanceDataCollectionMode = DataCollectionMode | 'inherited';
 
 export type InstanceMetadata = {
   lastDataCollectionTime?: number;
+};
+
+export type InstanceHealth = {
+  status: InstanceHealthStatus;
+  lastUpdateTime: number;
+};
+
+export type ApplicationHealth = {
+  status: ApplicationHealthStatus;
+  lastUpdateTime: number;
 };
 
 export type BaseItem = {
@@ -54,6 +64,7 @@ export type Application = BaseItem & {
 
 export type EnrichedApplication = Application & {
   readonly effectiveColor?: string;
+  readonly health: ApplicationHealth;
 };
 
 export type Folder = BaseItem & {

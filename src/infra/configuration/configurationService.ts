@@ -143,7 +143,7 @@ class ConfigurationService {
       id,
     };
     configurationStore.set(`items.${id}`, newApplication);
-    return <Application>this.getItem(id);
+    return <EnrichedApplication>this.getItem(id);
   }
 
   updateApplication(id: string, application: Omit<Application, 'id' | 'type'>): EnrichedApplication {
@@ -152,7 +152,8 @@ class ConfigurationService {
       throw new Error(`Item with id ${id} is not an application`);
     }
     configurationStore.set(`items.${id}`, application);
-    return <Application>this.getItem(id);
+    instanceInfoService.invalidateApplication(target.id);
+    return <EnrichedApplication>this.getItem(id);
   }
 
   deleteApplication(id: string): void {
@@ -162,6 +163,7 @@ class ConfigurationService {
     }
     const instances = this.getApplicationInstances(id);
     instances.forEach((instance) => this.deleteInstance(instance.id));
+    instanceInfoService.invalidateApplication(target.id);
     configurationStore.delete(`items.${id}` as any);
   }
 
@@ -180,7 +182,7 @@ class ConfigurationService {
       configurationStore.delete(`items.${id}.parentFolderId` as any);
     }
     configurationStore.set(`items.${id}.order`, newOrder);
-    return <Application>this.getItem(id);
+    return <EnrichedApplication>this.getItem(id);
   }
 
   getApplicationInstances(id: string): EnrichedInstance[] {
@@ -237,6 +239,7 @@ class ConfigurationService {
       id,
     };
     configurationStore.set(`items.${id}`, newInstance);
+    instanceInfoService.invalidateApplication(instance.parentApplicationId);
     return <EnrichedInstance>this.getItem(id);
   }
 
@@ -246,7 +249,7 @@ class ConfigurationService {
       throw new Error(`Item with id ${id} is not an instance`);
     }
     configurationStore.set(`items.${id}`, instance);
-    instanceInfoService.invalidateInstance(id);
+    instanceInfoService.invalidateInstance(target);
     return <EnrichedInstance>this.getItem(id);
   }
 
@@ -255,6 +258,7 @@ class ConfigurationService {
     if (!isInstance(target)) {
       throw new Error(`Item with id ${id} is not an instance`);
     }
+    instanceInfoService.invalidateInstance(target);
     configurationStore.delete(`items.${id}` as any);
   }
 
@@ -328,6 +332,7 @@ class ConfigurationService {
     const effectiveColor = this.getApplicationEffectiveColor(application);
     return {
       ...application,
+      health: instanceInfoService.getCachedApplicationHealth(application),
       effectiveColor,
     };
   }
