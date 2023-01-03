@@ -1,14 +1,3 @@
-import {
-  Application,
-  Configuration,
-  EnrichedApplication,
-  EnrichedFolder,
-  EnrichedInstance,
-  EnrichedItem,
-  Folder,
-  Instance,
-} from '../configuration/model/configuration';
-
 export type TaskName = 'queryInstanceMetrics' | 'queryInstanceHealth';
 
 export type TaskDefinition = {
@@ -17,6 +6,7 @@ export type TaskDefinition = {
   description: string;
   defaultCron: string;
   function: () => Promise<void>;
+  runOnStartup?: boolean;
 };
 
 export type EffectiveTaskDefinition = TaskDefinition & {

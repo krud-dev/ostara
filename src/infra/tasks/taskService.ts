@@ -39,7 +39,7 @@ class TaskService {
 
   initialize() {
     this.tasks.forEach((task) => {
-      schedule.scheduleJob(task.name, task.defaultCron, () => {
+      const callback = () => {
         const start = Date.now();
         log.debug(`Running task '${task.name}'`);
         task
@@ -50,7 +50,11 @@ class TaskService {
           .finally(() => {
             log.debug(`Task '${task.name}' concluded in ${Date.now() - start}ms`);
           });
-      });
+      };
+      if (task.runOnStartup) {
+        callback();
+      }
+      schedule.scheduleJob(task.name, task.defaultCron, callback);
     });
   }
 
