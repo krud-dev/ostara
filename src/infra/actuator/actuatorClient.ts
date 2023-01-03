@@ -65,7 +65,10 @@ export class ActuatorClient {
   async endpoints(): Promise<string[]> {
     const response = await this.axios.get('');
     const data = <ActuatorMainResponse>response.data;
-    return Object.keys(data._links).filter((key) => key !== 'self');
+    if (data._links) {
+      return Object.keys(data._links).filter((key) => key !== 'self');
+    }
+    return [];
   }
 
   /**
