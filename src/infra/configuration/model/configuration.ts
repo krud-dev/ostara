@@ -14,6 +14,10 @@ export type DataCollectionMode = 'on' | 'off';
 
 export type InstanceDataCollectionMode = DataCollectionMode | 'inherited';
 
+export type InstanceMetadata = {
+  lastDataCollectionTime?: number;
+};
+
 export type BaseItem = {
   readonly id: string;
   readonly type: ItemType;
@@ -28,12 +32,14 @@ export type Instance = BaseItem & {
   alias: string;
   actuatorUrl: string;
   dataCollectionMode: InstanceDataCollectionMode;
+  dataCollectionIntervalSeconds: number;
 };
 
 export type EnrichedInstance = Instance & {
   readonly effectiveColor?: string;
   readonly effectiveDataCollectionMode: DataCollectionMode;
   readonly health: InstanceHealth;
+  readonly lastDataCollectionTime?: number;
 };
 
 export type Application = BaseItem & {

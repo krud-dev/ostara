@@ -10,12 +10,14 @@ import {
   EnrichedItem,
   Folder,
   Instance,
+  InstanceMetadata,
   isApplication,
   isFolder,
   isInstance,
 } from './model/configuration';
 import { configurationStore } from './configurationStore';
 import { instanceHealthService } from '../instance/InstanceHealthService';
+import { instanceMetadataStore } from './instanceMetadataStore';
 
 class ConfigurationService {
   /**
@@ -26,6 +28,7 @@ class ConfigurationService {
   }
 
   getItems(): EnrichedItem[] {
+    const x = configurationStore;
     return Object.values(configurationStore.get('items')).map((item) => this.enrichItem(item));
   }
 
@@ -72,7 +75,7 @@ class ConfigurationService {
       id,
     };
     configurationStore.set(`items.${id}`, newFolder);
-    return this.enrichFolder(<Folder>this.getItem(id));
+    return <Folder>this.getItem(id);
   }
 
   updateFolder(id: string, folder: Omit<Folder, 'id' | 'type'>): EnrichedFolder {
@@ -81,7 +84,7 @@ class ConfigurationService {
       throw new Error(`Item with id ${id} is not a folder`);
     }
     configurationStore.set(`items.${id}`, folder);
-    return this.enrichFolder(<Folder>this.getItem(id));
+    return <Folder>this.getItem(id);
   }
 
   deleteFolder(id: string): void {
@@ -105,9 +108,9 @@ class ConfigurationService {
     if (!isFolder(folder)) {
       throw new Error(`Item with id ${id} is not a folder`);
     }
-    return Object.values(configurationStore.get('items'))
-      .filter((item) => (isFolder(item) || isApplication(item)) && item.parentFolderId === id)
-      .map((item) => this.enrichItem(item)) as Exclude<EnrichedItem, EnrichedInstance>[];
+    return this.getItems().filter(
+      (item) => (isFolder(item) || isApplication(item)) && item.parentFolderId === id
+    ) as Exclude<EnrichedItem, EnrichedInstance>[];
   }
 
   moveFolder(id: string, newParentFolderId: string | undefined, newOrder: number): EnrichedFolder {
@@ -125,7 +128,7 @@ class ConfigurationService {
       configurationStore.delete(`items.${id}.parentFolderId` as any);
     }
     configurationStore.set(`items.${id}.order`, newOrder);
-    return this.enrichFolder(<Folder>this.getItem(id));
+    return <Folder>this.getItem(id);
   }
 
   /**
@@ -140,7 +143,7 @@ class ConfigurationService {
       id,
     };
     configurationStore.set(`items.${id}`, newApplication);
-    return this.enrichApplication(<Application>this.getItem(id));
+    return <Application>this.getItem(id);
   }
 
   updateApplication(id: string, application: Omit<Application, 'id' | 'type'>): EnrichedApplication {
@@ -149,7 +152,7 @@ class ConfigurationService {
       throw new Error(`Item with id ${id} is not an application`);
     }
     configurationStore.set(`items.${id}`, application);
-    return this.enrichApplication(<Application>this.getItem(id));
+    return <Application>this.getItem(id);
   }
 
   deleteApplication(id: string): void {
@@ -177,7 +180,7 @@ class ConfigurationService {
       configurationStore.delete(`items.${id}.parentFolderId` as any);
     }
     configurationStore.set(`items.${id}.order`, newOrder);
-    return this.enrichApplication(<Application>this.getItem(id));
+    return <Application>this.getItem(id);
   }
 
   getApplicationInstances(id: string): EnrichedInstance[] {
@@ -185,9 +188,7 @@ class ConfigurationService {
     if (!isApplication(application)) {
       throw new Error(`Item with id ${id} is not an application`);
     }
-    return Object.values(configurationStore.get('items'))
-      .filter((item) => isInstance(item) && item.parentApplicationId === id)
-      .map((item) => this.enrichInstance(<Instance>item));
+    return <EnrichedInstance[]>this.getItems().filter((item) => isInstance(item) && item.parentApplicationId === id);
   }
 
   /**
@@ -195,29 +196,37 @@ class ConfigurationService {
    */
 
   getInstances(): EnrichedInstance[] {
-    return Object.values(configurationStore.get('items'))
-      .filter(isInstance)
-      .map((instance) => this.enrichInstance(instance));
+    return <EnrichedInstance[]>this.getItems().filter(isInstance);
   }
 
   getInstancesForDataCollection(): EnrichedInstance[] {
-    return this.getInstances().filter((instance) => {
-      const { dataCollectionMode } = instance;
-      switch (dataCollectionMode) {
-        case 'inherited': {
-          const application = this.getItem(instance.parentApplicationId);
-          if (application == null || !isApplication(application)) {
-            return false;
+    const currentTime = Date.now();
+    return this.getInstances()
+      .filter((instance) => {
+        const { dataCollectionMode } = instance;
+        switch (dataCollectionMode) {
+          case 'inherited': {
+            const application = this.getItem(instance.parentApplicationId);
+            if (application == null || !isApplication(application)) {
+              return false;
+            }
+            return application.dataCollectionMode === 'on';
           }
-          return application.dataCollectionMode === 'on';
+          case 'on': {
+            return true;
+          }
+          default:
+            return false;
         }
-        case 'on': {
+      })
+      .filter((instance) => {
+        const { lastDataCollectionTime } = this.getInstanceMetadata(instance);
+        if (lastDataCollectionTime == null) {
           return true;
         }
-        default:
-          return false;
-      }
-    });
+        const { dataCollectionIntervalSeconds } = instance;
+        return (currentTime - dataCollectionIntervalSeconds ?? 60) / 1000 > dataCollectionIntervalSeconds * 1000;
+      });
   }
 
   createInstance(instance: Omit<Instance, 'id' | 'type'>): EnrichedInstance {
@@ -228,7 +237,7 @@ class ConfigurationService {
       id,
     };
     configurationStore.set(`items.${id}`, newInstance);
-    return this.enrichInstance(this.getItem(id) as Instance);
+    return <EnrichedInstance>this.getItem(id);
   }
 
   updateInstance(id: string, instance: Omit<Instance, 'id' | 'type'>): EnrichedInstance {
@@ -238,7 +247,7 @@ class ConfigurationService {
     }
     configurationStore.set(`items.${id}`, instance);
     instanceHealthService.invalidateInstance(id);
-    return this.enrichInstance(this.getItem(id) as Instance);
+    return <EnrichedInstance>this.getItem(id);
   }
 
   deleteInstance(id: string): void {
@@ -261,12 +270,31 @@ class ConfigurationService {
     }
     configurationStore.set(`items.${id}.parentApplicationId`, newParentApplicationId);
     configurationStore.set(`items.${id}.order`, newOrder);
-    return this.enrichInstance(this.getItem(id) as Instance);
+    return <EnrichedInstance>this.getItem(id);
   }
 
   /**
    * Misc
    */
+
+  getInstanceMetadata(instance: Instance): InstanceMetadata {
+    let metadata = instanceMetadataStore.get(instance.id);
+    if (!metadata) {
+      metadata = {
+        lastDataCollectionTime: undefined,
+      };
+      instanceMetadataStore.set(instance.id, metadata);
+    }
+    return metadata;
+  }
+
+  updateInstanceLastDataCollectionTime(id: string) {
+    const target = this.getItemOrThrow(id);
+    if (!isInstance(target)) {
+      throw new Error(`Item with ID ${id} is not an instance`);
+    }
+    instanceMetadataStore.set(`${id}.lastDataCollectionTime`, Date.now());
+  }
 
   private enrichItem(item: BaseItem): EnrichedItem {
     if (isFolder(item)) {
@@ -290,6 +318,7 @@ class ConfigurationService {
       effectiveColor,
       effectiveDataCollectionMode,
       health,
+      lastDataCollectionTime: this.getInstanceMetadata(instance).lastDataCollectionTime,
     };
   }
 

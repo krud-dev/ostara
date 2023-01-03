@@ -5,6 +5,7 @@ import { ApplicationMetricValue } from '../entity/ApplicationMetricValue';
 import { dataSource } from '../dataSource';
 import { ApplicationMetric } from '../entity/ApplicationMetric';
 import { Between } from 'typeorm';
+import { configurationService } from '../configuration/configurationService';
 
 export type ApplicationMetricDTO = {
   name: string;
@@ -107,6 +108,10 @@ class MetricsService {
           })
         );
       })
+    );
+    configurationService.updateInstanceLastDataCollectionTime(instance.id);
+    log.info(
+      `Metrics for instance ${instance.id} saved, next collection in ${instance.dataCollectionIntervalSeconds} seconds`
     );
   }
 
