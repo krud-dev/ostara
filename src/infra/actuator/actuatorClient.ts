@@ -16,6 +16,7 @@ export class ActuatorClient {
     const url = baseUrl.endsWith('/') ? baseUrl : `${baseUrl}/`;
     this.axios = axios.create({
       baseURL: url,
+      timeout: 10000,
     });
   }
 
