@@ -25,7 +25,7 @@ export const useGetMetricsHistoryQuery = (
   options?: BaseQueryOptions<Data, Variables>
 ): BaseUseQueryResult<Data> =>
   useBaseQuery<Data, Variables>(
-    metricsKeys.latest(variables.instanceId, variables.metricName),
+    metricsKeys.history(variables.instanceId, variables.metricName, variables.from, variables.to),
     getMetricsHistory,
     variables,
     options
