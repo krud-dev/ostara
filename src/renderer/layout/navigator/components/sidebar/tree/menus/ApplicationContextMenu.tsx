@@ -7,31 +7,30 @@ import AddInstanceMenuItem from 'renderer/layout/navigator/components/sidebar/tr
 import ChooseColorMenuItem from 'renderer/layout/navigator/components/sidebar/tree/menus/items/ChooseColorMenuItem';
 import UpdateMenuItem from 'renderer/layout/navigator/components/sidebar/tree/menus/items/UpdateMenuItem';
 import CopyIdToClipboardMenuItem from 'renderer/layout/navigator/components/sidebar/tree/menus/items/CopyIdToClipboardMenuItem';
+import { ContextMenuContext } from 'renderer/components/menu/popup/ContextMenuContext';
+import React from 'react';
 
-export default function ApplicationContextMenu({
-  item,
-  node,
-  open,
-  anchorEl,
-  placement,
-  onClose,
-  onCreated,
-  sx,
-}: TreeItemContextMenuProps) {
+export default function ApplicationContextMenu({ item, node, onCreated, ...props }: TreeItemContextMenuProps) {
   return (
-    <ContextMenuPopper open={open} onClose={onClose} anchorEl={anchorEl} placement={placement} sx={sx}>
-      {node && (
-        <>
-          <AddInstanceMenuItem node={node} onClose={onClose} onCreated={onCreated} />
-          <Divider />
-        </>
-      )}
-      <ChooseColorMenuItem item={item} onClose={onClose} />
-      <Divider />
-      <CopyIdToClipboardMenuItem item={item} onClose={onClose} />
-      <UpdateMenuItem item={item} onClose={onClose} />
-      <RenameMenuItem item={item} node={node} onClose={onClose} />
-      <DeleteMenuItem item={item} onClose={onClose} />
+    <ContextMenuPopper {...props}>
+      <ContextMenuContext.Consumer>
+        {({ menuState: { close } }) => (
+          <>
+            {node && (
+              <>
+                <AddInstanceMenuItem node={node} onClose={close} onCreated={onCreated} />
+                <Divider />
+              </>
+            )}
+            <ChooseColorMenuItem item={item} onClose={close} />
+            <Divider />
+            <CopyIdToClipboardMenuItem item={item} onClose={close} />
+            <UpdateMenuItem item={item} onClose={close} />
+            <RenameMenuItem item={item} node={node} onClose={close} />
+            <DeleteMenuItem item={item} onClose={close} />
+          </>
+        )}
+      </ContextMenuContext.Consumer>
     </ContextMenuPopper>
   );
 }

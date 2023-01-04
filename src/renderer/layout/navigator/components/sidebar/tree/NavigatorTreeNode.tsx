@@ -1,8 +1,8 @@
 import { NodeRendererProps } from 'react-arborist';
 import { Badge, IconButton, ListItem, ListItemIcon, ListItemText, TextField } from '@mui/material';
 import { alpha, experimentalStyled as styled, Theme, useTheme } from '@mui/material/styles';
-import React, { useCallback, useEffect, useMemo, useRef } from 'react';
-import { TreeItem } from 'renderer/layout/navigator/components/sidebar/tree/tree';
+import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import { TreeItem, TreeItemContextMenuProps } from 'renderer/layout/navigator/components/sidebar/tree/tree';
 import typography from 'renderer/theme/config/typography';
 import { KeyboardArrowDown, KeyboardArrowRight, MoreVert, SvgIconComponent } from '@mui/icons-material';
 import { NAVIGATOR_ITEM_HEIGHT } from 'renderer/constants/ui';
@@ -14,7 +14,6 @@ import ApplicationContextMenu from 'renderer/layout/navigator/components/sidebar
 import { SxProps } from '@mui/system';
 import { matchPath, useLocation, useNavigate } from 'react-router-dom';
 import useItemColor from 'renderer/hooks/useItemColor';
-import { bindMenu, usePopupState } from 'material-ui-popup-state/hooks';
 import { IconViewer } from 'renderer/components/icon/IconViewer';
 import useItemIcon from 'renderer/hooks/useItemIcon';
 
@@ -72,33 +71,26 @@ export default function NavigatorTreeNode({ style, node, tree, dragHandle, previ
     }
   }, [pathname]);
 
-  const contextMenuState = usePopupState({ variant: 'popper' });
-  const contextMenuAnchorRef = useRef<HTMLButtonElement | null>(null);
+  const contextMenuRef = useRef<HTMLElement | null>(null);
+  const clickRef = useRef<HTMLButtonElement>(null);
 
-  const openContextMenu = useCallback(
-    (event?: React.MouseEvent): void => {
-      if (event) {
-        event.preventDefault();
+  const [menuOpen, setMenuOpen] = useState<boolean>(false);
 
+  const onContextMenuChange = useCallback(
+    (open: boolean): void => {
+      if (open) {
         node.focus();
-
-        const virtualElement: any = {
-          getBoundingClientRect: () => ({
-            width: 0,
-            height: 0,
-            top: event.clientY,
-            right: event.clientX,
-            bottom: event.clientY,
-            left: event.clientX,
-          }),
-        };
-        contextMenuState.setAnchorEl(virtualElement);
-      } else {
-        contextMenuState.setAnchorEl(contextMenuAnchorRef.current);
       }
-      contextMenuState.open();
     },
-    [node, contextMenuState]
+    [node]
+  );
+
+  const onClickChange = useCallback(
+    (open: boolean): void => {
+      setMenuOpen(open);
+      onContextMenuChange(open);
+    },
+    [setMenuOpen, onContextMenuChange]
   );
 
   const itemClickHandler = useCallback(
@@ -115,14 +107,6 @@ export default function NavigatorTreeNode({ style, node, tree, dragHandle, previ
       node.toggle();
     },
     [node]
-  );
-
-  const menuIconClickHandler = useCallback(
-    (event: React.MouseEvent): void => {
-      event.stopPropagation();
-      openContextMenu();
-    },
-    [openContextMenu]
   );
 
   const childItemCreatedHandler = useCallback(
@@ -173,38 +157,30 @@ export default function NavigatorTreeNode({ style, node, tree, dragHandle, previ
     [isFocused, isSelected, focusRootStyle, activeRootStyle]
   );
 
+  const contextMenuProps = useMemo<TreeItemContextMenuProps>(
+    () => ({
+      item: node.data,
+      node: node,
+      onCreated: childItemCreatedHandler,
+      contextMenuRef: contextMenuRef,
+      clickRef: clickRef,
+      onContextMenuChange: onContextMenuChange,
+      onClickChange: onClickChange,
+    }),
+    [node]
+  );
+
   return (
     <>
-      {isFolder(node.data) && (
-        <FolderContextMenu
-          item={node.data}
-          node={node}
-          placement={contextMenuState.anchorEl === contextMenuAnchorRef.current ? 'bottom-start' : undefined}
-          onCreated={childItemCreatedHandler}
-          {...bindMenu(contextMenuState)}
-        />
-      )}
-      {isApplication(node.data) && (
-        <ApplicationContextMenu
-          item={node.data}
-          node={node}
-          placement={contextMenuState.anchorEl === contextMenuAnchorRef.current ? 'bottom-start' : undefined}
-          onCreated={childItemCreatedHandler}
-          {...bindMenu(contextMenuState)}
-        />
-      )}
-      {isInstance(node.data) && (
-        <InstanceContextMenu
-          item={node.data}
-          node={node}
-          placement={contextMenuState.anchorEl === contextMenuAnchorRef.current ? 'bottom-start' : undefined}
-          onCreated={childItemCreatedHandler}
-          {...bindMenu(contextMenuState)}
-        />
-      )}
+      {isFolder(node.data) && <FolderContextMenu {...contextMenuProps} />}
+      {isApplication(node.data) && <ApplicationContextMenu {...contextMenuProps} />}
+      {isInstance(node.data) && <InstanceContextMenu {...contextMenuProps} />}
 
       <ListItemStyle
-        ref={dragHandle}
+        ref={(el) => {
+          dragHandle?.(el);
+          contextMenuRef.current = el;
+        }}
         component="div"
         // @ts-ignore
         button
@@ -214,7 +190,6 @@ export default function NavigatorTreeNode({ style, node, tree, dragHandle, previ
         sx={stateStyle}
         style={style}
         onClick={itemClickHandler}
-        onContextMenu={openContextMenu}
       >
         <IconButton
           onClick={arrowIconClickHandler}
@@ -278,14 +253,13 @@ export default function NavigatorTreeNode({ style, node, tree, dragHandle, previ
           />
         )}
         <IconButton
-          ref={contextMenuAnchorRef}
-          onClick={menuIconClickHandler}
+          ref={clickRef}
           sx={{
             p: 0.25,
             mr: 0.5,
             ml: 0.5,
           }}
-          className={`menu-toggle ${contextMenuState.isOpen ? 'menu-open' : ''}`}
+          className={`menu-toggle ${menuOpen ? 'menu-open' : ''}`}
         >
           <MoreVert fontSize="small" />
         </IconButton>
