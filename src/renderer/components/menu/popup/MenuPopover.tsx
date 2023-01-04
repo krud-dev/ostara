@@ -6,7 +6,7 @@ import { Theme } from '@mui/material/styles';
 
 type MenuPopoverProps = {
   direction?: 'left' | 'right';
-} & PopoverProps;
+} & Omit<PopoverProps, 'anchorOrigin' | 'transformOrigin' | 'PaperProps' | 'onClick'>;
 
 export default function MenuPopover({ children, direction = 'left', sx, ...other }: MenuPopoverProps) {
   const paperStyle = useMenuPaperStyle();
@@ -28,6 +28,7 @@ export default function MenuPopover({ children, direction = 'left', sx, ...other
           ...paperAggregatedStyle,
         },
       }}
+      onClick={(event) => event.stopPropagation()}
       {...other}
     >
       {children}

@@ -5,7 +5,7 @@ import { getItemTypeIcon } from 'renderer/utils/itemUtils';
 import { bindMenu, usePopupState } from 'material-ui-popup-state/hooks';
 import { IconViewer, MUIconType } from 'renderer/components/icon/IconViewer';
 import { useFormContext } from 'react-hook-form';
-import ItemIconContextMenu from 'renderer/components/item/dialogs/forms/fields/ItemIconContextMenu';
+import ItemIconMenu from 'renderer/components/item/dialogs/forms/fields/ItemIconMenu';
 
 type ItemIconFormFieldProps = { type: ItemType };
 
@@ -20,6 +20,9 @@ export default function ItemIconFormField({ type }: ItemIconFormFieldProps) {
 
   const openMenuHandler = useCallback(
     (event: React.MouseEvent): void => {
+      event.preventDefault();
+      event.stopPropagation();
+
       menuState.open();
     },
     [menuState]
@@ -38,12 +41,7 @@ export default function ItemIconFormField({ type }: ItemIconFormFieldProps) {
         <IconViewer icon={icon} fontSize={'small'} />
       </IconButton>
 
-      <ItemIconContextMenu
-        typeIcon={typeIcon}
-        selectedIcon={icon}
-        onSelected={iconSelectedHandler}
-        {...bindMenu(menuState)}
-      />
+      <ItemIconMenu typeIcon={typeIcon} selectedIcon={icon} onSelected={iconSelectedHandler} menuState={menuState} />
     </>
   );
 }

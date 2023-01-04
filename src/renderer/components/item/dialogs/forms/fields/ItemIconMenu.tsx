@@ -1,44 +1,32 @@
 import { Box, ToggleButton } from '@mui/material';
-import ContextMenuPopper from 'renderer/components/menu/popup/ContextMenuPopper';
 import PerfectScrollbar from 'react-perfect-scrollbar';
 import { IconViewer, MUIconType } from 'renderer/components/icon/IconViewer';
 import * as React from 'react';
 import { useCallback, useMemo } from 'react';
-import { SxProps } from '@mui/system';
-import { Theme } from '@mui/material/styles';
 import { availableItemIcons } from 'renderer/constants/icons';
+import { bindMenu, PopupState } from 'material-ui-popup-state/hooks';
+import MenuPopover from 'renderer/components/menu/popup/MenuPopover';
 
-type ItemIconContextMenuProps = {
+type ItemIconMenuProps = {
   typeIcon: MUIconType;
   selectedIcon: MUIconType;
-  open: boolean;
-  anchorEl?: Element | null;
-  onClose?: () => void;
   onSelected?: (icon: MUIconType) => void;
-  sx?: SxProps<Theme>;
+  menuState: PopupState;
 };
 
-export default function ItemIconContextMenu({
-  typeIcon,
-  selectedIcon,
-  open,
-  anchorEl,
-  onClose,
-  onSelected,
-  sx,
-}: ItemIconContextMenuProps) {
+export default function ItemIconMenu({ typeIcon, selectedIcon, onSelected, menuState }: ItemIconMenuProps) {
   const availableIcons = useMemo<MUIconType[]>(() => [typeIcon, ...availableItemIcons], [typeIcon]);
 
   const selectedHandler = useCallback(
     (icon: MUIconType): void => {
-      onClose?.();
+      menuState.close();
       onSelected?.(icon);
     },
-    [onSelected, onClose]
+    [onSelected, menuState]
   );
 
   return (
-    <ContextMenuPopper open={open} onClose={onClose} anchorEl={anchorEl} sx={{ p: 0, ...sx }}>
+    <MenuPopover {...bindMenu(menuState)}>
       <Box sx={{ width: 244, height: 192, overflow: 'hidden' }}>
         <PerfectScrollbar options={{ suppressScrollX: true, wheelPropagation: false }}>
           <Box sx={{ display: 'inline-flex', flexDirection: 'row', flexWrap: 'wrap', gap: 1, p: 2 }}>
@@ -55,6 +43,6 @@ export default function ItemIconContextMenu({
           </Box>
         </PerfectScrollbar>
       </Box>
-    </ContextMenuPopper>
+    </MenuPopover>
   );
 }

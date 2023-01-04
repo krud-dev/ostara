@@ -1,21 +1,19 @@
 import React, { useCallback, useMemo } from 'react';
-import { EnrichedItem, isApplication, isFolder, isInstance } from 'infra/configuration/model/configuration';
+import { EnrichedItem } from 'infra/configuration/model/configuration';
 import { Avatar, Badge, Box, IconButton, Typography } from '@mui/material';
 import { getItemHealthStatusColor, getItemHealthStatusTextId } from 'renderer/utils/itemUtils';
 import { COMPONENTS_SPACING, NAVIGATOR_ITEM_HEIGHT } from 'renderer/constants/ui';
-import FolderContextMenu from 'renderer/layout/navigator/components/sidebar/tree/menus/FolderContextMenu';
-import ApplicationContextMenu from 'renderer/layout/navigator/components/sidebar/tree/menus/ApplicationContextMenu';
-import InstanceContextMenu from 'renderer/layout/navigator/components/sidebar/tree/menus/InstanceContextMenu';
 import useItemColor from 'renderer/hooks/useItemColor';
 import { FormattedMessage } from 'react-intl';
-import { bindMenu, usePopupState } from 'material-ui-popup-state/hooks';
+import { usePopupState } from 'material-ui-popup-state/hooks';
 import { IconViewer } from 'renderer/components/icon/IconViewer';
 import useItemIcon from 'renderer/hooks/useItemIcon';
+import ItemMenu from 'renderer/layout/navigator/components/sidebar/tree/menus/ItemMenu';
 
 type ItemHeaderProps = { item: EnrichedItem };
 
 export default function ItemHeader({ item }: ItemHeaderProps) {
-  const menuState = usePopupState({ variant: 'popper' });
+  const menuState = usePopupState({ variant: 'popover' });
 
   const color = useItemColor(item);
   const healthStatusColor = useMemo<string | undefined>(() => getItemHealthStatusColor(item), [item]);
@@ -32,15 +30,7 @@ export default function ItemHeader({ item }: ItemHeaderProps) {
 
   return (
     <>
-      {isFolder(item) && (
-        <FolderContextMenu item={item} placement={'bottom-start'} sx={{ mt: 0.5 }} {...bindMenu(menuState)} />
-      )}
-      {isApplication(item) && (
-        <ApplicationContextMenu item={item} placement={'bottom-start'} sx={{ mt: 0.5 }} {...bindMenu(menuState)} />
-      )}
-      {isInstance(item) && (
-        <InstanceContextMenu item={item} placement={'bottom-start'} sx={{ mt: 0.5 }} {...bindMenu(menuState)} />
-      )}
+      <ItemMenu item={item} menuState={menuState} />
 
       <Box sx={{ height: NAVIGATOR_ITEM_HEIGHT * 2, px: COMPONENTS_SPACING, display: 'flex', alignItems: 'center' }}>
         <IconButton

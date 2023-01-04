@@ -1,21 +1,21 @@
 import { NodeRendererProps } from 'react-arborist';
 import { Badge, IconButton, ListItem, ListItemIcon, ListItemText, TextField } from '@mui/material';
 import { alpha, experimentalStyled as styled, Theme, useTheme } from '@mui/material/styles';
-import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
-import { TreeItem, TreeItemContextMenuProps } from 'renderer/layout/navigator/components/sidebar/tree/tree';
+import React, { useCallback, useEffect, useMemo, useRef } from 'react';
+import { TreeItem } from 'renderer/layout/navigator/components/sidebar/tree/tree';
 import typography from 'renderer/theme/config/typography';
 import { KeyboardArrowDown, KeyboardArrowRight, MoreVert, SvgIconComponent } from '@mui/icons-material';
 import { NAVIGATOR_ITEM_HEIGHT } from 'renderer/constants/ui';
 import { getItemHealthStatusColor, getItemUrl } from 'renderer/utils/itemUtils';
-import FolderContextMenu from 'renderer/layout/navigator/components/sidebar/tree/menus/FolderContextMenu';
-import { isApplication, isFolder, isInstance, Item } from 'infra/configuration/model/configuration';
-import InstanceContextMenu from 'renderer/layout/navigator/components/sidebar/tree/menus/InstanceContextMenu';
-import ApplicationContextMenu from 'renderer/layout/navigator/components/sidebar/tree/menus/ApplicationContextMenu';
+import { isApplication, isFolder, Item } from 'infra/configuration/model/configuration';
 import { SxProps } from '@mui/system';
 import { matchPath, useLocation, useNavigate } from 'react-router-dom';
 import useItemColor from 'renderer/hooks/useItemColor';
 import { IconViewer } from 'renderer/components/icon/IconViewer';
 import useItemIcon from 'renderer/hooks/useItemIcon';
+import ItemMenu from 'renderer/layout/navigator/components/sidebar/tree/menus/ItemMenu';
+import { usePopupState } from 'material-ui-popup-state/hooks';
+import ItemContextMenu from 'renderer/layout/navigator/components/sidebar/tree/menus/ItemContextMenu';
 
 type NavigatorTreeNodeProps = NodeRendererProps<TreeItem>;
 
@@ -71,10 +71,19 @@ export default function NavigatorTreeNode({ style, node, tree, dragHandle, previ
     }
   }, [pathname]);
 
-  const contextMenuRef = useRef<HTMLElement | null>(null);
-  const clickRef = useRef<HTMLButtonElement>(null);
+  const menuState = usePopupState({ variant: 'popover' });
 
-  const [menuOpen, setMenuOpen] = useState<boolean>(false);
+  const openMenuHandler = useCallback(
+    (event: React.MouseEvent): void => {
+      event.stopPropagation();
+      event.preventDefault();
+
+      menuState.open();
+    },
+    [menuState]
+  );
+
+  const contextMenuRef = useRef<HTMLElement | null>(null);
 
   const onContextMenuChange = useCallback(
     (open: boolean): void => {
@@ -85,16 +94,8 @@ export default function NavigatorTreeNode({ style, node, tree, dragHandle, previ
     [node]
   );
 
-  const onClickChange = useCallback(
-    (open: boolean): void => {
-      setMenuOpen(open);
-      onContextMenuChange(open);
-    },
-    [setMenuOpen, onContextMenuChange]
-  );
-
   const itemClickHandler = useCallback(
-    (event?: React.MouseEvent): void => {
+    (event: React.MouseEvent): void => {
       node.select();
       navigate(getItemUrl(node.data));
     },
@@ -157,24 +158,16 @@ export default function NavigatorTreeNode({ style, node, tree, dragHandle, previ
     [isFocused, isSelected, focusRootStyle, activeRootStyle]
   );
 
-  const contextMenuProps = useMemo<TreeItemContextMenuProps>(
-    () => ({
-      item: node.data,
-      node: node,
-      onCreated: childItemCreatedHandler,
-      contextMenuRef: contextMenuRef,
-      clickRef: clickRef,
-      onContextMenuChange: onContextMenuChange,
-      onClickChange: onClickChange,
-    }),
-    [node]
-  );
-
   return (
     <>
-      {isFolder(node.data) && <FolderContextMenu {...contextMenuProps} />}
-      {isApplication(node.data) && <ApplicationContextMenu {...contextMenuProps} />}
-      {isInstance(node.data) && <InstanceContextMenu {...contextMenuProps} />}
+      <ItemMenu node={node} item={node.data} onCreated={childItemCreatedHandler} menuState={menuState} />
+      <ItemContextMenu
+        node={node}
+        item={node.data}
+        onCreated={childItemCreatedHandler}
+        contextMenuRef={contextMenuRef}
+        onContextMenuChange={onContextMenuChange}
+      />
 
       <ListItemStyle
         ref={(el) => {
@@ -252,14 +245,17 @@ export default function NavigatorTreeNode({ style, node, tree, dragHandle, previ
             }}
           />
         )}
+
         <IconButton
-          ref={clickRef}
           sx={{
             p: 0.25,
             mr: 0.5,
             ml: 0.5,
           }}
-          className={`menu-toggle ${menuOpen ? 'menu-open' : ''}`}
+          className={`menu-toggle ${menuState.isOpen ? 'menu-open' : ''}`}
+          onClick={openMenuHandler}
+          onMouseDown={(event) => event.stopPropagation()}
+          ref={menuState.setAnchorEl}
         >
           <MoreVert fontSize="small" />
         </IconButton>
