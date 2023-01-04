@@ -6,13 +6,16 @@ import { isEmpty } from 'lodash';
 const useWidgetSubscribeToMetrics = (
   itemId: string,
   metricNames: string[],
-  callback: (metricDto: ApplicationMetricDTO) => void
+  callback: (metricDto: ApplicationMetricDTO) => void,
+  options: { active?: boolean } = {}
 ): void => {
+  const { active = true } = options;
+
   const subscribeToMetricState = useSubscribeToMetric();
 
   useEffect(() => {
     let unsubscribes: (() => void)[];
-    if (itemId && !isEmpty(metricNames)) {
+    if (active && itemId && !isEmpty(metricNames)) {
       (async () => {
         try {
           unsubscribes = await Promise.all(
@@ -33,6 +36,6 @@ const useWidgetSubscribeToMetrics = (
     return () => {
       unsubscribes?.forEach((unsubscribe) => unsubscribe());
     };
-  }, [itemId, metricNames]);
+  }, [itemId, metricNames, active]);
 };
 export default useWidgetSubscribeToMetrics;

@@ -34,7 +34,10 @@ const ProgressCircleDashboardWidget: FunctionComponent<DashboardWidgetCardProps<
   );
 
   const onMetricUpdate = useCallback(
-    (metricDto: ApplicationMetricDTO) => {
+    (metricDto?: ApplicationMetricDTO): void => {
+      if (!metricDto) {
+        return;
+      }
       if (metricDto.name === widget.currentMetricName) {
         setData((prev) => ({ ...prev, current: metricDto.values[0].value }));
       } else {
@@ -47,7 +50,7 @@ const ProgressCircleDashboardWidget: FunctionComponent<DashboardWidgetCardProps<
   const metricNames = useMemo<string[]>(() => [widget.maxMetricName, widget.currentMetricName], [widget]);
 
   UseWidgetLatestMetrics(item.id, metricNames, (metricDtos) => metricDtos.forEach(onMetricUpdate));
-  useWidgetSubscribeToMetrics(item.id, metricNames, onMetricUpdate);
+  useWidgetSubscribeToMetrics(item.id, metricNames, onMetricUpdate, { active: !isLoading });
 
   const chartData = useMemo<
     {

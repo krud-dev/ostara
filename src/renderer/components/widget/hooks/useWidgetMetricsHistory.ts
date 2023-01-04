@@ -7,7 +7,7 @@ const useWidgetMetricsHistory = (
   metricNames: string[],
   from: Date,
   to: Date,
-  callback: (metricDtos: ApplicationMetricDTO[]) => void
+  callback: (metricDtos: (ApplicationMetricDTO | undefined)[]) => void
 ): void => {
   const getMetricsHistoryState = useGetMetricsHistory();
 
@@ -16,7 +16,7 @@ const useWidgetMetricsHistory = (
       try {
         const results = await Promise.all(
           metricNames.map(
-            async (metricName): Promise<ApplicationMetricDTO> =>
+            async (metricName): Promise<ApplicationMetricDTO | undefined> =>
               await getMetricsHistoryState.mutateAsync({
                 instanceId: itemId,
                 metricName: metricName,

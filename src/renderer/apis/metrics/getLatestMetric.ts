@@ -8,7 +8,7 @@ type Variables = {
   metricName: string;
 };
 
-type Data = ApplicationMetricDTO;
+type Data = ApplicationMetricDTO | undefined;
 
 export const getLatestMetric = async (variables: Variables): Promise<Data> => {
   return await window.metrics.getLatestMetric(variables.instanceId, variables.metricName);

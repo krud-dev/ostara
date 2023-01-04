@@ -5,7 +5,7 @@ import { useGetLatestMetric } from 'renderer/apis/metrics/getLatestMetric';
 const useWidgetLatestMetrics = (
   itemId: string,
   metricNames: string[],
-  callback: (metricDtos: ApplicationMetricDTO[]) => void
+  callback: (metricDtos: (ApplicationMetricDTO | undefined)[]) => void
 ): void => {
   const getLatestMetricState = useGetLatestMetric();
 
@@ -14,7 +14,7 @@ const useWidgetLatestMetrics = (
       try {
         const results = await Promise.all(
           metricNames.map(
-            async (metricName): Promise<ApplicationMetricDTO> =>
+            async (metricName): Promise<ApplicationMetricDTO | undefined> =>
               await getLatestMetricState.mutateAsync({
                 instanceId: itemId,
                 metricName: metricName,

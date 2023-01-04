@@ -62,7 +62,7 @@ const StackedTimelineDashboardWidget: FunctionComponent<DashboardWidgetCardProps
     new Date(),
     (metricDtos) => {
       chain(metricDtos)
-        .map((metricDto) => metricDto.values)
+        .map((metricDto) => metricDto?.values || [])
         .unzip()
         .map((values) => ({ values: values.map((v) => v.value), timestamp: values[0].timestamp.getTime() }))
         .filter(
@@ -73,15 +73,20 @@ const StackedTimelineDashboardWidget: FunctionComponent<DashboardWidgetCardProps
         .forEach(addDataPoint);
     }
   );
-  useWidgetSubscribeToMetrics(item.id, metricNames, (metricDto) => {
-    const index = metrics.findIndex((metric) => metric.name === metricDto.name);
-    dataPoint.current.values[index] = metricDto.values[0].value;
-    dataPoint.current.timestamp = metricDto.values[0].timestamp.getTime();
-    if (dataPoint.current.values.length === metrics.length && every(dataPoint.current.values, isValidValue)) {
-      addDataPoint(dataPoint.current);
-      dataPoint.current = { values: [], timestamp: 0 };
-    }
-  });
+  useWidgetSubscribeToMetrics(
+    item.id,
+    metricNames,
+    (metricDto) => {
+      const index = metrics.findIndex((metric) => metric.name === metricDto.name);
+      dataPoint.current.values[index] = metricDto.values[0].value;
+      dataPoint.current.timestamp = metricDto.values[0].timestamp.getTime();
+      if (dataPoint.current.values.length === metrics.length && every(dataPoint.current.values, isValidValue)) {
+        addDataPoint(dataPoint.current);
+        dataPoint.current = { values: [], timestamp: 0 };
+      }
+    },
+    { active: !isLoading }
+  );
 
   const addDataPoint = useCallback((dataPointToAdd: DataPoint): void => {
     if (dataPointToAdd.timestamp - lastDataPointTimestamp.current < MIN_SECONDS_BETWEEN_DATA_POINTS * 1000) {

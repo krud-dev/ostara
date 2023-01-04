@@ -10,7 +10,7 @@ type Variables = {
   to: Date;
 };
 
-type Data = ApplicationMetricDTO;
+type Data = ApplicationMetricDTO | undefined;
 
 export const getMetricsHistory = async (variables: Variables): Promise<Data> => {
   return await window.metrics.getMetrics(variables.instanceId, variables.metricName, variables.from, variables.to);
