@@ -4,7 +4,7 @@ import { AssignmentOutlined } from '@mui/icons-material';
 import { urls } from 'renderer/routes/urls';
 import { useMemo } from 'react';
 import { FormattedMessage } from 'react-intl';
-import MainSidebarTitle from 'renderer/layout/common/MainSidebarTitle';
+import MainSidebarTitle from 'renderer/layout/common/main-sidebar/MainSidebarTitle';
 
 type SettingsSidebarProps = { width: number };
 

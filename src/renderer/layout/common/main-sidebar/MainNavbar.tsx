@@ -1,8 +1,8 @@
 import { AppBar, Box, Divider, IconButton, Stack, Toolbar } from '@mui/material';
-import LanguageMenu from 'renderer/layout/common/navbar/LanguageMenu';
+import LanguageMenu from 'renderer/layout/common/main-sidebar/navbar/LanguageMenu';
 import { COMPONENTS_SPACING, NAVBAR_HEIGHT } from 'renderer/constants/ui';
 import { HomeOutlined } from '@mui/icons-material';
-import AccountMenu from 'renderer/layout/common/navbar/AccountMenu';
+import AccountMenu from 'renderer/layout/common/main-sidebar/navbar/AccountMenu';
 import { useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { urls } from 'renderer/routes/urls';

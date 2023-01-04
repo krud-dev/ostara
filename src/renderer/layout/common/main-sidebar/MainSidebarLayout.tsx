@@ -1,5 +1,5 @@
 import { experimentalStyled as styled, useTheme } from '@mui/material/styles';
-import MainNavbar from 'renderer/layout/common/MainNavbar';
+import MainNavbar from 'renderer/layout/common/main-sidebar/MainNavbar';
 import { Allotment, LayoutPriority } from 'allotment';
 import { ComponentType, useMemo } from 'react';
 import { NAVBAR_HEIGHT, SIDEBAR_DEFAULT_WIDTH } from 'renderer/constants/ui';

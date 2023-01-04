@@ -6,10 +6,11 @@ import Home from 'renderer/pages/navigator/home';
 import Error from 'renderer/pages/general/error';
 import InstanceDashboard from 'renderer/pages/navigator/instance/dashboard';
 import FolderPage from 'renderer/pages/navigator/folder';
-import ApplicationPage from 'renderer/pages/navigator/application';
 import InstanceLayout from 'renderer/layout/instance/InstanceLayout';
 import SettingsLayout from 'renderer/layout/settings/SettingsLayout';
 import TasksPage from 'renderer/pages/navigator/settings/tasks';
+import ApplicationLayout from 'renderer/layout/application/ApplicationLayout';
+import ApplicationDashboard from 'renderer/pages/navigator/application/dashboard';
 
 export default function Router() {
   return useRoutes([
@@ -34,7 +35,22 @@ export default function Router() {
         },
         {
           path: urls.application.path,
-          element: <ApplicationPage />,
+          element: <ApplicationLayout />,
+          children: [
+            { path: '', element: <Navigate to={urls.applicationDashboard.path} replace /> },
+            {
+              path: urls.applicationDashboard.path,
+              element: <ApplicationDashboard />,
+            },
+            {
+              path: urls.applicationLoggers.path,
+              element: <ApplicationDashboard />,
+            },
+            {
+              path: urls.applicationCaches.path,
+              element: <ApplicationDashboard />,
+            },
+          ],
         },
         {
           path: urls.instance.path,

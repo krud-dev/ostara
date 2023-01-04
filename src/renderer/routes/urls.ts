@@ -26,9 +26,22 @@ export const urls = asUrlInfos({
     url: '/navigator/folder/:id',
     path: 'folder/:id',
   },
+  // Application Root
   application: {
     url: '/navigator/application/:id',
     path: 'application/:id',
+  },
+  applicationDashboard: {
+    url: '/navigator/application/:id/dashboard',
+    path: 'dashboard',
+  },
+  applicationLoggers: {
+    url: '/navigator/application/:id/loggers',
+    path: 'loggers',
+  },
+  applicationCaches: {
+    url: '/navigator/application/:id/caches',
+    path: 'caches',
   },
   // Instance Root
   instance: {

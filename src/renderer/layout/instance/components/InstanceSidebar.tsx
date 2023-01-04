@@ -18,7 +18,7 @@ import { EnrichedInstance } from 'infra/configuration/model/configuration';
 import { generatePath } from 'react-router-dom';
 import ItemHeader from 'renderer/components/item/ItemHeader';
 import { Box, Divider } from '@mui/material';
-import InstanceDataCollectionToggle from 'renderer/components/item/InstanceDataCollectionToggle';
+import InstanceDataCollectionToggle from 'renderer/components/item/data-collection/InstanceDataCollectionToggle';
 
 type InstanceSidebarProps = { item: EnrichedInstance; width: number };
 
