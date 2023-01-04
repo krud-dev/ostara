@@ -98,18 +98,16 @@ const NavigatorTreeProvider: FunctionComponent<NavigatorTreeProviderProps> = ({ 
     }
   }, [getItemsState.data]);
 
-  const [refreshTreeFlag, setRefreshTreeFlag] = useState<number>(0);
+  const [refreshTreeFlag, setRefreshTreeFlag] = useState<boolean>(false);
 
   useEffect(() => {
-    let timer: NodeJS.Timeout;
-    if (!getItemsState.data || some(getItemsState.data, (item) => isItemLoading(item))) {
-      if (!getItemsState.isLoading) {
-        getItemsState.refetch();
-      }
-      timer = setTimeout(() => {
-        setRefreshTreeFlag((prev) => prev + 1);
-      }, 2000);
+    if (!getItemsState.isLoading) {
+      getItemsState.refetch();
     }
+    const interval = !getItemsState.data || some(getItemsState.data, (item) => isItemLoading(item)) ? 2000 : 30000;
+    const timer = setTimeout(() => {
+      setRefreshTreeFlag((prev) => !prev);
+    }, interval);
     return () => clearTimeout(timer);
   }, [refreshTreeFlag]);
 

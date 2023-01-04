@@ -55,6 +55,7 @@ export default {
   outOfService: 'Out of Service',
   unreachable: 'Unreachable',
   unknown: 'Unknown',
+  mixed: 'Mixed',
   loading: 'Loading',
   dataCollection: 'Data Collection',
   notSupported: 'Not Supported',

@@ -1,7 +1,7 @@
 import { DataCollectionMode, EnrichedItem, Item, ItemType } from 'infra/configuration/model/configuration';
 import { generatePath } from 'react-router-dom';
 import { urls } from 'renderer/routes/urls';
-import { green, pink, red, yellow } from '@mui/material/colors';
+import { green, orange, pink, red, yellow } from '@mui/material/colors';
 import { ColorSchema } from 'renderer/theme/config/palette';
 import blueGrey from '@mui/material/colors/blueGrey';
 import { MUIconType } from 'renderer/components/icon/IconViewer';
@@ -52,6 +52,22 @@ export const getItemHealthStatusColor = (item: EnrichedItem): string | undefined
         return undefined;
     }
   }
+  if (item.type === 'application') {
+    switch (item.health.status) {
+      case 'ALL_UP':
+        return green[colorsIndex];
+      case 'ALL_DOWN':
+        return red[colorsIndex];
+      case 'SOME_DOWN':
+        return orange[colorsIndex];
+      case 'UNKNOWN':
+        return blueGrey[colorsIndex];
+      case 'PENDING':
+        return 'text.secondary';
+      default:
+        return undefined;
+    }
+  }
   return undefined;
 };
 
@@ -66,6 +82,22 @@ export const getItemHealthStatusTextId = (item: EnrichedItem): string | undefine
         return 'outOfService';
       case 'UNREACHABLE':
         return 'unreachable';
+      case 'UNKNOWN':
+        return 'unknown';
+      case 'PENDING':
+        return 'loading';
+      default:
+        return undefined;
+    }
+  }
+  if (item.type === 'application') {
+    switch (item.health.status) {
+      case 'ALL_UP':
+        return 'up';
+      case 'ALL_DOWN':
+        return 'down';
+      case 'SOME_DOWN':
+        return 'mixed';
       case 'UNKNOWN':
         return 'unknown';
       case 'PENDING':
@@ -101,6 +133,9 @@ export const getDataCollectionModeTextId = (dataCollectionMode: DataCollectionMo
 
 export const isItemLoading = (item: EnrichedItem): boolean => {
   if (item.type === 'instance' && item.health.status === 'PENDING') {
+    return true;
+  }
+  if (item.type === 'application' && item.health.status === 'PENDING') {
     return true;
   }
   return false;
