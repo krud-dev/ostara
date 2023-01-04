@@ -55,18 +55,12 @@ class InstanceInfoService {
   }
 
   invalidateInstance(instance: Instance): void {
-    this.instanceHealthCache.set(instance.id, {
-      status: 'PENDING',
-      lastUpdateTime: Date.now(),
-    });
-    this.endpointsCache.set(instance.id, []);
+    this.fetchInstanceHealth(instance);
+    this.fetchInstanceEndpoints(instance);
   }
 
   invalidateApplication(applicationId: string): void {
-    this.applicationHealthCache.set(applicationId, {
-      status: 'PENDING',
-      lastUpdateTime: Date.now(),
-    });
+    this.computeAndSaveApplicationHealth(applicationId);
   }
 
   async fetchInstanceHealth(instance: Instance): Promise<InstanceHealth> {
@@ -85,10 +79,7 @@ class InstanceInfoService {
       };
     }
     this.instanceHealthCache.set(instance.id, instanceHealth);
-    this.applicationHealthCache.set<ApplicationHealth>(instance.parentApplicationId, {
-      status: this.computeApplicationHealthStatus(instance.parentApplicationId),
-      lastUpdateTime: Date.now(),
-    });
+    this.computeAndSaveApplicationHealth(instance.parentApplicationId);
     return instanceHealth;
   }
 
@@ -104,9 +95,16 @@ class InstanceInfoService {
     }
   }
 
-  private computeApplicationHealthStatus(applicationId: string): ApplicationHealthStatus {
+  private computeAndSaveApplicationHealth(applicationId: string) {
+    this.applicationHealthCache.set<ApplicationHealth>(applicationId, {
+      status: this.getApplicationHealthStatus(applicationId),
+      lastUpdateTime: Date.now(),
+    });
+  }
+
+  private getApplicationHealthStatus(applicationId: string): ApplicationHealthStatus {
     const instances = configurationService.getApplicationInstances(applicationId);
-    if (!instances) {
+    if (instances.length === 0) {
       return 'PENDING';
     }
 
