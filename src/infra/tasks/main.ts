@@ -8,3 +8,7 @@ ipcMain.handle('taskService:getTasksForDisplay', async () => {
 ipcMain.handle('taskService:getTaskForDisplay', async (event, name) => {
   return taskService.getTaskForDisplay(name);
 });
+
+ipcMain.handle('taskService:runTask', async (event, name) => {
+  return taskService.runTask(name);
+});

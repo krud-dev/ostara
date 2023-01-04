@@ -22,6 +22,7 @@ declare global {
   export type TaskServiceBridge = {
     getTasksForDisplay: () => Promise<TaskDefinitionDisplay[]>;
     getTaskForDisplay: (name: string) => Promise<TaskDefinitionDisplay | undefined>;
+    runTask: (name: TaskName) => Promise<void>;
   };
 
   interface Window {

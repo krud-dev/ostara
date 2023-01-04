@@ -1,6 +1,6 @@
 import schedule from 'node-schedule';
 import log from 'electron-log';
-import { EffectiveTaskDefinition, TaskDefinition, TaskDefinitionDisplay } from './types';
+import { EffectiveTaskDefinition, TaskDefinition, TaskDefinitionDisplay, TaskName } from './types';
 
 class TaskService {
   private readonly tasks: TaskDefinition[] = [];
@@ -56,6 +56,10 @@ class TaskService {
       }
       schedule.scheduleJob(task.name, task.defaultCron, callback);
     });
+  }
+
+  runTask(name: TaskName) {
+    schedule.scheduledJobs[name]?.invoke();
   }
 
   private getTaskDefinitionDisplay(task: TaskDefinition): TaskDefinitionDisplay {
