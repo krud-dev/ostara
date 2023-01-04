@@ -27,7 +27,7 @@ const DashboardGenericCard: FunctionComponent<DashboardGenericCardProps> = ({ ti
           <CircularProgress />
         </CardContent>
       )}
-      {cardState === 'empty' && <EmptyContent text={<FormattedMessage id={'noDataAvailable'} />} />}
+      {cardState === 'empty' && <EmptyContent text={<FormattedMessage id={'noData'} />} />}
       {cardState === 'content' && children}
     </Card>
   );

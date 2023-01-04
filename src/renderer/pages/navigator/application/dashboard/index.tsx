@@ -22,7 +22,7 @@ const ApplicationDashboard: FunctionComponent = () => {
   }
 
   return (
-    <Page sx={{ width: '100%', p: COMPONENTS_SPACING }}>
+    <Page>
       <Stack direction={'column'} spacing={COMPONENTS_SPACING}>
         {`Application ${item.id}`}
         {widgets.map((widget) => (

@@ -1,5 +1,6 @@
 import { Theme } from '@mui/material/styles';
 import { Components } from '@mui/material/styles/components';
+import { COMPONENTS_SPACING } from 'renderer/constants/ui';
 
 export default function Table(theme: Theme): Components {
   return {
@@ -12,6 +13,9 @@ export default function Table(theme: Theme): Components {
               backgroundColor: theme.palette.action.hover,
             },
           },
+          '&:nth-of-type(even)': {
+            backgroundColor: theme.palette.action.alternate,
+          },
         },
       },
     },
@@ -23,16 +27,24 @@ export default function Table(theme: Theme): Components {
         head: {
           color: theme.palette.text.secondary,
           backgroundColor: theme.palette.background.neutral,
-          paddingLeft: theme.spacing(1),
-          paddingRight: theme.spacing(1),
+          paddingLeft: theme.spacing(COMPONENTS_SPACING),
+          paddingRight: theme.spacing(COMPONENTS_SPACING),
         },
         stickyHeader: {
           backgroundColor: theme.palette.background.paper,
           backgroundImage: `linear-gradient(to bottom, ${theme.palette.background.neutral} 0%, ${theme.palette.background.neutral} 100%)`,
         },
-        body: {
+        paddingCheckbox: {
           paddingLeft: theme.spacing(1),
           paddingRight: theme.spacing(1),
+        },
+        body: {
+          paddingLeft: theme.spacing(COMPONENTS_SPACING),
+          paddingRight: theme.spacing(COMPONENTS_SPACING),
+        },
+        sizeSmall: {
+          paddingLeft: theme.spacing(COMPONENTS_SPACING),
+          paddingRight: theme.spacing(COMPONENTS_SPACING),
         },
       },
     },

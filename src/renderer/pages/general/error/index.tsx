@@ -27,10 +27,6 @@ const Error: FunctionComponent<ErrorProps> = (props: ErrorProps) => {
             <FormattedMessage id="pageNotFoundErrorExplanation" />
           </Typography>
 
-          {/* <PageNotFoundIllustration */}
-          {/*  sx={{ height: 260, my: { xs: 3, sm: 6 } }} */}
-          {/* /> */}
-
           <Stack direction={{ xs: 'column', sm: 'row' }} spacing={2} sx={{ display: 'inline-flex' }}>
             <Button size="large" variant="contained" to="/" component={RouterLink}>
               <FormattedMessage id="goToHome" />

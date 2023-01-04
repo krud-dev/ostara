@@ -8,7 +8,7 @@ type Variables = { name: string };
 type Data = TaskDefinitionDisplay | undefined;
 
 export const getTask = async (variables: Variables): Promise<Data> => {
-  return await window.tasks.getTaskForDisplay(variables.name);
+  return await window.task.getTaskForDisplay(variables.name);
 };
 
 export const useGetTask = (options?: BaseMutationOptions<Data, Variables>): BaseUseMutationResult<Data, Variables> =>

@@ -26,6 +26,9 @@ declare module '@mui/material/styles/createPalette' {
   interface TypeBackground {
     neutral: string;
   }
+  interface TypeAction {
+    alternate: string;
+  }
   interface SimplePaletteColorOptions {
     lighter: string;
     darker: string;
@@ -113,6 +116,7 @@ const GREY = {
   700: '#454F5B',
   800: '#212B36',
   900: '#161C24',
+  500_4: alpha('#919EAB', 0.04),
   500_8: alpha('#919EAB', 0.08),
   500_12: alpha('#919EAB', 0.12),
   500_16: alpha('#919EAB', 0.16),
@@ -152,6 +156,7 @@ const COMMON = {
   chart: CHART_COLORS,
   divider: GREY[500_24],
   action: {
+    alternate: GREY[500_4],
     hover: GREY[500_8],
     selected: GREY[500_16],
     disabled: GREY[500_80],
