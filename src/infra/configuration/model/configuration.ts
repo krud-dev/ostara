@@ -49,7 +49,7 @@ export type EnrichedInstance = Instance & {
   readonly effectiveColor?: string;
   readonly effectiveDataCollectionMode: DataCollectionMode;
   readonly health: InstanceHealth;
-  readonly endpoints: string[] | undefined;
+  readonly endpoints: string[];
   readonly lastDataCollectionTime?: number;
 };
 

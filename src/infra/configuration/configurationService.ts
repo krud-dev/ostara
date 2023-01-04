@@ -250,6 +250,7 @@ class ConfigurationService {
     }
     configurationStore.set(`items.${id}`, instance);
     instanceInfoService.invalidateInstance(target);
+    instanceInfoService.invalidateApplication(target.parentApplicationId);
     return <EnrichedInstance>this.getItem(id);
   }
 
@@ -259,6 +260,7 @@ class ConfigurationService {
       throw new Error(`Item with id ${id} is not an instance`);
     }
     instanceInfoService.invalidateInstance(target);
+    instanceInfoService.invalidateApplication(target.parentApplicationId);
     configurationStore.delete(`items.${id}` as any);
   }
 
@@ -274,6 +276,8 @@ class ConfigurationService {
     }
     configurationStore.set(`items.${id}.parentApplicationId`, newParentApplicationId);
     configurationStore.set(`items.${id}.order`, newOrder);
+    instanceInfoService.invalidateApplication(target.parentApplicationId);
+    instanceInfoService.invalidateApplication(newParentApplicationId);
     return <EnrichedInstance>this.getItem(id);
   }
 

@@ -1,5 +1,3 @@
-import { Channels } from 'main/preload';
-
 declare global {
   type Store = {
     get: <T>(key: string) => T;
@@ -11,11 +9,6 @@ declare global {
   };
   interface Window {
     electron: {
-      ipcRenderer: {
-        sendMessage(channel: Channels, args: unknown[]): void;
-        on(channel: Channels, func: (...args: unknown[]) => void): (() => void) | undefined;
-        once(channel: Channels, func: (...args: unknown[]) => void): void;
-      };
       configurationStore: Store;
     };
   }

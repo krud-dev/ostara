@@ -8,6 +8,8 @@ import {
 } from '../configuration/model/configuration';
 import { ActuatorClient } from '../actuator/actuatorClient';
 import { configurationService } from '../configuration/configurationService';
+import { BrowserWindow } from 'electron';
+import log from 'electron-log';
 
 class InstanceInfoService {
   private readonly instanceHealthCache = new NodeCache();
@@ -15,6 +17,20 @@ class InstanceInfoService {
   private readonly applicationHealthCache = new NodeCache();
 
   private readonly endpointsCache = new NodeCache();
+
+  initializeListeners(window: BrowserWindow) {
+    log.info(`Initializing listeners for window ${window.id}`);
+    this.instanceHealthCache.addListener('set', (key: string, value: InstanceHealth) => {
+      window.webContents.send('app:instanceHealthUpdated', key, value);
+    });
+
+    this.applicationHealthCache.addListener('set', (key: string, value: ApplicationHealth) => {
+      window.webContents.send('app:applicationHealthUpdated', key, value);
+    });
+    this.endpointsCache.addListener('set', (key: string, value: string[]) => {
+      window.webContents.send('app:instanceEndpointsUpdated', key, value);
+    });
+  }
 
   getCachedInstanceHealth(instance: Instance): InstanceHealth {
     return (
@@ -34,18 +50,23 @@ class InstanceInfoService {
     );
   }
 
-  getCachedInstanceEndpoints(instance: Instance): string[] | undefined {
-    return this.endpointsCache.get<string[]>(instance.id);
+  getCachedInstanceEndpoints(instance: Instance): string[] {
+    return this.endpointsCache.get<string[]>(instance.id) ?? [];
   }
 
   invalidateInstance(instance: Instance): void {
-    this.instanceHealthCache.del(instance.id);
-    this.endpointsCache.del(instance.id);
-    this.applicationHealthCache.del(instance.parentApplicationId);
+    this.instanceHealthCache.set(instance.id, {
+      status: 'PENDING',
+      lastUpdateTime: Date.now(),
+    });
+    this.endpointsCache.set(instance.id, []);
   }
 
   invalidateApplication(applicationId: string): void {
-    this.applicationHealthCache.del(applicationId);
+    this.applicationHealthCache.set(applicationId, {
+      status: 'PENDING',
+      lastUpdateTime: Date.now(),
+    });
   }
 
   async fetchInstanceHealth(instance: Instance): Promise<InstanceHealth> {

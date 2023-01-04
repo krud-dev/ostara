@@ -4,29 +4,14 @@ import { configurationServiceBridge, configurationStoreBridge } from '../infra/c
 import { metricsServiceBridge } from '../infra/metrics/renderer';
 import { utilsBridge } from '../infra/rendererUtils/renderer';
 import { taskServiceBridge } from '../infra/tasks/renderer';
+import { subscriptionsBridge } from '../infra/subscriptions/renderer';
 
-export type Channels = 'ipc-example';
 contextBridge.exposeInMainWorld('electron', {
   configurationStore: configurationStoreBridge,
-  ipcRenderer: {
-    sendMessage(channel: Channels, args: unknown[]) {
-      ipcRenderer.send(channel, args);
-    },
-    on(channel: Channels, func: (...args: unknown[]) => void) {
-      const subscription = (_event: IpcRendererEvent, ...args: unknown[]) => func(...args);
-      ipcRenderer.on(channel, subscription);
-
-      return () => {
-        ipcRenderer.removeListener(channel, subscription);
-      };
-    },
-    once(channel: Channels, func: (...args: unknown[]) => void) {
-      ipcRenderer.once(channel, (_event, ...args) => func(...args));
-    },
-  },
 });
 contextBridge.exposeInMainWorld('actuator', actuatorBridge);
 contextBridge.exposeInMainWorld('configuration', configurationServiceBridge);
 contextBridge.exposeInMainWorld('metrics', metricsServiceBridge);
 contextBridge.exposeInMainWorld('task', taskServiceBridge);
 contextBridge.exposeInMainWorld('utils', utilsBridge);
+contextBridge.exposeInMainWorld('subscriptions', subscriptionsBridge);
