@@ -8,7 +8,7 @@ import ReactApexChart from 'react-apexcharts';
 import BaseOptionChart from 'renderer/components/chart/BaseOptionChart';
 import { ApexOptions } from 'apexcharts';
 import { ApplicationMetricDTO } from 'infra/metrics/metricsService';
-import UseWidgetLatestMetrics from 'renderer/components/widget/hooks/useWidgetLatestMetrics';
+import useWidgetLatestMetrics from 'renderer/components/widget/hooks/useWidgetLatestMetrics';
 import useWidgetSubscribeToMetrics from 'renderer/components/widget/hooks/useWidgetSubscribeToMetrics';
 
 const CHART_HEIGHT = 300;
@@ -27,7 +27,11 @@ const ProgressCircleDashboardWidget: FunctionComponent<DashboardWidgetCardProps<
   item,
 }) => {
   const [data, setData] = useState<{ current?: number; max?: number }>({ current: undefined, max: undefined });
-  const isLoading = useMemo<boolean>(() => data.current === undefined || data.max === undefined, [data]);
+  const [loading, setLoading] = useState<boolean>(true);
+  const empty = useMemo<boolean>(
+    () => !loading && (data.current === undefined || data.max === undefined),
+    [loading, data]
+  );
   const currentPercent = useMemo<number>(
     () => Math.round(((data.current ?? 0) / (data.max ?? 1)) * 10000) / 100,
     [data]
@@ -49,8 +53,11 @@ const ProgressCircleDashboardWidget: FunctionComponent<DashboardWidgetCardProps<
 
   const metricNames = useMemo<string[]>(() => [widget.maxMetricName, widget.currentMetricName], [widget]);
 
-  UseWidgetLatestMetrics(item.id, metricNames, (metricDtos) => metricDtos.forEach(onMetricUpdate));
-  useWidgetSubscribeToMetrics(item.id, metricNames, onMetricUpdate, { active: !isLoading });
+  useWidgetLatestMetrics(item.id, metricNames, (metricDtos) => {
+    metricDtos.forEach(onMetricUpdate);
+    setLoading(false);
+  });
+  useWidgetSubscribeToMetrics(item.id, metricNames, onMetricUpdate, { active: !loading });
 
   const chartData = useMemo<
     {
@@ -93,7 +100,7 @@ const ProgressCircleDashboardWidget: FunctionComponent<DashboardWidgetCardProps<
   const chartOptions: ApexOptions = merge(BaseOptionChart(), overrideOptions);
 
   return (
-    <DashboardGenericCard title={widget.title} loading={isLoading}>
+    <DashboardGenericCard title={widget.title} loading={loading} empty={empty}>
       <ChartWrapperStyle dir="ltr">
         <ReactApexChart type="radialBar" series={chartSeries} options={chartOptions} height={'100%'} />
       </ChartWrapperStyle>

@@ -49,6 +49,7 @@ const CreateInstanceDialog: FunctionComponent<CreateInstanceDialogProps & NiceMo
             dataCollectionMode: 'inherited',
             alias: data.alias,
             actuatorUrl: data.actuatorUrl,
+            dataCollectionIntervalSeconds: data.dataCollectionIntervalSeconds,
             parentApplicationId: instanceParentApplicationId,
             order: instanceOrder,
           };

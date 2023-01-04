@@ -69,4 +69,6 @@ export default {
   dataCollectionModeOn: 'Data collection from actuator instances is enabled',
   dataCollectionModeOff: 'Data collection from actuator instances is disabled',
   dataCollectionModeInherited: 'Inherited from parent application',
+  noDataAvailable: 'No data available',
+  dataCollectionIntervalSeconds: 'Data Collection Interval (Seconds)',
 };

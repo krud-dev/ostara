@@ -27,7 +27,12 @@ const InstanceDashboard: FunctionComponent = () => {
     <Page sx={{ width: '100%', p: COMPONENTS_SPACING }}>
       <Stack direction={'column'} spacing={COMPONENTS_SPACING}>
         {widgets.map((widget) => (
-          <DashboardWidget widget={widget} item={item} key={widget.id} />
+          <DashboardWidget
+            widget={widget}
+            item={item}
+            intervalSeconds={item.dataCollectionIntervalSeconds}
+            key={widget.id}
+          />
         ))}
       </Stack>
     </Page>

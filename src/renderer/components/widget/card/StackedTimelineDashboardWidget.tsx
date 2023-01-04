@@ -14,7 +14,6 @@ import useWidgetMetricsHistory from 'renderer/components/widget/hooks/useWidgetM
 
 const CHART_HEIGHT = 364;
 const MAX_DATA_POINTS = 50;
-const MIN_SECONDS_BETWEEN_DATA_POINTS = 5;
 
 const ChartWrapperStyle = styled('div')(({ theme }) => ({
   height: CHART_HEIGHT,
@@ -31,6 +30,7 @@ type DataPoint = { values: number[]; timestamp: number };
 const StackedTimelineDashboardWidget: FunctionComponent<DashboardWidgetCardProps<StackedTimelineWidget>> = ({
   widget,
   item,
+  intervalSeconds,
 }) => {
   const intl = useIntl();
 
@@ -38,11 +38,11 @@ const StackedTimelineDashboardWidget: FunctionComponent<DashboardWidgetCardProps
     widget.metrics.map((metric) => ({ name: metric.title, data: [] }))
   );
   const [chartLabels, setChartLabels] = useState<string[]>([]);
+  const [loading, setLoading] = useState<boolean>(true);
+  const empty = useMemo<boolean>(() => !loading && isEmpty(chartLabels), [loading, chartLabels]);
 
   const dataPoint = useRef<DataPoint>({ values: [], timestamp: 0 });
   const lastDataPointTimestamp = useRef<number>(0);
-
-  const isLoading = useMemo<boolean>(() => isEmpty(chartLabels), [chartLabels]);
 
   const metrics = useMemo<{ name: string; title: string; color: string }[]>(
     () =>
@@ -58,12 +58,13 @@ const StackedTimelineDashboardWidget: FunctionComponent<DashboardWidgetCardProps
   useWidgetMetricsHistory(
     item.id,
     metricNames,
-    new Date(Date.now() - MAX_DATA_POINTS * MIN_SECONDS_BETWEEN_DATA_POINTS * 1000),
+    new Date(Date.now() - MAX_DATA_POINTS * intervalSeconds * 1000),
     new Date(),
     (metricDtos) => {
       chain(metricDtos)
         .map((metricDto) => metricDto?.values || [])
         .unzip()
+        .filter((values) => every(values, (value) => !!value))
         .map((values) => ({ values: values.map((v) => v.value), timestamp: values[0].timestamp.getTime() }))
         .filter(
           (historyDataPoint) =>
@@ -71,6 +72,7 @@ const StackedTimelineDashboardWidget: FunctionComponent<DashboardWidgetCardProps
         )
         .value()
         .forEach(addDataPoint);
+      setLoading(false);
     }
   );
   useWidgetSubscribeToMetrics(
@@ -85,11 +87,11 @@ const StackedTimelineDashboardWidget: FunctionComponent<DashboardWidgetCardProps
         dataPoint.current = { values: [], timestamp: 0 };
       }
     },
-    { active: !isLoading }
+    { active: !loading }
   );
 
   const addDataPoint = useCallback((dataPointToAdd: DataPoint): void => {
-    if (dataPointToAdd.timestamp - lastDataPointTimestamp.current < MIN_SECONDS_BETWEEN_DATA_POINTS * 1000) {
+    if (dataPointToAdd.timestamp - lastDataPointTimestamp.current < intervalSeconds * 1000) {
       return;
     }
     lastDataPointTimestamp.current = dataPointToAdd.timestamp;
@@ -126,7 +128,7 @@ const StackedTimelineDashboardWidget: FunctionComponent<DashboardWidgetCardProps
   const chartOptions: ApexOptions = merge(BaseOptionChart(), overrideOptions);
 
   return (
-    <DashboardGenericCard title={widget.title} loading={isLoading}>
+    <DashboardGenericCard title={widget.title} loading={loading} empty={empty}>
       <ChartWrapperStyle dir="ltr">
         <ReactApexChart type="area" series={data} options={chartOptions} height={'100%'} width={'100%'} />
       </ChartWrapperStyle>

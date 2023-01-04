@@ -12,7 +12,8 @@ import useWidgetLatestMetrics from 'renderer/components/widget/hooks/useWidgetLa
 
 const DataBarDashboardWidget: FunctionComponent<DashboardWidgetCardProps<DataBarWidget>> = ({ widget, item }) => {
   const [data, setData] = useState<{ [key: string]: ApplicationMetricDTO }>({});
-  const isLoading = useMemo<boolean>(() => Object.keys(data).length < widget.metrics.length, [data]);
+  const [loading, setLoading] = useState<boolean>(true);
+  const empty = useMemo<boolean>(() => !loading && Object.keys(data).length < widget.metrics.length, [loading, data]);
 
   const onMetricUpdate = useCallback(
     (metricDto?: ApplicationMetricDTO): void => {
@@ -35,11 +36,14 @@ const DataBarDashboardWidget: FunctionComponent<DashboardWidgetCardProps<DataBar
 
   const metricNames = useMemo<string[]>(() => metrics.map((metric) => metric.name), [metrics]);
 
-  useWidgetLatestMetrics(item.id, metricNames, (metricDtos) => metricDtos.forEach(onMetricUpdate));
-  useWidgetSubscribeToMetrics(item.id, metricNames, onMetricUpdate, { active: !isLoading });
+  useWidgetLatestMetrics(item.id, metricNames, (metricDtos) => {
+    metricDtos.forEach(onMetricUpdate);
+    setLoading(false);
+  });
+  useWidgetSubscribeToMetrics(item.id, metricNames, onMetricUpdate, { active: !loading });
 
   return (
-    <DashboardGenericCard title={widget.title} loading={isLoading}>
+    <DashboardGenericCard title={widget.title} loading={loading} empty={empty}>
       <CardContent>
         <Stack direction={'row'}>
           {metrics.map((metric, index, array) => {

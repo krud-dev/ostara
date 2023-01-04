@@ -10,9 +10,10 @@ import DataBarDashboardWidget from 'renderer/components/widget/card/DataBarDashb
 interface DashboardWidgetProps {
   widget: Widget;
   item: Item;
+  intervalSeconds: number;
 }
 
-const DashboardWidget: FunctionComponent<DashboardWidgetProps> = ({ widget, item }) => {
+const DashboardWidget: FunctionComponent<DashboardWidgetProps> = ({ widget, item, intervalSeconds }) => {
   const DashboardCard = useMemo<ComponentType<DashboardWidgetCardProps<any>>>(() => {
     switch (widget.type) {
       case 'progress-circle':
@@ -26,6 +27,6 @@ const DashboardWidget: FunctionComponent<DashboardWidgetProps> = ({ widget, item
     }
   }, [widget]);
 
-  return <DashboardCard widget={widget} item={item} />;
+  return <DashboardCard widget={widget} item={item} intervalSeconds={intervalSeconds} />;
 };
 export default DashboardWidget;

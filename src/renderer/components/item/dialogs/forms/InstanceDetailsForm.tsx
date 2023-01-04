@@ -21,6 +21,7 @@ export type InstanceFormValues = {
   alias: string;
   icon?: string;
   actuatorUrl: string;
+  dataCollectionIntervalSeconds: number;
 };
 
 const InstanceDetailsForm: FunctionComponent<InstanceDetailsFormProps> = ({
@@ -114,6 +115,31 @@ const InstanceDetailsForm: FunctionComponent<InstanceDetailsFormProps> = ({
                   fullWidth
                   label={<FormattedMessage id="actuatorUrl" />}
                   type="url"
+                  autoComplete="off"
+                  error={invalid}
+                  helperText={error?.message}
+                />
+              );
+            }}
+          />
+
+          <Controller
+            name="dataCollectionIntervalSeconds"
+            rules={{
+              required: intl.formatMessage({ id: 'requiredField' }),
+            }}
+            control={control}
+            defaultValue={60}
+            render={({ field: { ref, ...field }, fieldState: { invalid, error } }) => {
+              return (
+                <TextField
+                  {...field}
+                  inputRef={ref}
+                  margin="normal"
+                  required
+                  fullWidth
+                  label={<FormattedMessage id="dataCollectionIntervalSeconds" />}
+                  type="number"
                   autoComplete="off"
                   error={invalid}
                   helperText={error?.message}
