@@ -115,6 +115,23 @@ const NavigatorTreeProvider: FunctionComponent<NavigatorTreeProviderProps> = ({ 
     };
   }, []);
 
+  const subscribeToEndpointsEventsState = useSubscribeToEvent();
+
+  useEffect(() => {
+    let unsubscribe: (() => void) | undefined;
+    (async () => {
+      unsubscribe = await subscribeToEndpointsEventsState.mutateAsync({
+        event: 'app:instanceEndpointsUpdated',
+        listener: () => {
+          getItemsState.refetch();
+        },
+      });
+    })();
+    return () => {
+      unsubscribe?.();
+    };
+  }, []);
+
   const performAction = useCallback((actionToPerform: NavigatorTreeAction) => {
     setAction(actionToPerform);
   }, []);
