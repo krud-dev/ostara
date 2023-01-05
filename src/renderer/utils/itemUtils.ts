@@ -1,4 +1,10 @@
-import { DataCollectionMode, EnrichedItem, Item, ItemType } from 'infra/configuration/model/configuration';
+import {
+  DataCollectionMode,
+  EnrichedInstance,
+  EnrichedItem,
+  Item,
+  ItemType,
+} from 'infra/configuration/model/configuration';
 import { generatePath } from 'react-router-dom';
 import { urls } from 'renderer/routes/urls';
 import { green, orange, pink, red, yellow } from '@mui/material/colors';
@@ -131,12 +137,6 @@ export const getDataCollectionModeTextId = (dataCollectionMode: DataCollectionMo
   }
 };
 
-export const isItemLoading = (item: EnrichedItem): boolean => {
-  if (item.type === 'instance' && item.health.status === 'PENDING') {
-    return true;
-  }
-  if (item.type === 'application' && item.health.status === 'PENDING') {
-    return true;
-  }
-  return false;
+export const isServiceInactive = (item: EnrichedInstance, service: string): boolean => {
+  return item.endpoints.indexOf(service) === -1;
 };

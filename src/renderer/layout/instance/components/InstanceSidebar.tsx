@@ -10,6 +10,7 @@ import {
   LanOutlined,
   ListAltOutlined,
   ParkOutlined,
+  StorageOutlined,
 } from '@mui/icons-material';
 import { urls } from 'renderer/routes/urls';
 import { useMemo } from 'react';
@@ -19,6 +20,7 @@ import { generatePath } from 'react-router-dom';
 import ItemHeader from 'renderer/components/item/ItemHeader';
 import { Box, Divider } from '@mui/material';
 import InstanceDataCollectionToggle from 'renderer/components/item/data-collection/InstanceDataCollectionToggle';
+import { isServiceInactive } from 'renderer/utils/itemUtils';
 
 type InstanceSidebarProps = { item: EnrichedInstance; width: number };
 
@@ -40,24 +42,35 @@ export default function InstanceSidebar({ item, width }: InstanceSidebarProps) {
             icon: <DataUsageOutlined />,
             label: <FormattedMessage id={'metrics'} />,
             to: generatePath(urls.instanceMetrics.url, { id: item.id }),
-          },
-          {
-            id: 'quartz',
-            icon: <AccessTimeOutlined />,
-            label: <FormattedMessage id={'quartz'} />,
-            to: generatePath(urls.instanceQuartz.url, { id: item.id }),
+            disabled: isServiceInactive(item, 'metrics'),
           },
           {
             id: 'environment',
             icon: <ParkOutlined />,
             label: <FormattedMessage id={'environment'} />,
             to: generatePath(urls.instanceEnvironment.url, { id: item.id }),
+            disabled: isServiceInactive(item, 'env'),
           },
           {
             id: 'beans',
             icon: <EggOutlined />,
             label: <FormattedMessage id={'beans'} />,
             to: generatePath(urls.instanceBeans.url, { id: item.id }),
+            disabled: isServiceInactive(item, 'beans'),
+          },
+          {
+            id: 'quartz',
+            icon: <AccessTimeOutlined />,
+            label: <FormattedMessage id={'quartz'} />,
+            to: generatePath(urls.instanceQuartz.url, { id: item.id }),
+            hidden: isServiceInactive(item, 'quartz'),
+          },
+          {
+            id: 'flyway',
+            icon: <StorageOutlined />,
+            label: <FormattedMessage id={'flyway'} />,
+            to: generatePath(urls.instanceFlyway.url, { id: item.id }),
+            hidden: isServiceInactive(item, 'flyway'),
           },
         ],
       },
@@ -70,12 +83,14 @@ export default function InstanceSidebar({ item, width }: InstanceSidebarProps) {
             icon: <ListAltOutlined />,
             label: <FormattedMessage id={'loggers'} />,
             to: generatePath(urls.instanceLoggers.url, { id: item.id }),
+            disabled: isServiceInactive(item, 'loggers'),
           },
           {
             id: 'caches',
             icon: <ClassOutlined />,
             label: <FormattedMessage id={'caches'} />,
             to: generatePath(urls.instanceCaches.url, { id: item.id }),
+            disabled: isServiceInactive(item, 'caches'),
           },
         ],
       },
@@ -88,12 +103,14 @@ export default function InstanceSidebar({ item, width }: InstanceSidebarProps) {
             icon: <DeviceHubOutlined />,
             label: <FormattedMessage id={'threadDump'} />,
             to: generatePath(urls.instanceThreadDump.url, { id: item.id }),
+            disabled: isServiceInactive(item, 'threaddump'),
           },
           {
             id: 'heapDump',
             icon: <LanOutlined />,
             label: <FormattedMessage id={'heapDump'} />,
             to: generatePath(urls.instanceHeapDump.url, { id: item.id }),
+            disabled: isServiceInactive(item, 'heapdump'),
           },
         ],
       },

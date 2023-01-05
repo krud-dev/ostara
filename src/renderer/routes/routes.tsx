@@ -66,15 +66,19 @@ export default function Router() {
               element: <InstanceDashboard />,
             },
             {
-              path: urls.instanceQuartz.path,
-              element: <InstanceDashboard />,
-            },
-            {
               path: urls.instanceEnvironment.path,
               element: <InstanceDashboard />,
             },
             {
               path: urls.instanceBeans.path,
+              element: <InstanceDashboard />,
+            },
+            {
+              path: urls.instanceQuartz.path,
+              element: <InstanceDashboard />,
+            },
+            {
+              path: urls.instanceFlyway.path,
               element: <InstanceDashboard />,
             },
             {

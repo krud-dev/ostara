@@ -34,6 +34,7 @@ export default {
   dashboard: 'Dashboard',
   metrics: 'Metrics',
   quartz: 'Quartz',
+  flyway: 'Flyway',
   environment: 'Environment',
   beans: 'Beans',
   manage: 'Manage',

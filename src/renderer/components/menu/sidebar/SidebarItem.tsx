@@ -40,6 +40,8 @@ export interface SidebarItemProps {
   id: string;
   label: ReactNode;
   to: string;
+  disabled?: boolean;
+  hidden?: boolean;
   icon?: JSX.Element;
   info?: JSX.Element;
   subs?: SidebarItemProps[];
@@ -48,7 +50,7 @@ export interface SidebarItemProps {
 export default function SidebarItem({ item }: { item: SidebarItemProps }) {
   const theme = useTheme();
   const { pathname } = useLocation();
-  const { label, to, icon, info, subs } = item;
+  const { label, to, disabled, hidden, icon, info, subs } = item;
 
   const isActiveRoot = useMemo<boolean>(() => matchPath({ path: to, end: false }, pathname) !== null, [pathname, to]);
   // const isActiveRoot = useMemo<boolean>(() => true, [pathname, to]);
@@ -72,6 +74,10 @@ export default function SidebarItem({ item }: { item: SidebarItemProps }) {
     // fontWeight: 'fontWeightMedium',
   };
 
+  if (hidden) {
+    return null;
+  }
+
   if (subs) {
     return (
       <>
@@ -79,6 +85,7 @@ export default function SidebarItem({ item }: { item: SidebarItemProps }) {
           // @ts-ignore
           button
           disableGutters
+          disabled={disabled}
           onClick={toggleHandler}
           sx={{
             ...(isActiveRoot && activeRootStyle),
@@ -112,11 +119,16 @@ export default function SidebarItem({ item }: { item: SidebarItemProps }) {
             {subs.map((sub) => {
               const isActiveSub = matchPath({ path: sub.to, end: false }, pathname) !== null;
 
+              if (sub.hidden) {
+                return null;
+              }
+
               return (
                 <ListItemStyle
                   // @ts-ignore
                   button
                   disableGutters
+                  disabled={sub.disabled}
                   component={RouterLink}
                   to={sub.to}
                   sx={{
@@ -158,6 +170,7 @@ export default function SidebarItem({ item }: { item: SidebarItemProps }) {
       // @ts-ignore
       button
       disableGutters
+      disabled={disabled}
       component={RouterLink}
       to={to}
       sx={{
