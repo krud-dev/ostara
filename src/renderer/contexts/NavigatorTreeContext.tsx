@@ -9,11 +9,11 @@ import React, {
 } from 'react';
 import { EnrichedItem, isInstance, Item } from 'infra/configuration/model/configuration';
 import { TreeItem } from 'renderer/layout/navigator/components/sidebar/tree/tree';
-import { forEach, some } from 'lodash';
+import { forEach } from 'lodash';
 import { useNavigate, useParams } from 'react-router-dom';
 import { urls } from 'renderer/routes/urls';
 import { useGetItemsQuery } from 'renderer/apis/configuration/item/getItems';
-import { isItemLoading } from 'renderer/utils/itemUtils';
+import { useSubscribeToEvent } from 'renderer/apis/subscriptions/subscribeToEvent';
 
 type NavigatorTreeAction = 'expandAll' | 'collapseAll';
 
@@ -98,18 +98,22 @@ const NavigatorTreeProvider: FunctionComponent<NavigatorTreeProviderProps> = ({ 
     }
   }, [getItemsState.data]);
 
-  const [refreshTreeFlag, setRefreshTreeFlag] = useState<boolean>(false);
+  const subscribeToHealthEventsState = useSubscribeToEvent();
 
   useEffect(() => {
-    if (!getItemsState.isLoading) {
-      getItemsState.refetch();
-    }
-    const interval = !getItemsState.data || some(getItemsState.data, (item) => isItemLoading(item)) ? 2000 : 30000;
-    const timer = setTimeout(() => {
-      setRefreshTreeFlag((prev) => !prev);
-    }, interval);
-    return () => clearTimeout(timer);
-  }, [refreshTreeFlag]);
+    let unsubscribe: (() => void) | undefined;
+    (async () => {
+      unsubscribe = await subscribeToHealthEventsState.mutateAsync({
+        event: 'app:instanceHealthUpdated',
+        listener: () => {
+          getItemsState.refetch();
+        },
+      });
+    })();
+    return () => {
+      unsubscribe?.();
+    };
+  }, []);
 
   const performAction = useCallback((actionToPerform: NavigatorTreeAction) => {
     setAction(actionToPerform);
