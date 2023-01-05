@@ -78,8 +78,11 @@ class InstanceInfoService {
         lastUpdateTime: Date.now(),
       };
     }
-    this.instanceHealthCache.set(instance.id, instanceHealth);
-    this.computeAndSaveApplicationHealth(instance.parentApplicationId);
+    const oldHealth = this.instanceHealthCache.get<InstanceHealth>(instance.id);
+    if (oldHealth?.status !== instanceHealth.status) {
+      this.instanceHealthCache.set(instance.id, instanceHealth);
+      this.computeAndSaveApplicationHealth(instance.parentApplicationId);
+    }
     return instanceHealth;
   }
 
@@ -87,7 +90,13 @@ class InstanceInfoService {
     const client = new ActuatorClient(instance.actuatorUrl);
     try {
       const endpoints = await client.endpoints();
-      this.endpointsCache.set(instance.id, endpoints);
+      const oldEndpoints = this.endpointsCache.get<string[]>(instance.id);
+      if (
+        oldEndpoints?.length !== endpoints.length ||
+        !oldEndpoints?.every((endpoint) => endpoints.includes(endpoint))
+      ) {
+        this.endpointsCache.set(instance.id, endpoints);
+      }
       return endpoints;
     } catch (e: unknown) {
       console.error(`Couldn't fetch endpoints for instance ${instance.id}`, e);
@@ -96,10 +105,14 @@ class InstanceInfoService {
   }
 
   private computeAndSaveApplicationHealth(applicationId: string) {
-    this.applicationHealthCache.set<ApplicationHealth>(applicationId, {
-      status: this.getApplicationHealthStatus(applicationId),
-      lastUpdateTime: Date.now(),
-    });
+    const oldHealth = this.applicationHealthCache.get<ApplicationHealth>(applicationId);
+    if (oldHealth?.status !== this.getApplicationHealthStatus(applicationId)) {
+      const newHealth: ApplicationHealth = {
+        status: this.getApplicationHealthStatus(applicationId),
+        lastUpdateTime: Date.now(),
+      };
+      this.applicationHealthCache.set(applicationId, newHealth);
+    }
   }
 
   private getApplicationHealthStatus(applicationId: string): ApplicationHealthStatus {
