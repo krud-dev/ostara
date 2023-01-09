@@ -21,11 +21,13 @@ export type InstanceMetadata = {
 export type InstanceHealth = {
   status: InstanceHealthStatus;
   lastUpdateTime: number;
+  lastStatusChangeTime: number;
 };
 
 export type ApplicationHealth = {
   status: ApplicationHealthStatus;
   lastUpdateTime: number;
+  lastStatusChangeTime: number;
 };
 
 export type BaseItem = {

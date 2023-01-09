@@ -39,6 +39,7 @@ class InstanceInfoService {
       this.instanceHealthCache.get<InstanceHealth>(instance.id) ?? {
         status: 'PENDING',
         lastUpdateTime: Date.now(),
+        lastStatusChangeTime: Date.now(),
       }
     );
   }
@@ -48,6 +49,7 @@ class InstanceInfoService {
       this.applicationHealthCache.get<ApplicationHealth>(application.id) ?? {
         status: 'PENDING',
         lastUpdateTime: Date.now(),
+        lastStatusChangeTime: Date.now(),
       }
     );
   }
@@ -73,19 +75,21 @@ class InstanceInfoService {
   async fetchInstanceHealth(instance: Instance): Promise<InstanceHealth> {
     const client = new ActuatorClient(instance.actuatorUrl);
     let instanceHealth: InstanceHealth;
+    const oldHealth = this.instanceHealthCache.get<InstanceHealth>(instance.id);
     try {
       const { status } = await client.health();
       instanceHealth = {
         status,
         lastUpdateTime: Date.now(),
+        lastStatusChangeTime: oldHealth?.status !== status ? Date.now() : oldHealth?.lastStatusChangeTime,
       };
     } catch (e: unknown) {
       instanceHealth = {
         status: 'UNREACHABLE',
         lastUpdateTime: Date.now(),
+        lastStatusChangeTime: oldHealth?.status !== 'UNREACHABLE' ? Date.now() : oldHealth?.lastStatusChangeTime,
       };
     }
-    const oldHealth = this.instanceHealthCache.get<InstanceHealth>(instance.id);
     this.instanceHealthCache.set(instance.id, instanceHealth);
     this.computeAndSaveApplicationHealth(instance.parentApplicationId);
     if (oldHealth?.status !== instanceHealth.status) {
@@ -115,9 +119,11 @@ class InstanceInfoService {
 
   private computeAndSaveApplicationHealth(applicationId: string) {
     const oldHealth = this.applicationHealthCache.get<ApplicationHealth>(applicationId);
+    const newStatus = this.getApplicationHealthStatus(applicationId);
     const newHealth: ApplicationHealth = {
-      status: this.getApplicationHealthStatus(applicationId),
+      status: newStatus,
       lastUpdateTime: Date.now(),
+      lastStatusChangeTime: oldHealth?.status !== newStatus ? Date.now() : oldHealth?.lastStatusChangeTime,
     };
     this.applicationHealthCache.set(applicationId, newHealth);
     if (oldHealth?.status !== this.getApplicationHealthStatus(applicationId)) {
