@@ -1,6 +1,6 @@
 import { ipcMain } from 'electron';
-import { instanceInfoService } from './InstanceInfoService';
+import { instanceService } from './InstanceService';
 
-ipcMain.handle('instanceInfoService:fetchInstanceHealthById', async (event, id) => {
-  return instanceInfoService.fetchInstanceHealthById(id);
+ipcMain.handle('instanceService:fetchInstanceHealthById', async (event, id) => {
+  return instanceService.fetchInstanceHealthById(id);
 });

@@ -5,7 +5,7 @@ import { metricsServiceBridge } from '../infra/metrics/renderer';
 import { utilsBridge } from '../infra/rendererUtils/renderer';
 import { taskServiceBridge } from '../infra/tasks/renderer';
 import { subscriptionsBridge } from '../infra/subscriptions/renderer';
-import { instanceInfoBridge } from '../infra/instance/renderer';
+import { instanceServiceBridge } from '../infra/instance/renderer';
 
 contextBridge.exposeInMainWorld('electron', {
   configurationStore: configurationStoreBridge,
@@ -16,4 +16,4 @@ contextBridge.exposeInMainWorld('metrics', metricsServiceBridge);
 contextBridge.exposeInMainWorld('task', taskServiceBridge);
 contextBridge.exposeInMainWorld('utils', utilsBridge);
 contextBridge.exposeInMainWorld('subscriptions', subscriptionsBridge);
-contextBridge.exposeInMainWorld('instanceInfo', instanceInfoBridge);
+contextBridge.exposeInMainWorld('instance', instanceServiceBridge);

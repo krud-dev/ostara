@@ -1,12 +1,12 @@
 import { InstanceHealth } from '../configuration/model/configuration';
 
 declare global {
-  type InstanceInfoBridge = {
+  type InstanceServiceBridge = {
     fetchInstanceHealthById: (instanceId: string) => Promise<InstanceHealth>;
   };
 
   interface Window {
-    instanceInfo: InstanceInfoBridge;
+    instanceService: InstanceServiceBridge;
   }
 }
 

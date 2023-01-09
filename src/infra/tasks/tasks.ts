@@ -2,7 +2,7 @@ import { taskService } from './taskService';
 import { configurationService } from '../configuration/configurationService';
 import log from 'electron-log';
 import { metricsService } from '../metrics/metricsService';
-import { instanceInfoService } from '../instance/InstanceInfoService';
+import { instanceService } from '../instance/InstanceService';
 
 taskService.declareTask({
   name: 'queryInstanceMetrics',
@@ -31,7 +31,7 @@ taskService.declareTask({
     await Promise.all(
       instances.map(async (instance) => {
         log.info(`Querying health for instance ${instance.id}`);
-        await instanceInfoService.fetchInstanceHealth(instance);
+        await instanceService.fetchInstanceHealth(instance);
       })
     );
   },
@@ -48,7 +48,7 @@ taskService.declareTask({
     await Promise.all(
       instances.map(async (instance) => {
         log.info(`Querying endpoints for instance ${instance.id}`);
-        await instanceInfoService.fetchInstanceEndpoints(instance);
+        await instanceService.fetchInstanceEndpoints(instance);
       })
     );
   },

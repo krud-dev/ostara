@@ -16,7 +16,7 @@ import {
   isInstance,
 } from './model/configuration';
 import { configurationStore } from './configurationStore';
-import { instanceInfoService } from '../instance/InstanceInfoService';
+import { instanceService } from '../instance/InstanceService';
 import { instanceMetadataStore } from './instanceMetadataStore';
 
 class ConfigurationService {
@@ -152,7 +152,7 @@ class ConfigurationService {
       throw new Error(`Item with id ${id} is not an application`);
     }
     configurationStore.set(`items.${id}`, application);
-    instanceInfoService.invalidateApplication(target.id);
+    instanceService.invalidateApplication(target.id);
     return <EnrichedApplication>this.getItem(id);
   }
 
@@ -163,7 +163,7 @@ class ConfigurationService {
     }
     const instances = this.getApplicationInstances(id);
     instances.forEach((instance) => this.deleteInstance(instance.id));
-    instanceInfoService.invalidateApplication(target.id);
+    instanceService.invalidateApplication(target.id);
     configurationStore.delete(`items.${id}` as any);
   }
 
@@ -247,7 +247,7 @@ class ConfigurationService {
       id,
     };
     configurationStore.set(`items.${id}`, newInstance);
-    instanceInfoService.invalidateApplication(instance.parentApplicationId);
+    instanceService.invalidateApplication(instance.parentApplicationId);
     return <EnrichedInstance>this.getItem(id);
   }
 
@@ -257,8 +257,8 @@ class ConfigurationService {
       throw new Error(`Item with id ${id} is not an instance`);
     }
     configurationStore.set(`items.${id}`, instance);
-    instanceInfoService.invalidateInstance(target);
-    instanceInfoService.invalidateApplication(target.parentApplicationId);
+    instanceService.invalidateInstance(target);
+    instanceService.invalidateApplication(target.parentApplicationId);
     return <EnrichedInstance>this.getItem(id);
   }
 
@@ -267,8 +267,8 @@ class ConfigurationService {
     if (!isInstance(target)) {
       throw new Error(`Item with id ${id} is not an instance`);
     }
-    instanceInfoService.invalidateInstance(target);
-    instanceInfoService.invalidateApplication(target.parentApplicationId);
+    instanceService.invalidateInstance(target);
+    instanceService.invalidateApplication(target.parentApplicationId);
     configurationStore.delete(`items.${id}` as any);
   }
 
@@ -284,8 +284,8 @@ class ConfigurationService {
     }
     configurationStore.set(`items.${id}.parentApplicationId`, newParentApplicationId);
     configurationStore.set(`items.${id}.order`, newOrder);
-    instanceInfoService.invalidateApplication(target.parentApplicationId);
-    instanceInfoService.invalidateApplication(newParentApplicationId);
+    instanceService.invalidateApplication(target.parentApplicationId);
+    instanceService.invalidateApplication(newParentApplicationId);
     return <EnrichedInstance>this.getItem(id);
   }
 
@@ -328,8 +328,8 @@ class ConfigurationService {
   private enrichInstance(instance: Instance): EnrichedInstance {
     const effectiveColor = this.getInstanceEffectiveColor(instance);
     const effectiveDataCollectionMode = this.getInstanceEffectiveDataCollectionMode(instance);
-    const health = instanceInfoService.getCachedInstanceHealth(instance);
-    const endpoints = instanceInfoService.getCachedInstanceEndpoints(instance);
+    const health = instanceService.getCachedInstanceHealth(instance);
+    const endpoints = instanceService.getCachedInstanceEndpoints(instance);
     return {
       ...instance,
       effectiveColor,
@@ -344,7 +344,7 @@ class ConfigurationService {
     const effectiveColor = this.getApplicationEffectiveColor(application);
     return {
       ...application,
-      health: instanceInfoService.getCachedApplicationHealth(application),
+      health: instanceService.getCachedApplicationHealth(application),
       effectiveColor,
     };
   }

@@ -12,7 +12,7 @@ import { BrowserWindow } from 'electron';
 import log from 'electron-log';
 import EventEmitter from 'events';
 
-class InstanceInfoService {
+class InstanceService {
   private readonly instanceHealthCache = new NodeCache();
 
   private readonly applicationHealthCache = new NodeCache();
@@ -166,4 +166,4 @@ class InstanceInfoService {
   }
 }
 
-export const instanceInfoService = new InstanceInfoService();
+export const instanceService = new InstanceService();

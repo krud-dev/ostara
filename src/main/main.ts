@@ -18,7 +18,7 @@ import { resolveHtmlPath } from './util';
 import '../infra';
 import { dataSource } from '../infra/dataSource';
 import { taskService } from '../infra/tasks/taskService';
-import { instanceInfoService } from '../infra/instance/InstanceInfoService';
+import { instanceService } from '../infra/instance/InstanceService';
 
 class AppUpdater {
   constructor() {
@@ -106,7 +106,7 @@ const createWindow = async () => {
     return { action: 'deny' };
   });
 
-  instanceInfoService.initializeListeners(mainWindow);
+  instanceService.initializeListeners(mainWindow);
 
   // Remove this if your app does not use auto updates
   // eslint-disable-next-line
