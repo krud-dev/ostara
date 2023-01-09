@@ -44,6 +44,11 @@ ipcMain.handle('actuator:evictCache', async (event, url, name) => {
   await client.evictCache(name);
 });
 
+ipcMain.handle('actuator:beans', async (event, url) => {
+  const client = new ActuatorClient(url);
+  return client.beans();
+});
+
 ipcMain.handle('actuator:logfile', async (event, url) => {
   const client = new ActuatorClient(url);
   return client.logfile();

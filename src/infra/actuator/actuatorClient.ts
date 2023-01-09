@@ -13,6 +13,7 @@ import {
   ActuatorMainResponse,
   ActuatorTestConnectionResponse,
 } from './model/base';
+import { ActuatorBeansResponse } from './model/beans';
 
 export class ActuatorClient {
   readonly axios: Axios;
@@ -119,6 +120,14 @@ export class ActuatorClient {
 
   async evictCache(name: string): Promise<void> {
     await this.axios.delete(`caches/${name}`);
+  }
+
+  /**
+   * Beans
+   */
+  async beans(): Promise<ActuatorBeansResponse> {
+    const response = await this.axios.get('beans');
+    return response.data;
   }
 
   /**

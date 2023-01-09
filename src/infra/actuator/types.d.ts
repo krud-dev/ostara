@@ -6,6 +6,7 @@ import { ActuatorEnvPropertyResponse, ActuatorEnvResponse } from './model/env';
 import { ActuatorThreadDumpResponse } from './model/threadDump';
 import { ActuatorLoggerResponse, ActuatorLoggersResponse } from './model/loggers';
 import { ActuatorEndpointsResponse, ActuatorTestConnectionResponse } from './model/base';
+import { ActuatorBeansResponse } from './model/beans';
 
 declare global {
   type ActuatorBridge = {
@@ -18,6 +19,7 @@ declare global {
     cache: (url: string, name: string) => Promise<ActuatorCacheResponse>;
     evictAllCaches: (url: string) => Promise<void>;
     evictCache: (url: string, name: string) => Promise<void>;
+    beans: (url: string) => Promise<ActuatorBeansResponse>;
     logfile: (url: string) => Promise<string>;
     logfileRange: (url: string, start: number, end: number) => Promise<string>;
     metrics: (url: string) => Promise<ActuatorMetricsResponse>;

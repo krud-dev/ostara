@@ -10,6 +10,7 @@ export const actuatorBridge: ActuatorBridge = {
   cache: (url: string, name: string) => ipcRenderer.invoke('actuator:cache', url, name),
   evictAllCaches: (url: string) => ipcRenderer.invoke('actuator:evictAllCaches', url),
   evictCache: (url: string, name: string) => ipcRenderer.invoke('actuator:evictCache', url, name),
+  beans: (url: string) => ipcRenderer.invoke('actuator:beans', url),
   logfile: (url: string) => ipcRenderer.invoke('actuator:logfile', url),
   logfileRange: (url: string, start: number, end: number) => ipcRenderer.invoke('actuator:logfileRange', start, end),
   metrics: (url: string) => ipcRenderer.invoke('actuator:metrics', url),
