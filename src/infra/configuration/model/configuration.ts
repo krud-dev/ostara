@@ -19,9 +19,10 @@ export type InstanceMetadata = {
 };
 
 export type InstanceHealth = {
-  status: InstanceHealthStatus;
-  lastUpdateTime: number;
-  lastStatusChangeTime: number;
+  readonly status: InstanceHealthStatus;
+  readonly statusText?: string;
+  readonly lastUpdateTime: number;
+  readonly lastStatusChangeTime: number;
 };
 
 export type ApplicationHealth = {

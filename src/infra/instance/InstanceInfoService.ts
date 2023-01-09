@@ -84,8 +84,15 @@ class InstanceInfoService {
         lastStatusChangeTime: oldHealth?.status !== status ? Date.now() : oldHealth?.lastStatusChangeTime,
       };
     } catch (e: unknown) {
+      let message;
+      if (e instanceof Error) {
+        message = e.message;
+      } else {
+        message = JSON.stringify(e);
+      }
       instanceHealth = {
         status: 'UNREACHABLE',
+        statusText: message,
         lastUpdateTime: Date.now(),
         lastStatusChangeTime: oldHealth?.status !== 'UNREACHABLE' ? Date.now() : oldHealth?.lastStatusChangeTime,
       };
