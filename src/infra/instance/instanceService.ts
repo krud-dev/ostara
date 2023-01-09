@@ -11,6 +11,8 @@ import { configurationService } from '../configuration/configurationService';
 import { BrowserWindow } from 'electron';
 import log from 'electron-log';
 import EventEmitter from 'events';
+import { InstanceCache } from './models/cache';
+import { ActuatorCache, ActuatorCacheManager, ActuatorCacheResponse } from '../actuator/model/caches';
 
 class InstanceService {
   private readonly instanceHealthCache = new NodeCache();
@@ -32,6 +34,44 @@ class InstanceService {
     this.events.addListener('app:instanceEndpointsUpdated', (key: string, value: string[]) => {
       window.webContents.send('app:instanceEndpointsUpdated', key, value);
     });
+  }
+
+  async getInstanceCaches(instanceId: string): Promise<InstanceCache[]> {
+    const instance = configurationService.getInstanceOrThrow(instanceId);
+    const client = new ActuatorClient(instance.actuatorUrl);
+    const response = await client.caches();
+    const result: InstanceCache[] = [];
+    // eslint-disable-next-line no-restricted-syntax
+    for (const [cacheManagerName, { caches }] of Object.entries(response.cacheManagers)) {
+      // eslint-disable-next-line no-restricted-syntax
+      for (const [cacheName, cache] of Object.entries(caches)) {
+        result.push({
+          name: cacheName,
+          cacheManager: cacheManagerName,
+          target: cache.target,
+        });
+      }
+    }
+    return result;
+  }
+
+  async getInstanceCache(instanceId: string, cacheName: string): Promise<ActuatorCache> {
+    const instance = configurationService.getInstanceOrThrow(instanceId);
+    const client = new ActuatorClient(instance.actuatorUrl);
+    const response = await client.cache(cacheName);
+    return response;
+  }
+
+  async evictInstanceCache(instanceId: string, cacheName: string): Promise<void> {
+    const instance = configurationService.getInstanceOrThrow(instanceId);
+    const client = new ActuatorClient(instance.actuatorUrl);
+    await client.evictCache(cacheName);
+  }
+
+  async evictAllInstanceCaches(instanceId: string): Promise<void> {
+    const instance = configurationService.getInstanceOrThrow(instanceId);
+    const client = new ActuatorClient(instance.actuatorUrl);
+    await client.evictAllCaches();
   }
 
   getCachedInstanceHealth(instance: Instance): InstanceHealth {
