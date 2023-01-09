@@ -201,6 +201,14 @@ class ConfigurationService {
     return <EnrichedInstance[]>this.getItems().filter(isInstance);
   }
 
+  getInstanceOrThrow(id: string): EnrichedInstance {
+    const target = this.getItemOrThrow(id);
+    if (!isInstance(target)) {
+      throw new Error(`Item with id ${id} is not an instance`);
+    }
+    return target;
+  }
+
   getInstancesForDataCollection(): EnrichedInstance[] {
     const currentTime = Date.now();
     return this.getInstances()

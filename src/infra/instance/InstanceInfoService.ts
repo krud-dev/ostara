@@ -10,6 +10,7 @@ import { ActuatorClient } from '../actuator/actuatorClient';
 import { configurationService } from '../configuration/configurationService';
 import { BrowserWindow } from 'electron';
 import log from 'electron-log';
+import EventEmitter from 'events';
 
 class InstanceInfoService {
   private readonly instanceHealthCache = new NodeCache();
@@ -18,16 +19,17 @@ class InstanceInfoService {
 
   private readonly endpointsCache = new NodeCache();
 
+  private readonly events: EventEmitter = new EventEmitter();
+
   initializeListeners(window: BrowserWindow) {
     log.info(`Initializing listeners for window ${window.id}`);
-    this.instanceHealthCache.addListener('set', (key: string, value: InstanceHealth) => {
+    this.events.addListener('app:instanceHealthUpdated', (key: string, value: InstanceHealth) => {
       window.webContents.send('app:instanceHealthUpdated', key, value);
     });
-
-    this.applicationHealthCache.addListener('set', (key: string, value: ApplicationHealth) => {
+    this.events.addListener('app:applicationHealthUpdated', (key: string, value: ApplicationHealth) => {
       window.webContents.send('app:applicationHealthUpdated', key, value);
     });
-    this.endpointsCache.addListener('set', (key: string, value: string[]) => {
+    this.events.addListener('app:instanceEndpointsUpdated', (key: string, value: string[]) => {
       window.webContents.send('app:instanceEndpointsUpdated', key, value);
     });
   }
@@ -63,6 +65,11 @@ class InstanceInfoService {
     this.computeAndSaveApplicationHealth(applicationId);
   }
 
+  fetchInstanceHealthById(instanceId: string): Promise<InstanceHealth> {
+    const instance = configurationService.getInstanceOrThrow(instanceId);
+    return this.fetchInstanceHealth(instance);
+  }
+
   async fetchInstanceHealth(instance: Instance): Promise<InstanceHealth> {
     const client = new ActuatorClient(instance.actuatorUrl);
     let instanceHealth: InstanceHealth;
@@ -79,9 +86,10 @@ class InstanceInfoService {
       };
     }
     const oldHealth = this.instanceHealthCache.get<InstanceHealth>(instance.id);
+    this.instanceHealthCache.set(instance.id, instanceHealth);
+    this.computeAndSaveApplicationHealth(instance.parentApplicationId);
     if (oldHealth?.status !== instanceHealth.status) {
-      this.instanceHealthCache.set(instance.id, instanceHealth);
-      this.computeAndSaveApplicationHealth(instance.parentApplicationId);
+      this.events.emit('app:instanceHealthUpdated', instance.id, instanceHealth);
     }
     return instanceHealth;
   }
@@ -91,11 +99,12 @@ class InstanceInfoService {
     try {
       const endpoints = await client.endpoints();
       const oldEndpoints = this.endpointsCache.get<string[]>(instance.id);
+      this.endpointsCache.set(instance.id, endpoints);
       if (
         oldEndpoints?.length !== endpoints.length ||
         !oldEndpoints?.every((endpoint) => endpoints.includes(endpoint))
       ) {
-        this.endpointsCache.set(instance.id, endpoints);
+        this.events.emit('app:instanceEndpointsUpdated', instance.id, endpoints);
       }
       return endpoints;
     } catch (e: unknown) {
@@ -106,12 +115,13 @@ class InstanceInfoService {
 
   private computeAndSaveApplicationHealth(applicationId: string) {
     const oldHealth = this.applicationHealthCache.get<ApplicationHealth>(applicationId);
+    const newHealth: ApplicationHealth = {
+      status: this.getApplicationHealthStatus(applicationId),
+      lastUpdateTime: Date.now(),
+    };
+    this.applicationHealthCache.set(applicationId, newHealth);
     if (oldHealth?.status !== this.getApplicationHealthStatus(applicationId)) {
-      const newHealth: ApplicationHealth = {
-        status: this.getApplicationHealthStatus(applicationId),
-        lastUpdateTime: Date.now(),
-      };
-      this.applicationHealthCache.set(applicationId, newHealth);
+      this.events.emit('app:applicationHealthUpdated', applicationId);
     }
   }
 
