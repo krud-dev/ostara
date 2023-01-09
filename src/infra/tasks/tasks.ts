@@ -24,7 +24,7 @@ taskService.declareTask({
   name: 'queryInstanceHealth',
   alias: 'Query Instance Health',
   description: 'Query the actuator API for instance health',
-  defaultCron: '* * * * * *',
+  defaultCron: '* * * * *',
   runOnStartup: true,
   function: async () => {
     const instances = configurationService.getInstances();
