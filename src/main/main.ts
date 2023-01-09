@@ -18,7 +18,7 @@ import { resolveHtmlPath } from './util';
 import '../infra';
 import { dataSource } from '../infra/dataSource';
 import { taskService } from '../infra/tasks/taskService';
-import { instanceService } from '../infra/instance/InstanceService';
+import { instanceService } from '../infra/instance/instanceService';
 
 class AppUpdater {
   constructor() {

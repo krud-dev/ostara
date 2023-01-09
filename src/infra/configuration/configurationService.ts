@@ -16,7 +16,7 @@ import {
   isInstance,
 } from './model/configuration';
 import { configurationStore } from './configurationStore';
-import { instanceService } from '../instance/InstanceService';
+import { instanceService } from '../instance/instanceService';
 import { instanceMetadataStore } from './instanceMetadataStore';
 
 class ConfigurationService {

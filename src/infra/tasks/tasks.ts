@@ -2,7 +2,7 @@ import { taskService } from './taskService';
 import { configurationService } from '../configuration/configurationService';
 import log from 'electron-log';
 import { metricsService } from '../metrics/metricsService';
-import { instanceService } from '../instance/InstanceService';
+import { instanceService } from '../instance/instanceService';
 
 taskService.declareTask({
   name: 'queryInstanceMetrics',
