@@ -1,7 +1,7 @@
 import React, { useCallback, useMemo } from 'react';
 import { EnrichedItem } from 'infra/configuration/model/configuration';
-import { Avatar, Badge, Box, IconButton, Typography } from '@mui/material';
-import { getItemHealthStatusColor, getItemHealthStatusTextId } from 'renderer/utils/itemUtils';
+import { Avatar, Badge, Box, IconButton, Tooltip, Typography } from '@mui/material';
+import { getItemHealthStatusColor, getItemHealthStatusTextId, getItemNameTooltip } from 'renderer/utils/itemUtils';
 import { COMPONENTS_SPACING, NAVIGATOR_ITEM_HEIGHT } from 'renderer/constants/ui';
 import useItemColor from 'renderer/hooks/useItemColor';
 import { FormattedMessage } from 'react-intl';
@@ -16,6 +16,7 @@ export default function ItemHeader({ item }: ItemHeaderProps) {
   const menuState = usePopupState({ variant: 'popover' });
 
   const color = useItemColor(item);
+  const nameTooltip = useMemo<string | undefined>(() => getItemNameTooltip(item), [item]);
   const healthStatusColor = useMemo<string | undefined>(() => getItemHealthStatusColor(item), [item]);
   const healthTextId = useMemo<string | undefined>(() => getItemHealthStatusTextId(item), [item]);
   const itemIcon = useItemIcon(item);
@@ -58,13 +59,15 @@ export default function ItemHeader({ item }: ItemHeaderProps) {
         </IconButton>
 
         <Box sx={{ ml: 2, overflow: 'hidden' }}>
-          <Typography
-            variant="subtitle2"
-            sx={{ color: 'text.primary', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}
-            noWrap
-          >
-            {item.alias}
-          </Typography>
+          <Tooltip title={nameTooltip}>
+            <Typography
+              variant="subtitle2"
+              sx={{ color: 'text.primary', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}
+              noWrap
+            >
+              {item.alias}
+            </Typography>
+          </Tooltip>
 
           <Typography
             variant="body2"

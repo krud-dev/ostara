@@ -1,12 +1,12 @@
 import { NodeRendererProps } from 'react-arborist';
-import { Badge, IconButton, ListItem, ListItemIcon, ListItemText, TextField } from '@mui/material';
+import { Badge, IconButton, ListItem, ListItemIcon, ListItemText, TextField, Tooltip } from '@mui/material';
 import { alpha, experimentalStyled as styled, Theme, useTheme } from '@mui/material/styles';
 import React, { useCallback, useEffect, useMemo, useRef } from 'react';
 import { TreeItem } from 'renderer/layout/navigator/components/sidebar/tree/tree';
 import typography from 'renderer/theme/config/typography';
 import { KeyboardArrowDown, KeyboardArrowRight, MoreVert, SvgIconComponent } from '@mui/icons-material';
 import { NAVIGATOR_ITEM_HEIGHT } from 'renderer/constants/ui';
-import { getItemHealthStatusColor, getItemUrl } from 'renderer/utils/itemUtils';
+import { getItemHealthStatusColor, getItemNameTooltip, getItemUrl } from 'renderer/utils/itemUtils';
 import { isApplication, isFolder, Item } from 'infra/configuration/model/configuration';
 import { SxProps } from '@mui/system';
 import { matchPath, useLocation, useNavigate } from 'react-router-dom';
@@ -118,6 +118,7 @@ export default function NavigatorTreeNode({ style, node, tree, dragHandle, previ
   );
 
   const color = useItemColor(node.data);
+  const nameTooltip = useMemo<string | undefined>(() => getItemNameTooltip(node.data), [node.data]);
   const healthStatusColor = useMemo<string | undefined>(() => getItemHealthStatusColor(node.data), [node.data]);
   const itemIcon = useItemIcon(node.data);
   const ToggleIcon = useMemo<SvgIconComponent>(
@@ -216,7 +217,11 @@ export default function NavigatorTreeNode({ style, node, tree, dragHandle, previ
         {!node.isEditing ? (
           <ListItemText
             disableTypography
-            primary={node.data.alias}
+            primary={
+              <Tooltip title={nameTooltip}>
+                <span>{node.data.alias}</span>
+              </Tooltip>
+            }
             sx={{
               whiteSpace: 'nowrap',
               overflow: 'hidden',

@@ -8,6 +8,7 @@ export default function Tooltip(theme: Theme): Components {
     MuiTooltip: {
       defaultProps: {
         arrow: true,
+        disableInteractive: true,
       },
       styleOverrides: {
         tooltip: {

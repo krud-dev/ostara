@@ -38,6 +38,13 @@ export const getItemUrl = (item: Item): string => {
   }
 };
 
+export const getItemNameTooltip = (item: EnrichedItem): string | undefined => {
+  if (item.type === 'instance') {
+    return item.actuatorUrl;
+  }
+  return undefined;
+};
+
 export const getItemHealthStatusColor = (item: EnrichedItem): string | undefined => {
   const colorsIndex = 600;
   if (item.type === 'instance') {
