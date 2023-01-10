@@ -1,5 +1,6 @@
 import { ipcMain } from 'electron';
 import { metricsService } from './metricsService';
+import { configurationService } from '../configuration/configurationService';
 
 ipcMain.handle('metricsService:getLatestMetric', async (event, instanceId, metricName) => {
   const metrics = await metricsService.getLatestMetric(instanceId, metricName);
@@ -12,17 +13,22 @@ ipcMain.handle('metricsService:subscribeToMetric', async (event, instanceId, met
   if (metricSubscriptions[channelName]) {
     throw new Error(`Channel name in use: ${channelName} for ${metricName} for instance ${instanceId}`);
   }
+  const instance = configurationService.getInstanceOrThrow(instanceId);
+  const callback = () => {
+    metricsService
+      .getLatestMetric(instanceId, metricName)
+      .then((metric) => event.sender.send(channelName, metric))
+      .catch((error) => console.error(error));
+  };
   metricSubscriptions[channelName] = true;
+  callback();
   const timer = setInterval(() => {
     if (metricSubscriptions[channelName]) {
-      metricsService
-        .getLatestMetric(instanceId, metricName)
-        .then((metric) => event.sender.send(channelName, metric))
-        .catch((error) => console.error(error));
+      callback();
     } else {
       clearInterval(timer);
     }
-  }, 1000);
+  }, instance.dataCollectionIntervalSeconds * 1000);
 });
 
 ipcMain.handle('metricsService:unsubscribeFromMetric', async (event, channelName) => {
