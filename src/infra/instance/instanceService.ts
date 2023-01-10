@@ -4,7 +4,7 @@ import {
   ApplicationHealth,
   ApplicationHealthStatus,
   Instance,
-  InstanceHealth,
+  InstanceHealth
 } from '../configuration/model/configuration';
 import { ActuatorClient } from '../actuator/actuatorClient';
 import { configurationService } from '../configuration/configurationService';
@@ -12,7 +12,7 @@ import { BrowserWindow } from 'electron';
 import log from 'electron-log';
 import EventEmitter from 'events';
 import { ApplicationCache, InstanceCache } from './models/cache';
-import { ActuatorCache, ActuatorCacheManager, ActuatorCacheResponse } from '../actuator/model/caches';
+import { systemEvents } from '../events';
 
 class InstanceService {
   private readonly instanceHealthCache = new NodeCache();
@@ -22,6 +22,25 @@ class InstanceService {
   private readonly endpointsCache = new NodeCache();
 
   private readonly events: EventEmitter = new EventEmitter();
+
+  constructor() {
+    const invalidateInstanceAndApplication = (instance: Instance) => {
+      this.invalidateInstance(instance);
+      this.invalidateApplication(instance.parentApplicationId);
+    };
+
+    systemEvents.on('instance-updated', (instance) => this.invalidateApplication(instance.parentApplicationId));
+    systemEvents.on('instance-created', invalidateInstanceAndApplication);
+    systemEvents.on('instance-deleted', invalidateInstanceAndApplication);
+    systemEvents.on('instance-moved', (instance, oldApplicationId, newParentApplicationId) => {
+      this.invalidateApplication(oldApplicationId);
+      this.invalidateApplication(newParentApplicationId);
+    });
+
+    systemEvents.on('application-updated', (application) => this.invalidateApplication(application.id));
+    systemEvents.on('application-created', (application) => this.invalidateApplication(application.id));
+    systemEvents.on('application-deleted', (application) => this.invalidateApplication(application.id));
+  }
 
   initializeListeners(window: BrowserWindow) {
     log.info(`Initializing listeners for window ${window.id}`);
@@ -125,7 +144,7 @@ class InstanceService {
 
   async evictAllApplicationCaches(applicationId: string): Promise<void> {
     const instances = configurationService.getApplicationInstances(applicationId);
-    await Promise.all(instances.map((instance) => this.evictAllInstanceCaches(instance.id).catch(() => null))); 
+    await Promise.all(instances.map((instance) => this.evictAllInstanceCaches(instance.id).catch(() => null)));
   }
 
   getCachedInstanceHealth(instance: Instance): InstanceHealth {

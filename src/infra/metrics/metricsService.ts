@@ -1,11 +1,6 @@
-import { Instance } from '../configuration/model/configuration';
-import { ActuatorClient } from '../actuator/actuatorClient';
-import log from 'electron-log';
-import { ApplicationMetricValue } from '../entity/ApplicationMetricValue';
 import { dataSource } from '../dataSource';
-import { ApplicationMetric } from '../entity/ApplicationMetric';
-import { Between } from 'typeorm';
 import { configurationService } from '../configuration/configurationService';
+import { actuatorClientStore } from '../actuator/actuatorClientStore';
 
 export type ApplicationMetricDTO = {
   name: string;
@@ -19,117 +14,23 @@ export type ApplicationMetricValueDTO = {
   timestamp: Date;
 };
 
-export type MetricSubscription = {
-  metricName: string;
-  instanceId: string;
-};
-
 class MetricsService {
-  async getMetrics(instanceId: string, metricName: string, from: Date, to: Date): Promise<ApplicationMetricDTO | undefined> {
-    const valueRepository = dataSource.getRepository(ApplicationMetricValue);
-    const applicationMetricValues = await valueRepository.findBy({
-      instanceId,
-      timestamp: Between(from, to),
-      applicationMetric: {
-        name: metricName,
-      },
-    });
-
-    if (applicationMetricValues.length === 0) {
-      return undefined;
-    }
-
-    return {
-      name: metricName,
-      description: applicationMetricValues[0].applicationMetric.description,
-      unit: applicationMetricValues[0].applicationMetric.unit,
-      values: applicationMetricValues.map((value) => ({
-        value: value.value,
-        timestamp: value.timestamp,
-      })),
-    };
-  }
-
   async getLatestMetric(instanceId: string, metricName: string): Promise<ApplicationMetricDTO | undefined> {
-    const valueRepository = dataSource.getRepository(ApplicationMetricValue);
-    const applicationMetricValue = await valueRepository.findOne({
-      where: {
-        instanceId,
-        applicationMetric: {
-          name: metricName,
-        },
-      },
-      order: {
-        timestamp: 'DESC',
-      },
-    });
-
-    if (!applicationMetricValue) {
-      return undefined;
-    }
-
+    const instance = configurationService.getInstanceOrThrow(instanceId);
+    const [metric, measurement] = /(.*)\[(.*)\]/.exec(metricName)!.slice(1);
+    const actuatorClient = actuatorClientStore.getActuatorClient(instance.id);
+    const response = await actuatorClient.metric(metric, {});
     return {
-      name: metricName,
-      description: applicationMetricValue.applicationMetric.description,
-      unit: applicationMetricValue.applicationMetric.unit,
+      name: response.name,
+      description: response.description,
+      unit: response.baseUnit,
       values: [
         {
-          value: applicationMetricValue.value,
-          timestamp: applicationMetricValue.timestamp,
+          value: response.measurements.find((m) => m.statistic === measurement)?.value ?? -1,
+          timestamp: new Date(),
         },
       ],
     };
-  }
-
-  async getAndSaveMetrics(instance: Instance) {
-    log.info(`Querying metrics for instance ${instance.id}`);
-    const client = new ActuatorClient(instance.actuatorUrl);
-    const { names } = await client.metrics();
-    log.debug(`Metrics for instance ${instance.id} retrieved`);
-    await Promise.all(
-      names.map(async (name) => {
-        const metricResponse = await client.metric(name, {});
-        log.debug(`Metric ${metricResponse.name} for instance ${instance.id} retrieved`);
-
-        await Promise.all(
-          metricResponse.measurements.map(async (measurement) => {
-            const applicationMetric = await this.getOrCreateApplicationMetric(
-              instance.parentApplicationId,
-              `${metricResponse.name}[${measurement.statistic}]`,
-              metricResponse.description,
-              metricResponse.baseUnit
-            );
-            const applicationMetricValue = new ApplicationMetricValue();
-            applicationMetricValue.applicationMetric = applicationMetric;
-            applicationMetricValue.instanceId = instance.id;
-            applicationMetricValue.value = measurement.value;
-            applicationMetricValue.timestamp = new Date();
-            return dataSource.getRepository(ApplicationMetricValue).save(applicationMetricValue);
-          })
-        );
-      })
-    );
-    configurationService.updateInstanceLastDataCollectionTime(instance.id);
-    log.info(
-      `Metrics for instance ${instance.id} saved, next collection in ${instance.dataCollectionIntervalSeconds} seconds`
-    );
-  }
-
-  async getOrCreateApplicationMetric(applicationId: string, name: string, description?: string, unit?: string) {
-    const repository = dataSource.getRepository(ApplicationMetric);
-    const applicationMetric = await repository.findOneBy({
-      applicationId,
-      name: name,
-    });
-    if (applicationMetric) {
-      return applicationMetric;
-    }
-    const newApplicationMetric = new ApplicationMetric();
-    newApplicationMetric.name = name;
-    newApplicationMetric.description = description;
-    newApplicationMetric.unit = unit;
-    newApplicationMetric.applicationId = applicationId;
-    return repository.save(newApplicationMetric);
   }
 }
 

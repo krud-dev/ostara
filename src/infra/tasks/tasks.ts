@@ -5,22 +5,6 @@ import { metricsService } from '../metrics/metricsService';
 import { instanceService } from '../instance/instanceService';
 
 taskService.declareTask({
-  name: 'queryInstanceMetrics',
-  alias: 'Query Instance Metrics',
-  description: 'Query the actuator API for instance metrics',
-  defaultCron: '* * * * * *',
-  function: async () => {
-    const instances = configurationService.getInstancesForDataCollection();
-    await Promise.all(
-      instances.map(async (instance) => {
-        log.info(`Querying metrics for instance ${instance.id}`);
-        await metricsService.getAndSaveMetrics(instance);
-      })
-    );
-  },
-});
-
-taskService.declareTask({
   name: 'queryInstanceHealth',
   alias: 'Query Instance Health',
   description: 'Query the actuator API for instance health',

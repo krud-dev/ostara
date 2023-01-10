@@ -18,6 +18,7 @@ import {
 import { configurationStore } from './configurationStore';
 import { instanceService } from '../instance/instanceService';
 import { instanceMetadataStore } from './instanceMetadataStore';
+import { systemEvents } from '../events';
 
 class ConfigurationService {
   /**
@@ -160,7 +161,7 @@ class ConfigurationService {
       throw new Error(`Item with id ${id} is not an application`);
     }
     configurationStore.set(`items.${id}`, application);
-    instanceService.invalidateApplication(target.id);
+    systemEvents.emit('application-updated', <EnrichedApplication>this.getItem(id));
     return <EnrichedApplication>this.getItem(id);
   }
 
@@ -171,25 +172,31 @@ class ConfigurationService {
     }
     const instances = this.getApplicationInstances(id);
     instances.forEach((instance) => this.deleteInstance(instance.id));
-    instanceService.invalidateApplication(target.id);
     configurationStore.delete(`items.${id}` as any);
+    systemEvents.emit('application-deleted', target);
   }
 
-  moveApplication(id: string, parentFolderId: string | undefined, newOrder: number): EnrichedApplication {
+  moveApplication(id: string, newParentFolderId: string | undefined, newOrder: number): EnrichedApplication {
     const target = this.getItemOrThrow(id);
     if (!isApplication(target)) {
       throw new Error(`Item with id ${id} is not an application`);
     }
-    if (parentFolderId) {
-      const newParentFolder = this.getItemOrThrow(parentFolderId);
+    if (newParentFolderId) {
+      const newParentFolder = this.getItemOrThrow(newParentFolderId);
       if (!isFolder(newParentFolder)) {
-        throw new Error(`Item with id ${parentFolderId} is not a folder`);
+        throw new Error(`Item with id ${newParentFolderId} is not a folder`);
       }
-      configurationStore.set(`items.${id}.parentFolderId`, parentFolderId);
+      configurationStore.set(`items.${id}.parentFolderId`, newParentFolderId);
     } else {
       configurationStore.delete(`items.${id}.parentFolderId` as any);
     }
     configurationStore.set(`items.${id}.order`, newOrder);
+    systemEvents.emit(
+      'application-moved',
+      <EnrichedApplication>this.getItem(id),
+      target.parentFolderId,
+      newParentFolderId
+    );
     return <EnrichedApplication>this.getItem(id);
   }
 
@@ -217,36 +224,6 @@ class ConfigurationService {
     return target;
   }
 
-  getInstancesForDataCollection(): EnrichedInstance[] {
-    const currentTime = Date.now();
-    return this.getInstances()
-      .filter((instance) => {
-        const { dataCollectionMode } = instance;
-        switch (dataCollectionMode) {
-          case 'inherited': {
-            const application = this.getItem(instance.parentApplicationId);
-            if (application == null || !isApplication(application)) {
-              return false;
-            }
-            return application.dataCollectionMode === 'on';
-          }
-          case 'on': {
-            return true;
-          }
-          default:
-            return false;
-        }
-      })
-      .filter((instance) => {
-        const { lastDataCollectionTime } = this.getInstanceMetadata(instance);
-        if (lastDataCollectionTime == null) {
-          return true;
-        }
-        const { dataCollectionIntervalSeconds } = instance;
-        return currentTime - lastDataCollectionTime > (dataCollectionIntervalSeconds ?? 60) * 1000;
-      });
-  }
-
   createInstance(instance: Omit<Instance, 'id' | 'type'>): EnrichedInstance {
     const id = this.generateId();
     const newInstance: Instance = {
@@ -255,7 +232,7 @@ class ConfigurationService {
       id,
     };
     configurationStore.set(`items.${id}`, newInstance);
-    instanceService.invalidateApplication(instance.parentApplicationId);
+    systemEvents.emit('instance-created', newInstance);
     return <EnrichedInstance>this.getItem(id);
   }
 
@@ -265,9 +242,8 @@ class ConfigurationService {
       throw new Error(`Item with id ${id} is not an instance`);
     }
     configurationStore.set(`items.${id}`, instance);
-    instanceService.invalidateInstance(target);
-    instanceService.invalidateApplication(target.parentApplicationId);
-    return <EnrichedInstance>this.getItem(id);
+    systemEvents.emit('instance-updated', this.getInstanceOrThrow(id));
+    return this.getInstanceOrThrow(id);
   }
 
   deleteInstance(id: string): void {
@@ -275,8 +251,7 @@ class ConfigurationService {
     if (!isInstance(target)) {
       throw new Error(`Item with id ${id} is not an instance`);
     }
-    instanceService.invalidateInstance(target);
-    instanceService.invalidateApplication(target.parentApplicationId);
+    systemEvents.emit('instance-deleted', target);
     configurationStore.delete(`items.${id}` as any);
   }
 
@@ -292,8 +267,12 @@ class ConfigurationService {
     }
     configurationStore.set(`items.${id}.parentApplicationId`, newParentApplicationId);
     configurationStore.set(`items.${id}.order`, newOrder);
-    instanceService.invalidateApplication(target.parentApplicationId);
-    instanceService.invalidateApplication(newParentApplicationId);
+    systemEvents.emit(
+      'instance-moved',
+      this.getInstanceOrThrow(id),
+      target.parentApplicationId,
+      newParentApplicationId
+    );
     return <EnrichedInstance>this.getItem(id);
   }
 
