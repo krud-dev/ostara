@@ -7,12 +7,7 @@ import { ActuatorMetricResponse, ActuatorMetricsResponse } from './model/metrics
 import { ActuatorEnvPropertyResponse, ActuatorEnvResponse } from './model/env';
 import { ActuatorLoggerResponse, ActuatorLoggersResponse, ActuatorLogLevel } from './model/loggers';
 import { ActuatorThreadDumpResponse } from './model/threadDump';
-import {
-  ActuatorEndpoint,
-  ActuatorEndpointsResponse,
-  ActuatorMainResponse,
-  ActuatorTestConnectionResponse,
-} from './model/base';
+import { ActuatorMainResponse, ActuatorTestConnectionResponse } from './model/base';
 import { ActuatorBeansResponse } from './model/beans';
 
 export class ActuatorClient {

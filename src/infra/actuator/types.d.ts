@@ -5,33 +5,34 @@ import { ActuatorMetricResponse, ActuatorMetricsResponse } from './model/metrics
 import { ActuatorEnvPropertyResponse, ActuatorEnvResponse } from './model/env';
 import { ActuatorThreadDumpResponse } from './model/threadDump';
 import { ActuatorLoggerResponse, ActuatorLoggersResponse } from './model/loggers';
-import { ActuatorEndpointsResponse, ActuatorTestConnectionResponse } from './model/base';
+import { ActuatorTestConnectionResponse } from './model/base';
 import { ActuatorBeansResponse } from './model/beans';
 
 declare global {
   type ActuatorBridge = {
-    testConnection: (url: string) => Promise<ActuatorTestConnectionResponse>;
-    endpoints: (url: string) => Promise<string[] | undefined>;
-    health: (url: string) => Promise<ActuatorHealthResponse>;
-    healthComponent: <T>(url: string, name: string) => Promise<ActuatorHealthComponentResponse<T>>;
-    info: (url: string) => Promise<ActuatorInfoResponse>;
-    caches: (url: string) => Promise<ActuatorCachesResponse>;
-    cache: (url: string, name: string) => Promise<ActuatorCacheResponse>;
-    evictAllCaches: (url: string) => Promise<void>;
-    evictCache: (url: string, name: string) => Promise<void>;
-    beans: (url: string) => Promise<ActuatorBeansResponse>;
-    logfile: (url: string) => Promise<string>;
-    logfileRange: (url: string, start: number, end: number) => Promise<string>;
-    metrics: (url: string) => Promise<ActuatorMetricsResponse>;
-    metric: (url: string, name: string, tags: { [key: string]: string }) => Promise<ActuatorMetricResponse>;
-    shutdown: (url: string) => Promise<void>;
-    env: (url: string) => Promise<ActuatorEnvResponse>;
-    envProperty: (url: string, name: string) => Promise<ActuatorEnvPropertyResponse>;
-    threadDump: (url: string) => Promise<ActuatorThreadDumpResponse>;
-    loggers: (url: string) => Promise<ActuatorLoggersResponse>;
-    logger: (url: string, name: string) => Promise<ActuatorLoggerResponse>;
-    updateLogger: (url: string, name: string, level: string) => Promise<void>;
-    clearLogger: (url: string, name: string) => Promise<void>;
+    testConnectionByUrl: (url: string) => Promise<ActuatorTestConnectionResponse>;
+    testConnection: (instanceId: string) => Promise<ActuatorTestConnectionResponse>;
+    endpoints: (instanceId: string) => Promise<string[] | undefined>;
+    health: (instanceId: string) => Promise<ActuatorHealthResponse>;
+    healthComponent: <T>(instanceId: string, name: string) => Promise<ActuatorHealthComponentResponse<T>>;
+    info: (instanceId: string) => Promise<ActuatorInfoResponse>;
+    caches: (instanceId: string) => Promise<ActuatorCachesResponse>;
+    cache: (instanceId: string, name: string) => Promise<ActuatorCacheResponse>;
+    evictAllCaches: (instanceId: string) => Promise<void>;
+    evictCache: (instanceId: string, name: string) => Promise<void>;
+    beans: (instanceId: string) => Promise<ActuatorBeansResponse>;
+    logfile: (instanceId: string) => Promise<string>;
+    logfileRange: (instanceId: string, start: number, end: number) => Promise<string>;
+    metrics: (instanceId: string) => Promise<ActuatorMetricsResponse>;
+    metric: (instanceId: string, name: string, tags: { [key: string]: string }) => Promise<ActuatorMetricResponse>;
+    shutdown: (instanceId: string) => Promise<void>;
+    env: (instanceId: string) => Promise<ActuatorEnvResponse>;
+    envProperty: (instanceId: string, name: string) => Promise<ActuatorEnvPropertyResponse>;
+    threadDump: (instanceId: string) => Promise<ActuatorThreadDumpResponse>;
+    loggers: (instanceId: string) => Promise<ActuatorLoggersResponse>;
+    logger: (instanceId: string, name: string) => Promise<ActuatorLoggerResponse>;
+    updateLogger: (instanceId: string, name: string, level: string) => Promise<void>;
+    clearLogger: (instanceId: string, name: string) => Promise<void>;
   };
   interface Window {
     actuator: ActuatorBridge;

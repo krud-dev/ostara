@@ -8,7 +8,7 @@ type Variables = { actuatorUrl: string };
 type Data = ActuatorTestConnectionResponse;
 
 export const testActuatorUrlConnection = async (variables: Variables): Promise<Data> => {
-  return await window.actuator.testConnection(variables.actuatorUrl);
+  return await window.actuator.testConnectionByUrl(variables.actuatorUrl);
 };
 
 export const useTestActuatorUrlConnection = (
