@@ -21,7 +21,11 @@ ipcMain.handle('metricsService:subscribeToMetric', async (event, instanceId, met
       .catch((error) => console.error(error));
   };
   metricSubscriptions[channelName] = true;
-  callback();
+  try {
+    callback();
+  } catch (error) {
+    // Instance may be unhealthy, just skip to allow the subscription to be created
+  }
   const timer = setInterval(() => {
     if (metricSubscriptions[channelName]) {
       callback();
