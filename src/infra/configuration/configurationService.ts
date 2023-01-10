@@ -3,7 +3,6 @@ import {
   Application,
   BaseItem,
   Configuration,
-  DataCollectionMode,
   EnrichedApplication,
   EnrichedFolder,
   EnrichedInstance,
@@ -29,7 +28,6 @@ class ConfigurationService {
   }
 
   getItems(): EnrichedItem[] {
-    const x = configurationStore;
     return Object.values(configurationStore.get('items')).map((item) => this.enrichItem(item));
   }
 
@@ -283,20 +281,10 @@ class ConfigurationService {
   getInstanceMetadata(instance: Instance): InstanceMetadata {
     let metadata = instanceMetadataStore.get(instance.id);
     if (!metadata) {
-      metadata = {
-        lastDataCollectionTime: undefined,
-      };
+      metadata = {};
       instanceMetadataStore.set(instance.id, metadata);
     }
     return metadata;
-  }
-
-  updateInstanceLastDataCollectionTime(id: string) {
-    const target = this.getItemOrThrow(id);
-    if (!isInstance(target)) {
-      throw new Error(`Item with ID ${id} is not an instance`);
-    }
-    instanceMetadataStore.set(`${id}.lastDataCollectionTime`, Date.now());
   }
 
   private enrichItem(item: BaseItem): EnrichedItem {
@@ -314,16 +302,13 @@ class ConfigurationService {
 
   private enrichInstance(instance: Instance): EnrichedInstance {
     const effectiveColor = this.getInstanceEffectiveColor(instance);
-    const effectiveDataCollectionMode = this.getInstanceEffectiveDataCollectionMode(instance);
     const health = instanceService.getCachedInstanceHealth(instance);
     const endpoints = instanceService.getCachedInstanceEndpoints(instance);
     return {
       ...instance,
       effectiveColor,
-      effectiveDataCollectionMode,
       health,
       endpoints,
-      lastDataCollectionTime: this.getInstanceMetadata(instance).lastDataCollectionTime,
     };
   }
 
@@ -365,12 +350,6 @@ class ConfigurationService {
       return folder.color;
     }
     return folder.color ?? this.getFolderEffectiveColor(<EnrichedFolder>this.getItemOrThrow(folder.parentFolderId));
-  }
-
-  private getInstanceEffectiveDataCollectionMode(instance: Instance): DataCollectionMode {
-    return instance.dataCollectionMode !== 'inherited'
-      ? instance.dataCollectionMode
-      : (<Application>this.getItemOrThrow(instance.parentApplicationId)).dataCollectionMode;
   }
 
   private generateId(): string {
