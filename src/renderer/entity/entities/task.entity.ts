@@ -34,6 +34,7 @@ export const taskEntity: Entity<TaskDefinitionDisplay> = {
     },
   ],
   massActions: [],
+  globalActions: [],
   defaultOrder: {
     id: 'alias',
     direction: 'asc',

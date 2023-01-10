@@ -12,6 +12,7 @@ import TasksPage from 'renderer/pages/navigator/settings/tasks';
 import ApplicationLayout from 'renderer/layout/application/ApplicationLayout';
 import ApplicationDashboard from 'renderer/pages/navigator/application/dashboard';
 import InstanceEnvironment from 'renderer/pages/navigator/instance/environment';
+import InstanceCaches from 'renderer/pages/navigator/instance/caches';
 
 export default function Router() {
   return useRoutes([
@@ -88,7 +89,7 @@ export default function Router() {
             },
             {
               path: urls.instanceCaches.path,
-              element: <InstanceDashboard />,
+              element: <InstanceCaches />,
             },
             {
               path: urls.instanceThreadDump.path,

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { ReactNode, useCallback } from 'react';
 import { Box, Card, Table, TableBody, TableContainer, TablePagination, useMediaQuery } from '@mui/material';
 import PerfectScrollbar from 'react-perfect-scrollbar';
 import TableToolbar from 'renderer/components/table/TableToolbar';
@@ -10,14 +10,16 @@ import TableHeadCustom from 'renderer/components/table/TableHeadCustom';
 import TableNoData from 'renderer/components/table/TableNoData';
 import { ROWS_PER_PAGE_OPTIONS } from 'renderer/constants/ui';
 import TableSkeleton from 'renderer/components/table/TableSkeleton';
-import { TableContext, TableProvider } from 'renderer/components/table/TableContext';
+import { DisplayItem, TableContext, TableProvider } from 'renderer/components/table/TableContext';
 import { useTheme } from '@mui/material/styles';
+import TableRowGroup from 'renderer/components/table/TableRowGroup';
 
 type TableComponentProps<EntityItem> = {
   entity: Entity<EntityItem>;
   queryState: BaseUseQueryResult<EntityItem[]>;
   actionsHandler: (actionId: string, row: EntityItem) => Promise<void>;
   massActionsHandler: (actionId: string, selectedRows: EntityItem[]) => Promise<void>;
+  globalActionsHandler: (actionId: string) => Promise<void>;
 };
 
 export default function TableComponent<EntityItem>({
@@ -25,9 +27,21 @@ export default function TableComponent<EntityItem>({
   queryState,
   actionsHandler,
   massActionsHandler,
+  globalActionsHandler,
 }: TableComponentProps<EntityItem>) {
   const theme = useTheme();
   const showRowPerPageLabel = useMediaQuery(theme.breakpoints.up('md'));
+
+  const renderRow = useCallback((item: DisplayItem<EntityItem>): ReactNode => {
+    switch (item.type) {
+      case 'Row':
+        return <TableRowCustom row={item.row} key={entity.getId(item.row)} />;
+      case 'Group':
+        return <TableRowGroup title={item.title} collapsed={item.collapsed} key={item.title} />;
+      default:
+        return <></>;
+    }
+  }, []);
 
   return (
     <TableProvider
@@ -35,11 +49,12 @@ export default function TableComponent<EntityItem>({
       queryState={queryState}
       actionsHandler={actionsHandler}
       massActionsHandler={massActionsHandler}
+      globalActionsHandler={globalActionsHandler}
     >
       <TableContext.Consumer>
         {({
           rows,
-          visibleRows,
+          displayRows,
           loading,
           empty,
           page,
@@ -69,9 +84,7 @@ export default function TableComponent<EntityItem>({
                   <TableBody>
                     {loading && <TableSkeleton />}
                     {empty && <TableNoData />}
-                    {visibleRows.map((row) => (
-                      <TableRowCustom row={row} key={entity.getId(row)} />
-                    ))}
+                    {displayRows.map((displayRow) => renderRow(displayRow))}
                   </TableBody>
                 </Table>
               </TableContainer>

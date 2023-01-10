@@ -5,7 +5,7 @@ import { Box, Button, DialogActions, DialogContent, TextField } from '@mui/mater
 import { useModal } from '@ebay/nice-modal-react';
 import { LoadingButton } from '@mui/lab';
 import { useSnackbar } from 'notistack';
-import { useTestActuatorUrlConnection } from 'renderer/apis/actuator/instance/testActuatorUrlConnection';
+import { useTestConnectionByUrl } from 'renderer/apis/actuator/testConnectionByUrl';
 import { getErrorMessage } from 'renderer/utils/errorUtils';
 import InputAdornment from '@mui/material/InputAdornment';
 import ItemIconFormField from 'renderer/components/item/dialogs/forms/fields/ItemIconFormField';
@@ -43,7 +43,7 @@ const InstanceDetailsForm: FunctionComponent<InstanceDetailsFormProps> = ({
     onCancel();
   }, [modal]);
 
-  const testConnectionState = useTestActuatorUrlConnection();
+  const testConnectionState = useTestConnectionByUrl();
   const actuatorUrl = watch('actuatorUrl');
 
   const testConnectionHandler = useCallback(async (): Promise<void> => {

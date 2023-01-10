@@ -69,6 +69,8 @@ export default {
   general: 'General',
   tasks: 'Tasks',
   actions: 'Actions',
+  evict: 'Evict',
+  evictAll: 'Evict All',
   daysShort: 'd',
   hoursShort: 'h',
   minutesShort: 'm',
@@ -79,4 +81,6 @@ export default {
   noData: 'No data',
   dataCollectionIntervalSeconds: 'Data Collection Interval (Seconds)',
   taskStartedSuccessfully: 'Task "{name}" started successfully',
+  evictedCacheSuccessfully: 'Evicted Cache "{names}" successfully',
+  evictedAllCachesSuccessfully: 'Evicted all caches successfully',
 };

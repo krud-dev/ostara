@@ -7,21 +7,21 @@ type Variables = { actuatorUrl: string };
 
 type Data = ActuatorTestConnectionResponse;
 
-export const testActuatorUrlConnection = async (variables: Variables): Promise<Data> => {
+export const testConnectionByUrl = async (variables: Variables): Promise<Data> => {
   return await window.actuator.testConnectionByUrl(variables.actuatorUrl);
 };
 
-export const useTestActuatorUrlConnection = (
+export const useTestConnectionByUrl = (
   options?: BaseMutationOptions<Data, Variables>
-): BaseUseMutationResult<Data, Variables> => useBaseMutation<Data, Variables>(testActuatorUrlConnection, options);
+): BaseUseMutationResult<Data, Variables> => useBaseMutation<Data, Variables>(testConnectionByUrl, options);
 
-export const useTestActuatorUrlConnectionQuery = (
+export const useTestConnectionByUrlQuery = (
   variables: Variables,
   options?: BaseQueryOptions<Data, Variables>
 ): BaseUseQueryResult<Data> =>
   useBaseQuery<Data, Variables>(
     actuatorKeys.testConnection(variables.actuatorUrl),
-    testActuatorUrlConnection,
+    testConnectionByUrl,
     variables,
     options
   );

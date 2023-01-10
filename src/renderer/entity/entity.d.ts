@@ -4,12 +4,14 @@ export type Entity<EntityItem> = {
   columns: EntityColumn[];
   actions: EntityAction[];
   massActions: EntityAction[];
+  globalActions: EntityAction[];
   defaultOrder: {
     id: string;
     direction: 'asc' | 'desc';
   };
   paging: boolean;
   getId: (item: EntityItem) => string;
+  getGrouping?: (item: EntityItem) => string;
   filterData: (data: EntityItem[], filter: string) => EntityItem[];
 };
 

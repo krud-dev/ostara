@@ -28,7 +28,7 @@ declare global {
   };
 
   interface Window {
-    instanceService: InstanceServiceBridge;
+    instance: InstanceServiceBridge;
   }
 }
 

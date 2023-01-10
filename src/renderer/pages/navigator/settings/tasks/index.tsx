@@ -38,16 +38,17 @@ const TasksPage: FunctionComponent = () => {
     []
   );
 
+  const globalActionsHandler = useCallback(async (actionId: string): Promise<void> => {}, []);
+
   return (
     <Page>
-      <Container disableGutters>
-        <TableComponent
-          entity={entity}
-          queryState={queryState}
-          actionsHandler={actionsHandler}
-          massActionsHandler={massActionsHandler}
-        />
-      </Container>
+      <TableComponent
+        entity={entity}
+        queryState={queryState}
+        actionsHandler={actionsHandler}
+        massActionsHandler={massActionsHandler}
+        globalActionsHandler={globalActionsHandler}
+      />
     </Page>
   );
 };

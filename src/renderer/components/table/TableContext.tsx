@@ -1,16 +1,21 @@
 import React, { PropsWithChildren, useCallback, useContext, useMemo, useState } from 'react';
 import { Entity } from 'renderer/entity/entity';
-import { isEmpty, orderBy } from 'lodash';
+import { chain, isEmpty, orderBy } from 'lodash';
 import useConfigurationStoreState from 'renderer/hooks/useConfigurationStoreState';
 import { DEFAULT_ROWS_PER_PAGE } from 'renderer/constants/ui';
 import { notEmpty } from 'renderer/utils/objectUtils';
 import { BaseUseQueryResult } from 'renderer/apis/base/useBaseQuery';
 import { useUpdateEffect } from 'react-use';
 
+export type DisplayItem<EntityItem> =
+  | { type: 'Row'; row: EntityItem }
+  | { type: 'Group'; title: string; collapsed: boolean };
+
 export type TableContextProps<EntityItem> = {
   entity: Entity<EntityItem>;
   rows: EntityItem[];
   visibleRows: EntityItem[];
+  displayRows: DisplayItem<EntityItem>[];
   selectedRows: EntityItem[];
   hasSelectedRows: boolean;
   selectRowHandler: (row: EntityItem) => void;
@@ -18,6 +23,7 @@ export type TableContextProps<EntityItem> = {
   selectAllIndeterminate: boolean;
   selectAllChecked: boolean;
   selectAllRowsHandler: (selectAll: boolean) => void;
+  toggleGroupHandler: (title: string) => void;
   loading: boolean;
   empty: boolean;
   page: number;
@@ -33,8 +39,10 @@ export type TableContextProps<EntityItem> = {
   changeDenseHandler: (newDense: boolean) => void;
   hasActions: boolean;
   hasMassActions: boolean;
+  hasGlobalActions: boolean;
   actionsHandler: (actionId: string, row: EntityItem) => Promise<void>;
   massActionsHandler: (actionId: string, selectedRows: EntityItem[]) => Promise<void>;
+  globalActionsHandler: (actionId: string) => Promise<void>;
 };
 
 const TableContext = React.createContext<TableContextProps<any>>(undefined!);
@@ -44,6 +52,7 @@ interface TableProviderProps<EntityItem> extends PropsWithChildren<any> {
   queryState: BaseUseQueryResult<EntityItem[]>;
   actionsHandler: (actionId: string, row: EntityItem) => Promise<void>;
   massActionsHandler: (actionId: string, selectedRows: EntityItem[]) => Promise<void>;
+  globalActionsHandler: (actionId: string) => Promise<void>;
 }
 
 function TableProvider<EntityItem>({
@@ -51,6 +60,7 @@ function TableProvider<EntityItem>({
   queryState,
   actionsHandler,
   massActionsHandler,
+  globalActionsHandler,
   children,
 }: TableProviderProps<EntityItem>) {
   const [filter, setFilter] = useState<string>('');
@@ -60,6 +70,7 @@ function TableProvider<EntityItem>({
   const [rowsPerPage, setRowsPerPage] = useConfigurationStoreState('tableRowsPerPage', DEFAULT_ROWS_PER_PAGE);
   const [selected, setSelected] = useState<string[]>([]);
   const [dense, setDense] = useConfigurationStoreState('tableDense', true);
+  const [collapsedGroups, setCollapsedGroups] = useState<string[]>([]);
 
   useUpdateEffect(() => {
     setSelected([]);
@@ -80,6 +91,21 @@ function TableProvider<EntityItem>({
       entity.paging ? filteredTableData.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage) : filteredTableData,
     [entity, filteredTableData, page, rowsPerPage]
   );
+  const displayTableData = useMemo<DisplayItem<EntityItem>[]>(() => {
+    if (!entity.getGrouping) {
+      return visibleTableData.map<DisplayItem<EntityItem>>((row) => ({ type: 'Row', row }));
+    }
+    const groups = chain(visibleTableData).groupBy(entity.getGrouping).value();
+    const groupsKeys = Object.keys(groups).sort();
+    return groupsKeys.flatMap((groupKey) => {
+      const groupRows = groups[groupKey];
+      const collapsed = collapsedGroups.includes(groupKey);
+      return [
+        { type: 'Group', title: groupKey, collapsed },
+        ...(!collapsed ? groupRows.map<DisplayItem<EntityItem>>((row) => ({ type: 'Row', row })) : []),
+      ];
+    });
+  }, [visibleTableData, collapsedGroups]);
 
   const loading = useMemo<boolean>(() => queryState.isLoading, [queryState.isLoading]);
   const empty = useMemo<boolean>(() => !filteredTableData.length && !!filter, [filteredTableData, filter]);
@@ -100,6 +126,7 @@ function TableProvider<EntityItem>({
 
   const hasActions = useMemo<boolean>(() => !isEmpty(entity.actions), [entity]);
   const hasMassActions = useMemo<boolean>(() => !isEmpty(entity.massActions), [entity]);
+  const hasGlobalActions = useMemo<boolean>(() => !isEmpty(entity.globalActions), [entity]);
 
   const changeFilterHandler = useCallback(
     (newFilter: string): void => {
@@ -159,6 +186,18 @@ function TableProvider<EntityItem>({
 
   const isRowSelected = useCallback((row: EntityItem): boolean => selected.includes(entity.getId(row)), [selected]);
 
+  const toggleGroupHandler = useCallback(
+    (groupTitle: string): void => {
+      setCollapsedGroups((currentCollapsedGroups) => {
+        if (currentCollapsedGroups.includes(groupTitle)) {
+          return currentCollapsedGroups.filter((title) => title !== groupTitle);
+        }
+        return [...currentCollapsedGroups, groupTitle];
+      });
+    },
+    [setCollapsedGroups]
+  );
+
   const changePageHandler = useCallback(
     (newPage: number): void => {
       setPage(newPage);
@@ -187,6 +226,7 @@ function TableProvider<EntityItem>({
         entity,
         rows: filteredTableData,
         visibleRows: visibleTableData,
+        displayRows: displayTableData,
         selectedRows,
         hasSelectedRows,
         selectRowHandler,
@@ -194,6 +234,7 @@ function TableProvider<EntityItem>({
         selectAllIndeterminate,
         selectAllChecked,
         selectAllRowsHandler,
+        toggleGroupHandler,
         loading,
         empty,
         page,
@@ -209,8 +250,10 @@ function TableProvider<EntityItem>({
         changeDenseHandler,
         hasActions,
         hasMassActions,
+        hasGlobalActions,
         actionsHandler,
         massActionsHandler,
+        globalActionsHandler,
       }}
     >
       {children}
