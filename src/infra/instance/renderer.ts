@@ -9,4 +9,12 @@ export const instanceServiceBridge: InstanceServiceBridge = {
     ipcRenderer.invoke('instanceService:evictInstanceCache', instanceId, cacheName),
   evictAllInstanceCaches: (instanceId: string) =>
     ipcRenderer.invoke('instanceService:evictAllInstanceCaches', instanceId),
+  getApplicationCaches: (applicationId: string) =>
+    ipcRenderer.invoke('instanceService:getApplicationCaches', applicationId),
+  getApplicationCache: (applicationId: string, cacheName: string) =>
+    ipcRenderer.invoke('instanceService:getApplicationCache', applicationId, cacheName),
+  evictApplicationCaches: (applicationId: string, cacheNames: string[]) =>
+    ipcRenderer.invoke('instanceService:evictApplicationCaches', applicationId, cacheNames),
+  evictAllApplicationCaches: (applicationId: string) =>
+    ipcRenderer.invoke('instanceService:evictAllApplicationCaches', applicationId),
 };

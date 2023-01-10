@@ -27,6 +27,8 @@ module.exports = {
     'import/prefer-default-export': 'off',
     'no-underscore-dangle': 'off',
     'import/no-cycle': 'off',
+    'no-restricted-syntax': 'off',
+    'no-multi-assign': 'off',
   },
   parserOptions: {
     ecmaVersion: 2020,

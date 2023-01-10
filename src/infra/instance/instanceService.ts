@@ -11,7 +11,7 @@ import { configurationService } from '../configuration/configurationService';
 import { BrowserWindow } from 'electron';
 import log from 'electron-log';
 import EventEmitter from 'events';
-import { InstanceCache } from './models/cache';
+import { ApplicationCache, InstanceCache } from './models/cache';
 import { ActuatorCache, ActuatorCacheManager, ActuatorCacheResponse } from '../actuator/model/caches';
 
 class InstanceService {
@@ -55,7 +55,7 @@ class InstanceService {
     return result;
   }
 
-  async getInstanceCache(instanceId: string, cacheName: string): Promise<ActuatorCache> {
+  async getInstanceCache(instanceId: string, cacheName: string): Promise<InstanceCache> {
     const instance = configurationService.getInstanceOrThrow(instanceId);
     const client = new ActuatorClient(instance.actuatorUrl);
     const response = await client.cache(cacheName);
@@ -72,6 +72,60 @@ class InstanceService {
     const instance = configurationService.getInstanceOrThrow(instanceId);
     const client = new ActuatorClient(instance.actuatorUrl);
     await client.evictAllCaches();
+  }
+
+  async getApplicationCaches(applicationId: string): Promise<ApplicationCache[]> {
+    const instances = configurationService.getApplicationInstances(applicationId);
+    const instanceCachesPromises = instances.map(async (instance) => ({
+      instanceId: instance.id,
+      instanceCaches: await this.getInstanceCaches(instance.id),
+    }));
+
+    const instancesCaches = await Promise.all(instanceCachesPromises);
+    const result: { [key: string]: ApplicationCache } = {};
+
+    for (const { instanceId, instanceCaches } of instancesCaches) {
+      for (const instanceCache of instanceCaches) {
+        const applicationCache = (result[instanceCache.name] = result[instanceCache.name] ?? {
+          name: instanceCache.name,
+          cacheManagers: {},
+          instanceCaches: {},
+        });
+        applicationCache.instanceCaches[instanceId] = instanceCache;
+      }
+    }
+    return Object.values(result);
+  }
+
+  async getApplicationCache(applicationId: string, cacheName: string): Promise<ApplicationCache> {
+    const instances = configurationService.getApplicationInstances(applicationId);
+    const instancesCachePromises = instances.map(async (instance) => ({
+      instanceId: instance.id,
+      instanceCache: await this.getInstanceCache(instance.id, cacheName),
+    }));
+
+    const instancesCaches = await Promise.all(instancesCachePromises);
+    const result: ApplicationCache = {
+      name: cacheName,
+      instanceCaches: {},
+    };
+
+    for (const { instanceId, instanceCache } of instancesCaches) {
+      result.instanceCaches[instanceId] = instanceCache;
+    }
+    return result;
+  }
+
+  async evictApplicationCaches(applicationId: string, cacheNames: string[]): Promise<void> {
+    const instances = configurationService.getApplicationInstances(applicationId);
+    await Promise.all(
+      instances.map((instance) => cacheNames.flatMap((cacheName) => this.evictInstanceCache(instance.id, cacheName)))
+    );
+  }
+
+  async evictAllApplicationCaches(applicationId: string): Promise<void> {
+    const instances = configurationService.getApplicationInstances(applicationId);
+    await Promise.all(instances.map((instance) => this.evictAllInstanceCaches(instance.id)));
   }
 
   getCachedInstanceHealth(instance: Instance): InstanceHealth {

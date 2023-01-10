@@ -20,3 +20,19 @@ ipcMain.handle('instanceService:evictInstanceCache', async (event, instanceId, c
 ipcMain.handle('instanceService:evictAllInstanceCaches', async (event, instanceId) => {
   return instanceService.evictAllInstanceCaches(instanceId);
 });
+
+ipcMain.handle('instanceService:getApplicationCaches', async (event, applicationId) => {
+  return instanceService.getApplicationCaches(applicationId);
+});
+
+ipcMain.handle('instanceService:getApplicationCache', async (event, applicationId, cacheName) => {
+  return instanceService.getApplicationCache(applicationId, cacheName);
+});
+
+ipcMain.handle('instanceService:evictApplicationCaches', async (event, applicationId, cacheNames) => {
+  return instanceService.evictApplicationCaches(applicationId, cacheNames);
+});
+
+ipcMain.handle('instanceService:evictAllApplicationCaches', async (event, applicationId) => {
+  return instanceService.evictAllApplicationCaches(applicationId);
+});

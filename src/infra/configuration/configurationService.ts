@@ -135,6 +135,14 @@ class ConfigurationService {
    * Application operations
    */
 
+  getApplicationOrThrow(id: string): EnrichedApplication {
+    const target = this.getItemOrThrow(id);
+    if (!isApplication(target)) {
+      throw new Error(`Item with id ${id} is not an application`);
+    }
+    return target;
+  }
+
   createApplication(application: Omit<Application, 'id' | 'type'>): EnrichedApplication {
     const id = this.generateId();
     const newApplication: Application = {
