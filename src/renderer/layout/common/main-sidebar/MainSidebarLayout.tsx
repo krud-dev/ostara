@@ -1,10 +1,10 @@
 import { experimentalStyled as styled, useTheme } from '@mui/material/styles';
 import MainNavbar from 'renderer/layout/common/main-sidebar/MainNavbar';
 import { Allotment, LayoutPriority } from 'allotment';
-import { ComponentType, useMemo } from 'react';
+import { ComponentType, useEffect, useMemo, useRef } from 'react';
 import { NAVBAR_HEIGHT, SIDEBAR_DEFAULT_WIDTH } from 'renderer/constants/ui';
 import PerfectScrollbar from 'react-perfect-scrollbar';
-import { Outlet } from 'react-router-dom';
+import { Outlet, useLocation } from 'react-router-dom';
 import useConfigurationStoreState from 'renderer/hooks/useConfigurationStoreState';
 
 const RootStyle = styled('div')({
@@ -23,6 +23,15 @@ type MainSidebarLayoutProps = {
 
 export default function MainSidebarLayout({ Sidebar }: MainSidebarLayoutProps) {
   const theme = useTheme();
+  const { pathname } = useLocation();
+
+  const scrollContainerRef = useRef<HTMLElement>();
+
+  useEffect(() => {
+    if (scrollContainerRef.current) {
+      scrollContainerRef.current.scrollTop = 0;
+    }
+  }, [pathname]);
 
   const [sidebarWidth, setSidebarWidth] = useConfigurationStoreState<number>('sidebarWidth', SIDEBAR_DEFAULT_WIDTH);
 
@@ -44,7 +53,12 @@ export default function MainSidebarLayout({ Sidebar }: MainSidebarLayoutProps) {
               }),
             }}
           >
-            <PerfectScrollbar options={{ wheelPropagation: false }}>
+            <PerfectScrollbar
+              containerRef={(el) => {
+                scrollContainerRef.current = el;
+              }}
+              options={{ wheelPropagation: false }}
+            >
               <Outlet />
             </PerfectScrollbar>
           </MainStyle>
