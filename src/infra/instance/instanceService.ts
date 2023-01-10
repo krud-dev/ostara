@@ -169,12 +169,28 @@ class InstanceService {
     let instanceHealth: InstanceHealth;
     const oldHealth = this.instanceHealthCache.get<InstanceHealth>(instance.id);
     try {
-      const { status } = await client.health();
-      instanceHealth = {
-        status,
-        lastUpdateTime: Date.now(),
-        lastStatusChangeTime: oldHealth?.status !== status ? Date.now() : oldHealth?.lastStatusChangeTime,
-      };
+      const { success, validActuator, statusText } = await client.testConnection();
+      if (!success) {
+        instanceHealth = {
+          status: 'UNREACHABLE',
+          statusText,
+          lastUpdateTime: Date.now(),
+          lastStatusChangeTime: oldHealth?.status !== 'UNREACHABLE' ? Date.now() : oldHealth?.lastStatusChangeTime,
+        };
+      } else if (!validActuator) {
+        instanceHealth = {
+          status: 'INVALID',
+          lastUpdateTime: Date.now(),
+          lastStatusChangeTime: oldHealth?.status !== 'INVALID' ? Date.now() : oldHealth?.lastStatusChangeTime,
+        };
+      } else {
+        const { status } = await client.health();
+        instanceHealth = {
+          status,
+          lastUpdateTime: Date.now(),
+          lastStatusChangeTime: oldHealth?.status !== status ? Date.now() : oldHealth?.lastStatusChangeTime,
+        };
+      }
     } catch (e: unknown) {
       let message;
       if (e instanceof Error) {
@@ -249,6 +265,7 @@ class InstanceService {
         (instance) =>
           instance.health.status === 'DOWN' ||
           instance.health.status === 'UNREACHABLE' ||
+          instance.health.status === 'INVALID' ||
           instance.health.status === 'OUT_OF_SERVICE'
       )
     ) {

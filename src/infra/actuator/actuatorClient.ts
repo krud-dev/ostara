@@ -34,19 +34,22 @@ export class ActuatorClient {
         return {
           statusCode: response.status,
           statusText: response.statusText,
+          validActuator: true,
           success: true,
         };
       }
       return {
         statusCode: response.status,
         statusText: 'Did not receive expected response from an actuator endpoint',
-        success: false,
+        validActuator: false,
+        success: true,
       };
     } catch (e: unknown) {
       if (axios.isAxiosError(e)) {
         return {
           statusCode: e.response?.status ?? 0,
           statusText: e.response?.statusText ?? '',
+          validActuator: false,
           success: false,
         };
       }
@@ -54,6 +57,7 @@ export class ActuatorClient {
       return {
         statusCode: 0,
         statusText: 'Unknown error',
+        validActuator: false,
         success: false,
       };
     }

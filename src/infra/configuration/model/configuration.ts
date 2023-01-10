@@ -6,7 +6,7 @@ export type EnrichedItem = EnrichedInstance | EnrichedApplication | EnrichedFold
 
 export type ItemType = 'instance' | 'application' | 'folder';
 
-export type InstanceHealthStatus = 'UP' | 'DOWN' | 'UNKNOWN' | 'OUT_OF_SERVICE' | 'UNREACHABLE' | 'PENDING';
+export type InstanceHealthStatus = 'UP' | 'DOWN' | 'UNKNOWN' | 'OUT_OF_SERVICE' | 'UNREACHABLE' | 'PENDING' | 'INVALID';
 
 export type ApplicationHealthStatus = 'ALL_UP' | 'ALL_DOWN' | 'SOME_DOWN' | 'UNKNOWN' | 'PENDING';
 

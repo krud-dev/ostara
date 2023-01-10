@@ -14,5 +14,6 @@ export type ActuatorEndpointsResponse = {
 export type ActuatorTestConnectionResponse = {
   statusCode: number;
   statusText?: string;
+  validActuator: boolean;
   success: boolean;
 };
