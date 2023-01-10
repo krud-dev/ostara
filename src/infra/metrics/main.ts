@@ -7,7 +7,7 @@ ipcMain.handle('metricsService:getLatestMetric', async (event, instanceId, metri
   return metrics;
 });
 
-const metricSubscriptions: { [key: string]: boolean } = {};
+const metricSubscriptions: { [key: string]: NodeJS.Timer } = {};
 
 ipcMain.handle('metricsService:subscribeToMetric', async (event, instanceId, metricName, channelName) => {
   if (metricSubscriptions[channelName]) {
@@ -20,24 +20,17 @@ ipcMain.handle('metricsService:subscribeToMetric', async (event, instanceId, met
       .then((metric) => event.sender.send(channelName, metric))
       .catch((error) => console.error(error));
   };
-  metricSubscriptions[channelName] = true;
   try {
     callback();
   } catch (error) {
     // Instance may be unhealthy, just skip to allow the subscription to be created
   }
-  const timer = setInterval(() => {
-    if (metricSubscriptions[channelName]) {
-      callback();
-    } else {
-      clearInterval(timer);
-    }
-  }, instance.dataCollectionIntervalSeconds * 1000);
+  metricSubscriptions[channelName] = setInterval(callback, (instance.dataCollectionIntervalSeconds ?? 60) * 1000);
 });
 
 ipcMain.handle('metricsService:unsubscribeFromMetric', async (event, channelName) => {
-  if (!metricSubscriptions[channelName]) {
-    throw new Error(`Channel name not in use: ${channelName}`);
+  if (metricSubscriptions[channelName]) {
+    clearInterval(metricSubscriptions[channelName]);
+    delete metricSubscriptions[channelName];
   }
-  delete metricSubscriptions[channelName];
 });
