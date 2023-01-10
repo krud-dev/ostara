@@ -21,7 +21,7 @@ class MetricsService {
     const actuatorClient = actuatorClientStore.getActuatorClient(instance.id);
     const response = await actuatorClient.metric(metric, {});
     return {
-      name: response.name,
+      name: metricName,
       description: response.description,
       unit: response.baseUnit,
       values: [
