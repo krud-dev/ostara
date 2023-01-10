@@ -16,15 +16,12 @@ export default function TableRowGroup<EntityItem>({ title, collapsed }: TableRow
 
   return (
     <TableRow>
-      <TableCell colSpan={999} sx={{ px: COMPONENTS_SPACING - 1.25 }}>
-        <IconButton
-          onClick={() => toggleGroupHandler(title)}
-          sx={{
-            mr: 1,
-          }}
-        >
+      <TableCell sx={{ pl: COMPONENTS_SPACING - 1.25, pr: 0 }}>
+        <IconButton onClick={() => toggleGroupHandler(title)}>
           <ToggleIcon fontSize="small" />
-        </IconButton>{' '}
+        </IconButton>
+      </TableCell>
+      <TableCell colSpan={999}>
         <Typography variant={'subtitle2'} component={'span'}>
           {title}
         </Typography>
