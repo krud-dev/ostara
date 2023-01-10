@@ -20,3 +20,7 @@ export type ActuatorLoggersResponse = {
 };
 
 export type ActuatorLoggerResponse = ActuatorLogger | ActuatorLoggerGroup;
+
+export function isActuatorLoggerGroup(logger: ActuatorLoggerResponse): logger is ActuatorLoggerGroup {
+  return 'members' in logger;
+}

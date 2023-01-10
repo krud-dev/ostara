@@ -4,7 +4,7 @@ import {
   ApplicationHealth,
   ApplicationHealthStatus,
   Instance,
-  InstanceHealth
+  InstanceHealth,
 } from '../configuration/model/configuration';
 import { ActuatorClient } from '../actuator/actuatorClient';
 import { configurationService } from '../configuration/configurationService';
@@ -13,6 +13,9 @@ import log from 'electron-log';
 import EventEmitter from 'events';
 import { ApplicationCache, InstanceCache } from './models/cache';
 import { systemEvents } from '../events';
+import { ApplicationLogger, InstanceLogger } from './models/logger';
+import { actuatorClientStore } from '../actuator/actuatorClientStore';
+import { ActuatorLogLevel, isActuatorLoggerGroup } from '../actuator/model/loggers';
 
 class InstanceService {
   private readonly instanceHealthCache = new NodeCache();
@@ -55,14 +58,102 @@ class InstanceService {
     });
   }
 
-  async getInstanceCaches(instanceId: string): Promise<InstanceCache[]> {
+  /**
+   * Loggers
+   */
+  async getInstanceLoggers(instanceId: string): Promise<InstanceLogger[]> {
     const instance = configurationService.getInstanceOrThrow(instanceId);
-    const client = new ActuatorClient(instance.actuatorUrl);
+    const client = actuatorClientStore.getActuatorClient(instance.id);
+    const { loggers } = await client.loggers();
+    return Object.entries(loggers).map(([name, logger]) => ({
+      name,
+      ...logger,
+    }));
+  }
+
+  async getInstanceLogger(instanceId: string, loggerName: string): Promise<InstanceLogger> {
+    const client = actuatorClientStore.getActuatorClient(instanceId);
+    const logger = await client.logger(loggerName);
+    if (isActuatorLoggerGroup(logger)) {
+      throw new Error('Logger is a group');
+    } else {
+      return {
+        name: loggerName,
+        configuredLevel: logger.configuredLevel,
+        effectiveLevel: logger.effectiveLevel,
+      };
+    }
+  }
+
+  async setInstanceLoggerLevel(
+    instanceId: string,
+    loggerName: string,
+    level: ActuatorLogLevel | undefined
+  ): Promise<void> {
+    const client = actuatorClientStore.getActuatorClient(instanceId);
+    await client.updateLogger(loggerName, level);
+  }
+
+  async getApplicationLoggers(applicationId: string): Promise<ApplicationLogger[]> {
+    const instances = configurationService.getApplicationInstances(applicationId);
+    const instanceLoggersPromise = instances.map(async (instance) => ({
+      instanceId: instance.id,
+      instanceLoggers: await this.getInstanceLoggers(instance.id).catch(() => []),
+    }));
+
+    const instancesLoggers = await Promise.all(instanceLoggersPromise);
+    const result: { [key: string]: ApplicationLogger } = {};
+
+    for (const { instanceId, instanceLoggers } of instancesLoggers) {
+      for (const instanceLogger of instanceLoggers) {
+        const applicationLogger: ApplicationLogger = (result[instanceLogger.name] = result[instanceLogger.name] ?? {
+          name: instanceLogger.name,
+          instanceLoggers: {},
+        });
+        applicationLogger.instanceLoggers[instanceId] = instanceLogger;
+      }
+    }
+    return Object.values(result);
+  }
+
+  async getApplicationLogger(applicationId: string, loggerName: string): Promise<ApplicationLogger> {
+    const instances = configurationService.getApplicationInstances(applicationId);
+    const instancesLoggerPromises = instances.map(async (instance) => ({
+      instanceId: instance.id,
+      instanceLogger: await this.getInstanceLogger(instance.id, loggerName).catch(() => null),
+    }));
+
+    const instancesLogger = await Promise.all(instancesLoggerPromises);
+    const result: ApplicationLogger = {
+      name: loggerName,
+      instanceLoggers: {},
+    };
+
+    for (const { instanceId, instanceLogger } of instancesLogger) {
+      if (instanceLogger) {
+        result.instanceLoggers[instanceId] = instanceLogger;
+      }
+    }
+    return result;
+  }
+
+  async setApplicationLoggerLevel(
+    applicationId: string,
+    loggerName: string,
+    level: ActuatorLogLevel | undefined
+  ): Promise<void> {
+    const instances = configurationService.getApplicationInstances(applicationId);
+    const instancesLoggerPromises = instances.map(async (instance) => {
+      await this.setInstanceLoggerLevel(instance.id, loggerName, level).catch(() => null);
+    });
+    await Promise.all(instancesLoggerPromises);
+  }
+
+  async getInstanceCaches(instanceId: string): Promise<InstanceCache[]> {
+    const client = actuatorClientStore.getActuatorClient(instanceId);
     const response = await client.caches();
     const result: InstanceCache[] = [];
-    // eslint-disable-next-line no-restricted-syntax
     for (const [cacheManagerName, { caches }] of Object.entries(response.cacheManagers)) {
-      // eslint-disable-next-line no-restricted-syntax
       for (const [cacheName, cache] of Object.entries(caches)) {
         result.push({
           name: cacheName,
@@ -75,21 +166,18 @@ class InstanceService {
   }
 
   async getInstanceCache(instanceId: string, cacheName: string): Promise<InstanceCache> {
-    const instance = configurationService.getInstanceOrThrow(instanceId);
-    const client = new ActuatorClient(instance.actuatorUrl);
+    const client = actuatorClientStore.getActuatorClient(instanceId);
     const response = await client.cache(cacheName);
     return response;
   }
 
   async evictInstanceCaches(instanceId: string, cacheNames: string[]): Promise<void> {
-    const instance = configurationService.getInstanceOrThrow(instanceId);
-    const client = new ActuatorClient(instance.actuatorUrl);
+    const client = actuatorClientStore.getActuatorClient(instanceId);
     await Promise.all(cacheNames.map((cacheName) => client.evictCache(cacheName)));
   }
 
   async evictAllInstanceCaches(instanceId: string): Promise<void> {
-    const instance = configurationService.getInstanceOrThrow(instanceId);
-    const client = new ActuatorClient(instance.actuatorUrl);
+    const client = actuatorClientStore.getActuatorClient(instanceId);
     await client.evictAllCaches();
   }
 
@@ -171,22 +259,13 @@ class InstanceService {
     return this.endpointsCache.get<string[]>(instance.id) ?? [];
   }
 
-  invalidateInstance(instance: Instance): void {
-    this.fetchInstanceHealth(instance);
-    this.fetchInstanceEndpoints(instance);
-  }
-
-  invalidateApplication(applicationId: string): void {
-    this.computeAndSaveApplicationHealth(applicationId);
-  }
-
   fetchInstanceHealthById(instanceId: string): Promise<InstanceHealth> {
     const instance = configurationService.getInstanceOrThrow(instanceId);
     return this.fetchInstanceHealth(instance);
   }
 
   async fetchInstanceHealth(instance: Instance): Promise<InstanceHealth> {
-    const client = new ActuatorClient(instance.actuatorUrl);
+    const client = actuatorClientStore.getActuatorClient(instance.id);
     let instanceHealth: InstanceHealth;
     const oldHealth = this.instanceHealthCache.get<InstanceHealth>(instance.id);
     try {
@@ -235,7 +314,7 @@ class InstanceService {
   }
 
   async fetchInstanceEndpoints(instance: Instance): Promise<string[]> {
-    const client = new ActuatorClient(instance.actuatorUrl);
+    const client = actuatorClientStore.getActuatorClient(instance.id);
     try {
       const endpoints = await client.endpoints();
       const oldEndpoints = this.endpointsCache.get<string[]>(instance.id);
@@ -265,6 +344,15 @@ class InstanceService {
     if (oldHealth?.status !== this.getApplicationHealthStatus(applicationId)) {
       this.events.emit('app:applicationHealthUpdated', applicationId);
     }
+  }
+
+  private invalidateInstance(instance: Instance): void {
+    this.fetchInstanceHealth(instance);
+    this.fetchInstanceEndpoints(instance);
+  }
+
+  private invalidateApplication(applicationId: string): void {
+    this.computeAndSaveApplicationHealth(applicationId);
   }
 
   private getApplicationHealthStatus(applicationId: string): ApplicationHealthStatus {

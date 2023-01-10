@@ -215,7 +215,7 @@ export class ActuatorClient {
     return response.data;
   }
 
-  async updateLogger(loggerOrGroupName: string, level: ActuatorLogLevel): Promise<void> {
+  async updateLogger(loggerOrGroupName: string, level: ActuatorLogLevel | undefined): Promise<void> {
     await this.axios.post(`loggers/${loggerOrGroupName}`, {
       configuredLevel: level,
     });
