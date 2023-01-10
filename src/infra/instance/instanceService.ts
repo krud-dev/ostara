@@ -78,7 +78,7 @@ class InstanceService {
     const instances = configurationService.getApplicationInstances(applicationId);
     const instanceCachesPromises = instances.map(async (instance) => ({
       instanceId: instance.id,
-      instanceCaches: await this.getInstanceCaches(instance.id),
+      instanceCaches: await this.getInstanceCaches(instance.id).catch(() => []),
     }));
 
     const instancesCaches = await Promise.all(instanceCachesPromises);
@@ -101,7 +101,7 @@ class InstanceService {
     const instances = configurationService.getApplicationInstances(applicationId);
     const instancesCachePromises = instances.map(async (instance) => ({
       instanceId: instance.id,
-      instanceCache: await this.getInstanceCache(instance.id, cacheName),
+      instanceCache: await this.getInstanceCache(instance.id, cacheName).catch(() => null),
     }));
 
     const instancesCaches = await Promise.all(instancesCachePromises);
@@ -111,19 +111,21 @@ class InstanceService {
     };
 
     for (const { instanceId, instanceCache } of instancesCaches) {
-      result.instanceCaches[instanceId] = instanceCache;
+      if (instanceCache) {
+        result.instanceCaches[instanceId] = instanceCache;
+      }
     }
     return result;
   }
 
   async evictApplicationCaches(applicationId: string, cacheNames: string[]): Promise<void> {
     const instances = configurationService.getApplicationInstances(applicationId);
-    await Promise.all(instances.map((instance) => this.evictInstanceCaches(instance.id, cacheNames)));
+    await Promise.all(instances.map((instance) => this.evictInstanceCaches(instance.id, cacheNames).catch(() => null)));
   }
 
   async evictAllApplicationCaches(applicationId: string): Promise<void> {
     const instances = configurationService.getApplicationInstances(applicationId);
-    await Promise.all(instances.map((instance) => this.evictAllInstanceCaches(instance.id)));
+    await Promise.all(instances.map((instance) => this.evictAllInstanceCaches(instance.id).catch(() => null))); 
   }
 
   getCachedInstanceHealth(instance: Instance): InstanceHealth {
