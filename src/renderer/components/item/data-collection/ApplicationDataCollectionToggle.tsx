@@ -1,10 +1,5 @@
 import React, { useCallback } from 'react';
-import {
-  DataCollectionMode,
-  EnrichedApplication,
-  EnrichedInstance,
-  InstanceDataCollectionMode,
-} from 'infra/configuration/model/configuration';
+import { DataCollectionMode, EnrichedApplication } from 'infra/configuration/model/configuration';
 import { useUpdateItem } from 'renderer/apis/configuration/item/updateItem';
 import DataCollectionToggle from 'renderer/components/item/data-collection/DataCollectionToggle';
 
@@ -14,10 +9,10 @@ export default function ApplicationDataCollectionToggle({ item }: ApplicationDat
   const updateState = useUpdateItem();
 
   const toggleHandler = useCallback(async (): Promise<void> => {
-    const newDataCollectionMode = getNewDataCollectionMode(item.dataCollectionMode);
-    try {
-      await updateState.mutateAsync({ item: { ...item, dataCollectionMode: newDataCollectionMode } });
-    } catch (e) {}
+    // const newDataCollectionMode = getNewDataCollectionMode(item.dataCollectionMode);
+    // try {
+    //   await updateState.mutateAsync({ item: { ...item, dataCollectionMode: newDataCollectionMode } });
+    // } catch (e) {}
   }, [item]);
 
   const getNewDataCollectionMode = useCallback((dataCollectionMode: DataCollectionMode): DataCollectionMode => {
@@ -33,8 +28,10 @@ export default function ApplicationDataCollectionToggle({ item }: ApplicationDat
 
   return (
     <DataCollectionToggle
-      dataCollectionMode={item.dataCollectionMode}
-      effectiveDataCollectionMode={item.dataCollectionMode}
+      // dataCollectionMode={item.dataCollectionMode}
+      dataCollectionMode={'on'}
+      // effectiveDataCollectionMode={item.dataCollectionMode}
+      effectiveDataCollectionMode={'on'}
       onToggle={toggleHandler}
     />
   );

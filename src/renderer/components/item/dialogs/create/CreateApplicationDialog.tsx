@@ -24,7 +24,7 @@ const CreateApplicationDialog: FunctionComponent<CreateApplicationDialogProps & 
     const submitHandler = useCallback(
       async (data: ApplicationFormValues): Promise<void> => {
         const itemToCreate: Omit<Application, 'id' | 'type'> = {
-          dataCollectionMode: 'on',
+          // dataCollectionMode: 'on',
           alias: data.alias,
           applicationType: 'SpringBoot',
           parentFolderId: parentFolderId,

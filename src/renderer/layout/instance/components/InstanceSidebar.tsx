@@ -121,8 +121,8 @@ export default function InstanceSidebar({ item, width }: InstanceSidebarProps) {
   return (
     <Box sx={{ width: width, height: '100%', display: 'flex', flexDirection: 'column' }}>
       <Sidebar sidebarConfig={navConfig} header={<ItemHeader item={item} />} sx={{ flexGrow: 1 }} />
-      <Divider />
-      <InstanceDataCollectionToggle item={item} />
+      {/*<Divider />*/}
+      {/*<InstanceDataCollectionToggle item={item} />*/}
     </Box>
   );
 }

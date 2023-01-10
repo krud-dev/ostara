@@ -4,7 +4,6 @@ import { Dialog } from '@mui/material';
 import NiceModal, { NiceModalHocProps, useModal } from '@ebay/nice-modal-react';
 import DialogTitleEnhanced from 'renderer/components/dialog/DialogTitleEnhanced';
 import { EnrichedFolder, Folder } from 'infra/configuration/model/configuration';
-import ApplicationDetailsForm from 'renderer/components/item/dialogs/forms/ApplicationDetailsForm';
 import { useUpdateFolder } from 'renderer/apis/configuration/folder/updateFolder';
 import FolderDetailsForm, { FolderFormValues } from 'renderer/components/item/dialogs/forms/FolderDetailsForm';
 

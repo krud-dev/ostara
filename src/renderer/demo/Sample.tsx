@@ -5,7 +5,7 @@ import DashboardPlayground from '../DashboardPlayground';
 
 const Sample = () => {
   return (
-    <Box sx={{ p: 4 }}>
+    <Box>
       <ActuatorPlayground url="https://sbclient.krud.dev/actuator" />
       <hr />
       <Config />

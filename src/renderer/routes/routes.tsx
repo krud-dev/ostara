@@ -11,6 +11,7 @@ import SettingsLayout from 'renderer/layout/settings/SettingsLayout';
 import TasksPage from 'renderer/pages/navigator/settings/tasks';
 import ApplicationLayout from 'renderer/layout/application/ApplicationLayout';
 import ApplicationDashboard from 'renderer/pages/navigator/application/dashboard';
+import InstanceEnvironment from 'renderer/pages/navigator/instance/environment';
 
 export default function Router() {
   return useRoutes([
@@ -67,7 +68,7 @@ export default function Router() {
             },
             {
               path: urls.instanceEnvironment.path,
-              element: <InstanceDashboard />,
+              element: <InstanceEnvironment />,
             },
             {
               path: urls.instanceBeans.path,

@@ -5,9 +5,6 @@ import { Box, Button, DialogActions, DialogContent, TextField } from '@mui/mater
 import { useModal } from '@ebay/nice-modal-react';
 import { LoadingButton } from '@mui/lab';
 import InputAdornment from '@mui/material/InputAdornment';
-import IconButton from '@mui/material/IconButton';
-import { IconViewer } from 'renderer/components/icon/IconViewer';
-import { ApplicationFormValues } from 'renderer/components/item/dialogs/forms/ApplicationDetailsForm';
 import ItemIconFormField from 'renderer/components/item/dialogs/forms/fields/ItemIconFormField';
 
 export type FolderDetailsFormProps = {

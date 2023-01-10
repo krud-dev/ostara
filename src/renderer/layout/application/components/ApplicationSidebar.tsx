@@ -52,8 +52,8 @@ export default function ApplicationSidebar({ item, width }: ApplicationSidebarPr
   return (
     <Box sx={{ width: width, height: '100%', display: 'flex', flexDirection: 'column' }}>
       <Sidebar sidebarConfig={navConfig} header={<ItemHeader item={item} />} sx={{ flexGrow: 1 }} />
-      <Divider />
-      <ApplicationDataCollectionToggle item={item} />
+      {/*<Divider />*/}
+      {/*<ApplicationDataCollectionToggle item={item} />*/}
     </Box>
   );
 }

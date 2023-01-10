@@ -8,11 +8,10 @@ import { Box, CardContent, Stack, Typography } from '@mui/material';
 import HelpIcon from 'renderer/components/help/HelpIcon';
 import MetricValue from 'renderer/components/widget/metric/MetricValue';
 import useWidgetSubscribeToMetrics from 'renderer/components/widget/hooks/useWidgetSubscribeToMetrics';
-import useWidgetLatestMetrics from 'renderer/components/widget/hooks/useWidgetLatestMetrics';
 
 const DataBarDashboardWidget: FunctionComponent<DashboardWidgetCardProps<DataBarWidget>> = ({ widget, item }) => {
   const [data, setData] = useState<{ [key: string]: ApplicationMetricDTO }>({});
-  const [loading, setLoading] = useState<boolean>(true);
+  const loading = useMemo<boolean>(() => Object.keys(data).length < widget.metrics.length, [data]);
   const empty = useMemo<boolean>(() => !loading && Object.keys(data).length < widget.metrics.length, [loading, data]);
 
   const onMetricUpdate = useCallback(
@@ -36,11 +35,7 @@ const DataBarDashboardWidget: FunctionComponent<DashboardWidgetCardProps<DataBar
 
   const metricNames = useMemo<string[]>(() => metrics.map((metric) => metric.name), [metrics]);
 
-  useWidgetLatestMetrics(item.id, metricNames, (metricDtos) => {
-    metricDtos.forEach(onMetricUpdate);
-    setLoading(false);
-  });
-  useWidgetSubscribeToMetrics(item.id, metricNames, onMetricUpdate, { active: !loading });
+  useWidgetSubscribeToMetrics(item.id, metricNames, onMetricUpdate);
 
   return (
     <DashboardGenericCard title={widget.title} loading={loading} empty={empty}>

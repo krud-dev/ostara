@@ -9,10 +9,10 @@ export default function InstanceDataCollectionToggle({ item }: InstanceDataColle
   const updateState = useUpdateItem();
 
   const toggleHandler = useCallback(async (): Promise<void> => {
-    const newDataCollectionMode = getNewDataCollectionMode(item.dataCollectionMode);
-    try {
-      await updateState.mutateAsync({ item: { ...item, dataCollectionMode: newDataCollectionMode } });
-    } catch (e) {}
+    // const newDataCollectionMode = getNewDataCollectionMode(item.dataCollectionMode);
+    // try {
+    //   await updateState.mutateAsync({ item: { ...item, dataCollectionMode: newDataCollectionMode } });
+    // } catch (e) {}
   }, [item]);
 
   const getNewDataCollectionMode = useCallback(
@@ -33,8 +33,10 @@ export default function InstanceDataCollectionToggle({ item }: InstanceDataColle
 
   return (
     <DataCollectionToggle
-      dataCollectionMode={item.dataCollectionMode}
-      effectiveDataCollectionMode={item.effectiveDataCollectionMode}
+      // dataCollectionMode={item.dataCollectionMode}
+      dataCollectionMode={'on'}
+      // effectiveDataCollectionMode={item.effectiveDataCollectionMode}
+      effectiveDataCollectionMode={'on'}
       onToggle={toggleHandler}
     />
   );

@@ -8,7 +8,6 @@ import ReactApexChart from 'react-apexcharts';
 import BaseOptionChart from 'renderer/components/chart/BaseOptionChart';
 import { ApexOptions } from 'apexcharts';
 import { ApplicationMetricDTO } from 'infra/metrics/metricsService';
-import useWidgetLatestMetrics from 'renderer/components/widget/hooks/useWidgetLatestMetrics';
 import useWidgetSubscribeToMetrics from 'renderer/components/widget/hooks/useWidgetSubscribeToMetrics';
 
 const CHART_HEIGHT = 300;
@@ -27,7 +26,7 @@ const ProgressCircleDashboardWidget: FunctionComponent<DashboardWidgetCardProps<
   item,
 }) => {
   const [data, setData] = useState<{ current?: number; max?: number }>({ current: undefined, max: undefined });
-  const [loading, setLoading] = useState<boolean>(true);
+  const loading = useMemo<boolean>(() => data.current === undefined || data.max === undefined, [data]);
   const empty = useMemo<boolean>(
     () => !loading && (data.current === undefined || data.max === undefined),
     [loading, data]
@@ -53,11 +52,7 @@ const ProgressCircleDashboardWidget: FunctionComponent<DashboardWidgetCardProps<
 
   const metricNames = useMemo<string[]>(() => [widget.maxMetricName, widget.currentMetricName], [widget]);
 
-  useWidgetLatestMetrics(item.id, metricNames, (metricDtos) => {
-    metricDtos.forEach(onMetricUpdate);
-    setLoading(false);
-  });
-  useWidgetSubscribeToMetrics(item.id, metricNames, onMetricUpdate, { active: !loading });
+  useWidgetSubscribeToMetrics(item.id, metricNames, onMetricUpdate);
 
   const chartData = useMemo<
     {

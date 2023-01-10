@@ -7,7 +7,6 @@ import { LoadingButton } from '@mui/lab';
 import { useSnackbar } from 'notistack';
 import { useTestActuatorUrlConnection } from 'renderer/apis/actuator/instance/testActuatorUrlConnection';
 import { getErrorMessage } from 'renderer/utils/errorUtils';
-import { FolderFormValues } from 'renderer/components/item/dialogs/forms/FolderDetailsForm';
 import InputAdornment from '@mui/material/InputAdornment';
 import ItemIconFormField from 'renderer/components/item/dialogs/forms/fields/ItemIconFormField';
 
@@ -129,7 +128,7 @@ const InstanceDetailsForm: FunctionComponent<InstanceDetailsFormProps> = ({
               required: intl.formatMessage({ id: 'requiredField' }),
             }}
             control={control}
-            defaultValue={60}
+            defaultValue={5}
             render={({ field: { ref, ...field }, fieldState: { invalid, error } }) => {
               return (
                 <TextField

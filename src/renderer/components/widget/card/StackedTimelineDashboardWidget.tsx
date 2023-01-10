@@ -10,7 +10,6 @@ import { ApexOptions } from 'apexcharts';
 import { chain, every, isEmpty, isNaN, isNil, takeRight } from 'lodash';
 import { useIntl } from 'react-intl';
 import useWidgetSubscribeToMetrics from 'renderer/components/widget/hooks/useWidgetSubscribeToMetrics';
-import useWidgetMetricsHistory from 'renderer/components/widget/hooks/useWidgetMetricsHistory';
 
 const CHART_HEIGHT = 364;
 const MAX_DATA_POINTS = 50;
@@ -38,7 +37,7 @@ const StackedTimelineDashboardWidget: FunctionComponent<DashboardWidgetCardProps
     widget.metrics.map((metric) => ({ name: metric.title, data: [] }))
   );
   const [chartLabels, setChartLabels] = useState<string[]>([]);
-  const [loading, setLoading] = useState<boolean>(true);
+  const loading = useMemo<boolean>(() => isEmpty(chartLabels), [chartLabels]);
   const empty = useMemo<boolean>(() => !loading && isEmpty(chartLabels), [loading, chartLabels]);
 
   const dataPoint = useRef<DataPoint>({ values: [], timestamp: 0 });
@@ -55,40 +54,15 @@ const StackedTimelineDashboardWidget: FunctionComponent<DashboardWidgetCardProps
 
   const metricNames = useMemo<string[]>(() => metrics.map((metric) => metric.name), [metrics]);
 
-  useWidgetMetricsHistory(
-    item.id,
-    metricNames,
-    new Date(Date.now() - MAX_DATA_POINTS * intervalSeconds * 1000),
-    new Date(),
-    (metricDtos) => {
-      chain(metricDtos)
-        .map((metricDto) => metricDto?.values || [])
-        .unzip()
-        .filter((values) => every(values, (value) => !!value))
-        .map((values) => ({ values: values.map((v) => v.value), timestamp: values[0].timestamp.getTime() }))
-        .filter(
-          (historyDataPoint) =>
-            historyDataPoint.values.length === metrics.length && every(historyDataPoint.values, isValidValue)
-        )
-        .value()
-        .forEach(addDataPoint);
-      setLoading(false);
+  useWidgetSubscribeToMetrics(item.id, metricNames, (metricDto) => {
+    const index = metrics.findIndex((metric) => metric.name === metricDto.name);
+    dataPoint.current.values[index] = metricDto.values[0].value;
+    dataPoint.current.timestamp = metricDto.values[0].timestamp.getTime();
+    if (dataPoint.current.values.length === metrics.length && every(dataPoint.current.values, isValidValue)) {
+      addDataPoint(dataPoint.current);
+      dataPoint.current = { values: [], timestamp: 0 };
     }
-  );
-  useWidgetSubscribeToMetrics(
-    item.id,
-    metricNames,
-    (metricDto) => {
-      const index = metrics.findIndex((metric) => metric.name === metricDto.name);
-      dataPoint.current.values[index] = metricDto.values[0].value;
-      dataPoint.current.timestamp = metricDto.values[0].timestamp.getTime();
-      if (dataPoint.current.values.length === metrics.length && every(dataPoint.current.values, isValidValue)) {
-        addDataPoint(dataPoint.current);
-        dataPoint.current = { values: [], timestamp: 0 };
-      }
-    },
-    { active: !loading }
-  );
+  });
 
   const addDataPoint = useCallback((dataPointToAdd: DataPoint): void => {
     if (dataPointToAdd.timestamp - lastDataPointTimestamp.current < intervalSeconds * 1000) {
