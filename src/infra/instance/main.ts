@@ -13,8 +13,8 @@ ipcMain.handle('instanceService:getInstanceCache', async (event, instanceId, cac
   return instanceService.getInstanceCache(instanceId, cacheName);
 });
 
-ipcMain.handle('instanceService:evictInstanceCache', async (event, instanceId, cacheName) => {
-  return instanceService.evictInstanceCache(instanceId, cacheName);
+ipcMain.handle('instanceService:evictInstanceCaches', async (event, instanceId, cacheNames) => {
+  return instanceService.evictInstanceCaches(instanceId, cacheNames);
 });
 
 ipcMain.handle('instanceService:evictAllInstanceCaches', async (event, instanceId) => {

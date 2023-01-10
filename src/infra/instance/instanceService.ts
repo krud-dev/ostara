@@ -62,10 +62,10 @@ class InstanceService {
     return response;
   }
 
-  async evictInstanceCache(instanceId: string, cacheName: string): Promise<void> {
+  async evictInstanceCaches(instanceId: string, cacheNames: string[]): Promise<void> {
     const instance = configurationService.getInstanceOrThrow(instanceId);
     const client = new ActuatorClient(instance.actuatorUrl);
-    await client.evictCache(cacheName);
+    await Promise.all(cacheNames.map((cacheName) => client.evictCache(cacheName)));
   }
 
   async evictAllInstanceCaches(instanceId: string): Promise<void> {
@@ -118,9 +118,7 @@ class InstanceService {
 
   async evictApplicationCaches(applicationId: string, cacheNames: string[]): Promise<void> {
     const instances = configurationService.getApplicationInstances(applicationId);
-    await Promise.all(
-      instances.map((instance) => cacheNames.flatMap((cacheName) => this.evictInstanceCache(instance.id, cacheName)))
-    );
+    await Promise.all(instances.map((instance) => this.evictInstanceCaches(instance.id, cacheNames)));
   }
 
   async evictAllApplicationCaches(applicationId: string): Promise<void> {

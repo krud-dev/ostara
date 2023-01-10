@@ -6,7 +6,7 @@ declare global {
     fetchInstanceHealthById: (instanceId: string) => Promise<InstanceHealth>;
     getInstanceCaches: (instanceId: string) => Promise<InstanceCache[]>;
     getInstanceCache: (instanceId: string, cacheName: string) => Promise<InstanceCache>;
-    evictInstanceCache: (instanceId: string, cacheName: string) => Promise<void>;
+    evictInstanceCaches: (instanceId: string, cacheNames: string[]) => Promise<void>;
     evictAllInstanceCaches: (instanceId: string) => Promise<void>;
 
     getApplicationCaches: (applicationId: string) => Promise<ApplicationCache[]>;
