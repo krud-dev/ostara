@@ -14,6 +14,8 @@ import { showDeleteConfirmationDialog } from 'renderer/utils/dialogUtils';
 import { useMoveItem } from 'renderer/apis/configuration/item/moveItem';
 import NiceModal from '@ebay/nice-modal-react';
 import CreateInstanceDialog from 'renderer/components/item/dialogs/create/CreateInstanceDialog';
+import { useNavigate } from 'react-router-dom';
+import { getItemUrl } from 'renderer/utils/itemUtils';
 
 const TreeStyle = styled(Tree<TreeItem>)(({ theme }) => ({
   '& [role="treeitem"]': {
@@ -28,6 +30,7 @@ type NavigatorTreeProps = {
 
 export default function NavigatorTree({ width, search }: NavigatorTreeProps) {
   const { data, isLoading, isEmpty, hasData, action, getItem } = useNavigatorTree();
+  const navigate = useNavigate();
 
   const treeRef = useRef<TreeApi<TreeItem> | null>(null);
 
@@ -83,8 +86,11 @@ export default function NavigatorTree({ width, search }: NavigatorTreeProps) {
 
   const height = useMemo<number>(() => getOpenItemsCount() * NAVIGATOR_ITEM_HEIGHT + 12, [toggleFlag, data]);
 
-  const createInstanceHandler = useCallback((): void => {
-    NiceModal.show<Instance | undefined>(CreateInstanceDialog, {});
+  const createInstanceHandler = useCallback(async (): Promise<void> => {
+    const instance = await NiceModal.show<Instance | undefined>(CreateInstanceDialog, {});
+    if (instance) {
+      navigate(getItemUrl(instance));
+    }
   }, []);
 
   const onCreate: CreateHandler<TreeItem> = useCallback(({ parentId, index, parentNode, type }) => {

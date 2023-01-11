@@ -61,13 +61,14 @@ export default function NavigatorTreeNode({ style, node, tree, dragHandle, previ
   const { pathname } = useLocation();
 
   useEffect(() => {
-    const itemPath = getItemUrl(node.data);
-    const isActive = matchPath({ path: itemPath, end: false }, pathname) !== null;
-    if (isActive && !isSelected) {
-      node.select();
-      node.openParents();
-    } else if (!isActive && isSelected) {
-      node.deselect();
+    if (
+      !node.isOpen &&
+      node.data.children?.some((child) => {
+        const chilePath = getItemUrl(child);
+        return matchPath({ path: chilePath, end: false }, pathname) !== null;
+      })
+    ) {
+      node.open();
     }
   }, [pathname]);
 
@@ -134,6 +135,14 @@ export default function NavigatorTreeNode({ style, node, tree, dragHandle, previ
     () => node.isFocused && (!isSelected || !node.isOnlySelection),
     [isSelected, node.isFocused, node.isOnlySelection]
   );
+
+  useEffect(() => {
+    if (isSelected) {
+      node.select();
+    } else {
+      node.deselect();
+    }
+  }, [isSelected]);
 
   const focusRootStyle = useMemo<SxProps<Theme>>(
     () => ({
