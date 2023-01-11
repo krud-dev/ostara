@@ -1,6 +1,6 @@
 import { EnrichedInstance, Instance } from 'infra/configuration/model/configuration';
 import { BaseMutationOptions, BaseUseMutationResult, useBaseMutation } from 'renderer/apis/base/useBaseMutation';
-import { configurationKeys } from 'renderer/apis/configuration/configurationKeys';
+import { apiKeys } from 'renderer/apis/apiKeys';
 
 type Variables = {
   id: string;
@@ -18,5 +18,5 @@ export const useUpdateInstance = (
 ): BaseUseMutationResult<Data, Variables> =>
   useBaseMutation<Data, Variables>(updateInstance, {
     ...options,
-    invalidateQueriesKeyFn: (data, variables) => configurationKeys.items(),
+    invalidateQueriesKeyFn: (data, variables) => apiKeys.items(),
   });

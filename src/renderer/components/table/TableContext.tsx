@@ -108,7 +108,7 @@ function TableProvider<EntityItem>({
   }, [visibleTableData, collapsedGroups]);
 
   const loading = useMemo<boolean>(() => queryState.isLoading, [queryState.isLoading]);
-  const empty = useMemo<boolean>(() => !filteredTableData.length && !!filter, [filteredTableData, filter]);
+  const empty = useMemo<boolean>(() => !filteredTableData.length, [filteredTableData]);
 
   const selectedRows = useMemo<EntityItem[]>(
     () => selected.map((id) => filteredTableData.find((row) => entity.getId(row) === id)).filter(notEmpty),

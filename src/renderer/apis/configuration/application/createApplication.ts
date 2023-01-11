@@ -1,6 +1,6 @@
 import { Application, EnrichedApplication } from 'infra/configuration/model/configuration';
 import { BaseMutationOptions, BaseUseMutationResult, useBaseMutation } from 'renderer/apis/base/useBaseMutation';
-import { configurationKeys } from 'renderer/apis/configuration/configurationKeys';
+import { apiKeys } from 'renderer/apis/apiKeys';
 
 type Variables = {
   item: Omit<Application, 'id' | 'type'>;
@@ -17,5 +17,5 @@ export const useCreateApplication = (
 ): BaseUseMutationResult<Data, Variables> =>
   useBaseMutation<Data, Variables>(createApplication, {
     ...options,
-    invalidateQueriesKeyFn: (data, variables) => configurationKeys.items(),
+    invalidateQueriesKeyFn: (data, variables) => apiKeys.items(),
   });

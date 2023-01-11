@@ -1,7 +1,7 @@
 import { BaseQueryOptions, BaseUseQueryResult, useBaseQuery } from '../base/useBaseQuery';
 import { BaseMutationOptions, BaseUseMutationResult, useBaseMutation } from 'renderer/apis/base/useBaseMutation';
 import { ApplicationMetricDTO } from 'infra/metrics/metricsService';
-import { metricsKeys } from 'renderer/apis/metrics/metricsKeys';
+import { apiKeys } from 'renderer/apis/apiKeys';
 
 type Variables = {
   instanceId: string;
@@ -23,7 +23,7 @@ export const useGetLatestMetricQuery = (
   options?: BaseQueryOptions<Data, Variables>
 ): BaseUseQueryResult<Data> =>
   useBaseQuery<Data, Variables>(
-    metricsKeys.latest(variables.instanceId, variables.metricName),
+    apiKeys.metricLatest(variables.instanceId, variables.metricName),
     getLatestMetric,
     variables,
     options

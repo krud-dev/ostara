@@ -1,6 +1,6 @@
 import { BaseMutationOptions, BaseUseMutationResult, useBaseMutation } from 'renderer/apis/base/useBaseMutation';
 import { EnrichedItem } from 'infra/configuration/model/configuration';
-import { configurationKeys } from 'renderer/apis/configuration/configurationKeys';
+import { apiKeys } from 'renderer/apis/apiKeys';
 
 type Variables = {
   id: string;
@@ -30,5 +30,5 @@ export const moveItem = async (variables: Variables): Promise<Data> => {
 export const useMoveItem = (options?: BaseMutationOptions<Data, Variables>): BaseUseMutationResult<Data, Variables> =>
   useBaseMutation<Data, Variables>(moveItem, {
     ...options,
-    invalidateQueriesKeyFn: (data, variables) => configurationKeys.items(),
+    invalidateQueriesKeyFn: (data, variables) => apiKeys.items(),
   });

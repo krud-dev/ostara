@@ -1,7 +1,7 @@
 import { BaseMutationOptions, BaseUseMutationResult, useBaseMutation } from 'renderer/apis/base/useBaseMutation';
 import { BaseQueryOptions, BaseUseQueryResult, useBaseQuery } from 'renderer/apis/base/useBaseQuery';
-import { actuatorKeys } from 'renderer/apis/actuator/actuatorKeys';
 import { ActuatorTestConnectionResponse } from 'infra/actuator/model/base';
+import { apiKeys } from 'renderer/apis/apiKeys';
 
 type Variables = { actuatorUrl: string };
 
@@ -20,7 +20,7 @@ export const useTestConnectionByUrlQuery = (
   options?: BaseQueryOptions<Data, Variables>
 ): BaseUseQueryResult<Data> =>
   useBaseQuery<Data, Variables>(
-    actuatorKeys.testConnection(variables.actuatorUrl),
+    apiKeys.actuatorConnection(variables.actuatorUrl),
     testConnectionByUrl,
     variables,
     options

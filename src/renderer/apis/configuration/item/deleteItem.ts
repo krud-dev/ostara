@@ -1,6 +1,6 @@
 import { isApplication, isFolder, isInstance, Item } from 'infra/configuration/model/configuration';
 import { BaseMutationOptions, BaseUseMutationResult, useBaseMutation } from 'renderer/apis/base/useBaseMutation';
-import { configurationKeys } from 'renderer/apis/configuration/configurationKeys';
+import { apiKeys } from 'renderer/apis/apiKeys';
 
 type Variables = {
   item: Item;
@@ -24,5 +24,5 @@ export const deleteItem = async (variables: Variables): Promise<Data> => {
 export const useDeleteItem = (options?: BaseMutationOptions<Data, Variables>): BaseUseMutationResult<Data, Variables> =>
   useBaseMutation<Data, Variables>(deleteItem, {
     ...options,
-    invalidateQueriesKeyFn: (data, variables) => configurationKeys.items(),
+    invalidateQueriesKeyFn: (data, variables) => apiKeys.items(),
   });

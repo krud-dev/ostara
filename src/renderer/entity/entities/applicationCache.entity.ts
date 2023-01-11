@@ -1,8 +1,9 @@
 import { Entity } from 'renderer/entity/entity';
-import { InstanceCache } from 'infra/instance/models/cache';
+import { ApplicationCache } from 'infra/instance/models/cache';
+import { chain } from 'lodash';
 import { EVICT_CACHE_ID } from 'renderer/entity/actions';
 
-export const instanceCacheEntity: Entity<InstanceCache> = {
+export const applicationCacheEntity: Entity<ApplicationCache> = {
   columns: [
     {
       id: 'name',
@@ -37,6 +38,6 @@ export const instanceCacheEntity: Entity<InstanceCache> = {
   },
   paging: false,
   getId: (item) => item.name,
-  getGrouping: (item) => item.cacheManager,
+  getGrouping: (item) => chain(item.instanceCaches).values().first().value()?.cacheManager || 'N/A',
   filterData: (data, filter) => data.filter((task) => task.name.toLowerCase().includes(filter.toLowerCase())),
 };

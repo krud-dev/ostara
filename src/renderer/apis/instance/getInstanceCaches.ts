@@ -1,7 +1,7 @@
 import { BaseQueryOptions, BaseUseQueryResult, useBaseQuery } from '../base/useBaseQuery';
 import { BaseMutationOptions, BaseUseMutationResult, useBaseMutation } from 'renderer/apis/base/useBaseMutation';
 import { InstanceCache } from 'infra/instance/models/cache';
-import { instanceKeys } from 'renderer/apis/instance/instanceKeys';
+import { apiKeys } from 'renderer/apis/apiKeys';
 
 type Variables = {
   instanceId: string;
@@ -21,4 +21,4 @@ export const useGetInstanceCachesQuery = (
   variables: Variables,
   options?: BaseQueryOptions<Data, Variables>
 ): BaseUseQueryResult<Data> =>
-  useBaseQuery<Data, Variables>(instanceKeys.caches(variables.instanceId), getInstanceCaches, variables, options);
+  useBaseQuery<Data, Variables>(apiKeys.itemCaches(variables.instanceId), getInstanceCaches, variables, options);

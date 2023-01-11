@@ -1,7 +1,7 @@
 import { BaseQueryOptions, BaseUseQueryResult, useBaseQuery } from '../../base/useBaseQuery';
 import { EnrichedItem } from 'infra/configuration/model/configuration';
 import { BaseMutationOptions, BaseUseMutationResult, useBaseMutation } from 'renderer/apis/base/useBaseMutation';
-import { configurationKeys } from 'renderer/apis/configuration/configurationKeys';
+import { apiKeys } from 'renderer/apis/apiKeys';
 
 type Variables = {};
 
@@ -17,4 +17,4 @@ export const useGetItems = (options?: BaseMutationOptions<Data, Variables>): Bas
 export const useGetItemsQuery = (
   variables: Variables,
   options?: BaseQueryOptions<Data, Variables>
-): BaseUseQueryResult<Data> => useBaseQuery<Data, Variables>(configurationKeys.items(), getItems, variables, options);
+): BaseUseQueryResult<Data> => useBaseQuery<Data, Variables>(apiKeys.items(), getItems, variables, options);

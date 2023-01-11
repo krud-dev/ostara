@@ -1,7 +1,7 @@
 import { BaseQueryOptions, BaseUseQueryResult, useBaseQuery } from '../base/useBaseQuery';
 import { BaseMutationOptions, BaseUseMutationResult, useBaseMutation } from 'renderer/apis/base/useBaseMutation';
 import { TaskDefinitionDisplay } from 'infra/tasks/types';
-import { tasksKeys } from 'renderer/apis/tasks/tasksKeys';
+import { apiKeys } from 'renderer/apis/apiKeys';
 
 type Variables = { name: string };
 
@@ -17,5 +17,4 @@ export const useGetTask = (options?: BaseMutationOptions<Data, Variables>): Base
 export const useGetTaskQuery = (
   variables: Variables,
   options?: BaseQueryOptions<Data, Variables>
-): BaseUseQueryResult<Data> =>
-  useBaseQuery<Data, Variables>(tasksKeys.task(variables.name), getTask, variables, options);
+): BaseUseQueryResult<Data> => useBaseQuery<Data, Variables>(apiKeys.task(variables.name), getTask, variables, options);

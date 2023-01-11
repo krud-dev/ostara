@@ -15,8 +15,8 @@ export default function TableToolbar({}: TableToolbarProps) {
       {hasGlobalActions && (
         <Stack direction={'row'} alignItems={'center'}>
           {entity.globalActions.map((action) => (
-            <Box>
-              <Tooltip title={<FormattedMessage id={action.labelId} />} key={action.id}>
+            <Box key={action.id}>
+              <Tooltip title={<FormattedMessage id={action.labelId} />}>
                 <IconButton onClick={() => globalActionsHandler(action.id)}>
                   <IconViewer icon={action.icon} fontSize={'small'} />
                 </IconButton>

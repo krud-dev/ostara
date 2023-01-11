@@ -1,7 +1,6 @@
 import { TaskDefinitionDisplay } from 'infra/tasks/types';
 import { Entity } from 'renderer/entity/entity';
-
-export const RUN_TASK_ID = 'runTask';
+import { RUN_TASK_ID } from 'renderer/entity/actions';
 
 export const taskEntity: Entity<TaskDefinitionDisplay> = {
   columns: [

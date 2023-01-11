@@ -13,6 +13,7 @@ import ApplicationLayout from 'renderer/layout/application/ApplicationLayout';
 import ApplicationDashboard from 'renderer/pages/navigator/application/dashboard';
 import InstanceEnvironment from 'renderer/pages/navigator/instance/environment';
 import InstanceCaches from 'renderer/pages/navigator/instance/caches';
+import ApplicationCaches from 'renderer/pages/navigator/application/caches';
 
 export default function Router() {
   return useRoutes([
@@ -50,7 +51,7 @@ export default function Router() {
             },
             {
               path: urls.applicationCaches.path,
-              element: <ApplicationDashboard />,
+              element: <ApplicationCaches />,
             },
           ],
         },
