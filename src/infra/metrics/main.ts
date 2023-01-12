@@ -1,6 +1,7 @@
 import { ipcMain } from 'electron';
 import { metricsService } from './metricsService';
 import { configurationService } from '../configuration/configurationService';
+import { systemEvents } from '../events';
 
 ipcMain.handle('metricsService:getLatestMetric', async (event, instanceId, metricName) => {
   const metrics = await metricsService.getLatestMetric(instanceId, metricName);
@@ -33,4 +34,13 @@ ipcMain.handle('metricsService:unsubscribeFromMetric', async (event, channelName
     clearInterval(metricSubscriptions[channelName]);
     delete metricSubscriptions[channelName];
   }
+});
+
+systemEvents.on('instance-deleted', (instance) => {
+  Object.keys(metricSubscriptions).forEach((channelName) => {
+    if (channelName.startsWith(instance.id)) {
+      clearInterval(metricSubscriptions[channelName]);
+      delete metricSubscriptions[channelName];
+    }
+  });
 });
