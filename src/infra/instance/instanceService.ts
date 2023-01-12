@@ -332,6 +332,10 @@ class InstanceService {
   }
 
   private computeAndSaveApplicationHealth(applicationId: string) {
+    if (!configurationService.itemExists(applicationId)) {
+      this.applicationHealthCache.del(applicationId);
+      return;
+    }
     const oldHealth = this.applicationHealthCache.get<ApplicationHealth>(applicationId);
     const newStatus = this.getApplicationHealthStatus(applicationId);
     const newHealth: ApplicationHealth = {
@@ -346,11 +350,19 @@ class InstanceService {
   }
 
   private invalidateInstance(instance: Instance): void {
+    if (!configurationService.itemExists(instance.id)) {
+      this.instanceHealthCache.del(instance.id);
+      return;
+    }
     this.fetchInstanceHealth(instance);
     this.fetchInstanceEndpoints(instance);
   }
 
   private invalidateApplication(applicationId: string): void {
+    if (!configurationService.itemExists(applicationId)) {
+      this.applicationHealthCache.del(applicationId);
+      return;
+    }
     this.computeAndSaveApplicationHealth(applicationId);
   }
 

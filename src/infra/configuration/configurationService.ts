@@ -47,9 +47,13 @@ class ConfigurationService {
     return item;
   }
 
+  itemExists(id: string): boolean {
+    return configurationStore.has(`items.${id}`);
+  }
+
   itemExistsOrThrow(id: string): void {
-    if (!configurationStore.has(`items.${id}`)) {
-      throw new Error(`Item with id ${id} not found`);
+    if (!this.itemExists(id)) {
+      throw new Error(`Item with ID ${id} not found`);
     }
   }
 
