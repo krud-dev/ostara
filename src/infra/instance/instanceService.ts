@@ -31,7 +31,7 @@ class InstanceService {
       this.invalidateApplication(instance.parentApplicationId);
     };
 
-    systemEvents.on('instance-updated', (instance) => this.invalidateApplication(instance.parentApplicationId));
+    systemEvents.on('instance-updated', invalidateInstanceAndApplication);
     systemEvents.on('instance-created', invalidateInstanceAndApplication);
     systemEvents.on('instance-deleted', invalidateInstanceAndApplication);
     systemEvents.on('instance-moved', (instance, oldApplicationId, newParentApplicationId) => {
