@@ -24,7 +24,7 @@ const ApplicationCaches: FunctionComponent = () => {
   const itemId = useMemo<string>(() => item?.id || '', [item]);
 
   const entity = useMemo<Entity<ApplicationCache>>(() => applicationCacheEntity, []);
-  const queryState = useGetApplicationCachesQuery({ applicationId: itemId }, { enabled: !!itemId });
+  const queryState = useGetApplicationCachesQuery({ applicationId: itemId });
 
   const evictCachesState = useEvictApplicationCaches();
   const evictAllCachesState = useEvictAllApplicationCaches();

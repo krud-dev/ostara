@@ -1,6 +1,6 @@
 export const apiKeys = {
   items: () => ['items'],
-  item: (id: string) => ['items', id],
+  item: (id: string) => [...apiKeys.items(), id],
   itemCaches: (id: string) => [...apiKeys.item(id), 'caches'],
 
   actuator: () => ['actuator'],
