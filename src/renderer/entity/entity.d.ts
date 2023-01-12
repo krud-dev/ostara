@@ -21,6 +21,7 @@ export type EntityBaseColumn = {
   labelId: string;
   width?: number;
   minWidth?: number;
+  tooltipId?: string;
 };
 
 export type EntityTextColumn = EntityBaseColumn & {

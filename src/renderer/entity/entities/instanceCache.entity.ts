@@ -8,6 +8,7 @@ export const instanceCacheEntity: Entity<InstanceCache> = {
       id: 'name',
       type: 'Text',
       labelId: 'name',
+      tooltipId: 'target',
     },
   ],
   actions: [
@@ -38,5 +39,5 @@ export const instanceCacheEntity: Entity<InstanceCache> = {
   paging: false,
   getId: (item) => item.name,
   getGrouping: (item) => item.cacheManager,
-  filterData: (data, filter) => data.filter((task) => task.name.toLowerCase().includes(filter.toLowerCase())),
+  filterData: (data, filter) => data.filter((item) => item.name.toLowerCase().includes(filter.toLowerCase())),
 };

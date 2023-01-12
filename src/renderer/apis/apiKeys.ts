@@ -2,6 +2,7 @@ export const apiKeys = {
   items: () => ['items'],
   item: (id: string) => [...apiKeys.items(), id],
   itemCaches: (id: string) => [...apiKeys.item(id), 'caches'],
+  itemEnv: (id: string) => [...apiKeys.item(id), 'env'],
 
   actuator: () => ['actuator'],
   actuatorConnection: (url: string) => [...apiKeys.actuator(), 'connection', url],

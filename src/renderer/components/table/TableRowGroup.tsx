@@ -3,6 +3,8 @@ import { useTable } from 'renderer/components/table/TableContext';
 import React, { useMemo } from 'react';
 import { KeyboardArrowDown, KeyboardArrowRight, SvgIconComponent } from '@mui/icons-material';
 import { COMPONENTS_SPACING } from 'renderer/constants/ui';
+import { alpha } from '@mui/material/styles';
+import { darken } from '@mui/system/colorManipulator';
 
 type TableRowGroupProps<EntityItem> = {
   title: string;
@@ -16,12 +18,11 @@ export default function TableRowGroup<EntityItem>({ title, collapsed }: TableRow
 
   return (
     <TableRow>
-      <TableCell sx={{ pl: COMPONENTS_SPACING - 1.25, pr: 0 }}>
-        <IconButton onClick={() => toggleGroupHandler(title)}>
+      <TableCell colSpan={999} sx={{ pl: COMPONENTS_SPACING - 1.25, pr: 0 }}>
+        <IconButton onClick={() => toggleGroupHandler(title)} sx={{ mr: 1 }}>
           <ToggleIcon fontSize="small" />
         </IconButton>
-      </TableCell>
-      <TableCell colSpan={999}>
+
         <Typography variant={'subtitle2'} component={'span'}>
           {title}
         </Typography>

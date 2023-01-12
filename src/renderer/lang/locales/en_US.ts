@@ -24,6 +24,8 @@ export default {
   save: 'Save',
   update: 'Update',
   cancel: 'Cancel',
+  copy: 'Copy',
+  value: 'Value',
   addYourFirstInstance: 'Add your first actuator instance',
   collapseAll: 'Collapse All',
   expandAll: 'Expand All',
@@ -46,6 +48,7 @@ export default {
   loggers: 'Loggers',
   caches: 'Caches',
   jvm: 'JVM',
+  origin: 'Origin',
   threadDump: 'Thread Dump',
   heapDump: 'Heap Dump',
   testConnection: 'Test Connection',
@@ -83,4 +86,5 @@ export default {
   taskStartedSuccessfully: 'Task "{name}" started successfully',
   evictedCacheSuccessfully: 'Evicted Cache "{names}" successfully',
   evictedAllCachesSuccessfully: 'Evicted all caches successfully',
+  activeProfiles: 'Active Profiles',
 };

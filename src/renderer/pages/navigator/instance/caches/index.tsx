@@ -83,10 +83,6 @@ const InstanceCaches: FunctionComponent = () => {
     }
   }, []);
 
-  if (!item) {
-    return null;
-  }
-
   return (
     <Page>
       <TableComponent

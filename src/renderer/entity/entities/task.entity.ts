@@ -42,10 +42,10 @@ export const taskEntity: Entity<TaskDefinitionDisplay> = {
   getId: (item) => item.name,
   filterData: (data, filter) =>
     data.filter(
-      (task) =>
-        task.alias.toLowerCase().includes(filter.toLowerCase()) ||
-        task.name.toLowerCase().includes(filter.toLowerCase()) ||
-        task.description.toLowerCase().includes(filter.toLowerCase()) ||
-        task.cron.toLowerCase().includes(filter.toLowerCase())
+      (item) =>
+        item.alias.toLowerCase().includes(filter.toLowerCase()) ||
+        item.name.toLowerCase().includes(filter.toLowerCase()) ||
+        item.description.toLowerCase().includes(filter.toLowerCase()) ||
+        item.cron.toLowerCase().includes(filter.toLowerCase())
     ),
 };

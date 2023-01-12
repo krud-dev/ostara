@@ -1,4 +1,4 @@
-import { Checkbox, IconButton, TableCell, TableRow, Tooltip } from '@mui/material';
+import { Box, Checkbox, IconButton, TableCell, TableRow, Tooltip } from '@mui/material';
 import { EntityColumn } from 'renderer/entity/entity';
 import { get } from 'lodash';
 import { IconViewer } from 'renderer/components/icon/IconViewer';
@@ -25,11 +25,18 @@ export default function TableRowCustom<EntityItem>({ row }: TableRowCustomProps<
         </TableCell>
       )}
 
-      {entity.columns.map((column: EntityColumn) => (
-        <TableCell align={column.align || 'left'} key={column.id}>
-          <TableCellData row={row} column={column} />
-        </TableCell>
-      ))}
+      {entity.columns.map((column: EntityColumn) => {
+        const tooltip = column.tooltipId ? get(row, column.tooltipId) : '';
+        return (
+          <TableCell align={column.align || 'left'} key={column.id}>
+            <Tooltip title={tooltip} disableInteractive={false}>
+              <Box component={'span'}>
+                <TableCellData row={row} column={column} />
+              </Box>
+            </Tooltip>
+          </TableCell>
+        );
+      })}
 
       {hasActions && (
         <TableCell align="right" sx={{ whiteSpace: 'nowrap' }}>
