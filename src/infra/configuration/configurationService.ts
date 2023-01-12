@@ -249,8 +249,8 @@ class ConfigurationService {
     if (!isInstance(target)) {
       throw new Error(`Item with id ${id} is not an instance`);
     }
-    systemEvents.emit('instance-deleted', target);
     configurationStore.delete(`items.${id}` as any);
+    systemEvents.emit('instance-deleted', target);
   }
 
   moveInstance(id: string, newParentApplicationId: string, newOrder: number): EnrichedInstance {

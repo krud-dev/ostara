@@ -4,9 +4,8 @@ import {
   ApplicationHealth,
   ApplicationHealthStatus,
   Instance,
-  InstanceHealth,
+  InstanceHealth
 } from '../configuration/model/configuration';
-import { ActuatorClient } from '../actuator/actuatorClient';
 import { configurationService } from '../configuration/configurationService';
 import { BrowserWindow } from 'electron';
 import log from 'electron-log';
