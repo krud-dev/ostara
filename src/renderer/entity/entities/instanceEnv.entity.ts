@@ -8,7 +8,7 @@ export const instanceEnvEntity: Entity<EnvProperty> = {
       id: 'name',
       type: 'Text',
       labelId: 'name',
-      tooltipId: 'origin',
+      getTooltip: (item) => item.origin,
     },
     {
       id: 'value',

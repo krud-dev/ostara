@@ -35,6 +35,10 @@ export const urls = asUrlInfos({
     url: '/navigator/application/:id/dashboard',
     path: 'dashboard',
   },
+  applicationInstances: {
+    url: '/navigator/application/:id/instances',
+    path: 'instances',
+  },
   applicationLoggers: {
     url: '/navigator/application/:id/loggers',
     path: 'loggers',

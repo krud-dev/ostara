@@ -18,6 +18,7 @@ export const taskEntity: Entity<TaskDefinitionDisplay> = {
       id: 'defaultCron',
       type: 'Cron',
       labelId: 'cron',
+      getTooltip: (item) => item.defaultCron,
     },
     {
       id: 'nextRun',
@@ -43,9 +44,9 @@ export const taskEntity: Entity<TaskDefinitionDisplay> = {
   filterData: (data, filter) =>
     data.filter(
       (item) =>
-        item.alias.toLowerCase().includes(filter.toLowerCase()) ||
-        item.name.toLowerCase().includes(filter.toLowerCase()) ||
-        item.description.toLowerCase().includes(filter.toLowerCase()) ||
-        item.cron.toLowerCase().includes(filter.toLowerCase())
+        item.alias?.toLowerCase().includes(filter.toLowerCase()) ||
+        item.name?.toLowerCase().includes(filter.toLowerCase()) ||
+        item.description?.toLowerCase().includes(filter.toLowerCase()) ||
+        item.cron?.toLowerCase().includes(filter.toLowerCase())
     ),
 };

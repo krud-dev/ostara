@@ -3,7 +3,7 @@ import { get } from 'lodash';
 
 type TableCellDataTextProps<EntityItem> = {
   row: EntityItem;
-  column: EntityTextColumn;
+  column: EntityTextColumn<EntityItem>;
 };
 
 export default function TableCellDataText<EntityItem>({ row, column }: TableCellDataTextProps<EntityItem>) {

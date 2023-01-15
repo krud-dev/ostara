@@ -1,6 +1,5 @@
 import { Box, Checkbox, IconButton, TableCell, TableRow, Tooltip } from '@mui/material';
 import { EntityColumn } from 'renderer/entity/entity';
-import { get } from 'lodash';
 import { IconViewer } from 'renderer/components/icon/IconViewer';
 import { FormattedMessage } from 'react-intl';
 import { useTable } from 'renderer/components/table/TableContext';
@@ -25,8 +24,8 @@ export default function TableRowCustom<EntityItem>({ row }: TableRowCustomProps<
         </TableCell>
       )}
 
-      {entity.columns.map((column: EntityColumn) => {
-        const tooltip = column.tooltipId ? get(row, column.tooltipId) : '';
+      {entity.columns.map((column: EntityColumn<EntityItem>) => {
+        const tooltip = column.getTooltip?.(row);
         return (
           <TableCell align={column.align || 'left'} key={column.id}>
             <Tooltip title={tooltip} disableInteractive={false}>

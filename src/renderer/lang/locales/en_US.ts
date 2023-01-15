@@ -87,4 +87,8 @@ export default {
   evictedCacheSuccessfully: 'Evicted Cache "{names}" successfully',
   evictedAllCachesSuccessfully: 'Evicted all caches successfully',
   activeProfiles: 'Active Profiles',
+  instances: 'Instances',
+  healthStatus: 'Health Status',
+  lastUpdateTime: 'Last Update Time',
+  lastChangeTime: 'Last Change Time',
 };

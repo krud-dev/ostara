@@ -5,7 +5,7 @@ import { FormattedDate } from 'react-intl';
 
 type TableCellDataDateProps<EntityItem> = {
   row: EntityItem;
-  column: EntityDateColumn;
+  column: EntityDateColumn<EntityItem>;
 };
 
 export default function TableCellDataDate<EntityItem>({ row, column }: TableCellDataDateProps<EntityItem>) {

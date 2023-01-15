@@ -9,6 +9,8 @@ import { generatePath } from 'react-router-dom';
 import ItemHeader from 'renderer/components/item/ItemHeader';
 import { Box, Divider } from '@mui/material';
 import ApplicationDataCollectionToggle from 'renderer/components/item/data-collection/ApplicationDataCollectionToggle';
+import { IconViewer } from 'renderer/components/icon/IconViewer';
+import { getItemTypeIcon } from 'renderer/utils/itemUtils';
 
 type ApplicationSidebarProps = { item: EnrichedApplication; width: number };
 
@@ -24,6 +26,12 @@ export default function ApplicationSidebar({ item, width }: ApplicationSidebarPr
             icon: <BarChartOutlined />,
             label: <FormattedMessage id={'dashboard'} />,
             to: generatePath(urls.applicationDashboard.url, { id: item.id }),
+          },
+          {
+            id: 'instances',
+            icon: <IconViewer icon={getItemTypeIcon('instance')} />,
+            label: <FormattedMessage id={'instances'} />,
+            to: generatePath(urls.applicationInstances.url, { id: item.id }),
           },
         ],
       },

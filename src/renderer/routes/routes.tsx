@@ -14,6 +14,7 @@ import ApplicationDashboard from 'renderer/pages/navigator/application/dashboard
 import InstanceEnvironment from 'renderer/pages/navigator/instance/environment';
 import InstanceCaches from 'renderer/pages/navigator/instance/caches';
 import ApplicationCaches from 'renderer/pages/navigator/application/caches';
+import ApplicationInstances from 'renderer/pages/navigator/application/instances';
 
 export default function Router() {
   return useRoutes([
@@ -44,6 +45,10 @@ export default function Router() {
             {
               path: urls.applicationDashboard.path,
               element: <ApplicationDashboard />,
+            },
+            {
+              path: urls.applicationInstances.path,
+              element: <ApplicationInstances />,
             },
             {
               path: urls.applicationLoggers.path,
