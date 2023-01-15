@@ -10,6 +10,7 @@ import { ActuatorThreadDumpResponse } from './model/threadDump';
 import { ActuatorMainResponse, ActuatorTestConnectionResponse } from './model/base';
 import { ActuatorBeansResponse } from './model/beans';
 import { ActuatorConfigPropsResponse } from './model/configprops';
+import { ActuatorFlywayResponse } from './model/flyway';
 
 export class ActuatorClient {
   readonly axios: Axios;
@@ -185,6 +186,11 @@ export class ActuatorClient {
     return response.data;
   }
 
+  async envProperty(name: string): Promise<ActuatorEnvPropertyResponse> {
+    const response = await this.axios.get(`env/${name}`);
+    return response.data;
+  }
+
   /**
    * Configprops
    */
@@ -194,8 +200,12 @@ export class ActuatorClient {
     return response.data;
   }
 
-  async envProperty(name: string): Promise<ActuatorEnvPropertyResponse> {
-    const response = await this.axios.get(`env/${name}`);
+  /**
+   * FLyway
+   */
+
+  async flyway(): Promise<ActuatorFlywayResponse> {
+    const response = await this.axios.get('flyway');
     return response.data;
   }
 

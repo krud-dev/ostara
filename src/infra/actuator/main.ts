@@ -64,6 +64,11 @@ ipcMain.handle('actuator:logfileRange', async (event, instanceId, start, end) =>
   return client.logfileRange(start, end);
 });
 
+ipcMain.handle('actuator:flyway', async (event, instanceId) => {
+  const client = actuatorClientStore.getActuatorClient(instanceId);
+  return client.flyway();
+});
+
 ipcMain.handle('actuator:metrics', async (event, instanceId) => {
   const client = actuatorClientStore.getActuatorClient(instanceId);
   return client.metrics();

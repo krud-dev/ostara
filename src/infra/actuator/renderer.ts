@@ -16,6 +16,7 @@ export const actuatorBridge: ActuatorBridge = {
   logfile: (instanceId: string) => ipcRenderer.invoke('actuator:logfile', instanceId),
   logfileRange: (instanceId: string, start: number, end: number) =>
     ipcRenderer.invoke('actuator:logfileRange', start, end),
+  flyway: (instanceId: string) => ipcRenderer.invoke('actuator:flyway', instanceId),
   metrics: (instanceId: string) => ipcRenderer.invoke('actuator:metrics', instanceId),
   metric: (instanceId: string, name: string, tags: { [key: string]: string }) =>
     ipcRenderer.invoke('actuator:metric', instanceId, name, tags),
