@@ -121,7 +121,7 @@ const NavigatorTreeProvider: FunctionComponent<NavigatorTreeProviderProps> = ({ 
     let unsubscribe: (() => void) | undefined;
     (async () => {
       unsubscribe = await subscribeToEndpointsEventsState.mutateAsync({
-        event: 'app:instanceEndpointsUpdated',
+        event: 'app:instanceAbilitiesUpdated',
         listener: () => {
           getItemsState.refetch();
         },

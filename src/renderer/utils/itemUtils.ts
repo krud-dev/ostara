@@ -11,6 +11,7 @@ import { green, orange, pink, red, yellow } from '@mui/material/colors';
 import { ColorSchema } from 'renderer/theme/config/palette';
 import blueGrey from '@mui/material/colors/blueGrey';
 import { MUIconType } from 'renderer/components/icon/IconViewer';
+import { InstanceAbility } from 'infra/instance/models/ability';
 
 export const getItemTypeIcon = (itemType: ItemType): MUIconType => {
   switch (itemType) {
@@ -66,6 +67,9 @@ export const getItemHealthStatusColor = (item: EnrichedItem): string | undefined
     }
   }
   if (item.type === 'application') {
+    if (item.instanceCount === 0) {
+      return undefined;
+    }
     switch (item.health.status) {
       case 'ALL_UP':
         return green[colorsIndex];
@@ -104,6 +108,9 @@ export const getItemHealthStatusTextId = (item: EnrichedItem): string | undefine
     }
   }
   if (item.type === 'application') {
+    if (item.instanceCount === 0) {
+      return undefined;
+    }
     switch (item.health.status) {
       case 'ALL_UP':
         return 'up';
@@ -144,6 +151,6 @@ export const getDataCollectionModeTextId = (dataCollectionMode: DataCollectionMo
   }
 };
 
-export const isServiceInactive = (item: EnrichedInstance, service: string): boolean => {
-  return item.endpoints.indexOf(service) === -1;
+export const isServiceInactive = (item: EnrichedInstance, ability: InstanceAbility): boolean => {
+  return item.abilities.indexOf(ability) === -1;
 };

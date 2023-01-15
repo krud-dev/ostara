@@ -23,7 +23,7 @@ const InstanceEnvironment: FunctionComponent = () => {
   const queryState = useGetInstanceEnvPropertiesQuery({ instanceId: itemId });
 
   const getPropertyString = useCallback((property: EnvProperty): string => {
-    return `${property.name}=${property.value}`;
+    return property.value;
   }, []);
 
   const actionsHandler = useCallback(async (actionId: string, row: EnvProperty): Promise<void> => {
