@@ -9,7 +9,6 @@ export type EnvProperty = {
   name: string;
   value: string;
   origin?: string;
-  profiles: string[];
 };
 
 type Variables = {
@@ -29,7 +28,6 @@ export const getInstanceEnvProperties = async (variables: Variables): Promise<Da
             name,
             value: toString(value.value),
             origin: value.origin,
-            profiles: result.activeProfiles,
           }))
           .value() || []
     )

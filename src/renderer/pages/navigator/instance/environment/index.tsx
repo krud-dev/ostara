@@ -8,10 +8,6 @@ import { EnvProperty, useGetInstanceEnvPropertiesQuery } from 'renderer/apis/ins
 import { instanceEnvEntity } from 'renderer/entity/entities/instanceEnv.entity';
 import useCopyToClipboard from 'renderer/hooks/useCopyToClipboard';
 import { COPY_ID } from 'renderer/entity/actions';
-import { FormattedMessage } from 'react-intl';
-import { Box, Card, Chip, CircularProgress, Typography } from '@mui/material';
-import { COMPONENTS_SPACING } from 'renderer/constants/ui';
-import { chain } from 'lodash';
 
 const InstanceEnvironment: FunctionComponent = () => {
   const { selectedItem } = useNavigatorTree();
@@ -25,18 +21,6 @@ const InstanceEnvironment: FunctionComponent = () => {
 
   const entity = useMemo<Entity<EnvProperty>>(() => instanceEnvEntity, []);
   const queryState = useGetInstanceEnvPropertiesQuery({ instanceId: itemId });
-
-  const activeProfiles = useMemo<string[] | undefined>(
-    () =>
-      queryState.data
-        ? chain(queryState.data)
-            .map<string[]>((p) => p.profiles || [])
-            .flatten()
-            .uniq()
-            .value()
-        : undefined,
-    [queryState.data]
-  );
 
   const getPropertyString = useCallback((property: EnvProperty): string => {
     return `${property.name}=${property.value}`;
@@ -66,21 +50,6 @@ const InstanceEnvironment: FunctionComponent = () => {
 
   return (
     <Page>
-      <Card sx={{ p: COMPONENTS_SPACING, mb: COMPONENTS_SPACING }}>
-        {!activeProfiles ? (
-          <Box sx={{ textAlign: 'center' }}>
-            <CircularProgress />
-          </Box>
-        ) : (
-          <Typography variant="subtitle2" sx={{ color: 'text.secondary' }}>
-            <FormattedMessage id={'activeProfiles'} />{' '}
-            {activeProfiles.map((p) => (
-              <Chip label={p} color={'primary'} key={p} />
-            ))}
-          </Typography>
-        )}
-      </Card>
-
       <TableComponent
         entity={entity}
         queryState={queryState}
