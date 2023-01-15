@@ -60,6 +60,7 @@ export type Application = BaseItem & {
 };
 
 export type EnrichedApplication = Application & {
+  readonly instanceCount: number;
   readonly effectiveColor?: string;
   readonly health: ApplicationHealth;
 };

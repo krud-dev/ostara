@@ -320,6 +320,7 @@ class ConfigurationService {
     const effectiveColor = this.getApplicationEffectiveColor(application);
     return {
       ...application,
+      instanceCount: Object.values(configurationStore.get('items')).filter((item) => isInstance(item) && item.parentApplicationId === application.id).length,
       health: instanceService.getCachedApplicationHealth(application),
       effectiveColor,
     };
