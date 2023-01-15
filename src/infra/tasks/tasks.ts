@@ -3,6 +3,7 @@ import { configurationService } from '../configuration/configurationService';
 import log from 'electron-log';
 import { metricsService } from '../metrics/metricsService';
 import { instanceService } from '../instance/instanceService';
+import { instanceAbilityService } from '../instance/InstanceAbilityService';
 
 taskService.declareTask({
   name: 'queryInstanceHealth',
@@ -32,7 +33,7 @@ taskService.declareTask({
     await Promise.all(
       instances.map(async (instance) => {
         log.info(`Querying endpoints for instance ${instance.id}`);
-        await instanceService.fetchInstanceEndpoints(instance);
+        await instanceAbilityService.fetchInstanceEndpoints(instance.id);
       })
     );
   },

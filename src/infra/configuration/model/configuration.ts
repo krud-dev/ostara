@@ -1,3 +1,5 @@
+import { InstanceAbility } from '../../instance/models/ability';
+
 export type ApplicationType = 'SpringBoot';
 
 export type Item = Instance | Application | Folder;
@@ -49,6 +51,7 @@ export type EnrichedInstance = Instance & {
   readonly effectiveColor?: string;
   readonly health: InstanceHealth;
   readonly endpoints: string[];
+  readonly abilities: InstanceAbility[];
 };
 
 export type Application = BaseItem & {

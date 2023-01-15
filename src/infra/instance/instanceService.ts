@@ -4,7 +4,7 @@ import {
   ApplicationHealth,
   ApplicationHealthStatus,
   Instance,
-  InstanceHealth
+  InstanceHealth,
 } from '../configuration/model/configuration';
 import { configurationService } from '../configuration/configurationService';
 import { BrowserWindow } from 'electron';
@@ -20,8 +20,6 @@ class InstanceService {
   private readonly instanceHealthCache = new NodeCache();
 
   private readonly applicationHealthCache = new NodeCache();
-
-  private readonly endpointsCache = new NodeCache();
 
   private readonly events: EventEmitter = new EventEmitter();
 
@@ -51,9 +49,6 @@ class InstanceService {
     });
     this.events.addListener('app:applicationHealthUpdated', (key: string, value: ApplicationHealth) => {
       window.webContents.send('app:applicationHealthUpdated', key, value);
-    });
-    this.events.addListener('app:instanceEndpointsUpdated', (key: string, value: string[]) => {
-      window.webContents.send('app:instanceEndpointsUpdated', key, value);
     });
   }
 
@@ -254,10 +249,6 @@ class InstanceService {
     );
   }
 
-  getCachedInstanceEndpoints(instance: Instance): string[] {
-    return this.endpointsCache.get<string[]>(instance.id) ?? [];
-  }
-
   fetchInstanceHealthById(instanceId: string): Promise<InstanceHealth> {
     const instance = configurationService.getInstanceOrThrow(instanceId);
     return this.fetchInstanceHealth(instance);
@@ -312,25 +303,6 @@ class InstanceService {
     return instanceHealth;
   }
 
-  async fetchInstanceEndpoints(instance: Instance): Promise<string[]> {
-    const client = actuatorClientStore.getActuatorClient(instance.id);
-    try {
-      const endpoints = await client.endpoints();
-      const oldEndpoints = this.endpointsCache.get<string[]>(instance.id);
-      this.endpointsCache.set(instance.id, endpoints);
-      if (
-        oldEndpoints?.length !== endpoints.length ||
-        !oldEndpoints?.every((endpoint) => endpoints.includes(endpoint))
-      ) {
-        this.events.emit('app:instanceEndpointsUpdated', instance.id, endpoints);
-      }
-      return endpoints;
-    } catch (e: unknown) {
-      console.error(`Couldn't fetch endpoints for instance ${instance.id}`, e);
-      return [];
-    }
-  }
-
   private computeAndSaveApplicationHealth(applicationId: string) {
     if (!configurationService.itemExists(applicationId)) {
       this.applicationHealthCache.del(applicationId);
@@ -355,7 +327,6 @@ class InstanceService {
       return;
     }
     this.fetchInstanceHealth(instance);
-    this.fetchInstanceEndpoints(instance);
   }
 
   private invalidateApplication(applicationId: string): void {

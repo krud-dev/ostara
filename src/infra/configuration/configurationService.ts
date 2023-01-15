@@ -18,6 +18,7 @@ import { configurationStore } from './configurationStore';
 import { instanceService } from '../instance/instanceService';
 import { instanceMetadataStore } from './instanceMetadataStore';
 import { systemEvents } from '../events';
+import { instanceAbilityService } from '../instance/InstanceAbilityService';
 
 class ConfigurationService {
   /**
@@ -307,12 +308,14 @@ class ConfigurationService {
   private enrichInstance(instance: Instance): EnrichedInstance {
     const effectiveColor = this.getInstanceEffectiveColor(instance);
     const health = instanceService.getCachedInstanceHealth(instance);
-    const endpoints = instanceService.getCachedInstanceEndpoints(instance);
+    const endpoints = instanceAbilityService.getCachedInstanceEndpoints(instance.id);
+    const abilities = instanceAbilityService.getCachedInstanceAbilities(instance.id);
     return {
       ...instance,
       effectiveColor,
       health,
       endpoints,
+      abilities,
     };
   }
 
@@ -320,7 +323,9 @@ class ConfigurationService {
     const effectiveColor = this.getApplicationEffectiveColor(application);
     return {
       ...application,
-      instanceCount: Object.values(configurationStore.get('items')).filter((item) => isInstance(item) && item.parentApplicationId === application.id).length,
+      instanceCount: Object.values(configurationStore.get('items')).filter(
+        (item) => isInstance(item) && item.parentApplicationId === application.id
+      ).length,
       health: instanceService.getCachedApplicationHealth(application),
       effectiveColor,
     };
