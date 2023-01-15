@@ -4,6 +4,7 @@ import { chain } from 'lodash';
 import { EVICT_CACHE_ID } from 'renderer/entity/actions';
 
 export const applicationCacheEntity: Entity<ApplicationCache> = {
+  id: 'applicationCache',
   columns: [
     {
       id: 'name',

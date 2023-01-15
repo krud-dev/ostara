@@ -15,6 +15,7 @@ import InstanceEnvironment from 'renderer/pages/navigator/instance/environment';
 import InstanceCaches from 'renderer/pages/navigator/instance/caches';
 import ApplicationCaches from 'renderer/pages/navigator/application/caches';
 import ApplicationInstances from 'renderer/pages/navigator/application/instances';
+import InstanceBeans from 'renderer/pages/navigator/instance/beans';
 
 export default function Router() {
   return useRoutes([
@@ -79,7 +80,7 @@ export default function Router() {
             },
             {
               path: urls.instanceBeans.path,
-              element: <InstanceDashboard />,
+              element: <InstanceBeans />,
             },
             {
               path: urls.instanceQuartz.path,

@@ -30,6 +30,7 @@ module.exports = {
     'no-restricted-syntax': 'off',
     'no-multi-assign': 'off',
     'no-await-in-loop': 'off',
+    'guard-for-in': 'off',
   },
   parserOptions: {
     ecmaVersion: 2020,

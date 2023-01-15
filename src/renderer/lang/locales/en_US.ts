@@ -91,4 +91,7 @@ export default {
   healthStatus: 'Health Status',
   lastUpdateTime: 'Last Update Time',
   lastChangeTime: 'Last Change Time',
+  scope: 'Scope',
+  type: 'Type',
+  dependencies: 'Dependencies',
 };

@@ -1,15 +1,16 @@
 import React, { PropsWithChildren, useCallback, useContext, useMemo, useState } from 'react';
 import { Entity } from 'renderer/entity/entity';
-import { chain, get, isEmpty, orderBy } from 'lodash';
+import { chain, get, isEmpty, orderBy, sortBy } from 'lodash';
 import useConfigurationStoreState from 'renderer/hooks/useConfigurationStoreState';
 import { DEFAULT_ROWS_PER_PAGE } from 'renderer/constants/ui';
 import { notEmpty } from 'renderer/utils/objectUtils';
 import { BaseUseQueryResult } from 'renderer/apis/base/useBaseQuery';
 import { useUpdateEffect } from 'react-use';
+import { getTableDisplayItems } from 'renderer/components/table/utils/tableUtils';
 
 export type DisplayItem<EntityItem> =
   | { type: 'Row'; row: EntityItem }
-  | { type: 'Group'; title: string; collapsed: boolean };
+  | { type: 'Group'; group: string; title: string; collapsed: boolean; depth: number };
 
 export type TableContextProps<EntityItem> = {
   entity: Entity<EntityItem>;
@@ -40,6 +41,7 @@ export type TableContextProps<EntityItem> = {
   hasActions: boolean;
   hasMassActions: boolean;
   hasGlobalActions: boolean;
+  hasRowAction: boolean;
   actionsHandler: (actionId: string, row: EntityItem) => Promise<void>;
   massActionsHandler: (actionId: string, selectedRows: EntityItem[]) => Promise<void>;
   globalActionsHandler: (actionId: string) => Promise<void>;
@@ -87,31 +89,20 @@ function TableProvider<EntityItem>({
             .toLowerCase(),
         orderDirection || entity.defaultOrder.direction
       ),
-    [tableData, filter, orderDirection, orderColumn]
+    [entity, tableData, filter, orderDirection, orderColumn]
   );
   const visibleTableData = useMemo<EntityItem[]>(
     () =>
       entity.paging ? filteredTableData.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage) : filteredTableData,
     [entity, filteredTableData, page, rowsPerPage]
   );
-  const displayTableData = useMemo<DisplayItem<EntityItem>[]>(() => {
-    if (!entity.getGrouping) {
-      return visibleTableData.map<DisplayItem<EntityItem>>((row) => ({ type: 'Row', row }));
-    }
-    const groups = chain(visibleTableData).groupBy(entity.getGrouping).value();
-    const groupsKeys = Object.keys(groups).sort();
-    return groupsKeys.flatMap((groupKey) => {
-      const groupRows = groups[groupKey];
-      const collapsed = collapsedGroups.includes(groupKey);
-      return [
-        { type: 'Group', title: groupKey, collapsed },
-        ...(!collapsed ? groupRows.map<DisplayItem<EntityItem>>((row) => ({ type: 'Row', row })) : []),
-      ];
-    });
-  }, [visibleTableData, collapsedGroups]);
+  const displayTableData = useMemo<DisplayItem<EntityItem>[]>(
+    () => getTableDisplayItems(entity, visibleTableData, collapsedGroups),
+    [entity, visibleTableData, collapsedGroups]
+  );
 
   const loading = useMemo<boolean>(() => queryState.isLoading, [queryState.isLoading]);
-  const empty = useMemo<boolean>(() => !filteredTableData.length, [filteredTableData]);
+  const empty = useMemo<boolean>(() => !loading && !filteredTableData.length, [loading, filteredTableData]);
 
   const selectedRows = useMemo<EntityItem[]>(
     () => selected.map((id) => filteredTableData.find((row) => entity.getId(row) === id)).filter(notEmpty),
@@ -130,6 +121,7 @@ function TableProvider<EntityItem>({
   const hasActions = useMemo<boolean>(() => !isEmpty(entity.actions), [entity]);
   const hasMassActions = useMemo<boolean>(() => !isEmpty(entity.massActions), [entity]);
   const hasGlobalActions = useMemo<boolean>(() => !isEmpty(entity.globalActions), [entity]);
+  const hasRowAction = useMemo<boolean>(() => !!entity.rowAction, [entity]);
 
   const changeFilterHandler = useCallback(
     (newFilter: string): void => {
@@ -159,21 +151,9 @@ function TableProvider<EntityItem>({
   const selectRowHandler = useCallback(
     (row: EntityItem): void => {
       const rowId = entity.getId(row);
-      const selectedIndex = selected.indexOf(rowId);
-
-      let newSelected: string[] = [];
-      if (selectedIndex === -1) {
-        newSelected = newSelected.concat(selected, rowId);
-      } else if (selectedIndex === 0) {
-        newSelected = newSelected.concat(selected.slice(1));
-      } else if (selectedIndex === selected.length - 1) {
-        newSelected = newSelected.concat(selected.slice(0, -1));
-      } else if (selectedIndex > 0) {
-        newSelected = newSelected.concat(selected.slice(0, selectedIndex), selected.slice(selectedIndex + 1));
-      }
-      setSelected(newSelected);
+      setSelected((prev) => (prev.includes(rowId) ? prev.filter((id) => id !== rowId) : [...prev, rowId]));
     },
-    [selected, setSelected]
+    [setSelected]
   );
 
   const selectAllRowsHandler = useCallback(
@@ -254,6 +234,7 @@ function TableProvider<EntityItem>({
         hasActions,
         hasMassActions,
         hasGlobalActions,
+        hasRowAction,
         actionsHandler,
         massActionsHandler,
         globalActionsHandler,

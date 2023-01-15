@@ -3,6 +3,7 @@ import { InstanceCache } from 'infra/instance/models/cache';
 import { EVICT_CACHE_ID } from 'renderer/entity/actions';
 
 export const instanceCacheEntity: Entity<InstanceCache> = {
+  id: 'instanceCache',
   columns: [
     {
       id: 'name',

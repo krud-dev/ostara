@@ -3,6 +3,7 @@ import { EnvProperty } from 'renderer/apis/instance/getInstanceEnvProperties';
 import { COPY_ID } from 'renderer/entity/actions';
 
 export const instanceEnvEntity: Entity<EnvProperty> = {
+  id: 'instanceEnv',
   columns: [
     {
       id: 'name',

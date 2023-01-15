@@ -13,9 +13,6 @@ export default function Table(theme: Theme): Components {
               backgroundColor: theme.palette.action.hover,
             },
           },
-          '&:nth-of-type(even)': {
-            backgroundColor: theme.palette.action.alternate,
-          },
         },
       },
     },

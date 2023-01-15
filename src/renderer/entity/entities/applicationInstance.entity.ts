@@ -1,8 +1,11 @@
 import { Entity } from 'renderer/entity/entity';
 import { EnrichedInstance } from 'infra/configuration/model/configuration';
 import TableCellDataHealthStatus from 'renderer/components/table/data/TableCellDataHealthStatus';
+import { generatePath } from 'react-router-dom';
+import { urls } from 'renderer/routes/urls';
 
 export const applicationInstance: Entity<EnrichedInstance> = {
+  id: 'applicationInstance',
   columns: [
     {
       id: 'alias',
@@ -30,6 +33,10 @@ export const applicationInstance: Entity<EnrichedInstance> = {
   actions: [],
   massActions: [],
   globalActions: [],
+  rowAction: {
+    type: 'Navigate',
+    getUrl: (item) => generatePath(urls.instance.url, { id: item.id }),
+  },
   defaultOrder: {
     id: 'name',
     direction: 'asc',

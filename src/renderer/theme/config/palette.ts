@@ -120,6 +120,7 @@ const GREY = {
   500_8: alpha('#919EAB', 0.08),
   500_12: alpha('#919EAB', 0.12),
   500_16: alpha('#919EAB', 0.16),
+  500_20: alpha('#919EAB', 0.2),
   500_24: alpha('#919EAB', 0.24),
   500_32: alpha('#919EAB', 0.32),
   500_48: alpha('#919EAB', 0.48),
@@ -171,7 +172,7 @@ const palette = {
   light: {
     ...COMMON,
     text: { primary: GREY[800], secondary: GREY[600], disabled: GREY[500] },
-    background: { paper: '#fff', default: '#fff', neutral: GREY[200] },
+    background: { paper: '#fff', default: '#fff', neutral: GREY[500_16] },
     action: { active: GREY[600], ...COMMON.action },
   },
   dark: {

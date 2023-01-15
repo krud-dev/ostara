@@ -43,4 +43,9 @@ export const useGetInstanceEnvPropertiesQuery = (
   variables: Variables,
   options?: BaseQueryOptions<Data, Variables>
 ): BaseUseQueryResult<Data> =>
-  useBaseQuery<Data, Variables>(apiKeys.itemEnv(variables.instanceId), getInstanceEnvProperties, variables, options);
+  useBaseQuery<Data, Variables>(
+    apiKeys.itemEnvProperties(variables.instanceId),
+    getInstanceEnvProperties,
+    variables,
+    options
+  );

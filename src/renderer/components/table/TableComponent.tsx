@@ -37,7 +37,15 @@ export default function TableComponent<EntityItem>({
       case 'Row':
         return <TableRowCustom row={item.row} key={entity.getId(item.row)} />;
       case 'Group':
-        return <TableRowGroup title={item.title} collapsed={item.collapsed} key={item.title} />;
+        return (
+          <TableRowGroup
+            group={item.group}
+            title={item.title}
+            collapsed={item.collapsed}
+            depth={item.depth}
+            key={item.group}
+          />
+        );
       default:
         return <></>;
     }

@@ -25,7 +25,7 @@ export const useGetApplicationInstancesQuery = (
   options?: BaseQueryOptions<Data, Variables>
 ): BaseUseQueryResult<Data> =>
   useBaseQuery<Data, Variables>(
-    apiKeys.itemCaches(variables.applicationId),
+    apiKeys.itemInstances(variables.applicationId),
     getApplicationInstances,
     variables,
     options

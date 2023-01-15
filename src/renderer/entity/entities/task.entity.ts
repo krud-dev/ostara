@@ -3,6 +3,7 @@ import { Entity } from 'renderer/entity/entity';
 import { RUN_TASK_ID } from 'renderer/entity/actions';
 
 export const taskEntity: Entity<TaskDefinitionDisplay> = {
+  id: 'task',
   columns: [
     {
       id: 'alias',
