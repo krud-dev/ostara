@@ -60,18 +60,6 @@ export default function NavigatorTreeNode({ style, node, tree, dragHandle, previ
   const navigate = useNavigate();
   const { pathname } = useLocation();
 
-  useEffect(() => {
-    if (
-      !node.isOpen &&
-      node.data.children?.some((child) => {
-        const chilePath = getItemUrl(child);
-        return matchPath({ path: chilePath, end: false }, pathname) !== null;
-      })
-    ) {
-      node.open();
-    }
-  }, [pathname]);
-
   const menuState = usePopupState({ variant: 'popover' });
 
   const openMenuHandler = useCallback(

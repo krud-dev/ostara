@@ -28,6 +28,9 @@ export default function SettingsSidebar({ width }: SettingsSidebarProps) {
   );
 
   return (
-    <Sidebar sidebarConfig={navConfig} header={<MainSidebarTitle title={<FormattedMessage id={'settings'} />} />} />
+    <Sidebar
+      sidebarConfig={navConfig}
+      header={<MainSidebarTitle title={<FormattedMessage id={'settings'} />} icon={'SettingsOutlined'} />}
+    />
   );
 }

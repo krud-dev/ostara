@@ -14,8 +14,9 @@ import { showDeleteConfirmationDialog } from 'renderer/utils/dialogUtils';
 import { useMoveItem } from 'renderer/apis/configuration/item/moveItem';
 import NiceModal from '@ebay/nice-modal-react';
 import CreateInstanceDialog from 'renderer/components/item/dialogs/create/CreateInstanceDialog';
-import { useNavigate } from 'react-router-dom';
+import { matchPath, useLocation, useNavigate } from 'react-router-dom';
 import { getItemUrl } from 'renderer/utils/itemUtils';
+import { OpenMap } from 'react-arborist/src/state/open-slice';
 
 const TreeStyle = styled(Tree<TreeItem>)(({ theme }) => ({
   '& [role="treeitem"]': {
@@ -31,6 +32,7 @@ type NavigatorTreeProps = {
 export default function NavigatorTree({ width, search }: NavigatorTreeProps) {
   const { data, isLoading, isEmpty, hasData, action, getItem } = useNavigatorTree();
   const navigate = useNavigate();
+  const { pathname } = useLocation();
 
   const treeRef = useRef<TreeApi<TreeItem> | null>(null);
 
@@ -85,6 +87,27 @@ export default function NavigatorTree({ width, search }: NavigatorTreeProps) {
   }, [action]);
 
   const height = useMemo<number>(() => getOpenItemsCount() * NAVIGATOR_ITEM_HEIGHT + 12, [toggleFlag, data]);
+  const initialOpenState = useMemo<OpenMap>(() => {
+    const openMap: OpenMap = {};
+    const checkItemOpen = (item: TreeItem): boolean => {
+      if (matchPath({ path: getItemUrl(item), end: false }, pathname)) {
+        return true;
+      }
+      if (item.children?.some(checkItemOpen)) {
+        openMap[item.id] = true;
+        return true;
+      }
+      return false;
+    };
+
+    for (const item of data ?? []) {
+      if (checkItemOpen(item)) {
+        break;
+      }
+    }
+
+    return openMap;
+  }, [data]);
 
   const createInstanceHandler = useCallback(async (): Promise<void> => {
     const instance = await NiceModal.show<Instance | undefined>(CreateInstanceDialog, {});
@@ -252,6 +275,7 @@ export default function NavigatorTree({ width, search }: NavigatorTreeProps) {
           idAccessor={'id'}
           data={data}
           openByDefault={false}
+          initialOpenState={initialOpenState}
           width={width}
           height={height}
           indent={12}
