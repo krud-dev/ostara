@@ -9,6 +9,7 @@ import { ActuatorLoggerResponse, ActuatorLoggersResponse, ActuatorLogLevel } fro
 import { ActuatorThreadDumpResponse } from './model/threadDump';
 import { ActuatorMainResponse, ActuatorTestConnectionResponse } from './model/base';
 import { ActuatorBeansResponse } from './model/beans';
+import { ActuatorConfigPropsResponse } from './model/configprops';
 
 export class ActuatorClient {
   readonly axios: Axios;
@@ -181,6 +182,15 @@ export class ActuatorClient {
 
   async env(): Promise<ActuatorEnvResponse> {
     const response = await this.axios.get('env');
+    return response.data;
+  }
+
+  /**
+   * Configprops
+   */
+
+  async configProps(): Promise<ActuatorConfigPropsResponse> {
+    const response = await this.axios.get('configprops');
     return response.data;
   }
 

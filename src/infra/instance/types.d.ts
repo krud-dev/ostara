@@ -4,7 +4,12 @@ import { ApplicationLogger, InstanceLogger } from './models/logger';
 import { LogLevel } from 'electron-log';
 
 declare global {
+  type InstancePropertyServiceBridge = {
+    getProperties(instanceId: string): Promise<{ [key: string]: { [key: string]: unknown } }>;
+  };
+
   type InstanceServiceBridge = {
+    propertyService: InstancePropertyServiceBridge;
     fetchInstanceHealthById: (instanceId: string) => Promise<InstanceHealth>;
     getInstanceLoggers: (instanceId: string) => Promise<InstanceLogger[]>;
     getInstanceLogger: (instanceId: string, loggerName: string) => Promise<InstanceLogger>;

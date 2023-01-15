@@ -2,6 +2,9 @@ import { ipcRenderer } from 'electron';
 import { LogLevel } from 'electron-log';
 
 export const instanceServiceBridge: InstanceServiceBridge = {
+  propertyService: {
+    getProperties: (instanceId: string) => ipcRenderer.invoke('instancePropertyService:getProperties', instanceId),
+  },
   getInstanceLoggers: (instanceId: string) => ipcRenderer.invoke('instanceService:getInstanceLoggers', instanceId),
   getInstanceLogger: (instanceId: string, loggerName: string) =>
     ipcRenderer.invoke('instanceService:getInstanceLogger', instanceId, loggerName),
