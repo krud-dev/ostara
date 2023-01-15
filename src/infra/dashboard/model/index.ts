@@ -30,6 +30,10 @@ export type ProgressCircleWidget = BaseWidgetDefinition & {
   currentMetricName: string;
   title: string;
   color: string;
+  colorThresholds: {
+    value: number;
+    color: string;
+  }[];
 };
 
 export type Widget = StackedTimelineWidget | DataBarWidget | ProgressCircleWidget;

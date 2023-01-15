@@ -49,6 +49,20 @@ export const springBootWidgets = {
     maxMetricName: 'jvm.memory.max[VALUE]',
     currentMetricName: 'jvm.memory.used[VALUE]',
     color: '#00ff00',
+    colorThresholds: [
+      {
+        value: 0,
+        color: '#00ff00',
+      },
+      {
+        value: 70,
+        color: '#ffff00',
+      },
+      {
+        value: 90,
+        color: '#ff0000',
+      },
+    ],
   },
   processWidget: <DataBarWidget>{
     id: 'process-widget',
