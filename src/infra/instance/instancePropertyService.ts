@@ -10,14 +10,19 @@ class InstancePropertyService {
     const configProps = await client.configProps();
     for (const [contextName, context] of Object.entries(configProps.contexts)) {
       for (const bean of Object.values(context.beans)) {
-        const configHierarchy = unflatten(
-          flatten(bean.properties, {
-            delimiter: '.',
-            transformKey: (key: string) => `${bean.prefix}.${paramCase(key)}`,
+        const flattened = Object.fromEntries(
+          Object.entries(
+            flatten(bean.properties, {
+              delimiter: '.',
+              transformKey: (key: string) => paramCase(key),
+            })
+          ).map(([key, value]) => {
+            return [`${bean.prefix}.${key}`, value];
           })
         );
-        if (configHierarchy && typeof configHierarchy === 'object') {
-          config[contextName] = merge(config[contextName] || {}, configHierarchy);
+        const unflattened = unflatten(flattened);
+        if (unflattened && typeof unflattened === 'object') {
+          config[contextName] = merge(config[contextName] || {}, unflattened);
         }
       }
     }
