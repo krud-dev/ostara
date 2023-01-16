@@ -2,8 +2,10 @@ import { actuatorClientStore } from '../actuator/actuatorClientStore';
 import { flatten, unflatten } from 'flat';
 import { paramCase } from 'change-case';
 import { merge } from 'lodash';
+import { HasAbility } from '../utils/hasAbility';
 
 class InstancePropertyService {
+  @HasAbility('properties')
   async getProperties(instanceId: string): Promise<{ [key: string]: { [key: string]: unknown } }> {
     const client = actuatorClientStore.getActuatorClient(instanceId);
     const config: { [key: string]: { [key: string]: unknown } } = {};
