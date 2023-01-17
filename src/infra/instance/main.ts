@@ -70,3 +70,26 @@ ipcMain.handle('instancePropertyService:getProperties', async (event, instanceId
 ipcMain.handle('instanceHttpRequestStatisticsService:getStatistics', async (event, instanceId) => {
   return instanceHttpRequestStatisticsService.getStatistics(instanceId);
 });
+
+ipcMain.handle('instanceHttpRequestStatisticsService:getStatisticsForUri', async (event, instanceId, uri, options) => {
+  return instanceHttpRequestStatisticsService.getStatisticsForUri(instanceId, uri, options);
+});
+
+ipcMain.handle('instanceHttpRequestStatisticsService:getStatisticsForUriByMethods', async (event, instanceId, uri) => {
+  return instanceHttpRequestStatisticsService.getStatisticsForUriByMethods(instanceId, uri);
+});
+
+ipcMain.handle('instanceHttpRequestStatisticsService:getStatisticsForUriByStatuses', async (event, instanceId, uri) => {
+  return instanceHttpRequestStatisticsService.getStatisticsForUriByStatuses(instanceId, uri);
+});
+
+ipcMain.handle('instanceHttpRequestStatisticsService:getStatisticsForUriByOutcomes', async (event, instanceId, uri) => {
+  return instanceHttpRequestStatisticsService.getStatisticsForUriByOutcomes(instanceId, uri);
+});
+
+ipcMain.handle(
+  'instanceHttpRequestStatisticsService:getStatisticsForUriByExceptions',
+  async (event, instanceId, uri) => {
+    return instanceHttpRequestStatisticsService.getStatisticsForUriByExceptions(instanceId, uri);
+  }
+);

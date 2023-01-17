@@ -1,5 +1,6 @@
 import { ipcRenderer } from 'electron';
 import { LogLevel } from 'electron-log';
+import { InstanceHttpRequestStatisticsForUriOptions } from './models/httpRequestStatistics';
 
 export const instanceServiceBridge: InstanceServiceBridge = {
   propertyService: {
@@ -8,6 +9,25 @@ export const instanceServiceBridge: InstanceServiceBridge = {
   httpRequestStatisticsService: {
     getStatistics: (instanceId: string) =>
       ipcRenderer.invoke('instanceHttpRequestStatisticsService:getStatistics', instanceId),
+    getStatisticsForUri: (instanceId: string, uri: string, options: InstanceHttpRequestStatisticsForUriOptions) => {
+      return ipcRenderer.invoke('instanceHttpRequestStatisticsService:getStatisticsForUri', instanceId, uri, options);
+    },
+    getStatisticsForUriByMethods: (instanceId: string, uri: string) => {
+      return ipcRenderer.invoke('instanceHttpRequestStatisticsService:getStatisticsForUriByMethods', instanceId, uri);
+    },
+    getStatisticsForUriByOutcomes: (instanceId: string, uri: string) => {
+      return ipcRenderer.invoke('instanceHttpRequestStatisticsService:getStatisticsForUriByOutcomes', instanceId, uri);
+    },
+    getStatisticsForUriByStatuses: (instanceId: string, uri: string) => {
+      return ipcRenderer.invoke('instanceHttpRequestStatisticsService:getStatisticsForUriByStatuses', instanceId, uri);
+    },
+    getStatisticsForUriByExceptions: (instanceId: string, uri: string) => {
+      return ipcRenderer.invoke(
+        'instanceHttpRequestStatisticsService:getStatisticsForUriByExceptions',
+        instanceId,
+        uri
+      );
+    },
   },
   getInstanceLoggers: (instanceId: string) => ipcRenderer.invoke('instanceService:getInstanceLoggers', instanceId),
   getInstanceLogger: (instanceId: string, loggerName: string) =>

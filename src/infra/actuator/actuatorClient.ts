@@ -158,7 +158,7 @@ export class ActuatorClient {
     return response.data;
   }
 
-  async metric(name: string, tags: { [key: string]: string } = {}): Promise<ActuatorMetricResponse> {
+  async metric(name: string, tags: { [key: string]: unknown } = {}): Promise<ActuatorMetricResponse> {
     const params = {
       tag: Object.keys(tags).map((key) => `${key}:${tags[key]}`),
     };
