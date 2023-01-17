@@ -48,6 +48,9 @@ export const instanceServiceBridge: InstanceServiceBridge = {
     ipcRenderer.invoke('instanceService:evictInstanceCaches', instanceId, cacheNames),
   evictAllInstanceCaches: (instanceId: string) =>
     ipcRenderer.invoke('instanceService:evictAllInstanceCaches', instanceId),
+  getInstanceCacheStatistics: (instanceId: string, cacheName: string) => {
+    return ipcRenderer.invoke('instanceService:getInstanceCacheStatistics', instanceId, cacheName);
+  },
   getApplicationCaches: (applicationId: string) =>
     ipcRenderer.invoke('instanceService:getApplicationCaches', applicationId),
   getApplicationCache: (applicationId: string, cacheName: string) =>
@@ -56,4 +59,7 @@ export const instanceServiceBridge: InstanceServiceBridge = {
     ipcRenderer.invoke('instanceService:evictApplicationCaches', applicationId, cacheNames),
   evictAllApplicationCaches: (applicationId: string) =>
     ipcRenderer.invoke('instanceService:evictAllApplicationCaches', applicationId),
+  getApplicationCacheStatistics: (applicationId: string, cacheName: string) => {
+    return ipcRenderer.invoke('instanceService:getApplicationCacheStatistics', applicationId, cacheName);
+  },
 };

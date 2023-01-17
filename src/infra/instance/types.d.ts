@@ -1,5 +1,5 @@
 import { InstanceHealth } from '../configuration/model/configuration';
-import { ApplicationCache, InstanceCache } from './models/cache';
+import { ApplicationCache, InstanceCache, InstanceCacheStatistics } from './models/cache';
 import { ApplicationLogger, InstanceLogger } from './models/logger';
 import { LogLevel } from 'electron-log';
 import {
@@ -50,11 +50,12 @@ declare global {
     getInstanceCache: (instanceId: string, cacheName: string) => Promise<InstanceCache>;
     evictInstanceCaches: (instanceId: string, cacheNames: string[]) => Promise<void>;
     evictAllInstanceCaches: (instanceId: string) => Promise<void>;
-
+    getInstanceCacheStatistics: (instanceId: string, cacheName: string) => Promise<InstanceCacheStatistics>;
     getApplicationCaches: (applicationId: string) => Promise<ApplicationCache[]>;
     getApplicationCache: (applicationId: string, cacheName: string) => Promise<ApplicationCache>;
     evictApplicationCaches: (applicationId: string, cacheNames: string[]) => Promise<void>;
     evictAllApplicationCaches: (applicationId: string) => Promise<void>;
+    getApplicationCacheStatistics: (applicationId: string, cacheName: string) => Promise<InstanceCacheStatistics>;
   };
 
   interface Window {

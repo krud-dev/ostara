@@ -43,6 +43,6 @@ export const abilityResolvers: AbilityResolvers[] = [
   endpointAbilityResolver('properties', 'configprops'),
   endpointAbilityResolver('mappings', 'mappings'),
   endpointAbilityResolver('scheduledtasks', 'scheduledtasks'),
-  metricAbilityResolver('cache-statistics', ['cache.gets']), // Should be expanded to all other metrics
+  endpointAbilityResolver('cache-statistics', 'metrics'), // Should be expanded to all other metrics
   metricAbilityResolver('http-request-statistics', ['http.server.requests']),
 ];

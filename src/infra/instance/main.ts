@@ -47,6 +47,10 @@ ipcMain.handle('instanceService:evictAllInstanceCaches', async (event, instanceI
   return instanceService.evictAllInstanceCaches(instanceId);
 });
 
+ipcMain.handle('instanceService:getInstanceCacheStatistics', async (event, instanceId, cacheName) => {
+  return instanceService.getInstanceCacheStatistics(instanceId, cacheName);
+});
+
 ipcMain.handle('instanceService:getApplicationCaches', async (event, applicationId) => {
   return instanceService.getApplicationCaches(applicationId);
 });
@@ -61,6 +65,10 @@ ipcMain.handle('instanceService:evictApplicationCaches', async (event, applicati
 
 ipcMain.handle('instanceService:evictAllApplicationCaches', async (event, applicationId) => {
   return instanceService.evictAllApplicationCaches(applicationId);
+});
+
+ipcMain.handle('instanceService:getApplicationCacheStatistics', async (event, applicationId, cacheName) => {
+  return instanceService.getApplicationCacheStatistics(applicationId, cacheName);
 });
 
 ipcMain.handle('instancePropertyService:getProperties', async (event, instanceId) => {
