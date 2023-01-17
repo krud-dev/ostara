@@ -1,6 +1,7 @@
 import { ipcMain } from 'electron';
 import { instanceService } from './instanceService';
 import { instancePropertyService } from './instancePropertyService';
+import { instanceHttpRequestStatisticsService } from './instanceHttpRequestStatisticsService';
 
 ipcMain.handle('instanceService:fetchInstanceHealthById', async (event, id) => {
   return instanceService.fetchInstanceHealthById(id);
@@ -64,4 +65,8 @@ ipcMain.handle('instanceService:evictAllApplicationCaches', async (event, applic
 
 ipcMain.handle('instancePropertyService:getProperties', async (event, instanceId) => {
   return instancePropertyService.getProperties(instanceId);
+});
+
+ipcMain.handle('instanceHttpRequestStatisticsService:getStatistics', async (event, instanceId) => {
+  return instanceHttpRequestStatisticsService.getStatistics(instanceId);
 });

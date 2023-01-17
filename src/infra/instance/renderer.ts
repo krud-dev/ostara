@@ -5,6 +5,10 @@ export const instanceServiceBridge: InstanceServiceBridge = {
   propertyService: {
     getProperties: (instanceId: string) => ipcRenderer.invoke('instancePropertyService:getProperties', instanceId),
   },
+  httpRequestStatisticsService: {
+    getStatistics: (instanceId: string) =>
+      ipcRenderer.invoke('instanceHttpRequestStatisticsService:getStatistics', instanceId),
+  },
   getInstanceLoggers: (instanceId: string) => ipcRenderer.invoke('instanceService:getInstanceLoggers', instanceId),
   getInstanceLogger: (instanceId: string, loggerName: string) =>
     ipcRenderer.invoke('instanceService:getInstanceLogger', instanceId, loggerName),
