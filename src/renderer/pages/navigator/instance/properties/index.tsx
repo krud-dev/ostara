@@ -2,8 +2,7 @@ import React, { FunctionComponent, useMemo } from 'react';
 import Page from 'renderer/components/layout/Page';
 import { useNavigatorTree } from 'renderer/contexts/NavigatorTreeContext';
 import { EnrichedInstance } from 'infra/configuration/model/configuration';
-import { Box, Card, CardContent, CircularProgress, Divider, Stack } from '@mui/material';
-import { COMPONENTS_SPACING } from 'renderer/constants/ui';
+import { Box, Card, CircularProgress } from '@mui/material';
 import { useGetInstancePropertiesQuery } from 'renderer/apis/instance/getInstanceProperties';
 import { isEmpty, map } from 'lodash';
 import EmptyContent from 'renderer/components/help/EmptyContent';
@@ -50,9 +49,7 @@ const InstanceProperties: FunctionComponent = () => {
             sxTabContainer={{ backgroundColor: (theme) => theme.palette.background.paper }}
           >
             {tabs.map((tab) => (
-              <CardContent key={tab.id}>
-                <InstancePropertiesCode properties={propertiesState.data?.[tab.id] || {}} />
-              </CardContent>
+              <InstancePropertiesCode properties={propertiesState.data?.[tab.id] || {}} key={tab.id} />
             ))}
           </TabPanel>
         </Card>
