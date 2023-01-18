@@ -47,7 +47,6 @@ export default function SecondarySidebarLayout<T>({ Sidebar, sidebarProps }: Sec
               containerRef={(el) => {
                 scrollContainerRef.current = el;
               }}
-              options={{ wheelPropagation: false }}
             >
               <Outlet />
             </PerfectScrollbar>

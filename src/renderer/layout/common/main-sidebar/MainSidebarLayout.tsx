@@ -58,7 +58,6 @@ export default function MainSidebarLayout({ Sidebar }: MainSidebarLayoutProps) {
               containerRef={(el) => {
                 scrollContainerRef.current = el;
               }}
-              options={{ wheelPropagation: false }}
             >
               <Outlet />
             </PerfectScrollbar>

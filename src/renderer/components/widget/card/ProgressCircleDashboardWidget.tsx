@@ -9,6 +9,7 @@ import BaseOptionChart from 'renderer/components/chart/BaseOptionChart';
 import { ApexOptions } from 'apexcharts';
 import { ApplicationMetricDTO } from 'infra/metrics/metricsService';
 import useWidgetSubscribeToMetrics from 'renderer/components/widget/hooks/useWidgetSubscribeToMetrics';
+import { chain, isEmpty } from 'lodash';
 
 const CHART_HEIGHT = 300;
 
@@ -35,6 +36,15 @@ const ProgressCircleDashboardWidget: FunctionComponent<DashboardWidgetCardProps<
     () => Math.round(((data.current ?? 0) / (data.max ?? 1)) * 10000) / 100,
     [data]
   );
+  const currentColor = useMemo<string>(() => {
+    if (isEmpty(widget.colorThresholds)) {
+      return widget.color;
+    }
+    return chain(widget.colorThresholds)
+      .filter((threshold) => currentPercent >= threshold.value)
+      .maxBy((threshold) => threshold.value)
+      .value().color;
+  }, [currentPercent, widget]);
 
   const onMetricUpdate = useCallback(
     (metricDto?: ApplicationMetricDTO): void => {
@@ -60,7 +70,7 @@ const ProgressCircleDashboardWidget: FunctionComponent<DashboardWidgetCardProps<
       value: number;
     }[]
   >(() => [{ label: widget.title, value: currentPercent }], [widget, currentPercent]);
-  const chartColors = useMemo<string[][]>(() => [[lighten(widget.color, 0.5), widget.color]], [widget]);
+  const chartColors = useMemo<string[]>(() => [lighten(currentColor, 0.5), currentColor], [currentColor]);
   const chartLabels = useMemo<string[]>(() => chartData.map((i) => i.label), [chartData]);
   const chartSeries = useMemo<number[]>(() => chartData.map((i) => i.value), [chartData]);
 
@@ -71,7 +81,7 @@ const ProgressCircleDashboardWidget: FunctionComponent<DashboardWidgetCardProps<
       fill: {
         type: 'gradient',
         gradient: {
-          colorStops: chartColors.map((colors) => [{ offset: 0, color: colors[0] }]),
+          colorStops: chartColors.map((color) => [{ offset: 0, color: color }]),
         },
       },
       plotOptions: {
