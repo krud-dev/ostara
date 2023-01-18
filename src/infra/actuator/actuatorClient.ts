@@ -222,6 +222,17 @@ export class ActuatorClient {
   }
 
   /**
+   * Heap Dump
+   */
+
+  async heapDump(): Promise<ArrayBuffer> {
+    const response = await this.axios.get('heapdump', {
+      responseType: 'arraybuffer',
+    });
+    return response.data;
+  }
+
+  /**
    * Loggers
    */
 

@@ -1,4 +1,8 @@
-export type TaskName = 'queryInstanceMetrics' | 'queryInstanceHealth' | 'queryInstanceEndpoints';
+export type TaskName =
+  | 'queryInstanceMetrics'
+  | 'queryInstanceHealth'
+  | 'queryInstanceEndpoints'
+  | 'downloadPendingHeapdumpReferences';
 
 export type TaskDefinition = {
   alias: string;

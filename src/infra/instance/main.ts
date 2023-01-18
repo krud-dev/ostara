@@ -2,6 +2,7 @@ import { ipcMain } from 'electron';
 import { instanceService } from './instanceService';
 import { instancePropertyService } from './instancePropertyService';
 import { instanceHttpRequestStatisticsService } from './instanceHttpRequestStatisticsService';
+import { instanceHeapdumpService } from './heapdump/instanceHeapdumpService';
 
 ipcMain.handle('instanceService:fetchInstanceHealthById', async (event, id) => {
   return instanceService.fetchInstanceHealthById(id);
@@ -101,3 +102,15 @@ ipcMain.handle(
     return instanceHttpRequestStatisticsService.getStatisticsForUriByExceptions(instanceId, uri);
   }
 );
+
+ipcMain.handle('instanceHeapdumpService:getHeapdumps', async (event, instanceId, heapdumpId) => {
+  return instanceHeapdumpService.getHeapdumps(instanceId);
+});
+
+ipcMain.handle('instanceHeapdumpService:requestDownloadHeapdump', async (event, instanceId) => {
+  return instanceHeapdumpService.requestDownloadHeapdump(instanceId);
+});
+
+ipcMain.handle('instanceHeapdumpService:deleteHeapdump', async (event, instanceId, referenceId) => {
+  return instanceHeapdumpService.deleteHeapdump(instanceId, referenceId);
+});

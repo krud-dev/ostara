@@ -10,6 +10,7 @@ import {
   InstanceHttpRequestStatisticsByStatus,
   InstanceHttpRequestStatisticsForUriOptions,
 } from './models/httpRequestStatistics';
+import { HeapdumpReference } from './heapdump/entities/HeapdumpReference';
 
 declare global {
   type InstancePropertyServiceBridge = {
@@ -32,9 +33,16 @@ declare global {
     ): Promise<InstanceHttpRequestStatisticsByException[]>;
   };
 
+  type InstanceHeapdumpServiceBridge = {
+    getHeapdumps(instanceId: string): Promise<HeapdumpReference[]>;
+    requestDownloadHeapdump(instanceId: string): Promise<HeapdumpReference>;
+    deleteHeapdump(instanceId: string, referenceId: string): Promise<void>;
+  };
+
   type InstanceServiceBridge = {
     propertyService: InstancePropertyServiceBridge;
     httpRequestStatisticsService: InstanceHttpRequestStatisticsServiceBridge;
+    heapdumpService: InstanceHeapdumpServiceBridge;
     fetchInstanceHealthById: (instanceId: string) => Promise<InstanceHealth>;
     getInstanceLoggers: (instanceId: string) => Promise<InstanceLogger[]>;
     getInstanceLogger: (instanceId: string, loggerName: string) => Promise<InstanceLogger>;

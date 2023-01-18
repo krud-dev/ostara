@@ -1,9 +1,9 @@
 import { taskService } from './taskService';
 import { configurationService } from '../configuration/configurationService';
 import log from 'electron-log';
-import { metricsService } from '../metrics/metricsService';
 import { instanceService } from '../instance/instanceService';
 import { instanceAbilityService } from '../instance/InstanceAbilityService';
+import { instanceHeapdumpService } from '../instance/heapdump/instanceHeapdumpService';
 
 taskService.declareTask({
   name: 'queryInstanceHealth',
@@ -36,5 +36,16 @@ taskService.declareTask({
         await instanceAbilityService.fetchInstanceEndpoints(instance.id);
       })
     );
+  },
+});
+
+taskService.declareTask({
+  name: 'downloadPendingHeapdumpReferences',
+  alias: 'Download Pending Heapdump References',
+  description: 'Download pending heapdump references',
+  defaultCron: '*/5  * * * * *',
+  function: async () => {
+    log.info('Downloading pending heapdump references');
+    await instanceHeapdumpService.downloadPendingReferences();
   },
 });

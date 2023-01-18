@@ -16,5 +16,19 @@ export type Events = {
   'application-created': (application: Application) => void;
   'application-updated': (application: Application) => void;
   'application-deleted': (application: Application) => void;
-  'application-moved': (application: Application, oldParentFolderId: string | undefined, newParentFolderId: string | undefined) => void;
+  'application-moved': (
+    application: Application,
+    oldParentFolderId: string | undefined,
+    newParentFolderId: string | undefined
+  ) => void;
+
+  /**
+   * Heapdump Reference events
+   */
+
+  'heapdump-reference-downloading': (referenceId: string) => void;
+
+  'heapdump-reference-download-complete': (referenceId: string) => void;
+
+  'heapdump-reference-download-failed': (referenceId: string, message: string) => void;
 };

@@ -29,6 +29,14 @@ export const instanceServiceBridge: InstanceServiceBridge = {
       );
     },
   },
+  heapdumpService: {
+    getHeapdumps: (instanceId: string) => ipcRenderer.invoke('instanceHeapdumpService:getHeapdumps', instanceId),
+    requestDownloadHeapdump: (instanceId: string) =>
+      ipcRenderer.invoke('instanceHeapdumpService:requestDownloadHeapdump', instanceId),
+    deleteHeapdump(instanceId: string, referenceId: string): Promise<void> {
+      return ipcRenderer.invoke('instanceHeapdumpService:deleteHeapdump', instanceId, referenceId);
+    },
+  },
   getInstanceLoggers: (instanceId: string) => ipcRenderer.invoke('instanceService:getInstanceLoggers', instanceId),
   getInstanceLogger: (instanceId: string, loggerName: string) =>
     ipcRenderer.invoke('instanceService:getInstanceLogger', instanceId, loggerName),
