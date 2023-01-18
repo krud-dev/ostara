@@ -1,6 +1,6 @@
 import { Box, ToggleButton } from '@mui/material';
 import PerfectScrollbar from 'react-perfect-scrollbar';
-import { IconViewer, MUIconType } from 'renderer/components/icon/IconViewer';
+import { IconViewer, MUIconType } from 'renderer/components/common/IconViewer';
 import * as React from 'react';
 import { useCallback, useMemo } from 'react';
 import { availableItemIcons } from 'renderer/constants/icons';

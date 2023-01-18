@@ -11,7 +11,7 @@ import { isApplication, isFolder, Item } from 'infra/configuration/model/configu
 import { SxProps } from '@mui/system';
 import { matchPath, useLocation, useNavigate } from 'react-router-dom';
 import useItemColor from 'renderer/hooks/useItemColor';
-import { IconViewer } from 'renderer/components/icon/IconViewer';
+import { IconViewer } from 'renderer/components/common/IconViewer';
 import useItemIcon from 'renderer/hooks/useItemIcon';
 import ItemMenu from 'renderer/layout/navigator/components/sidebar/tree/menus/ItemMenu';
 import { usePopupState } from 'material-ui-popup-state/hooks';

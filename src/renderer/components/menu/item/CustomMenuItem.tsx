@@ -1,7 +1,7 @@
 import { SvgIconComponent } from '@mui/icons-material';
 import React, { ReactNode } from 'react';
 import { ListItemIcon, ListItemText, MenuItem, MenuItemProps } from '@mui/material';
-import { IconViewer, MUIconType } from 'renderer/components/icon/IconViewer';
+import { IconViewer, MUIconType } from 'renderer/components/common/IconViewer';
 
 export type CustomMenuItemProps = {
   icon?: MUIconType;

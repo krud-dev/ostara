@@ -9,7 +9,7 @@ import { generatePath } from 'react-router-dom';
 import ItemHeader from 'renderer/components/item/ItemHeader';
 import { Box, Divider } from '@mui/material';
 import ApplicationDataCollectionToggle from 'renderer/components/item/data-collection/ApplicationDataCollectionToggle';
-import { IconViewer } from 'renderer/components/icon/IconViewer';
+import { IconViewer } from 'renderer/components/common/IconViewer';
 import { getItemTypeIcon } from 'renderer/utils/itemUtils';
 
 type ApplicationSidebarProps = { item: EnrichedApplication; width: number };

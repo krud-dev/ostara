@@ -6,7 +6,7 @@ import AccountMenu from 'renderer/layout/common/main-sidebar/navbar/AccountMenu'
 import { useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { urls } from 'renderer/routes/urls';
-import { IconViewer } from 'renderer/components/icon/IconViewer';
+import { IconViewer } from 'renderer/components/common/IconViewer';
 import { useUi } from 'renderer/contexts/UiContext';
 
 type MainNavbarProps = {

@@ -8,7 +8,7 @@ import NiceModal from '@ebay/nice-modal-react';
 import CreateFolderDialog from 'renderer/components/item/dialogs/create/CreateFolderDialog';
 import { getNewItemOrder } from 'renderer/utils/treeUtils';
 import CustomMenuItem from 'renderer/components/menu/item/CustomMenuItem';
-import { MUIconType } from 'renderer/components/icon/IconViewer';
+import { MUIconType } from 'renderer/components/common/IconViewer';
 
 type AddFolderMenuItemProps = {
   node: NodeApi<TreeItem>;

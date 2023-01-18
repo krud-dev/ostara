@@ -2,7 +2,7 @@ import { Checkbox, IconButton, Stack, StackProps, Tooltip, Typography } from '@m
 import { COMPONENTS_SPACING } from 'renderer/constants/ui';
 import { FormattedMessage } from 'react-intl';
 import { useTable } from 'renderer/components/table/TableContext';
-import { IconViewer } from 'renderer/components/icon/IconViewer';
+import { IconViewer } from 'renderer/components/common/IconViewer';
 import React from 'react';
 
 interface TableSelectedActionsProps extends StackProps {}

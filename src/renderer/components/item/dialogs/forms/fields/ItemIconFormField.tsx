@@ -3,7 +3,7 @@ import { ItemType } from 'infra/configuration/model/configuration';
 import { IconButton } from '@mui/material';
 import { getItemTypeIcon } from 'renderer/utils/itemUtils';
 import { bindMenu, usePopupState } from 'material-ui-popup-state/hooks';
-import { IconViewer, MUIconType } from 'renderer/components/icon/IconViewer';
+import { IconViewer, MUIconType } from 'renderer/components/common/IconViewer';
 import { useFormContext } from 'react-hook-form';
 import ItemIconMenu from 'renderer/components/item/dialogs/forms/fields/ItemIconMenu';
 

@@ -8,7 +8,7 @@ import CreateInstanceDialog from 'renderer/components/item/dialogs/create/Create
 import { getNewItemOrder } from 'renderer/utils/treeUtils';
 import { getItemTypeIcon } from 'renderer/utils/itemUtils';
 import CustomMenuItem from 'renderer/components/menu/item/CustomMenuItem';
-import { MUIconType } from 'renderer/components/icon/IconViewer';
+import { MUIconType } from 'renderer/components/common/IconViewer';
 
 type AddInstanceMenuItemProps = {
   node: NodeApi<TreeItem>;

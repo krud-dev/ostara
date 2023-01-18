@@ -4,6 +4,8 @@ import { FormattedMessage } from 'react-intl';
 import { COMPONENTS_SPACING, SECONDARY_SCROLL_CONTAINER_ID } from 'renderer/constants/ui';
 import { useScrollAndHighlightElement } from 'renderer/hooks/useScrollAndHighlightElement';
 import React, { useCallback } from 'react';
+import Label from 'renderer/components/common/Label';
+import { InlineCodeLabel } from 'renderer/components/common/InlineCodeLabel';
 
 type InstanceBeanDetailsProps = {
   row: InstanceBean;
@@ -29,7 +31,9 @@ export default function InstanceBeanDetails({ row }: InstanceBeanDetailsProps) {
         >
           <FormattedMessage id={'type'} />
         </Typography>
-        <Typography variant={'body2'}>{row.type}</Typography>
+        <Typography variant={'body2'}>
+          <InlineCodeLabel code={row.type} />
+        </Typography>
       </Box>
       {!!row.dependencies?.length && (
         <Box>

@@ -1,7 +1,7 @@
 import { ReactNode } from 'react';
 import { COMPONENTS_SPACING, NAVBAR_HEIGHT } from 'renderer/constants/ui';
 import { Box, Divider, Typography } from '@mui/material';
-import { IconViewer, MUIconType } from 'renderer/components/icon/IconViewer';
+import { IconViewer, MUIconType } from 'renderer/components/common/IconViewer';
 
 type MainSidebarTitleProps = {
   title: ReactNode;

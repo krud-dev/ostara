@@ -10,7 +10,7 @@ import CreateApplicationDialog from 'renderer/components/item/dialogs/create/Cre
 import CreateInstanceDialog from 'renderer/components/item/dialogs/create/CreateInstanceDialog';
 import { PopupState } from 'material-ui-popup-state/hooks';
 import CustomMenuItem from 'renderer/components/menu/item/CustomMenuItem';
-import { MUIconType } from 'renderer/components/icon/IconViewer';
+import { MUIconType } from 'renderer/components/common/IconViewer';
 
 type CreateItemMenuItemsProps = {
   menuState: PopupState;

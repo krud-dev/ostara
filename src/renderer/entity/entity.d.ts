@@ -1,4 +1,4 @@
-import { MUIconType } from 'renderer/components/icon/IconViewer';
+import { MUIconType } from 'renderer/components/common/IconViewer';
 import { ComponentType } from 'react';
 import { ColorSchema } from 'renderer/theme/config/palette';
 

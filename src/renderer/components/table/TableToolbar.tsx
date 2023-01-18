@@ -3,7 +3,7 @@ import SearchTextField from 'renderer/components/input/SearchTextField';
 import { COMPONENTS_SPACING } from 'renderer/constants/ui';
 import { useTable } from 'renderer/components/table/TableContext';
 import { FormattedMessage } from 'react-intl';
-import { IconViewer } from 'renderer/components/icon/IconViewer';
+import { IconViewer } from 'renderer/components/common/IconViewer';
 
 type TableToolbarProps = {};
 

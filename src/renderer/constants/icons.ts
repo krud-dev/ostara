@@ -1,4 +1,4 @@
-import { MUIconType } from 'renderer/components/icon/IconViewer';
+import { MUIconType } from 'renderer/components/common/IconViewer';
 
 export const availableItemIcons: MUIconType[] = [
   'ComputerOutlined',

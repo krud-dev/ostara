@@ -3,7 +3,7 @@ import { Box, IconButton } from '@mui/material';
 import { useUi } from 'renderer/contexts/UiContext';
 import MenuPopover from 'renderer/components/menu/popup/MenuPopover';
 import { FormattedMessage } from 'react-intl';
-import MAvatar from 'renderer/components/icon/MAvatar';
+import MAvatar from 'renderer/components/common/MAvatar';
 import { bindMenu, usePopupState } from 'material-ui-popup-state/hooks';
 import CustomMenuItem from 'renderer/components/menu/item/CustomMenuItem';
 import { useNavigate } from 'react-router-dom';

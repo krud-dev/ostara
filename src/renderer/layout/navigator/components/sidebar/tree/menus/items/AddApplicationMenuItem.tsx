@@ -8,7 +8,7 @@ import NiceModal from '@ebay/nice-modal-react';
 import { getNewItemOrder } from 'renderer/utils/treeUtils';
 import CreateApplicationDialog from 'renderer/components/item/dialogs/create/CreateApplicationDialog';
 import CustomMenuItem from 'renderer/components/menu/item/CustomMenuItem';
-import { MUIconType } from 'renderer/components/icon/IconViewer';
+import { MUIconType } from 'renderer/components/common/IconViewer';
 
 type AddApplicationMenuItemProps = {
   node: NodeApi<TreeItem>;

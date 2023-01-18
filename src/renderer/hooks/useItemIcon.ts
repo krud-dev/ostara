@@ -1,6 +1,6 @@
 import { useMemo } from 'react';
 import { Item } from 'infra/configuration/model/configuration';
-import { MUIconType } from 'renderer/components/icon/IconViewer';
+import { MUIconType } from 'renderer/components/common/IconViewer';
 import { getItemTypeIcon } from 'renderer/utils/itemUtils';
 
 const useItemIcon = (item: Item): MUIconType => {
