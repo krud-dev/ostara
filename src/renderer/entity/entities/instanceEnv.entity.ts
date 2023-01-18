@@ -32,10 +32,12 @@ export const instanceEnvEntity: Entity<EnvProperty> = {
     },
   ],
   globalActions: [],
-  defaultOrder: {
-    id: 'name',
-    direction: 'asc',
-  },
+  defaultOrder: [
+    {
+      id: 'name',
+      direction: 'asc',
+    },
+  ],
   paging: false,
   getId: (item) => `${item.name}-${item.source}`,
   getGrouping: (item) => item.source,

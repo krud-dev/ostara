@@ -37,10 +37,12 @@ export const applicationInstance: Entity<EnrichedInstance> = {
     type: 'Navigate',
     getUrl: (item) => generatePath(urls.instance.url, { id: item.id }),
   },
-  defaultOrder: {
-    id: 'name',
-    direction: 'asc',
-  },
+  defaultOrder: [
+    {
+      id: 'name',
+      direction: 'asc',
+    },
+  ],
   paging: false,
   getId: (item) => item.id,
   filterData: (data, filter) => data.filter((item) => item.alias?.toLowerCase().includes(filter.toLowerCase())),

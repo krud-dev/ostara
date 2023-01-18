@@ -33,10 +33,12 @@ export const instanceCacheEntity: Entity<InstanceCache> = {
       icon: 'CleaningServicesOutlined',
     },
   ],
-  defaultOrder: {
-    id: 'name',
-    direction: 'asc',
-  },
+  defaultOrder: [
+    {
+      id: 'name',
+      direction: 'asc',
+    },
+  ],
   paging: false,
   getId: (item) => item.name,
   getGrouping: (item) => item.cacheManager,

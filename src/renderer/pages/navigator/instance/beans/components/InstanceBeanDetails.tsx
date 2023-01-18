@@ -1,13 +1,25 @@
 import { Box, Link, Stack, Typography } from '@mui/material';
 import { InstanceBean } from 'renderer/apis/instance/getInstanceBeans';
 import { FormattedMessage } from 'react-intl';
-import { COMPONENTS_SPACING } from 'renderer/constants/ui';
+import { COMPONENTS_SPACING, SECONDARY_SCROLL_CONTAINER_ID } from 'renderer/constants/ui';
+import { useScrollAndHighlightElement } from 'renderer/hooks/useScrollAndHighlightElement';
+import React, { useCallback } from 'react';
 
 type InstanceBeanDetailsProps = {
   row: InstanceBean;
 };
 
 export default function InstanceBeanDetails({ row }: InstanceBeanDetailsProps) {
+  const highlightAndScroll = useScrollAndHighlightElement();
+
+  const dependencyClickHandler = useCallback(
+    (event: React.MouseEvent, dependency: string) => {
+      event.preventDefault();
+      highlightAndScroll(dependency, { containerId: SECONDARY_SCROLL_CONTAINER_ID });
+    },
+    [highlightAndScroll]
+  );
+
   return (
     <Stack direction={'column'} spacing={COMPONENTS_SPACING}>
       <Box>
@@ -29,7 +41,9 @@ export default function InstanceBeanDetails({ row }: InstanceBeanDetailsProps) {
           </Typography>
           {row.dependencies.map((dependency) => (
             <Typography variant={'body2'} key={dependency}>
-              <Link href={`#${dependency}`}>{dependency}</Link>
+              <Link href={`#${dependency}`} onClick={(event) => dependencyClickHandler(event, dependency)}>
+                {dependency}
+              </Link>
             </Typography>
           ))}
         </Box>

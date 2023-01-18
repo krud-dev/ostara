@@ -12,7 +12,7 @@ export type Entity<EntityItem> = {
   defaultOrder: {
     id: string;
     direction: 'asc' | 'desc';
-  };
+  }[];
   paging: boolean;
   getId: (item: EntityItem) => string;
   getAnchor?: (item: EntityItem) => string;

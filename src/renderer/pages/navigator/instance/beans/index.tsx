@@ -11,7 +11,6 @@ import useCopyToClipboard from 'renderer/hooks/useCopyToClipboard';
 
 const InstanceBeans: FunctionComponent = () => {
   const { selectedItem } = useNavigatorTree();
-  const copyToClipboard = useCopyToClipboard();
 
   const item = useMemo<EnrichedInstance | undefined>(
     () => selectedItem as EnrichedInstance | undefined,
@@ -22,29 +21,10 @@ const InstanceBeans: FunctionComponent = () => {
   const entity = useMemo<Entity<InstanceBean>>(() => instanceBeanEntity, []);
   const queryState = useGetInstanceBeansQuery({ instanceId: itemId });
 
-  const getBeanString = useCallback((bean: InstanceBean): string => {
-    return bean.name;
-  }, []);
+  const actionsHandler = useCallback(async (actionId: string, row: InstanceBean): Promise<void> => {}, []);
 
-  const actionsHandler = useCallback(async (actionId: string, row: InstanceBean): Promise<void> => {
-    switch (actionId) {
-      case COPY_ID:
-        copyToClipboard(getBeanString(row));
-        break;
-      default:
-        break;
-    }
-  }, []);
-
-  const massActionsHandler = useCallback(async (actionId: string, selectedRows: InstanceBean[]): Promise<void> => {
-    switch (actionId) {
-      case COPY_ID:
-        copyToClipboard(selectedRows.map(getBeanString).join(', '));
-        break;
-      default:
-        break;
-    }
-  }, []);
+  const massActionsHandler = useCallback(async (actionId: string, selectedRows: InstanceBean[]): Promise<void> => {},
+  []);
 
   const globalActionsHandler = useCallback(async (actionId: string): Promise<void> => {}, []);
 

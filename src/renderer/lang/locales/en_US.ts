@@ -94,4 +94,5 @@ export default {
   scope: 'Scope',
   type: 'Type',
   dependencies: 'Dependencies',
+  package: 'Package',
 };

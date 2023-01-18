@@ -1,6 +1,6 @@
 import React, { PropsWithChildren, useCallback, useContext, useMemo, useState } from 'react';
 import { Entity } from 'renderer/entity/entity';
-import { chain, get, isEmpty, orderBy, sortBy } from 'lodash';
+import { get, isEmpty, orderBy } from 'lodash';
 import useConfigurationStoreState from 'renderer/hooks/useConfigurationStoreState';
 import { DEFAULT_ROWS_PER_PAGE } from 'renderer/constants/ui';
 import { notEmpty } from 'renderer/utils/objectUtils';
@@ -83,11 +83,8 @@ function TableProvider<EntityItem>({
     () =>
       orderBy(
         entity.filterData(tableData, filter),
-        (item) =>
-          get(item, orderColumn || entity.defaultOrder.id)
-            ?.toString()
-            .toLowerCase(),
-        orderDirection || entity.defaultOrder.direction
+        [...(orderColumn ? [orderColumn] : []), ...entity.defaultOrder.map((o) => o.id)],
+        [...(orderDirection ? [orderDirection] : []), ...entity.defaultOrder.map((o) => o.direction)]
       ),
     [entity, tableData, filter, orderDirection, orderColumn]
   );

@@ -36,10 +36,12 @@ export const taskEntity: Entity<TaskDefinitionDisplay> = {
   ],
   massActions: [],
   globalActions: [],
-  defaultOrder: {
-    id: 'alias',
-    direction: 'asc',
-  },
+  defaultOrder: [
+    {
+      id: 'alias',
+      direction: 'asc',
+    },
+  ],
   paging: false,
   getId: (item) => item.name,
   filterData: (data, filter) =>

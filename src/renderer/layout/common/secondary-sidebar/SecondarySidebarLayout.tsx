@@ -2,7 +2,12 @@ import React, { ComponentType, useEffect, useMemo, useRef } from 'react';
 import { Box } from '@mui/material';
 import { Outlet, useLocation } from 'react-router-dom';
 import { Allotment, LayoutPriority } from 'allotment';
-import { INTERNAL_SIDEBAR_MAX_WIDTH, INTERNAL_SIDEBAR_MIN_WIDTH, SIDEBAR_DEFAULT_WIDTH } from 'renderer/constants/ui';
+import {
+  INTERNAL_SIDEBAR_MAX_WIDTH,
+  INTERNAL_SIDEBAR_MIN_WIDTH,
+  SECONDARY_SCROLL_CONTAINER_ID,
+  SIDEBAR_DEFAULT_WIDTH,
+} from 'renderer/constants/ui';
 import useConfigurationStoreState from 'renderer/hooks/useConfigurationStoreState';
 import PerfectScrollbar from 'react-perfect-scrollbar';
 
@@ -38,6 +43,7 @@ export default function SecondarySidebarLayout<T>({ Sidebar, sidebarProps }: Sec
         <Allotment.Pane priority={LayoutPriority.High}>
           <Box sx={{ height: '100%', overflow: 'hidden' }}>
             <PerfectScrollbar
+              id={SECONDARY_SCROLL_CONTAINER_ID}
               containerRef={(el) => {
                 scrollContainerRef.current = el;
               }}

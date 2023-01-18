@@ -19,7 +19,7 @@ export default function TableRowActionDetails<EntityItem>({
   return (
     <>
       <TableRow />
-      <TableRow>
+      <TableRow sx={{ borderBottom: (theme) => `1px solid ${theme.palette.divider}` }}>
         <TableCell colSpan={999} sx={{ wordBreak: 'break-all' }}>
           <action.Component row={row} />
         </TableCell>

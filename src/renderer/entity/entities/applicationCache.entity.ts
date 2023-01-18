@@ -33,10 +33,12 @@ export const applicationCacheEntity: Entity<ApplicationCache> = {
       icon: 'CleaningServicesOutlined',
     },
   ],
-  defaultOrder: {
-    id: 'name',
-    direction: 'asc',
-  },
+  defaultOrder: [
+    {
+      id: 'name',
+      direction: 'asc',
+    },
+  ],
   paging: false,
   getId: (item) => item.name,
   getGrouping: (item) => chain(item.instanceCaches).values().first().value()?.cacheManager || 'N/A',
