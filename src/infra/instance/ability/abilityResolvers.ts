@@ -11,7 +11,11 @@ const endpointAbilityResolver = (type: InstanceAbility, endpoint: string): Abili
   hasAbility: async (instanceId: string, endpoints: string[]) => endpoints.includes(endpoint),
 });
 
-const metricAbilityResolver = (type: InstanceAbility, metrics: string[]): AbilityResolvers => ({
+const metricAbilityResolver = (
+  type: InstanceAbility,
+  metricNames: string[],
+  mode: 'all' | 'any' = 'all'
+): AbilityResolvers => ({
   type,
   hasAbility: async (instanceId: string, endpoints: string[]) => {
     if (!endpoints.includes('metrics')) {
@@ -19,11 +23,14 @@ const metricAbilityResolver = (type: InstanceAbility, metrics: string[]): Abilit
     }
     const client = actuatorClientStore.getActuatorClient(instanceId);
     try {
-      await Promise.all(metrics.map((metric) => client.metric(metric)));
+      const metrics = await client.metrics();
+      if (mode === 'all') {
+        return metricNames.every((metricName) => metrics.names.includes(metricName));
+      }
+      return metricNames.some((metricName) => metrics.names.includes(metricName));
     } catch (e) {
       return false;
     }
-    return true;
   },
 });
 
@@ -43,6 +50,10 @@ export const abilityResolvers: AbilityResolvers[] = [
   endpointAbilityResolver('properties', 'configprops'),
   endpointAbilityResolver('mappings', 'mappings'),
   endpointAbilityResolver('scheduledtasks', 'scheduledtasks'),
-  endpointAbilityResolver('cache-statistics', 'metrics'), // Should be expanded to all other metrics
+  metricAbilityResolver(
+    'cache-statistics',
+    ['cache.gets', 'cache.puts', 'cache.evictions', 'cache.hits', 'cache.misses', 'cache.removals', 'cache.size'],
+    'any'
+  ), // Should be expanded to all other metrics
   metricAbilityResolver('http-request-statistics', ['http.server.requests']),
 ];
