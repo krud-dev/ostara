@@ -11,6 +11,7 @@ import {
   ListAltOutlined,
   ParkOutlined,
   StorageOutlined,
+  TextSnippetOutlined,
 } from '@mui/icons-material';
 import { urls } from 'renderer/routes/urls';
 import { useMemo } from 'react';
@@ -59,6 +60,13 @@ export default function InstanceSidebar({ item, width }: InstanceSidebarProps) {
             disabled: isServiceInactive(item, 'beans'),
           },
           {
+            id: 'properties',
+            icon: <ListAltOutlined />,
+            label: <FormattedMessage id={'properties'} />,
+            to: generatePath(urls.instanceProperties.url, { id: item.id }),
+            hidden: isServiceInactive(item, 'properties'),
+          },
+          {
             id: 'quartz',
             icon: <AccessTimeOutlined />,
             label: <FormattedMessage id={'quartz'} />,
@@ -80,7 +88,7 @@ export default function InstanceSidebar({ item, width }: InstanceSidebarProps) {
         items: [
           {
             id: 'loggers',
-            icon: <ListAltOutlined />,
+            icon: <TextSnippetOutlined />,
             label: <FormattedMessage id={'loggers'} />,
             to: generatePath(urls.instanceLoggers.url, { id: item.id }),
             disabled: isServiceInactive(item, 'loggers'),

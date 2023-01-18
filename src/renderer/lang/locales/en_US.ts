@@ -95,4 +95,5 @@ export default {
   type: 'Type',
   dependencies: 'Dependencies',
   package: 'Package',
+  properties: 'Properties',
 };

@@ -16,6 +16,7 @@ import InstanceCaches from 'renderer/pages/navigator/instance/caches';
 import ApplicationCaches from 'renderer/pages/navigator/application/caches';
 import ApplicationInstances from 'renderer/pages/navigator/application/instances';
 import InstanceBeans from 'renderer/pages/navigator/instance/beans';
+import InstanceProperties from 'renderer/pages/navigator/instance/properties';
 
 export default function Router() {
   return useRoutes([
@@ -89,6 +90,10 @@ export default function Router() {
             {
               path: urls.instanceFlyway.path,
               element: <InstanceDashboard />,
+            },
+            {
+              path: urls.instanceProperties.path,
+              element: <InstanceProperties />,
             },
             {
               path: urls.instanceLoggers.path,

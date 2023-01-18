@@ -5,6 +5,7 @@ export const apiKeys = {
   itemEnv: (id: string) => [...apiKeys.item(id), 'env'],
   itemEnvProperties: (id: string) => [...apiKeys.item(id), 'envProperties'],
   itemBeans: (id: string) => [...apiKeys.item(id), 'beans'],
+  itemProperties: (id: string) => [...apiKeys.item(id), 'properties'],
   itemInstances: (id: string) => [...apiKeys.item(id), 'instances'],
 
   actuator: () => ['actuator'],

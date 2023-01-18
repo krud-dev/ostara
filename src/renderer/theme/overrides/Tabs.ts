@@ -5,7 +5,7 @@ export default function Tabs(theme: Theme) {
     MuiTab: {
       styleOverrides: {
         root: {
-          padding: 0,
+          // padding: 0,
           fontWeight: theme.typography.fontWeightMedium,
           borderTopLeftRadius: theme.shape.borderRadius,
           borderTopRightRadius: theme.shape.borderRadius,

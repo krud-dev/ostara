@@ -65,7 +65,7 @@ export const urls = asUrlInfos({
     path: 'quartz',
   },
   instanceFlyway: {
-    url: '/navigator/instance/:id/Flyway',
+    url: '/navigator/instance/:id/flyway',
     path: 'flyway',
   },
   instanceEnvironment: {
@@ -75,6 +75,10 @@ export const urls = asUrlInfos({
   instanceBeans: {
     url: '/navigator/instance/:id/beans',
     path: 'beans',
+  },
+  instanceProperties: {
+    url: '/navigator/instance/:id/properties',
+    path: 'properties',
   },
   instanceLoggers: {
     url: '/navigator/instance/:id/loggers',
