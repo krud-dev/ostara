@@ -5,6 +5,7 @@ import TableCellDataCron from 'renderer/components/table/data/TableCellDataCron'
 import TableCellDataDate from 'renderer/components/table/data/TableCellDataDate';
 import TableCellDataCustom from 'renderer/components/table/data/TableCellDataCustom';
 import TableCellDataChip from 'renderer/components/table/data/TableCellDataChip';
+import TableCellDataNumber from 'renderer/components/table/data/TableCellDataNumber';
 
 type TableCellDataProps<EntityItem> = {
   row: EntityItem;
@@ -16,6 +17,8 @@ export default function TableCellData<EntityItem>({ row, column }: TableCellData
     switch (column.type) {
       case 'Text':
         return <TableCellDataText row={row} column={column} />;
+      case 'Number':
+        return <TableCellDataNumber row={row} column={column} />;
       case 'Cron':
         return <TableCellDataCron row={row} column={column} />;
       case 'Date':

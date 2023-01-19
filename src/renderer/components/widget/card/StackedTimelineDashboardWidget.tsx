@@ -2,27 +2,12 @@ import React, { FunctionComponent, useCallback, useMemo, useRef, useState } from
 import { StackedTimelineWidget } from 'infra/dashboard/model';
 import { DashboardWidgetCardProps } from 'renderer/components/widget/widget';
 import DashboardGenericCard from 'renderer/components/widget/card/DashboardGenericCard';
-import merge from 'lodash/merge';
-import { styled } from '@mui/material/styles';
-import ReactApexChart from 'react-apexcharts';
-import BaseOptionChart from 'renderer/components/chart/BaseOptionChart';
-import { ApexOptions } from 'apexcharts';
 import { chain, every, isEmpty, isNaN, isNil, takeRight } from 'lodash';
 import { useIntl } from 'react-intl';
 import useWidgetSubscribeToMetrics from 'renderer/components/widget/hooks/useWidgetSubscribeToMetrics';
+import AreaMultiple from 'renderer/components/widget/pure/AreaMultiple';
 
-const CHART_HEIGHT = 364;
 const MAX_DATA_POINTS = 50;
-
-const ChartWrapperStyle = styled('div')(({ theme }) => ({
-  height: CHART_HEIGHT,
-  marginTop: theme.spacing(2),
-  '& .apexcharts-canvas svg': { height: CHART_HEIGHT },
-  '& .apexcharts-canvas svg,.apexcharts-canvas foreignObject': {
-    overflow: 'visible',
-  },
-  padding: theme.spacing(0, 2),
-}));
 
 type DataPoint = { values: number[]; timestamp: number };
 
@@ -85,27 +70,9 @@ const StackedTimelineDashboardWidget: FunctionComponent<DashboardWidgetCardProps
 
   const chartColors = useMemo<string[]>(() => metrics.map((m) => m.color), [metrics]);
 
-  const overrideOptions = useMemo<Partial<ApexOptions>>(
-    () => ({
-      chart: {
-        stacked: true,
-      },
-      legend: { position: 'top', horizontalAlign: 'right' },
-      xaxis: {
-        categories: chartLabels,
-      },
-      colors: chartColors,
-    }),
-    [chartLabels, chartColors]
-  );
-
-  const chartOptions: ApexOptions = merge(BaseOptionChart(), overrideOptions);
-
   return (
     <DashboardGenericCard title={widget.title} loading={loading} empty={empty}>
-      <ChartWrapperStyle dir="ltr">
-        <ReactApexChart type="area" series={data} options={chartOptions} height={'100%'} width={'100%'} />
-      </ChartWrapperStyle>
+      <AreaMultiple series={data} labels={chartLabels} colors={chartColors} />
     </DashboardGenericCard>
   );
 };

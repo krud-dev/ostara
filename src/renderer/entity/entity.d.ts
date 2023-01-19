@@ -35,6 +35,11 @@ export type EntityTextColumn<EntityItem> = EntityBaseColumn<EntityItem> & {
   readonly type: 'Text';
 };
 
+export type EntityNumberColumn<EntityItem> = EntityBaseColumn<EntityItem> & {
+  readonly type: 'Number';
+  round?: number;
+};
+
 export type EntityCronColumn<EntityItem> = EntityBaseColumn<EntityItem> & {
   readonly type: 'Cron';
 };
@@ -55,6 +60,7 @@ export type EntityCustomColumn<EntityItem> = EntityBaseColumn<EntityItem> & {
 
 export type EntityColumn<EntityItem> =
   | EntityTextColumn<EntityItem>
+  | EntityNumberColumn<EntityItem>
   | EntityCronColumn<EntityItem>
   | EntityDateColumn<EntityItem>
   | EntityChipColumn<EntityItem>

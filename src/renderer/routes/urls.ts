@@ -60,6 +60,10 @@ export const urls = asUrlInfos({
     url: '/navigator/instance/:id/metrics',
     path: 'metrics',
   },
+  instanceHttpRequests: {
+    url: '/navigator/instance/:id/http-requests',
+    path: 'http-requests',
+  },
   instanceQuartz: {
     url: '/navigator/instance/:id/quartz',
     path: 'quartz',

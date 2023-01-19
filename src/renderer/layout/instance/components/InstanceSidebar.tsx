@@ -7,6 +7,7 @@ import {
   DataUsageOutlined,
   DeviceHubOutlined,
   EggOutlined,
+  HttpOutlined,
   LanOutlined,
   ListAltOutlined,
   ParkOutlined,
@@ -65,6 +66,13 @@ export default function InstanceSidebar({ item, width }: InstanceSidebarProps) {
             label: <FormattedMessage id={'properties'} />,
             to: generatePath(urls.instanceProperties.url, { id: item.id }),
             disabled: isServiceInactive(item, 'properties'),
+          },
+          {
+            id: 'http-requests',
+            icon: <HttpOutlined />,
+            label: <FormattedMessage id={'httpRequests'} />,
+            to: generatePath(urls.instanceHttpRequests.url, { id: item.id }),
+            hidden: isServiceInactive(item, 'http-request-statistics'),
           },
           {
             id: 'quartz',

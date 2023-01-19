@@ -1,12 +1,14 @@
 import { ApexOptions } from 'apexcharts';
 import { useTheme } from '@mui/material/styles';
+import { useIntl } from 'react-intl';
 
 export default function BaseOptionChart(): ApexOptions {
   const theme = useTheme();
+  const intl = useIntl();
 
   const LABEL_TOTAL = {
     show: true,
-    label: 'Total',
+    label: intl.formatMessage({ id: 'total' }),
     color: theme.palette.text.secondary,
     fontSize: theme.typography.subtitle2.fontSize as string,
     fontWeight: theme.typography.subtitle2.fontWeight,

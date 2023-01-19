@@ -17,6 +17,7 @@ import ApplicationCaches from 'renderer/pages/navigator/application/caches';
 import ApplicationInstances from 'renderer/pages/navigator/application/instances';
 import InstanceBeans from 'renderer/pages/navigator/instance/beans';
 import InstanceProperties from 'renderer/pages/navigator/instance/properties';
+import InstanceHttpRequests from 'renderer/pages/navigator/instance/http-requests';
 
 export default function Router() {
   return useRoutes([
@@ -82,6 +83,10 @@ export default function Router() {
             {
               path: urls.instanceBeans.path,
               element: <InstanceBeans />,
+            },
+            {
+              path: urls.instanceHttpRequests.path,
+              element: <InstanceHttpRequests />,
             },
             {
               path: urls.instanceQuartz.path,
