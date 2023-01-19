@@ -64,7 +64,7 @@ export default function InstanceSidebar({ item, width }: InstanceSidebarProps) {
             icon: <ListAltOutlined />,
             label: <FormattedMessage id={'properties'} />,
             to: generatePath(urls.instanceProperties.url, { id: item.id }),
-            hidden: isServiceInactive(item, 'properties'),
+            disabled: isServiceInactive(item, 'properties'),
           },
           {
             id: 'quartz',

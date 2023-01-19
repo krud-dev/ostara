@@ -3,9 +3,8 @@ import { useMemo } from 'react';
 import ReactCodeMirror, { ReactCodeMirrorProps } from '@uiw/react-codemirror';
 import { EditorView } from '@codemirror/view';
 import { Extension } from '@codemirror/state';
-import { StreamLanguage } from '@codemirror/language';
 import { useUi } from 'renderer/contexts/UiContext';
-import { yaml } from '@codemirror/legacy-modes/mode/yaml';
+import { langs } from '@uiw/codemirror-extensions-langs';
 
 export type ProgrammingLanguage = 'yaml';
 
@@ -25,7 +24,7 @@ export default function CodeEditor({ language, extensions, ...props }: CodeEdito
 
     switch (language) {
       case 'yaml':
-        return [StreamLanguage.define(yaml)];
+        return [langs.yaml()];
       default:
         return [];
     }
