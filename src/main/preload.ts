@@ -19,3 +19,4 @@ contextBridge.exposeInMainWorld('utils', utilsBridge);
 contextBridge.exposeInMainWorld('subscriptions', subscriptionsBridge);
 contextBridge.exposeInMainWorld('instance', instanceServiceBridge);
 contextBridge.exposeInMainWorld('ui', uiServiceBridge);
+contextBridge.exposeInMainWorld('isElectron', true);

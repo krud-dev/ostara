@@ -9,6 +9,7 @@ function ActuatorPlayground({ url }: ActuatorPlaygroundProps) {
   return (
     <div>
       <h1>Actuator Playground</h1>
+      <h2>isElectron: {JSON.stringify(window.isElectron)}</h2>
       <p>https://sbclient.krud.dev/first/1/actuator</p>
       <p>https://sbclient.krud.dev/first/2/actuator</p>
       <p>https://sbclient.krud.dev/first/3/actuator</p>
