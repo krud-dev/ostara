@@ -6,8 +6,7 @@ import TableComponent from 'renderer/components/table/TableComponent';
 import { useSnackbar } from 'notistack';
 import { Entity } from 'renderer/entity/entity';
 import { FormattedMessage } from 'react-intl';
-import { useGetInstanceCachesQuery } from 'renderer/apis/instance/getInstanceCaches';
-import { InstanceCache } from 'infra/instance/models/cache';
+import { EnrichedInstanceCache, useGetInstanceCachesQuery } from 'renderer/apis/instance/getInstanceCaches';
 import { instanceCacheEntity } from 'renderer/entity/entities/instanceCache.entity';
 import { useEvictInstanceCaches } from 'renderer/apis/instance/evictInstanceCaches';
 import { useEvictAllInstanceCaches } from 'renderer/apis/instance/evictAllInstanceCaches';
@@ -17,23 +16,19 @@ const InstanceCaches: FunctionComponent = () => {
   const { selectedItem } = useNavigatorTree();
   const { enqueueSnackbar } = useSnackbar();
 
-  const item = useMemo<EnrichedInstance | undefined>(
-    () => selectedItem as EnrichedInstance | undefined,
-    [selectedItem]
-  );
-  const itemId = useMemo<string>(() => item?.id || '', [item]);
+  const item = useMemo<EnrichedInstance>(() => selectedItem as EnrichedInstance, [selectedItem]);
 
-  const entity = useMemo<Entity<InstanceCache>>(() => instanceCacheEntity, []);
-  const queryState = useGetInstanceCachesQuery({ instanceId: itemId });
+  const entity = useMemo<Entity<EnrichedInstanceCache>>(() => instanceCacheEntity, []);
+  const queryState = useGetInstanceCachesQuery({ instance: item });
 
   const evictCachesState = useEvictInstanceCaches();
   const evictAllCachesState = useEvictAllInstanceCaches();
 
-  const actionsHandler = useCallback(async (actionId: string, row: InstanceCache): Promise<void> => {
+  const actionsHandler = useCallback(async (actionId: string, row: EnrichedInstanceCache): Promise<void> => {
     switch (actionId) {
       case EVICT_CACHE_ID:
         try {
-          await evictCachesState.mutateAsync({ instanceId: itemId, cacheNames: [row.name] });
+          await evictCachesState.mutateAsync({ instanceId: item.id, cacheNames: [row.name] });
           enqueueSnackbar(<FormattedMessage id={'evictedCacheSuccessfully'} values={{ names: row.name }} />, {
             variant: 'success',
           });
@@ -44,35 +39,38 @@ const InstanceCaches: FunctionComponent = () => {
     }
   }, []);
 
-  const massActionsHandler = useCallback(async (actionId: string, selectedRows: InstanceCache[]): Promise<void> => {
-    switch (actionId) {
-      case EVICT_CACHE_ID:
-        try {
-          await evictCachesState.mutateAsync({
-            instanceId: itemId,
-            cacheNames: selectedRows.map((r) => r.name),
-          });
-          enqueueSnackbar(
-            <FormattedMessage
-              id={'evictedCacheSuccessfully'}
-              values={{ names: selectedRows.map((r) => r.name).join(', ') }}
-            />,
-            {
-              variant: 'success',
-            }
-          );
-        } catch (e) {}
-        break;
-      default:
-        break;
-    }
-  }, []);
+  const massActionsHandler = useCallback(
+    async (actionId: string, selectedRows: EnrichedInstanceCache[]): Promise<void> => {
+      switch (actionId) {
+        case EVICT_CACHE_ID:
+          try {
+            await evictCachesState.mutateAsync({
+              instanceId: item.id,
+              cacheNames: selectedRows.map((r) => r.name),
+            });
+            enqueueSnackbar(
+              <FormattedMessage
+                id={'evictedCacheSuccessfully'}
+                values={{ names: selectedRows.map((r) => r.name).join(', ') }}
+              />,
+              {
+                variant: 'success',
+              }
+            );
+          } catch (e) {}
+          break;
+        default:
+          break;
+      }
+    },
+    []
+  );
 
   const globalActionsHandler = useCallback(async (actionId: string): Promise<void> => {
     switch (actionId) {
       case EVICT_CACHE_ID:
         try {
-          await evictAllCachesState.mutateAsync({ instanceId: itemId });
+          await evictAllCachesState.mutateAsync({ instanceId: item.id });
           enqueueSnackbar(<FormattedMessage id={'evictedAllCachesSuccessfully'} />, {
             variant: 'success',
           });

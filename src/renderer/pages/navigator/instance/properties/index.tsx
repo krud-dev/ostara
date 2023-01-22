@@ -13,12 +13,9 @@ import TabPanel, { TabInfo } from 'renderer/components/layout/TabPanel';
 const InstanceProperties: FunctionComponent = () => {
   const { selectedItem } = useNavigatorTree();
 
-  const item = useMemo<EnrichedInstance | undefined>(
-    () => selectedItem as EnrichedInstance | undefined,
-    [selectedItem]
-  );
+  const item = useMemo<EnrichedInstance>(() => selectedItem as EnrichedInstance, [selectedItem]);
 
-  const propertiesState = useGetInstancePropertiesQuery({ instanceId: item!.id });
+  const propertiesState = useGetInstancePropertiesQuery({ instanceId: item.id });
 
   const loading = useMemo<boolean>(() => propertiesState.isLoading, [propertiesState]);
   const empty = useMemo<boolean>(() => !loading && isEmpty(propertiesState.data), [loading, propertiesState]);

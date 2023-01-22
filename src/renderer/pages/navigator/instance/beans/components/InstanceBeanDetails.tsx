@@ -5,6 +5,7 @@ import { COMPONENTS_SPACING, SECONDARY_SCROLL_CONTAINER_ID } from 'renderer/cons
 import { useScrollAndHighlightElement } from 'renderer/hooks/useScrollAndHighlightElement';
 import React, { useCallback } from 'react';
 import { InlineCodeLabel } from 'renderer/components/code/InlineCodeLabel';
+import TableDetailsLabelValue from 'renderer/components/table/details/TableDetailsLabelValue';
 
 type InstanceBeanDetailsProps = {
   row: InstanceBean;
@@ -23,17 +24,7 @@ export default function InstanceBeanDetails({ row }: InstanceBeanDetailsProps) {
 
   return (
     <Stack direction={'column'} spacing={COMPONENTS_SPACING}>
-      <Box>
-        <Typography
-          variant={'caption'}
-          sx={{ color: 'text.secondary', fontWeight: 'bold', textTransform: 'uppercase' }}
-        >
-          <FormattedMessage id={'type'} />
-        </Typography>
-        <Typography variant={'body2'}>
-          <InlineCodeLabel code={row.type} />
-        </Typography>
-      </Box>
+      <TableDetailsLabelValue label={<FormattedMessage id={'type'} />} value={<InlineCodeLabel code={row.type} />} />
       {!!row.dependencies?.length && (
         <Box>
           <Typography

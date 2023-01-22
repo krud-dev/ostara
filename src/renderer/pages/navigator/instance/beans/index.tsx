@@ -6,20 +6,14 @@ import TableComponent from 'renderer/components/table/TableComponent';
 import { Entity } from 'renderer/entity/entity';
 import { instanceBeanEntity } from 'renderer/entity/entities/instanceBean.entity';
 import { InstanceBean, useGetInstanceBeansQuery } from 'renderer/apis/instance/getInstanceBeans';
-import { COPY_ID } from 'renderer/entity/actions';
-import useCopyToClipboard from 'renderer/hooks/useCopyToClipboard';
 
 const InstanceBeans: FunctionComponent = () => {
   const { selectedItem } = useNavigatorTree();
 
-  const item = useMemo<EnrichedInstance | undefined>(
-    () => selectedItem as EnrichedInstance | undefined,
-    [selectedItem]
-  );
-  const itemId = useMemo<string>(() => item?.id || '', [item]);
+  const item = useMemo<EnrichedInstance>(() => selectedItem as EnrichedInstance, [selectedItem]);
 
   const entity = useMemo<Entity<InstanceBean>>(() => instanceBeanEntity, []);
-  const queryState = useGetInstanceBeansQuery({ instanceId: itemId });
+  const queryState = useGetInstanceBeansQuery({ instanceId: item.id });
 
   const actionsHandler = useCallback(async (actionId: string, row: InstanceBean): Promise<void> => {}, []);
 

@@ -9,6 +9,7 @@ export type Entity<EntityItem> = {
   massActions: EntityAction[];
   globalActions: EntityAction[];
   rowAction?: EntityRowAction<EntityItem>;
+  isRowActionActive?: (item: EntityItem) => boolean;
   defaultOrder: {
     id: string;
     direction: 'asc' | 'desc';

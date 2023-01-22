@@ -1,6 +1,6 @@
 import React, { PropsWithChildren, useCallback, useContext, useMemo, useState } from 'react';
 import { Entity } from 'renderer/entity/entity';
-import { get, isEmpty, orderBy } from 'lodash';
+import { isEmpty, orderBy } from 'lodash';
 import useConfigurationStoreState from 'renderer/hooks/useConfigurationStoreState';
 import { DEFAULT_ROWS_PER_PAGE } from 'renderer/constants/ui';
 import { notEmpty } from 'renderer/utils/objectUtils';
@@ -41,7 +41,6 @@ export type TableContextProps<EntityItem> = {
   hasActions: boolean;
   hasMassActions: boolean;
   hasGlobalActions: boolean;
-  hasRowAction: boolean;
   actionsHandler: (actionId: string, row: EntityItem) => Promise<void>;
   massActionsHandler: (actionId: string, selectedRows: EntityItem[]) => Promise<void>;
   globalActionsHandler: (actionId: string) => Promise<void>;
@@ -118,7 +117,6 @@ function TableProvider<EntityItem>({
   const hasActions = useMemo<boolean>(() => !isEmpty(entity.actions), [entity]);
   const hasMassActions = useMemo<boolean>(() => !isEmpty(entity.massActions), [entity]);
   const hasGlobalActions = useMemo<boolean>(() => !isEmpty(entity.globalActions), [entity]);
-  const hasRowAction = useMemo<boolean>(() => !!entity.rowAction, [entity]);
 
   const changeFilterHandler = useCallback(
     (newFilter: string): void => {
@@ -231,7 +229,6 @@ function TableProvider<EntityItem>({
         hasActions,
         hasMassActions,
         hasGlobalActions,
-        hasRowAction,
         actionsHandler,
         massActionsHandler,
         globalActionsHandler,

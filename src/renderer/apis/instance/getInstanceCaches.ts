@@ -2,15 +2,23 @@ import { BaseQueryOptions, BaseUseQueryResult, useBaseQuery } from '../base/useB
 import { BaseMutationOptions, BaseUseMutationResult, useBaseMutation } from 'renderer/apis/base/useBaseMutation';
 import { InstanceCache } from 'infra/instance/models/cache';
 import { apiKeys } from 'renderer/apis/apiKeys';
+import { EnrichedInstance } from 'infra/configuration/model/configuration';
+import { isServiceInactive } from 'renderer/utils/itemUtils';
 
-type Variables = {
-  instanceId: string;
+export type EnrichedInstanceCache = InstanceCache & {
+  hasStatistics: boolean;
 };
 
-type Data = InstanceCache[];
+type Variables = {
+  instance: EnrichedInstance;
+};
+
+type Data = EnrichedInstanceCache[];
 
 export const getInstanceCaches = async (variables: Variables): Promise<Data> => {
-  return await window.instance.getInstanceCaches(variables.instanceId);
+  const hasStatistics = !isServiceInactive(variables.instance, 'cache-statistics');
+  const result = await window.instance.getInstanceCaches(variables.instance.id);
+  return result.map((cache) => ({ ...cache, hasStatistics: hasStatistics }));
 };
 
 export const useGetInstanceCaches = (
@@ -21,4 +29,4 @@ export const useGetInstanceCachesQuery = (
   variables: Variables,
   options?: BaseQueryOptions<Data, Variables>
 ): BaseUseQueryResult<Data> =>
-  useBaseQuery<Data, Variables>(apiKeys.itemCaches(variables.instanceId), getInstanceCaches, variables, options);
+  useBaseQuery<Data, Variables>(apiKeys.itemCaches(variables.instance.id), getInstanceCaches, variables, options);

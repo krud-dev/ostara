@@ -96,4 +96,12 @@ export default {
   dependencies: 'Dependencies',
   package: 'Package',
   properties: 'Properties',
+  gets: 'Gets',
+  puts: 'Puts',
+  evictions: 'Evictions',
+  hits: 'Hits',
+  misses: 'Misses',
+  removals: 'Removals',
+  size: 'Size',
+  notAvailable: 'N/A',
 };

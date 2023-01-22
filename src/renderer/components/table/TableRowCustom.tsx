@@ -12,20 +12,16 @@ type TableRowCustomProps<EntityItem> = {
 };
 
 export default function TableRowCustom<EntityItem>({ row }: TableRowCustomProps<EntityItem>) {
-  const {
-    entity,
-    selectedRows,
-    selectRowHandler,
-    isRowSelected,
-    hasActions,
-    hasMassActions,
-    hasRowAction,
-    actionsHandler,
-  } = useTable<EntityItem>();
+  const { entity, selectedRows, selectRowHandler, isRowSelected, hasActions, hasMassActions, actionsHandler } =
+    useTable<EntityItem>();
 
   const [open, setOpen] = useState<boolean>(false);
 
   const selected = useMemo<boolean>(() => isRowSelected(row), [row, selectedRows, isRowSelected]);
+  const hasRowAction = useMemo<boolean>(
+    () => !!entity.rowAction && (!entity.isRowActionActive || entity.isRowActionActive(row)),
+    [entity, row]
+  );
   const anchor = useMemo<string | undefined>(() => entity.getAnchor?.(row), [row, entity]);
 
   const rowClickHandler = useCallback((event: React.MouseEvent): void => {
@@ -89,7 +85,7 @@ export default function TableRowCustom<EntityItem>({ row }: TableRowCustomProps<
         )}
       </TableRow>
 
-      {hasRowAction && entity.rowAction && <TableRowAction row={row} action={entity.rowAction} open={open} />}
+      {hasRowAction && <TableRowAction row={row} action={entity.rowAction!} open={open} />}
     </>
   );
 }

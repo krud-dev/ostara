@@ -3,14 +3,20 @@ import { BaseMutationOptions, BaseUseMutationResult, useBaseMutation } from 'ren
 import { ApplicationCache } from 'infra/instance/models/cache';
 import { apiKeys } from 'renderer/apis/apiKeys';
 
+export type EnrichedApplicationCache = ApplicationCache & {
+  hasStatistics: boolean;
+};
+
 type Variables = {
   applicationId: string;
 };
 
-type Data = ApplicationCache[];
+type Data = EnrichedApplicationCache[];
 
 export const getApplicationCaches = async (variables: Variables): Promise<Data> => {
-  return await window.instance.getApplicationCaches(variables.applicationId);
+  const hasStatistics = true; // TODO update once enriched application has abilities
+  const result = await window.instance.getApplicationCaches(variables.applicationId);
+  return result.map((cache) => ({ ...cache, hasStatistics: hasStatistics }));
 };
 
 export const useGetApplicationCaches = (

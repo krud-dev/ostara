@@ -13,14 +13,10 @@ const InstanceEnvironment: FunctionComponent = () => {
   const { selectedItem } = useNavigatorTree();
   const copyToClipboard = useCopyToClipboard();
 
-  const item = useMemo<EnrichedInstance | undefined>(
-    () => selectedItem as EnrichedInstance | undefined,
-    [selectedItem]
-  );
-  const itemId = useMemo<string>(() => item?.id || '', [item]);
+  const item = useMemo<EnrichedInstance>(() => selectedItem as EnrichedInstance, [selectedItem]);
 
   const entity = useMemo<Entity<EnvProperty>>(() => instanceEnvEntity, []);
-  const queryState = useGetInstanceEnvPropertiesQuery({ instanceId: itemId });
+  const queryState = useGetInstanceEnvPropertiesQuery({ instanceId: item.id });
 
   const getPropertyString = useCallback((property: EnvProperty): string => {
     return property.value;

@@ -12,16 +12,9 @@ import { COMPONENTS_SPACING } from 'renderer/constants/ui';
 const InstanceDashboard: FunctionComponent = () => {
   const { selectedItem } = useNavigatorTree();
 
-  const item = useMemo<EnrichedInstance | undefined>(
-    () => selectedItem as EnrichedInstance | undefined,
-    [selectedItem]
-  );
+  const item = useMemo<EnrichedInstance>(() => selectedItem as EnrichedInstance, [selectedItem]);
 
   const widgets = useMemo<Widget[]>(() => values(springBootWidgets), []);
-
-  if (!item) {
-    return null;
-  }
 
   return (
     <Page key={item.dataCollectionIntervalSeconds}>

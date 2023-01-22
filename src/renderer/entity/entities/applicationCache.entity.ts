@@ -1,9 +1,10 @@
 import { Entity } from 'renderer/entity/entity';
-import { ApplicationCache } from 'infra/instance/models/cache';
 import { chain } from 'lodash';
 import { EVICT_CACHE_ID } from 'renderer/entity/actions';
+import { EnrichedApplicationCache } from 'renderer/apis/application/getApplicationCaches';
+import ApplicationCacheDetails from 'renderer/pages/navigator/application/caches/components/ApplicationCacheDetails';
 
-export const applicationCacheEntity: Entity<ApplicationCache> = {
+export const applicationCacheEntity: Entity<EnrichedApplicationCache> = {
   id: 'applicationCache',
   columns: [
     {
@@ -33,6 +34,11 @@ export const applicationCacheEntity: Entity<ApplicationCache> = {
       icon: 'CleaningServicesOutlined',
     },
   ],
+  rowAction: {
+    type: 'Details',
+    Component: ApplicationCacheDetails,
+  },
+  isRowActionActive: (item) => item.hasStatistics,
   defaultOrder: [
     {
       id: 'name',

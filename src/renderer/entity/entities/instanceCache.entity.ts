@@ -1,8 +1,9 @@
 import { Entity } from 'renderer/entity/entity';
-import { InstanceCache } from 'infra/instance/models/cache';
 import { EVICT_CACHE_ID } from 'renderer/entity/actions';
+import InstanceCacheDetails from 'renderer/pages/navigator/instance/caches/components/InstanceCacheDetails';
+import { EnrichedInstanceCache } from 'renderer/apis/instance/getInstanceCaches';
 
-export const instanceCacheEntity: Entity<InstanceCache> = {
+export const instanceCacheEntity: Entity<EnrichedInstanceCache> = {
   id: 'instanceCache',
   columns: [
     {
@@ -33,6 +34,11 @@ export const instanceCacheEntity: Entity<InstanceCache> = {
       icon: 'CleaningServicesOutlined',
     },
   ],
+  rowAction: {
+    type: 'Details',
+    Component: InstanceCacheDetails,
+  },
+  isRowActionActive: (item) => item.hasStatistics,
   defaultOrder: [
     {
       id: 'name',
