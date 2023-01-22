@@ -68,7 +68,14 @@ const createWindow = async () => {
     return path.join(RESOURCES_PATH, ...paths);
   };
 
-  await dataSource.initialize();
+  try {
+    log.debug('Initializing data source...');
+    await dataSource.initialize();
+    log.debug('Data source initialized');
+  } catch (e) {
+    app.quit();
+  }
+
   await taskService.initialize();
 
   mainWindow = new BrowserWindow({

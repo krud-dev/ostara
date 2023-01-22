@@ -233,7 +233,7 @@
   },
   "build": {
     "productName": "ElectronReact",
-    "appId": "org.erb.ElectronReact",
+    "appId": "dev.krud.springboost",
     "asar": true,
     "asarUnpack": "**\\*.{node,dll}",
     "files": [
