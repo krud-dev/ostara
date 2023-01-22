@@ -11,6 +11,7 @@ import { ActuatorMainResponse, ActuatorTestConnectionResponse } from './model/ba
 import { ActuatorBeansResponse } from './model/beans';
 import { ActuatorConfigPropsResponse } from './model/configprops';
 import { ActuatorFlywayResponse } from './model/flyway';
+import { ActuatorLiquibaseResponse } from './model/liquibase';
 
 export class ActuatorClient {
   readonly axios: Axios;
@@ -206,6 +207,15 @@ export class ActuatorClient {
 
   async flyway(): Promise<ActuatorFlywayResponse> {
     const response = await this.axios.get('flyway');
+    return response.data;
+  }
+
+  /**
+   * Liquibase
+   */
+
+  async liquibase(): Promise<ActuatorLiquibaseResponse> {
+    const response = await this.axios.get('liquibase');
     return response.data;
   }
 

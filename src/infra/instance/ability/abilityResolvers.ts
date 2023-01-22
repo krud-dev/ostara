@@ -40,6 +40,7 @@ export const abilityResolvers: AbilityResolvers[] = [
   endpointAbilityResolver('beans', 'beans'),
   endpointAbilityResolver('quartz', 'quartz'),
   endpointAbilityResolver('flyway', 'flyway'),
+  endpointAbilityResolver('liquibase', 'liquibase'),
   endpointAbilityResolver('loggers', 'loggers'),
   endpointAbilityResolver('caches', 'caches'),
   endpointAbilityResolver('threaddump', 'threaddump'),

@@ -24,6 +24,7 @@ declare global {
     logfile: (instanceId: string) => Promise<string>;
     logfileRange: (instanceId: string, start: number, end: number) => Promise<string>;
     flyway: (instanceId: string) => Promise<string>;
+    liquibase: (instanceId: string) => Promise<string>;
     metrics: (instanceId: string) => Promise<ActuatorMetricsResponse>;
     metric: (instanceId: string, name: string, tags: { [key: string]: string }) => Promise<ActuatorMetricResponse>;
     shutdown: (instanceId: string) => Promise<void>;

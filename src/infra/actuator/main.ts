@@ -69,6 +69,11 @@ ipcMain.handle('actuator:flyway', async (event, instanceId) => {
   return client.flyway();
 });
 
+ipcMain.handle('actuator:liquibase', async (event, instanceId) => {
+  const client = actuatorClientStore.getActuatorClient(instanceId);
+  return client.liquibase();
+});
+
 ipcMain.handle('actuator:metrics', async (event, instanceId) => {
   const client = actuatorClientStore.getActuatorClient(instanceId);
   return client.metrics();

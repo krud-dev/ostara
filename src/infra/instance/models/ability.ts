@@ -4,6 +4,7 @@ export type InstanceAbility =
   | 'beans'
   | 'quartz'
   | 'flyway'
+  | 'liquibase'
   | 'loggers'
   | 'caches'
   | 'threaddump'
