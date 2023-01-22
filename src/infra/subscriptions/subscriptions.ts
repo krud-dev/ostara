@@ -7,4 +7,12 @@ export type Subscriptions = {
   'app:applicationHealthUpdated': (event: IpcRendererEvent, applicationId: string, health: InstanceHealth) => void;
   'app:instanceEndpointsUpdated': (event: IpcRendererEvent, instanceId: string, endpoints: string[]) => void;
   'app:instanceAbilitiesUpdated': (event: IpcRendererEvent, instanceId: string, abilities: InstanceAbility[]) => void;
+  'app:themeUpdated': (
+    event: IpcRendererEvent,
+    data: {
+      shouldUseDarkColors: boolean;
+      shouldUseHighContrastColors: boolean;
+      shouldUseInvertedColorScheme: boolean;
+    }
+  ) => void;
 };

@@ -19,6 +19,7 @@ import '../infra';
 import { dataSource } from '../infra/dataSource';
 import { taskService } from '../infra/tasks/taskService';
 import { instanceService } from '../infra/instance/instanceService';
+import { uiService } from '../infra/ui/uiService';
 
 class AppUpdater {
   constructor() {
@@ -107,6 +108,7 @@ const createWindow = async () => {
   });
 
   instanceService.initializeListeners(mainWindow);
+  uiService.initializeListeners(mainWindow);
 
   // Remove this if your app does not use auto updates
   // eslint-disable-next-line
