@@ -7,6 +7,8 @@ import { ActuatorThreadDumpResponse } from './model/threadDump';
 import { ActuatorLoggerResponse, ActuatorLoggersResponse } from './model/loggers';
 import { ActuatorTestConnectionResponse } from './model/base';
 import { ActuatorBeansResponse } from './model/beans';
+import { ActuatorFlywayResponse } from './model/flyway';
+import { ActuatorLiquibaseResponse } from './model/liquibase';
 
 declare global {
   type ActuatorBridge = {
@@ -23,8 +25,8 @@ declare global {
     beans: (instanceId: string) => Promise<ActuatorBeansResponse>;
     logfile: (instanceId: string) => Promise<string>;
     logfileRange: (instanceId: string, start: number, end: number) => Promise<string>;
-    flyway: (instanceId: string) => Promise<string>;
-    liquibase: (instanceId: string) => Promise<string>;
+    flyway: (instanceId: string) => Promise<ActuatorFlywayResponse>;
+    liquibase: (instanceId: string) => Promise<ActuatorLiquibaseResponse>;
     metrics: (instanceId: string) => Promise<ActuatorMetricsResponse>;
     metric: (instanceId: string, name: string, tags: { [key: string]: string }) => Promise<ActuatorMetricResponse>;
     shutdown: (instanceId: string) => Promise<void>;
