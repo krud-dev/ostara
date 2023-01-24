@@ -6,7 +6,8 @@ import TableComponent from 'renderer/components/table/TableComponent';
 import { Entity } from 'renderer/entity/entity';
 import { InstanceHttpRequestStatistics } from 'infra/instance/models/httpRequestStatistics';
 import { useGetInstanceHttpRequestStatisticsQuery } from 'renderer/apis/instance/getInstanceHttpRequestStatistics';
-import { instanceHttpRequests } from 'renderer/entity/entities/instanceHttpRequests.entity';
+import { instanceHttpRequestEntity } from 'renderer/entity/entities/instanceHttpRequest.entity';
+import { Card } from '@mui/material';
 
 const InstanceHttpRequests: FunctionComponent = () => {
   const { selectedItem } = useNavigatorTree();
@@ -17,7 +18,7 @@ const InstanceHttpRequests: FunctionComponent = () => {
   );
   const itemId = useMemo<string>(() => item?.id || '', [item]);
 
-  const entity = useMemo<Entity<InstanceHttpRequestStatistics>>(() => instanceHttpRequests, []);
+  const entity = useMemo<Entity<InstanceHttpRequestStatistics>>(() => instanceHttpRequestEntity, []);
   const queryState = useGetInstanceHttpRequestStatisticsQuery({ instanceId: itemId });
 
   const actionsHandler = useCallback(async (actionId: string, row: InstanceHttpRequestStatistics): Promise<void> => {},
@@ -32,13 +33,15 @@ const InstanceHttpRequests: FunctionComponent = () => {
 
   return (
     <Page>
-      <TableComponent
-        entity={entity}
-        queryState={queryState}
-        actionsHandler={actionsHandler}
-        massActionsHandler={massActionsHandler}
-        globalActionsHandler={globalActionsHandler}
-      />
+      <Card>
+        <TableComponent
+          entity={entity}
+          queryState={queryState}
+          actionsHandler={actionsHandler}
+          massActionsHandler={massActionsHandler}
+          globalActionsHandler={globalActionsHandler}
+        />
+      </Card>
     </Page>
   );
 };

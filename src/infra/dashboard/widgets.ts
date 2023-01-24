@@ -31,14 +31,14 @@ export const springBootWidgets = {
     metrics: [
       {
         name: 'jvm.memory.used[VALUE]',
-        title: 'Memory Used',
+        title: 'Memory Used (MB)',
         order: 0,
         color: '#ff0000',
         valueType: 'bytes',
       },
       {
         name: 'jvm.memory.committed[VALUE]',
-        title: 'Memory Committed',
+        title: 'Memory Committed (MB)',
         order: 1,
         color: '#00ff00',
         valueType: 'bytes',

@@ -4,8 +4,8 @@ import InstanceHttpRequestDetails from 'renderer/pages/navigator/instance/http-r
 
 export const HTTPS_REQUESTS_TIME_ROUND = 5;
 
-export const instanceHttpRequests: Entity<InstanceHttpRequestStatistics> = {
-  id: 'instanceHttpRequests',
+export const instanceHttpRequestEntity: Entity<InstanceHttpRequestStatistics> = {
+  id: 'instanceHttpRequest',
   columns: [
     {
       id: 'uri',

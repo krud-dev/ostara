@@ -4,7 +4,7 @@ import TableCellDataHealthStatus from 'renderer/components/table/data/TableCellD
 import { generatePath } from 'react-router-dom';
 import { urls } from 'renderer/routes/urls';
 
-export const applicationInstance: Entity<EnrichedInstance> = {
+export const applicationInstanceEntity: Entity<EnrichedInstance> = {
   id: 'applicationInstance',
   columns: [
     {

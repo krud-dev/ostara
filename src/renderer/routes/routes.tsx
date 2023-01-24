@@ -18,6 +18,7 @@ import ApplicationInstances from 'renderer/pages/navigator/application/instances
 import InstanceBeans from 'renderer/pages/navigator/instance/beans';
 import InstanceProperties from 'renderer/pages/navigator/instance/properties';
 import InstanceHttpRequests from 'renderer/pages/navigator/instance/http-requests';
+import InstanceFlyway from 'renderer/pages/navigator/instance/flyway';
 
 export default function Router() {
   return useRoutes([
@@ -94,7 +95,7 @@ export default function Router() {
             },
             {
               path: urls.instanceFlyway.path,
-              element: <InstanceDashboard />,
+              element: <InstanceFlyway />,
             },
             {
               path: urls.instanceProperties.path,

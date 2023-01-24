@@ -8,6 +8,7 @@ import { EnvProperty, useGetInstanceEnvPropertiesQuery } from 'renderer/apis/ins
 import { instanceEnvEntity } from 'renderer/entity/entities/instanceEnv.entity';
 import useCopyToClipboard from 'renderer/hooks/useCopyToClipboard';
 import { COPY_ID } from 'renderer/entity/actions';
+import { Card } from '@mui/material';
 
 const InstanceEnvironment: FunctionComponent = () => {
   const { selectedItem } = useNavigatorTree();
@@ -46,13 +47,15 @@ const InstanceEnvironment: FunctionComponent = () => {
 
   return (
     <Page>
-      <TableComponent
-        entity={entity}
-        queryState={queryState}
-        actionsHandler={actionsHandler}
-        massActionsHandler={massActionsHandler}
-        globalActionsHandler={globalActionsHandler}
-      />
+      <Card>
+        <TableComponent
+          entity={entity}
+          queryState={queryState}
+          actionsHandler={actionsHandler}
+          massActionsHandler={massActionsHandler}
+          globalActionsHandler={globalActionsHandler}
+        />
+      </Card>
     </Page>
   );
 };

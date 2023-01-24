@@ -1,7 +1,6 @@
 import { Entity } from 'renderer/entity/entity';
 import { InstanceBean } from 'renderer/apis/instance/getInstanceBeans';
 import InstanceBeanDetails from 'renderer/pages/navigator/instance/beans/components/InstanceBeanDetails';
-import { COPY_ID } from 'renderer/entity/actions';
 
 export const instanceBeanEntity: Entity<InstanceBean> = {
   id: 'instanceBean',
@@ -18,7 +17,7 @@ export const instanceBeanEntity: Entity<InstanceBean> = {
     },
     {
       id: 'scope',
-      type: 'Chip',
+      type: 'Label',
       labelId: 'scope',
       getColor: () => 'default',
     },

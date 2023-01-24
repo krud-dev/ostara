@@ -6,6 +6,7 @@ import TableComponent from 'renderer/components/table/TableComponent';
 import { Entity } from 'renderer/entity/entity';
 import { instanceBeanEntity } from 'renderer/entity/entities/instanceBean.entity';
 import { InstanceBean, useGetInstanceBeansQuery } from 'renderer/apis/instance/getInstanceBeans';
+import { Card } from '@mui/material';
 
 const InstanceBeans: FunctionComponent = () => {
   const { selectedItem } = useNavigatorTree();
@@ -24,13 +25,15 @@ const InstanceBeans: FunctionComponent = () => {
 
   return (
     <Page>
-      <TableComponent
-        entity={entity}
-        queryState={queryState}
-        actionsHandler={actionsHandler}
-        massActionsHandler={massActionsHandler}
-        globalActionsHandler={globalActionsHandler}
-      />
+      <Card>
+        <TableComponent
+          entity={entity}
+          queryState={queryState}
+          actionsHandler={actionsHandler}
+          massActionsHandler={massActionsHandler}
+          globalActionsHandler={globalActionsHandler}
+        />
+      </Card>
     </Page>
   );
 };

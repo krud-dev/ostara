@@ -7,6 +7,8 @@ export const apiKeys = {
   itemEnvProperties: (id: string) => [...apiKeys.item(id), 'envProperties'],
   itemBeans: (id: string) => [...apiKeys.item(id), 'beans'],
   itemProperties: (id: string) => [...apiKeys.item(id), 'properties'],
+  itemFlyway: (id: string) => [...apiKeys.item(id), 'flyway'],
+  itemFlywayByContext: (id: string, context: string) => [...apiKeys.itemFlyway(id), 'context', context],
   itemHttpRequestStatistics: (id: string) => [...apiKeys.item(id), 'httpRequestStatistics'],
   itemHttpRequestStatisticsForUriByMethods: (id: string, uri: string) => [
     ...apiKeys.itemHttpRequestStatistics(id),

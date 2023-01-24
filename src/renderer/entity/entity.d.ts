@@ -1,6 +1,7 @@
 import { MUIconType } from 'renderer/components/common/IconViewer';
 import { ComponentType } from 'react';
 import { ColorSchema } from 'renderer/theme/config/palette';
+import { LabelColor } from 'renderer/components/common/Label';
 
 export type Entity<EntityItem> = {
   id: string;
@@ -48,9 +49,9 @@ export type EntityDateColumn<EntityItem> = EntityBaseColumn<EntityItem> & {
   readonly type: 'Date';
 };
 
-export type EntityChipColumn<EntityItem> = EntityBaseColumn<EntityItem> & {
-  readonly type: 'Chip';
-  getColor: (item: EntityItem) => ColorSchema | 'default';
+export type EntityLabelColumn<EntityItem> = EntityBaseColumn<EntityItem> & {
+  readonly type: 'Label';
+  getColor: (item: EntityItem) => LabelColor;
 };
 
 export type EntityCustomColumn<EntityItem> = EntityBaseColumn<EntityItem> & {
@@ -63,7 +64,7 @@ export type EntityColumn<EntityItem> =
   | EntityNumberColumn<EntityItem>
   | EntityCronColumn<EntityItem>
   | EntityDateColumn<EntityItem>
-  | EntityChipColumn<EntityItem>
+  | EntityLabelColumn<EntityItem>
   | EntityCustomColumn<EntityItem>;
 
 export type EntityRowActionNavigate<EntityItem> = {

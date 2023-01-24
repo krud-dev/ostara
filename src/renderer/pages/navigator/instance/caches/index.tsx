@@ -11,6 +11,7 @@ import { instanceCacheEntity } from 'renderer/entity/entities/instanceCache.enti
 import { useEvictInstanceCaches } from 'renderer/apis/instance/evictInstanceCaches';
 import { useEvictAllInstanceCaches } from 'renderer/apis/instance/evictAllInstanceCaches';
 import { EVICT_CACHE_ID } from 'renderer/entity/actions';
+import { Card } from '@mui/material';
 
 const InstanceCaches: FunctionComponent = () => {
   const { selectedItem } = useNavigatorTree();
@@ -83,13 +84,15 @@ const InstanceCaches: FunctionComponent = () => {
 
   return (
     <Page>
-      <TableComponent
-        entity={entity}
-        queryState={queryState}
-        actionsHandler={actionsHandler}
-        massActionsHandler={massActionsHandler}
-        globalActionsHandler={globalActionsHandler}
-      />
+      <Card>
+        <TableComponent
+          entity={entity}
+          queryState={queryState}
+          actionsHandler={actionsHandler}
+          massActionsHandler={massActionsHandler}
+          globalActionsHandler={globalActionsHandler}
+        />
+      </Card>
     </Page>
   );
 };

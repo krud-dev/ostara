@@ -5,7 +5,8 @@ import { EnrichedApplication, EnrichedInstance } from 'infra/configuration/model
 import TableComponent from 'renderer/components/table/TableComponent';
 import { Entity } from 'renderer/entity/entity';
 import { useGetApplicationInstancesQuery } from 'renderer/apis/application/getApplicationInstances';
-import { applicationInstance } from 'renderer/entity/entities/applicationInstance.entity';
+import { applicationInstanceEntity } from 'renderer/entity/entities/applicationInstance.entity';
+import { Card } from '@mui/material';
 
 const ApplicationInstances: FunctionComponent = () => {
   const { selectedItem } = useNavigatorTree();
@@ -16,7 +17,7 @@ const ApplicationInstances: FunctionComponent = () => {
   );
   const itemId = useMemo<string>(() => item?.id || '', [item]);
 
-  const entity = useMemo<Entity<EnrichedInstance>>(() => applicationInstance, []);
+  const entity = useMemo<Entity<EnrichedInstance>>(() => applicationInstanceEntity, []);
   const queryState = useGetApplicationInstancesQuery({ applicationId: itemId });
 
   const actionsHandler = useCallback(async (actionId: string, row: EnrichedInstance): Promise<void> => {}, []);
@@ -30,13 +31,15 @@ const ApplicationInstances: FunctionComponent = () => {
 
   return (
     <Page>
-      <TableComponent
-        entity={entity}
-        queryState={queryState}
-        actionsHandler={actionsHandler}
-        massActionsHandler={massActionsHandler}
-        globalActionsHandler={globalActionsHandler}
-      />
+      <Card>
+        <TableComponent
+          entity={entity}
+          queryState={queryState}
+          actionsHandler={actionsHandler}
+          massActionsHandler={massActionsHandler}
+          globalActionsHandler={globalActionsHandler}
+        />
+      </Card>
     </Page>
   );
 };

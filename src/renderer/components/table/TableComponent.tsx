@@ -1,5 +1,5 @@
 import React, { ReactNode, useCallback } from 'react';
-import { Box, Card, Table, TableBody, TableContainer, TablePagination, useMediaQuery } from '@mui/material';
+import { Box, Table, TableBody, TableContainer, TablePagination, useMediaQuery } from '@mui/material';
 import PerfectScrollbar from 'react-perfect-scrollbar';
 import TableToolbar from 'renderer/components/table/TableToolbar';
 import { BaseUseQueryResult } from 'renderer/apis/base/useBaseQuery';
@@ -71,7 +71,7 @@ export default function TableComponent<EntityItem>({
           changeRowsPerPageHandler,
           dense,
         }) => (
-          <Card>
+          <Box>
             <TableToolbar />
 
             <PerfectScrollbar options={{ suppressScrollY: true, wheelPropagation: true }}>
@@ -113,7 +113,7 @@ export default function TableComponent<EntityItem>({
                 />
               </Box>
             )}
-          </Card>
+          </Box>
         )}
       </TableContext.Consumer>
     </TableProvider>

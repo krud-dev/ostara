@@ -116,4 +116,12 @@ export default {
   notAvailable: 'N/A',
   true: 'True',
   false: 'False',
+  script: 'Script',
+  state: 'State',
+  executionTime: 'Execution Time',
+  installedBy: 'Installed By',
+  installedOn: 'Installed On',
+  installedRank: 'Installed Rank',
+  version: 'Version',
+  checksum: 'Checksum',
 };

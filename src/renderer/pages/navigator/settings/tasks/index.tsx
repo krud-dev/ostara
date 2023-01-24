@@ -9,6 +9,7 @@ import { useRunTask } from 'renderer/apis/tasks/runTask';
 import { useSnackbar } from 'notistack';
 import { FormattedMessage } from 'react-intl';
 import { RUN_TASK_ID } from 'renderer/entity/actions';
+import { Card } from '@mui/material';
 
 const TasksPage: FunctionComponent = () => {
   const { enqueueSnackbar } = useSnackbar();
@@ -42,13 +43,15 @@ const TasksPage: FunctionComponent = () => {
 
   return (
     <Page>
-      <TableComponent
-        entity={entity}
-        queryState={queryState}
-        actionsHandler={actionsHandler}
-        massActionsHandler={massActionsHandler}
-        globalActionsHandler={globalActionsHandler}
-      />
+      <Card>
+        <TableComponent
+          entity={entity}
+          queryState={queryState}
+          actionsHandler={actionsHandler}
+          massActionsHandler={massActionsHandler}
+          globalActionsHandler={globalActionsHandler}
+        />
+      </Card>
     </Page>
   );
 };
