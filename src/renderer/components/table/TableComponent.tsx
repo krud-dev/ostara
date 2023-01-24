@@ -1,4 +1,4 @@
-import React, { ReactNode, useCallback } from 'react';
+import React, { ReactNode, useCallback, useMemo, useRef, useState } from 'react';
 import { Box, Table, TableBody, TableContainer, TablePagination, useMediaQuery } from '@mui/material';
 import PerfectScrollbar from 'react-perfect-scrollbar';
 import TableToolbar from 'renderer/components/table/TableToolbar';
@@ -8,11 +8,15 @@ import TableRowCustom from 'renderer/components/table/TableRowCustom';
 import TableSelectedActions from 'renderer/components/table/TableSelectedActions';
 import TableHeadCustom from 'renderer/components/table/TableHeadCustom';
 import TableNoData from 'renderer/components/table/TableNoData';
-import { ROWS_PER_PAGE_OPTIONS } from 'renderer/constants/ui';
+import { COMPONENTS_SPACING, ROWS_PER_PAGE_OPTIONS } from 'renderer/constants/ui';
 import TableSkeleton from 'renderer/components/table/TableSkeleton';
 import { DisplayItem, TableContext, TableProvider } from 'renderer/components/table/TableContext';
 import { useTheme } from '@mui/material/styles';
 import TableRowGroup from 'renderer/components/table/TableRowGroup';
+import { useWindowSize } from 'react-use';
+import { isNil } from 'lodash';
+import { useScrollSync } from 'renderer/hooks/useScrollSync';
+import { calculateElementDocumentOffsetTop } from 'renderer/utils/elementUtils';
 
 type TableComponentProps<EntityItem> = {
   entity: Entity<EntityItem>;
@@ -51,6 +55,29 @@ export default function TableComponent<EntityItem>({
     }
   }, []);
 
+  const { height } = useWindowSize();
+  const [topOffset, setTopOffset] = useState<number | undefined>(undefined);
+
+  const scrollContainerHeight = useMemo<number>(() => {
+    return isNil(topOffset) ? 0 : height - topOffset - parseInt(theme.spacing(COMPONENTS_SPACING), 10);
+  }, [height, topOffset]);
+
+  const measureScrollRefOffset = useCallback((element: HTMLDivElement | null): void => {
+    if (element !== null) {
+      setTopOffset(calculateElementDocumentOffsetTop(element));
+    }
+  }, []);
+
+  const tableHeaderScrollRef = useRef<HTMLDivElement>(null);
+  const tableBodyScrollRef = useRef<any>(null);
+
+  useScrollSync([tableHeaderScrollRef, tableBodyScrollRef], {
+    horizontal: true,
+    vertical: false,
+    proportional: false,
+    throttleWaitTime: 25,
+  });
+
   return (
     <TableProvider
       entity={entity}
@@ -74,29 +101,43 @@ export default function TableComponent<EntityItem>({
           <Box>
             <TableToolbar />
 
-            <PerfectScrollbar options={{ suppressScrollY: true, wheelPropagation: true }}>
-              <TableContainer
-                sx={{
-                  width: 'auto',
-                  minWidth: '100%',
-                  position: 'relative',
-                  overflow: 'auto',
-                  display: 'inline-flex',
+            <TableContainer ref={tableHeaderScrollRef} sx={{ position: 'relative', overflow: 'hidden' }}>
+              <TableSelectedActions />
+
+              <Table size={dense ? 'small' : 'medium'}>
+                <TableHeadCustom />
+              </Table>
+            </TableContainer>
+
+            <Box ref={measureScrollRefOffset} sx={{ height: scrollContainerHeight }}>
+              <PerfectScrollbar
+                containerRef={(element) => {
+                  tableBodyScrollRef.current = element;
                 }}
+                options={{ wheelPropagation: true }}
               >
-                <TableSelectedActions />
-
-                <Table size={dense ? 'small' : 'medium'}>
-                  <TableHeadCustom />
-
-                  <TableBody>
-                    {loading && <TableSkeleton />}
-                    {empty && <TableNoData />}
-                    {displayRows.map((displayRow) => renderRow(displayRow))}
-                  </TableBody>
-                </Table>
-              </TableContainer>
-            </PerfectScrollbar>
+                <TableContainer
+                  sx={{
+                    width: 'auto',
+                    minWidth: '100%',
+                    position: 'relative',
+                    overflow: 'hidden',
+                    display: 'inline-block',
+                  }}
+                >
+                  <Table size={dense ? 'small' : 'medium'}>
+                    <TableHeadCustom
+                      sx={{ height: '0px', maxHeight: '0px', overflow: 'hidden', visibility: 'collapse' }}
+                    />
+                    <TableBody>
+                      {loading && <TableSkeleton />}
+                      {empty && <TableNoData />}
+                      {displayRows.map((displayRow) => renderRow(displayRow))}
+                    </TableBody>
+                  </Table>
+                </TableContainer>
+              </PerfectScrollbar>
+            </Box>
 
             {entity.paging && (
               <Box sx={{ position: 'relative' }}>

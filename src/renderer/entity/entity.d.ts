@@ -28,7 +28,6 @@ export type EntityBaseColumn<EntityItem> = {
   align?: 'left' | 'right' | 'center';
   labelId: string;
   width?: number;
-  minWidth?: number;
   getTooltip?: (item: EntityItem) => string | undefined;
 };
 

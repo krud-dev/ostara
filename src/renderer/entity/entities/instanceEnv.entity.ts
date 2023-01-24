@@ -9,12 +9,14 @@ export const instanceEnvEntity: Entity<EnvProperty> = {
       id: 'name',
       type: 'Text',
       labelId: 'name',
+      width: 300,
       getTooltip: (item) => item.origin,
     },
     {
       id: 'value',
       type: 'Text',
       labelId: 'value',
+      width: 300,
     },
   ],
   actions: [

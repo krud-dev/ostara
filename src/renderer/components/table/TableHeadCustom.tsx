@@ -15,6 +15,8 @@ const visuallyHidden = {
   clip: 'rect(0 0 0 0)',
 } as const;
 
+const DEFAULT_COLUMN_WIDTH = 175;
+
 type TableHeadCustomProps = {
   sx?: SxProps<Theme>;
 };
@@ -50,7 +52,11 @@ export default function TableHeadCustom({ sx }: TableHeadCustomProps) {
             key={column.id}
             align={column.align || 'left'}
             sortDirection={orderColumn === column.id ? orderDirection : false}
-            sx={{ width: column.width, minWidth: column.minWidth || 150 }}
+            sx={{
+              width: column.width || DEFAULT_COLUMN_WIDTH,
+              minWidth: column.width || DEFAULT_COLUMN_WIDTH,
+              maxWidth: column.width || DEFAULT_COLUMN_WIDTH,
+            }}
           >
             <TableSortLabel
               hideSortIcon

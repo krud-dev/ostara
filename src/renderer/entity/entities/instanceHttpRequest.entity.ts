@@ -11,6 +11,7 @@ export const instanceHttpRequestEntity: Entity<InstanceHttpRequestStatistics> = 
       id: 'uri',
       type: 'Text',
       labelId: 'uri',
+      width: 300,
     },
     {
       id: 'count',
