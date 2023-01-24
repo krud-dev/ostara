@@ -1,5 +1,5 @@
 import React, { FunctionComponent, useCallback, useMemo, useState } from 'react';
-import { DataBarWidget } from 'infra/dashboard/model';
+import { DataBarWidget, WidgetValueType } from 'infra/dashboard/model';
 import { DashboardWidgetCardProps } from 'renderer/components/widget/widget';
 import DashboardGenericCard from 'renderer/components/widget/card/DashboardGenericCard';
 import { chain, isNil } from 'lodash';
@@ -24,15 +24,7 @@ const DataBarDashboardWidget: FunctionComponent<DashboardWidgetCardProps<DataBar
     [setData]
   );
 
-  const metrics = useMemo<{ name: string; title: string }[]>(
-    () =>
-      chain(widget.metrics)
-        .sortBy('order')
-        .map((metric) => ({ name: metric.name, title: metric.title }))
-        .value(),
-    [widget]
-  );
-
+  const metrics = useMemo(() => chain(widget.metrics).sortBy('order').value(), [widget]);
   const metricNames = useMemo<string[]>(() => metrics.map((metric) => metric.name), [metrics]);
 
   useWidgetSubscribeToMetrics(item.id, metricNames, onMetricUpdate);
@@ -44,12 +36,11 @@ const DataBarDashboardWidget: FunctionComponent<DashboardWidgetCardProps<DataBar
           {metrics.map((metric, index, array) => {
             const dto = data[metric.name];
             const value = dto?.values[0]?.value;
-            const unit = dto?.unit;
             const tooltip = dto?.description;
             return (
               <Box sx={{ width: `${100 / array.length}%`, textAlign: 'center' }} key={metric.name}>
                 <Typography variant={'h3'} sx={{ whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
-                  {!isNil(value) ? <MetricValue value={value} unit={unit} /> : '\u00A0'}
+                  {!isNil(value) ? <MetricValue value={value} valueType={metric.valueType} /> : '\u00A0'}
                 </Typography>
                 <Typography
                   variant={'subtitle2'}

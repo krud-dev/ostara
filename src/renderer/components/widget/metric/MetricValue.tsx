@@ -1,24 +1,26 @@
 import * as React from 'react';
 import { ReactNode, useMemo } from 'react';
 import CountdownValue from 'renderer/components/widget/metric/CountdownValue';
-import { isNil } from 'lodash';
-import NumberValue from 'renderer/components/widget/metric/NumberValue';
+import { WidgetValueType } from 'infra/dashboard/model';
+import { formatWidgetValue } from 'renderer/utils/formatUtils';
+import { useIntl } from 'react-intl';
 
 export type MetricValueProps = {
   value: number;
-  unit?: string | null;
+  valueType: WidgetValueType;
 };
 
-const MetricValue = ({ value, unit }: MetricValueProps) => {
+const MetricValue = ({ value, valueType }: MetricValueProps) => {
+  const intl = useIntl();
+
   const displayValue = useMemo<ReactNode>(() => {
-    if (isNil(value)) {
-      return '\u00A0';
+    switch (valueType) {
+      case 'seconds':
+        return <CountdownValue seconds={value} />;
+      default:
+        return formatWidgetValue(value, valueType, intl);
     }
-    if (unit === 'seconds') {
-      return <CountdownValue seconds={value} />;
-    }
-    return <NumberValue value={value} />;
-  }, [value, unit]);
+  }, [value, valueType]);
 
   return <>{displayValue}</>;
 };

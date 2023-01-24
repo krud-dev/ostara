@@ -6,6 +6,7 @@ import { chain, every, isEmpty, isNaN, isNil, takeRight } from 'lodash';
 import { useIntl } from 'react-intl';
 import useWidgetSubscribeToMetrics from 'renderer/components/widget/hooks/useWidgetSubscribeToMetrics';
 import AreaMultiple from 'renderer/components/widget/pure/AreaMultiple';
+import { formatWidgetChartValue } from 'renderer/utils/formatUtils';
 
 const MAX_DATA_POINTS = 50;
 
@@ -28,20 +29,13 @@ const StackedTimelineDashboardWidget: FunctionComponent<DashboardWidgetCardProps
   const dataPoint = useRef<DataPoint>({ values: [], timestamp: 0 });
   const lastDataPointTimestamp = useRef<number>(0);
 
-  const metrics = useMemo<{ name: string; title: string; color: string }[]>(
-    () =>
-      chain(widget.metrics)
-        .sortBy('order')
-        .map((metric) => ({ name: metric.name, title: metric.title, color: metric.color }))
-        .value(),
-    [widget]
-  );
-
+  const metrics = useMemo(() => chain(widget.metrics).sortBy('order').value(), [widget]);
   const metricNames = useMemo<string[]>(() => metrics.map((metric) => metric.name), [metrics]);
 
   useWidgetSubscribeToMetrics(item.id, metricNames, (metricDto) => {
     const index = metrics.findIndex((metric) => metric.name === metricDto.name);
-    dataPoint.current.values[index] = metricDto.values[0].value;
+    const metric = metrics[index];
+    dataPoint.current.values[index] = formatWidgetChartValue(metricDto.values[0].value, metric.valueType);
     dataPoint.current.timestamp = metricDto.values[0].timestamp.getTime();
     if (dataPoint.current.values.length === metrics.length && every(dataPoint.current.values, isValidValue)) {
       addDataPoint(dataPoint.current);

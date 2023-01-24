@@ -26,7 +26,7 @@ export const springBootWidgets = {
   memoryUse: <StackedTimelineWidget>{
     id: 'memory-use-timeline',
     type: 'stacked-timeline',
-    title: 'Memory Use',
+    title: 'Memory Use (MB)',
     description: 'Shows the memory usage',
     metrics: [
       {

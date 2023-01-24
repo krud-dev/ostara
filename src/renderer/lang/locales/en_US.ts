@@ -114,4 +114,6 @@ export default {
   outcomes: 'Outcomes',
   exceptions: 'Exceptions',
   notAvailable: 'N/A',
+  true: 'True',
+  false: 'False',
 };
