@@ -5,9 +5,9 @@ import locales from 'renderer/lang';
 
 export type UiContextProps = {
   developerMode: boolean;
-  toggleDeveloperMode: () => void;
+  setDeveloperMode: (developerMode: boolean) => void;
   darkMode: boolean;
-  toggleDarkMode: () => void;
+  setDarkMode: (darkMode: boolean) => void;
   localeInfo: LocaleInfo;
   setLocale: (locale: string) => void;
   isRtl: boolean;
@@ -22,14 +22,6 @@ const UiProvider: FunctionComponent<UiProviderProps> = ({ children }) => {
   const [darkMode, setDarkMode] = useConfigurationStoreState<boolean>('darkMode', true);
   const [locale, setLocaleInternal] = useConfigurationStoreState<string>('locale', 'en');
   const localeInfo = useMemo<LocaleInfo>(() => locales[locale], [locale]);
-
-  const toggleDeveloperMode = useCallback((): void => {
-    setDeveloperMode((prev) => !prev);
-  }, [setDeveloperMode]);
-
-  const toggleDarkMode = useCallback((): void => {
-    setDarkMode((prev) => !prev);
-  }, [setDarkMode]);
 
   const setLocale = useCallback(
     (newLocale: string): void => {
@@ -46,9 +38,9 @@ const UiProvider: FunctionComponent<UiProviderProps> = ({ children }) => {
     <UiContext.Provider
       value={{
         developerMode,
-        toggleDeveloperMode,
+        setDeveloperMode,
         darkMode,
-        toggleDarkMode,
+        setDarkMode,
         localeInfo,
         setLocale,
         isRtl,

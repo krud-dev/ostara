@@ -38,7 +38,7 @@ export default function TableHeadCustom({ sx }: TableHeadCustomProps) {
     <TableHead sx={sx}>
       <TableRow>
         {hasMassActions && (
-          <TableCell padding="checkbox">
+          <TableCell padding="checkbox" sx={{ width: '1%!important' }}>
             <Checkbox
               indeterminate={selectAllIndeterminate}
               checked={selectAllChecked}
@@ -76,7 +76,7 @@ export default function TableHeadCustom({ sx }: TableHeadCustomProps) {
           </TableCell>
         ))}
         {hasActions && (
-          <TableCell align={'right'}>
+          <TableCell align={'right'} sx={{ width: '1%' }}>
             <FormattedMessage id={'actions'} />
           </TableCell>
         )}

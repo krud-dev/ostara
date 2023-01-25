@@ -19,6 +19,7 @@ import InstanceBeans from 'renderer/pages/navigator/instance/beans';
 import InstanceProperties from 'renderer/pages/navigator/instance/properties';
 import InstanceHttpRequests from 'renderer/pages/navigator/instance/http-requests';
 import InstanceFlyway from 'renderer/pages/navigator/instance/flyway';
+import ApplicationSettingsPage from 'renderer/pages/navigator/settings/application';
 
 export default function Router() {
   return useRoutes([
@@ -128,7 +129,11 @@ export default function Router() {
       path: urls.settings.path,
       element: <SettingsLayout />,
       children: [
-        { path: '', element: <Navigate to={urls.tasks.path} replace /> },
+        { path: '', element: <Navigate to={urls.applicationSettings.path} replace /> },
+        {
+          path: urls.applicationSettings.path,
+          element: <ApplicationSettingsPage />,
+        },
         {
           path: urls.tasks.path,
           element: <TasksPage />,

@@ -9,11 +9,13 @@ export const taskEntity: Entity<TaskDefinitionDisplay> = {
       id: 'alias',
       type: 'Text',
       labelId: 'name',
+      width: 200,
     },
     {
       id: 'description',
       type: 'Text',
       labelId: 'description',
+      width: 250,
     },
     {
       id: 'defaultCron',

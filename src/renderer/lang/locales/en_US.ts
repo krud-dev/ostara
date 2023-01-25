@@ -1,6 +1,7 @@
 export default {
-  lightMode: 'Light Mode',
-  darkMode: 'Dark Mode',
+  theme: 'Theme',
+  light: 'Light',
+  dark: 'Dark',
   developerMode: 'Developer Mode',
   on: 'On',
   off: 'Off',
@@ -124,4 +125,5 @@ export default {
   installedRank: 'Installed Rank',
   version: 'Version',
   checksum: 'Checksum',
+  application: 'Application',
 };
