@@ -13,11 +13,13 @@ export const instanceFlywayMigrationEntity: Entity<EnrichedActuatorFlywayMigrati
       id: 'type',
       type: 'Text',
       labelId: 'type',
+      width: 125,
     },
     {
       id: 'script',
       type: 'Text',
       labelId: 'script',
+      width: 300,
     },
     {
       id: 'state',

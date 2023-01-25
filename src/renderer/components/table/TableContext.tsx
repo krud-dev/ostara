@@ -36,8 +36,6 @@ export type TableContextProps<EntityItem> = {
   orderColumn: string | undefined;
   orderDirection: 'asc' | 'desc' | undefined;
   changeOrderHandler: (columnId: string) => void;
-  dense: boolean;
-  changeDenseHandler: (newDense: boolean) => void;
   hasActions: boolean;
   hasMassActions: boolean;
   hasGlobalActions: boolean;
@@ -70,7 +68,6 @@ function TableProvider<EntityItem>({
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useConfigurationStoreState('tableRowsPerPage', DEFAULT_ROWS_PER_PAGE);
   const [selected, setSelected] = useState<string[]>([]);
-  const [dense, setDense] = useConfigurationStoreState('tableDense', true);
   const [collapsedGroups, setCollapsedGroups] = useState<string[]>([]);
 
   useUpdateEffect(() => {
@@ -191,13 +188,6 @@ function TableProvider<EntityItem>({
     [setRowsPerPage, setPage]
   );
 
-  const changeDenseHandler = useCallback(
-    (newDense: boolean): void => {
-      setDense(newDense);
-    },
-    [setDense]
-  );
-
   return (
     <TableContext.Provider
       value={{
@@ -224,8 +214,6 @@ function TableProvider<EntityItem>({
         orderColumn,
         orderDirection,
         changeOrderHandler,
-        dense,
-        changeDenseHandler,
         hasActions,
         hasMassActions,
         hasGlobalActions,

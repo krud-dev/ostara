@@ -12,6 +12,7 @@ import { enUS, Localization } from '@mui/material/locale';
 import RtlLayout from 'renderer/theme/RtlLayout';
 import GlobalStyles from 'renderer/theme/GlobalStyles';
 import ChartStyle from 'renderer/components/chart/ChartStyle';
+import CodeStyle from 'renderer/components/code/CodeStyle';
 
 type ThemeConfigProps = {
   isDarkMode?: boolean;
@@ -43,6 +44,7 @@ export default function ThemeConfig({ isDarkMode, isRtl, localization, children 
         <CssBaseline />
         <GlobalStyles />
         <ChartStyle />
+        <CodeStyle />
         <RtlLayout>{children}</RtlLayout>
       </ThemeProvider>
     </StyledEngineProvider>

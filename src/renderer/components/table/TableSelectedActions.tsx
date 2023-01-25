@@ -15,7 +15,6 @@ export default function TableSelectedActions({ sx, ...other }: TableSelectedActi
     selectAllChecked,
     hasSelectedRows,
     selectAllRowsHandler,
-    dense,
     massActionsHandler,
   } = useTable();
 
@@ -34,13 +33,10 @@ export default function TableSelectedActions({ sx, ...other }: TableSelectedActi
         left: 0,
         right: 0,
         zIndex: 9,
-        height: 58,
+        height: 38,
         borderRadius: 1,
         position: 'absolute',
         bgcolor: 'primary.lighter',
-        ...(dense && {
-          height: 38,
-        }),
         ...sx,
       }}
       {...other}
@@ -54,12 +50,9 @@ export default function TableSelectedActions({ sx, ...other }: TableSelectedActi
       <Typography
         variant="subtitle1"
         sx={{
-          ml: 2,
+          ml: 3,
           flexGrow: 1,
           color: 'primary.main',
-          ...(dense && {
-            ml: 3,
-          }),
         }}
       >
         {selectedRows.length} <FormattedMessage id={'selected'} />

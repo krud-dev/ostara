@@ -4,6 +4,11 @@ import { COMPONENTS_SPACING } from 'renderer/constants/ui';
 
 export default function Table(theme: Theme): Components {
   return {
+    MuiTable: {
+      defaultProps: {
+        size: 'small',
+      },
+    },
     MuiTableRow: {
       styleOverrides: {
         root: {

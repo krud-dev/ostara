@@ -1,8 +1,12 @@
 import React, { useMemo } from 'react';
 import yaml from 'js-yaml';
 import CodeEditor from 'renderer/components/code/CodeEditor';
-import { Extension, EditorState } from '@codemirror/state';
+import { Extension } from '@codemirror/state';
 import { foldService } from '@codemirror/language';
+import { search } from '@codemirror/search';
+import { Box } from '@mui/material';
+import PerfectScrollbar from 'react-perfect-scrollbar';
+import useElementDocumentHeight from 'renderer/hooks/useElementDocumentHeight';
 
 type InstancePropertiesCodeProps = {
   properties: { [key: string]: unknown };
@@ -45,5 +49,15 @@ export default function InstancePropertiesCode({ properties }: InstancePropertie
     []
   );
 
-  return <CodeEditor language={'yaml'} value={code} editable={false} extensions={[foldingExtension]} />;
+  const searchExtension = useMemo<Extension>(() => search({ top: false }), []);
+
+  const { elementHeight, elementRef } = useElementDocumentHeight();
+
+  return (
+    <Box ref={elementRef} sx={{ height: elementHeight }}>
+      <PerfectScrollbar options={{ wheelPropagation: true }}>
+        <CodeEditor language={'yaml'} value={code} readOnly extensions={[foldingExtension, searchExtension]} />
+      </PerfectScrollbar>
+    </Box>
+  );
 }

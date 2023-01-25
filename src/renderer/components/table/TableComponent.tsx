@@ -17,6 +17,7 @@ import { useWindowSize } from 'react-use';
 import { isNil } from 'lodash';
 import { useScrollSync } from 'renderer/hooks/useScrollSync';
 import { calculateElementDocumentOffsetTop } from 'renderer/utils/elementUtils';
+import useElementDocumentHeight from 'renderer/hooks/useElementDocumentHeight';
 
 type TableComponentProps<EntityItem> = {
   entity: Entity<EntityItem>;
@@ -55,18 +56,7 @@ export default function TableComponent<EntityItem>({
     }
   }, []);
 
-  const { height } = useWindowSize();
-  const [topOffset, setTopOffset] = useState<number | undefined>(undefined);
-
-  const scrollContainerHeight = useMemo<number>(() => {
-    return isNil(topOffset) ? 0 : height - topOffset - parseInt(theme.spacing(COMPONENTS_SPACING), 10);
-  }, [height, topOffset]);
-
-  const measureScrollRefOffset = useCallback((element: HTMLDivElement | null): void => {
-    if (element !== null) {
-      setTopOffset(calculateElementDocumentOffsetTop(element));
-    }
-  }, []);
+  const { elementHeight, elementRef } = useElementDocumentHeight();
 
   const tableHeaderScrollRef = useRef<HTMLDivElement>(null);
   const tableBodyScrollRef = useRef<any>(null);
@@ -87,29 +77,19 @@ export default function TableComponent<EntityItem>({
       globalActionsHandler={globalActionsHandler}
     >
       <TableContext.Consumer>
-        {({
-          rows,
-          displayRows,
-          loading,
-          empty,
-          page,
-          changePageHandler,
-          rowsPerPage,
-          changeRowsPerPageHandler,
-          dense,
-        }) => (
+        {({ rows, displayRows, loading, empty, page, changePageHandler, rowsPerPage, changeRowsPerPageHandler }) => (
           <Box>
             <TableToolbar />
 
             <TableContainer ref={tableHeaderScrollRef} sx={{ position: 'relative', overflow: 'hidden' }}>
               <TableSelectedActions />
 
-              <Table size={dense ? 'small' : 'medium'}>
+              <Table>
                 <TableHeadCustom />
               </Table>
             </TableContainer>
 
-            <Box ref={measureScrollRefOffset} sx={{ height: scrollContainerHeight }}>
+            <Box ref={elementRef} sx={{ height: elementHeight }}>
               <PerfectScrollbar
                 containerRef={(element) => {
                   tableBodyScrollRef.current = element;
@@ -125,7 +105,7 @@ export default function TableComponent<EntityItem>({
                     display: 'inline-block',
                   }}
                 >
-                  <Table size={dense ? 'small' : 'medium'}>
+                  <Table>
                     <TableHeadCustom
                       sx={{ height: '0px', maxHeight: '0px', overflow: 'hidden', visibility: 'collapse' }}
                     />
