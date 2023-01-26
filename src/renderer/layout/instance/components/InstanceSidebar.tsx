@@ -91,6 +91,14 @@ export default function InstanceSidebar({ item, disabled, width }: InstanceSideb
             disabled: disabled,
             hidden: isServiceInactive(item, 'flyway'),
           },
+          {
+            id: 'liquibase',
+            icon: <StorageOutlined />,
+            label: <FormattedMessage id={'liquibase'} />,
+            to: generatePath(urls.instanceLiquibase.url, { id: item.id }),
+            disabled: disabled,
+            hidden: isServiceInactive(item, 'liquibase'),
+          },
         ],
       },
       {

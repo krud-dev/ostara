@@ -72,6 +72,10 @@ export const urls = asUrlInfos({
     url: '/navigator/instance/:id/flyway',
     path: 'flyway',
   },
+  instanceLiquibase: {
+    url: '/navigator/instance/:id/liquibase',
+    path: 'liquibase',
+  },
   instanceEnvironment: {
     url: '/navigator/instance/:id/environment',
     path: 'environment',

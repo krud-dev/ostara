@@ -9,6 +9,8 @@ export const apiKeys = {
   itemProperties: (id: string) => [...apiKeys.item(id), 'properties'],
   itemFlyway: (id: string) => [...apiKeys.item(id), 'flyway'],
   itemFlywayByContext: (id: string, context: string) => [...apiKeys.itemFlyway(id), 'context', context],
+  itemLiquibase: (id: string) => [...apiKeys.item(id), 'liquibase'],
+  itemLiquibaseByContext: (id: string, context: string) => [...apiKeys.itemLiquibase(id), 'context', context],
   itemHttpRequestStatistics: (id: string) => [...apiKeys.item(id), 'httpRequestStatistics'],
   itemHttpRequestStatisticsForUriByMethods: (id: string, uri: string) => [
     ...apiKeys.itemHttpRequestStatistics(id),

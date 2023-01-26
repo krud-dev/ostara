@@ -20,6 +20,7 @@ import InstanceProperties from 'renderer/pages/navigator/instance/properties';
 import InstanceHttpRequests from 'renderer/pages/navigator/instance/http-requests';
 import InstanceFlyway from 'renderer/pages/navigator/instance/flyway';
 import ApplicationSettingsPage from 'renderer/pages/navigator/settings/application';
+import InstanceLiquibase from 'renderer/pages/navigator/instance/liquibase';
 
 export default function Router() {
   return useRoutes([
@@ -97,6 +98,10 @@ export default function Router() {
             {
               path: urls.instanceFlyway.path,
               element: <InstanceFlyway />,
+            },
+            {
+              path: urls.instanceLiquibase.path,
+              element: <InstanceLiquibase />,
             },
             {
               path: urls.instanceProperties.path,

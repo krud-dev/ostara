@@ -63,8 +63,8 @@ export const instanceFlywayMigrationEntity: Entity<EnrichedActuatorFlywayMigrati
   globalActions: [],
   defaultOrder: [
     {
-      id: 'name',
-      direction: 'asc',
+      id: 'installedRank',
+      direction: 'desc',
     },
   ],
   paging: false,

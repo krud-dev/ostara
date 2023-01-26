@@ -135,4 +135,10 @@ export default {
   error: 'Error',
   lastStatusChangeTime: 'Last Status Change Time',
   additionalInformation: 'Additional Information',
+  executionType: 'Execution Type',
+  author: 'Author',
+  changelog: 'Changelog',
+  comments: 'Comments',
+  dateExecuted: 'Date Executed',
+  orderExecuted: 'Order Executed',
 };
