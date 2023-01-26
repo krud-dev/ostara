@@ -1,0 +1,319 @@
+{
+  "activeProfiles": [
+    "docker",
+    "flyway"
+  ],
+  "propertySources": [
+    {
+      "name": "server.ports",
+      "properties": {
+        "local.server.port": {
+          "value": 9091
+        }
+      }
+    },
+    {
+      "name": "servletContextInitParams",
+      "properties": {}
+    },
+    {
+      "name": "systemProperties",
+      "properties": {
+        "awt.toolkit": {
+          "value": "sun.awt.X11.XToolkit"
+        },
+        "java.specification.version": {
+          "value": "11"
+        },
+        "sun.cpu.isalist": {
+          "value": ""
+        },
+        "sun.jnu.encoding": {
+          "value": "UTF-8"
+        },
+        "java.class.path": {
+          "value": "/app/application.jar"
+        },
+        "java.vm.vendor": {
+          "value": "Azul Systems, Inc."
+        },
+        "sun.arch.data.model": {
+          "value": "64"
+        },
+        "java.vendor.url": {
+          "value": "http://www.azul.com/"
+        },
+        "catalina.useNaming": {
+          "value": "false"
+        },
+        "user.timezone": {
+          "value": "GMT"
+        },
+        "os.name": {
+          "value": "Linux"
+        },
+        "java.vm.specification.version": {
+          "value": "11"
+        },
+        "sun.java.launcher": {
+          "value": "SUN_STANDARD"
+        },
+        "user.country": {
+          "value": "US"
+        },
+        "sun.boot.library.path": {
+          "value": "/usr/lib/jvm/zulu11-ca-arm64/lib"
+        },
+        "sun.java.command": {
+          "value": "******"
+        },
+        "jdk.debug": {
+          "value": "release"
+        },
+        "sun.cpu.endian": {
+          "value": "little"
+        },
+        "user.home": {
+          "value": "/home/spring"
+        },
+        "user.language": {
+          "value": "en"
+        },
+        "java.specification.vendor": {
+          "value": "Oracle Corporation"
+        },
+        "java.version.date": {
+          "value": "2022-10-18"
+        },
+        "java.home": {
+          "value": "/usr/lib/jvm/zulu11-ca-arm64"
+        },
+        "file.separator": {
+          "value": "/"
+        },
+        "java.vm.compressedOopsMode": {
+          "value": "Zero based"
+        },
+        "line.separator": {
+          "value": "\n"
+        },
+        "java.specification.name": {
+          "value": "Java Platform API Specification"
+        },
+        "java.vm.specification.vendor": {
+          "value": "Oracle Corporation"
+        },
+        "jdk.vendor.version": {
+          "value": "Zulu11.60+19-CA"
+        },
+        "FILE_LOG_CHARSET": {
+          "value": "UTF-8"
+        },
+        "java.awt.graphicsenv": {
+          "value": "sun.awt.X11GraphicsEnvironment"
+        },
+        "java.awt.headless": {
+          "value": "true"
+        },
+        "java.protocol.handler.pkgs": {
+          "value": "org.springframework.boot.loader"
+        },
+        "sun.management.compiler": {
+          "value": "HotSpot 64-Bit Tiered Compilers"
+        },
+        "java.runtime.version": {
+          "value": "11.0.17+8-LTS"
+        },
+        "user.name": {
+          "value": "spring"
+        },
+        "path.separator": {
+          "value": ":"
+        },
+        "os.version": {
+          "value": "5.15.0-1021-oracle"
+        },
+        "java.runtime.name": {
+          "value": "OpenJDK Runtime Environment"
+        },
+        "file.encoding": {
+          "value": "UTF-8"
+        },
+        "spring.beaninfo.ignore": {
+          "value": "true"
+        },
+        "java.vm.name": {
+          "value": "OpenJDK 64-Bit Server VM"
+        },
+        "java.vendor.version": {
+          "value": "Zulu11.60+19-CA"
+        },
+        "java.vendor.url.bug": {
+          "value": "http://www.azul.com/support/"
+        },
+        "java.io.tmpdir": {
+          "value": "/tmp"
+        },
+        "catalina.home": {
+          "value": "/tmp/tomcat.9091.8722099812454648239"
+        },
+        "com.zaxxer.hikari.pool_number": {
+          "value": "1"
+        },
+        "java.version": {
+          "value": "11.0.17"
+        },
+        "user.dir": {
+          "value": "/app"
+        },
+        "os.arch": {
+          "value": "aarch64"
+        },
+        "java.vm.specification.name": {
+          "value": "Java Virtual Machine Specification"
+        },
+        "PID": {
+          "value": "6"
+        },
+        "java.awt.printerjob": {
+          "value": "sun.print.PSPrinterJob"
+        },
+        "sun.os.patch.level": {
+          "value": "unknown"
+        },
+        "CONSOLE_LOG_CHARSET": {
+          "value": "UTF-8"
+        },
+        "catalina.base": {
+          "value": "/tmp/tomcat.9091.8722099812454648239"
+        },
+        "java.library.path": {
+          "value": "/usr/java/packages/lib:/lib:/usr/lib:/usr/lib64:/lib64"
+        },
+        "java.vm.info": {
+          "value": "mixed mode"
+        },
+        "java.vendor": {
+          "value": "Azul Systems, Inc."
+        },
+        "java.vm.version": {
+          "value": "11.0.17+8-LTS"
+        },
+        "sun.io.unicode.encoding": {
+          "value": "UnicodeLittle"
+        },
+        "java.class.version": {
+          "value": "55.0"
+        }
+      }
+    },
+    {
+      "name": "systemEnvironment",
+      "properties": {
+        "PATH": {
+          "value": "/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin",
+          "origin": "System Environment Property \"PATH\""
+        },
+        "LANGUAGE": {
+          "value": "en_US:en",
+          "origin": "System Environment Property \"LANGUAGE\""
+        },
+        "HOSTNAME": {
+          "value": "5fcbf6c15a4d",
+          "origin": "System Environment Property \"HOSTNAME\""
+        },
+        "LC_ALL": {
+          "value": "en_US.UTF-8",
+          "origin": "System Environment Property \"LC_ALL\""
+        },
+        "SPRING_PROFILES_ACTIVE": {
+          "value": "docker,flyway",
+          "origin": "System Environment Property \"SPRING_PROFILES_ACTIVE\""
+        },
+        "SPRING_APPLICATION_NAME": {
+          "value": "first",
+          "origin": "System Environment Property \"SPRING_APPLICATION_NAME\""
+        },
+        "JAVA_HOME": {
+          "value": "/usr/lib/jvm/zulu11-ca-arm64",
+          "origin": "System Environment Property \"JAVA_HOME\""
+        },
+        "PWD": {
+          "value": "/app",
+          "origin": "System Environment Property \"PWD\""
+        },
+        "LANG": {
+          "value": "en_US.UTF-8",
+          "origin": "System Environment Property \"LANG\""
+        },
+        "SHLVL": {
+          "value": "1",
+          "origin": "System Environment Property \"SHLVL\""
+        },
+        "HOME": {
+          "value": "/home/spring",
+          "origin": "System Environment Property \"HOME\""
+        },
+        "_": {
+          "value": "/usr/bin/java",
+          "origin": "System Environment Property \"_\""
+        }
+      }
+    },
+    {
+      "name": "Config resource 'class path resource [application-flyway.properties]' via location 'optional:classpath:/'",
+      "properties": {
+        "spring.flyway.enabled": {
+          "value": "true",
+          "origin": "class path resource [application-flyway.properties] from application.jar - 1:23"
+        }
+      }
+    },
+    {
+      "name": "Config resource 'class path resource [application-docker.properties]' via location 'optional:classpath:/'",
+      "properties": {
+        "spring.boot.admin.client.url": {
+          "value": "http://server:9090",
+          "origin": "class path resource [application-docker.properties] from application.jar - 1:30"
+        }
+      }
+    },
+    {
+      "name": "Config resource 'class path resource [application.properties]' via location 'optional:classpath:/'",
+      "properties": {
+        "server.port": {
+          "value": "9091",
+          "origin": "class path resource [application.properties] from application.jar - 1:13"
+        },
+        "spring.boot.admin.client.url": {
+          "value": "http://localhost:9090",
+          "origin": "class path resource [application.properties] from application.jar - 2:30"
+        },
+        "management.endpoints.web.exposure.include": {
+          "value": "*",
+          "origin": "class path resource [application.properties] from application.jar - 3:43"
+        },
+        "management.endpoint.health.show-details": {
+          "value": "always",
+          "origin": "class path resource [application.properties] from application.jar - 4:41"
+        },
+        "spring.jpa.database-platform": {
+          "value": "org.hibernate.dialect.H2Dialect",
+          "origin": "class path resource [application.properties] from application.jar - 5:30"
+        },
+        "spring.flyway.enabled": {
+          "value": "false",
+          "origin": "class path resource [application.properties] from application.jar - 6:23"
+        },
+        "spring.liquibase.enabled": {
+          "value": "false",
+          "origin": "class path resource [application.properties] from application.jar - 7:26"
+        },
+        "spring.liquibase.change-log": {
+          "value": "classpath:db/changelog/db.changelog-master.xml",
+          "origin": "class path resource [application.properties] from application.jar - 8:29"
+        }
+      }
+    }
+  ]
+}

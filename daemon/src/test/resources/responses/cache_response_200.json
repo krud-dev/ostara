@@ -1,0 +1,5 @@
+{
+  "target": "java.util.concurrent.ConcurrentHashMap",
+  "name": "example28",
+  "cacheManager": "primeCacheManager"
+}

@@ -1,0 +1,108 @@
+{
+  "_links": {
+    "self": {
+      "href": "http://sbclient.krud.dev/actuator",
+      "templated": false
+    },
+    "beans": {
+      "href": "http://sbclient.krud.dev/actuator/beans",
+      "templated": false
+    },
+    "caches": {
+      "href": "http://sbclient.krud.dev/actuator/caches",
+      "templated": false
+    },
+    "caches-cache": {
+      "href": "http://sbclient.krud.dev/actuator/caches/{cache}",
+      "templated": true
+    },
+    "health": {
+      "href": "http://sbclient.krud.dev/actuator/health",
+      "templated": false
+    },
+    "health-path": {
+      "href": "http://sbclient.krud.dev/actuator/health/{*path}",
+      "templated": true
+    },
+    "info": {
+      "href": "http://sbclient.krud.dev/actuator/info",
+      "templated": false
+    },
+    "conditions": {
+      "href": "http://sbclient.krud.dev/actuator/conditions",
+      "templated": false
+    },
+    "configprops-prefix": {
+      "href": "http://sbclient.krud.dev/actuator/configprops/{prefix}",
+      "templated": true
+    },
+    "configprops": {
+      "href": "http://sbclient.krud.dev/actuator/configprops",
+      "templated": false
+    },
+    "env-toMatch": {
+      "href": "http://sbclient.krud.dev/actuator/env/{toMatch}",
+      "templated": true
+    },
+    "env": {
+      "href": "http://sbclient.krud.dev/actuator/env",
+      "templated": false
+    },
+    "flyway": {
+      "href": "http://sbclient.krud.dev/actuator/flyway",
+      "templated": false
+    },
+    "integrationgraph": {
+      "href": "http://sbclient.krud.dev/actuator/integrationgraph",
+      "templated": false
+    },
+    "loggers": {
+      "href": "http://sbclient.krud.dev/actuator/loggers",
+      "templated": false
+    },
+    "loggers-name": {
+      "href": "http://sbclient.krud.dev/actuator/loggers/{name}",
+      "templated": true
+    },
+    "heapdump": {
+      "href": "http://sbclient.krud.dev/actuator/heapdump",
+      "templated": false
+    },
+    "threaddump": {
+      "href": "http://sbclient.krud.dev/actuator/threaddump",
+      "templated": false
+    },
+    "metrics-requiredMetricName": {
+      "href": "http://sbclient.krud.dev/actuator/metrics/{requiredMetricName}",
+      "templated": true
+    },
+    "metrics": {
+      "href": "http://sbclient.krud.dev/actuator/metrics",
+      "templated": false
+    },
+    "quartz": {
+      "href": "http://sbclient.krud.dev/actuator/quartz",
+      "templated": false
+    },
+    "quartz-jobsOrTriggers": {
+      "href": "http://sbclient.krud.dev/actuator/quartz/{jobsOrTriggers}",
+      "templated": true
+    },
+    "quartz-jobsOrTriggers-group-name": {
+      "href": "http://sbclient.krud.dev/actuator/quartz/{jobsOrTriggers}/{group}/{name}",
+      "templated": true
+    },
+    "quartz-jobsOrTriggers-group": {
+      "href": "http://sbclient.krud.dev/actuator/quartz/{jobsOrTriggers}/{group}",
+      "templated": true
+    },
+    "scheduledtasks": {
+      "href": "http://sbclient.krud.dev/actuator/scheduledtasks",
+      "templated": false
+    },
+    "mappings": {
+      "href": "http://sbclient.krud.dev/actuator/mappings",
+      "templated": false
+    }
+  }
+}

@@ -1,0 +1,33 @@
+{
+  "name": "jvm.memory.max",
+  "description": "The maximum amount of memory in bytes that can be used for memory management",
+  "baseUnit": "bytes",
+  "measurements": [
+    {
+      "statistic": "VALUE",
+      "value": 5511315453
+    }
+  ],
+  "availableTags": [
+    {
+      "tag": "area",
+      "values": [
+        "heap",
+        "nonheap"
+      ]
+    },
+    {
+      "tag": "id",
+      "values": [
+        "CodeHeap 'profiled nmethods'",
+        "G1 Old Gen",
+        "CodeHeap 'non-profiled nmethods'",
+        "G1 Survivor Space",
+        "Compressed Class Space",
+        "Metaspace",
+        "G1 Eden Space",
+        "CodeHeap 'non-nmethods'"
+      ]
+    }
+  ]
+}

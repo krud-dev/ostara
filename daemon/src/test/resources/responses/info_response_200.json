@@ -1,0 +1,16 @@
+{
+  "git": {
+    "branch": "develop",
+    "commit": {
+      "id": "123456",
+      "time": 1672061382
+    }
+  },
+  "build": {
+    "artifact": "test",
+    "name": "test",
+    "time": 1672131248.844,
+    "version": "unspecified",
+    "group": "test"
+  }
+}

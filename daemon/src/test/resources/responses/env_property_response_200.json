@@ -1,0 +1,45 @@
+{
+  "property": {
+    "source": "systemProperties",
+    "value": "1"
+  },
+  "activeProfiles": [
+    "docker",
+    "flyway"
+  ],
+  "propertySources": [
+    {
+      "name": "server.ports"
+    },
+    {
+      "name": "servletConfigInitParams"
+    },
+    {
+      "name": "servletContextInitParams"
+    },
+    {
+      "name": "systemProperties",
+      "property": {
+        "value": "1"
+      }
+    },
+    {
+      "name": "systemEnvironment"
+    },
+    {
+      "name": "random"
+    },
+    {
+      "name": "Config resource 'class path resource [application-flyway.properties]' via location 'optional:classpath:/'"
+    },
+    {
+      "name": "Config resource 'class path resource [application-docker.properties]' via location 'optional:classpath:/'"
+    },
+    {
+      "name": "Config resource 'class path resource [application.properties]' via location 'optional:classpath:/'"
+    },
+    {
+      "name": "Management Server"
+    }
+  ]
+}

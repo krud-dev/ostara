@@ -1,0 +1,3672 @@
+{
+  "levels": [
+    "OFF",
+    "ERROR",
+    "WARN",
+    "INFO",
+    "DEBUG",
+    "TRACE"
+  ],
+  "loggers": {
+    "ROOT": {
+      "configuredLevel": "INFO",
+      "effectiveLevel": "INFO"
+    },
+    "_org": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "_org.springframework": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "_org.springframework.web": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "_org.springframework.web.servlet": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "_org.springframework.web.servlet.HandlerMapping": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "_org.springframework.web.servlet.HandlerMapping.Mappings": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "com": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "com.zaxxer": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "com.zaxxer.hikari": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "com.zaxxer.hikari.HikariConfig": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "com.zaxxer.hikari.HikariDataSource": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "com.zaxxer.hikari.pool": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "com.zaxxer.hikari.pool.HikariPool": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "com.zaxxer.hikari.pool.PoolBase": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "com.zaxxer.hikari.pool.PoolEntry": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "com.zaxxer.hikari.pool.ProxyConnection": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "com.zaxxer.hikari.pool.ProxyLeakTask": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "com.zaxxer.hikari.util": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "com.zaxxer.hikari.util.ConcurrentBag": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "com.zaxxer.hikari.util.DriverDataSource": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "de": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "de.codecentric": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "de.codecentric.boot": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "de.codecentric.boot.admin": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "de.codecentric.boot.admin.client": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "de.codecentric.boot.admin.client.config": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "de.codecentric.boot.admin.client.config.SpringBootAdminClientEnabledCondition": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "de.codecentric.boot.admin.client.registration": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "de.codecentric.boot.admin.client.registration.ApplicationRegistrator": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "de.codecentric.boot.admin.client.registration.RegistrationApplicationListener": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "dev": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "dev.krud": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "dev.krud.springbootadmin": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "dev.krud.springbootadmin.client": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "dev.krud.springbootadmin.client.ClientApplicationKt": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "io": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "io.micrometer": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "io.micrometer.core": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "io.micrometer.core.instrument": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "io.micrometer.core.instrument.binder": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "io.micrometer.core.instrument.binder.jvm": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "io.micrometer.core.instrument.binder.jvm.ExecutorServiceMetrics": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "io.micrometer.core.instrument.binder.jvm.JvmGcMetrics": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "io.micrometer.core.instrument.internal": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "io.micrometer.core.instrument.internal.DefaultGauge": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "io.micrometer.core.util": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "io.micrometer.core.util.internal": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "io.micrometer.core.util.internal.logging": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "io.micrometer.core.util.internal.logging.InternalLoggerFactory": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.apache": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.apache.catalina": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.apache.catalina.core": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.apache.catalina.core.ContainerBase": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.apache.catalina.core.ContainerBase.[Tomcat]": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.apache.catalina.core.ContainerBase.[Tomcat].[localhost]": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.apache.catalina.core.ContainerBase.[Tomcat].[localhost].[/]": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.apache.catalina.core.StandardEngine": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.apache.catalina.core.StandardService": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.apache.catalina.startup": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.apache.catalina.startup.DigesterFactory": {
+      "configuredLevel": "ERROR",
+      "effectiveLevel": "ERROR"
+    },
+    "org.apache.catalina.util": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.apache.catalina.util.LifecycleBase": {
+      "configuredLevel": "ERROR",
+      "effectiveLevel": "ERROR"
+    },
+    "org.apache.coyote": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.apache.coyote.http11": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.apache.coyote.http11.Http11NioProtocol": {
+      "configuredLevel": "WARN",
+      "effectiveLevel": "WARN"
+    },
+    "org.apache.sshd": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.apache.sshd.common": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.apache.sshd.common.util": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.apache.sshd.common.util.SecurityUtils": {
+      "configuredLevel": "WARN",
+      "effectiveLevel": "WARN"
+    },
+    "org.apache.tomcat": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.apache.tomcat.util": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.apache.tomcat.util.net": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.apache.tomcat.util.net.NioSelectorPool": {
+      "configuredLevel": "WARN",
+      "effectiveLevel": "WARN"
+    },
+    "org.eclipse": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.eclipse.jetty": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.eclipse.jetty.util": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.eclipse.jetty.util.component": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.eclipse.jetty.util.component.AbstractLifeCycle": {
+      "configuredLevel": "ERROR",
+      "effectiveLevel": "ERROR"
+    },
+    "org.flywaydb": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.flywaydb.core": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.flywaydb.core.FlywayExecutor": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.flywaydb.core.internal": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.flywaydb.core.internal.callback": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.flywaydb.core.internal.callback.SqlScriptCallbackFactory": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.flywaydb.core.internal.command": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.flywaydb.core.internal.command.DbMigrate": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.flywaydb.core.internal.command.DbSchemas": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.flywaydb.core.internal.command.DbValidate": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.flywaydb.core.internal.database": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.flywaydb.core.internal.database.DatabaseTypeRegister": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.flywaydb.core.internal.database.base": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.flywaydb.core.internal.database.base.BaseDatabaseType": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.flywaydb.core.internal.database.base.Database": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.flywaydb.core.internal.database.base.Schema": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.flywaydb.core.internal.database.h2": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.flywaydb.core.internal.database.h2.H2Schema": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.flywaydb.core.internal.jdbc": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.flywaydb.core.internal.jdbc.JdbcConnectionFactory": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.flywaydb.core.internal.jdbc.JdbcUtils": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.flywaydb.core.internal.jdbc.TransactionalExecutionTemplate": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.flywaydb.core.internal.license": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.flywaydb.core.internal.license.VersionPrinter": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.flywaydb.core.internal.parser": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.flywaydb.core.internal.parser.Parser": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.flywaydb.core.internal.parser.ParsingContext": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.flywaydb.core.internal.resolver": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.flywaydb.core.internal.resolver.sql": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.flywaydb.core.internal.resolver.sql.SqlMigrationResolver": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.flywaydb.core.internal.resource": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.flywaydb.core.internal.resource.ResourceNameValidator": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.flywaydb.core.internal.resource.classpath": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.flywaydb.core.internal.resource.classpath.ClassPathResource": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.flywaydb.core.internal.scanner": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.flywaydb.core.internal.scanner.Scanner": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.flywaydb.core.internal.scanner.classpath": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.flywaydb.core.internal.scanner.classpath.ClassPathScanner": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.flywaydb.core.internal.scanner.classpath.JarFileClassPathLocationScanner": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.flywaydb.core.internal.scanner.filesystem": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.flywaydb.core.internal.scanner.filesystem.FileSystemScanner": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.flywaydb.core.internal.schemahistory": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.flywaydb.core.internal.schemahistory.JdbcTableSchemaHistory": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.flywaydb.core.internal.schemahistory.SchemaHistoryFactory": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.flywaydb.core.internal.sqlscript": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.flywaydb.core.internal.sqlscript.DefaultSqlScriptExecutor": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.flywaydb.core.internal.sqlscript.ParserSqlScript": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.flywaydb.core.internal.sqlscript.SqlScriptMetadata": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.flywaydb.core.internal.util": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.flywaydb.core.internal.util.FeatureDetector": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.hibernate": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.hibernate.MultiTenancyStrategy": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.hibernate.SQL": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.hibernate.SQL_SLOW": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.hibernate.Version": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.hibernate.annotations": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.hibernate.annotations.common": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.hibernate.annotations.common.Version": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.hibernate.annotations.common.util": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.hibernate.annotations.common.util.StandardClassLoaderDelegateImpl": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.hibernate.boot": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.hibernate.boot.MetadataSources": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.hibernate.boot.cfgxml": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.hibernate.boot.cfgxml.internal": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.hibernate.boot.cfgxml.internal.ConfigLoader": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.hibernate.boot.cfgxml.spi": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.hibernate.boot.cfgxml.spi.LoadedConfig": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.hibernate.boot.internal": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.hibernate.boot.internal.BootstrapContextImpl": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.hibernate.boot.internal.ClassLoaderAccessImpl": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.hibernate.boot.internal.IdGeneratorInterpreterImpl": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.hibernate.boot.internal.InFlightMetadataCollectorImpl": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.hibernate.boot.internal.MetadataBuilderImpl": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.hibernate.boot.internal.SessionFactoryOptionsBuilder": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.hibernate.boot.jaxb": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.hibernate.boot.jaxb.internal": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.hibernate.boot.jaxb.internal.AbstractBinder": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.hibernate.boot.jaxb.internal.MappingBinder": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.hibernate.boot.jaxb.internal.stax": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.hibernate.boot.jaxb.internal.stax.LocalSchemaLocator": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.hibernate.boot.jaxb.internal.stax.LocalXmlResourceResolver": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.hibernate.boot.model": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.hibernate.boot.model.convert": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.hibernate.boot.model.convert.internal": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.hibernate.boot.model.convert.internal.AttributeConverterManager": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.hibernate.boot.model.process": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.hibernate.boot.model.process.internal": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.hibernate.boot.model.process.internal.ScanningCoordinator": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.hibernate.boot.model.process.spi": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.hibernate.boot.model.process.spi.MetadataBuildingProcess": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.hibernate.boot.model.relational": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.hibernate.boot.model.relational.Namespace": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.hibernate.boot.model.relational.internal": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.hibernate.boot.model.relational.internal.SqlStringGenerationContextImpl": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.hibernate.boot.model.source": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.hibernate.boot.model.source.internal": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.hibernate.boot.model.source.internal.annotations": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.hibernate.boot.model.source.internal.annotations.AnnotationMetadataSourceProcessorImpl": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.hibernate.boot.model.source.internal.hbm": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.hibernate.boot.model.source.internal.hbm.EntityHierarchyBuilder": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.hibernate.boot.model.source.internal.hbm.HbmMetadataSourceProcessorImpl": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.hibernate.boot.model.source.internal.hbm.ModelBinder": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.hibernate.boot.registry": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.hibernate.boot.registry.classloading": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.hibernate.boot.registry.classloading.internal": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.hibernate.boot.registry.classloading.internal.AggregatedServiceLoader": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.hibernate.boot.registry.classloading.internal.ClassLoaderServiceImpl": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.hibernate.boot.registry.internal": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.hibernate.boot.registry.internal.BootstrapServiceRegistryImpl": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.hibernate.boot.registry.selector": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.hibernate.boot.registry.selector.internal": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.hibernate.boot.registry.selector.internal.StrategySelectorBuilder": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.hibernate.boot.registry.selector.internal.StrategySelectorImpl": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.hibernate.boot.spi": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.hibernate.boot.spi.XmlMappingBinderAccess": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.hibernate.bytecode": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.hibernate.bytecode.internal": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.hibernate.bytecode.internal.bytebuddy": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.hibernate.bytecode.internal.bytebuddy.ByteBuddyState": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.hibernate.cache": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.hibernate.cache.internal": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.hibernate.cache.internal.CollectionCacheInvalidator": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.hibernate.cache.internal.RegionFactoryInitiator": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.hibernate.cache.internal.StrategyCreatorRegionFactoryImpl": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.hibernate.cfg": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.hibernate.cfg.AnnotationBinder": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.hibernate.cfg.Environment": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.hibernate.cfg.Settings": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.hibernate.cfg.annotations": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.hibernate.cfg.annotations.reflection": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.hibernate.cfg.annotations.reflection.internal": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.hibernate.cfg.annotations.reflection.internal.XMLContext": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.hibernate.cfg.beanvalidation": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.hibernate.cfg.beanvalidation.BeanValidationIntegrator": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.hibernate.dialect": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.hibernate.dialect.Dialect": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.hibernate.dialect.H2Dialect": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.hibernate.dialect.function": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.hibernate.dialect.function.TemplateRenderer": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.hibernate.engine": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.hibernate.engine.config": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.hibernate.engine.config.internal": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.hibernate.engine.config.internal.ConfigurationServiceImpl": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.hibernate.engine.internal": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.hibernate.engine.internal.EntityEntryContext": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.hibernate.engine.internal.StatefulPersistenceContext": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.hibernate.engine.jdbc": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.hibernate.engine.jdbc.connections": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.hibernate.engine.jdbc.connections.internal": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.hibernate.engine.jdbc.connections.internal.ConnectionProviderInitiator": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.hibernate.engine.jdbc.connections.internal.MultiTenantConnectionProviderInitiator": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.hibernate.engine.jdbc.cursor": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.hibernate.engine.jdbc.cursor.internal": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.hibernate.engine.jdbc.cursor.internal.StandardRefCursorSupport": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.hibernate.engine.jdbc.dialect": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.hibernate.engine.jdbc.dialect.internal": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.hibernate.engine.jdbc.dialect.internal.DialectResolverSet": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.hibernate.engine.jdbc.env": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.hibernate.engine.jdbc.env.internal": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.hibernate.engine.jdbc.env.internal.DefaultSchemaNameResolver": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.hibernate.engine.jdbc.env.internal.JdbcEnvironmentImpl": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.hibernate.engine.jdbc.env.internal.JdbcEnvironmentInitiator": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.hibernate.engine.jdbc.env.internal.LobCreatorBuilderImpl": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.hibernate.engine.jdbc.env.internal.NormalizingIdentifierHelperImpl": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.hibernate.engine.jdbc.env.spi": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.hibernate.engine.jdbc.env.spi.IdentifierHelperBuilder": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.hibernate.engine.jdbc.internal": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.hibernate.engine.jdbc.internal.JdbcCoordinatorImpl": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.hibernate.engine.jdbc.spi": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.hibernate.engine.jdbc.spi.SqlExceptionHelper": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.hibernate.engine.jndi": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.hibernate.engine.jndi.internal": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.hibernate.engine.jndi.internal.JndiServiceImpl": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.hibernate.engine.query": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.hibernate.engine.query.spi": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.hibernate.engine.query.spi.QueryPlanCache": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.hibernate.engine.spi": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.hibernate.engine.spi.ActionQueue": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.hibernate.engine.spi.EffectiveEntityGraph": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.hibernate.engine.transaction": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.hibernate.engine.transaction.jta": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.hibernate.engine.transaction.jta.platform": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.hibernate.engine.transaction.jta.platform.internal": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.hibernate.engine.transaction.jta.platform.internal.JtaPlatformInitiator": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.hibernate.engine.transaction.jta.platform.internal.JtaPlatformResolverInitiator": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.hibernate.event": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.hibernate.event.internal": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.hibernate.event.internal.AbstractFlushingEventListener": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.hibernate.event.internal.AbstractLockUpgradeEventListener": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.hibernate.event.internal.AbstractReassociateEventListener": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.hibernate.event.internal.AbstractSaveEventListener": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.hibernate.event.internal.DefaultAutoFlushEventListener": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.hibernate.event.internal.DefaultDeleteEventListener": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.hibernate.event.internal.DefaultDirtyCheckEventListener": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.hibernate.event.internal.DefaultEvictEventListener": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.hibernate.event.internal.DefaultFlushEntityEventListener": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.hibernate.event.internal.DefaultInitializeCollectionEventListener": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.hibernate.event.internal.DefaultLoadEventListener": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.hibernate.event.internal.DefaultLockEventListener": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.hibernate.event.internal.DefaultMergeEventListener": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.hibernate.event.internal.DefaultPersistEventListener": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.hibernate.event.internal.DefaultRefreshEventListener": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.hibernate.event.internal.DefaultReplicateEventListener": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.hibernate.event.internal.DefaultResolveNaturalIdEventListener": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.hibernate.event.internal.DefaultSaveOrUpdateEventListener": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.hibernate.event.internal.EntityCopyObserverFactoryInitiator": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.hibernate.event.service": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.hibernate.event.service.internal": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.hibernate.event.service.internal.EventListenerGroupImpl": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.hibernate.event.service.internal.PostCommitEventListenerGroupImpl": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.hibernate.hql": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.hibernate.hql.internal": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.hibernate.hql.internal.QueryTranslatorFactoryInitiator": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.hibernate.id": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.hibernate.id.factory": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.hibernate.id.factory.internal": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.hibernate.id.factory.internal.DefaultIdentifierGeneratorFactory": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.hibernate.integrator": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.hibernate.integrator.internal": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.hibernate.integrator.internal.IntegratorServiceImpl": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.hibernate.internal": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.hibernate.internal.SessionFactoryImpl": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.hibernate.internal.SessionFactoryImpl$SessionBuilderImpl": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.hibernate.internal.SessionFactoryRegistry": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.hibernate.internal.SessionImpl": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.hibernate.internal.util": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.hibernate.internal.util.ConfigHelper": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.hibernate.jpa": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.hibernate.jpa.HibernatePersistenceProvider": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.hibernate.jpa.boot": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.hibernate.jpa.boot.internal": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.hibernate.jpa.boot.internal.EntityManagerFactoryBuilderImpl": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.hibernate.jpa.event": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.hibernate.jpa.event.internal": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.hibernate.jpa.event.internal.CallbacksFactory": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.hibernate.jpa.internal": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.hibernate.jpa.internal.PersistenceUnitUtilImpl": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.hibernate.jpa.internal.util": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.hibernate.jpa.internal.util.LogHelper": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.hibernate.loader": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.hibernate.loader.BatchFetchStyle": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.hibernate.metamodel": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.hibernate.metamodel.internal": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.hibernate.metamodel.internal.AttributeFactory": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.hibernate.metamodel.internal.MetadataContext": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.hibernate.metamodel.internal.MetamodelImpl": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.hibernate.proxy": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.hibernate.proxy.pojo": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.hibernate.proxy.pojo.bytebuddy": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.hibernate.proxy.pojo.bytebuddy.ByteBuddyProxyHelper": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.hibernate.query": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.hibernate.query.spi": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.hibernate.query.spi.NamedQueryRepository": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.hibernate.resource": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.hibernate.resource.jdbc": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.hibernate.resource.jdbc.internal": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.hibernate.resource.jdbc.internal.AbstractLogicalConnectionImplementor": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.hibernate.resource.jdbc.internal.LogicalConnectionManagedImpl": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.hibernate.resource.jdbc.internal.ResourceRegistryStandardImpl": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.hibernate.resource.transaction": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.hibernate.resource.transaction.backend": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.hibernate.resource.transaction.backend.jdbc": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.hibernate.resource.transaction.backend.jdbc.internal": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.hibernate.resource.transaction.backend.jdbc.internal.JdbcResourceLocalTransactionCoordinatorImpl": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.hibernate.resource.transaction.internal": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.hibernate.resource.transaction.internal.SynchronizationRegistryStandardImpl": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.hibernate.secure": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.hibernate.secure.internal": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.hibernate.secure.internal.DisabledJaccServiceImpl": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.hibernate.secure.spi": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.hibernate.secure.spi.JaccIntegrator": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.hibernate.service": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.hibernate.service.internal": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.hibernate.service.internal.AbstractServiceRegistryImpl": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.hibernate.service.internal.SessionFactoryServiceRegistryImpl": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.hibernate.service.spi": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.hibernate.service.spi.ServiceBinding": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.hibernate.stat": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.hibernate.stat.internal": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.hibernate.stat.internal.StatisticsImpl": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.hibernate.stat.internal.StatisticsInitiator": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.hibernate.tool": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.hibernate.tool.schema": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.hibernate.tool.schema.spi": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.hibernate.tool.schema.spi.SchemaManagementToolCoordinator": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.hibernate.type": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.hibernate.type.BasicTypeRegistry": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.hibernate.type.DbTimestampType": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.hibernate.type.descriptor": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.hibernate.type.descriptor.java": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.hibernate.type.descriptor.java.spi": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.hibernate.type.descriptor.java.spi.JavaTypeDescriptorRegistry": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.hibernate.type.descriptor.sql": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.hibernate.type.descriptor.sql.SqlTypeDescriptorRegistry": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.hibernate.type.spi": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.hibernate.type.spi.TypeConfiguration": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.hibernate.type.spi.TypeConfiguration$Scope": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.hibernate.validator": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.hibernate.validator.internal": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.hibernate.validator.internal.util": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.hibernate.validator.internal.util.Version": {
+      "configuredLevel": "WARN",
+      "effectiveLevel": "WARN"
+    },
+    "org.jboss": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.jboss.logging": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.quartz": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.quartz.core": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.quartz.core.ErrorLogger": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.quartz.core.QuartzScheduler": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.quartz.core.QuartzSchedulerThread": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.quartz.core.SchedulerSignalerImpl": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.quartz.impl": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.quartz.impl.SchedulerDetailsSetter": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.quartz.impl.StdSchedulerFactory": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.quartz.simpl": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.quartz.simpl.PropertySettingJobFactory": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.quartz.simpl.RAMJobStore": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.quartz.simpl.SimpleThreadPool": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.springframework": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.springframework.aop": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.springframework.aop.aspectj": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.springframework.aop.aspectj.annotation": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.springframework.aop.aspectj.annotation.AnnotationAwareAspectJAutoProxyCreator": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.springframework.aop.aspectj.annotation.ReflectiveAspectJAdvisorFactory": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.springframework.aop.framework": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.springframework.aop.framework.CglibAopProxy": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.springframework.aop.framework.ObjenesisCglibAopProxy": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.springframework.aop.framework.autoproxy": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.springframework.aop.framework.autoproxy.BeanFactoryAdvisorRetrievalHelper": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.springframework.beans": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.springframework.beans.AbstractNestablePropertyAccessor": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.springframework.beans.CachedIntrospectionResults": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.springframework.beans.ExtendedBeanInfo": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.springframework.beans.TypeConverterDelegate": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.springframework.beans.factory": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.springframework.beans.factory.annotation": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.springframework.beans.factory.annotation.AutowiredAnnotationBeanPostProcessor": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.springframework.beans.factory.parsing": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.springframework.beans.factory.parsing.FailFastProblemReporter": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.springframework.beans.factory.support": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.springframework.beans.factory.support.DefaultListableBeanFactory": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.springframework.beans.factory.support.DisposableBeanAdapter": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.springframework.beans.factory.xml": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.springframework.beans.factory.xml.DefaultDocumentLoader": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.springframework.beans.factory.xml.XmlBeanDefinitionReader": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.springframework.boot": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.springframework.boot.BeanDefinitionLoader": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.springframework.boot.BeanDefinitionLoader$ClassExcludeFilter": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.springframework.boot.DefaultApplicationArguments": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.springframework.boot.DefaultApplicationArguments$Source": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.springframework.boot.SpringApplication": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.springframework.boot.SpringApplicationShutdownHook": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.springframework.boot.StartupInfoLogger": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.springframework.boot.actuate": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.springframework.boot.actuate.autoconfigure": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.springframework.boot.actuate.autoconfigure.availability": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.springframework.boot.actuate.autoconfigure.availability.AvailabilityProbesAutoConfiguration": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.springframework.boot.actuate.autoconfigure.availability.AvailabilityProbesAutoConfiguration$ProbesCondition": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.springframework.boot.actuate.autoconfigure.endpoint": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.springframework.boot.actuate.autoconfigure.endpoint.condition": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.springframework.boot.actuate.autoconfigure.endpoint.condition.OnAvailableEndpointCondition": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.springframework.boot.actuate.autoconfigure.health": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.springframework.boot.actuate.autoconfigure.health.OnEnabledHealthIndicatorCondition": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.springframework.boot.actuate.autoconfigure.info": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.springframework.boot.actuate.autoconfigure.info.OnEnabledInfoContributorCondition": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.springframework.boot.actuate.autoconfigure.logging": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.springframework.boot.actuate.autoconfigure.logging.LogFileWebEndpointAutoConfiguration": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.springframework.boot.actuate.autoconfigure.logging.LogFileWebEndpointAutoConfiguration$LogFileCondition": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.springframework.boot.actuate.autoconfigure.logging.LoggersEndpointAutoConfiguration": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.springframework.boot.actuate.autoconfigure.logging.LoggersEndpointAutoConfiguration$OnEnabledLoggingSystemCondition": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.springframework.boot.actuate.autoconfigure.metrics": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.springframework.boot.actuate.autoconfigure.metrics.CompositeMeterRegistryConfiguration": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.springframework.boot.actuate.autoconfigure.metrics.CompositeMeterRegistryConfiguration$MultipleNonPrimaryMeterRegistriesCondition": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.springframework.boot.actuate.autoconfigure.metrics.LogbackMetricsAutoConfiguration": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.springframework.boot.actuate.autoconfigure.metrics.LogbackMetricsAutoConfiguration$LogbackLoggingCondition": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.springframework.boot.actuate.autoconfigure.metrics.MeterRegistryConfigurer": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.springframework.boot.actuate.autoconfigure.metrics.MeterRegistryCustomizer": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.springframework.boot.actuate.autoconfigure.metrics.OnlyOnceLoggingDenyMeterFilter": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.springframework.boot.actuate.autoconfigure.metrics.export": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.springframework.boot.actuate.autoconfigure.metrics.export.OnMetricsExportEnabledCondition": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.springframework.boot.actuate.autoconfigure.metrics.jdbc": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.springframework.boot.actuate.autoconfigure.metrics.jdbc.DataSourcePoolMetricsAutoConfiguration": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.springframework.boot.actuate.autoconfigure.metrics.jdbc.DataSourcePoolMetricsAutoConfiguration$HikariDataSourceMetricsConfiguration": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.springframework.boot.actuate.autoconfigure.metrics.jdbc.DataSourcePoolMetricsAutoConfiguration$HikariDataSourceMetricsConfiguration$HikariDataSourceMeterBinder": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.springframework.boot.actuate.autoconfigure.startup": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.springframework.boot.actuate.autoconfigure.startup.StartupEndpointAutoConfiguration": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.springframework.boot.actuate.autoconfigure.startup.StartupEndpointAutoConfiguration$ApplicationStartupCondition": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.springframework.boot.actuate.autoconfigure.web": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.springframework.boot.actuate.autoconfigure.web.server": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.springframework.boot.actuate.autoconfigure.web.server.ManagementContextAutoConfiguration": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.springframework.boot.actuate.autoconfigure.web.server.ManagementContextAutoConfiguration$SameManagementContextConfiguration": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.springframework.boot.actuate.autoconfigure.web.server.ManagementContextAutoConfiguration$SameManagementContextConfiguration$1": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.springframework.boot.actuate.autoconfigure.web.server.OnManagementPortCondition": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.springframework.boot.actuate.context": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.springframework.boot.actuate.context.properties": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.springframework.boot.actuate.context.properties.ConfigurationPropertiesReportEndpoint": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.springframework.boot.actuate.context.properties.ConfigurationPropertiesReportEndpoint$ConfigurationPropertiesPropertyFilter": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.springframework.boot.actuate.endpoint": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.springframework.boot.actuate.endpoint.EndpointFilter": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.springframework.boot.actuate.endpoint.EndpointId": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.springframework.boot.actuate.endpoint.annotation": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.springframework.boot.actuate.endpoint.annotation.EndpointDiscoverer": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.springframework.boot.actuate.endpoint.jmx": {
+      "configuredLevel": "WARN",
+      "effectiveLevel": "WARN"
+    },
+    "org.springframework.boot.actuate.endpoint.web": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.springframework.boot.actuate.endpoint.web.EndpointLinksResolver": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.springframework.boot.actuate.endpoint.web.ServletEndpointRegistrar": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.springframework.boot.actuate.endpoint.web.servlet": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.springframework.boot.actuate.endpoint.web.servlet.AdditionalHealthEndpointPathsWebMvcHandlerMapping": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.springframework.boot.actuate.endpoint.web.servlet.ControllerEndpointHandlerMapping": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.springframework.boot.actuate.endpoint.web.servlet.WebMvcEndpointHandlerMapping": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.springframework.boot.actuate.health": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.springframework.boot.actuate.health.HealthEndpointSupport": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.springframework.boot.actuate.health.PingHealthIndicator": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.springframework.boot.actuate.jdbc": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.springframework.boot.actuate.jdbc.DataSourceHealthIndicator": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.springframework.boot.actuate.management": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.springframework.boot.actuate.management.HeapDumpWebEndpoint": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.springframework.boot.actuate.management.HeapDumpWebEndpoint$TemporaryFileSystemResource": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.springframework.boot.actuate.metrics": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.springframework.boot.actuate.metrics.web": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.springframework.boot.actuate.metrics.web.client": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.springframework.boot.actuate.metrics.web.client.MetricsClientHttpRequestInterceptor": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.springframework.boot.actuate.metrics.web.servlet": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.springframework.boot.actuate.metrics.web.servlet.LongTaskTimingHandlerInterceptor": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.springframework.boot.actuate.metrics.web.servlet.WebMvcMetricsFilter": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.springframework.boot.actuate.system": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.springframework.boot.actuate.system.DiskSpaceHealthIndicator": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.springframework.boot.autoconfigure": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.springframework.boot.autoconfigure.AutoConfigurationImportSelector": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.springframework.boot.autoconfigure.AutoConfigurationPackages": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.springframework.boot.autoconfigure.cache": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.springframework.boot.autoconfigure.cache.CacheCondition": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.springframework.boot.autoconfigure.condition": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.springframework.boot.autoconfigure.condition.OnBeanCondition": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.springframework.boot.autoconfigure.condition.OnClassCondition": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.springframework.boot.autoconfigure.condition.OnCloudPlatformCondition": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.springframework.boot.autoconfigure.condition.OnJndiCondition": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.springframework.boot.autoconfigure.condition.OnPropertyCondition": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.springframework.boot.autoconfigure.condition.OnResourceCondition": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.springframework.boot.autoconfigure.condition.OnWebApplicationCondition": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.springframework.boot.autoconfigure.context": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.springframework.boot.autoconfigure.context.MessageSourceAutoConfiguration": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.springframework.boot.autoconfigure.context.MessageSourceAutoConfiguration$ResourceBundleCondition": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.springframework.boot.autoconfigure.data": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.springframework.boot.autoconfigure.data.jpa": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.springframework.boot.autoconfigure.data.jpa.JpaRepositoriesAutoConfiguration": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.springframework.boot.autoconfigure.data.jpa.JpaRepositoriesAutoConfiguration$BootstrapExecutorCondition": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.springframework.boot.autoconfigure.flyway": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.springframework.boot.autoconfigure.flyway.FlywayAutoConfiguration": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.springframework.boot.autoconfigure.flyway.FlywayAutoConfiguration$FlywayDataSourceCondition": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.springframework.boot.autoconfigure.http": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.springframework.boot.autoconfigure.http.HttpMessageConvertersAutoConfiguration": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.springframework.boot.autoconfigure.http.HttpMessageConvertersAutoConfiguration$NotReactiveWebApplicationCondition": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.springframework.boot.autoconfigure.info": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.springframework.boot.autoconfigure.info.ProjectInfoAutoConfiguration": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.springframework.boot.autoconfigure.info.ProjectInfoAutoConfiguration$GitResourceAvailableCondition": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.springframework.boot.autoconfigure.integration": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.springframework.boot.autoconfigure.integration.IntegrationAutoConfiguration": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.springframework.boot.autoconfigure.integration.IntegrationAutoConfiguration$IntegrationRSocketConfiguration": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.springframework.boot.autoconfigure.integration.IntegrationAutoConfiguration$IntegrationRSocketConfiguration$AnyRSocketChannelAdapterAvailable": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.springframework.boot.autoconfigure.integration.IntegrationAutoConfiguration$OnIntegrationDatasourceInitializationCondition": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.springframework.boot.autoconfigure.jdbc": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration$EmbeddedDatabaseCondition": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration$PooledDataSourceAvailableCondition": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration$PooledDataSourceCondition": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.springframework.boot.autoconfigure.jdbc.DataSourceJmxConfiguration": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.springframework.boot.autoconfigure.liquibase": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.springframework.boot.autoconfigure.liquibase.LiquibaseAutoConfiguration": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.springframework.boot.autoconfigure.liquibase.LiquibaseAutoConfiguration$LiquibaseDataSourceCondition": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.springframework.boot.autoconfigure.logging": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.springframework.boot.autoconfigure.logging.ConditionEvaluationReportLoggingListener": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.springframework.boot.autoconfigure.orm": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.springframework.boot.autoconfigure.orm.jpa": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.springframework.boot.autoconfigure.orm.jpa.HibernateJpaConfiguration": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.springframework.boot.autoconfigure.orm.jpa.JpaBaseConfiguration": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.springframework.boot.autoconfigure.orm.jpa.JpaBaseConfiguration$JpaWebConfiguration": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.springframework.boot.autoconfigure.security": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.springframework.boot.autoconfigure.security.DefaultWebSecurityCondition": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.springframework.boot.autoconfigure.sql": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.springframework.boot.autoconfigure.sql.init": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.springframework.boot.autoconfigure.sql.init.SqlInitializationAutoConfiguration": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.springframework.boot.autoconfigure.sql.init.SqlInitializationAutoConfiguration$SqlInitializationModeCondition": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.springframework.boot.autoconfigure.transaction": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.springframework.boot.autoconfigure.transaction.PlatformTransactionManagerCustomizer": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.springframework.boot.autoconfigure.transaction.TransactionManagerCustomizers": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.springframework.boot.autoconfigure.web": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.springframework.boot.autoconfigure.web.OnEnabledResourceChainCondition": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.springframework.boot.autoconfigure.web.client": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.springframework.boot.autoconfigure.web.client.RestTemplateAutoConfiguration": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.springframework.boot.autoconfigure.web.client.RestTemplateAutoConfiguration$NotReactiveWebApplicationCondition": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.springframework.boot.autoconfigure.web.servlet": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.springframework.boot.autoconfigure.web.servlet.DispatcherServletAutoConfiguration": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.springframework.boot.autoconfigure.web.servlet.DispatcherServletAutoConfiguration$DefaultDispatcherServletCondition": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.springframework.boot.autoconfigure.web.servlet.DispatcherServletAutoConfiguration$DispatcherServletRegistrationCondition": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.springframework.boot.autoconfigure.web.servlet.WelcomePageHandlerMapping": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.springframework.boot.autoconfigure.web.servlet.error": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.springframework.boot.autoconfigure.web.servlet.error.ErrorMvcAutoConfiguration": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.springframework.boot.autoconfigure.web.servlet.error.ErrorMvcAutoConfiguration$ErrorTemplateMissingCondition": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.springframework.boot.autoconfigure.web.servlet.error.ErrorMvcAutoConfiguration$StaticView": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.springframework.boot.availability": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.springframework.boot.availability.ApplicationAvailabilityBean": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.springframework.boot.context": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.springframework.boot.context.ConfigurationWarningsApplicationContextInitializer": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.springframework.boot.context.FileEncodingApplicationListener": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.springframework.boot.context.config": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.springframework.boot.context.config.ConfigDataEnvironment": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.springframework.boot.context.config.ConfigDataEnvironmentContributors": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.springframework.boot.context.config.ConfigDataEnvironmentPostProcessor": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.springframework.boot.context.config.ConfigDataImporter": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.springframework.boot.context.config.ConfigDataLoaders": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.springframework.boot.context.config.ConfigDataLocationResolver": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.springframework.boot.context.logging": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.springframework.boot.context.logging.LoggingApplicationListener": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.springframework.boot.context.properties": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.springframework.boot.context.properties.PropertySourcesDeducer": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.springframework.boot.context.properties.source": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.springframework.boot.context.properties.source.ConfigurationPropertySourcesPropertyResolver": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.springframework.boot.context.properties.source.ConfigurationPropertySourcesPropertyResolver$DefaultResolver": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.springframework.boot.context.properties.source.ConfigurationPropertySourcesPropertySource": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.springframework.boot.env": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.springframework.boot.env.EnvironmentPostProcessor": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.springframework.boot.env.OriginTrackedMapPropertySource": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.springframework.boot.env.RandomValuePropertySource": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.springframework.boot.env.SystemEnvironmentPropertySourceEnvironmentPostProcessor": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.springframework.boot.env.SystemEnvironmentPropertySourceEnvironmentPostProcessor$OriginAwareSystemEnvironmentPropertySource": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.springframework.boot.jackson": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.springframework.boot.jackson.JsonMixinModule": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.springframework.boot.jackson.JsonMixinModule$JsonMixinComponentScanner": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.springframework.boot.jdbc": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.springframework.boot.jdbc.init": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.springframework.boot.jdbc.init.DataSourceScriptDatabaseInitializer": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.springframework.boot.system": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.springframework.boot.system.ApplicationPid": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.springframework.boot.web": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.springframework.boot.web.embedded": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.springframework.boot.web.embedded.tomcat": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.springframework.boot.web.embedded.tomcat.TomcatEmbeddedWebappClassLoader": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.springframework.boot.web.embedded.tomcat.TomcatProtocolHandlerCustomizer": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.springframework.boot.web.embedded.tomcat.TomcatServletWebServerFactory": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.springframework.boot.web.embedded.tomcat.TomcatStarter": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.springframework.boot.web.embedded.tomcat.TomcatWebServer": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.springframework.boot.web.server": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.springframework.boot.web.server.WebServerFactoryCustomizer": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.springframework.boot.web.server.WebServerFactoryCustomizerBeanPostProcessor": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.springframework.boot.web.servlet": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.springframework.boot.web.servlet.RegistrationBean": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.springframework.boot.web.servlet.ServletContextInitializerBeans": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.springframework.boot.web.servlet.context": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.springframework.boot.web.servlet.context.AnnotationConfigServletWebServerApplicationContext": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.springframework.boot.web.servlet.context.ApplicationServletEnvironment": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.springframework.boot.web.servlet.context.ServletWebServerApplicationContext": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.springframework.boot.web.servlet.filter": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.springframework.boot.web.servlet.filter.OrderedCharacterEncodingFilter": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.springframework.boot.web.servlet.filter.OrderedFormContentFilter": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.springframework.boot.web.servlet.filter.OrderedRequestContextFilter": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.springframework.cache": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.springframework.cache.annotation": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.springframework.cache.annotation.AnnotationCacheOperationSource": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.springframework.cache.interceptor": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.springframework.cache.interceptor.CacheInterceptor": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.springframework.context": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.springframework.context.annotation": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.springframework.context.annotation.AutoProxyRegistrar": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.springframework.context.annotation.ClassPathBeanDefinitionScanner": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.springframework.context.annotation.CommonAnnotationBeanPostProcessor": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.springframework.context.annotation.ComponentScanAnnotationParser": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.springframework.context.annotation.ComponentScanAnnotationParser$1": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.springframework.context.annotation.ConfigurationClassBeanDefinitionReader": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.springframework.context.annotation.ConfigurationClassEnhancer": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.springframework.context.annotation.ConfigurationClassParser": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.springframework.context.annotation.ConfigurationClassPostProcessor": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.springframework.context.annotation.ConfigurationClassUtils": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.springframework.context.event": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.springframework.context.event.ApplicationListenerMethodAdapter": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.springframework.context.event.EventListenerMethodProcessor": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.springframework.context.index": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.springframework.context.index.CandidateComponentsIndexLoader": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.springframework.context.support": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.springframework.context.support.ApplicationListenerDetector": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.springframework.context.support.DefaultLifecycleProcessor": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.springframework.context.support.DelegatingMessageSource": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.springframework.context.support.PostProcessorRegistrationDelegate": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.springframework.context.support.PostProcessorRegistrationDelegate$BeanPostProcessorChecker": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.springframework.context.support.PropertySourcesPlaceholderConfigurer": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.springframework.context.support.PropertySourcesPlaceholderConfigurer$1": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.springframework.core": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.springframework.core.LocalVariableTableParameterNameDiscoverer": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.springframework.core.env": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.springframework.core.env.MapPropertySource": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.springframework.core.env.PropertiesPropertySource": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.springframework.core.env.PropertySource": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.springframework.core.env.PropertySource$ComparisonPropertySource": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.springframework.core.env.PropertySource$StubPropertySource": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.springframework.core.env.PropertySourcesPropertyResolver": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.springframework.core.env.StandardEnvironment": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.springframework.core.env.SystemEnvironmentPropertySource": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.springframework.core.io": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.springframework.core.io.support": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.springframework.core.io.support.PathMatchingResourcePatternResolver": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.springframework.core.io.support.ResourceArrayPropertyEditor": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.springframework.core.io.support.SpringFactoriesLoader": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.springframework.core.task": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.springframework.core.task.SimpleAsyncTaskExecutor": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.springframework.core.task.SimpleAsyncTaskExecutor$ConcurrencyThrottleAdapter": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.springframework.core.type": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.springframework.core.type.filter": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.springframework.core.type.filter.AnnotationTypeFilter": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.springframework.core.type.filter.AssignableTypeFilter": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.springframework.data": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.springframework.data.jpa": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.springframework.data.jpa.repository": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.springframework.data.jpa.repository.config": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.springframework.data.jpa.repository.config.JpaMetamodelMappingContextFactoryBean": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.springframework.data.repository": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.springframework.data.repository.config": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.springframework.data.repository.config.RepositoryBeanDefinitionBuilder": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.springframework.data.repository.config.RepositoryComponentProvider": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.springframework.data.repository.config.RepositoryComponentProvider$InterfaceTypeFilter": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.springframework.data.repository.config.RepositoryConfigurationDelegate": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.springframework.data.repository.config.RepositoryConfigurationExtensionSupport": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.springframework.data.web": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.springframework.data.web.ProxyingHandlerMethodArgumentResolver": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.springframework.http": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.springframework.http.converter": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.springframework.http.converter.ByteArrayHttpMessageConverter": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.springframework.http.converter.ResourceHttpMessageConverter": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.springframework.http.converter.ResourceRegionHttpMessageConverter": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.springframework.http.converter.StringHttpMessageConverter": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.springframework.http.converter.json": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.springframework.http.converter.json.MappingJackson2HttpMessageConverter": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.springframework.http.converter.xml": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.springframework.http.converter.xml.Jaxb2RootElementHttpMessageConverter": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.springframework.http.converter.xml.SourceHttpMessageConverter": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.springframework.integration": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.springframework.integration.channel": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.springframework.integration.channel.DefaultHeaderChannelRegistry": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.springframework.integration.channel.DirectChannel": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.springframework.integration.channel.MessagePublishingErrorHandler": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.springframework.integration.channel.NullChannel": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.springframework.integration.channel.PublishSubscribeChannel": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.springframework.integration.channel.interceptor": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.springframework.integration.channel.interceptor.WireTap": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.springframework.integration.config": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.springframework.integration.config.ConsumerEndpointFactoryBean": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.springframework.integration.config.DefaultConfiguringBeanFactoryPostProcessor": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.springframework.integration.config.GlobalChannelInterceptorProcessor": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.springframework.integration.config.IdGeneratorConfigurer": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.springframework.integration.config.IntegrationComponentScanRegistrar": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.springframework.integration.config.IntegrationComponentScanRegistrar$1": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.springframework.integration.config.annotation": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.springframework.integration.config.annotation.AggregatorAnnotationPostProcessor": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.springframework.integration.config.annotation.BridgeFromAnnotationPostProcessor": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.springframework.integration.config.annotation.BridgeToAnnotationPostProcessor": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.springframework.integration.config.annotation.FilterAnnotationPostProcessor": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.springframework.integration.config.annotation.InboundChannelAdapterAnnotationPostProcessor": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.springframework.integration.config.annotation.MessagingAnnotationPostProcessor": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.springframework.integration.config.annotation.RouterAnnotationPostProcessor": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.springframework.integration.config.annotation.ServiceActivatorAnnotationPostProcessor": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.springframework.integration.config.annotation.SplitterAnnotationPostProcessor": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.springframework.integration.config.annotation.TransformerAnnotationPostProcessor": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.springframework.integration.context": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.springframework.integration.context.IntegrationContextUtils": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.springframework.integration.core": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.springframework.integration.core.MessagingTemplate": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.springframework.integration.dispatcher": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.springframework.integration.dispatcher.BroadcastingDispatcher": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.springframework.integration.dispatcher.UnicastingDispatcher": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.springframework.integration.dsl": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.springframework.integration.dsl.DelayerEndpointSpec": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.springframework.integration.dsl.GenericEndpointSpec": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.springframework.integration.dsl.HeaderEnricherSpec": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.springframework.integration.dsl.KotlinRouterSpec": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.springframework.integration.dsl.RouterSpec": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.springframework.integration.dsl.RouterSpec$RouterMappingProvider": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.springframework.integration.dsl.SplitterEndpointSpec": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.springframework.integration.dsl.WireTapSpec": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.springframework.integration.endpoint": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.springframework.integration.endpoint.EventDrivenConsumer": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.springframework.integration.expression": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.springframework.integration.expression.ExpressionUtils": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.springframework.integration.handler": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.springframework.integration.handler.BridgeHandler": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.springframework.integration.handler.DelayHandler": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.springframework.integration.handler.LambdaMessageProcessor": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.springframework.integration.handler.LoggingHandler": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.springframework.integration.http": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.springframework.integration.http.config": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.springframework.integration.http.config.HttpIntegrationConfigurationInitializer": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.springframework.integration.http.dsl": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.springframework.integration.http.dsl.HttpRequestHandlerEndpointSpec": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.springframework.integration.http.inbound": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.springframework.integration.http.inbound.HttpRequestHandlingMessagingGateway": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.springframework.integration.http.inbound.IntegrationRequestMappingHandlerMapping": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.springframework.integration.http.support": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.springframework.integration.http.support.DefaultHttpHeaderMapper": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.springframework.integration.router": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.springframework.integration.router.MethodInvokingRouter": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.springframework.integration.splitter": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.springframework.integration.splitter.MethodInvokingSplitter": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.springframework.integration.store": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.springframework.integration.store.SimpleMessageStore": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.springframework.integration.support": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.springframework.integration.support.SmartLifecycleRoleController": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.springframework.integration.support.channel": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.springframework.integration.support.channel.BeanFactoryChannelResolver": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.springframework.integration.support.converter": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.springframework.integration.support.converter.ObjectStringMessageConverter": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.springframework.integration.support.utils": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.springframework.integration.support.utils.IntegrationUtils": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.springframework.integration.transformer": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.springframework.integration.transformer.HeaderEnricher": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.springframework.integration.transformer.MessageTransformingHandler": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.springframework.jdbc": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.springframework.jdbc.core": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.springframework.jdbc.core.JdbcTemplate": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.springframework.jdbc.datasource": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.springframework.jdbc.datasource.DataSourceUtils": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.springframework.jdbc.datasource.lookup": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.springframework.jdbc.datasource.lookup.JndiDataSourceLookup": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.springframework.jndi": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.springframework.jndi.JndiTemplate": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.springframework.jndi.support": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.springframework.jndi.support.SimpleJndiBeanFactory": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.springframework.messaging": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.springframework.messaging.converter": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.springframework.messaging.converter.ByteArrayMessageConverter": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.springframework.messaging.converter.MappingJackson2MessageConverter": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.springframework.orm": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.springframework.orm.hibernate5": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.springframework.orm.hibernate5.SpringBeanContainer": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.springframework.orm.jpa": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.springframework.orm.jpa.EntityManagerFactoryUtils": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.springframework.orm.jpa.ExtendedEntityManagerCreator": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.springframework.orm.jpa.ExtendedEntityManagerCreator$ExtendedEntityManagerInvocationHandler": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.springframework.orm.jpa.JpaTransactionManager": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.springframework.orm.jpa.persistenceunit": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.springframework.orm.jpa.persistenceunit.DefaultPersistenceUnitManager": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.springframework.orm.jpa.persistenceunit.PersistenceUnitReader": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.springframework.orm.jpa.support": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.springframework.orm.jpa.support.AsyncRequestInterceptor": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.springframework.orm.jpa.support.OpenEntityManagerInViewInterceptor": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.springframework.scheduling": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.springframework.scheduling.annotation": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.springframework.scheduling.annotation.ScheduledAnnotationBeanPostProcessor": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.springframework.scheduling.concurrent": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.springframework.scheduling.concurrent.ThreadPoolTaskScheduler": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.springframework.scheduling.quartz": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.springframework.scheduling.quartz.ResourceLoaderClassLoadHelper": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.springframework.scheduling.quartz.SchedulerFactoryBean": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.springframework.scheduling.support": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.springframework.scheduling.support.TaskUtils": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.springframework.scheduling.support.TaskUtils$LoggingErrorHandler": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.springframework.transaction": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.springframework.transaction.annotation": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.springframework.transaction.annotation.AnnotationTransactionAttributeSource": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.springframework.transaction.interceptor": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.springframework.transaction.interceptor.TransactionInterceptor": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.springframework.transaction.support": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.springframework.transaction.support.TransactionSynchronizationUtils": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.springframework.transaction.support.TransactionTemplate": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.springframework.ui": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.springframework.ui.context": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.springframework.ui.context.support": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.springframework.ui.context.support.ResourceBundleThemeSource": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.springframework.ui.context.support.UiApplicationContextUtils": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.springframework.util": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.springframework.util.PropertyPlaceholderHelper": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.springframework.validation": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.springframework.validation.DataBinder": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.springframework.web": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.springframework.web.HttpLogging": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.springframework.web.client": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.springframework.web.client.RestTemplate": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.springframework.web.context": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.springframework.web.context.request": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.springframework.web.context.request.async": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.springframework.web.context.request.async.WebAsyncManager": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.springframework.web.context.support": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.springframework.web.context.support.ServletContextPropertySource": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.springframework.web.context.support.ServletContextResourcePatternResolver": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.springframework.web.context.support.StandardServletEnvironment": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.springframework.web.cors": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.springframework.web.cors.DefaultCorsProcessor": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.springframework.web.method": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.springframework.web.method.HandlerMethod": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.springframework.web.method.annotation": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.springframework.web.method.annotation.ModelFactory": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.springframework.web.servlet": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.springframework.web.servlet.DispatcherServlet": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.springframework.web.servlet.HandlerExecutionChain": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.springframework.web.servlet.PageNotFound": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.springframework.web.servlet.config": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.springframework.web.servlet.config.annotation": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.springframework.web.servlet.config.annotation.WebMvcConfigurer": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.springframework.web.servlet.function": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.springframework.web.servlet.function.support": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.springframework.web.servlet.function.support.HandlerFunctionAdapter": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.springframework.web.servlet.function.support.RouterFunctionMapping": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.springframework.web.servlet.handler": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.springframework.web.servlet.handler.BeanNameUrlHandlerMapping": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.springframework.web.servlet.handler.SimpleUrlHandlerMapping": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.springframework.web.servlet.mvc": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.springframework.web.servlet.mvc.annotation": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.springframework.web.servlet.mvc.annotation.ResponseStatusExceptionResolver": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.springframework.web.servlet.mvc.method": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.springframework.web.servlet.mvc.method.annotation": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.springframework.web.servlet.mvc.method.annotation.ExceptionHandlerExceptionResolver": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.springframework.web.servlet.mvc.method.annotation.HttpEntityMethodProcessor": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.springframework.web.servlet.mvc.method.annotation.ReactiveTypeHandler": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.springframework.web.servlet.mvc.method.annotation.RequestPartMethodArgumentResolver": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.springframework.web.servlet.mvc.method.annotation.RequestResponseBodyMethodProcessor": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.springframework.web.servlet.mvc.method.annotation.ServletModelAttributeMethodProcessor": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.springframework.web.servlet.mvc.support": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.springframework.web.servlet.mvc.support.DefaultHandlerExceptionResolver": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.springframework.web.servlet.resource": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.springframework.web.servlet.resource.PathResourceResolver": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.springframework.web.servlet.resource.ResourceHttpRequestHandler": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.springframework.web.servlet.resource.ResourceUrlProvider": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.springframework.web.servlet.support": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.springframework.web.servlet.support.SessionFlashMapManager": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.springframework.web.servlet.view": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.springframework.web.servlet.view.BeanNameViewResolver": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.springframework.web.servlet.view.ContentNegotiatingViewResolver": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.springframework.web.servlet.view.InternalResourceView": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.springframework.web.servlet.view.InternalResourceViewResolver": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.springframework.web.util": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    },
+    "org.springframework.web.util.UrlPathHelper": {
+      "configuredLevel": null,
+      "effectiveLevel": "INFO"
+    }
+  },
+  "groups": {
+    "web": {
+      "configuredLevel": null,
+      "members": [
+        "org.springframework.core.codec",
+        "org.springframework.http",
+        "org.springframework.web",
+        "org.springframework.boot.actuate.endpoint.web",
+        "org.springframework.boot.web.servlet.ServletContextInitializerBeans"
+      ]
+    },
+    "sql": {
+      "configuredLevel": null,
+      "members": [
+        "org.springframework.jdbc.core",
+        "org.hibernate.SQL",
+        "org.jooq.tools.LoggerListener"
+      ]
+    }
+  }
+}

@@ -1,0 +1,1120 @@
+{
+  "contexts": {
+    "first": {
+      "beans": {
+        "spring.jpa-org.springframework.boot.autoconfigure.orm.jpa.JpaProperties": {},
+        "spring.transaction-org.springframework.boot.autoconfigure.transaction.TransactionProperties": {},
+        "management.endpoints.web-org.springframework.boot.actuate.autoconfigure.endpoint.web.WebEndpointProperties": {},
+        "spring.jdbc-org.springframework.boot.autoconfigure.jdbc.JdbcProperties": {},
+        "spring.jackson-org.springframework.boot.autoconfigure.jackson.JacksonProperties": {
+          "prefix": "spring.jackson",
+          "properties": {
+            "serialization": {},
+            "visibility": {},
+            "parser": {},
+            "deserialization": {},
+            "generator": {},
+            "mapper": {}
+          },
+          "inputs": {
+            "serialization": {},
+            "visibility": {},
+            "parser": {},
+            "deserialization": {},
+            "generator": {},
+            "mapper": {}
+          }
+        },
+        "management.health.db-org.springframework.boot.actuate.autoconfigure.jdbc.DataSourceHealthIndicatorProperties": {
+          "prefix": "management.health.db",
+          "properties": {
+            "ignoreRoutingDataSources": false
+          },
+          "inputs": {
+            "ignoreRoutingDataSources": {}
+          }
+        },
+        "spring.data.web-org.springframework.boot.autoconfigure.data.web.SpringDataWebProperties": {
+          "prefix": "spring.data.web",
+          "properties": {
+            "pageable": {
+              "pageParameter": "page",
+              "sizeParameter": "size",
+              "oneIndexedParameters": false,
+              "prefix": "",
+              "qualifierDelimiter": "_",
+              "defaultPageSize": 20,
+              "maxPageSize": 2000
+            },
+            "sort": {
+              "sortParameter": "sort"
+            }
+          },
+          "inputs": {
+            "pageable": {
+              "pageParameter": {},
+              "sizeParameter": {},
+              "oneIndexedParameters": {},
+              "prefix": {},
+              "qualifierDelimiter": {},
+              "defaultPageSize": {},
+              "maxPageSize": {}
+            },
+            "sort": {
+              "sortParameter": {}
+            }
+          }
+        },
+        "spring.jpa.hibernate-org.springframework.boot.autoconfigure.orm.jpa.HibernateProperties": {
+          "prefix": "spring.jpa.hibernate",
+          "properties": {
+            "naming": {}
+          },
+          "inputs": {
+            "naming": {}
+          }
+        },
+        "spring.info-org.springframework.boot.autoconfigure.info.ProjectInfoProperties": {
+          "prefix": "spring.info",
+          "properties": {
+            "build": {
+              "location": {},
+              "encoding": "UTF-8"
+            },
+            "git": {
+              "location": {},
+              "encoding": "UTF-8"
+            }
+          },
+          "inputs": {
+            "build": {
+              "location": {},
+              "encoding": {}
+            },
+            "git": {
+              "location": {},
+              "encoding": {}
+            }
+          }
+        },
+        "spring.datasource-org.springframework.boot.autoconfigure.jdbc.DataSourceProperties": {
+          "prefix": "spring.datasource",
+          "properties": {
+            "generateUniqueName": true,
+            "xa": {
+              "properties": {}
+            },
+            "embeddedDatabaseConnection": "H2"
+          },
+          "inputs": {
+            "generateUniqueName": {},
+            "xa": {
+              "properties": {}
+            },
+            "embeddedDatabaseConnection": {}
+          }
+        },
+        "management.endpoint.health-org.springframework.boot.actuate.autoconfigure.health.HealthEndpointProperties": {
+          "prefix": "management.endpoint.health",
+          "properties": {
+            "logging": {
+              "slowIndicatorThreshold": "PT10S"
+            },
+            "showDetails": "ALWAYS",
+            "status": {
+              "order": [],
+              "httpMapping": {}
+            },
+            "roles": [],
+            "group": {}
+          },
+          "inputs": {
+            "logging": {
+              "slowIndicatorThreshold": {}
+            },
+            "showDetails": {
+              "value": "always",
+              "origin": "class path resource [application.properties] from application.jar - 4:41"
+            },
+            "status": {
+              "order": [],
+              "httpMapping": {}
+            },
+            "roles": [],
+            "group": {}
+          }
+        },
+        "spring.integration-org.springframework.boot.autoconfigure.integration.IntegrationProperties": {
+          "prefix": "spring.integration",
+          "properties": {
+            "poller": {
+              "maxMessagesPerPoll": -2147483648,
+              "receiveTimeout": "PT1S"
+            },
+            "endpoint": {
+              "throwExceptionOnLateReply": false,
+              "readOnlyHeaders": [],
+              "noAutoStartup": []
+            },
+            "management": {
+              "defaultLoggingEnabled": true
+            },
+            "channel": {
+              "autoCreate": true,
+              "maxUnicastSubscribers": 2147483647,
+              "maxBroadcastSubscribers": 2147483647
+            },
+            "jdbc": {
+              "schema": "classpath:org/springframework/integration/jdbc/schema-@@platform@@.sql",
+              "initializeSchema": "EMBEDDED"
+            },
+            "rsocket": {
+              "client": {},
+              "server": {
+                "messageMappingEnabled": false
+              }
+            },
+            "error": {
+              "requireSubscribers": true,
+              "ignoreFailures": true
+            }
+          },
+          "inputs": {
+            "poller": {
+              "maxMessagesPerPoll": {},
+              "receiveTimeout": {}
+            },
+            "endpoint": {
+              "throwExceptionOnLateReply": {},
+              "readOnlyHeaders": [],
+              "noAutoStartup": []
+            },
+            "management": {
+              "defaultLoggingEnabled": {}
+            },
+            "channel": {
+              "autoCreate": {},
+              "maxUnicastSubscribers": {},
+              "maxBroadcastSubscribers": {}
+            },
+            "jdbc": {
+              "schema": {},
+              "initializeSchema": {}
+            },
+            "rsocket": {
+              "client": {},
+              "server": {
+                "messageMappingEnabled": {}
+              }
+            },
+            "error": {
+              "requireSubscribers": {},
+              "ignoreFailures": {}
+            }
+          }
+        },
+        "spring.quartz-org.springframework.boot.autoconfigure.quartz.QuartzProperties": {
+          "prefix": "spring.quartz",
+          "properties": {
+            "jdbc": {
+              "schema": "classpath:org/quartz/impl/jdbcjobstore/tables_@@platform@@.sql",
+              "initializeSchema": "EMBEDDED",
+              "commentPrefix": [
+                "#",
+                "--"
+              ]
+            },
+            "overwriteExistingJobs": false,
+            "properties": {},
+            "jobStoreType": "MEMORY",
+            "autoStartup": true,
+            "startupDelay": "PT0S",
+            "waitForJobsToCompleteOnShutdown": false
+          },
+          "inputs": {
+            "jdbc": {
+              "schema": {},
+              "initializeSchema": {},
+              "commentPrefix": [
+                {},
+                {}
+              ]
+            },
+            "overwriteExistingJobs": {},
+            "properties": {},
+            "jobStoreType": {},
+            "autoStartup": {},
+            "startupDelay": {},
+            "waitForJobsToCompleteOnShutdown": {}
+          }
+        },
+        "spring.lifecycle-org.springframework.boot.autoconfigure.context.LifecycleProperties": {
+          "prefix": "spring.lifecycle",
+          "properties": {
+            "timeoutPerShutdownPhase": "PT30S"
+          },
+          "inputs": {
+            "timeoutPerShutdownPhase": {}
+          }
+        },
+        "spring.web-org.springframework.boot.autoconfigure.web.WebProperties": {
+          "prefix": "spring.web",
+          "properties": {
+            "localeResolver": "ACCEPT_HEADER",
+            "resources": {
+              "staticLocations": [
+                "classpath:/META-INF/resources/",
+                "classpath:/resources/",
+                "classpath:/static/",
+                "classpath:/public/"
+              ],
+              "addMappings": true,
+              "chain": {
+                "cache": true,
+                "compressed": false,
+                "strategy": {
+                  "fixed": {
+                    "enabled": false,
+                    "paths": [
+                      "/**"
+                    ]
+                  },
+                  "content": {
+                    "enabled": false,
+                    "paths": [
+                      "/**"
+                    ]
+                  }
+                }
+              },
+              "cache": {
+                "cachecontrol": {},
+                "useLastModified": true
+              }
+            }
+          },
+          "inputs": {
+            "localeResolver": {},
+            "resources": {
+              "staticLocations": [
+                {},
+                {},
+                {},
+                {}
+              ],
+              "addMappings": {},
+              "chain": {
+                "cache": {},
+                "compressed": {},
+                "strategy": {
+                  "fixed": {
+                    "enabled": {},
+                    "paths": [
+                      {}
+                    ]
+                  },
+                  "content": {
+                    "enabled": {},
+                    "paths": [
+                      {}
+                    ]
+                  }
+                }
+              },
+              "cache": {
+                "cachecontrol": {},
+                "useLastModified": {}
+              }
+            }
+          }
+        },
+        "management.metrics-org.springframework.boot.actuate.autoconfigure.metrics.MetricsProperties": {
+          "prefix": "management.metrics",
+          "properties": {
+            "system": {
+              "diskspace": {
+                "paths": [
+                  "/app/."
+                ]
+              }
+            },
+            "data": {
+              "repository": {
+                "metricName": "spring.data.repository.invocations",
+                "autotime": {
+                  "enabled": true,
+                  "percentilesHistogram": false
+                }
+              }
+            },
+            "web": {
+              "client": {
+                "request": {
+                  "metricName": "http.client.requests",
+                  "autotime": {
+                    "enabled": true,
+                    "percentilesHistogram": false
+                  }
+                },
+                "maxUriTags": 100
+              },
+              "server": {
+                "request": {
+                  "metricName": "http.server.requests",
+                  "ignoreTrailingSlash": true,
+                  "autotime": {
+                    "enabled": true,
+                    "percentilesHistogram": false
+                  }
+                },
+                "maxUriTags": 100
+              }
+            },
+            "enable": {},
+            "useGlobalRegistry": true,
+            "graphql": {
+              "autotime": {
+                "enabled": true,
+                "percentilesHistogram": false
+              }
+            },
+            "distribution": {
+              "percentilesHistogram": {},
+              "percentiles": {},
+              "slo": {},
+              "minimumExpectedValue": {},
+              "maximumExpectedValue": {},
+              "expiry": {},
+              "bufferLength": {}
+            },
+            "tags": {}
+          },
+          "inputs": {
+            "system": {
+              "diskspace": {
+                "paths": [
+                  {}
+                ]
+              }
+            },
+            "data": {
+              "repository": {
+                "metricName": {},
+                "autotime": {
+                  "enabled": {},
+                  "percentilesHistogram": {}
+                }
+              }
+            },
+            "web": {
+              "client": {
+                "request": {
+                  "metricName": {},
+                  "autotime": {
+                    "enabled": {},
+                    "percentilesHistogram": {}
+                  }
+                },
+                "maxUriTags": {}
+              },
+              "server": {
+                "request": {
+                  "metricName": {},
+                  "ignoreTrailingSlash": {},
+                  "autotime": {
+                    "enabled": {},
+                    "percentilesHistogram": {}
+                  }
+                },
+                "maxUriTags": {}
+              }
+            },
+            "enable": {},
+            "useGlobalRegistry": {},
+            "graphql": {
+              "autotime": {
+                "enabled": {},
+                "percentilesHistogram": {}
+              }
+            },
+            "distribution": {
+              "percentilesHistogram": {},
+              "percentiles": {},
+              "slo": {},
+              "minimumExpectedValue": {},
+              "maximumExpectedValue": {},
+              "expiry": {},
+              "bufferLength": {}
+            },
+            "tags": {}
+          }
+        },
+        "spring.boot.admin.client-de.codecentric.boot.admin.client.config.ClientProperties": {
+          "prefix": "spring.boot.admin.client",
+          "properties": {
+            "period": "PT10S",
+            "autoRegistration": true,
+            "apiPath": "instances",
+            "readTimeout": "PT5S",
+            "registerOnce": true,
+            "connectTimeout": "PT5S",
+            "url": [
+              "http://server:9090"
+            ],
+            "enabled": true
+          },
+          "inputs": {
+            "period": {},
+            "autoRegistration": {},
+            "apiPath": {},
+            "readTimeout": {},
+            "registerOnce": {},
+            "connectTimeout": {},
+            "url": [
+              {
+                "value": "http://server:9090",
+                "origin": "class path resource [application-docker.properties] from application.jar - 1:30"
+              }
+            ],
+            "enabled": {}
+          }
+        },
+        "spring.mvc-org.springframework.boot.autoconfigure.web.servlet.WebMvcProperties": {
+          "prefix": "spring.mvc",
+          "properties": {
+            "contentnegotiation": {
+              "favorPathExtension": false,
+              "favorParameter": false,
+              "mediaTypes": {}
+            },
+            "servlet": {
+              "path": "/",
+              "loadOnStartup": -1
+            },
+            "format": {},
+            "staticPathPattern": "/**",
+            "dispatchOptionsRequest": true,
+            "dispatchTraceRequest": false,
+            "ignoreDefaultModelOnRedirect": true,
+            "logResolvedException": false,
+            "async": {},
+            "view": {},
+            "publishRequestHandledEvents": true,
+            "logRequestDetails": false,
+            "pathmatch": {
+              "matchingStrategy": "PATH_PATTERN_PARSER",
+              "useSuffixPattern": false,
+              "useRegisteredSuffixPattern": false
+            },
+            "throwExceptionIfNoHandlerFound": false
+          },
+          "inputs": {
+            "contentnegotiation": {
+              "favorPathExtension": {},
+              "favorParameter": {},
+              "mediaTypes": {}
+            },
+            "servlet": {
+              "path": {},
+              "loadOnStartup": {}
+            },
+            "format": {},
+            "staticPathPattern": {},
+            "dispatchOptionsRequest": {},
+            "dispatchTraceRequest": {},
+            "ignoreDefaultModelOnRedirect": {},
+            "logResolvedException": {},
+            "async": {},
+            "view": {},
+            "publishRequestHandledEvents": {},
+            "logRequestDetails": {},
+            "pathmatch": {
+              "matchingStrategy": {},
+              "useSuffixPattern": {},
+              "useRegisteredSuffixPattern": {}
+            },
+            "throwExceptionIfNoHandlerFound": {}
+          }
+        },
+        "management.info-org.springframework.boot.actuate.autoconfigure.info.InfoContributorProperties": {
+          "prefix": "management.info",
+          "properties": {
+            "git": {
+              "mode": "SIMPLE"
+            }
+          },
+          "inputs": {
+            "git": {
+              "mode": {}
+            }
+          }
+        },
+        "spring.task.execution-org.springframework.boot.autoconfigure.task.TaskExecutionProperties": {
+          "prefix": "spring.task.execution",
+          "properties": {
+            "pool": {
+              "queueCapacity": 2147483647,
+              "coreSize": 8,
+              "maxSize": 2147483647,
+              "allowCoreThreadTimeout": true,
+              "keepAlive": "PT1M"
+            },
+            "threadNamePrefix": "task-",
+            "shutdown": {
+              "awaitTermination": false
+            }
+          },
+          "inputs": {
+            "pool": {
+              "queueCapacity": {},
+              "coreSize": {},
+              "maxSize": {},
+              "allowCoreThreadTimeout": {},
+              "keepAlive": {}
+            },
+            "threadNamePrefix": {},
+            "shutdown": {
+              "awaitTermination": {}
+            }
+          }
+        },
+        "management.server-org.springframework.boot.actuate.autoconfigure.web.server.ManagementServerProperties": {
+          "prefix": "management.server",
+          "properties": {
+            "basePath": ""
+          },
+          "inputs": {
+            "basePath": {}
+          }
+        },
+        "management.endpoint.configprops-org.springframework.boot.actuate.autoconfigure.context.properties.ConfigurationPropertiesReportEndpointProperties": {
+          "prefix": "management.endpoint.configprops",
+          "properties": {},
+          "inputs": {}
+        },
+        "spring.flyway-org.springframework.boot.autoconfigure.flyway.FlywayProperties": {
+          "prefix": "spring.flyway",
+          "properties": {
+            "cleanOnValidationError": false,
+            "placeholderSuffix": "}",
+            "repeatableSqlMigrationPrefix": "R",
+            "placeholders": {},
+            "validateMigrationNaming": false,
+            "validateOnMigrate": true,
+            "mixed": false,
+            "sqlMigrationSuffixes": [
+              ".sql"
+            ],
+            "enabled": true,
+            "baselineDescription": "<< Flyway Baseline >>",
+            "baselineVersion": "1",
+            "password": "******",
+            "skipDefaultResolvers": false,
+            "ignorePendingMigrations": false,
+            "sqlMigrationSeparator": "__",
+            "ignoreIgnoredMigrations": false,
+            "outOfOrder": false,
+            "jdbcProperties": {},
+            "table": "flyway_schema_history",
+            "group": false,
+            "connectRetries": 0,
+            "initSqls": [],
+            "baselineOnMigrate": false,
+            "encoding": "UTF-8",
+            "placeholderPrefix": "${",
+            "sqlMigrationPrefix": "V",
+            "cleanDisabled": false,
+            "ignoreMissingMigrations": false,
+            "failOnMissingLocations": false,
+            "schemas": [],
+            "placeholderReplacement": true,
+            "ignoreFutureMigrations": true,
+            "locations": [
+              "classpath:db/migration"
+            ],
+            "createSchemas": true,
+            "skipDefaultCallbacks": false
+          },
+          "inputs": {
+            "cleanOnValidationError": {},
+            "placeholderSuffix": {},
+            "repeatableSqlMigrationPrefix": {},
+            "placeholders": {},
+            "validateMigrationNaming": {},
+            "validateOnMigrate": {},
+            "mixed": {},
+            "sqlMigrationSuffixes": [
+              {}
+            ],
+            "enabled": {
+              "value": "true",
+              "origin": "class path resource [application-flyway.properties] from application.jar - 1:23"
+            },
+            "baselineDescription": {},
+            "baselineVersion": {},
+            "password": {},
+            "skipDefaultResolvers": {},
+            "ignorePendingMigrations": {},
+            "sqlMigrationSeparator": {},
+            "ignoreIgnoredMigrations": {},
+            "outOfOrder": {},
+            "jdbcProperties": {},
+            "table": {},
+            "group": {},
+            "connectRetries": {},
+            "initSqls": [],
+            "baselineOnMigrate": {},
+            "encoding": {},
+            "placeholderPrefix": {},
+            "sqlMigrationPrefix": {},
+            "cleanDisabled": {},
+            "ignoreMissingMigrations": {},
+            "failOnMissingLocations": {},
+            "schemas": [],
+            "placeholderReplacement": {},
+            "ignoreFutureMigrations": {},
+            "locations": [
+              {}
+            ],
+            "createSchemas": {},
+            "skipDefaultCallbacks": {}
+          }
+        },
+        "spring.boot.admin.client.instance-de.codecentric.boot.admin.client.config.InstanceProperties": {
+          "prefix": "spring.boot.admin.client.instance",
+          "properties": {
+            "name": "first",
+            "metadata": {},
+            "preferIp": false,
+            "serviceHostType": "CANONICAL_HOST_NAME"
+          },
+          "inputs": {
+            "name": {},
+            "metadata": {},
+            "preferIp": {},
+            "serviceHostType": {}
+          }
+        },
+        "spring.task.scheduling-org.springframework.boot.autoconfigure.task.TaskSchedulingProperties": {
+          "prefix": "spring.task.scheduling",
+          "properties": {
+            "pool": {
+              "size": 1
+            },
+            "threadNamePrefix": "scheduling-",
+            "shutdown": {
+              "awaitTermination": false
+            }
+          },
+          "inputs": {
+            "pool": {
+              "size": {}
+            },
+            "threadNamePrefix": {},
+            "shutdown": {
+              "awaitTermination": {}
+            }
+          }
+        },
+        "management.endpoints.web.cors-org.springframework.boot.actuate.autoconfigure.endpoint.web.CorsEndpointProperties": {
+          "prefix": "management.endpoints.web.cors",
+          "properties": {
+            "allowedOrigins": [],
+            "maxAge": "PT30M",
+            "exposedHeaders": [],
+            "allowedOriginPatterns": [],
+            "allowedHeaders": [],
+            "allowedMethods": []
+          },
+          "inputs": {
+            "allowedOrigins": [],
+            "maxAge": {},
+            "exposedHeaders": [],
+            "allowedOriginPatterns": [],
+            "allowedHeaders": [],
+            "allowedMethods": []
+          }
+        },
+        "management.health.diskspace-org.springframework.boot.actuate.autoconfigure.system.DiskSpaceHealthIndicatorProperties": {
+          "prefix": "management.health.diskspace",
+          "properties": {
+            "path": "/app/.",
+            "threshold": "10485760B"
+          },
+          "inputs": {
+            "path": {},
+            "threshold": {}
+          }
+        },
+        "spring.sql.init-org.springframework.boot.autoconfigure.sql.init.SqlInitializationProperties": {
+          "prefix": "spring.sql.init",
+          "properties": {
+            "mode": "EMBEDDED",
+            "separator": ";",
+            "platform": "all",
+            "continueOnError": false
+          },
+          "inputs": {
+            "mode": {},
+            "separator": {},
+            "platform": {},
+            "continueOnError": {}
+          }
+        },
+        "management.metrics.export.simple-org.springframework.boot.actuate.autoconfigure.metrics.export.simple.SimpleProperties": {
+          "prefix": "management.metrics.export.simple",
+          "properties": {
+            "mode": "CUMULATIVE",
+            "step": "PT1M",
+            "enabled": true
+          },
+          "inputs": {
+            "mode": {},
+            "step": {},
+            "enabled": {}
+          }
+        },
+        "management.endpoint.env-org.springframework.boot.actuate.autoconfigure.env.EnvironmentEndpointProperties": {
+          "prefix": "management.endpoint.env",
+          "properties": {},
+          "inputs": {}
+        },
+        "management.endpoint.logfile-org.springframework.boot.actuate.autoconfigure.logging.LogFileWebEndpointProperties": {
+          "prefix": "management.endpoint.logfile",
+          "properties": {},
+          "inputs": {}
+        },
+        "server-org.springframework.boot.autoconfigure.web.ServerProperties": {
+          "prefix": "server",
+          "properties": {
+            "reactive": {
+              "session": {
+                "timeout": "PT30M"
+              }
+            },
+            "undertow": {
+              "maxHttpPostSize": "-1B",
+              "eagerFilterInit": true,
+              "maxHeaders": 200,
+              "maxCookies": 200,
+              "allowEncodedSlash": false,
+              "decodeUrl": "true",
+              "urlCharset": "UTF-8",
+              "alwaysSetKeepAlive": true,
+              "preservePathOnForward": false,
+              "accesslog": {
+                "enabled": false,
+                "pattern": "common",
+                "prefix": "access_log.",
+                "suffix": "log",
+                "dir": "/app/logs",
+                "rotate": true
+              },
+              "threads": {},
+              "options": {
+                "socket": {},
+                "server": {}
+              }
+            },
+            "port": 9091,
+            "maxHttpHeaderSize": "8192B",
+            "tomcat": {
+              "accesslog": {
+                "enabled": false,
+                "pattern": "common",
+                "directory": "logs",
+                "prefix": "access_log",
+                "suffix": ".log",
+                "checkExists": false,
+                "rotate": true,
+                "renameOnRotate": false,
+                "maxDays": -1,
+                "fileDateFormat": ".yyyy-MM-dd",
+                "ipv6Canonical": false,
+                "requestAttributesEnabled": false,
+                "buffered": true
+              },
+              "threads": {
+                "max": 200,
+                "minSpare": 10
+              },
+              "backgroundProcessorDelay": "PT10S",
+              "maxHttpFormPostSize": "2097152B",
+              "maxSwallowSize": "2097152B",
+              "redirectContextRoot": true,
+              "useRelativeRedirects": false,
+              "uriEncoding": "UTF-8",
+              "maxConnections": 8192,
+              "acceptCount": 100,
+              "processorCache": 200,
+              "maxKeepAliveRequests": 100,
+              "additionalTldSkipPatterns": [],
+              "relaxedPathChars": [],
+              "relaxedQueryChars": [],
+              "rejectIllegalHeader": true,
+              "resource": {
+                "allowCaching": true
+              },
+              "mbeanregistry": {
+                "enabled": false
+              },
+              "remoteip": {
+                "internalProxies": "10\\.\\d{1,3}\\.\\d{1,3}\\.\\d{1,3}|192\\.168\\.\\d{1,3}\\.\\d{1,3}|169\\.254\\.\\d{1,3}\\.\\d{1,3}|127\\.\\d{1,3}\\.\\d{1,3}\\.\\d{1,3}|172\\.1[6-9]{1}\\.\\d{1,3}\\.\\d{1,3}|172\\.2[0-9]{1}\\.\\d{1,3}\\.\\d{1,3}|172\\.3[0-1]{1}\\.\\d{1,3}\\.\\d{1,3}|0:0:0:0:0:0:0:1|::1",
+                "protocolHeaderHttpsValue": "https",
+                "hostHeader": "X-Forwarded-Host",
+                "portHeader": "X-Forwarded-Port"
+              }
+            },
+            "servlet": {
+              "contextParameters": {},
+              "applicationDisplayName": "application",
+              "registerDefaultServlet": false
+            },
+            "jetty": {
+              "accesslog": {
+                "enabled": false,
+                "format": "NCSA",
+                "retentionPeriod": 31,
+                "append": false
+              },
+              "threads": {
+                "acceptors": -1,
+                "selectors": -1,
+                "max": 200,
+                "min": 8,
+                "idleTimeout": "PT1M"
+              },
+              "maxHttpFormPostSize": "200000B"
+            },
+            "error": {
+              "path": "/error",
+              "includeException": false,
+              "includeStacktrace": "NEVER",
+              "includeMessage": "NEVER",
+              "includeBindingErrors": "NEVER",
+              "whitelabel": {
+                "enabled": true
+              }
+            },
+            "shutdown": "IMMEDIATE",
+            "netty": {
+              "h2cMaxContentLength": "0B",
+              "initialBufferSize": "128B",
+              "maxChunkSize": "8192B",
+              "maxInitialLineLength": "4096B",
+              "validateHeaders": true
+            }
+          },
+          "inputs": {
+            "reactive": {
+              "session": {
+                "timeout": {}
+              }
+            },
+            "undertow": {
+              "maxHttpPostSize": {},
+              "eagerFilterInit": {},
+              "maxHeaders": {},
+              "maxCookies": {},
+              "allowEncodedSlash": {},
+              "decodeUrl": {},
+              "urlCharset": {},
+              "alwaysSetKeepAlive": {},
+              "preservePathOnForward": {},
+              "accesslog": {
+                "enabled": {},
+                "pattern": {},
+                "prefix": {},
+                "suffix": {},
+                "dir": {},
+                "rotate": {}
+              },
+              "threads": {},
+              "options": {
+                "socket": {},
+                "server": {}
+              }
+            },
+            "port": {
+              "value": "9091",
+              "origin": "class path resource [application.properties] from application.jar - 1:13"
+            },
+            "maxHttpHeaderSize": {},
+            "tomcat": {
+              "accesslog": {
+                "enabled": {},
+                "pattern": {},
+                "directory": {},
+                "prefix": {},
+                "suffix": {},
+                "checkExists": {},
+                "rotate": {},
+                "renameOnRotate": {},
+                "maxDays": {},
+                "fileDateFormat": {},
+                "ipv6Canonical": {},
+                "requestAttributesEnabled": {},
+                "buffered": {}
+              },
+              "threads": {
+                "max": {},
+                "minSpare": {}
+              },
+              "backgroundProcessorDelay": {},
+              "maxHttpFormPostSize": {},
+              "maxSwallowSize": {},
+              "redirectContextRoot": {},
+              "useRelativeRedirects": {},
+              "uriEncoding": {},
+              "maxConnections": {},
+              "acceptCount": {},
+              "processorCache": {},
+              "maxKeepAliveRequests": {},
+              "additionalTldSkipPatterns": [],
+              "relaxedPathChars": [],
+              "relaxedQueryChars": [],
+              "rejectIllegalHeader": {},
+              "resource": {
+                "allowCaching": {}
+              },
+              "mbeanregistry": {
+                "enabled": {}
+              },
+              "remoteip": {
+                "internalProxies": {},
+                "protocolHeaderHttpsValue": {},
+                "hostHeader": {},
+                "portHeader": {}
+              }
+            },
+            "servlet": {
+              "contextParameters": {},
+              "applicationDisplayName": {},
+              "registerDefaultServlet": {}
+            },
+            "jetty": {
+              "accesslog": {
+                "enabled": {},
+                "format": {},
+                "retentionPeriod": {},
+                "append": {}
+              },
+              "threads": {
+                "acceptors": {},
+                "selectors": {},
+                "max": {},
+                "min": {},
+                "idleTimeout": {}
+              },
+              "maxHttpFormPostSize": {}
+            },
+            "error": {
+              "path": {},
+              "includeException": {},
+              "includeStacktrace": {},
+              "includeMessage": {},
+              "includeBindingErrors": {},
+              "whitelabel": {
+                "enabled": {}
+              }
+            },
+            "shutdown": {},
+            "netty": {
+              "h2cMaxContentLength": {},
+              "initialBufferSize": {},
+              "maxChunkSize": {},
+              "maxInitialLineLength": {},
+              "validateHeaders": {}
+            }
+          }
+        },
+        "spring.servlet.multipart-org.springframework.boot.autoconfigure.web.servlet.MultipartProperties": {
+          "prefix": "spring.servlet.multipart",
+          "properties": {
+            "fileSizeThreshold": "0B",
+            "maxFileSize": "1048576B",
+            "maxRequestSize": "10485760B",
+            "enabled": true,
+            "resolveLazily": false
+          },
+          "inputs": {
+            "fileSizeThreshold": {},
+            "maxFileSize": {},
+            "maxRequestSize": {},
+            "enabled": {},
+            "resolveLazily": {}
+          }
+        },
+        "dataSource": {
+          "prefix": "spring.datasource.hikari",
+          "properties": {
+            "validationTimeout": 5000,
+            "hikariPoolMXBean": {},
+            "minimumIdle": 10,
+            "password": "******",
+            "metricsTrackerFactory": {},
+            "dataSourceProperties": {},
+            "loginTimeout": 30,
+            "autoCommit": true,
+            "connectionTimeout": 30000,
+            "poolName": "HikariPool-1",
+            "initializationFailTimeout": 1,
+            "readOnly": false,
+            "registerMbeans": false,
+            "healthCheckProperties": {},
+            "isolateInternalQueries": false,
+            "leakDetectionThreshold": 0,
+            "maxLifetime": 1800000,
+            "keepaliveTime": 0,
+            "allowPoolSuspension": false,
+            "idleTimeout": 600000,
+            "driverClassName": "org.h2.Driver",
+            "jdbcUrl": "jdbc:h2:mem:a16522bc-4add-4e58-a436-e73a22bcbfe3;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE",
+            "maximumPoolSize": 10,
+            "username": "sa"
+          },
+          "inputs": {
+            "validationTimeout": {},
+            "hikariPoolMXBean": {},
+            "minimumIdle": {},
+            "password": {},
+            "metricsTrackerFactory": {},
+            "dataSourceProperties": {},
+            "loginTimeout": {},
+            "autoCommit": {},
+            "connectionTimeout": {},
+            "poolName": {},
+            "initializationFailTimeout": {},
+            "readOnly": {},
+            "registerMbeans": {},
+            "healthCheckProperties": {},
+            "isolateInternalQueries": {},
+            "leakDetectionThreshold": {},
+            "maxLifetime": {},
+            "keepaliveTime": {},
+            "allowPoolSuspension": {},
+            "idleTimeout": {},
+            "driverClassName": {},
+            "jdbcUrl": {},
+            "maximumPoolSize": {},
+            "username": {}
+          }
+        },
+        "spring.jmx-org.springframework.boot.autoconfigure.jmx.JmxProperties": {
+          "prefix": "spring.jmx",
+          "properties": {
+            "uniqueNames": false,
+            "server": "mbeanServer",
+            "enabled": false
+          },
+          "inputs": {
+            "uniqueNames": {},
+            "server": {},
+            "enabled": {}
+          }
+        }
+      },
+      "parentId": null
+    }
+  }
+}

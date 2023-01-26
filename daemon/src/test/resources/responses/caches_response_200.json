@@ -1,0 +1,192 @@
+{
+  "cacheManagers": {
+    "primeCacheManager": {
+      "caches": {
+        "example26": {
+          "target": "java.util.concurrent.ConcurrentHashMap"
+        },
+        "example27": {
+          "target": "java.util.concurrent.ConcurrentHashMap"
+        },
+        "example24": {
+          "target": "java.util.concurrent.ConcurrentHashMap"
+        },
+        "example25": {
+          "target": "java.util.concurrent.ConcurrentHashMap"
+        },
+        "example22": {
+          "target": "java.util.concurrent.ConcurrentHashMap"
+        },
+        "example23": {
+          "target": "java.util.concurrent.ConcurrentHashMap"
+        },
+        "example20": {
+          "target": "java.util.concurrent.ConcurrentHashMap"
+        },
+        "example": {
+          "target": "java.util.concurrent.ConcurrentHashMap"
+        },
+        "example21": {
+          "target": "java.util.concurrent.ConcurrentHashMap"
+        },
+        "example28": {
+          "target": "java.util.concurrent.ConcurrentHashMap"
+        },
+        "example29": {
+          "target": "java.util.concurrent.ConcurrentHashMap"
+        },
+        "example30": {
+          "target": "java.util.concurrent.ConcurrentHashMap"
+        },
+        "example15": {
+          "target": "java.util.concurrent.ConcurrentHashMap"
+        },
+        "example16": {
+          "target": "java.util.concurrent.ConcurrentHashMap"
+        },
+        "example13": {
+          "target": "java.util.concurrent.ConcurrentHashMap"
+        },
+        "example14": {
+          "target": "java.util.concurrent.ConcurrentHashMap"
+        },
+        "example11": {
+          "target": "java.util.concurrent.ConcurrentHashMap"
+        },
+        "example12": {
+          "target": "java.util.concurrent.ConcurrentHashMap"
+        },
+        "example10": {
+          "target": "java.util.concurrent.ConcurrentHashMap"
+        },
+        "example7": {
+          "target": "java.util.concurrent.ConcurrentHashMap"
+        },
+        "example6": {
+          "target": "java.util.concurrent.ConcurrentHashMap"
+        },
+        "example9": {
+          "target": "java.util.concurrent.ConcurrentHashMap"
+        },
+        "example8": {
+          "target": "java.util.concurrent.ConcurrentHashMap"
+        },
+        "example3": {
+          "target": "java.util.concurrent.ConcurrentHashMap"
+        },
+        "example19": {
+          "target": "java.util.concurrent.ConcurrentHashMap"
+        },
+        "example2": {
+          "target": "java.util.concurrent.ConcurrentHashMap"
+        },
+        "example5": {
+          "target": "java.util.concurrent.ConcurrentHashMap"
+        },
+        "example17": {
+          "target": "java.util.concurrent.ConcurrentHashMap"
+        },
+        "example4": {
+          "target": "java.util.concurrent.ConcurrentHashMap"
+        },
+        "example18": {
+          "target": "java.util.concurrent.ConcurrentHashMap"
+        }
+      }
+    },
+    "otherCacheManager": {
+      "caches": {
+        "otherExample23": {
+          "target": "java.util.concurrent.ConcurrentHashMap"
+        },
+        "otherExample22": {
+          "target": "java.util.concurrent.ConcurrentHashMap"
+        },
+        "otherExample21": {
+          "target": "java.util.concurrent.ConcurrentHashMap"
+        },
+        "otherExample20": {
+          "target": "java.util.concurrent.ConcurrentHashMap"
+        },
+        "otherExample27": {
+          "target": "java.util.concurrent.ConcurrentHashMap"
+        },
+        "otherExample26": {
+          "target": "java.util.concurrent.ConcurrentHashMap"
+        },
+        "otherExample25": {
+          "target": "java.util.concurrent.ConcurrentHashMap"
+        },
+        "otherExample24": {
+          "target": "java.util.concurrent.ConcurrentHashMap"
+        },
+        "otherExample19": {
+          "target": "java.util.concurrent.ConcurrentHashMap"
+        },
+        "otherExample18": {
+          "target": "java.util.concurrent.ConcurrentHashMap"
+        },
+        "otherExample": {
+          "target": "java.util.concurrent.ConcurrentHashMap"
+        },
+        "otherExample17": {
+          "target": "java.util.concurrent.ConcurrentHashMap"
+        },
+        "otherExample12": {
+          "target": "java.util.concurrent.ConcurrentHashMap"
+        },
+        "otherExample11": {
+          "target": "java.util.concurrent.ConcurrentHashMap"
+        },
+        "otherExample10": {
+          "target": "java.util.concurrent.ConcurrentHashMap"
+        },
+        "otherExample16": {
+          "target": "java.util.concurrent.ConcurrentHashMap"
+        },
+        "otherExample15": {
+          "target": "java.util.concurrent.ConcurrentHashMap"
+        },
+        "otherExample14": {
+          "target": "java.util.concurrent.ConcurrentHashMap"
+        },
+        "otherExample13": {
+          "target": "java.util.concurrent.ConcurrentHashMap"
+        },
+        "otherExample30": {
+          "target": "java.util.concurrent.ConcurrentHashMap"
+        },
+        "otherExample3": {
+          "target": "java.util.concurrent.ConcurrentHashMap"
+        },
+        "otherExample2": {
+          "target": "java.util.concurrent.ConcurrentHashMap"
+        },
+        "otherExample5": {
+          "target": "java.util.concurrent.ConcurrentHashMap"
+        },
+        "otherExample29": {
+          "target": "java.util.concurrent.ConcurrentHashMap"
+        },
+        "otherExample4": {
+          "target": "java.util.concurrent.ConcurrentHashMap"
+        },
+        "otherExample28": {
+          "target": "java.util.concurrent.ConcurrentHashMap"
+        },
+        "otherExample7": {
+          "target": "java.util.concurrent.ConcurrentHashMap"
+        },
+        "otherExample6": {
+          "target": "java.util.concurrent.ConcurrentHashMap"
+        },
+        "otherExample9": {
+          "target": "java.util.concurrent.ConcurrentHashMap"
+        },
+        "otherExample8": {
+          "target": "java.util.concurrent.ConcurrentHashMap"
+        }
+      }
+    }
+  }
+}

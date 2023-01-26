@@ -1,0 +1,97 @@
+{
+  "contexts": {
+    "first": {
+      "flywayBeans": {
+        "flyway": {
+          "migrations": [
+            {
+              "type": "SQL",
+              "checksum": 0,
+              "version": "20221211133831",
+              "description": "Init",
+              "script": "V20221211133831__Init.sql",
+              "state": "SUCCESS",
+              "installedBy": "SA",
+              "installedOn": "2023-01-18T13:25:00.146Z",
+              "installedRank": 1,
+              "executionTime": 55
+            },
+            {
+              "type": "SQL",
+              "checksum": -690524359,
+              "version": "20230118141801",
+              "description": "Add Customers Table",
+              "script": "V20230118141801__Add_Customers_Table.sql",
+              "state": "SUCCESS",
+              "installedBy": "SA",
+              "installedOn": "2023-01-18T13:25:00.263Z",
+              "installedRank": 2,
+              "executionTime": 20
+            },
+            {
+              "type": "SQL",
+              "checksum": -690524359,
+              "version": "20230118141808",
+              "description": "Add Products Table",
+              "script": "V20230118141808__Add_Products_Table.sql",
+              "state": "SUCCESS",
+              "installedBy": "SA",
+              "installedOn": "2023-01-18T13:25:00.316Z",
+              "installedRank": 3,
+              "executionTime": 18
+            },
+            {
+              "type": "SQL",
+              "checksum": -690524359,
+              "version": "20230118141836",
+              "description": "Add Comments Table",
+              "script": "V20230118141836__Add_Comments_Table.sql",
+              "state": "SUCCESS",
+              "installedBy": "SA",
+              "installedOn": "2023-01-18T13:25:00.398Z",
+              "installedRank": 4,
+              "executionTime": 29
+            },
+            {
+              "type": "SQL",
+              "checksum": -690524359,
+              "version": "20230118141844",
+              "description": "Add Users Table",
+              "script": "V20230118141844__Add_Users_Table.sql",
+              "state": "SUCCESS",
+              "installedBy": "SA",
+              "installedOn": "2023-01-18T13:25:00.461Z",
+              "installedRank": 5,
+              "executionTime": 16
+            },
+            {
+              "type": "SQL",
+              "checksum": -690524359,
+              "version": "20230118141856",
+              "description": "Drop Comments Table",
+              "script": "V20230118141856__Drop_Comments_Table.sql",
+              "state": "SUCCESS",
+              "installedBy": "SA",
+              "installedOn": "2023-01-18T13:25:00.527Z",
+              "installedRank": 6,
+              "executionTime": 32
+            },
+            {
+              "type": "SQL",
+              "checksum": -690524359,
+              "version": null,
+              "description": "Refresh Database",
+              "script": "R__Refresh_Database.sql",
+              "state": "SUCCESS",
+              "installedBy": "SA",
+              "installedOn": "2023-01-18T13:25:00.612Z",
+              "installedRank": 7,
+              "executionTime": 36
+            }
+          ]
+        }
+      },
+      "parentId": null
+    }
+  }
+}
