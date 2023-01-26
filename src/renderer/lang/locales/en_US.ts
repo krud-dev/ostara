@@ -126,4 +126,13 @@ export default {
   version: 'Version',
   checksum: 'Checksum',
   application: 'Application',
+  instanceAliasUnreachable: 'Instance "{alias}" is unreachable',
+  instanceAliasInvalid: 'Instance "{alias}" URL is invalid',
+  instanceAliasPending: 'Instance "{alias}" is loading',
+  checkNetworkAndActuatorUrl: 'Please check the network connection and make sure the actuator URL is correct',
+  checkActuatorUrl: 'Check actuator URL, the url provided does not return an active actuator instance',
+  dataAvailableWhenConnection: 'Data will be available when the connection is established',
+  error: 'Error',
+  lastStatusChangeTime: 'Last Status Change Time',
+  additionalInformation: 'Additional Information',
 };

@@ -20,13 +20,12 @@ import { FormattedMessage } from 'react-intl';
 import { EnrichedInstance } from 'infra/configuration/model/configuration';
 import { generatePath } from 'react-router-dom';
 import ItemHeader from 'renderer/components/item/ItemHeader';
-import { Box, Divider } from '@mui/material';
-import InstanceDataCollectionToggle from 'renderer/components/item/data-collection/InstanceDataCollectionToggle';
+import { Box } from '@mui/material';
 import { isServiceInactive } from 'renderer/utils/itemUtils';
 
-type InstanceSidebarProps = { item: EnrichedInstance; width: number };
+type InstanceSidebarProps = { item: EnrichedInstance; disabled: boolean; width: number };
 
-export default function InstanceSidebar({ item, width }: InstanceSidebarProps) {
+export default function InstanceSidebar({ item, disabled, width }: InstanceSidebarProps) {
   const navConfig = useMemo<SidebarConfig>(
     () => [
       {
@@ -38,40 +37,42 @@ export default function InstanceSidebar({ item, width }: InstanceSidebarProps) {
             icon: <BarChartOutlined />,
             label: <FormattedMessage id={'dashboard'} />,
             to: generatePath(urls.instanceDashboard.url, { id: item.id }),
+            disabled: disabled,
           },
           {
             id: 'metrics',
             icon: <DataUsageOutlined />,
             label: <FormattedMessage id={'metrics'} />,
             to: generatePath(urls.instanceMetrics.url, { id: item.id }),
-            disabled: isServiceInactive(item, 'metrics'),
+            disabled: disabled || isServiceInactive(item, 'metrics'),
           },
           {
             id: 'environment',
             icon: <ParkOutlined />,
             label: <FormattedMessage id={'environment'} />,
             to: generatePath(urls.instanceEnvironment.url, { id: item.id }),
-            disabled: isServiceInactive(item, 'env'),
+            disabled: disabled || isServiceInactive(item, 'env'),
           },
           {
             id: 'beans',
             icon: <EggOutlined />,
             label: <FormattedMessage id={'beans'} />,
             to: generatePath(urls.instanceBeans.url, { id: item.id }),
-            disabled: isServiceInactive(item, 'beans'),
+            disabled: disabled || isServiceInactive(item, 'beans'),
           },
           {
             id: 'properties',
             icon: <ListAltOutlined />,
             label: <FormattedMessage id={'properties'} />,
             to: generatePath(urls.instanceProperties.url, { id: item.id }),
-            disabled: isServiceInactive(item, 'properties'),
+            disabled: disabled || isServiceInactive(item, 'properties'),
           },
           {
             id: 'http-requests',
             icon: <HttpOutlined />,
             label: <FormattedMessage id={'httpRequests'} />,
             to: generatePath(urls.instanceHttpRequests.url, { id: item.id }),
+            disabled: disabled,
             hidden: isServiceInactive(item, 'http-request-statistics'),
           },
           {
@@ -79,6 +80,7 @@ export default function InstanceSidebar({ item, width }: InstanceSidebarProps) {
             icon: <AccessTimeOutlined />,
             label: <FormattedMessage id={'quartz'} />,
             to: generatePath(urls.instanceQuartz.url, { id: item.id }),
+            disabled: disabled,
             hidden: isServiceInactive(item, 'quartz'),
           },
           {
@@ -86,6 +88,7 @@ export default function InstanceSidebar({ item, width }: InstanceSidebarProps) {
             icon: <StorageOutlined />,
             label: <FormattedMessage id={'flyway'} />,
             to: generatePath(urls.instanceFlyway.url, { id: item.id }),
+            disabled: disabled,
             hidden: isServiceInactive(item, 'flyway'),
           },
         ],
@@ -99,14 +102,14 @@ export default function InstanceSidebar({ item, width }: InstanceSidebarProps) {
             icon: <TextSnippetOutlined />,
             label: <FormattedMessage id={'loggers'} />,
             to: generatePath(urls.instanceLoggers.url, { id: item.id }),
-            disabled: isServiceInactive(item, 'loggers'),
+            disabled: disabled || isServiceInactive(item, 'loggers'),
           },
           {
             id: 'caches',
             icon: <ClassOutlined />,
             label: <FormattedMessage id={'caches'} />,
             to: generatePath(urls.instanceCaches.url, { id: item.id }),
-            disabled: isServiceInactive(item, 'caches'),
+            disabled: disabled || isServiceInactive(item, 'caches'),
           },
         ],
       },
@@ -119,19 +122,19 @@ export default function InstanceSidebar({ item, width }: InstanceSidebarProps) {
             icon: <DeviceHubOutlined />,
             label: <FormattedMessage id={'threadDump'} />,
             to: generatePath(urls.instanceThreadDump.url, { id: item.id }),
-            disabled: isServiceInactive(item, 'threaddump'),
+            disabled: disabled || isServiceInactive(item, 'threaddump'),
           },
           {
             id: 'heapDump',
             icon: <LanOutlined />,
             label: <FormattedMessage id={'heapDump'} />,
             to: generatePath(urls.instanceHeapDump.url, { id: item.id }),
-            disabled: isServiceInactive(item, 'heapdump'),
+            disabled: disabled || isServiceInactive(item, 'heapdump'),
           },
         ],
       },
     ],
-    [item]
+    [item, disabled]
   );
 
   return (

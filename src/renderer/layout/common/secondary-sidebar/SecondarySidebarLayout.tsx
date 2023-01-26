@@ -1,4 +1,4 @@
-import React, { ComponentType, useEffect, useMemo, useRef } from 'react';
+import React, { ComponentType, ReactNode, useEffect, useMemo, useRef } from 'react';
 import { Box } from '@mui/material';
 import { Outlet, useLocation } from 'react-router-dom';
 import { Allotment, LayoutPriority } from 'allotment';
@@ -14,9 +14,10 @@ import PerfectScrollbar from 'react-perfect-scrollbar';
 type SecondarySidebarLayoutProps<T> = {
   Sidebar: ComponentType<{ width: number } & T>;
   sidebarProps: T;
+  content?: ReactNode;
 };
 
-export default function SecondarySidebarLayout<T>({ Sidebar, sidebarProps }: SecondarySidebarLayoutProps<T>) {
+export default function SecondarySidebarLayout<T>({ Sidebar, sidebarProps, content }: SecondarySidebarLayoutProps<T>) {
   const { pathname } = useLocation();
 
   const scrollContainerRef = useRef<HTMLElement>();
@@ -48,7 +49,7 @@ export default function SecondarySidebarLayout<T>({ Sidebar, sidebarProps }: Sec
                 scrollContainerRef.current = el;
               }}
             >
-              <Outlet />
+              {content || <Outlet />}
             </PerfectScrollbar>
           </Box>
         </Allotment.Pane>
