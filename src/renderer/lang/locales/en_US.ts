@@ -141,4 +141,9 @@ export default {
   comments: 'Comments',
   dateExecuted: 'Date Executed',
   orderExecuted: 'Order Executed',
+  id: 'ID',
+  deploymentId: 'Deployment ID',
+  tag: 'Tag',
+  contexts: 'Contexts',
+  labels: 'Labels',
 };

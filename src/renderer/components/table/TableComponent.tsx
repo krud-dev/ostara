@@ -1,4 +1,4 @@
-import React, { ReactNode, useCallback, useMemo, useRef, useState } from 'react';
+import React, { ReactNode, useCallback, useRef } from 'react';
 import { Box, Table, TableBody, TableContainer, TablePagination, useMediaQuery } from '@mui/material';
 import PerfectScrollbar from 'react-perfect-scrollbar';
 import TableToolbar from 'renderer/components/table/TableToolbar';
@@ -8,15 +8,12 @@ import TableRowCustom from 'renderer/components/table/TableRowCustom';
 import TableSelectedActions from 'renderer/components/table/TableSelectedActions';
 import TableHeadCustom from 'renderer/components/table/TableHeadCustom';
 import TableNoData from 'renderer/components/table/TableNoData';
-import { COMPONENTS_SPACING, ROWS_PER_PAGE_OPTIONS } from 'renderer/constants/ui';
+import { ROWS_PER_PAGE_OPTIONS, TABLE_SCROLL_CONTAINER_ID } from 'renderer/constants/ui';
 import TableSkeleton from 'renderer/components/table/TableSkeleton';
 import { DisplayItem, TableContext, TableProvider } from 'renderer/components/table/TableContext';
 import { useTheme } from '@mui/material/styles';
 import TableRowGroup from 'renderer/components/table/TableRowGroup';
-import { useWindowSize } from 'react-use';
-import { isNil } from 'lodash';
 import { useScrollSync } from 'renderer/hooks/useScrollSync';
-import { calculateElementDocumentOffsetTop } from 'renderer/utils/elementUtils';
 import useElementDocumentHeight from 'renderer/hooks/useElementDocumentHeight';
 
 type TableComponentProps<EntityItem> = {
@@ -91,6 +88,7 @@ export default function TableComponent<EntityItem>({
 
             <Box ref={elementRef} sx={{ height: elementHeight }}>
               <PerfectScrollbar
+                id={TABLE_SCROLL_CONTAINER_ID}
                 containerRef={(element) => {
                   tableBodyScrollRef.current = element;
                 }}

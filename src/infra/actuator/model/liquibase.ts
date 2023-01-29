@@ -1,6 +1,6 @@
 export type ActuatorLiquibaseChangeset = {
   id: string;
-  chceksum: string;
+  checksum: string;
   orderExecuted: number;
   author: string;
   changeLog: string;

@@ -2,6 +2,7 @@ import { Theme } from '@mui/material/styles';
 import { Box, Checkbox, SxProps, TableCell, TableHead, TableRow, TableSortLabel } from '@mui/material';
 import { FormattedMessage } from 'react-intl';
 import { useTable } from 'renderer/components/table/TableContext';
+import { DEFAULT_TABLE_COLUMN_WIDTH } from 'renderer/constants/ui';
 
 const visuallyHidden = {
   border: 0,
@@ -14,8 +15,6 @@ const visuallyHidden = {
   whiteSpace: 'nowrap',
   clip: 'rect(0 0 0 0)',
 } as const;
-
-const DEFAULT_COLUMN_WIDTH = 175;
 
 type TableHeadCustomProps = {
   sx?: SxProps<Theme>;
@@ -53,9 +52,9 @@ export default function TableHeadCustom({ sx }: TableHeadCustomProps) {
             align={column.align || 'left'}
             sortDirection={orderColumn === column.id ? orderDirection : false}
             sx={{
-              width: column.width || DEFAULT_COLUMN_WIDTH,
-              minWidth: column.width || DEFAULT_COLUMN_WIDTH,
-              maxWidth: column.width || DEFAULT_COLUMN_WIDTH,
+              width: column.width || DEFAULT_TABLE_COLUMN_WIDTH,
+              minWidth: column.width || DEFAULT_TABLE_COLUMN_WIDTH,
+              maxWidth: column.width || DEFAULT_TABLE_COLUMN_WIDTH,
             }}
           >
             <TableSortLabel

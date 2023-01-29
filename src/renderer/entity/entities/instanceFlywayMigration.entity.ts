@@ -1,41 +1,33 @@
 import { Entity } from 'renderer/entity/entity';
 import { EnrichedActuatorFlywayMigration } from 'renderer/apis/instance/getInstanceFlywayMigrations';
+import FlywayMigrationDetails from 'renderer/pages/navigator/instance/flyway/components/FlywayMigrationDetails';
 
 export const instanceFlywayMigrationEntity: Entity<EnrichedActuatorFlywayMigration> = {
   id: 'instanceFlywayMigration',
   columns: [
+    {
+      id: 'installedBy',
+      type: 'Text',
+      labelId: 'installedBy',
+    },
     {
       id: 'description',
       type: 'Text',
       labelId: 'description',
     },
     {
-      id: 'type',
-      type: 'Text',
-      labelId: 'type',
-      width: 125,
-    },
-    {
-      id: 'script',
-      type: 'Text',
-      labelId: 'script',
-      width: 300,
-    },
-    {
       id: 'state',
       type: 'Label',
       labelId: 'state',
-      getColor: (item) => (item.state === 'SUCCESS' ? 'success' : 'warning'),
-    },
-    {
-      id: 'executionTime',
-      type: 'Number',
-      labelId: 'executionTime',
-    },
-    {
-      id: 'installedBy',
-      type: 'Text',
-      labelId: 'installedBy',
+      getColor: (item) => {
+        switch (item.state) {
+          case 'SUCCESS':
+          case 'FUTURE_SUCCESS':
+            return 'success';
+          default:
+            return 'default';
+        }
+      },
     },
     {
       id: 'installedOn',
@@ -47,20 +39,14 @@ export const instanceFlywayMigrationEntity: Entity<EnrichedActuatorFlywayMigrati
       type: 'Number',
       labelId: 'installedRank',
     },
-    {
-      id: 'version',
-      type: 'Text',
-      labelId: 'version',
-    },
-    {
-      id: 'checksum',
-      type: 'Text',
-      labelId: 'checksum',
-    },
   ],
   actions: [],
   massActions: [],
   globalActions: [],
+  rowAction: {
+    type: 'Details',
+    Component: FlywayMigrationDetails,
+  },
   defaultOrder: [
     {
       id: 'installedRank',

@@ -1,5 +1,6 @@
 import { Entity } from 'renderer/entity/entity';
 import { EnrichedActuatorLiquibaseChangeset } from 'renderer/apis/instance/getInstanceLiquibaseChangesets';
+import LiquibaseChangesetDetails from 'renderer/pages/navigator/instance/liquibase/components/LiquibaseChangesetDetails';
 
 export const instanceLiquibaseChangesetEntity: Entity<EnrichedActuatorLiquibaseChangeset> = {
   id: 'instanceLiquibaseChangeset',
@@ -10,19 +11,10 @@ export const instanceLiquibaseChangesetEntity: Entity<EnrichedActuatorLiquibaseC
       labelId: 'author',
     },
     {
-      id: 'changelog',
-      type: 'Text',
-      labelId: 'changelog',
-    },
-    {
       id: 'description',
       type: 'Text',
       labelId: 'description',
-    },
-    {
-      id: 'comments',
-      type: 'Text',
-      labelId: 'comments',
+      width: 250,
     },
     {
       id: 'execType',
@@ -57,6 +49,10 @@ export const instanceLiquibaseChangesetEntity: Entity<EnrichedActuatorLiquibaseC
   actions: [],
   massActions: [],
   globalActions: [],
+  rowAction: {
+    type: 'Details',
+    Component: LiquibaseChangesetDetails,
+  },
   defaultOrder: [
     {
       id: 'orderExecuted',
