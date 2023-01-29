@@ -9,9 +9,10 @@ import { FormattedMessage } from 'react-intl';
 import { ApplicationCache } from 'infra/instance/models/cache';
 import { EVICT_CACHE_ID } from 'renderer/entity/actions';
 import { applicationCacheEntity } from 'renderer/entity/entities/applicationCache.entity';
-import { useGetApplicationCachesQuery } from 'renderer/apis/application/getApplicationCaches';
+import { EnrichedApplicationCache, useGetApplicationCachesQuery } from 'renderer/apis/application/getApplicationCaches';
 import { useEvictApplicationCaches } from 'renderer/apis/application/evictApplicationCaches';
 import { useEvictAllApplicationCaches } from 'renderer/apis/application/evictAllApplicationCaches';
+import { Card } from '@mui/material';
 
 const ApplicationCaches: FunctionComponent = () => {
   const { selectedItem } = useNavigatorTree();
@@ -23,13 +24,13 @@ const ApplicationCaches: FunctionComponent = () => {
   );
   const itemId = useMemo<string>(() => item?.id || '', [item]);
 
-  const entity = useMemo<Entity<ApplicationCache>>(() => applicationCacheEntity, []);
+  const entity = useMemo<Entity<EnrichedApplicationCache>>(() => applicationCacheEntity, []);
   const queryState = useGetApplicationCachesQuery({ applicationId: itemId });
 
   const evictCachesState = useEvictApplicationCaches();
   const evictAllCachesState = useEvictAllApplicationCaches();
 
-  const actionsHandler = useCallback(async (actionId: string, row: ApplicationCache): Promise<void> => {
+  const actionsHandler = useCallback(async (actionId: string, row: EnrichedApplicationCache): Promise<void> => {
     switch (actionId) {
       case EVICT_CACHE_ID:
         try {
@@ -44,29 +45,32 @@ const ApplicationCaches: FunctionComponent = () => {
     }
   }, []);
 
-  const massActionsHandler = useCallback(async (actionId: string, selectedRows: ApplicationCache[]): Promise<void> => {
-    switch (actionId) {
-      case EVICT_CACHE_ID:
-        try {
-          await evictCachesState.mutateAsync({
-            applicationId: itemId,
-            cacheNames: selectedRows.map((r) => r.name),
-          });
-          enqueueSnackbar(
-            <FormattedMessage
-              id={'evictedCacheSuccessfully'}
-              values={{ names: selectedRows.map((r) => r.name).join(', ') }}
-            />,
-            {
-              variant: 'success',
-            }
-          );
-        } catch (e) {}
-        break;
-      default:
-        break;
-    }
-  }, []);
+  const massActionsHandler = useCallback(
+    async (actionId: string, selectedRows: EnrichedApplicationCache[]): Promise<void> => {
+      switch (actionId) {
+        case EVICT_CACHE_ID:
+          try {
+            await evictCachesState.mutateAsync({
+              applicationId: itemId,
+              cacheNames: selectedRows.map((r) => r.name),
+            });
+            enqueueSnackbar(
+              <FormattedMessage
+                id={'evictedCacheSuccessfully'}
+                values={{ names: selectedRows.map((r) => r.name).join(', ') }}
+              />,
+              {
+                variant: 'success',
+              }
+            );
+          } catch (e) {}
+          break;
+        default:
+          break;
+      }
+    },
+    []
+  );
 
   const globalActionsHandler = useCallback(async (actionId: string): Promise<void> => {
     switch (actionId) {
@@ -85,13 +89,15 @@ const ApplicationCaches: FunctionComponent = () => {
 
   return (
     <Page>
-      <TableComponent
-        entity={entity}
-        queryState={queryState}
-        actionsHandler={actionsHandler}
-        massActionsHandler={massActionsHandler}
-        globalActionsHandler={globalActionsHandler}
-      />
+      <Card>
+        <TableComponent
+          entity={entity}
+          queryState={queryState}
+          actionsHandler={actionsHandler}
+          massActionsHandler={massActionsHandler}
+          globalActionsHandler={globalActionsHandler}
+        />
+      </Card>
     </Page>
   );
 };
