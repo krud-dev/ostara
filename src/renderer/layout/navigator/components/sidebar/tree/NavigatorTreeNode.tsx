@@ -91,6 +91,13 @@ export default function NavigatorTreeNode({ style, node, tree, dragHandle, previ
     [node]
   );
 
+  const itemDoubleClickHandler = useCallback(
+    (event: React.MouseEvent): void => {
+      node.toggle();
+    },
+    [node]
+  );
+
   const arrowIconClickHandler = useCallback(
     (event: React.MouseEvent): void => {
       event.stopPropagation();
@@ -181,6 +188,7 @@ export default function NavigatorTreeNode({ style, node, tree, dragHandle, previ
         sx={stateStyle}
         style={style}
         onClick={itemClickHandler}
+        onDoubleClick={itemDoubleClickHandler}
       >
         <IconButton
           onClick={arrowIconClickHandler}
