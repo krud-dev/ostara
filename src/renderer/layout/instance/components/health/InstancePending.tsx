@@ -15,10 +15,6 @@ type InstancePendingProps = {
 export default function InstancePending({ item }: InstancePendingProps) {
   const healthStatusColor = useMemo<string | undefined>(() => getItemHealthStatusColor(item), [item]);
 
-  const updateHandler = useCallback((): void => {
-    showUpdateItemDialog(item);
-  }, [item]);
-
   return (
     <Page sx={{ height: '100%' }}>
       <Card sx={{ height: '100%' }}>

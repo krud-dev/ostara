@@ -6,7 +6,6 @@ import TableComponent from 'renderer/components/table/TableComponent';
 import { useSnackbar } from 'notistack';
 import { Entity } from 'renderer/entity/entity';
 import { FormattedMessage } from 'react-intl';
-import { ApplicationCache } from 'infra/instance/models/cache';
 import { EVICT_CACHE_ID } from 'renderer/entity/actions';
 import { applicationCacheEntity } from 'renderer/entity/entities/applicationCache.entity';
 import { EnrichedApplicationCache, useGetApplicationCachesQuery } from 'renderer/apis/application/getApplicationCaches';

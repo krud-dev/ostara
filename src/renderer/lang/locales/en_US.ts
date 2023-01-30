@@ -146,4 +146,5 @@ export default {
   tag: 'Tag',
   contexts: 'Contexts',
   labels: 'Labels',
+  refreshStatus: 'Refresh Status',
 };

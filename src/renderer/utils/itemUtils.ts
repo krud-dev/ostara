@@ -1,7 +1,9 @@
 import {
   DataCollectionMode,
+  EnrichedApplication,
   EnrichedInstance,
   EnrichedItem,
+  InstanceHealth,
   Item,
   ItemType,
 } from 'infra/configuration/model/configuration';
@@ -46,44 +48,53 @@ export const getItemNameTooltip = (item: EnrichedItem): string | undefined => {
   return undefined;
 };
 
+const HEALTH_STATUS_COLORS_INDEX = 600;
+
+export const getInstanceHealthStatusColor = (instanceHealth: InstanceHealth): string | undefined => {
+  switch (instanceHealth.status) {
+    case 'UP':
+      return green[HEALTH_STATUS_COLORS_INDEX];
+    case 'DOWN':
+      return red[HEALTH_STATUS_COLORS_INDEX];
+    case 'OUT_OF_SERVICE':
+      return yellow[HEALTH_STATUS_COLORS_INDEX];
+    case 'UNREACHABLE':
+      return pink[HEALTH_STATUS_COLORS_INDEX];
+    case 'UNKNOWN':
+      return blueGrey[HEALTH_STATUS_COLORS_INDEX];
+    case 'PENDING':
+      return 'text.secondary';
+    default:
+      return undefined;
+  }
+};
+
+export const getApplicationHealthStatusColor = (application: EnrichedApplication): string | undefined => {
+  if (application.instanceCount === 0) {
+    return undefined;
+  }
+  switch (application.health.status) {
+    case 'ALL_UP':
+      return green[HEALTH_STATUS_COLORS_INDEX];
+    case 'ALL_DOWN':
+      return red[HEALTH_STATUS_COLORS_INDEX];
+    case 'SOME_DOWN':
+      return orange[HEALTH_STATUS_COLORS_INDEX];
+    case 'UNKNOWN':
+      return blueGrey[HEALTH_STATUS_COLORS_INDEX];
+    case 'PENDING':
+      return 'text.secondary';
+    default:
+      return undefined;
+  }
+};
+
 export const getItemHealthStatusColor = (item: EnrichedItem): string | undefined => {
-  const colorsIndex = 600;
   if (item.type === 'instance') {
-    switch (item.health.status) {
-      case 'UP':
-        return green[colorsIndex];
-      case 'DOWN':
-        return red[colorsIndex];
-      case 'OUT_OF_SERVICE':
-        return yellow[colorsIndex];
-      case 'UNREACHABLE':
-        return pink[colorsIndex];
-      case 'UNKNOWN':
-        return blueGrey[colorsIndex];
-      case 'PENDING':
-        return 'text.secondary';
-      default:
-        return undefined;
-    }
+    return getInstanceHealthStatusColor(item.health);
   }
   if (item.type === 'application') {
-    if (item.instanceCount === 0) {
-      return undefined;
-    }
-    switch (item.health.status) {
-      case 'ALL_UP':
-        return green[colorsIndex];
-      case 'ALL_DOWN':
-        return red[colorsIndex];
-      case 'SOME_DOWN':
-        return orange[colorsIndex];
-      case 'UNKNOWN':
-        return blueGrey[colorsIndex];
-      case 'PENDING':
-        return 'text.secondary';
-      default:
-        return undefined;
-    }
+    return getApplicationHealthStatusColor(item);
   }
   return undefined;
 };

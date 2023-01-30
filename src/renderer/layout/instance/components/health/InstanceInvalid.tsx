@@ -1,23 +1,41 @@
 import { Button, Card, CardContent, CardHeader, Divider, Stack, Typography } from '@mui/material';
-import { EnrichedInstance } from 'infra/configuration/model/configuration';
+import { EnrichedInstance, InstanceHealth } from 'infra/configuration/model/configuration';
 import Page from 'renderer/components/layout/Page';
-import React, { useCallback, useMemo } from 'react';
-import { getItemHealthStatusColor } from 'renderer/utils/itemUtils';
+import React, { useCallback, useMemo, useState } from 'react';
+import { getInstanceHealthStatusColor, getItemHealthStatusColor } from 'renderer/utils/itemUtils';
 import { IconViewer } from 'renderer/components/common/IconViewer';
 import { FormattedMessage } from 'react-intl';
 import { showUpdateItemDialog } from 'renderer/utils/dialogUtils';
 import FormattedDateAndRelativeTime from 'renderer/components/time/FormattedDateAndRelativeTime';
+import { useUpdateEffect } from 'react-use';
+import { useFetchInstanceHealth } from 'renderer/apis/instance/fetchInstanceHealth';
+import { LoadingButton } from '@mui/lab';
 
 type InstanceInvalidProps = {
   item: EnrichedInstance;
 };
 
 export default function InstanceInvalid({ item }: InstanceInvalidProps) {
-  const healthStatusColor = useMemo<string | undefined>(() => getItemHealthStatusColor(item), [item]);
+  const [health, setHealth] = useState<InstanceHealth>(item.health);
+
+  useUpdateEffect(() => {
+    setHealth(item.health);
+  }, [item.health]);
+
+  const healthStatusColor = useMemo<string | undefined>(() => getInstanceHealthStatusColor(health), [health]);
 
   const updateHandler = useCallback((): void => {
     showUpdateItemDialog(item);
   }, [item]);
+
+  const healthState = useFetchInstanceHealth();
+
+  const refreshHandler = useCallback(async (): Promise<void> => {
+    try {
+      const result = await healthState.mutateAsync({ instanceId: item.id });
+      setHealth(result);
+    } catch (e) {}
+  }, [item, healthState]);
 
   return (
     <Page sx={{ height: '100%' }}>
@@ -61,7 +79,7 @@ export default function InstanceInvalid({ item }: InstanceInvalidProps) {
                     <FormattedMessage id={'lastUpdateTime'} />
                   </Typography>
                   <Typography variant="subtitle2">
-                    <FormattedDateAndRelativeTime value={item.health.lastUpdateTime} />
+                    <FormattedDateAndRelativeTime value={health.lastUpdateTime} />
                   </Typography>
                 </Stack>
 
@@ -70,16 +88,21 @@ export default function InstanceInvalid({ item }: InstanceInvalidProps) {
                     <FormattedMessage id={'lastStatusChangeTime'} />
                   </Typography>
                   <Typography variant="subtitle2">
-                    <FormattedDateAndRelativeTime value={item.health.lastStatusChangeTime} />
+                    <FormattedDateAndRelativeTime value={health.lastStatusChangeTime} />
                   </Typography>
                 </Stack>
               </Stack>
             </CardContent>
           </Card>
 
-          <Button variant="outlined" color="primary" onClick={updateHandler} sx={{ mt: 3 }}>
-            <FormattedMessage id={'updateInstance'} />
-          </Button>
+          <Stack direction={{ xs: 'column', sm: 'row' }} spacing={2} sx={{ mt: 3 }}>
+            <Button variant="outlined" color="primary" onClick={updateHandler}>
+              <FormattedMessage id={'updateInstance'} />
+            </Button>
+            <LoadingButton variant="outlined" color="primary" onClick={refreshHandler} loading={healthState.isLoading}>
+              <FormattedMessage id={'refreshStatus'} />
+            </LoadingButton>
+          </Stack>
         </CardContent>
       </Card>
     </Page>
