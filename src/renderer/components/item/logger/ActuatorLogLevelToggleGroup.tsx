@@ -25,24 +25,22 @@ export default function ActuatorLogLevelToggleGroup({
     [onChange]
   );
 
-  const logLevels = useMemo<ActuatorLogLevel[]>(() => ['OFF', 'ERROR', 'WARN', 'INFO', 'DEBUG', 'TRACE', 'ALL'], []);
+  const logLevels = useMemo<ActuatorLogLevel[]>(() => ['OFF', 'ERROR', 'WARN', 'INFO', 'DEBUG', 'TRACE'], []);
 
   const getColor = useCallback((level: ActuatorLogLevel) => {
     switch (level) {
       case 'OFF':
         return undefined;
       case 'ERROR':
-        return 'success';
+        return 'error';
       case 'WARN':
-        return 'success';
-      case 'INFO':
-        return 'info';
-      case 'DEBUG':
         return 'warning';
+      case 'INFO':
+        return 'success';
+      case 'DEBUG':
+        return 'info';
       case 'TRACE':
-        return 'error';
-      case 'ALL':
-        return 'error';
+        return 'fatal';
       default:
         return undefined;
     }

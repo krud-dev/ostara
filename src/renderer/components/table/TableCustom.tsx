@@ -26,7 +26,7 @@ export default function TableCustom<EntityItem>({}: TableCustomProps<EntityItem>
   const { entity, rows, displayRows, loading, empty, page, changePageHandler, rowsPerPage, changeRowsPerPageHandler } =
     useTable<EntityItem>();
   const theme = useTheme();
-  const showRowPerPageLabel = useMediaQuery(theme.breakpoints.up('md'));
+  const showRowPerPage = useMediaQuery(theme.breakpoints.up('md'));
 
   const renderRow = useCallback((item: DisplayItem<EntityItem>): ReactNode => {
     switch (item.type) {
@@ -113,12 +113,14 @@ export default function TableCustom<EntityItem>({}: TableCustomProps<EntityItem>
       {entity.paging && (
         <Box sx={{ position: 'relative' }}>
           <TablePagination
-            rowsPerPageOptions={ROWS_PER_PAGE_OPTIONS}
+            rowsPerPageOptions={showRowPerPage ? ROWS_PER_PAGE_OPTIONS : []}
             component="div"
             count={rows.length}
             rowsPerPage={rowsPerPage}
-            labelRowsPerPage={showRowPerPageLabel ? undefined : ''}
+            labelRowsPerPage={showRowPerPage ? undefined : ''}
             page={page}
+            showFirstButton
+            showLastButton
             onPageChange={(event, newPage) => changePageHandler(newPage)}
             onRowsPerPageChange={(event) => changeRowsPerPageHandler(parseInt(event.target.value, 10))}
             sx={{ height: TABLE_PAGINATION_HEIGHT, overflow: 'hidden' }}

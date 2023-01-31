@@ -1,6 +1,6 @@
 import { Theme } from '@mui/material/styles';
 import { Components } from '@mui/material/styles/components';
-import { COMPONENTS_SPACING } from 'renderer/constants/ui';
+import { COMPONENTS_SPACING, TABLE_PAGINATION_HEIGHT } from 'renderer/constants/ui';
 
 export default function Table(theme: Theme): Components {
   return {
@@ -56,7 +56,9 @@ export default function Table(theme: Theme): Components {
           borderTop: `solid 1px ${theme.palette.divider}`,
         },
         toolbar: {
-          height: 64,
+          height: TABLE_PAGINATION_HEIGHT - 1,
+          paddingLeft: `${theme.spacing(COMPONENTS_SPACING)}!important`,
+          paddingRight: `${theme.spacing(COMPONENTS_SPACING)}!important`,
         },
         select: {
           '&:focus': {

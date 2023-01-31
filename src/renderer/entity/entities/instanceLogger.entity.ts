@@ -16,7 +16,7 @@ export const instanceLoggerEntity: Entity<EnrichedInstanceLogger> = {
       id: 'effectiveLevel',
       type: 'Custom',
       labelId: 'level',
-      width: 410,
+      width: 370,
       Component: TableCellDataInstanceLoggerLevel,
     },
   ],
