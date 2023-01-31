@@ -36,7 +36,7 @@ export const instanceLoggerEntity: Entity<EnrichedInstanceLogger> = {
       direction: 'asc',
     },
   ],
-  paging: false,
+  paging: true,
   getId: (item) => item.name,
   filterData: (data, filter) => data.filter((item) => item.name?.toLowerCase().includes(filter.toLowerCase())),
 };

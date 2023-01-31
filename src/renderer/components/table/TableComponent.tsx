@@ -1,4 +1,4 @@
-import React, { ReactNode, useCallback, useRef } from 'react';
+import React, { ReactNode, useCallback, useMemo, useRef } from 'react';
 import { Box, Table, TableBody, TableContainer, TablePagination, useMediaQuery } from '@mui/material';
 import PerfectScrollbar from 'react-perfect-scrollbar';
 import TableToolbar from 'renderer/components/table/TableToolbar';
@@ -8,7 +8,12 @@ import TableRowCustom from 'renderer/components/table/TableRowCustom';
 import TableSelectedActions from 'renderer/components/table/TableSelectedActions';
 import TableHeadCustom from 'renderer/components/table/TableHeadCustom';
 import TableNoData from 'renderer/components/table/TableNoData';
-import { ROWS_PER_PAGE_OPTIONS, TABLE_SCROLL_CONTAINER_ID } from 'renderer/constants/ui';
+import {
+  COMPONENTS_SPACING,
+  ROWS_PER_PAGE_OPTIONS,
+  TABLE_PAGINATION_HEIGHT,
+  TABLE_SCROLL_CONTAINER_ID,
+} from 'renderer/constants/ui';
 import TableSkeleton from 'renderer/components/table/TableSkeleton';
 import { DisplayItem, TableContext, TableProvider } from 'renderer/components/table/TableContext';
 import { useTheme } from '@mui/material/styles';
@@ -53,7 +58,11 @@ export default function TableComponent<EntityItem>({
     }
   }, []);
 
-  const { elementHeight, elementRef } = useElementDocumentHeight();
+  const bottomOffset = useMemo<number>(
+    () => parseInt(theme.spacing(COMPONENTS_SPACING), 10) + (entity.paging ? TABLE_PAGINATION_HEIGHT : 0),
+    [entity]
+  );
+  const { elementHeight, elementRef } = useElementDocumentHeight({ bottomOffset });
 
   const tableHeaderScrollRef = useRef<HTMLDivElement>(null);
   const tableBodyScrollRef = useRef<any>(null);
@@ -128,7 +137,7 @@ export default function TableComponent<EntityItem>({
                   page={page}
                   onPageChange={(event, newPage) => changePageHandler(newPage)}
                   onRowsPerPageChange={(event) => changeRowsPerPageHandler(parseInt(event.target.value, 10))}
-                  sx={{ overflow: 'hidden' }}
+                  sx={{ height: TABLE_PAGINATION_HEIGHT, overflow: 'hidden' }}
                 />
               </Box>
             )}

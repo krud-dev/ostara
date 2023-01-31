@@ -44,7 +44,7 @@ export const instanceHttpRequestEntity: Entity<InstanceHttpRequestStatistics> = 
       direction: 'asc',
     },
   ],
-  paging: false,
+  paging: true,
   getId: (item) => item.uri,
   filterData: (data, filter) => data.filter((item) => item.uri?.toLowerCase().includes(filter.toLowerCase())),
 };
