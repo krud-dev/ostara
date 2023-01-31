@@ -3,7 +3,7 @@ import { ElectronTheme } from './models/electronTheme';
 
 export const uiServiceBridge: UiServiceBridge = {
   getTheme(): Promise<ElectronTheme> {
-    return ipcRenderer.invoke('ui:getTheme');
+    return ipcRenderer.invoke('uiService:getTheme');
   },
   getThemeSource(): Promise<'system' | 'light' | 'dark'> {
     return ipcRenderer.invoke('uiService:getThemeSource');
