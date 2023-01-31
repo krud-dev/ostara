@@ -1,7 +1,6 @@
 import { InstanceHealth } from '../configuration/model/configuration';
 import { ApplicationCache, ApplicationCacheStatistics, InstanceCache, InstanceCacheStatistics } from './models/cache';
 import { ApplicationLogger, InstanceLogger } from './models/logger';
-import { LogLevel } from 'electron-log';
 import {
   InstanceHttpRequestStatistics,
   InstanceHttpRequestStatisticsByException,
@@ -11,6 +10,7 @@ import {
   InstanceHttpRequestStatisticsForUriOptions,
 } from './models/httpRequestStatistics';
 import { HeapdumpReference } from './heapdump/entities/HeapdumpReference';
+import { ActuatorLogLevel } from 'infra/actuator/model/loggers';
 
 declare global {
   type InstancePropertyServiceBridge = {
@@ -46,13 +46,17 @@ declare global {
     fetchInstanceHealthById: (instanceId: string) => Promise<InstanceHealth>;
     getInstanceLoggers: (instanceId: string) => Promise<InstanceLogger[]>;
     getInstanceLogger: (instanceId: string, loggerName: string) => Promise<InstanceLogger>;
-    setInstanceLoggerLevel: (instanceId: string, loggerName: string, level: LogLevel | undefined) => Promise<void>;
+    setInstanceLoggerLevel: (
+      instanceId: string,
+      loggerName: string,
+      level: ActuatorLogLevel | undefined
+    ) => Promise<void>;
     getApplicationLoggers: (applicationId: string) => Promise<ApplicationLogger[]>;
     getApplicationLogger: (applicationId: string, loggerName: string) => Promise<ApplicationLogger>;
     setApplicationLoggerLevel: (
       applicationId: string,
       loggerName: string,
-      level: LogLevel | undefined
+      level: ActuatorLogLevel | undefined
     ) => Promise<void>;
     getInstanceCaches: (instanceId: string) => Promise<InstanceCache[]>;
     getInstanceCache: (instanceId: string, cacheName: string) => Promise<InstanceCache>;

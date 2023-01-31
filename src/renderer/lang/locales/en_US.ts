@@ -147,4 +147,6 @@ export default {
   contexts: 'Contexts',
   labels: 'Labels',
   refreshStatus: 'Refresh Status',
+  level: 'Level',
+  reset: 'Reset',
 };

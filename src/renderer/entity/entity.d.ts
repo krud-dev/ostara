@@ -6,9 +6,9 @@ import { LabelColor } from 'renderer/components/common/Label';
 export type Entity<EntityItem> = {
   id: string;
   columns: EntityColumn<EntityItem>[];
-  actions: EntityAction[];
-  massActions: EntityAction[];
-  globalActions: EntityAction[];
+  actions: EntityAction<EntityItem>[];
+  massActions: EntityActionMass[];
+  globalActions: EntityActionGlobal[];
   rowAction?: EntityRowAction<EntityItem>;
   isRowActionActive?: (item: EntityItem) => boolean;
   defaultOrder: {
@@ -27,7 +27,7 @@ export type EntityBaseColumn<EntityItem> = {
   id: string;
   align?: 'left' | 'right' | 'center';
   labelId: string;
-  width?: number;
+  width?: number | string;
   getTooltip?: (item: EntityItem) => string | undefined;
 };
 
@@ -78,8 +78,16 @@ export type EntityRowActionDetails<EntityItem> = {
 
 export type EntityRowAction<EntityItem> = EntityRowActionNavigate<EntityItem> | EntityRowActionDetails<EntityItem>;
 
-export type EntityAction = {
+export type EntityActionBase = {
   id: string;
   labelId: string;
   icon: MUIconType;
 };
+
+export type EntityAction<EntityItem> = EntityActionBase & {
+  isDisabled?: (item: EntityItem) => boolean;
+};
+
+export type EntityActionMass = EntityActionBase;
+
+export type EntityActionGlobal = EntityActionBase;

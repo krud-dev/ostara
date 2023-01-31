@@ -74,13 +74,18 @@ export default function TableRowCustom<EntityItem>({ row }: TableRowCustomProps<
 
         {hasActions && (
           <TableCell align="right" sx={{ whiteSpace: 'nowrap' }}>
-            {entity.actions.map((action) => (
-              <Tooltip title={<FormattedMessage id={action.labelId} />} key={action.id}>
-                <IconButton onClick={(event) => actionClickHandler(event, action.id)}>
-                  <IconViewer icon={action.icon} fontSize={'small'} />
-                </IconButton>
-              </Tooltip>
-            ))}
+            {entity.actions.map((action) => {
+              const disabled = action.isDisabled?.(row);
+              return (
+                <Tooltip title={<FormattedMessage id={action.labelId} />} key={action.id}>
+                  <Box component={'span'}>
+                    <IconButton onClick={(event) => actionClickHandler(event, action.id)} disabled={disabled}>
+                      <IconViewer icon={action.icon} fontSize={'small'} />
+                    </IconButton>
+                  </Box>
+                </Tooltip>
+              );
+            })}
           </TableCell>
         )}
       </TableRow>

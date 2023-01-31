@@ -21,6 +21,7 @@ import InstanceHttpRequests from 'renderer/pages/navigator/instance/http-request
 import InstanceFlyway from 'renderer/pages/navigator/instance/flyway';
 import ApplicationSettingsPage from 'renderer/pages/navigator/settings/application';
 import InstanceLiquibase from 'renderer/pages/navigator/instance/liquibase';
+import InstanceLoggers from 'renderer/pages/navigator/instance/loggers';
 
 export default function Router() {
   return useRoutes([
@@ -109,7 +110,7 @@ export default function Router() {
             },
             {
               path: urls.instanceLoggers.path,
-              element: <InstanceDashboard />,
+              element: <InstanceLoggers />,
             },
             {
               path: urls.instanceCaches.path,
