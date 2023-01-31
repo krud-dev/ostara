@@ -1,13 +1,44 @@
 {
-  "name": "electron-react-boilerplate",
-  "version": "4.6.0",
-  "description": "A foundation for scalable desktop apps",
-  "license": "MIT",
-  "author": {
-    "name": "Electron React Boilerplate Maintainers",
-    "email": "electronreactboilerplate@gmail.com",
-    "url": "https://github.com/electron-react-boilerplate"
+  "name": "spring-boost",
+  "version": "0.0.1",
+  "description": "A visual tool to monitor and interact with Spring Boot applications via Actuator",
+  "keywords": [
+    "spring boot",
+    "actuator",
+    "monitoring",
+    "performance",
+    "metrics",
+    "spring boost"
+  ],
+  "homepage": "https://github.com/krud-dev/spring-boost#readme",
+  "bugs": {
+    "url": "https://github.com/krud-dev/spring-boost/issues"
   },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/krud-dev/spring-boost.git"
+  },
+  "license": "All rights reserved",
+  "author": {
+    "name": "Krud Dev",
+    "email": "admin@krud.dev",
+    "url": "https://krud.dev/"
+  },
+  "contributors": [
+    {
+      "name": "Shani Holdengreber",
+      "url": "https://github.com/thewizkid87"
+    },
+    {
+      "name": "Aviv Mor",
+      "url": "https://github.com/avivm"
+    },
+    {
+      "name": "Idan Elhalwani",
+      "email": "idan@elhalwani.com",
+      "url": "https://github.com/idane"
+    }
+  ],
   "main": "./dist/main/main.js",
   "scripts": {
     "rebuild": "node -r ts-node/register ../../.erb/scripts/electron-rebuild.js",

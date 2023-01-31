@@ -1,35 +1,42 @@
 {
-  "description": "A foundation for scalable desktop apps",
+  "name": "spring-boost",
+  "version": "0.0.1",
+  "description": "A visual tool to monitor and interact with Spring Boot applications via Actuator",
   "keywords": [
-    "electron",
-    "boilerplate",
-    "react",
-    "typescript",
-    "ts",
-    "sass",
-    "webpack",
-    "hot",
-    "reload"
+    "spring boot",
+    "actuator",
+    "monitoring",
+    "performance",
+    "metrics",
+    "spring boost"
   ],
-  "homepage": "https://github.com/electron-react-boilerplate/electron-react-boilerplate#readme",
+  "homepage": "https://github.com/krud-dev/spring-boost#readme",
   "bugs": {
-    "url": "https://github.com/electron-react-boilerplate/electron-react-boilerplate/issues"
+    "url": "https://github.com/krud-dev/spring-boost/issues"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/electron-react-boilerplate/electron-react-boilerplate.git"
+    "url": "git+https://github.com/krud-dev/spring-boost.git"
   },
-  "license": "MIT",
+  "license": "All rights reserved",
   "author": {
-    "name": "Electron React Boilerplate Maintainers",
-    "email": "electronreactboilerplate@gmail.com",
-    "url": "https://electron-react-boilerplate.js.org"
+    "name": "Krud Dev",
+    "email": "admin@krud.dev",
+    "url": "https://krud.dev/"
   },
   "contributors": [
     {
-      "name": "Amila Welihinda",
-      "email": "amilajack@gmail.com",
-      "url": "https://github.com/amilajack"
+      "name": "Shani Holdengreber",
+      "url": "https://github.com/thewizkid87"
+    },
+    {
+      "name": "Aviv Mor",
+      "url": "https://github.com/avivm"
+    },
+    {
+      "name": "Idan Elhalwani",
+      "email": "idan@elhalwani.com",
+      "url": "https://github.com/idane"
     }
   ],
   "main": "./src/main/main.ts",
@@ -37,6 +44,7 @@
     "build": "concurrently \"npm run build:main\" \"npm run build:renderer\"",
     "build:main": "cross-env NODE_ENV=production TS_NODE_TRANSPILE_ONLY=true webpack --config ./.erb/configs/webpack.config.main.prod.ts",
     "build:renderer": "cross-env NODE_ENV=production TS_NODE_TRANSPILE_ONLY=true webpack --config ./.erb/configs/webpack.config.renderer.prod.ts",
+    "build:daemon": "cd daemon && ./gradlew bootJar",
     "postinstall": "ts-node .erb/scripts/check-native-dep.js && electron-builder install-app-deps && cross-env NODE_ENV=development TS_NODE_TRANSPILE_ONLY=true webpack --config ./.erb/configs/webpack.config.renderer.dev.dll.ts",
     "lint": "cross-env NODE_ENV=development eslint . --ext .js,.jsx,.ts,.tsx",
     "package": "ts-node ./.erb/scripts/clean.js dist && npm run build && electron-builder build --publish never",
@@ -46,6 +54,7 @@
     "start:main": "cross-env NODE_ENV=development electronmon -r ts-node/register/transpile-only .",
     "start:preload": "cross-env NODE_ENV=development TS_NODE_TRANSPILE_ONLY=true webpack --config ./.erb/configs/webpack.config.preload.dev.ts",
     "start:renderer": "cross-env NODE_ENV=development TS_NODE_TRANSPILE_ONLY=true webpack serve --config ./.erb/configs/webpack.config.renderer.dev.ts",
+    "start:daemon": "cd daemon && ./gradlew bootRun",
     "test": "jest"
   },
   "lint-staged": {
@@ -291,12 +300,9 @@
     ],
     "publish": {
       "provider": "github",
-      "owner": "electron-react-boilerplate",
-      "repo": "electron-react-boilerplate"
+      "owner": "krud-dev",
+      "repo": "spring-boost"
     }
-  },
-  "collective": {
-    "url": "https://opencollective.com/electron-react-boilerplate-594"
   },
   "devEngines": {
     "node": ">=14.x",
