@@ -9,13 +9,14 @@ import shutil
 from subprocess import check_output, CalledProcessError, STDOUT
 
 class Jdk:
-    def __init__(self, version, os, arch, url, checksum):
+    def __init__(self, variant, version, os, arch, url, checksum):
+        self.variant = variant
         self.version = version
         self.os = os
         self.arch = arch
         self.url = url
         self.checksum = checksum
-        self.zip_filename = "jdk-{}-{}-{}.zip".format(version, os, arch)
+        self.zip_filename = "{}-{}-{}-{}.zip".format(variant, version, os, arch)
         self.zip_path = path.join(path.dirname(__file__), "jdk_zips")
         self.zip_full_path = path.join(self.zip_path, self.zip_filename)
         self.unzip_path = path.join(path.dirname(__file__), "jdks", self.os, self.arch)
@@ -68,11 +69,12 @@ jdks = []
 with open(path.join(path.dirname(__file__), 'jdks.csv'), 'r') as csv_file:
     csv_reader = csv.DictReader(csv_file)
     for line in csv_reader:
-        jdks.append(Jdk(line['version'], line['os'], line['arch'], line['url'], line['checksum']))
+        jdks.append(Jdk(line['variant'], line['version'], line['os'], line['arch'], line['url'], line['checksum']))
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
     parser.add_argument("action", help="Action to perform", choices=["clean", "clean:jdks", "clean:zips", "download", "unzip"], nargs='+')
+    parser.add_argument("-t", "--variant", help="Variant to use", choices=["jre", "jdk"], default="jre")
     args = parser.parse_args()
     print("Running: {}".format(",".join(args.action)))
     if "clean" in args.action or "clean:jdks" in args.action:
@@ -91,10 +93,12 @@ if __name__ == "__main__":
     if "download" in args.action:
         print("Downloading jdks...")
         for jdk in jdks:
-            jdk.download()
+            if jdk.variant == args.variant:
+                jdk.download()
     if "unzip" in args.action:
         print("Unzipping jdks...")
         for jdk in jdks:
-            jdk.unzip()
+            if jdk.variant == args.variant:
+              jdk.unzip()
 
 
