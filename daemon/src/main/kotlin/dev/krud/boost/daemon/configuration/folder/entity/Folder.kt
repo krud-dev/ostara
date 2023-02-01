@@ -6,6 +6,7 @@ import dev.krud.shapeshift.resolver.annotation.DefaultMappingTarget
 import dev.krud.shapeshift.resolver.annotation.MappedField
 import jakarta.persistence.Column
 import jakarta.persistence.Entity
+import java.util.UUID
 
 @Entity
 @DefaultMappingTarget(FolderRO::class)
@@ -28,8 +29,8 @@ class Folder(
     @Column(nullable = true)
     var sort: Int? = null,
     @MappedField
-    @Column(nullable = true, columnDefinition = "VARCHAR(255) REFERENCES folder(id)")
-    var parentFolderId: String? = null,
+    @Column(nullable = true)
+    var parentFolderId: UUID? = null,
 ) : AbstractEntity() {
     companion object {
         const val NAME = "folder"

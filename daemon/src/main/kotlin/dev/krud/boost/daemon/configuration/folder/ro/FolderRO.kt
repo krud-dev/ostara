@@ -10,6 +10,6 @@ class FolderRO(
     val color: String? = null,
     val icon: String? = null,
     val sort: Int? = null,
-    val parentFolderId: String? = null,
+    val parentFolderId: UUID? = null,
 )
 

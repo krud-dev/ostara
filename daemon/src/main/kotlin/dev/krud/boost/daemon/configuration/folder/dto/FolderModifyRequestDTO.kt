@@ -20,7 +20,7 @@ data class FolderModifyRequestDTO(
     @MappedField
     val sort: Int? = null,
     @MappedField
-    val parentFolderId: String? = null,
+    val parentFolderId: UUID? = null,
 ) {
     companion object {
         fun FolderModifyRequestDTO.toFolder(id: UUID? = null): Folder {
