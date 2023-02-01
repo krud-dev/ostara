@@ -241,7 +241,7 @@
     "webpack-merge": "^5.8.0"
   },
   "build": {
-    "productName": "ElectronReact",
+    "productName": "Spring Boost",
     "appId": "dev.krud.springboost",
     "asar": true,
     "asarUnpack": "**\\*.{node,dll}",
