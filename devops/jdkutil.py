@@ -4,9 +4,9 @@ import urllib.request
 from os import path
 import pathlib
 import hashlib
-import zipfile
 import argparse
 import shutil
+from subprocess import check_output, CalledProcessError, STDOUT
 
 class Jdk:
     def __init__(self, version, os, arch, url, checksum):
@@ -52,11 +52,14 @@ class Jdk:
     def unzip(self):
         print("Unzipping {}".format(self.zip_filename))
         pathlib.Path(self.unzip_path).mkdir(parents=True, exist_ok=True)
-        with zipfile.ZipFile(self.zip_full_path, 'r') as zip_ref:
-            zip_ref.extractall(self.unzip_path)
-            for item in pathlib.Path(self.unzip_path).iterdir():
-                if item.is_dir():
-                    shutil.move(path.join(self.unzip_path, item.name), path.join(self.unzip_path, "jdk"))
+        try:
+            check_output(['unzip', '-q', self.zip_full_path, '-d', self.unzip_path], stderr=STDOUT)
+        except CalledProcessError as err:
+            print(err.output)
+            raise err
+        for item in pathlib.Path(self.unzip_path).iterdir():
+            if item.is_dir():
+                shutil.move(path.join(self.unzip_path, item.name), path.join(self.unzip_path, "jdk"))
         print("Unzipped {} to {}".format(self.zip_filename, self.unzip_path))
 
 
