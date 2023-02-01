@@ -1,3 +1,4 @@
+#!/usr/bin/env python3
 import csv
 import urllib.request
 from os import path
@@ -57,28 +58,28 @@ class Jdk:
                 if item.is_dir():
                     shutil.move(path.join(self.unzip_path, item.name), path.join(self.unzip_path, "jdk"))
         print("Unzipped {} to {}".format(self.zip_filename, self.unzip_path))
-        
-            
+
+
 jdks = []
 
 with open(path.join(path.dirname(__file__), 'jdks.csv'), 'r') as csv_file:
     csv_reader = csv.DictReader(csv_file)
     for line in csv_reader:
         jdks.append(Jdk(line['version'], line['os'], line['arch'], line['url'], line['checksum']))
-    
+
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
-    parser.add_argument("action", help="Action to perform", choices=["clean", "clean:zips", "download", "unzip"], nargs='+')
+    parser.add_argument("action", help="Action to perform", choices=["clean", "clean:jdks", "clean:zips", "download", "unzip"], nargs='+')
     args = parser.parse_args()
-    print(args.action)
-    if "clean" in args.action:
+    print("Running: {}".format(",".join(args.action)))
+    if "clean" in args.action or "clean:jdks" in args.action:
         print("Cleaning jdks...")
         if not path.exists(path.join(path.dirname(__file__), "jdks")):
             print("No jdks to clean")
         else:
             shutil.rmtree(path.join(path.dirname(__file__), "jdks"))
-            
-    if "clean:zips" in args.action:
+
+    if "clean" in args.action or "clean:zips" in args.action:
         print("Cleaning jdk zips...")
         if not path.exists(path.join(path.dirname(__file__), "jdk_zips")):
             print("No jdk zips to clean")
