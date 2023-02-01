@@ -1,17 +1,18 @@
-package dev.krud.boost.daemon.configuration.folder.entity
+package dev.krud.boost.daemon.configuration.application.entity
 
-import dev.krud.boost.daemon.configuration.folder.ro.FolderRO
+import dev.krud.boost.daemon.configuration.application.enums.ApplicationType
+import dev.krud.boost.daemon.configuration.application.ro.ApplicationRO
 import dev.krud.boost.daemon.entity.AbstractEntity
 import dev.krud.shapeshift.resolver.annotation.DefaultMappingTarget
 import dev.krud.shapeshift.resolver.annotation.MappedField
 import jakarta.persistence.Column
 import jakarta.persistence.Entity
-import java.util.UUID
+import java.util.*
 
 @Entity
-@DefaultMappingTarget(FolderRO::class)
+@DefaultMappingTarget(ApplicationRO::class)
 @MappedField(mapFrom = "id")
-class Folder(
+class Application(
     @MappedField
     @Column(nullable = false)
     var alias: String,
@@ -19,6 +20,8 @@ class Folder(
     @Column(nullable = true)
     @MappedField
     var description: String? = null,
+    @MappedField
+    var type: ApplicationType,
     @MappedField
     @Column(nullable = true)
     var color: String? = null,
@@ -33,7 +36,7 @@ class Folder(
     var parentFolderId: UUID? = null,
 ) : AbstractEntity() {
     companion object {
-        const val NAME = "folder"
+        const val NAME = "application"
     }
 }
 

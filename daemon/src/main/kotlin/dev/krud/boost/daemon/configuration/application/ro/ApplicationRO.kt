@@ -1,11 +1,12 @@
-package dev.krud.boost.daemon.configuration.folder.ro
+package dev.krud.boost.daemon.configuration.application.ro
 
+import dev.krud.boost.daemon.configuration.application.enums.ApplicationType
 import java.util.*
 
-
-class FolderRO(
+class ApplicationRO(
     val id: UUID,
     val alias: String,
+    var type: ApplicationType,
     val description: String? = null,
     val color: String? = null,
     val icon: String? = null,

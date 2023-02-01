@@ -1,6 +1,7 @@
 package dev.krud.boost.daemon
 
 import dev.krud.crudframework.jpa.annotation.EnableJpaCrud
+import io.swagger.v3.oas.annotations.Hidden
 import org.springframework.boot.autoconfigure.SpringBootApplication
 import org.springframework.boot.runApplication
 import org.springframework.web.bind.annotation.GetMapping
@@ -11,10 +12,11 @@ import org.springframework.web.bind.annotation.RestController
 class DaemonApplication
 
 @RestController
+@Hidden
 class TestController {
     @GetMapping("/")
-    fun test() : String {
-        return "Test"
+    fun root() : String {
+        return "OK"
     }
 }
 
