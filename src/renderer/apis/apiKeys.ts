@@ -1,4 +1,7 @@
 export const apiKeys = {
+  theme: () => ['theme'],
+  themeSource: () => ['themeSource'],
+
   items: () => ['items'],
   item: (id: string) => [...apiKeys.items(), id],
   itemCaches: (id: string) => [...apiKeys.item(id), 'caches'],

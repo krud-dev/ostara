@@ -8,7 +8,7 @@ declare global {
   };
 
   interface Window {
-    subscriptions: SubscriptionsBridge;
+    ui: UiServiceBridge;
   }
 }
 

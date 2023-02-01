@@ -13,39 +13,39 @@ import Router from 'renderer/routes/routes';
 export default function App() {
   return (
     <MemoryRouter>
-      <UiProvider>
-        <UiContext.Consumer>
-          {({ darkMode, localeInfo }) => (
-            <IntlProvider
-              locale={localeInfo.locale}
-              messages={localeInfo.messages}
-              onError={(err) => {
-                if (err.code === 'MISSING_TRANSLATION') {
-                  console.warn('Missing translation', err.message);
-                  return;
-                }
-                throw err;
-              }}
-            >
-              <LocalizationProvider dateAdapter={AdapterDateFns} adapterLocale={localeInfo.dateLocalization}>
-                <ThemeConfig
-                  isDarkMode={darkMode}
-                  isRtl={localeInfo.direction === 'rtl'}
-                  localization={localeInfo.materialUiLocalization}
-                >
-                  <NotistackProvider>
-                    <QueryClientProvider client={queryClient}>
+      <QueryClientProvider client={queryClient}>
+        <UiProvider>
+          <UiContext.Consumer>
+            {({ darkMode, localeInfo }) => (
+              <IntlProvider
+                locale={localeInfo.locale}
+                messages={localeInfo.messages}
+                onError={(err) => {
+                  if (err.code === 'MISSING_TRANSLATION') {
+                    console.warn('Missing translation', err.message);
+                    return;
+                  }
+                  throw err;
+                }}
+              >
+                <LocalizationProvider dateAdapter={AdapterDateFns} adapterLocale={localeInfo.dateLocalization}>
+                  <ThemeConfig
+                    isDarkMode={darkMode}
+                    isRtl={localeInfo.direction === 'rtl'}
+                    localization={localeInfo.materialUiLocalization}
+                  >
+                    <NotistackProvider>
                       <NiceModal.Provider>
                         <Router />
                       </NiceModal.Provider>
-                    </QueryClientProvider>
-                  </NotistackProvider>
-                </ThemeConfig>
-              </LocalizationProvider>
-            </IntlProvider>
-          )}
-        </UiContext.Consumer>
-      </UiProvider>
+                    </NotistackProvider>
+                  </ThemeConfig>
+                </LocalizationProvider>
+              </IntlProvider>
+            )}
+          </UiContext.Consumer>
+        </UiProvider>
+      </QueryClientProvider>
     </MemoryRouter>
   );
 }

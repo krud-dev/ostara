@@ -1,5 +1,6 @@
 export default {
   theme: 'Theme',
+  system: 'System',
   light: 'Light',
   dark: 'Dark',
   developerMode: 'Developer Mode',

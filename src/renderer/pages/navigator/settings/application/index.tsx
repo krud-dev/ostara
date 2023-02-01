@@ -3,9 +3,10 @@ import Page from 'renderer/components/layout/Page';
 import { Card, CardContent, CardHeader, MenuItem, TextField } from '@mui/material';
 import { FormattedMessage } from 'react-intl';
 import { useUi } from 'renderer/contexts/UiContext';
+import { ThemeSource } from 'renderer/apis/ui/getThemeSource';
 
 const ApplicationSettingsPage: FunctionComponent = () => {
-  const { darkMode, setDarkMode, developerMode, setDeveloperMode } = useUi();
+  const { themeSource, setThemeSource, developerMode, setDeveloperMode } = useUi();
 
   return (
     <Page>
@@ -17,13 +18,16 @@ const ApplicationSettingsPage: FunctionComponent = () => {
             label={<FormattedMessage id="theme" />}
             margin="normal"
             select
-            value={darkMode.toString()}
-            onChange={(e) => setDarkMode(e.target.value === 'true')}
+            value={themeSource}
+            onChange={(e) => setThemeSource(e.target.value as ThemeSource)}
           >
-            <MenuItem value={'true'}>
+            <MenuItem value={'system'}>
+              <FormattedMessage id="system" />
+            </MenuItem>
+            <MenuItem value={'dark'}>
               <FormattedMessage id="dark" />
             </MenuItem>
-            <MenuItem value={'false'}>
+            <MenuItem value={'light'}>
               <FormattedMessage id="light" />
             </MenuItem>
           </TextField>
