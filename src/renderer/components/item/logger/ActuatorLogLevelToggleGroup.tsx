@@ -16,10 +16,7 @@ export default function ActuatorLogLevelToggleGroup({
   onChange,
 }: ActuatorLogLevelToggleGroupProps) {
   const changeHandler = useCallback(
-    (event: React.MouseEvent<HTMLElement>, newLevel: ActuatorLogLevel) => {
-      if (!newLevel) {
-        return;
-      }
+    (newLevel: ActuatorLogLevel) => {
       onChange?.(newLevel);
     },
     [onChange]
@@ -47,7 +44,7 @@ export default function ActuatorLogLevelToggleGroup({
   }, []);
 
   return (
-    <ToggleButtonGroup value={configuredLevels} size={'small'} disabled={disabled} onChange={changeHandler}>
+    <ToggleButtonGroup value={configuredLevels} size={'small'} disabled={disabled}>
       {logLevels.map((level) => {
         const selected = !configuredLevels?.includes(level) && effectiveLevels.includes(level) ? true : undefined;
         return (
@@ -55,6 +52,7 @@ export default function ActuatorLogLevelToggleGroup({
             value={level}
             color={getColor(level)}
             selected={selected}
+            onClick={() => changeHandler(level)}
             sx={{ whiteSpace: 'nowrap', ...(selected ? { opacity: 0.5 } : {}) }}
             key={level}
           >
