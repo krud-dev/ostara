@@ -1,13 +1,14 @@
 import { Entity } from 'renderer/entity/entity';
-import TableCellDataInstanceLoggerLevel from 'renderer/components/table/data/TableCellDataInstanceLoggerLevel';
 import { RESET_ID } from 'renderer/entity/actions';
-import { EnrichedInstanceLogger } from 'renderer/apis/instance/getInstanceLoggers';
 import { isClassName } from 'renderer/utils/classUtils';
 import LoggerCustomFiltersComponent, {
   LoggerCustomFilters,
 } from 'renderer/components/item/logger/LoggerCustomFiltersComponent';
+import { EnrichedApplicationLogger } from 'renderer/apis/application/getApplicationLoggers';
+import { every, some } from 'lodash';
+import TableCellDataApplicationLoggerLevel from 'renderer/components/table/data/TableCellDataApplicationLoggerLevel';
 
-export const instanceLoggerEntity: Entity<EnrichedInstanceLogger, LoggerCustomFilters> = {
+export const applicationLoggerEntity: Entity<EnrichedApplicationLogger, LoggerCustomFilters> = {
   id: 'instanceCache',
   columns: [
     {
@@ -21,7 +22,7 @@ export const instanceLoggerEntity: Entity<EnrichedInstanceLogger, LoggerCustomFi
       type: 'Custom',
       labelId: 'level',
       width: 370,
-      Component: TableCellDataInstanceLoggerLevel,
+      Component: TableCellDataApplicationLoggerLevel,
     },
   ],
   actions: [
@@ -29,7 +30,7 @@ export const instanceLoggerEntity: Entity<EnrichedInstanceLogger, LoggerCustomFi
       id: RESET_ID,
       labelId: 'reset',
       icon: 'RotateLeftOutlined',
-      isDisabled: (item) => item.name === 'ROOT' || !item.configuredLevel,
+      isDisabled: (item) => item.name === 'ROOT' || every(item.instanceLoggers, (logger) => !logger.configuredLevel),
     },
   ],
   massActions: [],
@@ -46,7 +47,7 @@ export const instanceLoggerEntity: Entity<EnrichedInstanceLogger, LoggerCustomFi
     data.filter(
       (item) =>
         item.name?.toLowerCase().includes(filter.toLowerCase()) &&
-        (!customFilters?.configured || !!item.configuredLevel) &&
+        (!customFilters?.configured || some(item.instanceLoggers, (logger) => !!logger.configuredLevel)) &&
         (!customFilters?.classes || isClassName(item.name))
     ),
   CustomFiltersComponent: LoggerCustomFiltersComponent,

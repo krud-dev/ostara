@@ -1,7 +1,6 @@
 import React, { useCallback, useState } from 'react';
 import { Stack, ToggleButton } from '@mui/material';
 import { useUpdateEffect } from 'react-use';
-import { IconViewer } from 'renderer/components/common/IconViewer';
 import { FormattedMessage } from 'react-intl';
 
 export type LoggerCustomFilters = {

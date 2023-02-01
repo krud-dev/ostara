@@ -22,6 +22,7 @@ import InstanceFlyway from 'renderer/pages/navigator/instance/flyway';
 import ApplicationSettingsPage from 'renderer/pages/navigator/settings/application';
 import InstanceLiquibase from 'renderer/pages/navigator/instance/liquibase';
 import InstanceLoggers from 'renderer/pages/navigator/instance/loggers';
+import ApplicationLoggers from 'renderer/pages/navigator/application/loggers';
 
 export default function Router() {
   return useRoutes([
@@ -59,7 +60,7 @@ export default function Router() {
             },
             {
               path: urls.applicationLoggers.path,
-              element: <ApplicationDashboard />,
+              element: <ApplicationLoggers />,
             },
             {
               path: urls.applicationCaches.path,

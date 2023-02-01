@@ -17,7 +17,7 @@ const InstanceLoggers: FunctionComponent = () => {
   const item = useMemo<EnrichedInstance>(() => selectedItem as EnrichedInstance, [selectedItem]);
 
   const entity = useMemo<Entity<EnrichedInstanceLogger, LoggerCustomFilters>>(() => instanceLoggerEntity, []);
-  const queryState = useGetInstanceLoggersQuery({ instance: item });
+  const queryState = useGetInstanceLoggersQuery({ instanceId: item.id });
 
   const setLevelState = useSetInstanceLoggerLevel();
 

@@ -3,15 +3,15 @@ import { ToggleButton, ToggleButtonGroup } from '@mui/material';
 import { ActuatorLogLevel } from 'infra/actuator/model/loggers';
 
 type ActuatorLogLevelToggleGroupProps = {
-  configuredLevel?: ActuatorLogLevel;
-  effectiveLevel: ActuatorLogLevel;
+  configuredLevels?: ActuatorLogLevel[];
+  effectiveLevels: ActuatorLogLevel[];
   disabled?: boolean;
   onChange?: (newLevel: ActuatorLogLevel) => void;
 };
 
 export default function ActuatorLogLevelToggleGroup({
-  configuredLevel,
-  effectiveLevel,
+  configuredLevels,
+  effectiveLevels,
   disabled,
   onChange,
 }: ActuatorLogLevelToggleGroupProps) {
@@ -47,9 +47,9 @@ export default function ActuatorLogLevelToggleGroup({
   }, []);
 
   return (
-    <ToggleButtonGroup value={configuredLevel} size={'small'} disabled={disabled} exclusive onChange={changeHandler}>
+    <ToggleButtonGroup value={configuredLevels} size={'small'} disabled={disabled} onChange={changeHandler}>
       {logLevels.map((level) => {
-        const selected = !configuredLevel && effectiveLevel === level ? true : undefined;
+        const selected = !configuredLevels?.includes(level) && effectiveLevels.includes(level) ? true : undefined;
         return (
           <ToggleButton
             value={level}
