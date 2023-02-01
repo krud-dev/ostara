@@ -149,4 +149,6 @@ export default {
   refreshStatus: 'Refresh Status',
   level: 'Level',
   reset: 'Reset',
+  configured: 'Configured',
+  classes: 'Classes',
 };

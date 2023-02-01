@@ -13,7 +13,7 @@ type TableRowCustomProps<EntityItem> = {
 
 export default function TableRowCustom<EntityItem>({ row }: TableRowCustomProps<EntityItem>) {
   const { entity, selectedRows, selectRowHandler, isRowSelected, hasActions, hasMassActions, actionsHandler } =
-    useTable<EntityItem>();
+    useTable<EntityItem, unknown>();
 
   const [open, setOpen] = useState<boolean>(false);
 

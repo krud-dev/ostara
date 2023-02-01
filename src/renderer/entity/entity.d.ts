@@ -1,9 +1,8 @@
 import { MUIconType } from 'renderer/components/common/IconViewer';
 import { ComponentType } from 'react';
-import { ColorSchema } from 'renderer/theme/config/palette';
 import { LabelColor } from 'renderer/components/common/Label';
 
-export type Entity<EntityItem> = {
+export type Entity<EntityItem, CustomFilters = never> = {
   id: string;
   columns: EntityColumn<EntityItem>[];
   actions: EntityAction<EntityItem>[];
@@ -20,7 +19,8 @@ export type Entity<EntityItem> = {
   getAnchor?: (item: EntityItem) => string;
   getGrouping?: (item: EntityItem) => string;
   groupingTreeSeparator?: string;
-  filterData: (data: EntityItem[], filter: string) => EntityItem[];
+  filterData: (data: EntityItem[], filter: string, customFilters?: CustomFilters) => EntityItem[];
+  CustomFiltersComponent?: ComponentType<{ onChange?: (customFilters?: CustomFilters) => void }>;
 };
 
 export type EntityBaseColumn<EntityItem> = {

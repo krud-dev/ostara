@@ -3,14 +3,14 @@ import { DisplayItem } from 'renderer/components/table/TableContext';
 import { Entity } from 'renderer/entity/entity';
 
 const getTableDisplayItemsRegular = <EntityItem>(
-  entity: Entity<EntityItem>,
+  entity: Entity<EntityItem, unknown>,
   items: EntityItem[]
 ): DisplayItem<EntityItem>[] => {
   return items.map<DisplayItem<EntityItem>>((item) => ({ type: 'Row', row: item }));
 };
 
 const getTableDisplayItemsGroups = <EntityItem>(
-  entity: Entity<EntityItem>,
+  entity: Entity<EntityItem, unknown>,
   items: EntityItem[],
   collapsedGroups: string[]
 ): DisplayItem<EntityItem>[] => {
@@ -58,7 +58,7 @@ const collapseGroupingTree = (node: GroupingTree): GroupingTree => {
 };
 
 const flattenGroupingTree = <EntityItem>(
-  entity: Entity<EntityItem>,
+  entity: Entity<EntityItem, unknown>,
   groupingTree: GroupingTree
 ): { name: string; depth: number; group: string }[] => {
   const treeGroups: { name: string; depth: number; group: string }[] = [];
@@ -76,7 +76,7 @@ const flattenGroupingTree = <EntityItem>(
 };
 
 const getTableDisplayItemsTree = <EntityItem>(
-  entity: Entity<EntityItem>,
+  entity: Entity<EntityItem, unknown>,
   items: EntityItem[],
   collapsedGroups: string[]
 ): DisplayItem<EntityItem>[] => {
@@ -109,7 +109,7 @@ const getTableDisplayItemsTree = <EntityItem>(
 };
 
 export const getTableDisplayItems = <EntityItem>(
-  entity: Entity<EntityItem>,
+  entity: Entity<EntityItem, any>,
   items: EntityItem[],
   collapsedGroups: string[]
 ): DisplayItem<EntityItem>[] => {

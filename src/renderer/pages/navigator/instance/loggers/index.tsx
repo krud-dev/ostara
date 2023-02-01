@@ -9,13 +9,14 @@ import { instanceLoggerEntity } from 'renderer/entity/entities/instanceLogger.en
 import { EnrichedInstanceLogger, useGetInstanceLoggersQuery } from 'renderer/apis/instance/getInstanceLoggers';
 import { useSetInstanceLoggerLevel } from 'renderer/apis/instance/setInstanceLoggerLevel';
 import { RESET_ID } from 'renderer/entity/actions';
+import { LoggerCustomFilters } from 'renderer/components/item/logger/LoggerCustomFiltersComponent';
 
 const InstanceLoggers: FunctionComponent = () => {
   const { selectedItem } = useNavigatorTree();
 
   const item = useMemo<EnrichedInstance>(() => selectedItem as EnrichedInstance, [selectedItem]);
 
-  const entity = useMemo<Entity<EnrichedInstanceLogger>>(() => instanceLoggerEntity, []);
+  const entity = useMemo<Entity<EnrichedInstanceLogger, LoggerCustomFilters>>(() => instanceLoggerEntity, []);
   const queryState = useGetInstanceLoggersQuery({ instance: item });
 
   const setLevelState = useSetInstanceLoggerLevel();

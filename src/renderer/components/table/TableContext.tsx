@@ -12,8 +12,8 @@ export type DisplayItem<EntityItem> =
   | { type: 'Row'; row: EntityItem }
   | { type: 'Group'; group: string; title: string; collapsed: boolean; depth: number };
 
-export type TableContextProps<EntityItem> = {
-  entity: Entity<EntityItem>;
+export type TableContextProps<EntityItem, CustomFilters> = {
+  entity: Entity<EntityItem, CustomFilters>;
   rows: EntityItem[];
   visibleRows: EntityItem[];
   displayRows: DisplayItem<EntityItem>[];
@@ -33,6 +33,8 @@ export type TableContextProps<EntityItem> = {
   changeRowsPerPageHandler: (newRowsPerPage: number) => void;
   filter: string;
   changeFilterHandler: (newFilter: string) => void;
+  customFilters: CustomFilters;
+  changeCustomFiltersHandler: (newCustomFilters?: CustomFilters) => void;
   orderColumn: string | undefined;
   orderDirection: 'asc' | 'desc' | undefined;
   changeOrderHandler: (columnId: string) => void;
@@ -44,25 +46,26 @@ export type TableContextProps<EntityItem> = {
   globalActionsHandler: (actionId: string) => Promise<void>;
 };
 
-const TableContext = React.createContext<TableContextProps<any>>(undefined!);
+const TableContext = React.createContext<TableContextProps<any, any>>(undefined!);
 
-interface TableProviderProps<EntityItem> extends PropsWithChildren<any> {
-  entity: Entity<EntityItem>;
+interface TableProviderProps<EntityItem, CustomFilters> extends PropsWithChildren<any> {
+  entity: Entity<EntityItem, CustomFilters>;
   queryState: BaseUseQueryResult<EntityItem[]>;
   actionsHandler: (actionId: string, row: EntityItem) => Promise<void>;
   massActionsHandler: (actionId: string, selectedRows: EntityItem[]) => Promise<void>;
   globalActionsHandler: (actionId: string) => Promise<void>;
 }
 
-function TableProvider<EntityItem>({
+function TableProvider<EntityItem, CustomFilters>({
   entity,
   queryState,
   actionsHandler,
   massActionsHandler,
   globalActionsHandler,
   children,
-}: TableProviderProps<EntityItem>) {
+}: TableProviderProps<EntityItem, CustomFilters>) {
   const [filter, setFilter] = useState<string>('');
+  const [customFilters, setCustomFilters] = useState<CustomFilters | undefined>(undefined);
   const [orderColumn, setOrderColumn] = useState<string | undefined>(undefined);
   const [orderDirection, setOrderDirection] = useState<'asc' | 'desc' | undefined>(undefined);
   const [page, setPage] = useState(0);
@@ -78,11 +81,11 @@ function TableProvider<EntityItem>({
   const filteredTableData = useMemo<EntityItem[]>(
     () =>
       orderBy(
-        entity.filterData(tableData, filter),
+        filter || customFilters ? entity.filterData(tableData, filter, customFilters) : tableData,
         [...(orderColumn ? [orderColumn] : []), ...entity.defaultOrder.map((o) => o.id)],
         [...(orderDirection ? [orderDirection] : []), ...entity.defaultOrder.map((o) => o.direction)]
       ),
-    [entity, tableData, filter, orderDirection, orderColumn]
+    [entity, tableData, filter, customFilters, orderDirection, orderColumn]
   );
   const visibleTableData = useMemo<EntityItem[]>(
     () =>
@@ -121,6 +124,14 @@ function TableProvider<EntityItem>({
       setPage(0);
     },
     [setFilter, setPage]
+  );
+
+  const changeCustomFiltersHandler = useCallback(
+    (newCustomFilters?: CustomFilters): void => {
+      setCustomFilters(newCustomFilters);
+      setPage(0);
+    },
+    [setCustomFilters, setPage]
   );
 
   const changeOrderHandler = useCallback(
@@ -211,6 +222,8 @@ function TableProvider<EntityItem>({
         changeRowsPerPageHandler,
         filter,
         changeFilterHandler,
+        customFilters,
+        changeCustomFiltersHandler,
         orderColumn,
         orderDirection,
         changeOrderHandler,
@@ -227,7 +240,7 @@ function TableProvider<EntityItem>({
   );
 }
 
-function useTable<EntityItem>(): TableContextProps<EntityItem> {
+function useTable<EntityItem, CustomFilters>(): TableContextProps<EntityItem, CustomFilters> {
   const context = useContext(TableContext);
 
   if (!context) throw new Error('TableContext must be used inside TableProvider');
