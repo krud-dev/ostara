@@ -1,4 +1,6 @@
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
+import org.springframework.boot.gradle.tasks.bundling.BootJar
+
 plugins {
     id("org.springframework.boot") version "3.0.2"
     id("io.spring.dependency-management") version "1.1.0"
@@ -39,6 +41,10 @@ dependencies {
     testImplementation("com.squareup.okhttp3:mockwebserver:4.10.0")
     testImplementation("io.strikt:strikt-core:0.34.0")
     testImplementation("org.springframework.boot:spring-boot-starter-test")
+}
+
+tasks.withType<BootJar> {
+    archiveFileName.set("daemon.jar")
 }
 
 tasks.withType<KotlinCompile> {
