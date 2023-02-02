@@ -1,6 +1,6 @@
 import React, { useRef, useState } from 'react';
-import { Box, Divider, Stack } from '@mui/material';
-import { NAVBAR_HEIGHT } from 'renderer/constants/ui';
+import { Box, Stack } from '@mui/material';
+import { SIDEBAR_HEADER_HEIGHT } from 'renderer/constants/ui';
 import PerfectScrollbar from 'react-perfect-scrollbar';
 import NavigatorTree from 'renderer/layout/navigator/components/sidebar/tree/NavigatorTree';
 import SearchTextField from 'renderer/components/input/SearchTextField';
@@ -23,8 +23,14 @@ export default function NavigatorSidebar({ width }: NavigatorSidebarProps) {
       <CreateItemContextMenu contextMenuRef={contextMenuRef} />
 
       <Box sx={{ height: '100%', overflow: 'hidden', display: 'flex', flexDirection: 'column' }}>
-        <Box sx={{ height: NAVBAR_HEIGHT, minHeight: NAVBAR_HEIGHT, display: 'flex', flexDirection: 'column' }}>
-          <Stack direction={'row'} spacing={0.5} alignItems={'center'} sx={{ flexGrow: 1, px: 0.5 }}>
+        <Box
+          sx={{
+            height: SIDEBAR_HEADER_HEIGHT,
+            display: 'flex',
+            flexDirection: 'column',
+          }}
+        >
+          <Stack direction={'row'} spacing={0.25} alignItems={'center'} sx={{ flexGrow: 1, px: 0.25 }}>
             <Box>
               <CreateItemMenu />
             </Box>
@@ -39,8 +45,6 @@ export default function NavigatorSidebar({ width }: NavigatorSidebarProps) {
               <SearchItemMenu />
             </Box>
           </Stack>
-
-          <Divider />
         </Box>
 
         <Box sx={{ flexGrow: 1, overflow: 'hidden' }} ref={contextMenuRef}>

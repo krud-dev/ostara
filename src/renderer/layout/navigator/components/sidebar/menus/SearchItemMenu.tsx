@@ -29,7 +29,7 @@ export default function SearchItemMenu() {
   return (
     <>
       <IconButton size={'small'} ref={menuState.setAnchorEl} onClick={openHandler}>
-        <MoreVertOutlined fontSize={'small'} />
+        <MoreVertOutlined fontSize={'medium'} />
       </IconButton>
 
       <MenuPopover {...bindMenu(menuState)}>

@@ -21,7 +21,7 @@ export default function CreateItemMenu() {
   return (
     <>
       <IconButton size={'small'} ref={menuState.setAnchorEl} onClick={openHandler}>
-        <AddOutlined fontSize={'small'} />
+        <AddOutlined fontSize={'medium'} />
       </IconButton>
 
       <MenuPopover {...bindMenu(menuState)}>

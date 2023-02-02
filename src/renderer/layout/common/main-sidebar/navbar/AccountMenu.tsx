@@ -39,12 +39,12 @@ export default function AccountMenu() {
           onClick={openHandler}
           sx={{
             padding: 0,
-            width: 48,
-            height: 48,
+            width: 36,
+            height: 36,
             ...(menuState.isOpen && { bgcolor: 'action.selected' }),
           }}
         >
-          <MAvatar variant={'circular'} color={'primary'}>
+          <MAvatar variant={'circular'} color={'primary'} sx={{ width: 28, height: 28, fontSize: 14 }}>
             {'SB'}
           </MAvatar>
         </IconButton>

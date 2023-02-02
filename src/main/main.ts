@@ -83,6 +83,12 @@ const createWindow = async () => {
     width: 1024,
     height: 728,
     icon: getAssetPath('icon.png'),
+    minWidth: 700, // accommodate 800 x 600 display minimum
+    minHeight: 500, // accommodate 800 x 600 display minimum
+    titleBarStyle: 'hidden',
+    titleBarOverlay: {
+      height: 40,
+    },
     webPreferences: {
       preload: app.isPackaged ? path.join(__dirname, 'preload.js') : path.join(__dirname, '../../.erb/dll/preload.js'),
     },

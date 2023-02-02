@@ -1,7 +1,7 @@
 import { AppBar, Box, Divider, IconButton, Stack, Toolbar } from '@mui/material';
 import LanguageMenu from 'renderer/layout/common/main-sidebar/navbar/LanguageMenu';
 import { COMPONENTS_SPACING, NAVBAR_HEIGHT } from 'renderer/constants/ui';
-import { HomeOutlined } from '@mui/icons-material';
+import { Home, HomeOutlined } from '@mui/icons-material';
 import AccountMenu from 'renderer/layout/common/main-sidebar/navbar/AccountMenu';
 import { useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
@@ -9,11 +9,9 @@ import { urls } from 'renderer/routes/urls';
 import { IconViewer } from 'renderer/components/common/IconViewer';
 import { useUi } from 'renderer/contexts/UiContext';
 
-type MainNavbarProps = {
-  sidebarWidth: number;
-};
+type MainNavbarProps = {};
 
-export default function MainNavbar({ sidebarWidth }: MainNavbarProps) {
+export default function MainNavbar({}: MainNavbarProps) {
   const { isRtl } = useUi();
   const navigate = useNavigate();
 
@@ -35,33 +33,40 @@ export default function MainNavbar({ sidebarWidth }: MainNavbarProps) {
         minHeight: NAVBAR_HEIGHT,
         display: 'flex',
         backgroundColor: (theme) => theme.palette.background.default,
-        width: `calc(100% - ${sidebarWidth + 1}px)`,
+        '-webkit-user-select': 'none',
+        '-webkit-app-region': 'drag',
       }}
     >
       <Toolbar disableGutters sx={{ flexGrow: 1, px: COMPONENTS_SPACING }}>
-        <Stack direction="row" spacing={0.5}>
-          <IconButton size={'medium'} onClick={homeHandler} sx={{ color: 'text.primary' }}>
-            <HomeOutlined fontSize={'large'} />
-          </IconButton>
-          <IconButton size={'medium'} onClick={backHandler} sx={{ color: 'text.primary' }}>
-            <IconViewer
-              icon={isRtl ? 'KeyboardArrowRightOutlined' : 'KeyboardArrowLeftOutlined'}
-              fontSize={'large'}
-              sx={{ color: 'text.primary' }}
-            />
-          </IconButton>
-          <IconButton size={'medium'} onClick={forwardHandler} sx={{ color: 'text.primary' }}>
-            <IconViewer
-              icon={isRtl ? 'KeyboardArrowLeftOutlined' : 'KeyboardArrowRightOutlined'}
-              fontSize={'large'}
-              sx={{ color: 'text.primary' }}
-            />
-          </IconButton>
+        <Stack direction="row" spacing={0.5} sx={{ pl: 8 }}>
+          <Box>
+            <IconButton size={'small'} onClick={homeHandler} sx={{ color: 'text.primary' }}>
+              <Home fontSize={'medium'} />
+            </IconButton>
+          </Box>
+          <Box>
+            <IconButton size={'small'} onClick={backHandler} sx={{ color: 'text.primary' }}>
+              <IconViewer
+                icon={isRtl ? 'KeyboardArrowRightOutlined' : 'KeyboardArrowLeftOutlined'}
+                fontSize={'medium'}
+                sx={{ color: 'text.primary' }}
+              />
+            </IconButton>
+          </Box>
+          <Box>
+            <IconButton size={'small'} onClick={forwardHandler} sx={{ color: 'text.primary' }}>
+              <IconViewer
+                icon={isRtl ? 'KeyboardArrowLeftOutlined' : 'KeyboardArrowRightOutlined'}
+                fontSize={'medium'}
+                sx={{ color: 'text.primary' }}
+              />
+            </IconButton>
+          </Box>
         </Stack>
 
         <Box sx={{ flexGrow: 1 }} />
 
-        <Stack direction="row" spacing={{ xs: 0.5, sm: 1.5 }}>
+        <Stack direction="row" spacing={{ xs: 0.5, sm: 1 }}>
           <LanguageMenu />
           <AccountMenu />
         </Stack>

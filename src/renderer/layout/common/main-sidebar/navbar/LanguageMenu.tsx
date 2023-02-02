@@ -38,8 +38,8 @@ export default function LanguageMenu() {
           onClick={openHandler}
           sx={{
             padding: 0,
-            width: 48,
-            height: 48,
+            width: 36,
+            height: 36,
             ...(menuState.isOpen && { bgcolor: 'action.selected' }),
           }}
         >
@@ -47,7 +47,7 @@ export default function LanguageMenu() {
             component="img"
             src={localeInfo.icon}
             alt={localeInfo.name}
-            sx={{ width: '28px', borderRadius: '3px' }}
+            sx={{ width: '24px', borderRadius: '3px' }}
           />
         </IconButton>
       </Box>

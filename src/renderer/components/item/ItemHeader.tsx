@@ -2,7 +2,7 @@ import React, { useCallback, useMemo } from 'react';
 import { EnrichedItem } from 'infra/configuration/model/configuration';
 import { Avatar, Badge, Box, IconButton, Tooltip, Typography } from '@mui/material';
 import { getItemHealthStatusColor, getItemHealthStatusTextId, getItemNameTooltip } from 'renderer/utils/itemUtils';
-import { COMPONENTS_SPACING, NAVIGATOR_ITEM_HEIGHT } from 'renderer/constants/ui';
+import { COMPONENTS_SPACING, SIDEBAR_HEADER_HEIGHT } from 'renderer/constants/ui';
 import useItemColor from 'renderer/hooks/useItemColor';
 import { FormattedMessage } from 'react-intl';
 import { usePopupState } from 'material-ui-popup-state/hooks';
@@ -33,7 +33,7 @@ export default function ItemHeader({ item }: ItemHeaderProps) {
     <>
       <ItemMenu item={item} menuState={menuState} />
 
-      <Box sx={{ height: NAVIGATOR_ITEM_HEIGHT * 2, px: COMPONENTS_SPACING, display: 'flex', alignItems: 'center' }}>
+      <Box sx={{ height: SIDEBAR_HEADER_HEIGHT, px: COMPONENTS_SPACING, display: 'flex', alignItems: 'center' }}>
         <IconButton
           size={'small'}
           sx={{ p: 0 }}

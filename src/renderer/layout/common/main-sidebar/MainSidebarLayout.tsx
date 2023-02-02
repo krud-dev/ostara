@@ -6,6 +6,7 @@ import { MAIN_SCROLL_CONTAINER_ID, NAVBAR_HEIGHT, SIDEBAR_DEFAULT_WIDTH } from '
 import PerfectScrollbar from 'react-perfect-scrollbar';
 import { Outlet, useLocation } from 'react-router-dom';
 import useConfigurationStoreState from 'renderer/hooks/useConfigurationStoreState';
+import { Box } from '@mui/material';
 
 const RootStyle = styled('div')({
   height: '100%',
@@ -39,10 +40,12 @@ export default function MainSidebarLayout({ Sidebar }: MainSidebarLayoutProps) {
 
   return (
     <RootStyle>
-      <MainNavbar sidebarWidth={sidebarWidth} />
+      <MainNavbar />
       <Allotment defaultSizes={defaultSizes} proportionalLayout={false} onChange={(sizes) => setSidebarWidth(sizes[0])}>
         <Allotment.Pane minSize={200} maxSize={500} snap>
-          <Sidebar width={sidebarWidth} />
+          <Box sx={{ height: '100%', paddingTop: `${NAVBAR_HEIGHT}px` }}>
+            <Sidebar width={sidebarWidth} />
+          </Box>
         </Allotment.Pane>
         <Allotment.Pane priority={LayoutPriority.High}>
           <MainStyle
