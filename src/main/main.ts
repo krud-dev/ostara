@@ -10,7 +10,7 @@
  */
 import 'reflect-metadata';
 import path from 'path';
-import { app, BrowserWindow, shell } from 'electron';
+import { app, BrowserWindow, nativeTheme, shell } from 'electron';
 import { autoUpdater } from 'electron-updater';
 import log from 'electron-log';
 import MenuBuilder from './menu';
@@ -85,6 +85,7 @@ const createWindow = async () => {
     icon: getAssetPath('icon.png'),
     minWidth: 700, // accommodate 800 x 600 display minimum
     minHeight: 500, // accommodate 800 x 600 display minimum
+    backgroundColor: nativeTheme.shouldUseDarkColors ? '#161C24' : '#ffffff',
     titleBarStyle: 'hidden',
     titleBarOverlay: {
       height: 40,

@@ -39,8 +39,8 @@ const ApplicationDetailsForm: FunctionComponent<ApplicationDetailsFormProps> = (
 
   return (
     <FormProvider {...methods}>
-      <DialogContent>
-        <Box component="form" onSubmit={submitHandler} noValidate sx={{ mt: 1 }}>
+      <Box component="form" onSubmit={submitHandler} noValidate>
+        <DialogContent>
           <Controller
             name="alias"
             rules={{
@@ -73,17 +73,17 @@ const ApplicationDetailsForm: FunctionComponent<ApplicationDetailsFormProps> = (
               );
             }}
           />
-        </Box>
-      </DialogContent>
-      <DialogActions>
-        <Box sx={{ flexGrow: 1 }} />
-        <Button variant="outlined" color="primary" onClick={cancelHandler}>
-          <FormattedMessage id={'cancel'} />
-        </Button>
-        <LoadingButton variant="contained" color="primary" onClick={submitHandler}>
-          <FormattedMessage id={'save'} />
-        </LoadingButton>
-      </DialogActions>
+        </DialogContent>
+        <DialogActions>
+          <Box sx={{ flexGrow: 1 }} />
+          <Button variant="outlined" color="primary" onClick={cancelHandler}>
+            <FormattedMessage id={'cancel'} />
+          </Button>
+          <LoadingButton variant="contained" color="primary" type={'submit'}>
+            <FormattedMessage id={'save'} />
+          </LoadingButton>
+        </DialogActions>
+      </Box>
     </FormProvider>
   );
 };

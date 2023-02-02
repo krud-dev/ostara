@@ -152,4 +152,6 @@ export default {
   reset: 'Reset',
   configured: 'Configured',
   classes: 'Classes',
+  invalidUrl: 'Invalid URL',
+  invalidNumber: 'Invalid number',
 };

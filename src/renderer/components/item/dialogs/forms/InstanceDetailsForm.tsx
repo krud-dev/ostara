@@ -9,6 +9,7 @@ import { useTestConnectionByUrl } from 'renderer/apis/actuator/testConnectionByU
 import { getErrorMessage } from 'renderer/utils/errorUtils';
 import InputAdornment from '@mui/material/InputAdornment';
 import ItemIconFormField from 'renderer/components/item/dialogs/forms/fields/ItemIconFormField';
+import { DIGITS_REGEX, URL_REGEX } from 'renderer/constants/regex';
 
 export type InstanceDetailsFormProps = {
   defaultValues?: InstanceFormValues;
@@ -63,8 +64,8 @@ const InstanceDetailsForm: FunctionComponent<InstanceDetailsFormProps> = ({
 
   return (
     <FormProvider {...methods}>
-      <DialogContent>
-        <Box component="form" onSubmit={submitHandler} noValidate sx={{ mt: 1 }}>
+      <Box component="form" onSubmit={submitHandler} noValidate>
+        <DialogContent>
           <Controller
             name="alias"
             rules={{
@@ -101,6 +102,7 @@ const InstanceDetailsForm: FunctionComponent<InstanceDetailsFormProps> = ({
             name="actuatorUrl"
             rules={{
               required: intl.formatMessage({ id: 'requiredField' }),
+              pattern: { value: URL_REGEX, message: intl.formatMessage({ id: 'invalidUrl' }) },
             }}
             control={control}
             defaultValue=""
@@ -126,6 +128,7 @@ const InstanceDetailsForm: FunctionComponent<InstanceDetailsFormProps> = ({
             name="dataCollectionIntervalSeconds"
             rules={{
               required: intl.formatMessage({ id: 'requiredField' }),
+              pattern: { value: DIGITS_REGEX, message: intl.formatMessage({ id: 'invalidNumber' }) },
             }}
             control={control}
             defaultValue={5}
@@ -147,25 +150,25 @@ const InstanceDetailsForm: FunctionComponent<InstanceDetailsFormProps> = ({
               );
             }}
           />
-        </Box>
-      </DialogContent>
-      <DialogActions>
-        <LoadingButton
-          variant="text"
-          color="primary"
-          loading={testConnectionState.isLoading}
-          onClick={testConnectionHandler}
-        >
-          <FormattedMessage id={'testConnection'} />
-        </LoadingButton>
-        <Box sx={{ flexGrow: 1 }} />
-        <Button variant="outlined" color="primary" onClick={cancelHandler}>
-          <FormattedMessage id={'cancel'} />
-        </Button>
-        <LoadingButton variant="contained" color="primary" onClick={submitHandler}>
-          <FormattedMessage id={'save'} />
-        </LoadingButton>
-      </DialogActions>
+        </DialogContent>
+        <DialogActions>
+          <LoadingButton
+            variant="text"
+            color="primary"
+            loading={testConnectionState.isLoading}
+            onClick={testConnectionHandler}
+          >
+            <FormattedMessage id={'testConnection'} />
+          </LoadingButton>
+          <Box sx={{ flexGrow: 1 }} />
+          <Button variant="outlined" color="primary" onClick={cancelHandler}>
+            <FormattedMessage id={'cancel'} />
+          </Button>
+          <LoadingButton variant="contained" color="primary" type={'submit'}>
+            <FormattedMessage id={'save'} />
+          </LoadingButton>
+        </DialogActions>
+      </Box>
     </FormProvider>
   );
 };
