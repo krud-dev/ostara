@@ -11,10 +11,12 @@ import { Box } from '@mui/material';
 const RootStyle = styled('div')({
   height: '100%',
   overflow: 'hidden',
+  display: 'flex',
+  flexDirection: 'column',
 });
 
 const MainStyle = styled('div')(({ theme }) => ({
-  height: '100vh',
+  height: '100%',
   overflow: 'hidden',
 }));
 
@@ -41,32 +43,37 @@ export default function MainSidebarLayout({ Sidebar }: MainSidebarLayoutProps) {
   return (
     <RootStyle>
       <MainNavbar />
-      <Allotment defaultSizes={defaultSizes} proportionalLayout={false} onChange={(sizes) => setSidebarWidth(sizes[0])}>
-        <Allotment.Pane minSize={200} maxSize={500} snap>
-          <Box sx={{ height: '100%', paddingTop: `${NAVBAR_HEIGHT}px` }}>
-            <Sidebar width={sidebarWidth} />
-          </Box>
-        </Allotment.Pane>
-        <Allotment.Pane priority={LayoutPriority.High}>
-          <MainStyle
-            sx={{
-              paddingTop: `${NAVBAR_HEIGHT}px`,
-              transition: theme.transitions.create('margin', {
-                duration: theme.transitions.duration.complex,
-              }),
-            }}
-          >
-            <PerfectScrollbar
-              id={MAIN_SCROLL_CONTAINER_ID}
-              containerRef={(el) => {
-                scrollContainerRef.current = el;
+      <Box sx={{ flexGrow: 1 }}>
+        <Allotment
+          defaultSizes={defaultSizes}
+          proportionalLayout={false}
+          onChange={(sizes) => setSidebarWidth(sizes[0])}
+        >
+          <Allotment.Pane minSize={200} maxSize={500} snap>
+            <Box sx={{ height: '100%' }}>
+              <Sidebar width={sidebarWidth} />
+            </Box>
+          </Allotment.Pane>
+          <Allotment.Pane priority={LayoutPriority.High}>
+            <MainStyle
+              sx={{
+                transition: theme.transitions.create('margin', {
+                  duration: theme.transitions.duration.complex,
+                }),
               }}
             >
-              <Outlet />
-            </PerfectScrollbar>
-          </MainStyle>
-        </Allotment.Pane>
-      </Allotment>
+              <PerfectScrollbar
+                id={MAIN_SCROLL_CONTAINER_ID}
+                containerRef={(el) => {
+                  scrollContainerRef.current = el;
+                }}
+              >
+                <Outlet />
+              </PerfectScrollbar>
+            </MainStyle>
+          </Allotment.Pane>
+        </Allotment>
+      </Box>
     </RootStyle>
   );
 }

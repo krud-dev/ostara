@@ -30,6 +30,7 @@ export default function MainNavbar({}: MainNavbarProps) {
 
   return (
     <AppBar
+      position={'static'}
       sx={{
         minHeight: NAVBAR_HEIGHT,
         display: 'flex',
