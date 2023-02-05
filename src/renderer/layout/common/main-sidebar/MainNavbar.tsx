@@ -8,6 +8,7 @@ import { useNavigate } from 'react-router-dom';
 import { urls } from 'renderer/routes/urls';
 import { IconViewer } from 'renderer/components/common/IconViewer';
 import { useUi } from 'renderer/contexts/UiContext';
+import { isWindows } from 'renderer/utils/platformUtils';
 
 type MainNavbarProps = {};
 
@@ -38,7 +39,7 @@ export default function MainNavbar({}: MainNavbarProps) {
       }}
     >
       <Toolbar disableGutters sx={{ flexGrow: 1, px: COMPONENTS_SPACING }}>
-        <Stack direction="row" spacing={0.5} sx={{ pl: 8 }}>
+        <Stack direction="row" spacing={0.5} sx={{ pl: isWindows ? 0 : 8 }}>
           <Box>
             <IconButton size={'small'} onClick={homeHandler} sx={{ color: 'text.primary' }}>
               <Home fontSize={'medium'} />
@@ -66,7 +67,7 @@ export default function MainNavbar({}: MainNavbarProps) {
 
         <Box sx={{ flexGrow: 1 }} />
 
-        <Stack direction="row" spacing={{ xs: 0.5, sm: 1 }}>
+        <Stack direction="row" spacing={{ xs: 0.5, sm: 1 }} sx={{ pr: isWindows ? 18 : 0 }}>
           <LanguageMenu />
           <AccountMenu />
         </Stack>

@@ -20,6 +20,7 @@ import { dataSource } from '../infra/dataSource';
 import { taskService } from '../infra/tasks/taskService';
 import { instanceService } from '../infra/instance/instanceService';
 import { uiService } from '../infra/ui/uiService';
+import { isWindows } from '../infra/utils/platform';
 
 class AppUpdater {
   constructor() {
@@ -78,17 +79,22 @@ const createWindow = async () => {
 
   await taskService.initialize();
 
+  const backgroundColor = nativeTheme.shouldUseDarkColors ? '#161C24' : '#ffffff';
+  const color = nativeTheme.shouldUseDarkColors ? '#ffffff' : '#212B36';
+
   mainWindow = new BrowserWindow({
     show: false,
-    width: 1024,
-    height: 728,
+    width: 1440,
+    height: 900,
     icon: getAssetPath('icon.png'),
     minWidth: 700, // accommodate 800 x 600 display minimum
     minHeight: 500, // accommodate 800 x 600 display minimum
-    backgroundColor: nativeTheme.shouldUseDarkColors ? '#161C24' : '#ffffff',
+    backgroundColor: backgroundColor,
     titleBarStyle: 'hidden',
     titleBarOverlay: {
-      height: 40,
+      height: 40 + (isWindows ? -1 : 0),
+      color: backgroundColor,
+      symbolColor: color,
     },
     webPreferences: {
       preload: app.isPackaged ? path.join(__dirname, 'preload.js') : path.join(__dirname, '../../.erb/dll/preload.js'),

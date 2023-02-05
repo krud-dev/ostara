@@ -1,4 +1,4 @@
-import { contextBridge, ipcRenderer, IpcRendererEvent } from 'electron';
+import { contextBridge } from 'electron';
 import { actuatorBridge } from '../infra/actuator/renderer';
 import { configurationServiceBridge, configurationStoreBridge } from '../infra/configuration/renderer';
 import { metricsServiceBridge } from '../infra/metrics/renderer';
