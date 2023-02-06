@@ -20,7 +20,7 @@ import { dataSource } from '../infra/dataSource';
 import { taskService } from '../infra/tasks/taskService';
 import { instanceService } from '../infra/instance/instanceService';
 import { uiService } from '../infra/ui/uiService';
-import { isWindows } from '../infra/utils/platform';
+import { isMac, isWindows } from '../infra/utils/platform';
 
 class AppUpdater {
   constructor() {
@@ -90,12 +90,15 @@ const createWindow = async () => {
     minWidth: 700, // accommodate 800 x 600 display minimum
     minHeight: 500, // accommodate 800 x 600 display minimum
     backgroundColor: backgroundColor,
-    titleBarStyle: 'hidden',
-    titleBarOverlay: {
-      height: 40 + (isWindows ? -1 : 0),
-      color: backgroundColor,
-      symbolColor: color,
-    },
+    frame: isMac,
+    titleBarStyle: isMac ? 'hidden' : undefined,
+    titleBarOverlay: isMac
+      ? {
+          height: 40 + (isWindows ? -1 : 0),
+          color: backgroundColor,
+          symbolColor: color,
+        }
+      : undefined,
     webPreferences: {
       preload: app.isPackaged ? path.join(__dirname, 'preload.js') : path.join(__dirname, '../../.erb/dll/preload.js'),
     },
@@ -127,8 +130,8 @@ const createWindow = async () => {
     return { action: 'deny' };
   });
 
-  instanceService.initializeListeners(mainWindow);
-  uiService.initializeListeners(mainWindow);
+  instanceService.initialize(mainWindow);
+  uiService.initialize(mainWindow);
 
   // Remove this if your app does not use auto updates
   // eslint-disable-next-line

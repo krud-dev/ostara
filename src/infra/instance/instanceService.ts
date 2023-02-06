@@ -49,8 +49,8 @@ class InstanceService {
     return abilities.every((ability) => instance.abilities.includes(ability));
   }
 
-  initializeListeners(window: BrowserWindow) {
-    log.info(`Initializing listeners for window ${window.id}`);
+  initialize(window: BrowserWindow) {
+    log.info(`Initializing instance service for window ${window.id}`);
     this.events.addListener('app:instanceHealthUpdated', (key: string, value: InstanceHealth) => {
       window.webContents.send('app:instanceHealthUpdated', key, value);
     });

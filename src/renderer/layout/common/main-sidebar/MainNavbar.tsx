@@ -1,14 +1,15 @@
 import { AppBar, Box, Divider, IconButton, Stack, Toolbar } from '@mui/material';
 import LanguageMenu from 'renderer/layout/common/main-sidebar/navbar/LanguageMenu';
 import { COMPONENTS_SPACING, NAVBAR_HEIGHT } from 'renderer/constants/ui';
-import { Home, HomeOutlined } from '@mui/icons-material';
+import { Home } from '@mui/icons-material';
 import AccountMenu from 'renderer/layout/common/main-sidebar/navbar/AccountMenu';
 import { useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { urls } from 'renderer/routes/urls';
 import { IconViewer } from 'renderer/components/common/IconViewer';
 import { useUi } from 'renderer/contexts/UiContext';
-import { isWindows } from 'renderer/utils/platformUtils';
+import { isMac } from 'renderer/utils/platformUtils';
+import WindowControls from './navbar/WindowControls';
 
 type MainNavbarProps = {};
 
@@ -39,8 +40,8 @@ export default function MainNavbar({}: MainNavbarProps) {
         '-webkit-app-region': 'drag',
       }}
     >
-      <Toolbar disableGutters sx={{ flexGrow: 1, px: COMPONENTS_SPACING }}>
-        <Stack direction="row" spacing={0.5} sx={{ pl: isWindows ? 0 : 8 }}>
+      <Toolbar disableGutters sx={{ flexGrow: 1, pl: COMPONENTS_SPACING, pr: !isMac ? '0' : COMPONENTS_SPACING }}>
+        <Stack direction="row" spacing={0.5} sx={{ pl: isMac ? 8 : 0 }}>
           <Box>
             <IconButton size={'small'} onClick={homeHandler} sx={{ color: 'text.primary' }}>
               <Home fontSize={'medium'} />
@@ -68,10 +69,12 @@ export default function MainNavbar({}: MainNavbarProps) {
 
         <Box sx={{ flexGrow: 1 }} />
 
-        <Stack direction="row" spacing={{ xs: 0.5, sm: 1 }} sx={{ pr: isWindows ? 18 : 0 }}>
+        <Stack direction="row" spacing={{ xs: 0.5, sm: 1 }}>
           <LanguageMenu />
           <AccountMenu />
         </Stack>
+
+        {!isMac && <WindowControls sx={{ pl: 2 }} />}
       </Toolbar>
       <Divider />
     </AppBar>

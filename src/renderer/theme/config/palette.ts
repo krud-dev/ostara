@@ -41,6 +41,8 @@ declare module '@mui/material/styles/createPalette' {
     gradients: GradientsPaletteOptions;
     chart: ChartPaletteOptions;
     fatal: Palette['primary'];
+    lightGrey: Palette['primary'];
+    darkGrey: Palette['primary'];
   }
   interface PaletteOptions {
     gradients: GradientsPaletteOptions;
@@ -113,6 +115,20 @@ const FATAL = {
   dark: '#8e24aa',
   darker: '#4a148c',
 };
+const LIGHT_GREY = {
+  lighter: '#FFFFFF',
+  light: '#F9FAFB',
+  main: '#F4F6F8',
+  dark: '#DFE3E8',
+  darker: '#C4CDD5',
+};
+const DARK_GREY = {
+  lighter: '#637381',
+  light: '#454F5B',
+  main: '#212B36',
+  dark: '#161C24',
+  darker: '#000000',
+};
 
 const GREY = {
   0: '#FFFFFF',
@@ -162,6 +178,8 @@ const COMMON = {
   warning: { ...WARNING, contrastText: GREY[800] },
   error: { ...ERROR, contrastText: '#fff' },
   fatal: { ...FATAL, contrastText: '#fff' },
+  lightGrey: { ...LIGHT_GREY, contrastText: GREY[800] },
+  darkGrey: { ...DARK_GREY, contrastText: '#fff' },
   grey: GREY,
   gradients: GRADIENTS,
   chart: CHART_COLORS,

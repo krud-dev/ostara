@@ -1,1 +1,1 @@
-export const { isMac, isWindows, isLinux } = window.utils;
+export const { isMac, isWindows, isLinux } = window.ui;
