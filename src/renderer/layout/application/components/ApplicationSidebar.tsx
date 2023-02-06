@@ -21,12 +21,12 @@ export default function ApplicationSidebar({ item, width }: ApplicationSidebarPr
         id: 'insights',
         label: <FormattedMessage id={'insights'} />,
         items: [
-          {
-            id: 'dashboard',
-            icon: <BarChartOutlined />,
-            label: <FormattedMessage id={'dashboard'} />,
-            to: generatePath(urls.applicationDashboard.url, { id: item.id }),
-          },
+          // {
+          //   id: 'dashboard',
+          //   icon: <BarChartOutlined />,
+          //   label: <FormattedMessage id={'dashboard'} />,
+          //   to: generatePath(urls.applicationDashboard.url, { id: item.id }),
+          // },
           {
             id: 'instances',
             icon: <IconViewer icon={getItemTypeIcon('instance')} />,

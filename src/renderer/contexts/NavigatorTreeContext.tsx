@@ -14,6 +14,8 @@ import { useNavigate, useParams } from 'react-router-dom';
 import { urls } from 'renderer/routes/urls';
 import { useGetItemsQuery } from 'renderer/apis/configuration/item/getItems';
 import { useSubscribeToEvent } from 'renderer/apis/subscriptions/subscribeToEvent';
+import { useQueryClient } from '@tanstack/react-query';
+import { apiKeys } from '../apis/apiKeys';
 
 type NavigatorTreeAction = 'expandAll' | 'collapseAll';
 
@@ -34,6 +36,7 @@ interface NavigatorTreeProviderProps extends PropsWithChildren<any> {}
 
 const NavigatorTreeProvider: FunctionComponent<NavigatorTreeProviderProps> = ({ children }) => {
   const navigate = useNavigate();
+  const queryClient = useQueryClient();
   const params = useParams<{ id?: string }>();
 
   const [data, setData] = useState<TreeItem[] | undefined>(undefined);
@@ -106,7 +109,7 @@ const NavigatorTreeProvider: FunctionComponent<NavigatorTreeProviderProps> = ({ 
       unsubscribe = await subscribeToHealthEventsState.mutateAsync({
         event: 'app:instanceHealthUpdated',
         listener: () => {
-          getItemsState.refetch();
+          queryClient.invalidateQueries(apiKeys.items());
         },
       });
     })();
@@ -123,7 +126,7 @@ const NavigatorTreeProvider: FunctionComponent<NavigatorTreeProviderProps> = ({ 
       unsubscribe = await subscribeToEndpointsEventsState.mutateAsync({
         event: 'app:instanceAbilitiesUpdated',
         listener: () => {
-          getItemsState.refetch();
+          queryClient.invalidateQueries(apiKeys.items());
         },
       });
     })();

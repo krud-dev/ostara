@@ -11,6 +11,7 @@ export const applicationInstanceEntity: Entity<EnrichedInstance> = {
       id: 'alias',
       type: 'Text',
       labelId: 'name',
+      getTooltip: (item) => item.actuatorUrl,
     },
     {
       id: 'health.status',
