@@ -89,18 +89,14 @@ const createSplashWindow = async () => {
     return path.join(RESOURCES_PATH, ...paths);
   };
 
-  const backgroundColor = nativeTheme.shouldUseDarkColors ? '#161C24' : '#ffffff';
-  const color = nativeTheme.shouldUseDarkColors ? '#ffffff' : '#212B36';
-
   splashWindow = new BrowserWindow({
     show: true,
-    width: 300,
+    width: 500,
     height: 300,
     icon: getAssetPath('icon.png'),
-    minWidth: 300, // accommodate 800 x 600 display minimum
-    minHeight: 300, // accommodate 800 x 600 display minimum
-    backgroundColor: backgroundColor,
+    resizable: false,
     frame: false,
+    center: true,
     webPreferences: {
       devTools: false,
     },
@@ -148,6 +144,7 @@ const createMainWindow = async () => {
 
   mainWindow = new BrowserWindow({
     show: false,
+    title: 'Loading',
     width: 1440,
     height: 900,
     icon: getAssetPath('icon.png'),
