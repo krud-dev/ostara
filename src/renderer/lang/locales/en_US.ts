@@ -154,4 +154,6 @@ export default {
   classes: 'Classes',
   invalidUrl: 'Invalid URL',
   invalidNumber: 'Invalid number',
+  overview: 'Overview',
+  language: 'Language',
 };

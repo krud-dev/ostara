@@ -1,5 +1,4 @@
 import { AppBar, Box, Divider, IconButton, Stack, Toolbar } from '@mui/material';
-import LanguageMenu from 'renderer/layout/common/main-sidebar/navbar/LanguageMenu';
 import { COMPONENTS_SPACING, NAVBAR_HEIGHT } from 'renderer/constants/ui';
 import { Home } from '@mui/icons-material';
 import AccountMenu from 'renderer/layout/common/main-sidebar/navbar/AccountMenu';
@@ -70,7 +69,6 @@ export default function MainNavbar({}: MainNavbarProps) {
         <Box sx={{ flexGrow: 1 }} />
 
         <Stack direction="row" spacing={{ xs: 0.5, sm: 1 }}>
-          <LanguageMenu />
           <AccountMenu />
         </Stack>
 

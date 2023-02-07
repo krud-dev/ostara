@@ -19,7 +19,7 @@ export default function ApplicationSidebar({ item, width }: ApplicationSidebarPr
     () => [
       {
         id: 'insights',
-        label: <FormattedMessage id={'insights'} />,
+        label: <FormattedMessage id={'overview'} />,
         items: [
           // {
           //   id: 'dashboard',
