@@ -1,10 +1,10 @@
 package dev.krud.boost.daemon.configuration.folder
 
 import dev.krud.boost.daemon.configuration.folder.entity.Folder
-import dev.krud.boost.exception.ResourceNotCreatedException
-import dev.krud.boost.exception.ResourceNotDeletedException
-import dev.krud.boost.exception.ResourceNotFoundException
-import dev.krud.boost.exception.ResourceNotUpdatedException
+import dev.krud.boost.daemon.exception.ResourceNotCreatedException
+import dev.krud.boost.daemon.exception.ResourceNotDeletedException
+import dev.krud.boost.daemon.exception.ResourceNotFoundException
+import dev.krud.boost.daemon.exception.ResourceNotUpdatedException
 import org.springframework.dao.EmptyResultDataAccessException
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.Pageable
