@@ -4,6 +4,7 @@ import { app, dialog } from 'electron';
 import axios from 'axios';
 import log from 'electron-log';
 import { systemEvents } from '../infra/events';
+import { isWindows } from '../infra/utils/platform';
 
 type InternalDaemonOptions = {
   type: 'internal';
@@ -44,7 +45,7 @@ export class DaemonController {
 
   private readonly daemonDatabaseLocation = path.join(app.getPath('userData'), 'daemon.sqlite');
 
-  private readonly defaultJdkLocation = path.join(process.resourcesPath, 'jdk', 'bin', 'java');
+  private readonly defaultJdkLocation = path.join(process.resourcesPath, 'jdk', 'bin', isWindows ? 'java.exe' : 'java');
 
   private daemonProcess?: ChildProcessWithoutNullStreams = undefined;
 
@@ -133,11 +134,15 @@ export class DaemonController {
       throw new Error('Cannot start internal daemon process with external options');
     }
 
-    const env = { IP: this.options.host, SERVER_PORT: String(this.internalPort), SPRING_DATASOURCE_URL: `jdbc:sqlite:${this.daemonDatabaseLocation}` };
+    const env = {
+      IP: this.options.host,
+      SERVER_PORT: String(this.internalPort),
+      SPRING_DATASOURCE_URL: `jdbc:sqlite:${this.daemonDatabaseLocation}`,
+    };
 
     if (!app.isPackaged) {
       log.info('Running daemon from source...');
-      this.daemonProcess = spawn('./gradlew', ['bootRun'], {
+      this.daemonProcess = spawn(isWindows ? './gradlew' : './gradlew.bat', ['bootRun'], {
         cwd: path.join(__dirname, '..', '..', 'daemon'),
         env: { ...process.env, ...env },
       });
