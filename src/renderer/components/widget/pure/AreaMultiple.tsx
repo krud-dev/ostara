@@ -21,9 +21,10 @@ type AreaMultipleProps = {
   series: { name: string; data: number[] }[];
   labels: string[];
   colors: string[];
+  tickAmount?: number;
 };
 
-const AreaMultiple: FunctionComponent<AreaMultipleProps> = ({ series, labels, colors }) => {
+const AreaMultiple: FunctionComponent<AreaMultipleProps> = ({ series, labels, colors, tickAmount }) => {
   const overrideOptions = useMemo<Partial<ApexOptions>>(
     () => ({
       chart: {
@@ -32,6 +33,7 @@ const AreaMultiple: FunctionComponent<AreaMultipleProps> = ({ series, labels, co
       legend: { position: 'top', horizontalAlign: 'right' },
       xaxis: {
         categories: labels,
+        tickAmount: tickAmount,
       },
       colors: colors,
     }),
