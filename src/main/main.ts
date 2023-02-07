@@ -101,6 +101,9 @@ const createSplashWindow = async () => {
     minHeight: 300, // accommodate 800 x 600 display minimum
     backgroundColor: backgroundColor,
     frame: false,
+    webPreferences: {
+      devTools: false,
+    },
   });
 
   splashWindow.loadFile(getAssetPath('splash.html'));
@@ -175,11 +178,8 @@ const createMainWindow = async () => {
       splashWindow.close();
       splashWindow = null;
     }
-    if (process.env.START_MINIMIZED) {
-      mainWindow.minimize();
-    } else {
-      mainWindow.show();
-    }
+    mainWindow.show();
+    mainWindow.focus();
   });
 
   mainWindow.on('closed', () => {
@@ -208,11 +208,7 @@ const createMainWindow = async () => {
  */
 
 app.on('window-all-closed', () => {
-  // Respect the OSX convention of having the application in memory even
-  // after all windows have been closed
-  if (process.platform !== 'darwin') {
-    app.quit();
-  }
+  app.quit();
 });
 
 app
