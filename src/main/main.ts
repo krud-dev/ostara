@@ -32,6 +32,7 @@ class AppUpdater {
   }
 }
 
+let splashWindow: BrowserWindow | null = null;
 let mainWindow: BrowserWindow | null = null;
 
 if (process.env.NODE_ENV === 'production') {
@@ -58,7 +59,65 @@ const installExtensions = async () => {
     .catch(console.log);
 };
 
-const createWindow = async () => {
+const initDaemon = async () => {
+  let daemonController: DaemonController;
+  if (app.isPackaged) {
+    daemonController = new DaemonController({
+      type: 'internal',
+      protocol: 'http',
+      host: '127.0.0.1',
+      port: 'random',
+    });
+  } else {
+    daemonController = new DaemonController({
+      type: 'external',
+      address: 'http://127.0.0.1:12222',
+    });
+  }
+  daemonController.start().catch((e) => {
+    log.error('Error starting daemon', e);
+    app.exit(1);
+  });
+};
+
+const createSplashWindow = async () => {
+  const RESOURCES_PATH = app.isPackaged
+    ? path.join(process.resourcesPath, 'assets')
+    : path.join(__dirname, '../../assets');
+
+  const getAssetPath = (...paths: string[]): string => {
+    return path.join(RESOURCES_PATH, ...paths);
+  };
+
+  const backgroundColor = nativeTheme.shouldUseDarkColors ? '#161C24' : '#ffffff';
+  const color = nativeTheme.shouldUseDarkColors ? '#ffffff' : '#212B36';
+
+  splashWindow = new BrowserWindow({
+    show: true,
+    width: 300,
+    height: 300,
+    icon: getAssetPath('icon.png'),
+    minWidth: 300, // accommodate 800 x 600 display minimum
+    minHeight: 300, // accommodate 800 x 600 display minimum
+    backgroundColor: backgroundColor,
+    frame: false,
+  });
+
+  splashWindow.loadFile(getAssetPath('splash.html'));
+
+  splashWindow.on('ready-to-show', () => {
+    if (!splashWindow) {
+      throw new Error('"splashWindow" is not defined');
+    }
+    splashWindow.show();
+  });
+
+  splashWindow.on('closed', () => {
+    mainWindow = null;
+  });
+};
+
+const createMainWindow = async () => {
   if (isDebug) {
     await installExtensions();
   }
@@ -80,24 +139,6 @@ const createWindow = async () => {
   }
 
   await taskService.initialize();
-  let daemonController: DaemonController;
-  if (app.isPackaged) {
-    daemonController = new DaemonController({
-      type: 'internal',
-      protocol: 'http',
-      host: '127.0.0.1',
-      port: 'random',
-    });
-  } else {
-    daemonController = new DaemonController({
-      type: 'external',
-      address: 'http://127.0.0.1:12222',
-    });
-  }
-  daemonController.start().catch((e) => {
-    log.error('Error starting daemon', e);
-    app.exit(1);
-  });
 
   const backgroundColor = nativeTheme.shouldUseDarkColors ? '#161C24' : '#ffffff';
   const color = nativeTheme.shouldUseDarkColors ? '#ffffff' : '#212B36';
@@ -129,6 +170,10 @@ const createWindow = async () => {
   mainWindow.on('ready-to-show', () => {
     if (!mainWindow) {
       throw new Error('"mainWindow" is not defined');
+    }
+    if (splashWindow) {
+      splashWindow.close();
+      splashWindow = null;
     }
     if (process.env.START_MINIMIZED) {
       mainWindow.minimize();
@@ -172,12 +217,16 @@ app.on('window-all-closed', () => {
 
 app
   .whenReady()
-  .then(() => {
-    createWindow();
+  .then(async () => {
+    await createSplashWindow();
+    systemEvents.on('daemon-ready', () => {
+      createMainWindow();
+    });
+    await initDaemon();
     app.on('activate', () => {
       // On macOS it's common to re-dialogs a window in the app when the
       // dock icon is clicked and there are no other windows open.
-      if (mainWindow === null) createWindow();
+      if (mainWindow === null) createMainWindow();
     });
   })
   .catch(console.log);

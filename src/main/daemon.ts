@@ -42,6 +42,8 @@ export class DaemonController {
 
   private readonly defaultDaemonLocation = path.join(process.resourcesPath, 'daemon', 'daemon.jar');
 
+  private readonly daemonDatabaseLocation = path.join(app.getPath('userData'), 'daemon.sqlite');
+
   private readonly defaultJdkLocation = path.join(process.resourcesPath, 'jdk', 'bin', 'java');
 
   private daemonProcess?: ChildProcessWithoutNullStreams = undefined;
@@ -131,7 +133,7 @@ export class DaemonController {
       throw new Error('Cannot start internal daemon process with external options');
     }
 
-    const env = { IP: this.options.host, SERVER_PORT: String(this.internalPort) };
+    const env = { IP: this.options.host, SERVER_PORT: String(this.internalPort), SPRING_DATASOURCE_URL: `jdbc:sqlite:${this.daemonDatabaseLocation}` };
 
     if (!app.isPackaged) {
       log.info('Running daemon from source...');
