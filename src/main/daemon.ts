@@ -3,6 +3,7 @@ import path from 'path';
 import { app, dialog } from 'electron';
 import axios from 'axios';
 import log from 'electron-log';
+import { systemEvents } from '../infra/events';
 
 type InternalDaemonOptions = {
   type: 'internal';
@@ -33,6 +34,12 @@ export class DaemonController {
 
   private readonly daemonAddress: string;
 
+  private started: boolean = false;
+
+  private running: boolean = false;
+
+  private healthCheckInterval: NodeJS.Timeout | undefined;
+
   private readonly defaultDaemonLocation = path.join(process.resourcesPath, 'daemon', 'daemon.jar');
 
   private readonly defaultJdkLocation = path.join(process.resourcesPath, 'jdk', 'bin', 'java');
@@ -55,10 +62,6 @@ export class DaemonController {
 
   async start() {
     return new Promise<void>((resolve) => {
-      if (this.daemonProcess) {
-        throw new Error('Daemon is already running');
-      }
-
       if (isInternalOptions(this.options)) {
         log.info(`Starting daemon on ${this.daemonAddress}...`);
         this.initDaemonProcess();
@@ -66,22 +69,58 @@ export class DaemonController {
         log.info(`Using external daemon on ${this.daemonAddress}...`);
       }
 
-      const interval = setInterval(async () => {
-        log.info('Checking if daemon is running...');
-        try {
-          const response = await axios.get(this.daemonAddress);
-          if (response.status === 200) {
-            log.info('Daemon is running!');
-            clearInterval(interval);
-            resolve();
-          } else {
-            log.info('Daemon is not running!');
-          }
-        } catch (err) {
-          log.info('Daemon is not running!');
-        }
-      }, 1000);
+      this.startHealthCheck();
     });
+  }
+
+  async stop() {
+    this.stopHealthCheck();
+    if (this.daemonProcess) {
+      log.info('Stopping daemon...');
+      this.daemonProcess.kill();
+      this.daemonProcess = undefined;
+    }
+  }
+
+  private startHealthCheck() {
+    if (this.healthCheckInterval) {
+      throw new Error('Health check is already running');
+    }
+    log.info('Starting health check...');
+    this.healthCheckInterval = setInterval(async () => {
+      try {
+        const response = await axios.get(this.daemonAddress);
+        if (response.status === 200) {
+          if (!this.started) {
+            log.info('Daemon is ready!');
+            systemEvents.emit('daemon-ready');
+          }
+          if (!this.running && this.started) {
+            log.info('Daemon is healthy!');
+            systemEvents.emit('daemon-healthy');
+          }
+          this.running = true;
+          this.started = true;
+        } else {
+          throw new Error('Daemon is not running!');
+        }
+      } catch (err) {
+        if (this.running && this.started) {
+          log.info('Daemon is unhealthy!');
+          systemEvents.emit('daemon-unhealthy');
+        }
+        this.running = false;
+      }
+    }, 1000);
+  }
+
+  private stopHealthCheck() {
+    if (!this.healthCheckInterval) {
+      throw new Error('Health check is not running');
+    }
+    log.info('Stopping health check...');
+    clearInterval(this.healthCheckInterval);
+    this.healthCheckInterval = undefined;
   }
 
   private initDaemonProcess() {

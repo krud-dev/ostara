@@ -2,6 +2,12 @@ import { Application, Instance } from '../configuration/model/configuration';
 
 export type Events = {
   /**
+   * System
+   */
+  'daemon-ready': () => void;
+  'daemon-healthy': () => void;
+  'daemon-unhealthy': () => void;
+  /**
    * instance events
    * @param
    */

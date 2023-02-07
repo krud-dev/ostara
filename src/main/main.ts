@@ -20,6 +20,8 @@ import { dataSource } from '../infra/dataSource';
 import { taskService } from '../infra/tasks/taskService';
 import { instanceService } from '../infra/instance/instanceService';
 import { uiService } from '../infra/ui/uiService';
+import { DaemonController } from './daemon';
+import { systemEvents } from '../infra/events';
 import { isMac, isWindows } from '../infra/utils/platform';
 
 class AppUpdater {
@@ -78,6 +80,24 @@ const createWindow = async () => {
   }
 
   await taskService.initialize();
+  let daemonController: DaemonController;
+  if (app.isPackaged) {
+    daemonController = new DaemonController({
+      type: 'internal',
+      protocol: 'http',
+      host: '127.0.0.1',
+      port: 'random',
+    });
+  } else {
+    daemonController = new DaemonController({
+      type: 'external',
+      address: 'http://127.0.0.1:12222',
+    });
+  }
+  daemonController.start().catch((e) => {
+    log.error('Error starting daemon', e);
+    app.exit(1);
+  });
 
   const backgroundColor = nativeTheme.shouldUseDarkColors ? '#161C24' : '#ffffff';
   const color = nativeTheme.shouldUseDarkColors ? '#ffffff' : '#212B36';
