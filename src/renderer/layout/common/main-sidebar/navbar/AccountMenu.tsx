@@ -32,6 +32,7 @@ export default function AccountMenu() {
           display: 'flex',
           justifyContent: 'center',
           alignItems: 'center',
+          '-webkit-app-region': 'no-drag',
         }}
       >
         <IconButton

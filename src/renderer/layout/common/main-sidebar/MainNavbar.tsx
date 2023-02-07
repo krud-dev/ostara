@@ -41,12 +41,12 @@ export default function MainNavbar({}: MainNavbarProps) {
     >
       <Toolbar disableGutters sx={{ flexGrow: 1, pl: COMPONENTS_SPACING, pr: !isMac ? '0' : COMPONENTS_SPACING }}>
         <Stack direction="row" spacing={0.5} sx={{ pl: isMac ? 8 : 0 }}>
-          <Box>
+          <Box sx={{ '-webkit-app-region': 'no-drag' }}>
             <IconButton size={'small'} onClick={homeHandler} sx={{ color: 'text.primary' }}>
               <Home fontSize={'medium'} />
             </IconButton>
           </Box>
-          <Box>
+          <Box sx={{ '-webkit-app-region': 'no-drag' }}>
             <IconButton size={'small'} onClick={backHandler} sx={{ color: 'text.primary' }}>
               <IconViewer
                 icon={isRtl ? 'KeyboardArrowRightOutlined' : 'KeyboardArrowLeftOutlined'}
@@ -55,7 +55,7 @@ export default function MainNavbar({}: MainNavbarProps) {
               />
             </IconButton>
           </Box>
-          <Box>
+          <Box sx={{ '-webkit-app-region': 'no-drag' }}>
             <IconButton size={'small'} onClick={forwardHandler} sx={{ color: 'text.primary' }}>
               <IconViewer
                 icon={isRtl ? 'KeyboardArrowLeftOutlined' : 'KeyboardArrowRightOutlined'}
@@ -72,7 +72,7 @@ export default function MainNavbar({}: MainNavbarProps) {
           <AccountMenu />
         </Stack>
 
-        {!isMac && <WindowControls sx={{ pl: 2 }} />}
+        {!isMac && <WindowControls sx={{ pl: 2, '-webkit-app-region': 'no-drag' }} />}
       </Toolbar>
       <Divider />
     </AppBar>
