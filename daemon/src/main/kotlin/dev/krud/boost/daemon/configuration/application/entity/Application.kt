@@ -7,6 +7,7 @@ import dev.krud.shapeshift.resolver.annotation.DefaultMappingTarget
 import dev.krud.shapeshift.resolver.annotation.MappedField
 import jakarta.persistence.Column
 import jakarta.persistence.Entity
+import org.hibernate.annotations.Formula
 import java.util.*
 
 @Entity
@@ -35,6 +36,9 @@ class Application(
     @Column(nullable = true)
     var parentFolderId: UUID? = null,
 ) : AbstractEntity() {
+    @MappedField
+    @Formula("(select count(*) from instance i where i.parent_application_id = id)")
+    val instanceCount: Int = 0
     companion object {
         const val NAME = "application"
     }

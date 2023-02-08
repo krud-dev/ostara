@@ -7,6 +7,7 @@ class ApplicationRO(
     val id: UUID,
     val alias: String,
     var type: ApplicationType,
+    var instanceCount: Int = 0,
     val description: String? = null,
     val color: String? = null,
     val icon: String? = null,
