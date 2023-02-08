@@ -1,6 +1,6 @@
 package dev.krud.boost.daemon.controller.api.v1
 
-import dev.krud.boost.daemon.configuration.instance.dto.InstanceModifyRequestDTO
+import dev.krud.boost.daemon.configuration.instance.ro.InstanceModifyRequestRO
 import dev.krud.boost.daemon.configuration.instance.entity.Instance
 import dev.krud.boost.daemon.configuration.instance.ro.InstanceRO
 import dev.krud.crudframework.crud.handler.CrudHandler
@@ -13,4 +13,4 @@ import org.springframework.web.bind.annotation.RestController
 @Tag(name = "Instance", description = "Instance API")
 class InstanceController(
     private val crudHandler: CrudHandler
-) : AbstractCrudController<Instance, InstanceRO, InstanceModifyRequestDTO, InstanceModifyRequestDTO>(Instance::class, InstanceRO::class, crudHandler)
+) : AbstractCrudController<Instance, InstanceRO, InstanceModifyRequestRO, InstanceModifyRequestRO>(Instance::class, InstanceRO::class, crudHandler)

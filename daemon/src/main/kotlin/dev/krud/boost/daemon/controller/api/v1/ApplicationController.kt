@@ -1,6 +1,6 @@
 package dev.krud.boost.daemon.controller.api.v1
 
-import dev.krud.boost.daemon.configuration.application.dto.ApplicationModifyRequestDTO
+import dev.krud.boost.daemon.configuration.application.ro.ApplicationModifyRequestRO
 import dev.krud.boost.daemon.configuration.application.entity.Application
 import dev.krud.boost.daemon.configuration.application.ro.ApplicationRO
 import dev.krud.crudframework.crud.handler.CrudHandler
@@ -13,4 +13,4 @@ import org.springframework.web.bind.annotation.RestController
 @Tag(name = "Application", description = "Application API")
 class ApplicationController(
     private val crudHandler: CrudHandler
-) : AbstractCrudController<Application, ApplicationRO, ApplicationModifyRequestDTO, ApplicationModifyRequestDTO>(Application::class, ApplicationRO::class, crudHandler)
+) : AbstractCrudController<Application, ApplicationRO, ApplicationModifyRequestRO, ApplicationModifyRequestRO>(Application::class, ApplicationRO::class, crudHandler)

@@ -1,4 +1,4 @@
-package dev.krud.boost.daemon.configuration.instance.dto
+package dev.krud.boost.daemon.configuration.instance.ro
 
 import dev.krud.boost.daemon.configuration.instance.entity.Instance
 import dev.krud.shapeshift.resolver.annotation.DefaultMappingTarget
@@ -7,7 +7,7 @@ import jakarta.validation.constraints.NotBlank
 import java.util.*
 
 @DefaultMappingTarget(Instance::class)
-data class InstanceModifyRequestDTO(
+data class InstanceModifyRequestRO(
     @MappedField
     @NotBlank
     val alias: String,

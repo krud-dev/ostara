@@ -1,4 +1,4 @@
-package dev.krud.boost.daemon.configuration.application.dto
+package dev.krud.boost.daemon.configuration.application.ro
 
 import dev.krud.boost.daemon.configuration.application.entity.Application
 import dev.krud.boost.daemon.configuration.application.enums.ApplicationType
@@ -8,7 +8,7 @@ import jakarta.validation.constraints.NotBlank
 import java.util.*
 
 @DefaultMappingTarget(Application::class)
-data class ApplicationModifyRequestDTO(
+data class ApplicationModifyRequestRO(
     @MappedField
     @NotBlank
     val alias: String,

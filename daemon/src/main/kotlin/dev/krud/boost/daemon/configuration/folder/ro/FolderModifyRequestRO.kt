@@ -1,4 +1,4 @@
-package dev.krud.boost.daemon.configuration.folder.dto
+package dev.krud.boost.daemon.configuration.folder.ro
 
 import dev.krud.boost.daemon.configuration.folder.entity.Folder
 import dev.krud.shapeshift.resolver.annotation.DefaultMappingTarget
@@ -7,7 +7,7 @@ import jakarta.validation.constraints.NotBlank
 import java.util.*
 
 @DefaultMappingTarget(Folder::class)
-data class FolderModifyRequestDTO(
+data class FolderModifyRequestRO(
     @MappedField
     @NotBlank
     val alias: String,
@@ -23,7 +23,7 @@ data class FolderModifyRequestDTO(
     val parentFolderId: UUID? = null,
 ) {
     companion object {
-        fun FolderModifyRequestDTO.toFolder(id: UUID? = null): Folder {
+        fun FolderModifyRequestRO.toFolder(id: UUID? = null): Folder {
             return Folder(
                 alias = alias,
                 description = description,
@@ -38,8 +38,8 @@ data class FolderModifyRequestDTO(
             }
         }
 
-        fun Folder.toModifyFolderRequestDTO(): FolderModifyRequestDTO {
-            return FolderModifyRequestDTO(
+        fun Folder.toModifyFolderRequestDTO(): FolderModifyRequestRO {
+            return FolderModifyRequestRO(
                 alias = alias,
                 description = description,
                 color = color,
