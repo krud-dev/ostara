@@ -1,4 +1,4 @@
-package dev.krud.boost.daemon.configuration.instance
+package dev.krud.boost.daemon.configuration.instance.crud
 
 import dev.krud.boost.daemon.actuator.ActuatorHttpClient
 import dev.krud.boost.daemon.configuration.instance.entity.Instance
