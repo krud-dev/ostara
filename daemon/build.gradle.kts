@@ -12,6 +12,9 @@ plugins {
 group = "dev.krud.boost"
 version = "0.0.1-SNAPSHOT"
 
+val crudFrameworkVersion = "0.15.0"
+val shapeShiftVersion = "0.8.0"
+
 kotlin {
     jvmToolchain(17)
 }
@@ -33,10 +36,10 @@ dependencies {
     implementation("com.google.code.gson:gson:2.10.1")
     implementation("org.flywaydb:flyway-core:9.12.0")
     implementation("org.springdoc:springdoc-openapi-starter-webmvc-ui:2.0.2")
-    implementation("dev.krud:crud-framework-core:0.14.0")
-    implementation("dev.krud:crud-framework-hibernate5-connector:0.14.0")
-    implementation("dev.krud:shapeshift:0.8.0")
-    implementation("dev.krud:spring-boot-starter-shapeshift:0.8.0")
+    implementation("dev.krud:crud-framework-core:$crudFrameworkVersion")
+    implementation("dev.krud:crud-framework-hibernate5-connector:$crudFrameworkVersion")
+    implementation("dev.krud:shapeshift:$shapeShiftVersion")
+    implementation("dev.krud:spring-boot-starter-shapeshift:$shapeShiftVersion")
 
     testImplementation("com.squareup.okhttp3:mockwebserver:4.10.0")
     testImplementation("io.strikt:strikt-core:0.34.0")
