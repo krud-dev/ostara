@@ -36,7 +36,7 @@ dependencies {
     implementation("dev.krud:crud-framework-core:0.14.0")
     implementation("dev.krud:crud-framework-hibernate5-connector:0.14.0")
     implementation("dev.krud:shapeshift:0.8.0")
-    implementation("dev.krud:spring-boot-starter-shapeshift:0.7.0")
+    implementation("dev.krud:spring-boot-starter-shapeshift:0.8.0")
 
     testImplementation("com.squareup.okhttp3:mockwebserver:4.10.0")
     testImplementation("io.strikt:strikt-core:0.34.0")
