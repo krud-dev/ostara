@@ -91,6 +91,7 @@ const createSplashWindow = async () => {
 
   splashWindow = new BrowserWindow({
     show: true,
+    title: 'Loading',
     width: 500,
     height: 300,
     icon: getAssetPath('icon.png'),
@@ -144,7 +145,6 @@ const createMainWindow = async () => {
 
   mainWindow = new BrowserWindow({
     show: false,
-    title: 'Loading',
     width: 1440,
     height: 900,
     icon: getAssetPath('icon.png'),
