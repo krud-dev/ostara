@@ -10,12 +10,12 @@ import org.springframework.stereotype.Component
 
 @Component
 class InstanceToRoMappingDecorator(
-    private val instanceService: InstanceService
+  private val instanceService: InstanceService
 ) : MappingDecorator<Instance, InstanceRO> {
-    override fun decorate(context: MappingDecoratorContext<Instance, InstanceRO>) {
-        val actuatorClient = ActuatorHttpClient(context.from.actuatorUrl)
-        context.to.endpoints = actuatorClient.endpoints()
-        context.to.abilities = instanceService.resolveAbilities(context.from)
-        context.to.effectiveColor = context.to.effectiveColor
-    }
+  override fun decorate(context: MappingDecoratorContext<Instance, InstanceRO>) {
+    val actuatorClient = ActuatorHttpClient(context.from.actuatorUrl)
+    context.to.endpoints = actuatorClient.endpoints()
+    context.to.abilities = instanceService.resolveAbilities(context.from)
+    context.to.effectiveColor = context.to.effectiveColor
+  }
 }

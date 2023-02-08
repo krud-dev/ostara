@@ -10,18 +10,18 @@ import java.util.*
 
 @Component
 class InstanceActuatorClientProvider(
-    @Lazy
-    private val crudHandler: CrudHandler
+  @Lazy
+  private val crudHandler: CrudHandler
 ) {
-    fun provide(instance: Instance): ActuatorHttpClient {
-        return ActuatorHttpClient(instance.actuatorUrl) // TODO: cache
-    }
+  fun provide(instance: Instance): ActuatorHttpClient {
+    return ActuatorHttpClient(instance.actuatorUrl) // TODO: cache
+  }
 
-    fun provide(instanceId: UUID): ActuatorHttpClient {
-        val instance = crudHandler
-            .show(instanceId, Instance::class.java)
-            .applyPolicies()
-            .execute() ?: throw ResourceNotFoundException(Instance.NAME, instanceId)
-        return provide(instance)
-    }
+  fun provide(instanceId: UUID): ActuatorHttpClient {
+    val instance = crudHandler
+      .show(instanceId, Instance::class.java)
+      .applyPolicies()
+      .execute() ?: throw ResourceNotFoundException(Instance.NAME, instanceId)
+    return provide(instance)
+  }
 }

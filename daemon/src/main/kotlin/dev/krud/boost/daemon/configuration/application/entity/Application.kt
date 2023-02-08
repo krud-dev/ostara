@@ -18,39 +18,38 @@ import java.util.*
 @DefaultMappingTarget(ApplicationRO::class)
 @MappedField(mapFrom = "id")
 class Application(
-    @MappedField
-    @Column(nullable = false)
-    var alias: String,
-    @MappedField
-    @Column(nullable = true)
-    @MappedField
-    var description: String? = null,
-    @MappedField
-    var type: ApplicationType,
-    @MappedField
-    @Column(nullable = true)
-    var color: String? = null,
-    @MappedField
-    @Column(nullable = true)
-    var icon: String? = null,
-    @MappedField
-    @Column(nullable = true)
-    var sort: Int? = null,
-    @MappedField
-    @Column(name = "parent_folder_id", nullable = true)
-    var parentFolderId: UUID? = null,
+  @MappedField
+  @Column(nullable = false)
+  var alias: String,
+  @MappedField
+  @Column(nullable = true)
+  @MappedField
+  var description: String? = null,
+  @MappedField
+  var type: ApplicationType,
+  @MappedField
+  @Column(nullable = true)
+  var color: String? = null,
+  @MappedField
+  @Column(nullable = true)
+  var icon: String? = null,
+  @MappedField
+  @Column(nullable = true)
+  var sort: Int? = null,
+  @MappedField
+  @Column(name = "parent_folder_id", nullable = true)
+  var parentFolderId: UUID? = null
 ) : AbstractEntity() {
-    @MappedField
-    @Formula("(select count(*) from instance i where i.parent_application_id = id)")
-    val instanceCount: Int = 0
+  @MappedField
+  @Formula("(select count(*) from instance i where i.parent_application_id = id)")
+  val instanceCount: Int = 0
 
-    @ManyToOne
-    @JoinColumn(name = "parent_folder_id", insertable = false, updatable = false, nullable = true)
-    val parentFolder: Folder? = null
-    companion object {
-        const val NAME = "application"
-        val Application.effectiveColor: String?
-            get() = color ?: parentFolder?.effectiveColor
-    }
+  @ManyToOne
+  @JoinColumn(name = "parent_folder_id", insertable = false, updatable = false, nullable = true)
+  val parentFolder: Folder? = null
+  companion object {
+    const val NAME = "application"
+    val Application.effectiveColor: String?
+      get() = color ?: parentFolder?.effectiveColor
+  }
 }
-

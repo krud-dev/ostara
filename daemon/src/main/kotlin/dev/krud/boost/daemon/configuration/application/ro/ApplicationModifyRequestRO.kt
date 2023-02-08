@@ -9,19 +9,19 @@ import java.util.*
 
 @DefaultMappingTarget(Application::class)
 data class ApplicationModifyRequestRO(
-    @MappedField
-    @NotBlank
-    val alias: String,
-    @MappedField
-    val type: ApplicationType,
-    @MappedField
-    val description: String? = null,
-    @MappedField
-    val color: String? = null,
-    @MappedField
-    val icon: String? = null,
-    @MappedField
-    val sort: Int? = null,
-    @MappedField
-    val parentFolderId: UUID? = null,
+  @MappedField
+  @NotBlank
+  val alias: String,
+  @MappedField
+  val type: ApplicationType,
+  @MappedField
+  val description: String? = null,
+  @MappedField
+  val color: String? = null,
+  @MappedField
+  val icon: String? = null,
+  @MappedField
+  val sort: Int? = null,
+  @MappedField
+  val parentFolderId: UUID? = null
 )

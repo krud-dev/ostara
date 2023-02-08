@@ -14,12 +14,12 @@ class DaemonApplication
 @RestController
 @Hidden
 class TestController {
-    @GetMapping("/")
-    fun root() : String {
-        return "OK"
-    }
+  @GetMapping("/")
+  fun root(): String {
+    return "OK"
+  }
 }
 
 fun main(args: Array<String>) {
-    runApplication<DaemonApplication>(*args)
+  runApplication<DaemonApplication>(*args)
 }

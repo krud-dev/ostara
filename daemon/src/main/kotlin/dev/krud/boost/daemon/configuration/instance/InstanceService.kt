@@ -7,22 +7,24 @@ import org.springframework.stereotype.Service
 
 @Service
 class InstanceService(
-    private val instanceAbilityResolvers: List<InstanceAbilityResolver>,
-    private val actuatorClientProvider: InstanceActuatorClientProvider
+  private val instanceAbilityResolvers: List<InstanceAbilityResolver>,
+  private val actuatorClientProvider: InstanceActuatorClientProvider
 ) {
-    /**
-     * Resolves the abilities of an instance.
-     */
-    // TODO: cache
-    fun resolveAbilities(instance: Instance): Set<InstanceAbility> {
-        val actuatorClient = actuatorClientProvider.provide(instance)
-        val endpoints = actuatorClient.endpoints()
-        val options = InstanceAbilityResolver.Options(instance, endpoints, actuatorClient)
-        return instanceAbilityResolvers
-            .filter { it.hasAbility(
-                options
-            ) }
-            .map { it.ability }
-            .toSet()
-    }
+  /**
+   * Resolves the abilities of an instance.
+   */
+  // TODO: cache
+  fun resolveAbilities(instance: Instance): Set<InstanceAbility> {
+    val actuatorClient = actuatorClientProvider.provide(instance)
+    val endpoints = actuatorClient.endpoints()
+    val options = InstanceAbilityResolver.Options(instance, endpoints, actuatorClient)
+    return instanceAbilityResolvers
+      .filter {
+        it.hasAbility(
+          options
+        )
+      }
+      .map { it.ability }
+      .toSet()
+  }
 }
