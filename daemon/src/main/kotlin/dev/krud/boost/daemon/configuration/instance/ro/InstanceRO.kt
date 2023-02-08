@@ -1,5 +1,6 @@
 package dev.krud.boost.daemon.configuration.instance.ro
 
+import dev.krud.boost.daemon.configuration.instance.enums.InstanceAbility
 import java.util.*
 
 class InstanceRO(
@@ -12,6 +13,7 @@ class InstanceRO(
     val icon: String? = null,
     val sort: Int? = null,
     val parentApplicationId: UUID? = null,
-    var endpoints: Set<String> = emptySet()
+    var endpoints: Set<String> = emptySet(),
+    var abilities: Set<InstanceAbility> = emptySet()
 )
 

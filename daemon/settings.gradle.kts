@@ -1,6 +1,7 @@
 rootProject.name = "daemon"
 
 val useCrudLocal = extra.has("use.crud.local")
+val useShapeShiftLocal = extra.has("use.shapeshift.local")
 if (useCrudLocal) {
     includeBuild("../../crud-framework") {
         dependencySubstitution {
@@ -10,5 +11,13 @@ if (useCrudLocal) {
             substitute(module("dev.krud:crud-framework-mongo-connector")).using(project(":crud-framework-mongo-connector"))
         }
     }
+}
 
+if (useShapeShiftLocal) {
+    includeBuild("../../shapeshift") {
+        dependencySubstitution {
+            substitute(module("dev.krud:shapeshift")).using(project(":shapeshift"))
+            substitute(module("dev.krud:spring-boot-starter-shapeshift")).using(project(":spring-boot-starter-shapeshift"))
+        }
+    }
 }
