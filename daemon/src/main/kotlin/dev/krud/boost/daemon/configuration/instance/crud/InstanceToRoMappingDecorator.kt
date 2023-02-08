@@ -16,5 +16,6 @@ class InstanceToRoMappingDecorator(
         val actuatorClient = ActuatorHttpClient(context.from.actuatorUrl)
         context.to.endpoints = actuatorClient.endpoints()
         context.to.abilities = instanceService.resolveAbilities(context.from)
+        context.to.effectiveColor = context.to.effectiveColor
     }
 }

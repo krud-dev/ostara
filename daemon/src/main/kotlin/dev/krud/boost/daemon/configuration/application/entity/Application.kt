@@ -2,11 +2,15 @@ package dev.krud.boost.daemon.configuration.application.entity
 
 import dev.krud.boost.daemon.configuration.application.enums.ApplicationType
 import dev.krud.boost.daemon.configuration.application.ro.ApplicationRO
+import dev.krud.boost.daemon.configuration.folder.entity.Folder
+import dev.krud.boost.daemon.configuration.folder.entity.Folder.Companion.effectiveColor
 import dev.krud.boost.daemon.entity.AbstractEntity
 import dev.krud.shapeshift.resolver.annotation.DefaultMappingTarget
 import dev.krud.shapeshift.resolver.annotation.MappedField
 import jakarta.persistence.Column
 import jakarta.persistence.Entity
+import jakarta.persistence.JoinColumn
+import jakarta.persistence.ManyToOne
 import org.hibernate.annotations.Formula
 import java.util.*
 
@@ -33,14 +37,20 @@ class Application(
     @Column(nullable = true)
     var sort: Int? = null,
     @MappedField
-    @Column(nullable = true)
+    @Column(name = "parent_folder_id", nullable = true)
     var parentFolderId: UUID? = null,
 ) : AbstractEntity() {
     @MappedField
     @Formula("(select count(*) from instance i where i.parent_application_id = id)")
     val instanceCount: Int = 0
+
+    @ManyToOne
+    @JoinColumn(name = "parent_folder_id", insertable = false, updatable = false, nullable = true)
+    val parentFolder: Folder? = null
     companion object {
         const val NAME = "application"
+        val Application.effectiveColor: String?
+            get() = color ?: parentFolder?.effectiveColor
     }
 }
 

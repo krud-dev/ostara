@@ -6,7 +6,9 @@ import dev.krud.shapeshift.resolver.annotation.DefaultMappingTarget
 import dev.krud.shapeshift.resolver.annotation.MappedField
 import jakarta.persistence.Column
 import jakarta.persistence.Entity
-import java.util.UUID
+import jakarta.persistence.JoinColumn
+import jakarta.persistence.ManyToOne
+import java.util.*
 
 @Entity
 @DefaultMappingTarget(FolderRO::class)
@@ -29,11 +31,17 @@ class Folder(
     @Column(nullable = true)
     var sort: Int? = null,
     @MappedField
-    @Column(nullable = true)
+    @Column(name = "parent_folder_id", nullable = true)
     var parentFolderId: UUID? = null,
 ) : AbstractEntity() {
+    @ManyToOne
+    @JoinColumn(name = "parent_folder_id", insertable = false, updatable = false, nullable = true)
+    val parentFolder: Folder? = null
+
     companion object {
         const val NAME = "folder"
+        val Folder.effectiveColor: String?
+            get() = color ?: parentFolder?.effectiveColor
     }
 }
 

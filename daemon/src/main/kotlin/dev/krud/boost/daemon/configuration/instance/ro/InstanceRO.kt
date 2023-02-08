@@ -10,10 +10,11 @@ class InstanceRO(
     val dataCollectionIntervalSeconds: Int,
     val description: String? = null,
     val color: String? = null,
+    var effectiveColor: String? = null,
     val icon: String? = null,
     val sort: Int? = null,
     val parentApplicationId: UUID? = null,
     var endpoints: Set<String> = emptySet(),
-    var abilities: Set<InstanceAbility> = emptySet()
+    var abilities: Set<InstanceAbility> = emptySet(),
 )
 
