@@ -1,7 +1,5 @@
 package dev.krud.boost.daemon.configuration.instance.entity
 
-import dev.krud.boost.daemon.configuration.application.enums.ApplicationType
-import dev.krud.boost.daemon.configuration.application.ro.ApplicationRO
 import dev.krud.boost.daemon.configuration.instance.ro.InstanceRO
 import dev.krud.boost.daemon.entity.AbstractEntity
 import dev.krud.shapeshift.resolver.annotation.DefaultMappingTarget
@@ -18,11 +16,15 @@ class Instance(
     @Column(nullable = false)
     var alias: String,
     @MappedField
+    @Column(nullable = false)
+    var actuatorUrl: String,
+    @MappedField
+    @Column(nullable = false, columnDefinition = "int default 5")
+    var dataCollectionIntervalSeconds: Int = 5,
+    @MappedField
     @Column(nullable = true)
     @MappedField
     var description: String? = null,
-    @MappedField
-    var type: ApplicationType,
     @MappedField
     @Column(nullable = true)
     var color: String? = null,
@@ -34,7 +36,7 @@ class Instance(
     var sort: Int? = null,
     @MappedField
     @Column(nullable = true)
-    var parentApplicationId: UUID? = null,
+    var parentApplicationId: UUID? = null
 ) : AbstractEntity() {
     companion object {
         const val NAME = "application"

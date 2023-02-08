@@ -12,6 +12,9 @@ data class InstanceModifyRequestDTO(
     @NotBlank
     val alias: String,
     @MappedField
+    @NotBlank
+    var actuatorUrl: String,
+    @MappedField
     val dataCollectionIntervalSeconds: Int,
     @MappedField
     val description: String? = null,

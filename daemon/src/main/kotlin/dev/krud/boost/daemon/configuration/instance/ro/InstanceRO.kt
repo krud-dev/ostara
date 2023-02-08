@@ -5,11 +5,13 @@ import java.util.*
 class InstanceRO(
     val id: UUID,
     val alias: String,
+    var actuatorUrl: String,
     val dataCollectionIntervalSeconds: Int,
     val description: String? = null,
     val color: String? = null,
     val icon: String? = null,
     val sort: Int? = null,
-    val parentApplicationId: UUID? = null
+    val parentApplicationId: UUID? = null,
+    var endpoints: Set<String> = emptySet()
 )
 
