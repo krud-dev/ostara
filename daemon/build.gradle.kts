@@ -1,5 +1,8 @@
+
+import cz.habarta.typescript.generator.gradle.GenerateTask
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 import org.springframework.boot.gradle.tasks.bundling.BootJar
+import java.nio.file.Paths
 
 plugins {
     id("org.springframework.boot") version "3.0.2"
@@ -7,6 +10,7 @@ plugins {
     kotlin("jvm") version "1.7.22"
     kotlin("plugin.spring") version "1.7.22"
     kotlin("plugin.jpa") version "1.7.22"
+    id("cz.habarta.typescript-generator") version "3.1.1185"
 }
 
 group = "dev.krud.boost"
@@ -51,10 +55,26 @@ tasks.withType<BootJar> {
 }
 
 tasks.withType<KotlinCompile> {
+    finalizedBy("generateTypeScript")
     kotlinOptions {
         freeCompilerArgs = listOf("-Xjsr305=strict")
         jvmTarget = "17"
     }
+}
+
+tasks.withType<GenerateTask> {
+    jsonLibrary = cz.habarta.typescript.generator.JsonLibrary.jackson2
+    classPatterns = listOf(
+        "dev.krud.boost.**.*RO",
+    )
+    excludeClasses = listOf(
+        "java.io.Serializable",
+    )
+    noFileComment = false
+    outputKind = cz.habarta.typescript.generator.TypeScriptOutputKind.module
+    outputFile = Paths.get(project.projectDir.path, "..", "src", "common", "generated_definitions.d.ts").toString()
+    nullabilityDefinition = cz.habarta.typescript.generator.NullabilityDefinition.undefinedInlineUnion
+    mapDate = cz.habarta.typescript.generator.DateMapping.asNumber
 }
 
 tasks.withType<Test> {
