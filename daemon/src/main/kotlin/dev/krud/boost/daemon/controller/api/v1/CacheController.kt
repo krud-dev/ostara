@@ -2,6 +2,7 @@ package dev.krud.boost.daemon.controller.api.v1
 
 import dev.krud.boost.daemon.configuration.instance.cache.InstanceCacheService
 import dev.krud.boost.daemon.configuration.instance.cache.ro.InstanceCacheRO
+import dev.krud.boost.daemon.configuration.instance.cache.ro.InstanceCacheStatisticsRO
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.media.Content
 import io.swagger.v3.oas.annotations.responses.ApiResponse
@@ -58,5 +59,16 @@ class CacheController(
     @ApiResponse(responseCode = "400", description = "Instance is missing ability", content = [Content()])
     fun evictInstanceCache(@PathVariable instanceId: UUID, @PathVariable cacheName: String) {
         instanceCacheService.evictCache(instanceId, cacheName)
+    }
+
+    @GetMapping("/instance/{instanceId}/{cacheName}/statistics")
+    @ResponseStatus(HttpStatus.OK)
+    @Operation(
+        summary = "Get cache statistics for the instance"
+    )
+    @ApiResponse(responseCode = "200", description = "Cache statistics")
+    @ApiResponse(responseCode = "400", description = "Instance is missing ability", content = [Content()])
+    fun getInstanceCacheStatistics(@PathVariable instanceId: UUID, @PathVariable cacheName: String): InstanceCacheStatisticsRO {
+        return instanceCacheService.getCacheStatistics(instanceId, cacheName)
     }
 }
