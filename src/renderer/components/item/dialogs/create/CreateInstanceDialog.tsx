@@ -3,58 +3,66 @@ import React, { FunctionComponent, useCallback } from 'react';
 import { Dialog } from '@mui/material';
 import NiceModal, { NiceModalHocProps, useModal } from '@ebay/nice-modal-react';
 import DialogTitleEnhanced from 'renderer/components/dialog/DialogTitleEnhanced';
-import { Application, EnrichedInstance, Instance } from 'infra/configuration/model/configuration';
-import { useCreateApplication } from 'renderer/apis/configuration/application/createApplication';
-import { useCreateInstance } from 'renderer/apis/configuration/instance/createInstance';
 import InstanceDetailsForm, { InstanceFormValues } from 'renderer/components/item/dialogs/forms/InstanceDetailsForm';
+import { useCrudCreate } from '../../../../apis/crud/crudCreate';
+import {
+  ApplicationModifyRequestRO,
+  ApplicationRO,
+  InstanceModifyRequestRO,
+  InstanceRO,
+} from '../../../../../common/generated_definitions';
+import { applicationCrudEntity } from '../../../../apis/crud/entity/entities/application.crud-entity';
+import { instanceCrudEntity } from '../../../../apis/crud/entity/entities/instance.crud-entity';
 
 export type CreateInstanceDialogProps = {
   parentApplicationId?: string;
   parentFolderId?: string;
-  order?: number;
-  onCreated?: (item: EnrichedInstance) => void;
+  sort?: number;
+  onCreated?: (item: InstanceRO) => void;
 };
 
 const CreateInstanceDialog: FunctionComponent<CreateInstanceDialogProps & NiceModalHocProps> = NiceModal.create(
-  ({ parentApplicationId, parentFolderId, order, onCreated }) => {
+  ({ parentApplicationId, parentFolderId, sort, onCreated }) => {
     const modal = useModal();
 
-    const createApplicationState = useCreateApplication();
-    const createInstanceState = useCreateInstance();
+    const createApplicationState = useCrudCreate<ApplicationRO, ApplicationModifyRequestRO>();
+    const createInstanceState = useCrudCreate<InstanceRO, InstanceModifyRequestRO>();
 
     const submitHandler = useCallback(
       async (data: InstanceFormValues): Promise<void> => {
         try {
           let instanceParentApplicationId = parentApplicationId;
-          let instanceOrder = order ?? 1;
+          let instanceSort = sort ?? 1;
 
           if (!instanceParentApplicationId) {
-            const applicationToCreate: Omit<Application, 'id' | 'type'> = {
+            const applicationToCreate: ApplicationModifyRequestRO = {
               // dataCollectionMode: 'on',
               alias: data.alias,
-              applicationType: 'SpringBoot',
+              type: 'SPRING_BOOT',
               parentFolderId: parentFolderId,
-              order: order ?? 1,
+              sort: sort ?? 1,
             };
 
             const application = await createApplicationState.mutateAsync({
+              entity: applicationCrudEntity,
               item: applicationToCreate,
             });
 
             instanceParentApplicationId = application.id;
-            instanceOrder = 1;
+            instanceSort = 1;
           }
 
-          const instanceToCreate: Omit<Instance, 'id' | 'type'> = {
+          const instanceToCreate: InstanceModifyRequestRO = {
             // dataCollectionMode: 'inherited',
             alias: data.alias,
             actuatorUrl: data.actuatorUrl,
             dataCollectionIntervalSeconds: data.dataCollectionIntervalSeconds,
             parentApplicationId: instanceParentApplicationId,
-            order: instanceOrder,
+            sort: instanceSort,
           };
 
           const result = await createInstanceState.mutateAsync({
+            entity: instanceCrudEntity,
             item: instanceToCreate,
           });
           if (result) {
@@ -65,7 +73,7 @@ const CreateInstanceDialog: FunctionComponent<CreateInstanceDialogProps & NiceMo
           }
         } catch (e) {}
       },
-      [parentApplicationId, parentFolderId, order, onCreated, modal, createApplicationState, createInstanceState]
+      [parentApplicationId, parentFolderId, sort, onCreated, modal, createApplicationState, createInstanceState]
     );
 
     const cancelHandler = useCallback((): void => {

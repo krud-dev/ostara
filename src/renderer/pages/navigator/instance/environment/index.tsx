@@ -1,7 +1,6 @@
 import React, { FunctionComponent, useCallback, useMemo } from 'react';
 import Page from 'renderer/components/layout/Page';
 import { useNavigatorTree } from 'renderer/contexts/NavigatorTreeContext';
-import { EnrichedInstance } from 'infra/configuration/model/configuration';
 import { Entity } from 'renderer/entity/entity';
 import TableComponent from 'renderer/components/table/TableComponent';
 import { EnvProperty, useGetInstanceEnvPropertiesQuery } from 'renderer/apis/instance/getInstanceEnvProperties';
@@ -9,12 +8,13 @@ import { instanceEnvEntity } from 'renderer/entity/entities/instanceEnv.entity';
 import useCopyToClipboard from 'renderer/hooks/useCopyToClipboard';
 import { COPY_ID } from 'renderer/entity/actions';
 import { Card } from '@mui/material';
+import { InstanceRO } from '../../../../../common/generated_definitions';
 
 const InstanceEnvironment: FunctionComponent = () => {
   const { selectedItem } = useNavigatorTree();
   const copyToClipboard = useCopyToClipboard();
 
-  const item = useMemo<EnrichedInstance>(() => selectedItem as EnrichedInstance, [selectedItem]);
+  const item = useMemo<InstanceRO>(() => selectedItem as InstanceRO, [selectedItem]);
 
   const entity = useMemo<Entity<EnvProperty>>(() => instanceEnvEntity, []);
   const queryState = useGetInstanceEnvPropertiesQuery({ instanceId: item.id });

@@ -1,4 +1,4 @@
-import { darken, IconButton, Stack, TableCell, TableRow, Typography } from '@mui/material';
+import { IconButton, Stack, TableCell, TableRow, Typography } from '@mui/material';
 import { useTable } from 'renderer/components/table/TableContext';
 import React, { useCallback, useMemo } from 'react';
 import { KeyboardArrowDown, KeyboardArrowRight, SvgIconComponent } from '@mui/icons-material';
@@ -12,7 +12,7 @@ type TableRowGroupProps<EntityItem> = {
 };
 
 export default function TableRowGroup<EntityItem>({ group, title, collapsed, depth }: TableRowGroupProps<EntityItem>) {
-  const { toggleGroupHandler } = useTable<EntityItem>();
+  const { toggleGroupHandler } = useTable<EntityItem, unknown>();
 
   const ToggleIcon = useMemo<SvgIconComponent>(() => (collapsed ? KeyboardArrowRight : KeyboardArrowDown), [collapsed]);
 

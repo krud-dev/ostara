@@ -4,15 +4,15 @@ import { BarChartOutlined, ClassOutlined, ListAltOutlined } from '@mui/icons-mat
 import { urls } from 'renderer/routes/urls';
 import { useMemo } from 'react';
 import { FormattedMessage } from 'react-intl';
-import { EnrichedApplication } from 'infra/configuration/model/configuration';
 import { generatePath } from 'react-router-dom';
 import ItemHeader from 'renderer/components/item/ItemHeader';
 import { Box, Divider } from '@mui/material';
 import ApplicationDataCollectionToggle from 'renderer/components/item/data-collection/ApplicationDataCollectionToggle';
 import { IconViewer } from 'renderer/components/common/IconViewer';
 import { getItemTypeIcon } from 'renderer/utils/itemUtils';
+import { ApplicationRO } from '../../../../common/generated_definitions';
 
-type ApplicationSidebarProps = { item: EnrichedApplication; width: number };
+type ApplicationSidebarProps = { item: ApplicationRO; width: number };
 
 export default function ApplicationSidebar({ item, width }: ApplicationSidebarProps) {
   const navConfig = useMemo<SidebarConfig>(

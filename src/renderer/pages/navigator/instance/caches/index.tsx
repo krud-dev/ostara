@@ -1,7 +1,6 @@
 import React, { FunctionComponent, useCallback, useMemo } from 'react';
 import Page from 'renderer/components/layout/Page';
 import { useNavigatorTree } from 'renderer/contexts/NavigatorTreeContext';
-import { EnrichedInstance } from 'infra/configuration/model/configuration';
 import TableComponent from 'renderer/components/table/TableComponent';
 import { useSnackbar } from 'notistack';
 import { Entity } from 'renderer/entity/entity';
@@ -12,12 +11,13 @@ import { useEvictInstanceCaches } from 'renderer/apis/instance/evictInstanceCach
 import { useEvictAllInstanceCaches } from 'renderer/apis/instance/evictAllInstanceCaches';
 import { EVICT_CACHE_ID } from 'renderer/entity/actions';
 import { Card } from '@mui/material';
+import { InstanceRO } from '../../../../../common/generated_definitions';
 
 const InstanceCaches: FunctionComponent = () => {
   const { selectedItem } = useNavigatorTree();
   const { enqueueSnackbar } = useSnackbar();
 
-  const item = useMemo<EnrichedInstance>(() => selectedItem as EnrichedInstance, [selectedItem]);
+  const item = useMemo<InstanceRO>(() => selectedItem as InstanceRO, [selectedItem]);
 
   const entity = useMemo<Entity<EnrichedInstanceCache>>(() => instanceCacheEntity, []);
   const queryState = useGetInstanceCachesQuery({ instance: item });

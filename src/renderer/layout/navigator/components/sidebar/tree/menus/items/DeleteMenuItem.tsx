@@ -1,12 +1,12 @@
 import { useCallback } from 'react';
 import { FormattedMessage } from 'react-intl';
-import { useDeleteItem } from 'renderer/apis/configuration/item/deleteItem';
+import { useDeleteItem } from 'renderer/apis/item/deleteItem';
 import { showDeleteConfirmationDialog } from 'renderer/utils/dialogUtils';
-import { Item } from 'infra/configuration/model/configuration';
 import CustomMenuItem from 'renderer/components/menu/item/CustomMenuItem';
+import { ItemRO } from '../../../../../../../definitions/daemon';
 
 type DeleteMenuItemProps = {
-  item: Item;
+  item: ItemRO;
   onClose?: () => void;
 };
 

@@ -1,15 +1,13 @@
-import { Button, Card, CardContent, CardHeader, CircularProgress, Divider, Stack, Typography } from '@mui/material';
-import { EnrichedInstance } from 'infra/configuration/model/configuration';
+import { Card, CardContent, CircularProgress, Typography } from '@mui/material';
 import Page from 'renderer/components/layout/Page';
-import React, { useCallback, useMemo } from 'react';
+import React, { useMemo } from 'react';
 import { getItemHealthStatusColor } from 'renderer/utils/itemUtils';
 import { IconViewer } from 'renderer/components/common/IconViewer';
 import { FormattedMessage } from 'react-intl';
-import { showUpdateItemDialog } from 'renderer/utils/dialogUtils';
-import FormattedDateAndRelativeTime from 'renderer/components/time/FormattedDateAndRelativeTime';
+import { InstanceRO } from '../../../../../common/generated_definitions';
 
 type InstancePendingProps = {
-  item: EnrichedInstance;
+  item: InstanceRO;
 };
 
 export default function InstancePending({ item }: InstancePendingProps) {

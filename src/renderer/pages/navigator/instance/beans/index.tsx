@@ -1,17 +1,17 @@
 import React, { FunctionComponent, useCallback, useMemo } from 'react';
 import Page from 'renderer/components/layout/Page';
 import { useNavigatorTree } from 'renderer/contexts/NavigatorTreeContext';
-import { EnrichedInstance } from 'infra/configuration/model/configuration';
 import TableComponent from 'renderer/components/table/TableComponent';
 import { Entity } from 'renderer/entity/entity';
 import { instanceBeanEntity } from 'renderer/entity/entities/instanceBean.entity';
 import { InstanceBean, useGetInstanceBeansQuery } from 'renderer/apis/instance/getInstanceBeans';
 import { Card } from '@mui/material';
+import { InstanceRO } from '../../../../../common/generated_definitions';
 
 const InstanceBeans: FunctionComponent = () => {
   const { selectedItem } = useNavigatorTree();
 
-  const item = useMemo<EnrichedInstance>(() => selectedItem as EnrichedInstance, [selectedItem]);
+  const item = useMemo<InstanceRO>(() => selectedItem as InstanceRO, [selectedItem]);
 
   const entity = useMemo<Entity<InstanceBean>>(() => instanceBeanEntity, []);
   const queryState = useGetInstanceBeansQuery({ instanceId: item.id });

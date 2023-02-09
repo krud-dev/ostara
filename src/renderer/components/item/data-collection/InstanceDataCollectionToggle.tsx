@@ -1,9 +1,10 @@
 import React, { useCallback } from 'react';
-import { EnrichedInstance, InstanceDataCollectionMode } from 'infra/configuration/model/configuration';
-import { useUpdateItem } from 'renderer/apis/configuration/item/updateItem';
+import { InstanceDataCollectionMode } from 'infra/configuration/model/configuration';
+import { useUpdateItem } from 'renderer/apis/item/updateItem';
 import DataCollectionToggle from 'renderer/components/item/data-collection/DataCollectionToggle';
+import { InstanceRO } from '../../../../common/generated_definitions';
 
-type InstanceDataCollectionToggleProps = { item: EnrichedInstance };
+type InstanceDataCollectionToggleProps = { item: InstanceRO };
 
 export default function InstanceDataCollectionToggle({ item }: InstanceDataCollectionToggleProps) {
   const updateState = useUpdateItem();

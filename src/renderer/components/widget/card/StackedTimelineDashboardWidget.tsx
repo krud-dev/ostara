@@ -1,6 +1,5 @@
 import React, { FunctionComponent, useCallback, useMemo, useRef, useState } from 'react';
-import { StackedTimelineWidget } from 'infra/dashboard/model';
-import { DashboardWidgetCardProps } from 'renderer/components/widget/widget';
+import { DashboardWidgetCardProps, StackedTimelineWidget } from 'renderer/components/widget/widget';
 import DashboardGenericCard from 'renderer/components/widget/card/DashboardGenericCard';
 import { chain, every, isEmpty, isNaN, isNil, takeRight } from 'lodash';
 import { useIntl } from 'react-intl';

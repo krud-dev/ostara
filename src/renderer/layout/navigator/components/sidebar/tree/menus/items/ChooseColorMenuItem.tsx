@@ -3,9 +3,10 @@ import { Box, MenuItem, Stack } from '@mui/material';
 import { experimentalStyled as styled, useTheme } from '@mui/material/styles';
 import { amber, blue, deepOrange, green, indigo, orange, pink, purple, red } from '@mui/material/colors';
 import { CheckOutlined } from '@mui/icons-material';
-import { useSetItemColor } from 'renderer/apis/configuration/item/setItemColor';
-import { EnrichedItem } from 'infra/configuration/model/configuration';
+import { useSetItemColor } from 'renderer/apis/item/setItemColor';
 import { DEFAULT_COLOR_VALUE } from 'renderer/hooks/useItemColor';
+import { ItemRO } from '../../../../../../../definitions/daemon';
+import { getItemType } from '../../../../../../../utils/itemUtils';
 
 const MenuItemStyle = styled(MenuItem)(({ theme }) => ({
   cursor: 'default',
@@ -15,7 +16,7 @@ const MenuItemStyle = styled(MenuItem)(({ theme }) => ({
 }));
 
 type ChooseColorMenuItemProps = {
-  item: EnrichedItem;
+  item: ItemRO;
   onClose?: () => void;
 };
 
@@ -30,7 +31,7 @@ export default function ChooseColorMenuItem({ item, onClose }: ChooseColorMenuIt
     async (newColor: string | undefined): Promise<void> => {
       setSelectedColor(newColor);
       try {
-        await setItemColorState.mutateAsync({ id: item.id, color: newColor });
+        await setItemColorState.mutateAsync({ id: item.id, type: getItemType(item), color: newColor });
       } catch (e) {}
     },
     [onClose, item, setItemColorState]

@@ -1,7 +1,6 @@
 import React, { FunctionComponent, useCallback, useMemo } from 'react';
 import Page from 'renderer/components/layout/Page';
 import { useNavigatorTree } from 'renderer/contexts/NavigatorTreeContext';
-import { EnrichedApplication } from 'infra/configuration/model/configuration';
 import TableComponent from 'renderer/components/table/TableComponent';
 import { Entity } from 'renderer/entity/entity';
 import { Card } from '@mui/material';
@@ -13,11 +12,12 @@ import {
   useGetApplicationLoggersQuery,
 } from 'renderer/apis/application/getApplicationLoggers';
 import { useSetApplicationLoggerLevel } from 'renderer/apis/application/setApplicationLoggerLevel';
+import { ApplicationRO } from '../../../../../common/generated_definitions';
 
 const ApplicationLoggers: FunctionComponent = () => {
   const { selectedItem } = useNavigatorTree();
 
-  const item = useMemo<EnrichedApplication>(() => selectedItem as EnrichedApplication, [selectedItem]);
+  const item = useMemo<ApplicationRO>(() => selectedItem as ApplicationRO, [selectedItem]);
 
   const entity = useMemo<Entity<EnrichedApplicationLogger, LoggerCustomFilters>>(() => applicationLoggerEntity, []);
   const queryState = useGetApplicationLoggersQuery({ applicationId: item.id });

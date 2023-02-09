@@ -1,6 +1,5 @@
 import React, { FunctionComponent, useCallback, useMemo, useState } from 'react';
-import { DataBarWidget, WidgetValueType } from 'infra/dashboard/model';
-import { DashboardWidgetCardProps } from 'renderer/components/widget/widget';
+import { DashboardWidgetCardProps, DataBarWidget } from 'renderer/components/widget/widget';
 import DashboardGenericCard from 'renderer/components/widget/card/DashboardGenericCard';
 import { chain, isNil } from 'lodash';
 import { ApplicationMetricDTO } from 'infra/metrics/metricsService';

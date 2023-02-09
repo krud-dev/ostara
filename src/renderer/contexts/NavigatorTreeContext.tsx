@@ -7,27 +7,31 @@ import React, {
   useMemo,
   useState,
 } from 'react';
-import { EnrichedItem, isInstance, Item } from 'infra/configuration/model/configuration';
 import { TreeItem } from 'renderer/layout/navigator/components/sidebar/tree/tree';
-import { forEach } from 'lodash';
 import { useNavigate, useParams } from 'react-router-dom';
 import { urls } from 'renderer/routes/urls';
-import { useGetItemsQuery } from 'renderer/apis/configuration/item/getItems';
 import { useSubscribeToEvent } from 'renderer/apis/subscriptions/subscribeToEvent';
 import { useQueryClient } from '@tanstack/react-query';
 import { apiKeys } from '../apis/apiKeys';
+import { ItemRO } from '../definitions/daemon';
+import { useCrudSearchQuery } from '../apis/crud/crudSearch';
+import { ApplicationRO, FolderRO, InstanceRO } from '../../common/generated_definitions';
+import { instanceCrudEntity } from '../apis/crud/entity/entities/instance.crud-entity';
+import { folderCrudEntity } from '../apis/crud/entity/entities/folder.crud-entity';
+import { applicationCrudEntity } from '../apis/crud/entity/entities/application.crud-entity';
+import { buildTree } from '../utils/treeUtils';
 
 type NavigatorTreeAction = 'expandAll' | 'collapseAll';
 
 export type NavigatorTreeContextProps = {
   data: TreeItem[] | undefined;
-  selectedItem: EnrichedItem | undefined;
+  selectedItem: ItemRO | undefined;
   isLoading: boolean;
   isEmpty: boolean;
   hasData: boolean;
   action: NavigatorTreeAction | undefined;
   performAction: (action: NavigatorTreeAction) => void;
-  getItem: (id: string) => Item | undefined;
+  getItem: (id: string) => ItemRO | undefined;
 };
 
 const NavigatorTreeContext = React.createContext<NavigatorTreeContextProps>(undefined!);
@@ -39,67 +43,36 @@ const NavigatorTreeProvider: FunctionComponent<NavigatorTreeProviderProps> = ({ 
   const queryClient = useQueryClient();
   const params = useParams<{ id?: string }>();
 
-  const [data, setData] = useState<TreeItem[] | undefined>(undefined);
   const [action, setAction] = useState<NavigatorTreeAction | undefined>(undefined);
 
+  const searchFolderState = useCrudSearchQuery<FolderRO>({ entity: folderCrudEntity });
+  const searchApplicationState = useCrudSearchQuery<ApplicationRO>({ entity: applicationCrudEntity });
+  const searchInstanceState = useCrudSearchQuery<InstanceRO>({ entity: instanceCrudEntity });
+
+  const items = useMemo<ItemRO[] | undefined>(
+    () =>
+      searchFolderState.data && searchApplicationState.data && searchInstanceState.data
+        ? [
+            ...searchFolderState.data.results,
+            ...searchApplicationState.data.results,
+            ...searchInstanceState.data.results,
+          ]
+        : undefined,
+    [searchFolderState.data, searchApplicationState.data, searchInstanceState.data]
+  );
+  const data = useMemo<TreeItem[] | undefined>(() => items && buildTree(items), [items]);
   const isLoading = useMemo<boolean>(() => !data, [data]);
-  const isEmpty = useMemo<boolean>(() => data?.length === 0, [data]);
+  const isEmpty = useMemo<boolean>(() => !!data && data.length === 0, [data]);
   const hasData = useMemo<boolean>(() => !!data && data.length > 0, [data]);
 
-  const getItemsState = useGetItemsQuery({});
-
-  const buildTree = useCallback((items: EnrichedItem[]): TreeItem[] => {
-    const sortByOrder = (itemsToSort: EnrichedItem[]) => itemsToSort.sort((a, b) => (a.order ?? 0) - (b.order ?? 0));
-
-    const hashMap = new Map<string, TreeItem>();
-    forEach(items, (item) => {
-      hashMap.set(item.id, { ...item, children: [] });
-    });
-
-    const dataTree: TreeItem[] = [];
-    forEach(items, (item) => {
-      if (isInstance(item)) {
-        const treeItem = hashMap.get(item.id);
-        if (treeItem) {
-          const parentChildren = hashMap.get(item.parentApplicationId)?.children;
-          if (parentChildren) {
-            parentChildren.push(treeItem);
-            sortByOrder(parentChildren);
-          }
-        }
-      } else {
-        const treeItem = hashMap.get(item.id);
-        if (treeItem) {
-          if (item.parentFolderId) {
-            const parentChildren = hashMap.get(item.parentFolderId)?.children;
-            if (parentChildren) {
-              parentChildren.push(treeItem);
-              sortByOrder(parentChildren);
-            }
-          } else {
-            dataTree.push(treeItem);
-          }
-        }
-      }
-    });
-
-    sortByOrder(dataTree);
-    return dataTree;
-  }, []);
-
   useEffect(() => {
-    const result = getItemsState.data;
-    if (result) {
-      setData(buildTree(result));
-
-      if (params.id) {
-        const item = result.find((i) => i.id === params.id);
-        if (!item) {
-          navigate(urls.home.url);
-        }
+    if (items && params.id) {
+      const item = items.find((i) => i.id === params.id);
+      if (!item) {
+        navigate(urls.home.url);
       }
     }
-  }, [getItemsState.data]);
+  }, [items]);
 
   const subscribeToHealthEventsState = useSubscribeToEvent();
 
@@ -146,13 +119,13 @@ const NavigatorTreeProvider: FunctionComponent<NavigatorTreeProviderProps> = ({ 
   }, [action]);
 
   const getItem = useCallback(
-    (id: string): EnrichedItem | undefined => {
-      return getItemsState.data?.find((i) => i.id === id);
+    (id: string): ItemRO | undefined => {
+      return items?.find((i) => i.id === id);
     },
-    [getItemsState.data]
+    [items]
   );
 
-  const selectedItem = useMemo<EnrichedItem | undefined>(() => {
+  const selectedItem = useMemo<ItemRO | undefined>(() => {
     if (!params.id) {
       return undefined;
     }
@@ -161,7 +134,7 @@ const NavigatorTreeProvider: FunctionComponent<NavigatorTreeProviderProps> = ({ 
       return undefined;
     }
     return item;
-  }, [getItemsState.data, params.id]);
+  }, [getItem, params.id]);
 
   return (
     <NavigatorTreeContext.Provider

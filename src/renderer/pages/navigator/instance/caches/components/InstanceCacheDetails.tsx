@@ -2,8 +2,8 @@ import React, { useMemo } from 'react';
 import { InstanceCache } from 'infra/instance/models/cache';
 import { useGetInstanceCacheStatisticsQuery } from 'renderer/apis/instance/getInstanceCacheStatistics';
 import { useNavigatorTree } from 'renderer/contexts/NavigatorTreeContext';
-import { EnrichedInstance } from 'infra/configuration/model/configuration';
 import ItemCacheDetails, { ItemCacheStatistics } from 'renderer/components/item/cache/ItemCacheDetails';
+import { InstanceRO } from '../../../../../../common/generated_definitions';
 
 type InstanceCacheDetailsProps = {
   row: InstanceCache;
@@ -12,7 +12,7 @@ type InstanceCacheDetailsProps = {
 export default function InstanceCacheDetails({ row }: InstanceCacheDetailsProps) {
   const { selectedItem } = useNavigatorTree();
 
-  const item = useMemo<EnrichedInstance>(() => selectedItem as EnrichedInstance, [selectedItem]);
+  const item = useMemo<InstanceRO>(() => selectedItem as InstanceRO, [selectedItem]);
 
   const statisticsQuery = useGetInstanceCacheStatisticsQuery({ instanceId: item.id, cacheName: row.name });
   const statistics = useMemo<ItemCacheStatistics | undefined>(

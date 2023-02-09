@@ -1,7 +1,6 @@
 import React, { FunctionComponent, useMemo } from 'react';
 import Page from 'renderer/components/layout/Page';
 import { useNavigatorTree } from 'renderer/contexts/NavigatorTreeContext';
-import { EnrichedInstance } from 'infra/configuration/model/configuration';
 import { Box, Card, CircularProgress } from '@mui/material';
 import { isEmpty, map } from 'lodash';
 import EmptyContent from 'renderer/components/help/EmptyContent';
@@ -9,11 +8,12 @@ import { FormattedMessage } from 'react-intl';
 import TabPanel, { TabInfo } from 'renderer/components/layout/TabPanel';
 import { useGetInstanceLiquibaseQuery } from 'renderer/apis/instance/getInstanceLiquibase';
 import LiquibaseChangesetsTable from 'renderer/pages/navigator/instance/liquibase/components/LiquibaseChangesetsTable';
+import { InstanceRO } from '../../../../../common/generated_definitions';
 
 const InstanceLiquibase: FunctionComponent = () => {
   const { selectedItem } = useNavigatorTree();
 
-  const item = useMemo<EnrichedInstance>(() => selectedItem as EnrichedInstance, [selectedItem]);
+  const item = useMemo<InstanceRO>(() => selectedItem as InstanceRO, [selectedItem]);
 
   const contextsState = useGetInstanceLiquibaseQuery({ instanceId: item.id });
 

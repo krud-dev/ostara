@@ -1,11 +1,11 @@
 import { useCallback } from 'react';
 import { FormattedMessage } from 'react-intl';
-import { Item } from 'infra/configuration/model/configuration';
 import CustomMenuItem from 'renderer/components/menu/item/CustomMenuItem';
 import { showUpdateItemDialog } from 'renderer/utils/dialogUtils';
+import { ItemRO } from '../../../../../../../definitions/daemon';
 
 type UpdateMenuItemProps = {
-  item: Item;
+  item: ItemRO;
   onClose?: () => void;
 };
 

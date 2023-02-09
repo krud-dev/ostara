@@ -1,12 +1,12 @@
 import { useCallback } from 'react';
 import { FormattedMessage } from 'react-intl';
-import { Item } from 'infra/configuration/model/configuration';
 import { useUi } from 'renderer/contexts/UiContext';
 import CustomMenuItem from 'renderer/components/menu/item/CustomMenuItem';
 import useCopyToClipboard from 'renderer/hooks/useCopyToClipboard';
+import { ItemRO } from '../../../../../../../definitions/daemon';
 
 type CopyIdToClipboardMenuItemProps = {
-  item: Item;
+  item: ItemRO;
   onClose?: () => void;
 };
 

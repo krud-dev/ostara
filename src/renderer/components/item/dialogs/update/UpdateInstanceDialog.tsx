@@ -3,24 +3,26 @@ import React, { FunctionComponent, useCallback } from 'react';
 import { Dialog } from '@mui/material';
 import NiceModal, { NiceModalHocProps, useModal } from '@ebay/nice-modal-react';
 import DialogTitleEnhanced from 'renderer/components/dialog/DialogTitleEnhanced';
-import { EnrichedInstance, Instance } from 'infra/configuration/model/configuration';
 import InstanceDetailsForm, { InstanceFormValues } from 'renderer/components/item/dialogs/forms/InstanceDetailsForm';
-import { useUpdateInstance } from 'renderer/apis/configuration/instance/updateInstance';
+import { InstanceModifyRequestRO, InstanceRO } from '../../../../../common/generated_definitions';
+import { useCrudUpdate } from '../../../../apis/crud/crudUpdate';
+import { instanceCrudEntity } from '../../../../apis/crud/entity/entities/instance.crud-entity';
 
 export type UpdateInstanceDialogProps = {
-  item: Instance;
-  onUpdated?: (item: EnrichedInstance) => void;
+  item: InstanceRO;
+  onUpdated?: (item: InstanceRO) => void;
 };
 
 const UpdateInstanceDialog: FunctionComponent<UpdateInstanceDialogProps & NiceModalHocProps> = NiceModal.create(
   ({ item, onUpdated }) => {
     const modal = useModal();
 
-    const updateItemState = useUpdateInstance();
+    const updateState = useCrudUpdate<InstanceRO, InstanceModifyRequestRO>();
 
     const submitHandler = useCallback(async (data: InstanceFormValues): Promise<void> => {
       try {
-        const result = await updateItemState.mutateAsync({
+        const result = await updateState.mutateAsync({
+          entity: instanceCrudEntity,
           id: item.id,
           item: { ...item, ...data },
         });

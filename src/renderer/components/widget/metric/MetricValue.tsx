@@ -1,9 +1,9 @@
 import * as React from 'react';
 import { ReactNode, useMemo } from 'react';
 import CountdownValue from 'renderer/components/widget/metric/CountdownValue';
-import { WidgetValueType } from 'infra/dashboard/model';
 import { formatWidgetValue } from 'renderer/utils/formatUtils';
 import { useIntl } from 'react-intl';
+import { WidgetValueType } from '../widget';
 
 export type MetricValueProps = {
   value: number;

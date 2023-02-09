@@ -1,4 +1,4 @@
-import { DataBarWidget, ProgressCircleWidget, StackedTimelineWidget } from './model';
+import { DataBarWidget, ProgressCircleWidget, StackedTimelineWidget } from '../../../../../components/widget/widget';
 
 export const springBootWidgets = {
   threadCount: <StackedTimelineWidget>{

@@ -1,10 +1,10 @@
 import { useMemo } from 'react';
-import { EnrichedItem } from 'infra/configuration/model/configuration';
 import { useTheme } from '@mui/material/styles';
+import { ItemRO } from '../definitions/daemon';
 
 export const DEFAULT_COLOR_VALUE = 'default';
 
-const useItemColor = (item: EnrichedItem): string => {
+const useItemColor = (item: ItemRO): string => {
   const theme = useTheme();
   return useMemo<string>(
     () =>

@@ -2,18 +2,19 @@ import { useCallback, useMemo } from 'react';
 import { FormattedMessage } from 'react-intl';
 import { NodeApi } from 'react-arborist';
 import { TreeItem } from 'renderer/layout/navigator/components/sidebar/tree/tree';
-import { Folder, isFolder, Item } from 'infra/configuration/model/configuration';
-import { getItemTypeIcon } from 'renderer/utils/itemUtils';
+import { getItemTypeIcon, isFolder } from 'renderer/utils/itemUtils';
 import NiceModal from '@ebay/nice-modal-react';
 import CreateFolderDialog from 'renderer/components/item/dialogs/create/CreateFolderDialog';
-import { getNewItemOrder } from 'renderer/utils/treeUtils';
+import { getNewItemSort } from 'renderer/utils/treeUtils';
 import CustomMenuItem from 'renderer/components/menu/item/CustomMenuItem';
 import { MUIconType } from 'renderer/components/common/IconViewer';
+import { ItemRO } from '../../../../../../../definitions/daemon';
+import { FolderRO } from '../../../../../../../../common/generated_definitions';
 
 type AddFolderMenuItemProps = {
   node: NodeApi<TreeItem>;
   onClose?: () => void;
-  onCreated?: (item: Item) => void;
+  onCreated?: (item: ItemRO) => void;
 };
 
 export default function AddFolderMenuItem({ node, onClose, onCreated }: AddFolderMenuItemProps) {
@@ -24,9 +25,9 @@ export default function AddFolderMenuItem({ node, onClose, onCreated }: AddFolde
       return;
     }
 
-    NiceModal.show<Folder | undefined>(CreateFolderDialog, {
+    NiceModal.show<FolderRO | undefined>(CreateFolderDialog, {
       parentFolderId: node.data.id,
-      order: getNewItemOrder(node),
+      sort: getNewItemSort(node),
       onCreated: onCreated,
     });
   }, [onClose, node, onCreated]);

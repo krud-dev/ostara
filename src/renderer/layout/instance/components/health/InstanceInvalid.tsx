@@ -1,8 +1,8 @@
 import { Button, Card, CardContent, CardHeader, Divider, Stack, Typography } from '@mui/material';
-import { EnrichedInstance, InstanceHealth } from 'infra/configuration/model/configuration';
+import { InstanceHealth } from 'infra/configuration/model/configuration';
 import Page from 'renderer/components/layout/Page';
 import React, { useCallback, useMemo, useState } from 'react';
-import { getInstanceHealthStatusColor, getItemHealthStatusColor } from 'renderer/utils/itemUtils';
+import { getInstanceHealthStatusColor } from 'renderer/utils/itemUtils';
 import { IconViewer } from 'renderer/components/common/IconViewer';
 import { FormattedMessage } from 'react-intl';
 import { showUpdateItemDialog } from 'renderer/utils/dialogUtils';
@@ -10,17 +10,24 @@ import FormattedDateAndRelativeTime from 'renderer/components/time/FormattedDate
 import { useUpdateEffect } from 'react-use';
 import { useFetchInstanceHealth } from 'renderer/apis/instance/fetchInstanceHealth';
 import { LoadingButton } from '@mui/lab';
+import { InstanceRO } from '../../../../../common/generated_definitions';
 
 type InstanceInvalidProps = {
-  item: EnrichedInstance;
+  item: InstanceRO;
 };
 
 export default function InstanceInvalid({ item }: InstanceInvalidProps) {
-  const [health, setHealth] = useState<InstanceHealth>(item.health);
+  // TODO: Remove when health is available
+  const [health, setHealth] = useState<InstanceHealth>({
+    status: 'INVALID',
+    lastUpdateTime: 0,
+    lastStatusChangeTime: 0,
+  });
+  // const [health, setHealth] = useState<InstanceHealth>(item.health);
 
-  useUpdateEffect(() => {
-    setHealth(item.health);
-  }, [item.health]);
+  // useUpdateEffect(() => {
+  //   setHealth(item.health);
+  // }, [item.health]);
 
   const healthStatusColor = useMemo<string | undefined>(() => getInstanceHealthStatusColor(health), [health]);
 

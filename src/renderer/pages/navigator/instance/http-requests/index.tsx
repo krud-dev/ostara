@@ -1,25 +1,21 @@
 import React, { FunctionComponent, useCallback, useMemo } from 'react';
 import Page from 'renderer/components/layout/Page';
 import { useNavigatorTree } from 'renderer/contexts/NavigatorTreeContext';
-import { EnrichedInstance } from 'infra/configuration/model/configuration';
 import TableComponent from 'renderer/components/table/TableComponent';
 import { Entity } from 'renderer/entity/entity';
 import { InstanceHttpRequestStatistics } from 'infra/instance/models/httpRequestStatistics';
 import { useGetInstanceHttpRequestStatisticsQuery } from 'renderer/apis/instance/getInstanceHttpRequestStatistics';
 import { instanceHttpRequestEntity } from 'renderer/entity/entities/instanceHttpRequest.entity';
 import { Card } from '@mui/material';
+import { InstanceRO } from '../../../../../common/generated_definitions';
 
 const InstanceHttpRequests: FunctionComponent = () => {
   const { selectedItem } = useNavigatorTree();
 
-  const item = useMemo<EnrichedInstance | undefined>(
-    () => selectedItem as EnrichedInstance | undefined,
-    [selectedItem]
-  );
-  const itemId = useMemo<string>(() => item?.id || '', [item]);
+  const item = useMemo<InstanceRO>(() => selectedItem as InstanceRO, [selectedItem]);
 
   const entity = useMemo<Entity<InstanceHttpRequestStatistics>>(() => instanceHttpRequestEntity, []);
-  const queryState = useGetInstanceHttpRequestStatisticsQuery({ instanceId: itemId });
+  const queryState = useGetInstanceHttpRequestStatisticsQuery({ instanceId: item.id });
 
   const actionsHandler = useCallback(async (actionId: string, row: InstanceHttpRequestStatistics): Promise<void> => {},
   []);

@@ -3,24 +3,26 @@ import React, { FunctionComponent, useCallback } from 'react';
 import { Dialog } from '@mui/material';
 import NiceModal, { NiceModalHocProps, useModal } from '@ebay/nice-modal-react';
 import DialogTitleEnhanced from 'renderer/components/dialog/DialogTitleEnhanced';
-import { EnrichedFolder, Folder } from 'infra/configuration/model/configuration';
-import { useUpdateFolder } from 'renderer/apis/configuration/folder/updateFolder';
 import FolderDetailsForm, { FolderFormValues } from 'renderer/components/item/dialogs/forms/FolderDetailsForm';
+import { useCrudUpdate } from '../../../../apis/crud/crudUpdate';
+import { FolderModifyRequestRO, FolderRO } from '../../../../../common/generated_definitions';
+import { folderCrudEntity } from '../../../../apis/crud/entity/entities/folder.crud-entity';
 
 export type UpdateFolderDialogProps = {
-  item: Folder;
-  onUpdated?: (item: EnrichedFolder) => void;
+  item: FolderRO;
+  onUpdated?: (item: FolderRO) => void;
 };
 
 const UpdateFolderDialog: FunctionComponent<UpdateFolderDialogProps & NiceModalHocProps> = NiceModal.create(
   ({ item, onUpdated }) => {
     const modal = useModal();
 
-    const updateItemState = useUpdateFolder();
+    const updateState = useCrudUpdate<FolderRO, FolderModifyRequestRO>();
 
     const submitHandler = useCallback(async (data: FolderFormValues): Promise<void> => {
       try {
-        const result = await updateItemState.mutateAsync({
+        const result = await updateState.mutateAsync({
+          entity: folderCrudEntity,
           id: item.id,
           item: { ...item, ...data },
         });

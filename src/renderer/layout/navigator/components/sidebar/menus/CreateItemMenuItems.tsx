@@ -3,7 +3,6 @@ import { FormattedMessage } from 'react-intl';
 import { getItemTypeIcon } from 'renderer/utils/itemUtils';
 import NiceModal from '@ebay/nice-modal-react';
 import CreateFolderDialog from 'renderer/components/item/dialogs/create/CreateFolderDialog';
-import { Application, Folder, Instance } from 'infra/configuration/model/configuration';
 import { useNavigatorTree } from 'renderer/contexts/NavigatorTreeContext';
 import { chain } from 'lodash';
 import CreateApplicationDialog from 'renderer/components/item/dialogs/create/CreateApplicationDialog';
@@ -11,6 +10,7 @@ import CreateInstanceDialog from 'renderer/components/item/dialogs/create/Create
 import { PopupState } from 'material-ui-popup-state/hooks';
 import CustomMenuItem from 'renderer/components/menu/item/CustomMenuItem';
 import { MUIconType } from 'renderer/components/common/IconViewer';
+import { ApplicationRO, FolderRO, InstanceRO } from '../../../../../../common/generated_definitions';
 
 type CreateItemMenuItemsProps = {
   menuState: PopupState;
@@ -22,7 +22,7 @@ export default function CreateItemMenuItems({ menuState }: CreateItemMenuItemsPr
   const getNewItemOrder = useCallback((): number => {
     return data?.length
       ? chain(data)
-          .map<number>((item) => item.order ?? 0)
+          .map<number>((item) => item.sort ?? 0)
           .max()
           .value() + 1
       : 1;
@@ -31,24 +31,24 @@ export default function CreateItemMenuItems({ menuState }: CreateItemMenuItemsPr
   const createFolderHandler = useCallback((): void => {
     menuState.close();
 
-    NiceModal.show<Folder | undefined>(CreateFolderDialog, {
-      order: getNewItemOrder(),
+    NiceModal.show<FolderRO | undefined>(CreateFolderDialog, {
+      sort: getNewItemOrder(),
     });
   }, [menuState, getNewItemOrder]);
 
   const createApplicationHandler = useCallback((): void => {
     menuState.close();
 
-    NiceModal.show<Application | undefined>(CreateApplicationDialog, {
-      order: getNewItemOrder(),
+    NiceModal.show<ApplicationRO | undefined>(CreateApplicationDialog, {
+      sort: getNewItemOrder(),
     });
   }, [menuState, getNewItemOrder]);
 
   const createInstanceHandler = useCallback((): void => {
     menuState.close();
 
-    NiceModal.show<Instance | undefined>(CreateInstanceDialog, {
-      order: getNewItemOrder(),
+    NiceModal.show<InstanceRO | undefined>(CreateInstanceDialog, {
+      sort: getNewItemOrder(),
     });
   }, [menuState, getNewItemOrder]);
 

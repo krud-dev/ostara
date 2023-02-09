@@ -4,7 +4,6 @@ import { COMPONENTS_SPACING } from 'renderer/constants/ui';
 import React, { useMemo } from 'react';
 import { InstanceHttpRequestStatistics } from 'infra/instance/models/httpRequestStatistics';
 import { useGetInstanceHttpRequestStatisticsForUriByMethodsQuery } from 'renderer/apis/instance/getInstanceHttpRequestStatisticsForUriByMethods';
-import { EnrichedInstance } from 'infra/configuration/model/configuration';
 import { useNavigatorTree } from 'renderer/contexts/NavigatorTreeContext';
 import InstanceHttpRequestCharts, {
   InstanceHttpRequestChartsData,
@@ -12,6 +11,7 @@ import InstanceHttpRequestCharts, {
 import { useGetInstanceHttpRequestStatisticsForUriByOutcomesQuery } from 'renderer/apis/instance/getInstanceHttpRequestStatisticsForUriByOutcomes';
 import { useGetInstanceHttpRequestStatisticsForUriByStatusesQuery } from 'renderer/apis/instance/getInstanceHttpRequestStatisticsForUriByStatuses';
 import { useGetInstanceHttpRequestStatisticsForUriByExceptionsQuery } from 'renderer/apis/instance/getInstanceHttpRequestStatisticsForUriByExceptions';
+import { InstanceRO } from '../../../../../../common/generated_definitions';
 
 type InstanceBeanDetailsProps = {
   row: InstanceHttpRequestStatistics;
@@ -20,7 +20,7 @@ type InstanceBeanDetailsProps = {
 export default function InstanceHttpRequestDetails({ row }: InstanceBeanDetailsProps) {
   const { selectedItem } = useNavigatorTree();
 
-  const item = useMemo<EnrichedInstance>(() => selectedItem as EnrichedInstance, [selectedItem]);
+  const item = useMemo<InstanceRO>(() => selectedItem as InstanceRO, [selectedItem]);
 
   const methodsState = useGetInstanceHttpRequestStatisticsForUriByMethodsQuery({ instanceId: item.id, uri: row.uri });
   const methodsData = useMemo<InstanceHttpRequestChartsData | undefined>(

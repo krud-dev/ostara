@@ -3,35 +3,37 @@ import React, { FunctionComponent, useCallback } from 'react';
 import { Dialog } from '@mui/material';
 import NiceModal, { NiceModalHocProps, useModal } from '@ebay/nice-modal-react';
 import DialogTitleEnhanced from 'renderer/components/dialog/DialogTitleEnhanced';
-import { Application, EnrichedApplication } from 'infra/configuration/model/configuration';
-import { useCreateApplication } from 'renderer/apis/configuration/application/createApplication';
 import ApplicationDetailsForm, {
   ApplicationFormValues,
 } from 'renderer/components/item/dialogs/forms/ApplicationDetailsForm';
+import { useCrudCreate } from '../../../../apis/crud/crudCreate';
+import { ApplicationModifyRequestRO, ApplicationRO } from '../../../../../common/generated_definitions';
+import { applicationCrudEntity } from '../../../../apis/crud/entity/entities/application.crud-entity';
 
 export type CreateApplicationDialogProps = {
   parentFolderId?: string;
-  order?: number;
-  onCreated?: (item: EnrichedApplication) => void;
+  sort?: number;
+  onCreated?: (item: ApplicationRO) => void;
 };
 
 const CreateApplicationDialog: FunctionComponent<CreateApplicationDialogProps & NiceModalHocProps> = NiceModal.create(
-  ({ parentFolderId, order, onCreated }) => {
+  ({ parentFolderId, sort, onCreated }) => {
     const modal = useModal();
 
-    const createState = useCreateApplication();
+    const createState = useCrudCreate<ApplicationRO, ApplicationModifyRequestRO>();
 
     const submitHandler = useCallback(
       async (data: ApplicationFormValues): Promise<void> => {
-        const itemToCreate: Omit<Application, 'id' | 'type'> = {
+        const itemToCreate: ApplicationModifyRequestRO = {
           // dataCollectionMode: 'on',
           alias: data.alias,
-          applicationType: 'SpringBoot',
+          type: 'SPRING_BOOT',
           parentFolderId: parentFolderId,
-          order: order ?? 1,
+          sort: sort ?? 1,
         };
         try {
           const result = await createState.mutateAsync({
+            entity: applicationCrudEntity,
             item: itemToCreate,
           });
           if (result) {
@@ -42,7 +44,7 @@ const CreateApplicationDialog: FunctionComponent<CreateApplicationDialogProps & 
           }
         } catch (e) {}
       },
-      [parentFolderId, order, onCreated, createState, modal]
+      [parentFolderId, sort, onCreated, createState, modal]
     );
 
     const cancelHandler = useCallback((): void => {

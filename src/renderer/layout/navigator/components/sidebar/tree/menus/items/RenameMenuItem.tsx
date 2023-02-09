@@ -2,12 +2,12 @@ import { useCallback } from 'react';
 import { FormattedMessage } from 'react-intl';
 import { NodeApi } from 'react-arborist';
 import { TreeItem } from 'renderer/layout/navigator/components/sidebar/tree/tree';
-import { Item } from 'infra/configuration/model/configuration';
 import CustomMenuItem from 'renderer/components/menu/item/CustomMenuItem';
 import { showUpdateItemDialog } from 'renderer/utils/dialogUtils';
+import { ItemRO } from '../../../../../../../definitions/daemon';
 
 type RenameMenuItemProps = {
-  item: Item;
+  item: ItemRO;
   node?: NodeApi<TreeItem>;
   onClose?: () => void;
 };

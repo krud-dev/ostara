@@ -3,31 +3,32 @@ import React, { FunctionComponent, useCallback } from 'react';
 import { Dialog } from '@mui/material';
 import NiceModal, { NiceModalHocProps, useModal } from '@ebay/nice-modal-react';
 import DialogTitleEnhanced from 'renderer/components/dialog/DialogTitleEnhanced';
-import { EnrichedFolder, Folder } from 'infra/configuration/model/configuration';
-import { useCreateFolder } from 'renderer/apis/configuration/folder/createFolder';
 import FolderDetailsForm, { FolderFormValues } from 'renderer/components/item/dialogs/forms/FolderDetailsForm';
+import { FolderModifyRequestRO, FolderRO } from '../../../../../common/generated_definitions';
+import { useCrudCreate } from '../../../../apis/crud/crudCreate';
+import { folderCrudEntity } from '../../../../apis/crud/entity/entities/folder.crud-entity';
 
 export type CreateFolderDialogProps = {
   parentFolderId?: string;
-  order?: number;
-  onCreated?: (item: EnrichedFolder) => void;
+  sort?: number;
+  onCreated?: (item: FolderRO) => void;
 };
 
 const CreateFolderDialog: FunctionComponent<CreateFolderDialogProps & NiceModalHocProps> = NiceModal.create(
-  ({ parentFolderId, order, onCreated }) => {
+  ({ parentFolderId, sort, onCreated }) => {
     const modal = useModal();
 
-    const createState = useCreateFolder();
+    const createState = useCrudCreate<FolderRO, FolderModifyRequestRO>();
 
     const submitHandler = useCallback(
       async (data: FolderFormValues): Promise<void> => {
-        const itemToCreate: Omit<Folder, 'id' | 'type'> = {
+        const itemToCreate: FolderModifyRequestRO = {
           alias: data.alias,
           parentFolderId: parentFolderId,
-          order: order ?? 1,
+          sort: sort ?? 1,
         };
         try {
-          const result = await createState.mutateAsync({ item: itemToCreate });
+          const result = await createState.mutateAsync({ entity: folderCrudEntity, item: itemToCreate });
           if (result) {
             onCreated?.(result);
 
@@ -36,7 +37,7 @@ const CreateFolderDialog: FunctionComponent<CreateFolderDialogProps & NiceModalH
           }
         } catch (e) {}
       },
-      [parentFolderId, order, onCreated, createState, modal]
+      [parentFolderId, sort, onCreated, createState, modal]
     );
 
     const cancelHandler = useCallback((): void => {

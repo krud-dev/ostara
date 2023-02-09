@@ -1,6 +1,5 @@
 import React, { FunctionComponent } from 'react';
-import { Widget } from 'infra/dashboard/model';
-import { DashboardWidgetCardProps } from 'renderer/components/widget/widget';
+import { DashboardWidgetCardProps, Widget } from 'renderer/components/widget/widget';
 import DashboardGenericCard from 'renderer/components/widget/card/DashboardGenericCard';
 import { FormattedMessage } from 'react-intl';
 import { CardContent, Typography } from '@mui/material';

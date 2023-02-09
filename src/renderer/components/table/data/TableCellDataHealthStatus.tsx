@@ -1,16 +1,16 @@
 import { EntityBaseColumn } from 'renderer/entity/entity';
-import { EnrichedItem } from 'infra/configuration/model/configuration';
 import { useMemo } from 'react';
 import { getItemHealthStatusColor, getItemHealthStatusTextId } from 'renderer/utils/itemUtils';
 import { FormattedMessage } from 'react-intl';
 import { Box } from '@mui/material';
+import { ItemRO } from '../../../definitions/daemon';
 
-type TableCellDataHealthStatusProps<EntityItem extends EnrichedItem> = {
+type TableCellDataHealthStatusProps<EntityItem extends ItemRO> = {
   row: EntityItem;
   column: EntityBaseColumn<EntityItem>;
 };
 
-export default function TableCellDataHealthStatus<EntityItem extends EnrichedItem>({
+export default function TableCellDataHealthStatus<EntityItem extends ItemRO>({
   row,
   column,
 }: TableCellDataHealthStatusProps<EntityItem>) {

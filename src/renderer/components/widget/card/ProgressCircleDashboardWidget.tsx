@@ -1,6 +1,5 @@
 import React, { FunctionComponent, useCallback, useMemo, useState } from 'react';
-import { ProgressCircleWidget } from 'infra/dashboard/model';
-import { DashboardWidgetCardProps } from 'renderer/components/widget/widget';
+import { DashboardWidgetCardProps, ProgressCircleWidget } from 'renderer/components/widget/widget';
 import DashboardGenericCard from 'renderer/components/widget/card/DashboardGenericCard';
 import { ApplicationMetricDTO } from 'infra/metrics/metricsService';
 import useWidgetSubscribeToMetrics from 'renderer/components/widget/hooks/useWidgetSubscribeToMetrics';

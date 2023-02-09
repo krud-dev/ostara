@@ -24,7 +24,7 @@ type TableCustomProps<EntityItem> = {};
 
 export default function TableCustom<EntityItem>({}: TableCustomProps<EntityItem>) {
   const { entity, rows, displayRows, loading, empty, page, changePageHandler, rowsPerPage, changeRowsPerPageHandler } =
-    useTable<EntityItem>();
+    useTable<EntityItem, unknown>();
   const theme = useTheme();
   const showRowPerPage = useMediaQuery(theme.breakpoints.up('md'));
 

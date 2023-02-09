@@ -1,6 +1,6 @@
-import { WidgetValueType } from 'infra/dashboard/model';
 import { isArray, isNil, isNumber, toString } from 'lodash';
 import { IntlShape } from 'react-intl';
+import { WidgetValueType } from '../components/widget/widget';
 
 export const roundNumber = (number: number, decimals: number): number => {
   return parseFloat(number.toFixed(decimals));

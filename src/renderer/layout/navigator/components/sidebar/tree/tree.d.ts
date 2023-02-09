@@ -1,14 +1,14 @@
-import { EnrichedItem, Item } from 'infra/configuration/model/configuration';
 import { NodeApi } from 'react-arborist';
 import { ContextMenuPopperProps } from 'renderer/components/menu/popup/ContextMenuPopper';
 import { PopupState } from 'material-ui-popup-state/es/hooks';
+import { ItemRO } from '../../../../../definitions/daemon';
 
-export type TreeItem = EnrichedItem & { children?: TreeItem[] };
+export type TreeItem = ItemRO & { children?: TreeItem[] };
 
 type TreeItemProps = {
-  item: EnrichedItem;
+  item: ItemRO;
   node?: NodeApi<TreeItem>;
-  onCreated?: (item: Item) => void;
+  onCreated?: (item: ItemRO) => void;
 };
 
 type TreeItemMenuProps = {

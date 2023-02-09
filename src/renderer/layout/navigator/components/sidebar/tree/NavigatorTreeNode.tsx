@@ -6,8 +6,13 @@ import { TreeItem } from 'renderer/layout/navigator/components/sidebar/tree/tree
 import typography from 'renderer/theme/config/typography';
 import { KeyboardArrowDown, KeyboardArrowRight, MoreVert, SvgIconComponent } from '@mui/icons-material';
 import { NAVIGATOR_ITEM_HEIGHT } from 'renderer/constants/ui';
-import { getItemHealthStatusColor, getItemNameTooltip, getItemUrl } from 'renderer/utils/itemUtils';
-import { isApplication, isFolder, Item } from 'infra/configuration/model/configuration';
+import {
+  getItemHealthStatusColor,
+  getItemNameTooltip,
+  getItemUrl,
+  isApplication,
+  isFolder,
+} from 'renderer/utils/itemUtils';
 import { SxProps } from '@mui/system';
 import { matchPath, useLocation, useNavigate } from 'react-router-dom';
 import useItemColor from 'renderer/hooks/useItemColor';
@@ -16,6 +21,7 @@ import useItemIcon from 'renderer/hooks/useItemIcon';
 import ItemMenu from 'renderer/layout/navigator/components/sidebar/tree/menus/ItemMenu';
 import { usePopupState } from 'material-ui-popup-state/hooks';
 import ItemContextMenu from 'renderer/layout/navigator/components/sidebar/tree/menus/ItemContextMenu';
+import { ItemRO } from '../../../../../definitions/daemon';
 
 type NavigatorTreeNodeProps = NodeRendererProps<TreeItem>;
 
@@ -107,7 +113,7 @@ export default function NavigatorTreeNode({ style, node, tree, dragHandle, previ
   );
 
   const childItemCreatedHandler = useCallback(
-    (item: Item): void => {
+    (item: ItemRO): void => {
       node.open();
     },
     [node]

@@ -1,7 +1,6 @@
 import React, { FunctionComponent, useCallback, useMemo } from 'react';
 import Page from 'renderer/components/layout/Page';
 import { useNavigatorTree } from 'renderer/contexts/NavigatorTreeContext';
-import { EnrichedInstance } from 'infra/configuration/model/configuration';
 import TableComponent from 'renderer/components/table/TableComponent';
 import { Entity } from 'renderer/entity/entity';
 import { Card } from '@mui/material';
@@ -10,11 +9,12 @@ import { EnrichedInstanceLogger, useGetInstanceLoggersQuery } from 'renderer/api
 import { useSetInstanceLoggerLevel } from 'renderer/apis/instance/setInstanceLoggerLevel';
 import { RESET_ID } from 'renderer/entity/actions';
 import { LoggerCustomFilters } from 'renderer/components/item/logger/LoggerCustomFiltersComponent';
+import { InstanceRO } from '../../../../../common/generated_definitions';
 
 const InstanceLoggers: FunctionComponent = () => {
   const { selectedItem } = useNavigatorTree();
 
-  const item = useMemo<EnrichedInstance>(() => selectedItem as EnrichedInstance, [selectedItem]);
+  const item = useMemo<InstanceRO>(() => selectedItem as InstanceRO, [selectedItem]);
 
   const entity = useMemo<Entity<EnrichedInstanceLogger, LoggerCustomFilters>>(() => instanceLoggerEntity, []);
   const queryState = useGetInstanceLoggersQuery({ instanceId: item.id });

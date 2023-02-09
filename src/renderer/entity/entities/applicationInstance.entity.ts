@@ -1,10 +1,10 @@
 import { Entity } from 'renderer/entity/entity';
-import { EnrichedInstance } from 'infra/configuration/model/configuration';
 import TableCellDataHealthStatus from 'renderer/components/table/data/TableCellDataHealthStatus';
 import { generatePath } from 'react-router-dom';
 import { urls } from 'renderer/routes/urls';
+import { InstanceRO } from '../../../common/generated_definitions';
 
-export const applicationInstanceEntity: Entity<EnrichedInstance> = {
+export const applicationInstanceEntity: Entity<InstanceRO> = {
   id: 'applicationInstance',
   columns: [
     {
@@ -17,7 +17,8 @@ export const applicationInstanceEntity: Entity<EnrichedInstance> = {
       id: 'health.status',
       type: 'Custom',
       labelId: 'healthStatus',
-      getTooltip: (item) => item.health?.statusText,
+      // TODO: Add when health is available
+      // getTooltip: (item) => item.health?.statusText,
       Component: TableCellDataHealthStatus,
     },
     {

@@ -1,18 +1,18 @@
 import React, { FunctionComponent, useMemo } from 'react';
 import Page from 'renderer/components/layout/Page';
 import { useNavigatorTree } from 'renderer/contexts/NavigatorTreeContext';
-import { EnrichedInstance } from 'infra/configuration/model/configuration';
-import { springBootWidgets } from 'infra/dashboard/widgets';
-import { Widget } from 'infra/dashboard/model';
 import { values } from 'lodash';
 import DashboardWidget from 'renderer/components/widget/DashboardWidget';
 import { Stack } from '@mui/material';
 import { COMPONENTS_SPACING } from 'renderer/constants/ui';
+import { Widget } from '../../../../components/widget/widget';
+import { InstanceRO } from '../../../../../common/generated_definitions';
+import { springBootWidgets } from './constants/widgets';
 
 const InstanceDashboard: FunctionComponent = () => {
   const { selectedItem } = useNavigatorTree();
 
-  const item = useMemo<EnrichedInstance>(() => selectedItem as EnrichedInstance, [selectedItem]);
+  const item = useMemo<InstanceRO>(() => selectedItem as InstanceRO, [selectedItem]);
 
   const widgets = useMemo<Widget[]>(() => values(springBootWidgets), []);
 

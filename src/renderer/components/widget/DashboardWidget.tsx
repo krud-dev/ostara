@@ -1,15 +1,14 @@
 import React, { ComponentType, FunctionComponent, useMemo } from 'react';
-import { Widget } from 'infra/dashboard/model';
-import { Item } from 'infra/configuration/model/configuration';
-import { DashboardWidgetCardProps } from 'renderer/components/widget/widget';
+import { DashboardWidgetCardProps, Widget } from 'renderer/components/widget/widget';
 import NotSupportedDashboardWidget from 'renderer/components/widget/card/NotSupportedDashboardWidget';
 import ProgressCircleDashboardWidget from 'renderer/components/widget/card/ProgressCircleDashboardWidget';
 import StackedTimelineDashboardWidget from 'renderer/components/widget/card/StackedTimelineDashboardWidget';
 import DataBarDashboardWidget from 'renderer/components/widget/card/DataBarDashboardWidget';
+import { ItemRO } from '../../definitions/daemon';
 
 interface DashboardWidgetProps {
   widget: Widget;
-  item: Item;
+  item: ItemRO;
   intervalSeconds: number;
 }
 

@@ -1,5 +1,4 @@
 import React, { useCallback, useMemo } from 'react';
-import { EnrichedItem } from 'infra/configuration/model/configuration';
 import { Avatar, Badge, Box, IconButton, Tooltip, Typography } from '@mui/material';
 import { getItemHealthStatusColor, getItemHealthStatusTextId, getItemNameTooltip } from 'renderer/utils/itemUtils';
 import { COMPONENTS_SPACING, SIDEBAR_HEADER_HEIGHT } from 'renderer/constants/ui';
@@ -9,8 +8,9 @@ import { usePopupState } from 'material-ui-popup-state/hooks';
 import { IconViewer } from 'renderer/components/common/IconViewer';
 import useItemIcon from 'renderer/hooks/useItemIcon';
 import ItemMenu from 'renderer/layout/navigator/components/sidebar/tree/menus/ItemMenu';
+import { ItemRO } from '../../definitions/daemon';
 
-type ItemHeaderProps = { item: EnrichedItem };
+type ItemHeaderProps = { item: ItemRO };
 
 export default function ItemHeader({ item }: ItemHeaderProps) {
   const menuState = usePopupState({ variant: 'popover' });

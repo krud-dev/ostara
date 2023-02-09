@@ -1,16 +1,13 @@
 import React, { FunctionComponent, useMemo } from 'react';
 import { useNavigatorTree } from 'renderer/contexts/NavigatorTreeContext';
-import { EnrichedApplication } from 'infra/configuration/model/configuration';
 import SecondarySidebarLayout from 'renderer/layout/common/secondary-sidebar/SecondarySidebarLayout';
 import ApplicationSidebar from 'renderer/layout/application/components/ApplicationSidebar';
+import { ApplicationRO } from '../../../common/generated_definitions';
 
 const ApplicationLayout: FunctionComponent = () => {
   const { selectedItem } = useNavigatorTree();
 
-  const item = useMemo<EnrichedApplication | undefined>(
-    () => selectedItem as EnrichedApplication | undefined,
-    [selectedItem]
-  );
+  const item = useMemo<ApplicationRO | undefined>(() => selectedItem as ApplicationRO | undefined, [selectedItem]);
 
   if (!item) {
     return null;

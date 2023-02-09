@@ -1,11 +1,11 @@
 import React from 'react';
 import MenuPopover from 'renderer/components/menu/popup/MenuPopover';
 import { bindMenu } from 'material-ui-popup-state/hooks';
-import { isApplication, isFolder, isInstance } from 'infra/configuration/model/configuration';
 import { TreeItemMenuProps } from 'renderer/layout/navigator/components/sidebar/tree/tree';
 import FolderMenuItems from 'renderer/layout/navigator/components/sidebar/tree/menus/FolderMenuItems';
 import ApplicationMenuItems from 'renderer/layout/navigator/components/sidebar/tree/menus/ApplicationMenuItems';
 import InstanceMenuItems from 'renderer/layout/navigator/components/sidebar/tree/menus/InstanceMenuItems';
+import { isApplication, isFolder, isInstance } from '../../../../../../utils/itemUtils';
 
 type ItemMenuProps = TreeItemMenuProps;
 

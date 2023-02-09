@@ -1,5 +1,4 @@
 import { CreateHandler, DeleteHandler, MoveHandler, RenameHandler, Tree, TreeApi } from 'react-arborist';
-import { Instance, isApplication, isFolder, isInstance, Item, ItemType } from 'infra/configuration/model/configuration';
 import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { Box, Button, CircularProgress, Typography } from '@mui/material';
 import NavigatorTreeNode from 'renderer/layout/navigator/components/sidebar/tree/NavigatorTreeNode';
@@ -8,15 +7,18 @@ import { NAVIGATOR_ITEM_HEIGHT } from 'renderer/constants/ui';
 import { experimentalStyled as styled } from '@mui/material/styles';
 import { FormattedMessage } from 'react-intl';
 import { useNavigatorTree } from 'renderer/contexts/NavigatorTreeContext';
-import { useUpdateItem } from 'renderer/apis/configuration/item/updateItem';
-import { useDeleteItem } from 'renderer/apis/configuration/item/deleteItem';
+import { useUpdateItem } from 'renderer/apis/item/updateItem';
+import { useDeleteItem } from 'renderer/apis/item/deleteItem';
 import { showDeleteConfirmationDialog } from 'renderer/utils/dialogUtils';
-import { useMoveItem } from 'renderer/apis/configuration/item/moveItem';
+import { useMoveItem } from 'renderer/apis/item/moveItem';
 import NiceModal from '@ebay/nice-modal-react';
 import CreateInstanceDialog from 'renderer/components/item/dialogs/create/CreateInstanceDialog';
 import { matchPath, useLocation, useNavigate } from 'react-router-dom';
-import { getItemUrl } from 'renderer/utils/itemUtils';
+import { getItemType, getItemUrl, isApplication, isFolder, isInstance } from 'renderer/utils/itemUtils';
 import { OpenMap } from 'react-arborist/src/state/open-slice';
+import { InstanceRO } from '../../../../../../common/generated_definitions';
+import { ItemRO } from '../../../../../definitions/daemon';
+import { ItemType } from '../../../../../../infra/configuration/model/configuration';
 
 const TreeStyle = styled(Tree<TreeItem>)(({ theme }) => ({
   '& [role="treeitem"]': {
@@ -110,7 +112,7 @@ export default function NavigatorTree({ width, search }: NavigatorTreeProps) {
   }, [data]);
 
   const createInstanceHandler = useCallback(async (): Promise<void> => {
-    const instance = await NiceModal.show<Instance | undefined>(CreateInstanceDialog, {});
+    const instance = await NiceModal.show<InstanceRO | undefined>(CreateInstanceDialog, {});
     if (instance) {
       navigate(getItemUrl(instance));
     }
@@ -123,7 +125,7 @@ export default function NavigatorTree({ width, search }: NavigatorTreeProps) {
   const updateItemState = useUpdateItem();
 
   const updateItem = useCallback(
-    async (item: Item): Promise<Item | undefined> => {
+    async (item: ItemRO): Promise<ItemRO | undefined> => {
       try {
         return await updateItemState.mutateAsync({ item });
       } catch (e) {}
@@ -135,9 +137,9 @@ export default function NavigatorTree({ width, search }: NavigatorTreeProps) {
   const moveItemState = useMoveItem();
 
   const moveItem = useCallback(
-    async (id: string, type: ItemType, parentId: string | undefined, order: number): Promise<Item | undefined> => {
+    async (id: string, type: ItemType, parentId: string | undefined, sort: number): Promise<ItemRO | undefined> => {
       try {
-        return await moveItemState.mutateAsync({ id, type, parentId, order });
+        return await moveItemState.mutateAsync({ id, type, parentId, sort });
       } catch (e) {}
       return undefined;
     },
@@ -147,7 +149,7 @@ export default function NavigatorTree({ width, search }: NavigatorTreeProps) {
   const deleteItemState = useDeleteItem();
 
   const deleteItem = useCallback(
-    async (item: Item): Promise<void> => {
+    async (item: ItemRO): Promise<void> => {
       try {
         await deleteItemState.mutateAsync({ item });
       } catch (e) {}
@@ -196,24 +198,24 @@ export default function NavigatorTree({ width, search }: NavigatorTreeProps) {
       }
 
       const children = parentNode?.children?.map((c) => c.data) ?? data;
-      const beforeOrder = children?.[index - 1]?.order;
-      const afterOrder = children?.[index]?.order;
+      const beforeSort = children?.[index - 1]?.sort;
+      const afterSort = children?.[index]?.sort;
 
       dragNodes.forEach((node, nodeIndex, array) => {
         const item = node.data;
 
-        let newOrder: number;
-        if (beforeOrder && afterOrder) {
-          newOrder = beforeOrder + ((afterOrder - beforeOrder) / (array.length + 1)) * (nodeIndex + 1);
-        } else if (beforeOrder) {
-          newOrder = beforeOrder + nodeIndex + 1;
-        } else if (afterOrder) {
-          newOrder = (afterOrder / (array.length + 1)) * (nodeIndex + 1);
+        let newSort: number;
+        if (beforeSort && afterSort) {
+          newSort = beforeSort + ((afterSort - beforeSort) / (array.length + 1)) * (nodeIndex + 1);
+        } else if (beforeSort) {
+          newSort = beforeSort + nodeIndex + 1;
+        } else if (afterSort) {
+          newSort = (afterSort / (array.length + 1)) * (nodeIndex + 1);
         } else {
-          newOrder = nodeIndex + 1;
+          newSort = nodeIndex + 1;
         }
 
-        moveItem(item.id, item.type, parentId || undefined, newOrder);
+        moveItem(item.id, getItemType(item), parentId || undefined, newSort);
       });
     },
     [data]

@@ -1,7 +1,6 @@
 import React, { FunctionComponent, useCallback, useMemo } from 'react';
 import Page from 'renderer/components/layout/Page';
 import { useNavigatorTree } from 'renderer/contexts/NavigatorTreeContext';
-import { EnrichedApplication } from 'infra/configuration/model/configuration';
 import TableComponent from 'renderer/components/table/TableComponent';
 import { useSnackbar } from 'notistack';
 import { Entity } from 'renderer/entity/entity';
@@ -12,15 +11,13 @@ import { EnrichedApplicationCache, useGetApplicationCachesQuery } from 'renderer
 import { useEvictApplicationCaches } from 'renderer/apis/application/evictApplicationCaches';
 import { useEvictAllApplicationCaches } from 'renderer/apis/application/evictAllApplicationCaches';
 import { Card } from '@mui/material';
+import { ApplicationRO } from '../../../../../common/generated_definitions';
 
 const ApplicationCaches: FunctionComponent = () => {
   const { selectedItem } = useNavigatorTree();
   const { enqueueSnackbar } = useSnackbar();
 
-  const item = useMemo<EnrichedApplication | undefined>(
-    () => selectedItem as EnrichedApplication | undefined,
-    [selectedItem]
-  );
+  const item = useMemo<ApplicationRO | undefined>(() => selectedItem as ApplicationRO | undefined, [selectedItem]);
   const itemId = useMemo<string>(() => item?.id || '', [item]);
 
   const entity = useMemo<Entity<EnrichedApplicationCache>>(() => applicationCacheEntity, []);

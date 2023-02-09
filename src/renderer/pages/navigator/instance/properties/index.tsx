@@ -1,7 +1,6 @@
 import React, { FunctionComponent, useMemo } from 'react';
 import Page from 'renderer/components/layout/Page';
 import { useNavigatorTree } from 'renderer/contexts/NavigatorTreeContext';
-import { EnrichedInstance } from 'infra/configuration/model/configuration';
 import { Box, Card, CircularProgress } from '@mui/material';
 import { useGetInstancePropertiesQuery } from 'renderer/apis/instance/getInstanceProperties';
 import { isEmpty, map } from 'lodash';
@@ -9,11 +8,12 @@ import EmptyContent from 'renderer/components/help/EmptyContent';
 import { FormattedMessage } from 'react-intl';
 import InstancePropertiesCode from 'renderer/pages/navigator/instance/properties/widgets/InstancePropertiesCode';
 import TabPanel, { TabInfo } from 'renderer/components/layout/TabPanel';
+import { InstanceRO } from '../../../../../common/generated_definitions';
 
 const InstanceProperties: FunctionComponent = () => {
   const { selectedItem } = useNavigatorTree();
 
-  const item = useMemo<EnrichedInstance>(() => selectedItem as EnrichedInstance, [selectedItem]);
+  const item = useMemo<InstanceRO>(() => selectedItem as InstanceRO, [selectedItem]);
 
   const propertiesState = useGetInstancePropertiesQuery({ instanceId: item.id });
 

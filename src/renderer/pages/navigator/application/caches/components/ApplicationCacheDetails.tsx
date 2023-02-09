@@ -1,7 +1,6 @@
 import React, { ReactNode, useCallback, useMemo } from 'react';
 import { ApplicationCache, ApplicationCacheStatistics } from 'infra/instance/models/cache';
 import { useNavigatorTree } from 'renderer/contexts/NavigatorTreeContext';
-import { EnrichedApplication, EnrichedInstance } from 'infra/configuration/model/configuration';
 import { useGetApplicationCacheStatisticsQuery } from 'renderer/apis/application/getApplicationCacheStatistics';
 import { chain, get, sumBy } from 'lodash';
 import ItemCacheDetails, { ItemCacheStatistics } from 'renderer/components/item/cache/ItemCacheDetails';
@@ -9,6 +8,7 @@ import { useGetApplicationInstancesQuery } from 'renderer/apis/application/getAp
 import { Stack } from '@mui/material';
 import TableDetailsLabelValue from 'renderer/components/table/details/TableDetailsLabelValue';
 import { FormattedMessage } from 'react-intl';
+import { ApplicationRO, InstanceRO } from '../../../../../../common/generated_definitions';
 
 type ApplicationCacheDetailsProps = {
   row: ApplicationCache;
@@ -17,7 +17,7 @@ type ApplicationCacheDetailsProps = {
 export default function ApplicationCacheDetails({ row }: ApplicationCacheDetailsProps) {
   const { selectedItem } = useNavigatorTree();
 
-  const item = useMemo<EnrichedApplication>(() => selectedItem as EnrichedApplication, [selectedItem]);
+  const item = useMemo<ApplicationRO>(() => selectedItem as ApplicationRO, [selectedItem]);
 
   const statisticsQuery = useGetApplicationCacheStatisticsQuery({ applicationId: item.id, cacheName: row.name });
   const instancesQuery = useGetApplicationInstancesQuery({ applicationId: item.id });
@@ -74,7 +74,7 @@ export default function ApplicationCacheDetails({ row }: ApplicationCacheDetails
 type ValueTooltipProps = {
   name: string;
   applicationStatistics: ApplicationCacheStatistics;
-  instances: EnrichedInstance[];
+  instances: InstanceRO[];
 };
 
 function ValueTooltip({ name, applicationStatistics, instances }: ValueTooltipProps) {
