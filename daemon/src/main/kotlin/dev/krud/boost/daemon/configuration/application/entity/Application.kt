@@ -4,13 +4,11 @@ import dev.krud.boost.daemon.configuration.application.enums.ApplicationType
 import dev.krud.boost.daemon.configuration.application.ro.ApplicationRO
 import dev.krud.boost.daemon.configuration.folder.entity.Folder
 import dev.krud.boost.daemon.configuration.folder.entity.Folder.Companion.effectiveColor
+import dev.krud.boost.daemon.configuration.instance.entity.Instance
 import dev.krud.boost.daemon.entity.AbstractEntity
 import dev.krud.shapeshift.resolver.annotation.DefaultMappingTarget
 import dev.krud.shapeshift.resolver.annotation.MappedField
-import jakarta.persistence.Column
-import jakarta.persistence.Entity
-import jakarta.persistence.JoinColumn
-import jakarta.persistence.ManyToOne
+import jakarta.persistence.*
 import org.hibernate.annotations.Formula
 import java.util.*
 
@@ -52,4 +50,7 @@ class Application(
     val Application.effectiveColor: String?
       get() = color ?: parentFolder?.effectiveColor
   }
+
+  @OneToMany(mappedBy = "parentApplication", fetch = FetchType.EAGER)
+  val instances: List<Instance> = listOf()
 }

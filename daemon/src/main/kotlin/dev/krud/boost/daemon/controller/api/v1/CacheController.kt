@@ -1,5 +1,8 @@
 package dev.krud.boost.daemon.controller.api.v1
 
+import dev.krud.boost.daemon.configuration.application.cache.ApplicationCacheService
+import dev.krud.boost.daemon.configuration.application.cache.ro.ApplicationCacheRO
+import dev.krud.boost.daemon.configuration.application.cache.ro.ApplicationCacheStatisticsRO
 import dev.krud.boost.daemon.configuration.instance.cache.InstanceCacheService
 import dev.krud.boost.daemon.configuration.instance.cache.ro.InstanceCacheRO
 import dev.krud.boost.daemon.configuration.instance.cache.ro.InstanceCacheStatisticsRO
@@ -15,8 +18,13 @@ import java.util.*
 @RequestMapping("$API_PREFIX/cache")
 @Tag(name = "Cache", description = "Cache operations for Instance/Application API")
 class CacheController(
-    private val instanceCacheService: InstanceCacheService
+    private val instanceCacheService: InstanceCacheService,
+    private val applicationCacheService: ApplicationCacheService
 ) {
+    /**
+     * Instance
+     */
+
     @GetMapping("/instance/{instanceId}")
     @ResponseStatus(HttpStatus.OK)
     @Operation(
@@ -33,7 +41,7 @@ class CacheController(
     @Operation(
         summary = "Get cache for the instance"
     )
-    @ApiResponse(responseCode = "200", description = "List of actuator endpoints")
+    @ApiResponse(responseCode = "200", description = "Cache")
     @ApiResponse(responseCode = "400", description = "Instance is missing ability", content = [Content()])
     fun getInstanceCache(@PathVariable instanceId: UUID, @PathVariable cacheName: String): InstanceCacheRO {
         return instanceCacheService.getCache(instanceId, cacheName)
@@ -68,7 +76,72 @@ class CacheController(
     )
     @ApiResponse(responseCode = "200", description = "Cache statistics")
     @ApiResponse(responseCode = "400", description = "Instance is missing ability", content = [Content()])
-    fun getInstanceCacheStatistics(@PathVariable instanceId: UUID, @PathVariable cacheName: String): InstanceCacheStatisticsRO {
+    fun getInstanceCacheStatistics(
+        @PathVariable instanceId: UUID,
+        @PathVariable cacheName: String
+    ): InstanceCacheStatisticsRO {
         return instanceCacheService.getCacheStatistics(instanceId, cacheName)
+    }
+
+    /**
+     * Application
+     */
+
+    @GetMapping("/application/{applicationId}")
+    @ResponseStatus(HttpStatus.OK)
+    @Operation(
+        summary = "Get all caches for the application"
+    )
+    @ApiResponse(responseCode = "200", description = "Cache list")
+    @ApiResponse(responseCode = "400", description = "Application is missing ability", content = [Content()])
+    fun getApplicationCaches(@PathVariable applicationId: UUID): List<ApplicationCacheRO> {
+        return applicationCacheService.getCaches(applicationId)
+    }
+
+    @GetMapping("/application/{applicationId}/{cacheName}")
+    @ResponseStatus(HttpStatus.OK)
+    @Operation(
+        summary = "Get cache for the application"
+    )
+    @ApiResponse(responseCode = "200", description = "Cache")
+    @ApiResponse(responseCode = "400", description = "Application is missing ability", content = [Content()])
+    fun getApplicationCache(@PathVariable applicationId: UUID, @PathVariable cacheName: String): ApplicationCacheRO {
+        return applicationCacheService.getCache(applicationId, cacheName)
+    }
+
+    @DeleteMapping("/application/{applicationId}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    @Operation(
+        summary = "Evict all caches for the application"
+    )
+    @ApiResponse(responseCode = "204", description = "Caches evicted")
+    @ApiResponse(responseCode = "400", description = "Application is missing ability", content = [Content()])
+    fun evictApplicationCaches(@PathVariable applicationId: UUID) {
+        applicationCacheService.evictAllCaches(applicationId)
+    }
+
+    @DeleteMapping("/application/{applicationId}/{cacheName}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    @Operation(
+        summary = "Evict cache for the application"
+    )
+    @ApiResponse(responseCode = "204", description = "Cache evicted")
+    @ApiResponse(responseCode = "400", description = "Application is missing ability", content = [Content()])
+    fun evictApplicationCache(@PathVariable applicationId: UUID, @PathVariable cacheName: String) {
+        applicationCacheService.evictCache(applicationId, cacheName)
+    }
+
+    @GetMapping("/application/{applicationId}/{cacheName}/statistics")
+    @ResponseStatus(HttpStatus.OK)
+    @Operation(
+        summary = "Get cache statistics for the application"
+    )
+    @ApiResponse(responseCode = "200", description = "Cache statistics")
+    @ApiResponse(responseCode = "400", description = "Application is missing ability", content = [Content()])
+    fun getApplicationCacheStatistics(
+        @PathVariable applicationId: UUID,
+        @PathVariable cacheName: String
+    ): ApplicationCacheStatisticsRO {
+        return applicationCacheService.getCacheStatistics(applicationId, cacheName)
     }
 }

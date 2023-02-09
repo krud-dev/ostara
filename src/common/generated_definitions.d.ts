@@ -1,6 +1,6 @@
 /* tslint:disable */
 /* eslint-disable */
-// Generated using typescript-generator version 3.1.1185 on 2023-02-09 16:24:25.
+// Generated using typescript-generator version 3.1.1185 on 2023-02-09 17:27:37.
 
 export interface DynamicModelFilter {
     start?: number;
@@ -16,6 +16,22 @@ export interface PagedResult<T> {
     total: number;
     hasMore: boolean;
     results: T[];
+}
+
+export interface ApplicationCacheRO {
+    name: string;
+    cacheManager: string;
+    target: string;
+}
+
+export interface ApplicationCacheStatisticsRO {
+    gets: number;
+    puts: number;
+    evictions: number;
+    hits: number;
+    misses: number;
+    removals: number;
+    size: number;
 }
 
 export interface ApplicationModifyRequestRO {
