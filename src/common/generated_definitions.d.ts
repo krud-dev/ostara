@@ -1,6 +1,22 @@
 /* tslint:disable */
 /* eslint-disable */
-// Generated using typescript-generator version 3.1.1185 on 2023-02-08 14:15:52.
+// Generated using typescript-generator version 3.1.1185 on 2023-02-09 15:19:20.
+
+export interface DynamicModelFilter {
+    start?: number;
+    limit?: number;
+    orders: OrderDTO[];
+    filterFields: FilterField[];
+    cacheKey: string;
+}
+
+export interface PagedResult<T> {
+    start?: number;
+    limit?: number;
+    total: number;
+    hasMore: boolean;
+    results: T[];
+}
 
 export interface ApplicationModifyRequestRO {
     alias: string;
@@ -71,6 +87,27 @@ export interface InstanceRO {
     abilities: InstanceAbility[];
 }
 
+export interface OrderDTO {
+    by?: string;
+    descending: boolean;
+}
+
+export interface FilterField {
+    fieldName: string;
+    operation: FilterFieldOperation;
+    dataType: FilterFieldDataType;
+    enumType: string;
+    values: any[];
+    children: FilterField[];
+    validated: boolean;
+    value1: any;
+    value2: any;
+}
+
 export type ApplicationType = "SPRING_BOOT";
 
 export type InstanceAbility = "METRICS" | "ENV" | "BEANS" | "QUARTZ" | "FLYWAY" | "LIQUIBASE" | "LOGGERS" | "CACHES" | "THREADDUMP" | "HEAPDUMP" | "CACHE_STATISTICS" | "SHUTDOWN" | "REFRESH" | "HTTP_REQUEST_STATISTICS" | "INTEGRATIONGRAPH" | "PROPERTIES" | "MAPPINGS" | "SCHEDULEDTASKS" | "HEALTH" | "INFO";
+
+export type FilterFieldOperation = "Equal" | "NotEqual" | "In" | "NotIn" | "GreaterThan" | "GreaterEqual" | "LowerThan" | "LowerEqual" | "Between" | "Contains" | "IsNull" | "IsNotNull" | "IsEmpty" | "IsNotEmpty" | "And" | "Or" | "Not" | "Noop";
+
+export type FilterFieldDataType = "String" | "Integer" | "Long" | "Double" | "Boolean" | "Date" | "Object" | "Enum" | "None";

@@ -70,6 +70,10 @@ tasks.withType<GenerateTask> {
     excludeClasses = listOf(
         "java.io.Serializable",
     )
+    classes = listOf(
+        "dev.krud.crudframework.modelfilter.DynamicModelFilter",
+        "dev.krud.crudframework.ro.PagedResult"
+    )
     noFileComment = false
     outputKind = cz.habarta.typescript.generator.TypeScriptOutputKind.module
     outputFile = Paths.get(project.projectDir.path, "..", "src", "common", "generated_definitions.d.ts").toString()
