@@ -450,6 +450,9 @@ class ActuatorHttpClient(
       .apply(build)
       .build()
     val response = httpClient.newCall(request).execute()
+    if (!response.isSuccessful) {
+      error("Request failed: $url with status code ${response.code}")
+    }
     val responseBody = response.body?.string()
 
     return GSON.fromJson(responseBody, Type::class.java)

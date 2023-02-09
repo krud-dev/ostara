@@ -1,6 +1,6 @@
 /* tslint:disable */
 /* eslint-disable */
-// Generated using typescript-generator version 3.1.1185 on 2023-02-09 15:19:20.
+// Generated using typescript-generator version 3.1.1185 on 2023-02-09 16:09:17.
 
 export interface DynamicModelFilter {
     start?: number;
@@ -59,6 +59,12 @@ export interface FolderRO {
     icon?: string;
     sort?: number;
     parentFolderId?: string;
+}
+
+export interface InstanceCacheRO {
+    name: string;
+    cacheManager: string;
+    target: string;
 }
 
 export interface InstanceModifyRequestRO {
