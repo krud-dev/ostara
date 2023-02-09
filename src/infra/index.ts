@@ -1,3 +1,4 @@
+import './daemon';
 import './rendererUtils';
 import './tasks';
 import './configuration';

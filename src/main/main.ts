@@ -20,7 +20,7 @@ import { dataSource } from '../infra/dataSource';
 import { taskService } from '../infra/tasks/taskService';
 import { instanceService } from '../infra/instance/instanceService';
 import { uiService } from '../infra/ui/uiService';
-import { DaemonController } from './daemon';
+import { DaemonController, initDaemon } from '../infra/daemon/daemon';
 import { systemEvents } from '../infra/events';
 import { isMac, isWindows } from '../infra/utils/platform';
 
@@ -57,27 +57,6 @@ const installExtensions = async () => {
       forceDownload
     )
     .catch(console.log);
-};
-
-const initDaemon = async () => {
-  let daemonController: DaemonController;
-  if (app.isPackaged) {
-    daemonController = new DaemonController({
-      type: 'internal',
-      protocol: 'http',
-      host: '127.0.0.1',
-      port: 'random',
-    });
-  } else {
-    daemonController = new DaemonController({
-      type: 'external',
-      address: 'http://127.0.0.1:12222',
-    });
-  }
-  daemonController.start().catch((e) => {
-    log.error('Error starting daemon', e);
-    app.exit(1);
-  });
 };
 
 const createSplashWindow = async () => {
@@ -216,10 +195,5 @@ app
       createMainWindow();
     });
     await initDaemon();
-    app.on('activate', () => {
-      // On macOS it's common to re-dialogs a window in the app when the
-      // dock icon is clicked and there are no other windows open.
-      if (mainWindow === null) createMainWindow();
-    });
   })
   .catch(console.log);

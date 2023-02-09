@@ -3,8 +3,8 @@ import path from 'path';
 import { app, dialog } from 'electron';
 import axios from 'axios';
 import log from 'electron-log';
-import { systemEvents } from '../infra/events';
-import { isWindows } from '../infra/utils/platform';
+import { systemEvents } from '../events';
+import { isWindows } from '../utils/platform';
 
 type InternalDaemonOptions = {
   type: 'internal';
@@ -33,7 +33,7 @@ export class DaemonController {
 
   private readonly internalPort: number | undefined;
 
-  private readonly daemonAddress: string;
+  readonly daemonAddress: string;
 
   private started: boolean = false;
 
@@ -178,3 +178,33 @@ export class DaemonController {
     });
   }
 }
+
+let daemonController: DaemonController | undefined;
+
+export function getDaemonController(): DaemonController | undefined {
+  return daemonController;
+}
+
+export async function initDaemon(): Promise<DaemonController> {
+  if (daemonController) {
+    return daemonController;
+  }
+  if (app.isPackaged) {
+    daemonController = new DaemonController({
+      type: 'internal',
+      protocol: 'http',
+      host: '127.0.0.1',
+      port: 'random',
+    });
+  } else {
+    daemonController = new DaemonController({
+      type: 'external',
+      address: 'http://127.0.0.1:12222',
+    });
+  }
+  daemonController.start().catch((e) => {
+    log.error('Error starting daemon', e);
+    app.exit(1);
+  });
+  return daemonController;
+};
