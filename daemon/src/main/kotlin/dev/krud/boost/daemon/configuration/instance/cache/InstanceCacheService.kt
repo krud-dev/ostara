@@ -49,7 +49,7 @@ class InstanceCacheService(
 
     fun getCacheStatistics(instanceId: UUID, cacheName: String): InstanceCacheStatisticsRO {
         val instance = instanceService.getInstanceOrThrow(instanceId)
-        instanceService.hasAbilityOrThrow(instance, InstanceAbility.CACHES)
+        instanceService.hasAbilityOrThrow(instance, InstanceAbility.CACHES, InstanceAbility.CACHE_STATISTICS)
         return actuatorClientProvider.doWith(instance) {
             val metrics = STATS_METRIC_NAMES.associateWith { metricName ->
                 try {

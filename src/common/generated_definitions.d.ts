@@ -1,6 +1,6 @@
 /* tslint:disable */
 /* eslint-disable */
-// Generated using typescript-generator version 3.1.1185 on 2023-02-09 16:21:30.
+// Generated using typescript-generator version 3.1.1185 on 2023-02-09 16:24:25.
 
 export interface DynamicModelFilter {
     start?: number;
