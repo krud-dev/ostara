@@ -201,6 +201,12 @@ export default function NavigatorTree({ width, search }: NavigatorTreeProps) {
         return;
       }
 
+      if (dragNodes.some((node) => isFolder(node.data)) && parentNode && !isFolder(parentNode.data)) {
+        // TODO: Show snackbar
+        console.log("Cannot move folder to item that isn't folder");
+        return;
+      }
+
       const children = parentNode?.children?.map((c) => c.data) ?? data;
       const beforeSort = children?.[index - 1]?.sort;
       const afterSort = children?.[index]?.sort;
