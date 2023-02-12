@@ -7,6 +7,7 @@ import dev.krud.crudframework.crud.handler.CrudHandler
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.media.Content
 import io.swagger.v3.oas.annotations.responses.ApiResponse
+import io.swagger.v3.oas.annotations.tags.Tag
 import org.springframework.boot.logging.LogLevel
 import org.springframework.http.HttpStatus
 import org.springframework.web.bind.annotation.*
@@ -14,6 +15,7 @@ import java.util.UUID
 
 @RestController
 @RequestMapping("$API_PREFIX/actuator")
+@Tag(name = "Actuator", description = "Actuator Passthrough API")
 class ActuatorController(
     private val crudHandler: CrudHandler
 ) {
