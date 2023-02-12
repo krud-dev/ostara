@@ -9,6 +9,7 @@ import ApplicationDetailsForm, {
 import { useCrudCreate } from '../../../../apis/crud/crudCreate';
 import { ApplicationModifyRequestRO, ApplicationRO } from '../../../../../common/generated_definitions';
 import { applicationCrudEntity } from '../../../../apis/crud/entity/entities/application.crud-entity';
+import { INHERITED_COLOR_VALUE } from '../../../../hooks/useItemColor';
 
 export type CreateApplicationDialogProps = {
   parentFolderId?: string;
@@ -30,6 +31,7 @@ const CreateApplicationDialog: FunctionComponent<CreateApplicationDialogProps & 
           type: 'SPRING_BOOT',
           parentFolderId: parentFolderId,
           sort: sort ?? 1,
+          color: INHERITED_COLOR_VALUE,
         };
         try {
           const result = await createState.mutateAsync({

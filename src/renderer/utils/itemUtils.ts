@@ -1,11 +1,11 @@
-import { DataCollectionMode, ItemType } from 'infra/configuration/model/configuration';
+import { DataCollectionMode } from 'infra/configuration/model/configuration';
 import { generatePath } from 'react-router-dom';
 import { urls } from 'renderer/routes/urls';
 import { green, orange, pink, red, yellow } from '@mui/material/colors';
 import { ColorSchema } from 'renderer/theme/config/palette';
 import blueGrey from '@mui/material/colors/blueGrey';
 import { MUIconType } from 'renderer/components/common/IconViewer';
-import { ItemRO } from '../definitions/daemon';
+import { ItemRO, ItemType } from '../definitions/daemon';
 import {
   ApplicationRO,
   FolderRO,

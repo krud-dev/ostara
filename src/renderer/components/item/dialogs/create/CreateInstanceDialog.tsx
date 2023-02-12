@@ -13,6 +13,7 @@ import {
 } from '../../../../../common/generated_definitions';
 import { applicationCrudEntity } from '../../../../apis/crud/entity/entities/application.crud-entity';
 import { instanceCrudEntity } from '../../../../apis/crud/entity/entities/instance.crud-entity';
+import { INHERITED_COLOR_VALUE } from '../../../../hooks/useItemColor';
 
 export type CreateInstanceDialogProps = {
   parentApplicationId?: string;
@@ -41,6 +42,7 @@ const CreateInstanceDialog: FunctionComponent<CreateInstanceDialogProps & NiceMo
               type: 'SPRING_BOOT',
               parentFolderId: parentFolderId,
               sort: sort ?? 1,
+              color: INHERITED_COLOR_VALUE,
             };
 
             const application = await createApplicationState.mutateAsync({

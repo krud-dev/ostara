@@ -3,10 +3,9 @@ import { Box, MenuItem, Stack } from '@mui/material';
 import { experimentalStyled as styled, useTheme } from '@mui/material/styles';
 import { amber, blue, deepOrange, green, indigo, orange, pink, purple, red } from '@mui/material/colors';
 import { CheckOutlined } from '@mui/icons-material';
-import { useSetItemColor } from 'renderer/apis/item/setItemColor';
-import { DEFAULT_COLOR_VALUE } from 'renderer/hooks/useItemColor';
+import { DEFAULT_COLOR_VALUE, INHERITED_COLOR_VALUE } from 'renderer/hooks/useItemColor';
 import { ItemRO } from '../../../../../../../definitions/daemon';
-import { getItemType } from '../../../../../../../utils/itemUtils';
+import { useUpdateItem } from '../../../../../../../apis/item/updateItem';
 
 const MenuItemStyle = styled(MenuItem)(({ theme }) => ({
   cursor: 'default',
@@ -25,16 +24,16 @@ export default function ChooseColorMenuItem({ item, onClose }: ChooseColorMenuIt
 
   const [selectedColor, setSelectedColor] = useState<string | undefined>(item.effectiveColor);
 
-  const setItemColorState = useSetItemColor();
+  const updateItemState = useUpdateItem();
 
   const setColorHandler = useCallback(
     async (newColor: string | undefined): Promise<void> => {
       setSelectedColor(newColor);
       try {
-        await setItemColorState.mutateAsync({ id: item.id, type: getItemType(item), color: newColor });
+        await updateItemState.mutateAsync({ item: { ...item, color: newColor } });
       } catch (e) {}
     },
-    [onClose, item, setItemColorState]
+    [onClose, item, updateItemState]
   );
 
   const noColor = useMemo<string>(() => theme.palette.text.primary, []);
@@ -43,7 +42,7 @@ export default function ChooseColorMenuItem({ item, onClose }: ChooseColorMenuIt
   const colors = useMemo<{ color: string; fillColor: string; value: string | undefined }[]>(() => {
     const colorsIndex = 400;
     return [
-      { color: noColor, fillColor: 'transparent', value: undefined },
+      { color: noColor, fillColor: 'transparent', value: INHERITED_COLOR_VALUE },
       { color: defaultColor, fillColor: defaultColor, value: DEFAULT_COLOR_VALUE },
       { color: red[colorsIndex], fillColor: red[colorsIndex], value: red[colorsIndex] },
       { color: pink[colorsIndex], fillColor: pink[colorsIndex], value: pink[colorsIndex] },

@@ -1,5 +1,4 @@
 import { Button, Card, CardContent, CardHeader, Divider, Stack, Typography } from '@mui/material';
-import { InstanceHealth } from 'infra/configuration/model/configuration';
 import Page from 'renderer/components/layout/Page';
 import React, { useCallback, useMemo, useState } from 'react';
 import { getInstanceHealthStatusColor } from 'renderer/utils/itemUtils';
@@ -10,14 +9,14 @@ import FormattedDateAndRelativeTime from 'renderer/components/time/FormattedDate
 import { useFetchInstanceHealth } from 'renderer/apis/instance/fetchInstanceHealth';
 import { LoadingButton } from '@mui/lab';
 import { useUpdateEffect } from 'react-use';
-import { InstanceRO } from '../../../../../common/generated_definitions';
+import { InstanceHealthRO, InstanceRO } from '../../../../../common/generated_definitions';
 
 type InstanceUnreachableProps = {
   item: InstanceRO;
 };
 
 export default function InstanceUnreachable({ item }: InstanceUnreachableProps) {
-  const [health, setHealth] = useState<InstanceHealth>(item.health);
+  const [health, setHealth] = useState<InstanceHealthRO>(item.health);
 
   useUpdateEffect(() => {
     setHealth(item.health);

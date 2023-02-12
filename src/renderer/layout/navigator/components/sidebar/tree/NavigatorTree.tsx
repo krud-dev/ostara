@@ -17,8 +17,7 @@ import { matchPath, useLocation, useNavigate } from 'react-router-dom';
 import { getItemType, getItemUrl, isApplication, isFolder, isInstance } from 'renderer/utils/itemUtils';
 import { OpenMap } from 'react-arborist/src/state/open-slice';
 import { InstanceRO } from '../../../../../../common/generated_definitions';
-import { ItemRO } from '../../../../../definitions/daemon';
-import { ItemType } from '../../../../../../infra/configuration/model/configuration';
+import { ItemRO, ItemType } from '../../../../../definitions/daemon';
 
 const TreeStyle = styled(Tree<TreeItem>)(({ theme }) => ({
   '& [role="treeitem"]': {
