@@ -15,5 +15,6 @@ class InstanceRO(
     val sort: Int? = null,
     val parentApplicationId: UUID? = null,
     var endpoints: Set<String> = emptySet(),
-    var abilities: Set<InstanceAbility> = emptySet()
+    var abilities: Set<InstanceAbility> = emptySet(),
+    var health: InstanceHealthRO = InstanceHealthRO.UNKNOWN
 )

@@ -1,6 +1,6 @@
 /* tslint:disable */
 /* eslint-disable */
-// Generated using typescript-generator version 3.1.1185 on 2023-02-12 10:04:10.
+// Generated using typescript-generator version 3.1.1185 on 2023-02-12 11:12:05.
 
 export interface DynamicModelFilter {
     start?: number;
@@ -108,6 +108,13 @@ export interface InstanceLoggerRO {
     configuredLevel?: LogLevel;
 }
 
+export interface InstanceHealthRO {
+    status: InstanceHealthStatus;
+    statusText?: string;
+    lastUpdateTime: DateAsNumber;
+    lastStatusChangeTime: DateAsNumber;
+}
+
 export interface InstanceModifyRequestRO {
     alias: string;
     actuatorUrl: string;
@@ -132,6 +139,7 @@ export interface InstanceRO {
     parentApplicationId?: string;
     endpoints: string[];
     abilities: InstanceAbility[];
+    health: InstanceHealthRO;
 }
 
 export interface OrderDTO {
@@ -151,9 +159,13 @@ export interface FilterField {
     value2: any;
 }
 
+export type DateAsNumber = number;
+
 export type ApplicationType = "SPRING_BOOT";
 
 export type LogLevel = "TRACE" | "DEBUG" | "INFO" | "WARN" | "ERROR" | "FATAL" | "OFF";
+
+export type InstanceHealthStatus = "UP" | "DOWN" | "UNKNOWN" | "OUT_OF_SERVICE" | "UNREACHABLE" | "PENDING" | "INVALID";
 
 export type InstanceAbility = "METRICS" | "ENV" | "BEANS" | "QUARTZ" | "FLYWAY" | "LIQUIBASE" | "LOGGERS" | "CACHES" | "THREADDUMP" | "HEAPDUMP" | "CACHE_STATISTICS" | "SHUTDOWN" | "REFRESH" | "HTTP_REQUEST_STATISTICS" | "INTEGRATIONGRAPH" | "PROPERTIES" | "MAPPINGS" | "SCHEDULEDTASKS" | "HEALTH" | "INFO";
 

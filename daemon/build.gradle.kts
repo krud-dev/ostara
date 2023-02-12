@@ -44,6 +44,7 @@ dependencies {
     implementation("dev.krud:crud-framework-hibernate5-connector:$crudFrameworkVersion")
     implementation("dev.krud:shapeshift:$shapeShiftVersion")
     implementation("dev.krud:spring-boot-starter-shapeshift:$shapeShiftVersion")
+    implementation("com.fasterxml.jackson.datatype:jackson-datatype-jsr310:2.14.2")
 
     testImplementation("com.squareup.okhttp3:mockwebserver:4.10.0")
     testImplementation("io.strikt:strikt-core:0.34.0")

@@ -9,6 +9,7 @@ import okhttp3.OkHttpClient
 import okhttp3.Request
 import okhttp3.RequestBody
 import okhttp3.RequestBody.Companion.toRequestBody
+import okhttp3.Response
 import org.springframework.boot.logging.LogLevel
 import java.io.InputStream
 
@@ -18,6 +19,33 @@ class ActuatorHttpClient(
 ) {
 
     private val baseHttpUrl: HttpUrl = baseUrl.toHttpUrl()
+
+    fun testConnection(): TestConnectionResponse {
+        val rootCall = buildRequest(
+            baseHttpUrl,
+            "GET"
+        )
+        val response = httpClient.newCall(rootCall).execute()
+        if (!response.isSuccessful) {
+            return TestConnectionResponse(
+                response.code,
+                response.body?.string(),
+                false,
+                false
+            )
+        }
+        val validActuator = try {
+            endpoints().isNotEmpty() // TODO: omit the need for extra request
+        } catch (e: Exception) {
+            false
+        }
+        return TestConnectionResponse(
+            response.code,
+            null,
+            validActuator,
+            true
+        )
+    }
 
     fun endpoints(): Set<String> = doGet<EndpointsResponse>(baseHttpUrl)
         .links
@@ -153,6 +181,13 @@ class ActuatorHttpClient(
     fun updateLogger(loggerOrGroupName: String, level: LogLevel?) = doPost<Unit>(
         asUrl("loggers", loggerOrGroupName),
         GSON.toJson(LoggerUpdateRequest(level)).toRequestBody("application/json".toMediaType())
+    )
+
+    data class TestConnectionResponse(
+        val statusCode: Int,
+        val statusText: String?,
+        val validActuator: Boolean,
+        val success: Boolean
     )
 
     data class EndpointsResponse(
@@ -444,18 +479,31 @@ class ActuatorHttpClient(
         requestBody: RequestBody? = null,
         build: Request.Builder.() -> Unit = {}
     ): Type {
-        val request = Request.Builder()
+        val request = buildRequest(url, method, requestBody, build)
+        val response = runRequest(request)
+        val responseBody = response.body?.string()
+        return GSON.fromJson(responseBody, Type::class.java)
+    }
+
+    private fun runRequest(request: Request): Response {
+        val response = httpClient.newCall(request).execute()
+        if (!response.isSuccessful) {
+            error("Request failed: ${request.url} with status code ${response.code}")
+        }
+        return response
+    }
+
+    private inline fun buildRequest(
+        url: HttpUrl,
+        method: String,
+        requestBody: RequestBody? = null,
+        build: Request.Builder.() -> Unit = {}
+    ): Request {
+        return Request.Builder()
             .url(url)
             .method(method, requestBody)
             .apply(build)
             .build()
-        val response = httpClient.newCall(request).execute()
-        if (!response.isSuccessful) {
-            error("Request failed: $url with status code ${response.code}")
-        }
-        val responseBody = response.body?.string()
-
-        return GSON.fromJson(responseBody, Type::class.java)
     }
 
     private fun asUrl(vararg segments: String, build: HttpUrl.Builder.() -> Unit = {}): HttpUrl =
