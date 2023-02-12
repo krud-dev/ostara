@@ -1,6 +1,7 @@
 package dev.krud.boost.daemon.configuration.folder.ro
 
 import dev.krud.boost.daemon.configuration.folder.entity.Folder
+import dev.krud.boost.daemon.utils.DEFAULT_COLOR
 import dev.krud.shapeshift.resolver.annotation.DefaultMappingTarget
 import dev.krud.shapeshift.resolver.annotation.MappedField
 import jakarta.validation.constraints.NotBlank
@@ -12,9 +13,9 @@ data class FolderModifyRequestRO(
     @NotBlank
     val alias: String,
     @MappedField
-    val description: String? = null,
+    val color: String = DEFAULT_COLOR,
     @MappedField
-    val color: String? = null,
+    val description: String? = null,
     @MappedField
     val icon: String? = null,
     @MappedField

@@ -1,6 +1,6 @@
 /* tslint:disable */
 /* eslint-disable */
-// Generated using typescript-generator version 3.1.1185 on 2023-02-12 14:57:11.
+// Generated using typescript-generator version 3.1.1185 on 2023-02-12 15:17:28.
 
 export interface DynamicModelFilter {
     start?: number;
@@ -52,8 +52,8 @@ export interface ApplicationHealthRO {
 export interface ApplicationModifyRequestRO {
     alias: string;
     type: ApplicationType;
+    color: string;
     description?: string;
-    color?: string;
     icon?: string;
     sort?: number;
     parentFolderId?: string;
@@ -75,8 +75,8 @@ export interface ApplicationRO {
 
 export interface FolderModifyRequestRO {
     alias: string;
+    color: string;
     description?: string;
-    color?: string;
     icon?: string;
     sort?: number;
     parentFolderId?: string;
@@ -133,8 +133,8 @@ export interface InstanceModifyRequestRO {
     alias: string;
     actuatorUrl: string;
     dataCollectionIntervalSeconds: number;
+    color: string;
     description?: string;
-    color?: string;
     icon?: string;
     sort?: number;
     parentApplicationId?: string;

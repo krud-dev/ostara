@@ -4,6 +4,7 @@ import dev.krud.boost.daemon.configuration.application.entity.Application
 import dev.krud.boost.daemon.configuration.application.entity.Application.Companion.effectiveColor
 import dev.krud.boost.daemon.configuration.instance.ro.InstanceRO
 import dev.krud.boost.daemon.entity.AbstractEntity
+import dev.krud.boost.daemon.utils.DEFAULT_COLOR
 import dev.krud.crudframework.crud.annotation.Deleteable
 import dev.krud.shapeshift.resolver.annotation.DefaultMappingTarget
 import dev.krud.shapeshift.resolver.annotation.MappedField
@@ -35,8 +36,8 @@ class Instance(
     @MappedField
     var description: String? = null,
     @MappedField
-    @Column(nullable = true)
-    var color: String? = null,
+    @Column(nullable = false, columnDefinition = "varchar(30) default '$DEFAULT_COLOR'")
+    var color: String = DEFAULT_COLOR,
     @MappedField
     @Column(nullable = true)
     var icon: String? = null,
@@ -50,7 +51,12 @@ class Instance(
 
     companion object {
         const val NAME = "application"
-        val Instance.effectiveColor: String?
-            get() = color ?: parentApplication?.effectiveColor
+        val Instance.effectiveColor: String
+            get() {
+                if (color != DEFAULT_COLOR) {
+                    return color
+                }
+                return parentApplication?.effectiveColor ?: DEFAULT_COLOR
+            }
     }
 }

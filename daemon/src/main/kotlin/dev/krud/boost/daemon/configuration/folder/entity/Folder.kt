@@ -2,6 +2,7 @@ package dev.krud.boost.daemon.configuration.folder.entity
 
 import dev.krud.boost.daemon.configuration.folder.ro.FolderRO
 import dev.krud.boost.daemon.entity.AbstractEntity
+import dev.krud.boost.daemon.utils.DEFAULT_COLOR
 import dev.krud.shapeshift.resolver.annotation.DefaultMappingTarget
 import dev.krud.shapeshift.resolver.annotation.MappedField
 import jakarta.persistence.Column
@@ -22,8 +23,8 @@ class Folder(
     @MappedField
     var description: String? = null,
     @MappedField
-    @Column(nullable = true)
-    var color: String? = null,
+    @Column(nullable = false, columnDefinition = "varchar(30) default '$DEFAULT_COLOR'")
+    var color: String = DEFAULT_COLOR,
     @MappedField
     @Column(nullable = true)
     var icon: String? = null,
@@ -40,7 +41,12 @@ class Folder(
 
     companion object {
         const val NAME = "folder"
-        val Folder.effectiveColor: String?
-            get() = color ?: parentFolder?.effectiveColor
+        val Folder.effectiveColor: String
+            get() {
+                if (color != DEFAULT_COLOR) {
+                    return color
+                }
+                return parentFolder?.effectiveColor ?: DEFAULT_COLOR
+            }
     }
 }

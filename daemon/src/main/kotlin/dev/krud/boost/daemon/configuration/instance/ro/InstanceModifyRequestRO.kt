@@ -1,6 +1,7 @@
 package dev.krud.boost.daemon.configuration.instance.ro
 
 import dev.krud.boost.daemon.configuration.instance.entity.Instance
+import dev.krud.boost.daemon.utils.DEFAULT_COLOR
 import dev.krud.shapeshift.resolver.annotation.DefaultMappingTarget
 import dev.krud.shapeshift.resolver.annotation.MappedField
 import jakarta.validation.constraints.NotBlank
@@ -17,9 +18,9 @@ data class InstanceModifyRequestRO(
     @MappedField
     val dataCollectionIntervalSeconds: Int,
     @MappedField
-    val description: String? = null,
+    val color: String = DEFAULT_COLOR,
     @MappedField
-    val color: String? = null,
+    val description: String? = null,
     @MappedField
     val icon: String? = null,
     @MappedField

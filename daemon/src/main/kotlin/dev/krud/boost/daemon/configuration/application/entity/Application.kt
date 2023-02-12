@@ -1,11 +1,13 @@
 package dev.krud.boost.daemon.configuration.application.entity
 
+import dev.krud.boost.daemon.configuration.application.entity.Application.Companion.effectiveColor
 import dev.krud.boost.daemon.configuration.application.enums.ApplicationType
 import dev.krud.boost.daemon.configuration.application.ro.ApplicationRO
 import dev.krud.boost.daemon.configuration.folder.entity.Folder
 import dev.krud.boost.daemon.configuration.folder.entity.Folder.Companion.effectiveColor
 import dev.krud.boost.daemon.configuration.instance.entity.Instance
 import dev.krud.boost.daemon.entity.AbstractEntity
+import dev.krud.boost.daemon.utils.DEFAULT_COLOR
 import dev.krud.shapeshift.resolver.annotation.DefaultMappingTarget
 import dev.krud.shapeshift.resolver.annotation.MappedField
 import jakarta.persistence.*
@@ -26,8 +28,8 @@ class Application(
     @MappedField
     var type: ApplicationType,
     @MappedField
-    @Column(nullable = true)
-    var color: String? = null,
+    @Column(nullable = false, columnDefinition = "varchar(30) default '$DEFAULT_COLOR'")
+    var color: String = DEFAULT_COLOR,
     @MappedField
     @Column(nullable = true)
     var icon: String? = null,
@@ -51,8 +53,13 @@ class Application(
 
     companion object {
         const val NAME = "application"
-        val Application.effectiveColor: String?
-            get() = color ?: parentFolder?.effectiveColor
+        val Application.effectiveColor: String
+            get() {
+                if (color != DEFAULT_COLOR) {
+                    return color
+                }
+                return parentFolder?.effectiveColor ?: DEFAULT_COLOR
+            }
         val Application.healthyInstances get() = instances
     }
 }
