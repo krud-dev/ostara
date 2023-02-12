@@ -45,12 +45,14 @@ class Application(
     @ManyToOne
     @JoinColumn(name = "parent_folder_id", insertable = false, updatable = false, nullable = true)
     val parentFolder: Folder? = null
+
+    @OneToMany(mappedBy = "parentApplication", fetch = FetchType.EAGER)
+    val instances: List<Instance> = listOf()
+
     companion object {
         const val NAME = "application"
         val Application.effectiveColor: String?
             get() = color ?: parentFolder?.effectiveColor
+        val Application.healthyInstances get() = instances
     }
-
-    @OneToMany(mappedBy = "parentApplication", fetch = FetchType.EAGER)
-    val instances: List<Instance> = listOf()
 }

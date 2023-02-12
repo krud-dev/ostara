@@ -1,6 +1,6 @@
 /* tslint:disable */
 /* eslint-disable */
-// Generated using typescript-generator version 3.1.1185 on 2023-02-12 09:34:01.
+// Generated using typescript-generator version 3.1.1185 on 2023-02-12 10:04:10.
 
 export interface DynamicModelFilter {
     start?: number;
@@ -36,6 +36,11 @@ export interface ApplicationCacheStatisticsRO {
     misses: number;
     removals: number;
     size: number;
+}
+
+export interface ApplicationLoggerRO {
+    name: string;
+    loggers: { [index: string]: InstanceLoggerRO };
 }
 
 export interface ApplicationModifyRequestRO {
