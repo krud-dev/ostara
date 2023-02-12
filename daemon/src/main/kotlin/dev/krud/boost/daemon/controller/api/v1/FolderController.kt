@@ -35,8 +35,8 @@ class FolderController(
     @ApiResponse(responseCode = "200", description = "Move operation")
     @ApiResponse(responseCode = "404", description = "Folder not found")
     @ApiResponse(responseCode = "503", description = "Folder invalid")
-    fun moveFolder(@PathVariable folderId: UUID, @RequestParam(required = false) newParentFolderId: UUID? = null): FolderRO {
-        val folder = folderService.moveFolder(folderId, newParentFolderId)
+    fun moveFolder(@PathVariable folderId: UUID, @RequestParam(required = false) newParentFolderId: UUID? = null, @RequestParam(required = false) newSort: Int? = null): FolderRO {
+        val folder = folderService.moveFolder(folderId, newParentFolderId, newSort)
         return shapeShift.map(folder)
     }
 }

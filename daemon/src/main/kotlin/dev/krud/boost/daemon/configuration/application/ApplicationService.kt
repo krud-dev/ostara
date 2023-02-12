@@ -36,12 +36,13 @@ class ApplicationService(
         }
     }
 
-    fun moveApplication(applicationId: UUID, newParentFolderId: UUID?): Application {
+    fun moveApplication(applicationId: UUID, newParentFolderId: UUID?, newSort: Int?): Application {
         val application = getApplicationOrThrow(applicationId)
         if (application.parentFolderId == newParentFolderId) {
             return application
         }
         application.parentFolderId = newParentFolderId // TODO: check if folder exists, should fail on foreign key for now
+        application.sort = newSort
         return crudHandler
             .update(application, Application::class.java)
             .execute()

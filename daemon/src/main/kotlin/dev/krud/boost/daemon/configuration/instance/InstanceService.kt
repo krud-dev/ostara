@@ -1,6 +1,5 @@
 package dev.krud.boost.daemon.configuration.instance
 
-import com.github.benmanes.caffeine.cache.Cache
 import dev.krud.boost.daemon.configuration.instance.ability.InstanceAbilityResolver
 import dev.krud.boost.daemon.configuration.instance.entity.Instance
 import dev.krud.boost.daemon.configuration.instance.enums.InstanceAbility
@@ -68,13 +67,14 @@ class InstanceService(
         }
     }
 
-    fun moveInstance(instanceId: UUID, newParentApplicationId: UUID): Instance {
+    fun moveInstance(instanceId: UUID, newParentApplicationId: UUID, newSort: Int?): Instance {
         val instance = getInstanceOrThrow(instanceId)
         if (instance.parentApplicationId == newParentApplicationId) {
             return instance
         }
         val oldParentApplicationId = instance.parentApplicationId
         instance.parentApplicationId = newParentApplicationId // TODO: check if application exists, should fail on foreign key for now
+        instance.sort = newSort
         val updatedInstance = crudHandler
             .update(instance)
             .execute()
