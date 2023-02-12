@@ -2,6 +2,9 @@ import { BaseMutationOptions, BaseUseMutationResult, useBaseMutation } from 'ren
 import { ItemRO, ItemType } from '../../definitions/daemon';
 import { crudKeys } from '../crud/crudKeys';
 import { getItemTypeEntity } from '../../utils/itemUtils';
+import { moveFolder } from '../folder/moveFolder';
+import { moveApplication } from '../application/moveApplication';
+import { moveInstance } from '../instance/moveInstance';
 
 type Variables = {
   id: string;
@@ -13,20 +16,27 @@ type Variables = {
 type Data = ItemRO;
 
 export const moveItem = async (variables: Variables): Promise<Data> => {
-  throw new Error('Not implemented');
-  // switch (variables.type) {
-  //   case 'folder':
-  //     return await window.configuration.moveFolder(variables.id, variables.parentId, variables.sort);
-  //   case 'application':
-  //     return await window.configuration.moveApplication(variables.id, variables.parentId, variables.sort);
-  //   case 'instance':
-  //     if (!variables.parentId) {
-  //       throw new Error('Instance must have a parent');
-  //     }
-  //     return await window.configuration.moveInstance(variables.id, variables.parentId, variables.sort);
-  //   default:
-  //     throw new Error('Unknown item type');
-  // }
+  switch (variables.type) {
+    case 'folder':
+      return await moveFolder({ folderId: variables.id, newParentFolderId: variables.parentId, sort: variables.sort });
+    case 'application':
+      return await moveApplication({
+        applicationId: variables.id,
+        newParentFolderId: variables.parentId,
+        sort: variables.sort,
+      });
+    case 'instance':
+      if (!variables.parentId) {
+        throw new Error('Instance must have a parent');
+      }
+      return await moveInstance({
+        instanceId: variables.id,
+        newParentApplicationId: variables.parentId,
+        sort: variables.sort,
+      });
+    default:
+      throw new Error('Unknown item type');
+  }
 };
 
 export const useMoveItem = (options?: BaseMutationOptions<Data, Variables>): BaseUseMutationResult<Data, Variables> =>

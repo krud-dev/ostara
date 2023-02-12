@@ -136,6 +136,10 @@ export default function NavigatorTreeNode({ style, node, tree, dragHandle, previ
     () => node.isFocused && (!isSelected || !node.isOnlySelection),
     [isSelected, node.isFocused, node.isOnlySelection]
   );
+  const isWillReceiveDrop = useMemo<boolean>(
+    () => node.isDroppable && node.willReceiveDrop,
+    [node.isDroppable, node.willReceiveDrop]
+  );
 
   useEffect(() => {
     if (isSelected) {
@@ -161,12 +165,20 @@ export default function NavigatorTreeNode({ style, node, tree, dragHandle, previ
     [theme]
   );
 
+  const willReceiveDropRootStyle = useMemo<SxProps<Theme>>(
+    () => ({
+      bgcolor: alpha(theme.palette.secondary.light, theme.palette.action.selectedOpacity),
+    }),
+    [theme]
+  );
+
   const stateStyle = useMemo<SxProps<Theme>>(
     () => ({
       ...(isFocused && focusRootStyle),
       ...(isSelected && activeRootStyle),
+      ...(isWillReceiveDrop && willReceiveDropRootStyle),
     }),
-    [isFocused, isSelected, focusRootStyle, activeRootStyle]
+    [isFocused, isSelected, isWillReceiveDrop, focusRootStyle, activeRootStyle, willReceiveDropRootStyle]
   );
 
   return (

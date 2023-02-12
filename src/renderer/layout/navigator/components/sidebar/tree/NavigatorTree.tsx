@@ -25,6 +25,8 @@ const TreeStyle = styled(Tree<TreeItem>)(({ theme }) => ({
   },
 }));
 
+const NAVIGATOR_TREE_PADDING_BOTTOM = 12;
+
 type NavigatorTreeProps = {
   width: number;
   search?: string;
@@ -87,7 +89,10 @@ export default function NavigatorTree({ width, search }: NavigatorTreeProps) {
     setToggleFlag((prevToggleFlag) => prevToggleFlag + 1);
   }, [action]);
 
-  const height = useMemo<number>(() => getOpenItemsCount() * NAVIGATOR_ITEM_HEIGHT + 12, [toggleFlag, data]);
+  const height = useMemo<number>(
+    () => getOpenItemsCount() * NAVIGATOR_ITEM_HEIGHT + NAVIGATOR_TREE_PADDING_BOTTOM,
+    [toggleFlag, data]
+  );
   const initialOpenState = useMemo<OpenMap>(() => {
     const openMap: OpenMap = {};
     const checkItemOpen = (item: TreeItem): boolean => {
@@ -280,6 +285,7 @@ export default function NavigatorTree({ width, search }: NavigatorTreeProps) {
           width={width}
           height={height}
           indent={12}
+          paddingBottom={NAVIGATOR_TREE_PADDING_BOTTOM}
           rowHeight={NAVIGATOR_ITEM_HEIGHT}
           searchTerm={search}
           searchMatch={(node, term) => node.data.alias.toLowerCase().includes(term.toLowerCase())}
