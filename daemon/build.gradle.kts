@@ -31,6 +31,7 @@ dependencies {
     implementation("org.springframework.boot:spring-boot-starter-web")
     implementation("org.springframework.boot:spring-boot-starter-data-jpa")
     implementation("org.springframework.boot:spring-boot-starter-integration")
+    implementation("org.springframework.boot:spring-boot-starter-cache")
     implementation("org.jetbrains.kotlin:kotlin-reflect")
     implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
     implementation("org.hibernate.orm:hibernate-community-dialects")
@@ -46,6 +47,7 @@ dependencies {
     implementation("dev.krud:shapeshift:$shapeShiftVersion")
     implementation("dev.krud:spring-boot-starter-shapeshift:$shapeShiftVersion")
     implementation("com.fasterxml.jackson.datatype:jackson-datatype-jsr310:2.14.2")
+    implementation("com.github.ben-manes.caffeine:caffeine:3.1.3")
 
     testImplementation("com.squareup.okhttp3:mockwebserver:4.10.0")
     testImplementation("io.strikt:strikt-core:0.34.0")
