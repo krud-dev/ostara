@@ -1,6 +1,6 @@
 /* tslint:disable */
 /* eslint-disable */
-// Generated using typescript-generator version 3.1.1185 on 2023-02-12 08:43:21.
+// Generated using typescript-generator version 3.1.1185 on 2023-02-12 09:34:01.
 
 export interface DynamicModelFilter {
     start?: number;
@@ -97,6 +97,12 @@ export interface InstanceCacheStatisticsRO {
     size: number;
 }
 
+export interface InstanceLoggerRO {
+    name: string;
+    effectiveLevel?: LogLevel;
+    configuredLevel?: LogLevel;
+}
+
 export interface InstanceModifyRequestRO {
     alias: string;
     actuatorUrl: string;
@@ -141,6 +147,8 @@ export interface FilterField {
 }
 
 export type ApplicationType = "SPRING_BOOT";
+
+export type LogLevel = "TRACE" | "DEBUG" | "INFO" | "WARN" | "ERROR" | "FATAL" | "OFF";
 
 export type InstanceAbility = "METRICS" | "ENV" | "BEANS" | "QUARTZ" | "FLYWAY" | "LIQUIBASE" | "LOGGERS" | "CACHES" | "THREADDUMP" | "HEAPDUMP" | "CACHE_STATISTICS" | "SHUTDOWN" | "REFRESH" | "HTTP_REQUEST_STATISTICS" | "INTEGRATIONGRAPH" | "PROPERTIES" | "MAPPINGS" | "SCHEDULEDTASKS" | "HEALTH" | "INFO";
 
