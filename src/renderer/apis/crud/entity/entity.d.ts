@@ -1,25 +1,19 @@
 export type CrudEntityType = 'CrudFramework' | 'LocalStorage';
 
-type CrudEntityTypeCrudFramework = {
+export type CrudEntityBase = {
+  id: string;
+};
+
+type CrudEntityCrudFramework = CrudEntityBase & {
   type: 'CrudFramework';
   path: string;
 };
 
-type CrudEntityTypeLocalStorage = {
+type CrudEntityLocalStorage = CrudEntityBase & {
   type: 'LocalStorage';
 };
 
-type CrudEntityTypes = CrudEntityTypeCrudFramework | CrudEntityTypeLocalStorage;
-
-export type CrudEntityTypeHelper<T> = T extends 'CrudFramework'
-  ? CrudEntityTypeCrudFramework
-  : T extends 'LocalStorage'
-  ? CrudEntityTypeLocalStorage
-  : never;
-
-export type CrudEntity = CrudEntityTypes & {
-  id: string;
-};
+export type CrudEntity = CrudEntityCrudFramework | CrudEntityLocalStorage;
 
 export type BaseRO = {
   id: string;

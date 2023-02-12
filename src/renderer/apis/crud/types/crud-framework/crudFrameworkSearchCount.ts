@@ -1,11 +1,11 @@
-import { CrudEntity, CrudEntityTypeHelper } from '../../entity/entity';
+import { CrudEntityCrudFramework } from '../../entity/entity';
 import { AxiosResponse } from 'axios';
 import { CrudSearchCountData, CrudSearchCountVariables } from '../../crudSearchCount';
 import { FilterField } from '../../../../../common/generated_definitions';
 import { axiosInstance } from '../../../axiosInstance';
 
 export const crudFrameworkSearchCount = async (
-  entity: CrudEntity & CrudEntityTypeHelper<'CrudFramework'>,
+  entity: CrudEntityCrudFramework,
   variables: Omit<CrudSearchCountVariables, 'entity'>
 ): Promise<CrudSearchCountData> => {
   const { filterFields = [] } = variables;

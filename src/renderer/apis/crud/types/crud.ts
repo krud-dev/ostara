@@ -5,39 +5,35 @@ import { CrudSearchCountData, CrudSearchCountVariables } from '../crudSearchCoun
 import { CrudSearchData, CrudSearchVariables } from '../crudSearch';
 import { CrudDeleteData, CrudDeleteVariables } from '../crudDelete';
 import { CrudCreateData, CrudCreateVariables } from '../crudCreate';
-import { BaseRO, CrudEntity, CrudEntityType, CrudEntityTypeHelper } from '../entity/entity';
+import { BaseRO, CrudEntity, CrudEntityType } from '../entity/entity';
 
 export type CrudMethods<T extends CrudEntityType> = {
   create: <ResponseRO, RequestRO = ResponseRO>(
-    entity: CrudEntity & CrudEntityTypeHelper<T>,
+    entity: CrudEntity & { type: T },
     variables: Omit<CrudCreateVariables<RequestRO>, 'entity'>
   ) => Promise<CrudCreateData<ResponseRO>>;
-  delete: (
-    entity: CrudEntity & CrudEntityTypeHelper<T>,
-    variables: Omit<CrudDeleteVariables, 'entity'>
-  ) => Promise<CrudDeleteData>;
+  delete: (entity: CrudEntity & { type: T }, variables: Omit<CrudDeleteVariables, 'entity'>) => Promise<CrudDeleteData>;
   search: <ResponseRO extends BaseRO>(
-    entity: CrudEntity & CrudEntityTypeHelper<T>,
+    entity: CrudEntity & { type: T },
     variables: Omit<CrudSearchVariables, 'entity'>
   ) => Promise<CrudSearchData<ResponseRO>>;
   searchCount: (
-    entity: CrudEntity & CrudEntityTypeHelper<T>,
+    entity: CrudEntity & { type: T },
     variables: Omit<CrudSearchCountVariables, 'entity'>
   ) => Promise<CrudSearchCountData>;
   show: <ResponseRO extends BaseRO>(
-    entity: CrudEntity & CrudEntityTypeHelper<T>,
+    entity: CrudEntity & { type: T },
     variables: Omit<CrudShowVariables, 'entity'>
   ) => Promise<CrudShowData<ResponseRO>>;
   update: <ResponseRO extends BaseRO, RequestRO = ResponseRO>(
-    entity: CrudEntity & CrudEntityTypeHelper<T>,
+    entity: CrudEntity & { type: T },
     variables: Omit<CrudUpdateVariables<RequestRO>, 'entity'>
   ) => Promise<CrudUpdateData<ResponseRO>>;
 };
 
-const crudMethodsMap: Map<CrudEntityType, CrudMethods<CrudEntityType>> = new Map<
-  CrudEntityType,
-  CrudMethods<CrudEntityType>
->([['CrudFramework', crudFrameworkMethods]]);
+const crudMethodsMap: Map<CrudEntityType, CrudMethods<any>> = new Map<CrudEntityType, CrudMethods<any>>([
+  ['CrudFramework', crudFrameworkMethods],
+]);
 
 export const getCrudMethods = <T extends CrudEntityType>(type: T): CrudMethods<T> => {
   const crudMethods = crudMethodsMap.get(type);

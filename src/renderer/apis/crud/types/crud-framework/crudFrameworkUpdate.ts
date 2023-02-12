@@ -1,10 +1,10 @@
-import { BaseRO, CrudEntity, CrudEntityTypeHelper } from '../../entity/entity';
+import { BaseRO, CrudEntityCrudFramework } from '../../entity/entity';
 import { AxiosResponse } from 'axios';
 import { CrudUpdateData, CrudUpdateVariables } from '../../crudUpdate';
 import { axiosInstance } from '../../../axiosInstance';
 
 export const crudFrameworkUpdate = async <ResponseRO extends BaseRO, RequestRO = ResponseRO>(
-  entity: CrudEntity & CrudEntityTypeHelper<'CrudFramework'>,
+  entity: CrudEntityCrudFramework,
   variables: Omit<CrudUpdateVariables<RequestRO>, 'entity'>
 ): Promise<CrudUpdateData<ResponseRO>> => {
   const { item, id } = variables;

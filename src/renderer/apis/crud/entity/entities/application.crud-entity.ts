@@ -1,6 +1,6 @@
-import { CrudEntity } from '../entity';
+import { CrudEntityCrudFramework } from '../entity';
 
-export const applicationCrudEntity: CrudEntity & { type: 'CrudFramework' } = {
+export const applicationCrudEntity: CrudEntityCrudFramework = {
   id: 'application',
   type: 'CrudFramework',
   path: 'applications',

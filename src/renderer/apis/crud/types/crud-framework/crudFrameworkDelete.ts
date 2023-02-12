@@ -1,10 +1,10 @@
-import { CrudEntity, CrudEntityTypeHelper } from '../../entity/entity';
+import { CrudEntityCrudFramework } from '../../entity/entity';
 import { AxiosResponse } from 'axios';
 import { CrudDeleteData, CrudDeleteVariables } from '../../crudDelete';
 import { axiosInstance } from '../../../axiosInstance';
 
 export const crudFrameworkDelete = async (
-  entity: CrudEntity & CrudEntityTypeHelper<'CrudFramework'>,
+  entity: CrudEntityCrudFramework,
   variables: Omit<CrudDeleteVariables, 'entity'>
 ): Promise<CrudDeleteData> => {
   const { id } = variables;
