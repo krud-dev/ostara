@@ -1,6 +1,6 @@
 /* tslint:disable */
 /* eslint-disable */
-// Generated using typescript-generator version 3.1.1185 on 2023-02-12 11:12:05.
+// Generated using typescript-generator version 3.1.1185 on 2023-02-12 11:30:28.
 
 export interface DynamicModelFilter {
     start?: number;
@@ -43,6 +43,12 @@ export interface ApplicationLoggerRO {
     loggers: { [index: string]: InstanceLoggerRO };
 }
 
+export interface ApplicationHealthRO {
+    status: ApplicationHealthStatus;
+    lastUpdateTime: DateAsNumber;
+    lastStatusChangeTime: DateAsNumber;
+}
+
 export interface ApplicationModifyRequestRO {
     alias: string;
     type: ApplicationType;
@@ -64,6 +70,7 @@ export interface ApplicationRO {
     icon?: string;
     sort?: number;
     parentFolderId?: string;
+    health: ApplicationHealthRO;
 }
 
 export interface FolderModifyRequestRO {
@@ -160,6 +167,8 @@ export interface FilterField {
 }
 
 export type DateAsNumber = number;
+
+export type ApplicationHealthStatus = "ALL_UP" | "ALL_DOWN" | "SOME_DOWN" | "UNKNOWN" | "PENDING";
 
 export type ApplicationType = "SPRING_BOOT";
 

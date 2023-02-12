@@ -1,6 +1,7 @@
 package dev.krud.boost.daemon.configuration.instance
 
 import dev.krud.boost.daemon.actuator.ActuatorHttpClient
+import dev.krud.boost.daemon.configuration.instance.entity.Instance
 import dev.krud.boost.daemon.configuration.instance.ro.InstanceHealthRO
 import org.springframework.stereotype.Service
 import java.util.*
@@ -10,14 +11,17 @@ class InstanceHealthService(
     private val instanceService: InstanceService,
     private val actuatorClientProvider: InstanceActuatorClientProvider
 ) {
-    //    @Cacheable("instanceHealth")
     fun getHealth(instanceId: UUID): InstanceHealthRO {
         val instance = instanceService.getInstanceOrThrow(instanceId)
+        return getHealth(instance)
+    }
+
+    fun getHealth(instance: Instance): InstanceHealthRO {
         val actuatorClient = actuatorClientProvider.provide(instance)
         val testConnection = try {
             actuatorClient.testConnection()
         } catch (e: Exception) {
-            return InstanceHealthRO.UNKNOWN
+            return InstanceHealthRO.unknown()
         }
 
         if (!testConnection.success) {
@@ -31,7 +35,7 @@ class InstanceHealthService(
         val health = try {
             actuatorClient.health()
         } catch (e: Exception) {
-            return InstanceHealthRO.UNKNOWN
+            return InstanceHealthRO.unknown()
         }
 
         return when (health.status) {

@@ -13,5 +13,6 @@ class ApplicationRO(
     var effectiveColor: String? = null,
     val icon: String? = null,
     val sort: Int? = null,
-    val parentFolderId: UUID? = null
+    val parentFolderId: UUID? = null,
+    var health: ApplicationHealthRO = ApplicationHealthRO.unknown()
 )
