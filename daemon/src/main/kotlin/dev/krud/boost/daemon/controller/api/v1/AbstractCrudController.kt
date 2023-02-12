@@ -1,5 +1,6 @@
 package dev.krud.boost.daemon.controller.api.v1
 
+import dev.krud.boost.daemon.base.crud.ro.CountResultRO
 import dev.krud.boost.daemon.entity.AbstractEntity
 import dev.krud.crudframework.crud.handler.CrudHandler
 import dev.krud.crudframework.modelfilter.DynamicModelFilter
@@ -126,6 +127,5 @@ abstract class AbstractCrudController<Entity : AbstractEntity, RO : Any, CreateD
             .applyPolicies()
             .execute()
     }
-
-    data class CountResultRO(val total: Long)
 }
+
