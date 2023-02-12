@@ -14,7 +14,7 @@ type Variables = {
 type Data = EnrichedApplicationCache[];
 
 export const getApplicationCaches = async (variables: Variables): Promise<Data> => {
-  const hasStatistics = true; // TODO update once application has abilities
+  const hasStatistics = false; // TODO update once application has abilities
   const result = await window.instance.getApplicationCaches(variables.applicationId);
   return result.map((cache) => ({ ...cache, hasStatistics: hasStatistics }));
 };

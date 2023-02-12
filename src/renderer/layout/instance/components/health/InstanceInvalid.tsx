@@ -17,17 +17,11 @@ type InstanceInvalidProps = {
 };
 
 export default function InstanceInvalid({ item }: InstanceInvalidProps) {
-  // TODO: Remove when health is available
-  const [health, setHealth] = useState<InstanceHealth>({
-    status: 'INVALID',
-    lastUpdateTime: 0,
-    lastStatusChangeTime: 0,
-  });
-  // const [health, setHealth] = useState<InstanceHealth>(item.health);
+  const [health, setHealth] = useState<InstanceHealth>(item.health);
 
-  // useUpdateEffect(() => {
-  //   setHealth(item.health);
-  // }, [item.health]);
+  useUpdateEffect(() => {
+    setHealth(item.health);
+  }, [item.health]);
 
   const healthStatusColor = useMemo<string | undefined>(() => getInstanceHealthStatusColor(health), [health]);
 

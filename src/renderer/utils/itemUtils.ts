@@ -1,12 +1,18 @@
-import { DataCollectionMode, InstanceHealth, ItemType } from 'infra/configuration/model/configuration';
+import { DataCollectionMode, ItemType } from 'infra/configuration/model/configuration';
 import { generatePath } from 'react-router-dom';
 import { urls } from 'renderer/routes/urls';
-import { green, pink, red, yellow } from '@mui/material/colors';
+import { green, orange, pink, red, yellow } from '@mui/material/colors';
 import { ColorSchema } from 'renderer/theme/config/palette';
 import blueGrey from '@mui/material/colors/blueGrey';
 import { MUIconType } from 'renderer/components/common/IconViewer';
 import { ItemRO } from '../definitions/daemon';
-import { ApplicationRO, FolderRO, InstanceAbility, InstanceRO } from '../../common/generated_definitions';
+import {
+  ApplicationRO,
+  FolderRO,
+  InstanceAbility,
+  InstanceHealthRO,
+  InstanceRO,
+} from '../../common/generated_definitions';
 import { CrudEntity } from '../apis/crud/entity/entity';
 import { applicationCrudEntity } from '../apis/crud/entity/entities/application.crud-entity';
 import { instanceCrudEntity } from '../apis/crud/entity/entities/instance.crud-entity';
@@ -89,7 +95,7 @@ export const getItemNameTooltip = (item: ItemRO): string | undefined => {
 
 const HEALTH_STATUS_COLORS_INDEX = 600;
 
-export const getInstanceHealthStatusColor = (instanceHealth: InstanceHealth): string | undefined => {
+export const getInstanceHealthStatusColor = (instanceHealth: InstanceHealthRO): string | undefined => {
   switch (instanceHealth.status) {
     case 'UP':
       return green[HEALTH_STATUS_COLORS_INDEX];
@@ -112,28 +118,25 @@ export const getApplicationHealthStatusColor = (application: ApplicationRO): str
   if (application.instanceCount === 0) {
     return undefined;
   }
-  return undefined;
-  // TODO: reimplement
-  // switch (application.health.status) {
-  //   case 'ALL_UP':
-  //     return green[HEALTH_STATUS_COLORS_INDEX];
-  //   case 'ALL_DOWN':
-  //     return red[HEALTH_STATUS_COLORS_INDEX];
-  //   case 'SOME_DOWN':
-  //     return orange[HEALTH_STATUS_COLORS_INDEX];
-  //   case 'UNKNOWN':
-  //     return blueGrey[HEALTH_STATUS_COLORS_INDEX];
-  //   case 'PENDING':
-  //     return 'text.secondary';
-  //   default:
-  //     return undefined;
-  // }
+  switch (application.health.status) {
+    case 'ALL_UP':
+      return green[HEALTH_STATUS_COLORS_INDEX];
+    case 'ALL_DOWN':
+      return red[HEALTH_STATUS_COLORS_INDEX];
+    case 'SOME_DOWN':
+      return orange[HEALTH_STATUS_COLORS_INDEX];
+    case 'UNKNOWN':
+      return blueGrey[HEALTH_STATUS_COLORS_INDEX];
+    case 'PENDING':
+      return 'text.secondary';
+    default:
+      return undefined;
+  }
 };
 
 export const getItemHealthStatusColor = (item: ItemRO): string | undefined => {
   if (isInstance(item)) {
-    // TODO: reimplement
-    // return getInstanceHealthStatusColor(item.health);
+    return getInstanceHealthStatusColor(item.health);
   }
   if (isApplication(item)) {
     return getApplicationHealthStatusColor(item);
@@ -143,45 +146,41 @@ export const getItemHealthStatusColor = (item: ItemRO): string | undefined => {
 
 export const getItemHealthStatusTextId = (item: ItemRO): string | undefined => {
   if (isInstance(item)) {
-    return undefined;
-    // TODO: reimplement
-    // switch (item.health.status) {
-    //   case 'UP':
-    //     return 'up';
-    //   case 'DOWN':
-    //     return 'down';
-    //   case 'OUT_OF_SERVICE':
-    //     return 'outOfService';
-    //   case 'UNREACHABLE':
-    //     return 'unreachable';
-    //   case 'UNKNOWN':
-    //     return 'unknown';
-    //   case 'PENDING':
-    //     return 'loading';
-    //   default:
-    //     return undefined;
-    // }
+    switch (item.health.status) {
+      case 'UP':
+        return 'up';
+      case 'DOWN':
+        return 'down';
+      case 'OUT_OF_SERVICE':
+        return 'outOfService';
+      case 'UNREACHABLE':
+        return 'unreachable';
+      case 'UNKNOWN':
+        return 'unknown';
+      case 'PENDING':
+        return 'loading';
+      default:
+        return undefined;
+    }
   }
   if (isApplication(item)) {
     if (item.instanceCount === 0) {
       return undefined;
     }
-    return undefined;
-    // TODO: reimplement
-    // switch (item.health.status) {
-    //   case 'ALL_UP':
-    //     return 'up';
-    //   case 'ALL_DOWN':
-    //     return 'down';
-    //   case 'SOME_DOWN':
-    //     return 'mixed';
-    //   case 'UNKNOWN':
-    //     return 'unknown';
-    //   case 'PENDING':
-    //     return 'loading';
-    //   default:
-    //     return undefined;
-    // }
+    switch (item.health.status) {
+      case 'ALL_UP':
+        return 'up';
+      case 'ALL_DOWN':
+        return 'down';
+      case 'SOME_DOWN':
+        return 'mixed';
+      case 'UNKNOWN':
+        return 'unknown';
+      case 'PENDING':
+        return 'loading';
+      default:
+        return undefined;
+    }
   }
   return undefined;
 };

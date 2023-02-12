@@ -16,18 +16,16 @@ const InstanceLayout: FunctionComponent = () => {
     if (!item) {
       return null;
     }
-    return undefined;
-    // TODO: reimplement
-    // switch (item.health.status) {
-    //   case 'PENDING':
-    //     return <InstancePending item={item} />;
-    //   case 'UNREACHABLE':
-    //     return <InstanceUnreachable item={item} />;
-    //   case 'INVALID':
-    //     return <InstanceInvalid item={item} />;
-    //   default:
-    //     return undefined;
-    // }
+    switch (item.health.status) {
+      case 'PENDING':
+        return <InstancePending item={item} />;
+      case 'UNREACHABLE':
+        return <InstanceUnreachable item={item} />;
+      case 'INVALID':
+        return <InstanceInvalid item={item} />;
+      default:
+        return undefined;
+    }
   }, [item]);
 
   const sidebarDisabled = useMemo<boolean>(() => !!content, [content]);

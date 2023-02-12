@@ -17,8 +17,7 @@ export const applicationInstanceEntity: Entity<InstanceRO> = {
       id: 'health.status',
       type: 'Custom',
       labelId: 'healthStatus',
-      // TODO: Add when health is available
-      // getTooltip: (item) => item.health?.statusText,
+      getTooltip: (item) => item.health?.statusText,
       Component: TableCellDataHealthStatus,
     },
     {
