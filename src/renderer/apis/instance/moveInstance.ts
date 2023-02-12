@@ -8,18 +8,18 @@ import { instanceCrudEntity } from '../crud/entity/entities/instance.crud-entity
 type Variables = {
   instanceId: string;
   newParentApplicationId: string;
-  sort: number;
+  newSort: number;
 };
 
 type Data = InstanceRO;
 
 export const moveInstance = async (variables: Variables): Promise<Data> => {
-  const { instanceId, newParentApplicationId, sort } = variables;
+  const { instanceId, newParentApplicationId, newSort } = variables;
 
   const result = await axiosInstance.post<Data, AxiosResponse<Data>, null>(
     `${instanceCrudEntity.path}/${instanceId}/move`,
     null,
-    { params: { newParentApplicationId, sort } }
+    { params: { newParentApplicationId, newSort } }
   );
   return result.data;
 };

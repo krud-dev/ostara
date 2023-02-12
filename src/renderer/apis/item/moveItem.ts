@@ -18,12 +18,16 @@ type Data = ItemRO;
 export const moveItem = async (variables: Variables): Promise<Data> => {
   switch (variables.type) {
     case 'folder':
-      return await moveFolder({ folderId: variables.id, newParentFolderId: variables.parentId, sort: variables.sort });
+      return await moveFolder({
+        folderId: variables.id,
+        newParentFolderId: variables.parentId,
+        newSort: variables.sort,
+      });
     case 'application':
       return await moveApplication({
         applicationId: variables.id,
         newParentFolderId: variables.parentId,
-        sort: variables.sort,
+        newSort: variables.sort,
       });
     case 'instance':
       if (!variables.parentId) {
@@ -32,7 +36,7 @@ export const moveItem = async (variables: Variables): Promise<Data> => {
       return await moveInstance({
         instanceId: variables.id,
         newParentApplicationId: variables.parentId,
-        sort: variables.sort,
+        newSort: variables.sort,
       });
     default:
       throw new Error('Unknown item type');

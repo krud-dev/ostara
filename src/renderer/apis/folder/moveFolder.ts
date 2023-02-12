@@ -8,18 +8,18 @@ import { crudKeys } from '../crud/crudKeys';
 type Variables = {
   folderId: string;
   newParentFolderId?: string;
-  sort: number;
+  newSort: number;
 };
 
 type Data = FolderRO;
 
 export const moveFolder = async (variables: Variables): Promise<Data> => {
-  const { folderId, newParentFolderId, sort } = variables;
+  const { folderId, newParentFolderId, newSort } = variables;
 
   const result = await axiosInstance.post<Data, AxiosResponse<Data>, null>(
     `${folderCrudEntity.path}/${folderId}/move`,
     null,
-    { params: { newParentFolderId, sort } }
+    { params: { newParentFolderId, newSort } }
   );
   return result.data;
 };
