@@ -8,4 +8,3 @@ class InstanceCreatedEventMessage(payload: Payload) : AbstractMessage<InstanceCr
         val instanceId: UUID
     )
 }
-

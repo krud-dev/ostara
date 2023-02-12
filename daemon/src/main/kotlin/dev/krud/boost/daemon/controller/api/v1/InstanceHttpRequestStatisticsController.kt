@@ -36,7 +36,7 @@ class InstanceHttpRequestStatisticsController(
     @GetMapping("/methods")
     @ResponseStatus(HttpStatus.OK)
     @Operation(
-        summary = "Get HTTP request statistics for an instance by URI split by methods",
+        summary = "Get HTTP request statistics for an instance by URI split by methods"
     )
     @ApiResponse(responseCode = "200", description = "Get HTTP request statistics for an instance by URI split by methods")
     @ApiResponse(responseCode = "404", description = "Instance not found")
@@ -47,7 +47,7 @@ class InstanceHttpRequestStatisticsController(
     @GetMapping("/outcomes")
     @ResponseStatus(HttpStatus.OK)
     @Operation(
-        summary = "Get HTTP request statistics for an instance by URI split by outcomes",
+        summary = "Get HTTP request statistics for an instance by URI split by outcomes"
     )
     @ApiResponse(responseCode = "200", description = "Get HTTP request statistics for an instance by URI split by outcomes")
     @ApiResponse(responseCode = "404", description = "Instance not found")
@@ -58,7 +58,7 @@ class InstanceHttpRequestStatisticsController(
     @GetMapping("/statuses")
     @ResponseStatus(HttpStatus.OK)
     @Operation(
-        summary = "Get HTTP request statistics for an instance by URI split by statuses",
+        summary = "Get HTTP request statistics for an instance by URI split by statuses"
     )
     @ApiResponse(responseCode = "200", description = "Get HTTP request statistics for an instance by URI split by statuses")
     @ApiResponse(responseCode = "404", description = "Instance not found")
@@ -69,7 +69,7 @@ class InstanceHttpRequestStatisticsController(
     @GetMapping("/exceptions")
     @ResponseStatus(HttpStatus.OK)
     @Operation(
-        summary = "Get HTTP request statistics for an instance by URI split by exceptions",
+        summary = "Get HTTP request statistics for an instance by URI split by exceptions"
     )
     @ApiResponse(responseCode = "200", description = "Get HTTP request statistics for an instance by URI split by exceptions")
     @ApiResponse(responseCode = "404", description = "Instance not found")

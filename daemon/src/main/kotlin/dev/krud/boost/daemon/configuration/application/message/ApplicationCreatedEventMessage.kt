@@ -8,4 +8,3 @@ class ApplicationCreatedEventMessage(payload: Payload) : AbstractMessage<Applica
         val applicationId: UUID
     )
 }
-

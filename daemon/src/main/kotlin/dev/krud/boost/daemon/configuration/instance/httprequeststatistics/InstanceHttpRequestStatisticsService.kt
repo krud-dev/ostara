@@ -1,6 +1,5 @@
 package dev.krud.boost.daemon.configuration.instance.httprequeststatistics
 
-import com.github.benmanes.caffeine.cache.Cache
 import dev.krud.boost.daemon.actuator.ActuatorHttpClient
 import dev.krud.boost.daemon.configuration.instance.InstanceActuatorClientProvider
 import dev.krud.boost.daemon.configuration.instance.InstanceService

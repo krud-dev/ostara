@@ -1,9 +1,7 @@
 package dev.krud.boost.daemon.configuration.instance
 
-import com.github.benmanes.caffeine.cache.Cache
 import dev.krud.boost.daemon.actuator.ActuatorHttpClient
 import dev.krud.boost.daemon.configuration.instance.entity.Instance
-import dev.krud.boost.daemon.configuration.instance.httprequeststatistics.InstanceHttpRequestStatisticsService
 import dev.krud.boost.daemon.configuration.instance.messaging.InstanceCreatedEventMessage
 import dev.krud.boost.daemon.configuration.instance.messaging.InstanceDeletedEventMessage
 import dev.krud.boost.daemon.configuration.instance.messaging.InstanceUpdatedEventMessage

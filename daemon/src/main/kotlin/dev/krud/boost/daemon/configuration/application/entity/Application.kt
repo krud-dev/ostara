@@ -1,6 +1,5 @@
 package dev.krud.boost.daemon.configuration.application.entity
 
-import dev.krud.boost.daemon.configuration.application.entity.Application.Companion.effectiveColor
 import dev.krud.boost.daemon.configuration.application.enums.ApplicationType
 import dev.krud.boost.daemon.configuration.application.ro.ApplicationRO
 import dev.krud.boost.daemon.configuration.folder.entity.Folder
