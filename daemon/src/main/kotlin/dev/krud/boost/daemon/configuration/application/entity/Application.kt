@@ -7,6 +7,7 @@ import dev.krud.boost.daemon.configuration.folder.entity.Folder.Companion.effect
 import dev.krud.boost.daemon.configuration.instance.entity.Instance
 import dev.krud.boost.daemon.entity.AbstractEntity
 import dev.krud.boost.daemon.utils.DEFAULT_COLOR
+import dev.krud.crudframework.crud.annotation.Deleteable
 import dev.krud.shapeshift.resolver.annotation.DefaultMappingTarget
 import dev.krud.shapeshift.resolver.annotation.MappedField
 import jakarta.persistence.*
@@ -16,6 +17,7 @@ import java.util.*
 @Entity
 @DefaultMappingTarget(ApplicationRO::class)
 @MappedField(mapFrom = "id")
+@Deleteable(softDelete = false)
 class Application(
     @MappedField
     @Column(nullable = false)
