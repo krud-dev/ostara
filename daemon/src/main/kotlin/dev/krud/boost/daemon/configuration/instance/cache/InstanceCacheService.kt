@@ -72,7 +72,7 @@ class InstanceCacheService(
             "cache.hits",
             "cache.misses",
             "cache.removals",
-            "cache.size",
+            "cache.size"
         )
 
         private fun Map<String, Long>.toInstanceCacheStatistics(): InstanceCacheStatisticsRO {

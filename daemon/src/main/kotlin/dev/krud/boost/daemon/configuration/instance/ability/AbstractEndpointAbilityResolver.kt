@@ -7,7 +7,7 @@ import dev.krud.boost.daemon.configuration.instance.enums.InstanceAbility
  */
 
 sealed class AbstractEndpointAbilityResolver(override val ability: InstanceAbility, private val endpoint: String) : InstanceAbilityResolver {
-  override fun hasAbility(options: InstanceAbilityResolver.Options): Boolean {
-    return options.endpoints.contains(endpoint)
-  }
+    override fun hasAbility(options: InstanceAbilityResolver.Options): Boolean {
+        return options.endpoints.contains(endpoint)
+    }
 }

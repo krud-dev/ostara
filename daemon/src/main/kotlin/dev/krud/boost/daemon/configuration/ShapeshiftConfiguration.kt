@@ -15,13 +15,13 @@ import java.util.*
 
 @Configuration
 class ShapeshiftConfiguration : ShapeShiftBuilderCustomizer, ShapeShiftAutoConfiguration() {
-  override fun customize(builder: ShapeShiftBuilder) {
-    builder
-      .withObjectSupplier { FolderModifyRequestRO("") }
-      .withObjectSupplier { FolderRO(UUID.randomUUID(), "") }
-      .withObjectSupplier { ApplicationModifyRequestRO("", ApplicationType.SPRING_BOOT) }
-      .withObjectSupplier { ApplicationRO(UUID.randomUUID(), "", ApplicationType.SPRING_BOOT) }
-      .withObjectSupplier { InstanceModifyRequestRO("", "", -1) }
-      .withObjectSupplier { InstanceRO(UUID.randomUUID(), "", "", -1) }
-  }
+    override fun customize(builder: ShapeShiftBuilder) {
+        builder
+            .withObjectSupplier { FolderModifyRequestRO("") }
+            .withObjectSupplier { FolderRO(UUID.randomUUID(), "") }
+            .withObjectSupplier { ApplicationModifyRequestRO("", ApplicationType.SPRING_BOOT) }
+            .withObjectSupplier { ApplicationRO(UUID.randomUUID(), "", ApplicationType.SPRING_BOOT) }
+            .withObjectSupplier { InstanceModifyRequestRO("", "", -1) }
+            .withObjectSupplier { InstanceRO(UUID.randomUUID(), "", "", -1) }
+    }
 }

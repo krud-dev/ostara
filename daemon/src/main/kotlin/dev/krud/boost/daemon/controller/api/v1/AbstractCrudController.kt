@@ -54,7 +54,6 @@ abstract class AbstractCrudController<Entity : AbstractEntity, RO : Any, CreateD
         return CountResultRO(count)
     }
 
-
     /**
      * Get a single resource
      */
@@ -128,4 +127,3 @@ abstract class AbstractCrudController<Entity : AbstractEntity, RO : Any, CreateD
             .execute()
     }
 }
-

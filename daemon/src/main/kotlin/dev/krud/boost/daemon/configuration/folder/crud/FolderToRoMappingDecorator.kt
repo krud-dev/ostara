@@ -8,7 +8,7 @@ import org.springframework.stereotype.Component
 
 @Component
 class FolderToRoMappingDecorator : MappingDecorator<Folder, FolderRO> {
-  override fun decorate(context: MappingDecoratorContext<Folder, FolderRO>) {
-    context.to.effectiveColor = context.to.effectiveColor
-  }
+    override fun decorate(context: MappingDecoratorContext<Folder, FolderRO>) {
+        context.to.effectiveColor = context.to.effectiveColor
+    }
 }

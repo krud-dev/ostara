@@ -12,5 +12,5 @@ import org.springframework.web.bind.annotation.RestController
 @RequestMapping("$API_PREFIX/applications")
 @Tag(name = "Application", description = "Application API")
 class ApplicationController(
-  private val crudHandler: CrudHandler
+    private val crudHandler: CrudHandler
 ) : AbstractCrudController<Application, ApplicationRO, ApplicationModifyRequestRO, ApplicationModifyRequestRO>(Application::class, ApplicationRO::class, crudHandler)

@@ -5,15 +5,15 @@ import org.springframework.stereotype.Component
 
 @Component
 class CacheStatisticsAbilityResolver : AbstractMetricsAbilityResolver(
-  InstanceAbility.CACHE_STATISTICS,
-  setOf(
-    "cache.gets",
-    "cache.puts",
-    "cache.evictions",
-    "cache.hits",
-    "cache.misses",
-    "cache.removals",
-    "cache.size"
-  ),
-  Mode.ANY
+    InstanceAbility.CACHE_STATISTICS,
+    setOf(
+        "cache.gets",
+        "cache.puts",
+        "cache.evictions",
+        "cache.hits",
+        "cache.misses",
+        "cache.removals",
+        "cache.size"
+    ),
+    Mode.ANY
 )
