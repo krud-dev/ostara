@@ -1,11 +1,19 @@
 package dev.krud.boost.daemon.configuration.instance
 
+import com.github.benmanes.caffeine.cache.Cache
 import dev.krud.boost.daemon.configuration.instance.ability.InstanceAbilityResolver
 import dev.krud.boost.daemon.configuration.instance.entity.Instance
 import dev.krud.boost.daemon.configuration.instance.enums.InstanceAbility
+import dev.krud.boost.daemon.configuration.instance.messaging.InstanceCreatedEventMessage
+import dev.krud.boost.daemon.configuration.instance.messaging.InstanceDeletedEventMessage
 import dev.krud.boost.daemon.configuration.instance.messaging.InstanceMovedEventMessage
+import dev.krud.boost.daemon.configuration.instance.messaging.InstanceUpdatedEventMessage
 import dev.krud.crudframework.crud.handler.CrudHandler
+import org.springframework.cache.CacheManager
+import org.springframework.cache.annotation.Cacheable
+import org.springframework.integration.annotation.ServiceActivator
 import org.springframework.integration.channel.PublishSubscribeChannel
+import org.springframework.messaging.Message
 import org.springframework.stereotype.Service
 import java.util.*
 
@@ -14,8 +22,10 @@ class InstanceService(
     private val crudHandler: CrudHandler,
     private val instanceAbilityResolvers: List<InstanceAbilityResolver>,
     private val actuatorClientProvider: InstanceActuatorClientProvider,
-    private val systemEventsChannel: PublishSubscribeChannel
+    private val systemEventsChannel: PublishSubscribeChannel,
+    private val cacheManager: CacheManager
 ) {
+    private val instanceAbilityCache = cacheManager.getCache("instanceAbilityCache")!!
 
     fun getInstance(instanceId: UUID): Instance? {
         return crudHandler
@@ -30,7 +40,7 @@ class InstanceService(
     /**
      * Resolves the abilities of an instance.
      */
-    // TODO: cache
+    @Cacheable(cacheNames = ["instanceAbilityCache"], key = "#instance.id")
     fun resolveAbilities(instance: Instance): Set<InstanceAbility> {
         val actuatorClient = actuatorClientProvider.provide(instance)
         val endpoints = actuatorClient.endpoints()
@@ -70,5 +80,22 @@ class InstanceService(
             .execute()
         systemEventsChannel.send(InstanceMovedEventMessage(InstanceMovedEventMessage.Payload(instanceId, oldParentApplicationId, newParentApplicationId)))
         return updatedInstance
+    }
+
+    @ServiceActivator(inputChannel = "systemEventsChannel")
+    protected fun onInstanceEvent(event: Message<*>) {
+        when (event) {
+            is InstanceCreatedEventMessage -> {
+                instanceAbilityCache.evict(event.payload.instanceId)
+            }
+
+            is InstanceUpdatedEventMessage -> {
+                instanceAbilityCache.evict(event.payload.instanceId)
+            }
+
+            is InstanceDeletedEventMessage -> {
+                instanceAbilityCache.evict(event.payload.instanceId)
+            }
+        }
     }
 }

@@ -10,6 +10,7 @@ import dev.krud.boost.daemon.configuration.instance.messaging.InstanceCreatedEve
 import dev.krud.boost.daemon.configuration.instance.messaging.InstanceDeletedEventMessage
 import dev.krud.boost.daemon.configuration.instance.messaging.InstanceUpdatedEventMessage
 import org.springframework.beans.factory.DisposableBean
+import org.springframework.cache.CacheManager
 import org.springframework.cache.annotation.Cacheable
 import org.springframework.http.HttpMethod
 import org.springframework.integration.annotation.ServiceActivator
@@ -21,9 +22,10 @@ import java.util.concurrent.Executors
 @Service
 class InstanceHttpRequestStatisticsService(
     private val instanceService: InstanceService,
-    private val httpRequestStatisticsCache: Cache<String, List<InstanceHttpRequestStatisticsRO>>,
-    private val actuatorClientProvider: InstanceActuatorClientProvider
+    private val actuatorClientProvider: InstanceActuatorClientProvider,
+    private val cacheManager: CacheManager
 ) : DisposableBean {
+    private val httpRequestStatisticsCache = cacheManager.getCache("httpRequestStatisticsCache")!!
     private val executor = Executors.newCachedThreadPool()
 
     override fun destroy() {
@@ -123,15 +125,19 @@ class InstanceHttpRequestStatisticsService(
     protected fun onInstanceEvent(event: Message<*>) {
         when (event) {
             is InstanceCreatedEventMessage -> {
-                httpRequestStatisticsCache.invalidateAll(getCacheKeys(event.payload.instanceId))
+                getCacheKeys(event.payload.instanceId).forEach {
+                    httpRequestStatisticsCache.evict(it)
+                }
             }
-
             is InstanceUpdatedEventMessage -> {
-                httpRequestStatisticsCache.invalidateAll(getCacheKeys(event.payload.instanceId))
+                getCacheKeys(event.payload.instanceId).forEach {
+                    httpRequestStatisticsCache.evict(it)
+                }
             }
-
             is InstanceDeletedEventMessage -> {
-                httpRequestStatisticsCache.invalidateAll(getCacheKeys(event.payload.instanceId))
+                getCacheKeys(event.payload.instanceId).forEach {
+                    httpRequestStatisticsCache.evict(it)
+                }
             }
         }
     }

@@ -1,6 +1,6 @@
 /* tslint:disable */
 /* eslint-disable */
-// Generated using typescript-generator version 3.1.1185 on 2023-02-12 15:17:28.
+// Generated using typescript-generator version 3.1.1185 on 2023-02-12 16:11:09.
 
 export interface DynamicModelFilter {
     start?: number;
@@ -151,7 +151,6 @@ export interface InstanceRO {
     icon?: string;
     sort?: number;
     parentApplicationId?: string;
-    endpoints: string[];
     abilities: InstanceAbility[];
     health: InstanceHealthRO;
 }

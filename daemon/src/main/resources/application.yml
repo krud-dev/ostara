@@ -1,0 +1,26 @@
+server:
+  port: 12222
+spring:
+  datasource:
+    driver-class-name: org.sqlite.JDBC
+    url: jdbc:sqlite:mydb.db
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+    open-in-view: false
+  cache:
+    type: caffeine
+  main:
+    allow-bean-definition-overriding: true
+  jackson:
+    serialization:
+      write-dates-as-timestamps: true
+cache:
+  caches:
+    - name: httpRequestStatisticsCache
+      expire-after-write: 10m
+    - name: instanceHealthCache
+      expire-after-write: 10m
+    - name: instanceAbilityCache
+      expire-after-write: 10m

@@ -1,6 +1,5 @@
 package dev.krud.boost.daemon.configuration.instance.crud
 
-import dev.krud.boost.daemon.actuator.ActuatorHttpClient
 import dev.krud.boost.daemon.configuration.instance.InstanceHealthService
 import dev.krud.boost.daemon.configuration.instance.InstanceService
 import dev.krud.boost.daemon.configuration.instance.entity.Instance
@@ -19,12 +18,10 @@ class InstanceToRoMappingDecorator(
     private val instanceHealthService: InstanceHealthService
 ) : MappingDecorator<Instance, InstanceRO> {
     override fun decorate(context: MappingDecoratorContext<Instance, InstanceRO>) {
-        val actuatorClient = ActuatorHttpClient(context.from.actuatorUrl)
         context.to.effectiveColor = context.from.effectiveColor
         val health = instanceHealthService.getHealth(context.from.id)
         context.to.health = health
         if (health.status.running) {
-            context.to.endpoints = actuatorClient.endpoints()
             context.to.abilities = instanceService.resolveAbilities(context.from)
         }
     }
