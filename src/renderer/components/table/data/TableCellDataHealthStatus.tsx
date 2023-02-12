@@ -18,7 +18,7 @@ export default function TableCellDataHealthStatus<EntityItem extends ItemRO>({
   const healthTextId = useMemo<string | undefined>(() => getItemHealthStatusTextId(row), [row]);
   return (
     <Box component={'span'} sx={{ color: healthStatusColor }}>
-      <FormattedMessage id={healthTextId} />
+      {healthTextId && <FormattedMessage id={healthTextId} />}
     </Box>
   );
 }
