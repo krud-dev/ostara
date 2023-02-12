@@ -92,7 +92,7 @@ const createSplashWindow = async () => {
   });
 
   splashWindow.on('closed', () => {
-    mainWindow = null;
+    splashWindow = null;
   });
 };
 
