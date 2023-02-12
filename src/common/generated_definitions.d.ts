@@ -1,6 +1,6 @@
 /* tslint:disable */
 /* eslint-disable */
-// Generated using typescript-generator version 3.1.1185 on 2023-02-09 18:17:40.
+// Generated using typescript-generator version 3.1.1185 on 2023-02-12 08:43:21.
 
 export interface DynamicModelFilter {
     start?: number;
@@ -16,6 +16,10 @@ export interface PagedResult<T> {
     total: number;
     hasMore: boolean;
     results: T[];
+}
+
+export interface CountResultRO {
+    total: number;
 }
 
 export interface ApplicationCacheRO {
@@ -119,10 +123,6 @@ export interface InstanceRO {
     abilities: InstanceAbility[];
 }
 
-export interface CountResultRO {
-    total: number;
-}
-
 export interface OrderDTO {
     by?: string;
     descending: boolean;
@@ -146,4 +146,4 @@ export type InstanceAbility = "METRICS" | "ENV" | "BEANS" | "QUARTZ" | "FLYWAY" 
 
 export type FilterFieldOperation = "Equal" | "NotEqual" | "In" | "NotIn" | "GreaterThan" | "GreaterEqual" | "LowerThan" | "LowerEqual" | "Between" | "Contains" | "IsNull" | "IsNotNull" | "IsEmpty" | "IsNotEmpty" | "And" | "Or" | "Not" | "Noop";
 
-export type FilterFieldDataType = "String" | "Integer" | "Long" | "Double" | "Boolean" | "Date" | "Object" | "Enum" | "None";
+export type FilterFieldDataType = "String" | "Integer" | "Long" | "Double" | "Boolean" | "Date" | "Object" | "Enum" | "UUID" | "None";

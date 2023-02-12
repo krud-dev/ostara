@@ -1,69 +1,32 @@
 package dev.krud.boost.daemon.configuration.folder
 
 import dev.krud.boost.daemon.configuration.folder.entity.Folder
-import dev.krud.boost.daemon.exception.ResourceNotCreatedException
-import dev.krud.boost.daemon.exception.ResourceNotDeletedException
-import dev.krud.boost.daemon.exception.ResourceNotFoundException
-import dev.krud.boost.daemon.exception.ResourceNotUpdatedException
-import org.springframework.dao.EmptyResultDataAccessException
-import org.springframework.data.domain.Page
-import org.springframework.data.domain.Pageable
+import dev.krud.crudframework.crud.handler.CrudHandler
 import org.springframework.stereotype.Service
-import org.springframework.transaction.annotation.Transactional
 import java.util.*
 
 @Service
 class FolderService(
-    private val folderDao: FolderDao
+    private val crudHandler: CrudHandler
 ) {
-    @Transactional(readOnly = false)
-    @Throws(ResourceNotCreatedException::class)
-    fun createFolder(folder: Folder): Folder {
-        if (folder.exists()) {
-            throw ResourceNotCreatedException(Folder.NAME, "it already exists")
-        }
-        return try {
-            folderDao.save(folder)
-        } catch (e: Throwable) {
-            throw ResourceNotCreatedException(Folder.NAME, e.message).initCause(e)
-        }
+    fun getFolder(folderId: UUID): Folder? {
+        return crudHandler
+            .show(folderId, Folder::class.java)
+            .execute()
     }
 
-    @Transactional(readOnly = false)
-    @Throws(ResourceNotUpdatedException::class, ResourceNotFoundException::class)
-    fun updateFolder(id: UUID, folder: Folder): Folder {
-        return try {
-            folderDao.save(folder)
-        } catch (e: Throwable) {
-            when (e) {
-                is EmptyResultDataAccessException -> throw ResourceNotFoundException(Folder.NAME, id)
-                else -> throw ResourceNotUpdatedException(Folder.NAME, id, e.message).initCause(e)
-            }
+    fun getFolderOrThrow(folderId: UUID): Folder {
+        return getFolder(folderId) ?: error("Folder $folderId not found")
+    }
+
+    fun moveFolder(folderId: UUID, newParentFolderId: UUID?): Folder {
+        val folder = getFolderOrThrow(folderId)
+        if (folder.parentFolderId == newParentFolderId) {
+            return folder
         }
-    }
-
-    @Transactional(readOnly = false)
-    @Throws(ResourceNotDeletedException::class, ResourceNotFoundException::class)
-    fun deleteFolder(id: UUID) {
-        return try {
-            folderDao.deleteById(id)
-        } catch (e: Throwable) {
-            when (e) {
-                is EmptyResultDataAccessException -> throw ResourceNotFoundException(Folder.NAME, id)
-                else -> throw ResourceNotDeletedException(Folder.NAME, id, e.message).initCause(e)
-            }
-        }
-    }
-
-    @Transactional(readOnly = true)
-    fun getFolders(pageable: Pageable): Page<Folder> {
-        return folderDao.findAll(pageable)
-    }
-
-    @Transactional(readOnly = true)
-    @Throws(ResourceNotFoundException::class)
-    fun getFolder(id: UUID): Folder {
-        return folderDao.findById(id)
-            .orElseThrow { ResourceNotFoundException(Folder.NAME, id) }
+        folder.parentFolderId = newParentFolderId // TODO: check if folder exists, should fail on foreign key for now
+        return crudHandler
+            .update(folder, Folder::class.java)
+            .execute()
     }
 }

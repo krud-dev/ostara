@@ -54,4 +54,15 @@ class InstanceService(
             error("Instance ${instance.id} does not have one or more abilities '${abilities.joinToString(", ")}'")
         }
     }
+
+    fun moveInstance(instanceId: UUID, newParentApplicationId: UUID): Instance {
+        val instance = getInstanceOrThrow(instanceId)
+        if (instance.parentApplicationId == newParentApplicationId) {
+            return instance
+        }
+        instance.parentApplicationId = newParentApplicationId // TODO: check if application exists, should fail on foreign key for now
+        return crudHandler
+            .update(instance)
+            .execute()
+    }
 }
