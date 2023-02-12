@@ -3,7 +3,9 @@ package dev.krud.boost.daemon.configuration.instance
 import dev.krud.boost.daemon.configuration.instance.ability.InstanceAbilityResolver
 import dev.krud.boost.daemon.configuration.instance.entity.Instance
 import dev.krud.boost.daemon.configuration.instance.enums.InstanceAbility
+import dev.krud.boost.daemon.configuration.instance.messaging.InstanceMovedEventMessage
 import dev.krud.crudframework.crud.handler.CrudHandler
+import org.springframework.integration.channel.PublishSubscribeChannel
 import org.springframework.stereotype.Service
 import java.util.*
 
@@ -11,7 +13,8 @@ import java.util.*
 class InstanceService(
     private val crudHandler: CrudHandler,
     private val instanceAbilityResolvers: List<InstanceAbilityResolver>,
-    private val actuatorClientProvider: InstanceActuatorClientProvider
+    private val actuatorClientProvider: InstanceActuatorClientProvider,
+    private val systemEventsChannel: PublishSubscribeChannel
 ) {
 
     fun getInstance(instanceId: UUID): Instance? {
@@ -60,9 +63,12 @@ class InstanceService(
         if (instance.parentApplicationId == newParentApplicationId) {
             return instance
         }
+        val oldParentApplicationId = instance.parentApplicationId
         instance.parentApplicationId = newParentApplicationId // TODO: check if application exists, should fail on foreign key for now
-        return crudHandler
+        val updatedInstance = crudHandler
             .update(instance)
             .execute()
+        systemEventsChannel.send(InstanceMovedEventMessage(InstanceMovedEventMessage.Payload(instanceId, oldParentApplicationId, newParentApplicationId)))
+        return updatedInstance
     }
 }

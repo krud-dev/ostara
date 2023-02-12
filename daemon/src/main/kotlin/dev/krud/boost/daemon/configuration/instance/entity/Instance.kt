@@ -25,6 +25,9 @@ class Instance(
     @Column(nullable = false)
     var actuatorUrl: String,
     @MappedField
+    @Column(name = "parent_application_id", nullable = false)
+    var parentApplicationId: UUID,
+    @MappedField
     @Column(nullable = false, columnDefinition = "int default 5")
     var dataCollectionIntervalSeconds: Int = 5,
     @MappedField
@@ -39,14 +42,12 @@ class Instance(
     var icon: String? = null,
     @MappedField
     @Column(nullable = true)
-    var sort: Int? = null,
-    @MappedField
-    @Column(name = "parent_application_id", nullable = true)
-    var parentApplicationId: UUID? = null
+    var sort: Int? = null
 ) : AbstractEntity() {
     @ManyToOne
     @JoinColumn(name = "parent_application_id", insertable = false, updatable = false, nullable = false)
     val parentApplication: Application? = null
+
     companion object {
         const val NAME = "application"
         val Instance.effectiveColor: String?
