@@ -85,6 +85,10 @@ tasks.withType<GenerateTask> {
     mapDate = cz.habarta.typescript.generator.DateMapping.asNumber
 }
 
+noArg {
+    invokeInitializers = true
+}
+
 tasks.withType<Test> {
     useJUnitPlatform()
 }
