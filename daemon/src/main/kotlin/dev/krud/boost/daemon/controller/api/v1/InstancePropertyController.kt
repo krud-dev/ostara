@@ -24,7 +24,7 @@ class InstancePropertyController(
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
     @Operation(
-        summary = "Get properties for an instance",
+        summary = "Get properties for an instance"
     )
     @ApiResponse(responseCode = "200", description = "Properties for an instance")
     @ApiResponse(responseCode = "400", description = "Instance is missing ability", content = [Content()])

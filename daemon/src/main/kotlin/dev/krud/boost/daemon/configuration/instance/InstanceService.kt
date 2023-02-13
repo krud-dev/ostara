@@ -7,6 +7,8 @@ import dev.krud.boost.daemon.configuration.instance.messaging.InstanceCreatedEve
 import dev.krud.boost.daemon.configuration.instance.messaging.InstanceDeletedEventMessage
 import dev.krud.boost.daemon.configuration.instance.messaging.InstanceMovedEventMessage
 import dev.krud.boost.daemon.configuration.instance.messaging.InstanceUpdatedEventMessage
+import dev.krud.boost.daemon.exception.throwBadRequest
+import dev.krud.boost.daemon.exception.throwNotFound
 import dev.krud.crudframework.crud.handler.CrudHandler
 import org.springframework.cache.CacheManager
 import org.springframework.cache.annotation.Cacheable
@@ -33,7 +35,7 @@ class InstanceService(
     }
 
     fun getInstanceOrThrow(instanceId: UUID): Instance {
-        return getInstance(instanceId) ?: error("Instance $instanceId not found")
+        return getInstance(instanceId) ?: throwNotFound("Instance $instanceId not found")
     }
 
     /**
@@ -63,7 +65,7 @@ class InstanceService(
 
     fun hasAbilityOrThrow(instance: Instance, vararg abilities: InstanceAbility) {
         if (!hasAbility(instance, *abilities)) {
-            error("Instance ${instance.id} does not have one or more abilities '${abilities.joinToString(", ")}'")
+            throwBadRequest("Instance ${instance.id} does not have one or more abilities '${abilities.joinToString(", ")}'")
         }
     }
 

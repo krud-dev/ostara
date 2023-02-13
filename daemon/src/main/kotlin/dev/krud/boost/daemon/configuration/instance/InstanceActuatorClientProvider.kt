@@ -2,7 +2,6 @@ package dev.krud.boost.daemon.configuration.instance
 
 import dev.krud.boost.daemon.actuator.ActuatorHttpClient
 import dev.krud.boost.daemon.configuration.instance.entity.Instance
-import dev.krud.boost.daemon.exception.ResourceNotFoundException
 import java.util.*
 
 interface InstanceActuatorClientProvider {

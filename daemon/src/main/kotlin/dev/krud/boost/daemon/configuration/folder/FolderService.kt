@@ -1,6 +1,7 @@
 package dev.krud.boost.daemon.configuration.folder
 
 import dev.krud.boost.daemon.configuration.folder.entity.Folder
+import dev.krud.boost.daemon.exception.throwNotFound
 import dev.krud.crudframework.crud.handler.CrudHandler
 import org.springframework.stereotype.Service
 import java.util.*
@@ -16,7 +17,7 @@ class FolderService(
     }
 
     fun getFolderOrThrow(folderId: UUID): Folder {
-        return getFolder(folderId) ?: error("Folder $folderId not found")
+        return getFolder(folderId) ?: throwNotFound("Folder $folderId not found")
     }
 
     fun moveFolder(folderId: UUID, newParentFolderId: UUID?, newSort: Int?): Folder {

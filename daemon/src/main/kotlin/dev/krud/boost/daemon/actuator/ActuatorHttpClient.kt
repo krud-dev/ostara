@@ -2,6 +2,7 @@ package dev.krud.boost.daemon.actuator
 
 import com.google.gson.GsonBuilder
 import com.google.gson.annotations.SerializedName
+import dev.krud.boost.daemon.exception.throwInternalServerError
 import okhttp3.HttpUrl
 import okhttp3.HttpUrl.Companion.toHttpUrl
 import okhttp3.MediaType.Companion.toMediaType
@@ -488,7 +489,7 @@ class ActuatorHttpClient(
     private fun runRequest(request: Request): Response {
         val response = httpClient.newCall(request).execute()
         if (!response.isSuccessful) {
-            error("Request failed: ${request.url} with status code ${response.code}")
+            throwInternalServerError("Request failed: ${request.url} with status code ${response.code}")
         }
         return response
     }

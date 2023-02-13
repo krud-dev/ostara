@@ -2,7 +2,6 @@ package dev.krud.boost.daemon.configuration.folder.entity
 
 import dev.krud.boost.daemon.configuration.application.entity.Application
 import dev.krud.boost.daemon.configuration.folder.ro.FolderRO
-import dev.krud.boost.daemon.configuration.instance.entity.Instance
 import dev.krud.boost.daemon.entity.AbstractEntity
 import dev.krud.boost.daemon.utils.DEFAULT_COLOR
 import dev.krud.crudframework.crud.annotation.Deleteable

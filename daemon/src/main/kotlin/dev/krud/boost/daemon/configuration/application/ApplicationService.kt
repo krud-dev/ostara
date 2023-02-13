@@ -3,6 +3,8 @@ package dev.krud.boost.daemon.configuration.application
 import dev.krud.boost.daemon.configuration.application.entity.Application
 import dev.krud.boost.daemon.configuration.instance.InstanceService
 import dev.krud.boost.daemon.configuration.instance.enums.InstanceAbility
+import dev.krud.boost.daemon.exception.throwBadRequest
+import dev.krud.boost.daemon.exception.throwNotFound
 import dev.krud.crudframework.crud.handler.CrudHandler
 import org.springframework.stereotype.Service
 import java.util.*
@@ -19,7 +21,7 @@ class ApplicationService(
     }
 
     fun getApplicationOrThrow(applicationId: UUID): Application {
-        return getApplication(applicationId) ?: error("Application $applicationId not found")
+        return getApplication(applicationId) ?: throwNotFound("Application $applicationId not found")
     }
 
     fun hasAbility(application: Application, vararg abilities: InstanceAbility): Boolean {
@@ -32,7 +34,7 @@ class ApplicationService(
 
     fun hasAbilityOrThrow(application: Application, vararg abilities: InstanceAbility) {
         if (!hasAbility(application, *abilities)) {
-            error("Application ${application.id} does not have one or more abilities '${abilities.joinToString(", ")}'")
+            throwBadRequest("Application ${application.id} does not have one or more abilities '${abilities.joinToString(", ")}'")
         }
     }
 

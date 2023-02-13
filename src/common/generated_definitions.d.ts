@@ -128,6 +128,18 @@ export interface InstanceLoggerRO {
     configuredLevel?: LogLevel;
 }
 
+export interface InstanceMetricRO {
+    name: string;
+    description?: string;
+    unit?: string;
+    values: InstanceMetricValueRO[];
+}
+
+export interface InstanceMetricValueRO {
+    value: number;
+    timestamp: DateAsNumber;
+}
+
 export interface InstancePropertyRO {
     contexts: { [index: string]: { [index: string]: any } };
 }
