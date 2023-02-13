@@ -1,9 +1,11 @@
 import { BaseQueryOptions, BaseUseQueryResult, useBaseQuery } from '../base/useBaseQuery';
 import { BaseMutationOptions, BaseUseMutationResult, useBaseMutation } from 'renderer/apis/base/useBaseMutation';
 import { apiKeys } from 'renderer/apis/apiKeys';
-import { ApplicationLogger } from 'infra/instance/models/logger';
+import { ApplicationLoggerRO } from '../../../common/generated_definitions';
+import { axiosInstance } from '../axiosInstance';
+import { AxiosResponse } from 'axios';
 
-export type EnrichedApplicationLogger = ApplicationLogger & {
+export type EnrichedApplicationLoggerRO = ApplicationLoggerRO & {
   applicationId: string;
 };
 
@@ -11,10 +13,14 @@ type Variables = {
   applicationId: string;
 };
 
-type Data = EnrichedApplicationLogger[];
+type Data = EnrichedApplicationLoggerRO[];
 
 export const getApplicationLoggers = async (variables: Variables): Promise<Data> => {
-  const result = await window.instance.getApplicationLoggers(variables.applicationId);
+  const result = (
+    await axiosInstance.get<ApplicationLoggerRO[], AxiosResponse<ApplicationLoggerRO[]>>(
+      `logger/application/${variables.applicationId}`
+    )
+  ).data;
   return result.map((logger) => ({ ...logger, applicationId: variables.applicationId }));
 };
 

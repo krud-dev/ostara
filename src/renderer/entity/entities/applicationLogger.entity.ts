@@ -4,11 +4,11 @@ import { isClassName } from 'renderer/utils/classUtils';
 import LoggerCustomFiltersComponent, {
   LoggerCustomFilters,
 } from 'renderer/components/item/logger/LoggerCustomFiltersComponent';
-import { EnrichedApplicationLogger } from 'renderer/apis/application/getApplicationLoggers';
+import { EnrichedApplicationLoggerRO } from 'renderer/apis/application/getApplicationLoggers';
 import { every, some } from 'lodash';
 import TableCellDataApplicationLoggerLevel from 'renderer/components/table/data/TableCellDataApplicationLoggerLevel';
 
-export const applicationLoggerEntity: Entity<EnrichedApplicationLogger, LoggerCustomFilters> = {
+export const applicationLoggerEntity: Entity<EnrichedApplicationLoggerRO, LoggerCustomFilters> = {
   id: 'instanceCache',
   columns: [
     {
@@ -30,7 +30,7 @@ export const applicationLoggerEntity: Entity<EnrichedApplicationLogger, LoggerCu
       id: RESET_ID,
       labelId: 'reset',
       icon: 'RotateLeftOutlined',
-      isDisabled: (item) => item.name === 'ROOT' || every(item.instanceLoggers, (logger) => !logger.configuredLevel),
+      isDisabled: (item) => item.name === 'ROOT' || every(item.loggers, (logger) => !logger.configuredLevel),
     },
   ],
   massActions: [],
@@ -47,7 +47,7 @@ export const applicationLoggerEntity: Entity<EnrichedApplicationLogger, LoggerCu
     data.filter(
       (item) =>
         item.name?.toLowerCase().includes(filter.toLowerCase()) &&
-        (!customFilters?.configured || some(item.instanceLoggers, (logger) => !!logger.configuredLevel)) &&
+        (!customFilters?.configured || some(item.loggers, (logger) => !!logger.configuredLevel)) &&
         (!customFilters?.classes || isClassName(item.name))
     ),
   CustomFiltersComponent: LoggerCustomFiltersComponent,

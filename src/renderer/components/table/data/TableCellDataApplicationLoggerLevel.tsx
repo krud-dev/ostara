@@ -1,25 +1,25 @@
 import { EntityBaseColumn } from 'renderer/entity/entity';
 import { useCallback, useMemo } from 'react';
-import { ActuatorLogLevel } from 'infra/actuator/model/loggers';
-import ActuatorLogLevelToggleGroup from 'renderer/components/item/logger/ActuatorLogLevelToggleGroup';
-import { EnrichedApplicationLogger } from 'renderer/apis/application/getApplicationLoggers';
+import LogLevelToggleGroup from 'renderer/components/item/logger/LogLevelToggleGroup';
+import { EnrichedApplicationLoggerRO } from 'renderer/apis/application/getApplicationLoggers';
 import { useSetApplicationLoggerLevel } from 'renderer/apis/application/setApplicationLoggerLevel';
 import { map } from 'lodash';
 import { notEmpty } from 'renderer/utils/objectUtils';
+import { LogLevel } from '../../../../common/generated_definitions';
 
-type TableCellDataApplicationLoggerLevelProps<EntityItem extends EnrichedApplicationLogger> = {
+type TableCellDataApplicationLoggerLevelProps<EntityItem extends EnrichedApplicationLoggerRO> = {
   row: EntityItem;
   column: EntityBaseColumn<EntityItem>;
 };
 
-export default function TableCellDataApplicationLoggerLevel<EntityItem extends EnrichedApplicationLogger>({
+export default function TableCellDataApplicationLoggerLevel<EntityItem extends EnrichedApplicationLoggerRO>({
   row,
   column,
 }: TableCellDataApplicationLoggerLevelProps<EntityItem>) {
   const setLevelState = useSetApplicationLoggerLevel();
 
   const changeHandler = useCallback(
-    (newLevel: ActuatorLogLevel | undefined) => {
+    (newLevel: LogLevel | undefined) => {
       if (setLevelState.isLoading) {
         return;
       }
@@ -28,17 +28,17 @@ export default function TableCellDataApplicationLoggerLevel<EntityItem extends E
     [row, setLevelState]
   );
 
-  const effectiveLevels = useMemo<ActuatorLogLevel[]>(
-    () => map(row.instanceLoggers, (logger) => logger.effectiveLevel),
-    [row.instanceLoggers]
+  const effectiveLevels = useMemo<LogLevel[]>(
+    () => map(row.loggers, (logger) => logger.effectiveLevel).filter(notEmpty),
+    [row.loggers]
   );
-  const configuredLevels = useMemo<ActuatorLogLevel[] | undefined>(
-    () => map(row.instanceLoggers, (logger) => logger.configuredLevel).filter(notEmpty),
-    [row.instanceLoggers]
+  const configuredLevels = useMemo<LogLevel[] | undefined>(
+    () => map(row.loggers, (logger) => logger.configuredLevel).filter(notEmpty),
+    [row.loggers]
   );
 
   return (
-    <ActuatorLogLevelToggleGroup
+    <LogLevelToggleGroup
       effectiveLevels={effectiveLevels}
       configuredLevels={configuredLevels}
       onChange={changeHandler}

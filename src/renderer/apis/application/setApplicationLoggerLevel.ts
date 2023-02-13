@@ -1,21 +1,27 @@
 import { BaseMutationOptions, BaseUseMutationResult, useBaseMutation } from 'renderer/apis/base/useBaseMutation';
 import { apiKeys } from 'renderer/apis/apiKeys';
-import { ActuatorLogLevel } from 'infra/actuator/model/loggers';
+import { axiosInstance } from '../axiosInstance';
+import { AxiosResponse } from 'axios';
+import { ApplicationLoggerRO, LogLevel } from '../../../common/generated_definitions';
 
 type Variables = {
   applicationId: string;
   loggerName: string;
-  level?: ActuatorLogLevel;
+  level?: LogLevel;
 };
 
-type Data = void;
+type Data = ApplicationLoggerRO;
 
 export const setApplicationLoggerLevel = async (variables: Variables): Promise<Data> => {
-  return await window.instance.setApplicationLoggerLevel(
-    variables.applicationId,
-    variables.loggerName,
-    variables.level
-  );
+  return (
+    await axiosInstance.put<Data, AxiosResponse<Data>, null>(
+      `logger/application/${variables.applicationId}/${variables.loggerName}`,
+      null,
+      {
+        params: { level: variables.level },
+      }
+    )
+  ).data;
 };
 
 export const useSetApplicationLoggerLevel = (

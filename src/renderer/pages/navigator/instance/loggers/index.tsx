@@ -5,7 +5,7 @@ import TableComponent from 'renderer/components/table/TableComponent';
 import { Entity } from 'renderer/entity/entity';
 import { Card } from '@mui/material';
 import { instanceLoggerEntity } from 'renderer/entity/entities/instanceLogger.entity';
-import { EnrichedInstanceLogger, useGetInstanceLoggersQuery } from 'renderer/apis/instance/getInstanceLoggers';
+import { EnrichedInstanceLoggerRO, useGetInstanceLoggersQuery } from 'renderer/apis/instance/getInstanceLoggers';
 import { useSetInstanceLoggerLevel } from 'renderer/apis/instance/setInstanceLoggerLevel';
 import { RESET_ID } from 'renderer/entity/actions';
 import { LoggerCustomFilters } from 'renderer/components/item/logger/LoggerCustomFiltersComponent';
@@ -16,12 +16,12 @@ const InstanceLoggers: FunctionComponent = () => {
 
   const item = useMemo<InstanceRO>(() => selectedItem as InstanceRO, [selectedItem]);
 
-  const entity = useMemo<Entity<EnrichedInstanceLogger, LoggerCustomFilters>>(() => instanceLoggerEntity, []);
+  const entity = useMemo<Entity<EnrichedInstanceLoggerRO, LoggerCustomFilters>>(() => instanceLoggerEntity, []);
   const queryState = useGetInstanceLoggersQuery({ instanceId: item.id });
 
   const setLevelState = useSetInstanceLoggerLevel();
 
-  const actionsHandler = useCallback(async (actionId: string, row: EnrichedInstanceLogger): Promise<void> => {
+  const actionsHandler = useCallback(async (actionId: string, row: EnrichedInstanceLoggerRO): Promise<void> => {
     switch (actionId) {
       case RESET_ID:
         setLevelState.mutate({ instanceId: row.instanceId, loggerName: row.name, level: undefined });
@@ -32,7 +32,7 @@ const InstanceLoggers: FunctionComponent = () => {
   }, []);
 
   const massActionsHandler = useCallback(
-    async (actionId: string, selectedRows: EnrichedInstanceLogger[]): Promise<void> => {},
+    async (actionId: string, selectedRows: EnrichedInstanceLoggerRO[]): Promise<void> => {},
     []
   );
 

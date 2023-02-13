@@ -1,30 +1,30 @@
 import { useCallback, useMemo } from 'react';
 import { ToggleButton, ToggleButtonGroup } from '@mui/material';
-import { ActuatorLogLevel } from 'infra/actuator/model/loggers';
+import { LogLevel } from '../../../../common/generated_definitions';
 
-type ActuatorLogLevelToggleGroupProps = {
-  configuredLevels?: ActuatorLogLevel[];
-  effectiveLevels: ActuatorLogLevel[];
+type LogLevelToggleGroupProps = {
+  configuredLevels?: LogLevel[];
+  effectiveLevels: LogLevel[];
   disabled?: boolean;
-  onChange?: (newLevel: ActuatorLogLevel) => void;
+  onChange?: (newLevel: LogLevel) => void;
 };
 
-export default function ActuatorLogLevelToggleGroup({
+export default function LogLevelToggleGroup({
   configuredLevels,
   effectiveLevels,
   disabled,
   onChange,
-}: ActuatorLogLevelToggleGroupProps) {
+}: LogLevelToggleGroupProps) {
   const changeHandler = useCallback(
-    (newLevel: ActuatorLogLevel) => {
+    (newLevel: LogLevel) => {
       onChange?.(newLevel);
     },
     [onChange]
   );
 
-  const logLevels = useMemo<ActuatorLogLevel[]>(() => ['OFF', 'ERROR', 'WARN', 'INFO', 'DEBUG', 'TRACE'], []);
+  const logLevels = useMemo<LogLevel[]>(() => ['OFF', 'ERROR', 'WARN', 'INFO', 'DEBUG', 'TRACE'], []);
 
-  const getColor = useCallback((level: ActuatorLogLevel) => {
+  const getColor = useCallback((level: LogLevel) => {
     switch (level) {
       case 'OFF':
         return undefined;

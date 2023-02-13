@@ -8,7 +8,7 @@ import { RESET_ID } from 'renderer/entity/actions';
 import { LoggerCustomFilters } from 'renderer/components/item/logger/LoggerCustomFiltersComponent';
 import { applicationLoggerEntity } from 'renderer/entity/entities/applicationLogger.entity';
 import {
-  EnrichedApplicationLogger,
+  EnrichedApplicationLoggerRO,
   useGetApplicationLoggersQuery,
 } from 'renderer/apis/application/getApplicationLoggers';
 import { useSetApplicationLoggerLevel } from 'renderer/apis/application/setApplicationLoggerLevel';
@@ -19,12 +19,12 @@ const ApplicationLoggers: FunctionComponent = () => {
 
   const item = useMemo<ApplicationRO>(() => selectedItem as ApplicationRO, [selectedItem]);
 
-  const entity = useMemo<Entity<EnrichedApplicationLogger, LoggerCustomFilters>>(() => applicationLoggerEntity, []);
+  const entity = useMemo<Entity<EnrichedApplicationLoggerRO, LoggerCustomFilters>>(() => applicationLoggerEntity, []);
   const queryState = useGetApplicationLoggersQuery({ applicationId: item.id });
 
   const setLevelState = useSetApplicationLoggerLevel();
 
-  const actionsHandler = useCallback(async (actionId: string, row: EnrichedApplicationLogger): Promise<void> => {
+  const actionsHandler = useCallback(async (actionId: string, row: EnrichedApplicationLoggerRO): Promise<void> => {
     switch (actionId) {
       case RESET_ID:
         setLevelState.mutate({ applicationId: row.applicationId, loggerName: row.name, level: undefined });
@@ -35,7 +35,7 @@ const ApplicationLoggers: FunctionComponent = () => {
   }, []);
 
   const massActionsHandler = useCallback(
-    async (actionId: string, selectedRows: EnrichedApplicationLogger[]): Promise<void> => {},
+    async (actionId: string, selectedRows: EnrichedApplicationLoggerRO[]): Promise<void> => {},
     []
   );
 

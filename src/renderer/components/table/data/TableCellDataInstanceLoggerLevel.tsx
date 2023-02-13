@@ -1,23 +1,23 @@
 import { EntityBaseColumn } from 'renderer/entity/entity';
 import { useCallback, useMemo } from 'react';
-import { ActuatorLogLevel } from 'infra/actuator/model/loggers';
-import ActuatorLogLevelToggleGroup from 'renderer/components/item/logger/ActuatorLogLevelToggleGroup';
+import LogLevelToggleGroup from 'renderer/components/item/logger/LogLevelToggleGroup';
 import { useSetInstanceLoggerLevel } from 'renderer/apis/instance/setInstanceLoggerLevel';
-import { EnrichedInstanceLogger } from 'renderer/apis/instance/getInstanceLoggers';
+import { EnrichedInstanceLoggerRO } from 'renderer/apis/instance/getInstanceLoggers';
+import { LogLevel } from '../../../../common/generated_definitions';
 
-type TableCellDataLoggerLevelProps<EntityItem extends EnrichedInstanceLogger> = {
+type TableCellDataLoggerLevelProps<EntityItem extends EnrichedInstanceLoggerRO> = {
   row: EntityItem;
   column: EntityBaseColumn<EntityItem>;
 };
 
-export default function TableCellDataInstanceLoggerLevel<EntityItem extends EnrichedInstanceLogger>({
+export default function TableCellDataInstanceLoggerLevel<EntityItem extends EnrichedInstanceLoggerRO>({
   row,
   column,
 }: TableCellDataLoggerLevelProps<EntityItem>) {
   const setLevelState = useSetInstanceLoggerLevel();
 
   const changeHandler = useCallback(
-    (newLevel: ActuatorLogLevel | undefined) => {
+    (newLevel: LogLevel | undefined) => {
       if (setLevelState.isLoading) {
         return;
       }
@@ -26,14 +26,17 @@ export default function TableCellDataInstanceLoggerLevel<EntityItem extends Enri
     [row, setLevelState]
   );
 
-  const effectiveLevels = useMemo<ActuatorLogLevel[]>(() => [row.effectiveLevel], [row.effectiveLevel]);
-  const configuredLevels = useMemo<ActuatorLogLevel[] | undefined>(
+  const effectiveLevels = useMemo<LogLevel[]>(
+    () => (row.effectiveLevel ? [row.effectiveLevel] : []),
+    [row.effectiveLevel]
+  );
+  const configuredLevels = useMemo<LogLevel[] | undefined>(
     () => (row.configuredLevel ? [row.configuredLevel] : undefined),
     [row.configuredLevel]
   );
 
   return (
-    <ActuatorLogLevelToggleGroup
+    <LogLevelToggleGroup
       effectiveLevels={effectiveLevels}
       configuredLevels={configuredLevels}
       onChange={changeHandler}

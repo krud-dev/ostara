@@ -1,13 +1,13 @@
 import { Entity } from 'renderer/entity/entity';
 import TableCellDataInstanceLoggerLevel from 'renderer/components/table/data/TableCellDataInstanceLoggerLevel';
 import { RESET_ID } from 'renderer/entity/actions';
-import { EnrichedInstanceLogger } from 'renderer/apis/instance/getInstanceLoggers';
+import { EnrichedInstanceLoggerRO } from 'renderer/apis/instance/getInstanceLoggers';
 import { isClassName } from 'renderer/utils/classUtils';
 import LoggerCustomFiltersComponent, {
   LoggerCustomFilters,
 } from 'renderer/components/item/logger/LoggerCustomFiltersComponent';
 
-export const instanceLoggerEntity: Entity<EnrichedInstanceLogger, LoggerCustomFilters> = {
+export const instanceLoggerEntity: Entity<EnrichedInstanceLoggerRO, LoggerCustomFilters> = {
   id: 'instanceCache',
   columns: [
     {
