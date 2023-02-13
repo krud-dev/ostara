@@ -24,3 +24,5 @@ cache:
       expire-after-write: 10m
     - name: instanceAbilityCache
       expire-after-write: 10m
+    - name: instancePropertyCache
+      expire-after-write: 1m

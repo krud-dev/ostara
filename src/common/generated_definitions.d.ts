@@ -108,6 +108,13 @@ export interface InstanceCacheStatisticsRO {
     size: number;
 }
 
+export interface InstanceHealthRO {
+    status: InstanceHealthStatus;
+    statusText?: string;
+    lastUpdateTime: DateAsNumber;
+    lastStatusChangeTime: DateAsNumber;
+}
+
 export interface InstanceHttpRequestStatisticsRO {
     uri: string;
     count: number;
@@ -121,11 +128,8 @@ export interface InstanceLoggerRO {
     configuredLevel?: LogLevel;
 }
 
-export interface InstanceHealthRO {
-    status: InstanceHealthStatus;
-    statusText?: string;
-    lastUpdateTime: DateAsNumber;
-    lastStatusChangeTime: DateAsNumber;
+export interface InstancePropertyRO {
+    contexts: { [index: string]: { [index: string]: any } };
 }
 
 export interface InstanceModifyRequestRO {
@@ -177,9 +181,9 @@ export type ApplicationHealthStatus = "ALL_UP" | "ALL_DOWN" | "SOME_DOWN" | "UNK
 
 export type ApplicationType = "SPRING_BOOT";
 
-export type LogLevel = "TRACE" | "DEBUG" | "INFO" | "WARN" | "ERROR" | "FATAL" | "OFF";
-
 export type InstanceHealthStatus = "UP" | "DOWN" | "UNKNOWN" | "OUT_OF_SERVICE" | "UNREACHABLE" | "PENDING" | "INVALID";
+
+export type LogLevel = "TRACE" | "DEBUG" | "INFO" | "WARN" | "ERROR" | "FATAL" | "OFF";
 
 export type InstanceAbility = "METRICS" | "ENV" | "BEANS" | "QUARTZ" | "FLYWAY" | "LIQUIBASE" | "LOGGERS" | "CACHES" | "THREADDUMP" | "HEAPDUMP" | "CACHE_STATISTICS" | "SHUTDOWN" | "REFRESH" | "HTTP_REQUEST_STATISTICS" | "INTEGRATIONGRAPH" | "PROPERTIES" | "MAPPINGS" | "SCHEDULEDTASKS" | "HEALTH" | "INFO";
 
