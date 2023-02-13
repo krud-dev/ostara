@@ -1,6 +1,7 @@
 package dev.krud.boost.daemon.configuration.instance.ro
 
 import dev.krud.boost.daemon.configuration.instance.enums.InstanceAbility
+import dev.krud.boost.daemon.configuration.instance.health.ro.InstanceHealthRO
 import java.util.*
 
 class InstanceRO(

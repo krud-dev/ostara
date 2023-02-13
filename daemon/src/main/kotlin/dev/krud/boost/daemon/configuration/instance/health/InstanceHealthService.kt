@@ -1,11 +1,13 @@
-package dev.krud.boost.daemon.configuration.instance
+package dev.krud.boost.daemon.configuration.instance.health
 
 import dev.krud.boost.daemon.actuator.ActuatorHttpClient
+import dev.krud.boost.daemon.configuration.instance.InstanceActuatorClientProvider
+import dev.krud.boost.daemon.configuration.instance.InstanceService
 import dev.krud.boost.daemon.configuration.instance.entity.Instance
 import dev.krud.boost.daemon.configuration.instance.messaging.InstanceCreatedEventMessage
 import dev.krud.boost.daemon.configuration.instance.messaging.InstanceDeletedEventMessage
 import dev.krud.boost.daemon.configuration.instance.messaging.InstanceUpdatedEventMessage
-import dev.krud.boost.daemon.configuration.instance.ro.InstanceHealthRO
+import dev.krud.boost.daemon.configuration.instance.health.ro.InstanceHealthRO
 import org.springframework.cache.CacheManager
 import org.springframework.cache.annotation.Cacheable
 import org.springframework.integration.annotation.ServiceActivator

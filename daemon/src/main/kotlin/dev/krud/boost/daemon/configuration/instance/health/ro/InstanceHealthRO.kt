@@ -1,4 +1,4 @@
-package dev.krud.boost.daemon.configuration.instance.ro
+package dev.krud.boost.daemon.configuration.instance.health.ro
 
 import dev.krud.boost.daemon.configuration.instance.enums.InstanceHealthStatus
 import java.time.LocalDateTime

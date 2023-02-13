@@ -3,7 +3,7 @@ package dev.krud.boost.daemon.configuration.application
 import dev.krud.boost.daemon.configuration.application.entity.Application
 import dev.krud.boost.daemon.configuration.application.enums.ApplicationHealthStatus.Companion.toApplicationHealthStatus
 import dev.krud.boost.daemon.configuration.application.ro.ApplicationHealthRO
-import dev.krud.boost.daemon.configuration.instance.InstanceHealthService
+import dev.krud.boost.daemon.configuration.instance.health.InstanceHealthService
 import org.springframework.stereotype.Service
 import java.time.LocalDateTime
 

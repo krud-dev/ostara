@@ -1,6 +1,6 @@
 package dev.krud.boost.daemon.configuration.instance.crud
 
-import dev.krud.boost.daemon.configuration.instance.InstanceHealthService
+import dev.krud.boost.daemon.configuration.instance.health.InstanceHealthService
 import dev.krud.boost.daemon.configuration.instance.InstanceService
 import dev.krud.boost.daemon.configuration.instance.entity.Instance
 import dev.krud.boost.daemon.configuration.instance.entity.Instance.Companion.effectiveColor
