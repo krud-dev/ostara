@@ -1,9 +1,11 @@
 import { BaseQueryOptions, BaseUseQueryResult, useBaseQuery } from '../base/useBaseQuery';
 import { BaseMutationOptions, BaseUseMutationResult, useBaseMutation } from 'renderer/apis/base/useBaseMutation';
-import { ApplicationCache } from 'infra/instance/models/cache';
 import { apiKeys } from 'renderer/apis/apiKeys';
+import { ApplicationCacheRO } from '../../../common/generated_definitions';
+import { axiosInstance } from '../axiosInstance';
+import { AxiosResponse } from 'axios';
 
-export type EnrichedApplicationCache = ApplicationCache & {
+export type EnrichedApplicationCacheRO = ApplicationCacheRO & {
   hasStatistics: boolean;
 };
 
@@ -11,11 +13,15 @@ type Variables = {
   applicationId: string;
 };
 
-type Data = EnrichedApplicationCache[];
+type Data = EnrichedApplicationCacheRO[];
 
 export const getApplicationCaches = async (variables: Variables): Promise<Data> => {
   const hasStatistics = false; // TODO update once application has abilities
-  const result = await window.instance.getApplicationCaches(variables.applicationId);
+  const result = (
+    await axiosInstance.get<ApplicationCacheRO[], AxiosResponse<ApplicationCacheRO[]>>(
+      `cache/application/${variables.applicationId}`
+    )
+  ).data;
   return result.map((cache) => ({ ...cache, hasStatistics: hasStatistics }));
 };
 

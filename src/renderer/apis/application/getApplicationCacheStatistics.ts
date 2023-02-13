@@ -1,17 +1,23 @@
 import { BaseQueryOptions, BaseUseQueryResult, useBaseQuery } from '../base/useBaseQuery';
 import { BaseMutationOptions, BaseUseMutationResult, useBaseMutation } from 'renderer/apis/base/useBaseMutation';
-import { ApplicationCacheStatistics, InstanceCacheStatistics } from 'infra/instance/models/cache';
 import { apiKeys } from 'renderer/apis/apiKeys';
+import { ApplicationCacheStatisticsRO } from '../../../common/generated_definitions';
+import { axiosInstance } from '../axiosInstance';
+import { AxiosResponse } from 'axios';
 
 type Variables = {
   applicationId: string;
   cacheName: string;
 };
 
-type Data = ApplicationCacheStatistics;
+type Data = ApplicationCacheStatisticsRO;
 
 export const getApplicationCacheStatistics = async (variables: Variables): Promise<Data> => {
-  return await window.instance.getApplicationCacheStatistics(variables.applicationId, variables.cacheName);
+  return (
+    await axiosInstance.get<Data, AxiosResponse<Data>>(
+      `application/${variables.applicationId}/${variables.cacheName}/statistics`
+    )
+  ).data;
 };
 
 export const useGetApplicationCacheStatistics = (

@@ -1,12 +1,11 @@
 import React, { useMemo } from 'react';
-import { InstanceCache } from 'infra/instance/models/cache';
 import { useGetInstanceCacheStatisticsQuery } from 'renderer/apis/instance/getInstanceCacheStatistics';
 import { useNavigatorTree } from 'renderer/contexts/NavigatorTreeContext';
 import ItemCacheDetails, { ItemCacheStatistics } from 'renderer/components/item/cache/ItemCacheDetails';
-import { InstanceRO } from '../../../../../../common/generated_definitions';
+import { InstanceCacheRO, InstanceRO } from '../../../../../../common/generated_definitions';
 
 type InstanceCacheDetailsProps = {
-  row: InstanceCache;
+  row: InstanceCacheRO;
 };
 
 export default function InstanceCacheDetails({ row }: InstanceCacheDetailsProps) {

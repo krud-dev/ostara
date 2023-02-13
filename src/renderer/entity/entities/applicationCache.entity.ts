@@ -1,10 +1,9 @@
 import { Entity } from 'renderer/entity/entity';
-import { chain } from 'lodash';
 import { EVICT_CACHE_ID } from 'renderer/entity/actions';
-import { EnrichedApplicationCache } from 'renderer/apis/application/getApplicationCaches';
+import { EnrichedApplicationCacheRO } from 'renderer/apis/application/getApplicationCaches';
 import ApplicationCacheDetails from 'renderer/pages/navigator/application/caches/components/ApplicationCacheDetails';
 
-export const applicationCacheEntity: Entity<EnrichedApplicationCache> = {
+export const applicationCacheEntity: Entity<EnrichedApplicationCacheRO> = {
   id: 'applicationCache',
   columns: [
     {
@@ -47,6 +46,6 @@ export const applicationCacheEntity: Entity<EnrichedApplicationCache> = {
   ],
   paging: false,
   getId: (item) => item.name,
-  getGrouping: (item) => chain(item.instanceCaches).values().first().value()?.cacheManager || 'N/A',
+  getGrouping: (item) => item.cacheManager,
   filterData: (data, filter) => data.filter((item) => item.name?.toLowerCase().includes(filter.toLowerCase())),
 };

@@ -5,7 +5,7 @@ import TableComponent from 'renderer/components/table/TableComponent';
 import { useSnackbar } from 'notistack';
 import { Entity } from 'renderer/entity/entity';
 import { FormattedMessage } from 'react-intl';
-import { EnrichedInstanceCache, useGetInstanceCachesQuery } from 'renderer/apis/instance/getInstanceCaches';
+import { EnrichedInstanceCacheRO, useGetInstanceCachesQuery } from 'renderer/apis/instance/getInstanceCaches';
 import { instanceCacheEntity } from 'renderer/entity/entities/instanceCache.entity';
 import { useEvictInstanceCaches } from 'renderer/apis/instance/evictInstanceCaches';
 import { useEvictAllInstanceCaches } from 'renderer/apis/instance/evictAllInstanceCaches';
@@ -19,13 +19,13 @@ const InstanceCaches: FunctionComponent = () => {
 
   const item = useMemo<InstanceRO>(() => selectedItem as InstanceRO, [selectedItem]);
 
-  const entity = useMemo<Entity<EnrichedInstanceCache>>(() => instanceCacheEntity, []);
+  const entity = useMemo<Entity<EnrichedInstanceCacheRO>>(() => instanceCacheEntity, []);
   const queryState = useGetInstanceCachesQuery({ instance: item });
 
   const evictCachesState = useEvictInstanceCaches();
   const evictAllCachesState = useEvictAllInstanceCaches();
 
-  const actionsHandler = useCallback(async (actionId: string, row: EnrichedInstanceCache): Promise<void> => {
+  const actionsHandler = useCallback(async (actionId: string, row: EnrichedInstanceCacheRO): Promise<void> => {
     switch (actionId) {
       case EVICT_CACHE_ID:
         try {
@@ -41,7 +41,7 @@ const InstanceCaches: FunctionComponent = () => {
   }, []);
 
   const massActionsHandler = useCallback(
-    async (actionId: string, selectedRows: EnrichedInstanceCache[]): Promise<void> => {
+    async (actionId: string, selectedRows: EnrichedInstanceCacheRO[]): Promise<void> => {
       switch (actionId) {
         case EVICT_CACHE_ID:
           try {

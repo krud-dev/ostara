@@ -7,7 +7,10 @@ import { Entity } from 'renderer/entity/entity';
 import { FormattedMessage } from 'react-intl';
 import { EVICT_CACHE_ID } from 'renderer/entity/actions';
 import { applicationCacheEntity } from 'renderer/entity/entities/applicationCache.entity';
-import { EnrichedApplicationCache, useGetApplicationCachesQuery } from 'renderer/apis/application/getApplicationCaches';
+import {
+  EnrichedApplicationCacheRO,
+  useGetApplicationCachesQuery,
+} from 'renderer/apis/application/getApplicationCaches';
 import { useEvictApplicationCaches } from 'renderer/apis/application/evictApplicationCaches';
 import { useEvictAllApplicationCaches } from 'renderer/apis/application/evictAllApplicationCaches';
 import { Card } from '@mui/material';
@@ -20,13 +23,13 @@ const ApplicationCaches: FunctionComponent = () => {
   const item = useMemo<ApplicationRO | undefined>(() => selectedItem as ApplicationRO | undefined, [selectedItem]);
   const itemId = useMemo<string>(() => item?.id || '', [item]);
 
-  const entity = useMemo<Entity<EnrichedApplicationCache>>(() => applicationCacheEntity, []);
+  const entity = useMemo<Entity<EnrichedApplicationCacheRO>>(() => applicationCacheEntity, []);
   const queryState = useGetApplicationCachesQuery({ applicationId: itemId });
 
   const evictCachesState = useEvictApplicationCaches();
   const evictAllCachesState = useEvictAllApplicationCaches();
 
-  const actionsHandler = useCallback(async (actionId: string, row: EnrichedApplicationCache): Promise<void> => {
+  const actionsHandler = useCallback(async (actionId: string, row: EnrichedApplicationCacheRO): Promise<void> => {
     switch (actionId) {
       case EVICT_CACHE_ID:
         try {
@@ -42,7 +45,7 @@ const ApplicationCaches: FunctionComponent = () => {
   }, []);
 
   const massActionsHandler = useCallback(
-    async (actionId: string, selectedRows: EnrichedApplicationCache[]): Promise<void> => {
+    async (actionId: string, selectedRows: EnrichedApplicationCacheRO[]): Promise<void> => {
       switch (actionId) {
         case EVICT_CACHE_ID:
           try {

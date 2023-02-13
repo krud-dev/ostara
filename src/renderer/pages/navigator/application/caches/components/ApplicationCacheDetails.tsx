@@ -1,17 +1,11 @@
-import React, { ReactNode, useCallback, useMemo } from 'react';
-import { ApplicationCache, ApplicationCacheStatistics } from 'infra/instance/models/cache';
+import React, { useMemo } from 'react';
 import { useNavigatorTree } from 'renderer/contexts/NavigatorTreeContext';
 import { useGetApplicationCacheStatisticsQuery } from 'renderer/apis/application/getApplicationCacheStatistics';
-import { chain, get, sumBy } from 'lodash';
 import ItemCacheDetails, { ItemCacheStatistics } from 'renderer/components/item/cache/ItemCacheDetails';
-import { useGetApplicationInstancesQuery } from 'renderer/apis/application/getApplicationInstances';
-import { Stack } from '@mui/material';
-import TableDetailsLabelValue from 'renderer/components/table/details/TableDetailsLabelValue';
-import { FormattedMessage } from 'react-intl';
-import { ApplicationRO, InstanceRO } from '../../../../../../common/generated_definitions';
+import { ApplicationCacheRO, ApplicationRO } from '../../../../../../common/generated_definitions';
 
 type ApplicationCacheDetailsProps = {
-  row: ApplicationCache;
+  row: ApplicationCacheRO;
 };
 
 export default function ApplicationCacheDetails({ row }: ApplicationCacheDetailsProps) {
@@ -20,81 +14,21 @@ export default function ApplicationCacheDetails({ row }: ApplicationCacheDetails
   const item = useMemo<ApplicationRO>(() => selectedItem as ApplicationRO, [selectedItem]);
 
   const statisticsQuery = useGetApplicationCacheStatisticsQuery({ applicationId: item.id, cacheName: row.name });
-  const instancesQuery = useGetApplicationInstancesQuery({ applicationId: item.id });
-
-  const getValueTooltip = useCallback(
-    (name: string): ReactNode | undefined => {
-      return statisticsQuery.data && instancesQuery.data ? (
-        <ValueTooltip name={name} applicationStatistics={statisticsQuery.data} instances={instancesQuery.data} />
-      ) : undefined;
-    },
-    [statisticsQuery.data, instancesQuery.data]
+  const statistics = useMemo<ItemCacheStatistics | undefined>(
+    () =>
+      statisticsQuery.data
+        ? {
+            gets: { value: statisticsQuery.data.gets },
+            puts: { value: statisticsQuery.data.puts },
+            evictions: { value: statisticsQuery.data.evictions },
+            hits: { value: statisticsQuery.data.hits },
+            misses: { value: statisticsQuery.data.misses },
+            removals: { value: statisticsQuery.data.removals },
+            size: { value: statisticsQuery.data.size },
+          }
+        : undefined,
+    [statisticsQuery.data]
   );
-
-  const statistics = useMemo<ItemCacheStatistics | undefined>(() => {
-    if (!statisticsQuery.data) {
-      return undefined;
-    }
-    const instanceStatistics = chain(statisticsQuery.data).values().value();
-    return {
-      gets: {
-        value: sumBy(instanceStatistics, (s) => s.gets),
-        tooltip: getValueTooltip('gets'),
-      },
-      puts: {
-        value: sumBy(instanceStatistics, (s) => s.puts),
-        tooltip: getValueTooltip('puts'),
-      },
-      evictions: {
-        value: sumBy(instanceStatistics, (s) => s.evictions),
-        tooltip: getValueTooltip('evictions'),
-      },
-      hits: {
-        value: sumBy(instanceStatistics, (s) => s.hits),
-        tooltip: getValueTooltip('hits'),
-      },
-      misses: {
-        value: sumBy(instanceStatistics, (s) => s.misses),
-        tooltip: getValueTooltip('misses'),
-      },
-      removals: {
-        value: sumBy(instanceStatistics, (s) => s.removals),
-        tooltip: getValueTooltip('removals'),
-      },
-      size: {
-        value: sumBy(instanceStatistics, (s) => s.size),
-        tooltip: getValueTooltip('size'),
-      },
-    };
-  }, [statisticsQuery.data, instancesQuery.data]);
 
   return <ItemCacheDetails statistics={statistics} />;
-}
-
-type ValueTooltipProps = {
-  name: string;
-  applicationStatistics: ApplicationCacheStatistics;
-  instances: InstanceRO[];
-};
-
-function ValueTooltip({ name, applicationStatistics, instances }: ValueTooltipProps) {
-  const values = useMemo<{ id: string; label: ReactNode; value: number }[]>(
-    () =>
-      chain(applicationStatistics)
-        .map((instanceStatistics, instanceId) => ({
-          id: instanceId,
-          label: instances.find((i) => i.id === instanceId)?.alias || <FormattedMessage id={'notAvailable'} />,
-          value: get(instanceStatistics, name) || 0,
-        }))
-        .value(),
-    [name, applicationStatistics, instances]
-  );
-
-  return (
-    <Stack direction={'column'} spacing={1}>
-      {values.map((v) => (
-        <TableDetailsLabelValue label={v.label} value={v.value} key={v.id} />
-      ))}
-    </Stack>
-  );
 }

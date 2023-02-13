@@ -1,11 +1,12 @@
 import { BaseQueryOptions, BaseUseQueryResult, useBaseQuery } from '../base/useBaseQuery';
 import { BaseMutationOptions, BaseUseMutationResult, useBaseMutation } from 'renderer/apis/base/useBaseMutation';
-import { InstanceCache } from 'infra/instance/models/cache';
 import { apiKeys } from 'renderer/apis/apiKeys';
 import { isServiceInactive } from 'renderer/utils/itemUtils';
-import { InstanceRO } from '../../../common/generated_definitions';
+import { InstanceCacheRO, InstanceRO } from '../../../common/generated_definitions';
+import { axiosInstance } from '../axiosInstance';
+import { AxiosResponse } from 'axios';
 
-export type EnrichedInstanceCache = InstanceCache & {
+export type EnrichedInstanceCacheRO = InstanceCacheRO & {
   hasStatistics: boolean;
 };
 
@@ -13,11 +14,15 @@ type Variables = {
   instance: InstanceRO;
 };
 
-type Data = EnrichedInstanceCache[];
+type Data = EnrichedInstanceCacheRO[];
 
 export const getInstanceCaches = async (variables: Variables): Promise<Data> => {
   const hasStatistics = !isServiceInactive(variables.instance, 'CACHE_STATISTICS');
-  const result = await window.instance.getInstanceCaches(variables.instance.id);
+  const result = (
+    await axiosInstance.get<InstanceCacheRO[], AxiosResponse<InstanceCacheRO[]>>(
+      `cache/instance/${variables.instance.id}`
+    )
+  ).data;
   return result.map((cache) => ({ ...cache, hasStatistics: hasStatistics }));
 };
 
