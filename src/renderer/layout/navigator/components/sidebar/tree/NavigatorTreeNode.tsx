@@ -136,10 +136,7 @@ export default function NavigatorTreeNode({ style, node, tree, dragHandle, previ
     () => node.isFocused && (!isSelected || !node.isOnlySelection),
     [isSelected, node.isFocused, node.isOnlySelection]
   );
-  const isWillReceiveDrop = useMemo<boolean>(
-    () => node.isDroppable && node.willReceiveDrop,
-    [node.isDroppable, node.willReceiveDrop]
-  );
+  const isWillReceiveDrop = useMemo<boolean>(() => node.willReceiveDrop, [node.willReceiveDrop]);
 
   useEffect(() => {
     if (isSelected) {

@@ -18,6 +18,7 @@ import { getItemType, getItemUrl, isApplication, isFolder, isInstance } from 're
 import { OpenMap } from 'react-arborist/src/state/open-slice';
 import { InstanceRO } from '../../../../../../common/generated_definitions';
 import { ItemRO, ItemType } from '../../../../../definitions/daemon';
+import { NodeApi } from 'react-arborist/dist/interfaces/node-api';
 
 const TreeStyle = styled(Tree<TreeItem>)(({ theme }) => ({
   '& [role="treeitem"]': {
@@ -177,36 +178,6 @@ export default function NavigatorTree({ width, search }: NavigatorTreeProps) {
 
   const onMove: MoveHandler<TreeItem> = useCallback(
     ({ parentId, index, parentNode, dragNodes, dragIds }) => {
-      if (parentNode && isInstance(parentNode.data)) {
-        // TODO: Show snackbar
-        console.log('Cannot move to instance');
-        return;
-      }
-
-      if (dragNodes.some((node) => isInstance(node.data)) && dragNodes.some((node) => !isInstance(node.data))) {
-        // TODO: Show snackbar
-        console.log('Cannot mix instances and non-instances');
-        return;
-      }
-
-      if (dragNodes.some((node) => isInstance(node.data)) && (!parentNode || !isApplication(parentNode.data))) {
-        // TODO: Show snackbar
-        console.log("Cannot move instance to item that isn't application");
-        return;
-      }
-
-      if (dragNodes.some((node) => isApplication(node.data)) && parentNode && !isFolder(parentNode.data)) {
-        // TODO: Show snackbar
-        console.log("Cannot move application to item that isn't folder");
-        return;
-      }
-
-      if (dragNodes.some((node) => isFolder(node.data)) && parentNode && !isFolder(parentNode.data)) {
-        // TODO: Show snackbar
-        console.log("Cannot move folder to item that isn't folder");
-        return;
-      }
-
       const children = parentNode?.children?.map((c) => c.data) ?? data;
       const beforeSort = children?.[index - 1]?.sort;
       const afterSort = children?.[index]?.sort;
@@ -244,7 +215,28 @@ export default function NavigatorTree({ width, search }: NavigatorTreeProps) {
     setToggleFlag((prevToggleFlag) => prevToggleFlag + 1);
   }, []);
 
-  const disableDrop = useCallback((dropItem: TreeItem): boolean => isInstance(dropItem), []);
+  const disableDrop = useCallback(
+    (args: { parentNode: NodeApi<TreeItem>; dragNodes: NodeApi<TreeItem>[]; index: number }): boolean => {
+      const { parentNode, dragNodes } = args;
+      if (isInstance(parentNode.data)) {
+        return true;
+      }
+      if (dragNodes.some((node) => isInstance(node.data)) && dragNodes.some((node) => !isInstance(node.data))) {
+        return true;
+      }
+      if (dragNodes.some((node) => isInstance(node.data)) && !isApplication(parentNode.data)) {
+        return true;
+      }
+      if (dragNodes.some((node) => isApplication(node.data)) && !parentNode.isRoot && !isFolder(parentNode.data)) {
+        return true;
+      }
+      if (dragNodes.some((node) => isFolder(node.data)) && !parentNode.isRoot && !isFolder(parentNode.data)) {
+        return true;
+      }
+      return false;
+    },
+    []
+  );
 
   return (
     <>
