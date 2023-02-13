@@ -1,5 +1,8 @@
 server:
   port: 12222
+  error:
+    include-binding-errors: always
+    include-message: always
 spring:
   datasource:
     driver-class-name: org.sqlite.JDBC
@@ -11,11 +14,6 @@ spring:
     open-in-view: false
   cache:
     type: caffeine
-  main:
-    allow-bean-definition-overriding: true
-  jackson:
-    serialization:
-      write-dates-as-timestamps: true
 cache:
   caches:
     - name: httpRequestStatisticsCache
