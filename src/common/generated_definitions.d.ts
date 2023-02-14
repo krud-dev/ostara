@@ -189,6 +189,8 @@ export interface FilterField {
 
 export type DateAsNumber = number;
 
+export type HttpMethod = "GET" | "POST" | "PUT" | "DELETE" | "PATCH" | "HEAD" | "OPTIONS" | "TRACE";
+
 export type ApplicationHealthStatus = "ALL_UP" | "ALL_DOWN" | "SOME_DOWN" | "UNKNOWN" | "PENDING";
 
 export type ApplicationType = "SPRING_BOOT";
