@@ -1,15 +1,15 @@
 import { Card, CardContent, CardHeader, Stack } from '@mui/material';
 import { FormattedMessage } from 'react-intl';
 import React, { ReactNode, useMemo } from 'react';
-import { InstanceHttpRequestStatistics } from 'infra/instance/models/httpRequestStatistics';
 import DonutMultiple from 'renderer/components/widget/pure/DonutMultiple';
 import TableDetailsChart from 'renderer/components/table/details/TableDetailsChart';
 import { HTTPS_REQUESTS_TIME_ROUND } from 'renderer/entity/entities/instanceHttpRequest.entity';
 import { COMPONENTS_SPACING } from 'renderer/constants/ui';
+import { InstanceHttpRequestStatisticsRO } from '../../../../../../common/generated_definitions';
 
 export type InstanceHttpRequestChartsData = {
   label: string;
-  statistics: InstanceHttpRequestStatistics;
+  statistics: InstanceHttpRequestStatisticsRO;
 }[];
 
 type InstanceHttpRequestChartsProps = {

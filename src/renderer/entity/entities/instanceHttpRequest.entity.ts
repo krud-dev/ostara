@@ -1,10 +1,10 @@
 import { Entity } from 'renderer/entity/entity';
-import { InstanceHttpRequestStatistics } from 'infra/instance/models/httpRequestStatistics';
 import InstanceHttpRequestDetails from 'renderer/pages/navigator/instance/http-requests/components/InstanceHttpRequestDetails';
+import { InstanceHttpRequestStatisticsRO } from '../../../common/generated_definitions';
 
 export const HTTPS_REQUESTS_TIME_ROUND = 5;
 
-export const instanceHttpRequestEntity: Entity<InstanceHttpRequestStatistics> = {
+export const instanceHttpRequestEntity: Entity<InstanceHttpRequestStatisticsRO> = {
   id: 'instanceHttpRequest',
   columns: [
     {

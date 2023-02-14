@@ -1,23 +1,23 @@
 import { BaseQueryOptions, BaseUseQueryResult, useBaseQuery } from '../base/useBaseQuery';
 import { BaseMutationOptions, BaseUseMutationResult, useBaseMutation } from 'renderer/apis/base/useBaseMutation';
 import { apiKeys } from 'renderer/apis/apiKeys';
-import {
-  InstanceHttpRequestStatisticsByMethod,
-  InstanceHttpRequestStatisticsByStatus
-} from 'infra/instance/models/httpRequestStatistics';
+import { InstanceHttpRequestStatisticsRO } from '../../../common/generated_definitions';
+import { axiosInstance } from '../axiosInstance';
+import { AxiosResponse } from 'axios';
 
 type Variables = {
   instanceId: string;
   uri: string;
 };
 
-type Data = InstanceHttpRequestStatisticsByStatus[];
+type Data = { [key: number]: InstanceHttpRequestStatisticsRO };
 
 export const getInstanceHttpRequestStatisticsForUriByStatuses = async (variables: Variables): Promise<Data> => {
-  return await window.instance.httpRequestStatisticsService.getStatisticsForUriByStatuses(
-    variables.instanceId,
-    variables.uri
-  );
+  return (
+    await axiosInstance.get<Data, AxiosResponse<Data>>(
+      `instances/${variables.instanceId}/httpRequestStatistics/statuses?uri=${encodeURIComponent(variables.uri)}`
+    )
+  ).data;
 };
 
 export const useGetInstanceHttpRequestStatisticsForUriByStatuses = (

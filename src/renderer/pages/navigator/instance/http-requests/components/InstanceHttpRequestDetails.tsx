@@ -2,19 +2,19 @@ import { Stack } from '@mui/material';
 import { FormattedMessage } from 'react-intl';
 import { COMPONENTS_SPACING } from 'renderer/constants/ui';
 import React, { useMemo } from 'react';
-import { InstanceHttpRequestStatistics } from 'infra/instance/models/httpRequestStatistics';
-import { useGetInstanceHttpRequestStatisticsForUriByMethodsQuery } from 'renderer/apis/instance/getInstanceHttpRequestStatisticsForUriByMethods';
 import { useNavigatorTree } from 'renderer/contexts/NavigatorTreeContext';
 import InstanceHttpRequestCharts, {
   InstanceHttpRequestChartsData,
 } from 'renderer/pages/navigator/instance/http-requests/components/InstanceHttpRequestCharts';
+import { useGetInstanceHttpRequestStatisticsForUriByMethodsQuery } from 'renderer/apis/instance/getInstanceHttpRequestStatisticsForUriByMethods';
 import { useGetInstanceHttpRequestStatisticsForUriByOutcomesQuery } from 'renderer/apis/instance/getInstanceHttpRequestStatisticsForUriByOutcomes';
 import { useGetInstanceHttpRequestStatisticsForUriByStatusesQuery } from 'renderer/apis/instance/getInstanceHttpRequestStatisticsForUriByStatuses';
 import { useGetInstanceHttpRequestStatisticsForUriByExceptionsQuery } from 'renderer/apis/instance/getInstanceHttpRequestStatisticsForUriByExceptions';
-import { InstanceRO } from '../../../../../../common/generated_definitions';
+import { InstanceHttpRequestStatisticsRO, InstanceRO } from '../../../../../../common/generated_definitions';
+import { map } from 'lodash';
 
 type InstanceBeanDetailsProps = {
-  row: InstanceHttpRequestStatistics;
+  row: InstanceHttpRequestStatisticsRO;
 };
 
 export default function InstanceHttpRequestDetails({ row }: InstanceBeanDetailsProps) {
@@ -24,19 +24,19 @@ export default function InstanceHttpRequestDetails({ row }: InstanceBeanDetailsP
 
   const methodsState = useGetInstanceHttpRequestStatisticsForUriByMethodsQuery({ instanceId: item.id, uri: row.uri });
   const methodsData = useMemo<InstanceHttpRequestChartsData | undefined>(
-    () => methodsState.data?.map((v) => ({ label: v.method, statistics: v.statistics })),
+    () => map(methodsState.data, (statistics, method) => ({ label: method, statistics: statistics })),
     [methodsState.data]
   );
 
   const statusesState = useGetInstanceHttpRequestStatisticsForUriByStatusesQuery({ instanceId: item.id, uri: row.uri });
   const statusesData = useMemo<InstanceHttpRequestChartsData | undefined>(
-    () => statusesState.data?.map((v) => ({ label: v.status.toString(), statistics: v.statistics })),
+    () => map(statusesState.data, (statistics, method) => ({ label: method, statistics: statistics })),
     [statusesState.data]
   );
 
   const outcomesState = useGetInstanceHttpRequestStatisticsForUriByOutcomesQuery({ instanceId: item.id, uri: row.uri });
   const outcomesData = useMemo<InstanceHttpRequestChartsData | undefined>(
-    () => outcomesState.data?.map((v) => ({ label: v.outcome, statistics: v.statistics })),
+    () => map(outcomesState.data, (statistics, method) => ({ label: method, statistics: statistics })),
     [outcomesState.data]
   );
 
@@ -45,7 +45,7 @@ export default function InstanceHttpRequestDetails({ row }: InstanceBeanDetailsP
     uri: row.uri,
   });
   const exceptionsData = useMemo<InstanceHttpRequestChartsData | undefined>(
-    () => exceptionsState.data?.map((v) => ({ label: v.exception, statistics: v.statistics })),
+    () => map(exceptionsState.data, (statistics, method) => ({ label: method, statistics: statistics })),
     [exceptionsState.data]
   );
 

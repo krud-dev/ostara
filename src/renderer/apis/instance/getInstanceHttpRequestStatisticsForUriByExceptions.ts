@@ -1,20 +1,24 @@
 import { BaseQueryOptions, BaseUseQueryResult, useBaseQuery } from '../base/useBaseQuery';
 import { BaseMutationOptions, BaseUseMutationResult, useBaseMutation } from 'renderer/apis/base/useBaseMutation';
 import { apiKeys } from 'renderer/apis/apiKeys';
-import { InstanceHttpRequestStatisticsByException } from 'infra/instance/models/httpRequestStatistics';
+import { HttpMethod, InstanceHttpRequestStatisticsByException } from 'infra/instance/models/httpRequestStatistics';
+import { axiosInstance } from '../axiosInstance';
+import { AxiosResponse } from 'axios';
+import { InstanceHttpRequestStatisticsRO } from '../../../common/generated_definitions';
 
 type Variables = {
   instanceId: string;
   uri: string;
 };
 
-type Data = InstanceHttpRequestStatisticsByException[];
+type Data = { [key: string]: InstanceHttpRequestStatisticsRO };
 
 export const getInstanceHttpRequestStatisticsForUriByExceptions = async (variables: Variables): Promise<Data> => {
-  return await window.instance.httpRequestStatisticsService.getStatisticsForUriByExceptions(
-    variables.instanceId,
-    variables.uri
-  );
+  return (
+    await axiosInstance.get<Data, AxiosResponse<Data>>(
+      `instances/${variables.instanceId}/httpRequestStatistics/exceptions?uri=${encodeURIComponent(variables.uri)}`
+    )
+  ).data;
 };
 
 export const useGetInstanceHttpRequestStatisticsForUriByExceptions = (
