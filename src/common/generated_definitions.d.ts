@@ -17,6 +17,9 @@ export interface PagedResult<T> {
     results: T[];
 }
 
+export interface ActuatorResponse {
+}
+
 export interface CountResultRO {
     total: number;
 }

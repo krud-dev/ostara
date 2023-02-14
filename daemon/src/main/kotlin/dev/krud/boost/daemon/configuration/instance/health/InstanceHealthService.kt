@@ -1,6 +1,6 @@
 package dev.krud.boost.daemon.configuration.instance.health
 
-import dev.krud.boost.daemon.actuator.ActuatorHttpClient
+import dev.krud.boost.daemon.actuator.model.HealthActuatorResponse
 import dev.krud.boost.daemon.configuration.instance.InstanceActuatorClientProvider
 import dev.krud.boost.daemon.configuration.instance.InstanceService
 import dev.krud.boost.daemon.configuration.instance.entity.Instance
@@ -51,10 +51,10 @@ class InstanceHealthService(
         }
 
         return when (health.status) {
-            ActuatorHttpClient.HealthResponse.Status.UP -> InstanceHealthRO.up()
-            ActuatorHttpClient.HealthResponse.Status.DOWN -> InstanceHealthRO.down()
-            ActuatorHttpClient.HealthResponse.Status.OUT_OF_SERVICE -> InstanceHealthRO.outOfService()
-            ActuatorHttpClient.HealthResponse.Status.UNKNOWN -> InstanceHealthRO.unknown()
+            HealthActuatorResponse.Status.UP -> InstanceHealthRO.up()
+            HealthActuatorResponse.Status.DOWN -> InstanceHealthRO.down()
+            HealthActuatorResponse.Status.OUT_OF_SERVICE -> InstanceHealthRO.outOfService()
+            HealthActuatorResponse.Status.UNKNOWN -> InstanceHealthRO.unknown()
         }
     }
 

@@ -73,13 +73,14 @@ tasks.withType<GenerateTask> {
     jsonLibrary = cz.habarta.typescript.generator.JsonLibrary.jackson2
     classPatterns = listOf(
         "dev.krud.boost.**.*RO",
+        "dev.krud.boost.daemon.actuator.model.*"
     )
     excludeClasses = listOf(
         "java.io.Serializable",
     )
     classes = listOf(
         "dev.krud.crudframework.modelfilter.DynamicModelFilter",
-        "dev.krud.crudframework.ro.PagedResult"
+        "dev.krud.crudframework.ro.PagedResult",
     )
     classesWithAnnotations = listOf(
         "dev.krud.boost.daemon.base.annotations.GenerateTypescript"

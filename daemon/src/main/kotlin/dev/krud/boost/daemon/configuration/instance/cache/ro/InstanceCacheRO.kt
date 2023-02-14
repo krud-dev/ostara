@@ -1,6 +1,7 @@
 package dev.krud.boost.daemon.configuration.instance.cache.ro
 
-import dev.krud.boost.daemon.actuator.ActuatorHttpClient
+import dev.krud.boost.daemon.actuator.model.CacheActuatorResponse
+import dev.krud.boost.daemon.actuator.model.CachesActuatorResponse
 
 data class InstanceCacheRO(
     val name: String,
@@ -8,7 +9,7 @@ data class InstanceCacheRO(
     val target: String
 ) {
     companion object {
-        fun ActuatorHttpClient.CacheResponse.toRO(): InstanceCacheRO {
+        fun CacheActuatorResponse.toRO(): InstanceCacheRO {
             return InstanceCacheRO(
                 name = name,
                 cacheManager = cacheManager,
@@ -16,7 +17,7 @@ data class InstanceCacheRO(
             )
         }
 
-        fun ActuatorHttpClient.CachesResponse.toROs(): List<InstanceCacheRO> {
+        fun CachesActuatorResponse.toROs(): List<InstanceCacheRO> {
             return cacheManagers.flatMap { (cacheManagerName, cacheManager) ->
                 cacheManager.caches.map { (cacheName, cache) ->
                     InstanceCacheRO(

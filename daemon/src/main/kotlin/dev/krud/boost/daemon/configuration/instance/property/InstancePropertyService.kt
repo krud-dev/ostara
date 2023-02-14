@@ -3,7 +3,7 @@ package dev.krud.boost.daemon.configuration.instance.property
 import com.github.wnameless.json.flattener.JsonFlattener
 import com.github.wnameless.json.unflattener.JsonUnflattener
 import com.google.gson.GsonBuilder
-import dev.krud.boost.daemon.actuator.ActuatorHttpClient
+import dev.krud.boost.daemon.actuator.model.ConfigPropsActuatorResponse
 import dev.krud.boost.daemon.configuration.instance.InstanceActuatorClientProvider
 import dev.krud.boost.daemon.configuration.instance.InstanceService
 import dev.krud.boost.daemon.configuration.instance.enums.InstanceAbility
@@ -33,7 +33,7 @@ class InstancePropertyService(
         return InstancePropertyRO(contexts)
     }
 
-    private fun Collection<ActuatorHttpClient.ConfigPropsResponse.Context.Bean>.flattenProperties(): Map<String, Any> {
+    private fun Collection<ConfigPropsActuatorResponse.Context.Bean>.flattenProperties(): Map<String, Any> {
         val map = mutableMapOf<String, Any>()
         forEach { bean ->
             val flattened = JsonFlattener(GSON.toJson(bean.properties))
