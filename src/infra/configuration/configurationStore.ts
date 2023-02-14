@@ -8,6 +8,7 @@ const defaults: Configuration = {
   themeSource: 'system',
   locale: 'en-US',
   sidebarWidth: SIDEBAR_DEFAULT_WIDTH,
+  secondarySidebarWidth: SIDEBAR_DEFAULT_WIDTH,
   tableRowsPerPage: DEFAULT_ROWS_PER_PAGE,
 };
 export const configurationStore = new ElectronStore<Configuration>({

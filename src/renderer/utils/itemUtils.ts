@@ -1,4 +1,3 @@
-import { DataCollectionMode } from 'infra/configuration/model/configuration';
 import { generatePath } from 'react-router-dom';
 import { urls } from 'renderer/routes/urls';
 import { green, orange, pink, red, yellow } from '@mui/material/colors';
@@ -185,27 +184,27 @@ export const getItemHealthStatusTextId = (item: ItemRO): string | undefined => {
   return undefined;
 };
 
-export const getDataCollectionModeColor = (dataCollectionMode: DataCollectionMode): ColorSchema => {
-  switch (dataCollectionMode) {
-    case 'on':
-      return 'success';
-    case 'off':
-      return 'error';
-    default:
-      return 'primary';
-  }
-};
-
-export const getDataCollectionModeTextId = (dataCollectionMode: DataCollectionMode): string => {
-  switch (dataCollectionMode) {
-    case 'on':
-      return 'on';
-    case 'off':
-      return 'off';
-    default:
-      return 'notAvailable';
-  }
-};
+// export const getDataCollectionModeColor = (dataCollectionMode: DataCollectionMode): ColorSchema => {
+//   switch (dataCollectionMode) {
+//     case 'on':
+//       return 'success';
+//     case 'off':
+//       return 'error';
+//     default:
+//       return 'primary';
+//   }
+// };
+//
+// export const getDataCollectionModeTextId = (dataCollectionMode: DataCollectionMode): string => {
+//   switch (dataCollectionMode) {
+//     case 'on':
+//       return 'on';
+//     case 'off':
+//       return 'off';
+//     default:
+//       return 'notAvailable';
+//   }
+// };
 
 export const isServiceInactive = (item: InstanceRO, ability: InstanceAbility): boolean => {
   return item.abilities.indexOf(ability) === -1;

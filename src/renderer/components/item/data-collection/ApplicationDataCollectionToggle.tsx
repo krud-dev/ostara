@@ -1,5 +1,4 @@
 import React, { useCallback } from 'react';
-import { DataCollectionMode } from 'infra/configuration/model/configuration';
 import { useUpdateItem } from 'renderer/apis/item/updateItem';
 import DataCollectionToggle from 'renderer/components/item/data-collection/DataCollectionToggle';
 import { ApplicationRO } from '../../../../common/generated_definitions';
@@ -16,23 +15,23 @@ export default function ApplicationDataCollectionToggle({ item }: ApplicationDat
     // } catch (e) {}
   }, [item]);
 
-  const getNewDataCollectionMode = useCallback((dataCollectionMode: DataCollectionMode): DataCollectionMode => {
-    switch (dataCollectionMode) {
-      case 'on':
-        return 'off';
-      case 'off':
-        return 'on';
-      default:
-        return 'on';
-    }
-  }, []);
+  // const getNewDataCollectionMode = useCallback((dataCollectionMode: DataCollectionMode): DataCollectionMode => {
+  //   switch (dataCollectionMode) {
+  //     case 'on':
+  //       return 'off';
+  //     case 'off':
+  //       return 'on';
+  //     default:
+  //       return 'on';
+  //   }
+  // }, []);
 
   return (
     <DataCollectionToggle
       // dataCollectionMode={item.dataCollectionMode}
-      dataCollectionMode={'on'}
+      // dataCollectionMode={'on'}
       // effectiveDataCollectionMode={item.dataCollectionMode}
-      effectiveDataCollectionMode={'on'}
+      // effectiveDataCollectionMode={'on'}
       onToggle={toggleHandler}
     />
   );

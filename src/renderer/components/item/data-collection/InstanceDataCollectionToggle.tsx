@@ -1,5 +1,4 @@
 import React, { useCallback } from 'react';
-import { InstanceDataCollectionMode } from 'infra/configuration/model/configuration';
 import { useUpdateItem } from 'renderer/apis/item/updateItem';
 import DataCollectionToggle from 'renderer/components/item/data-collection/DataCollectionToggle';
 import { InstanceRO } from '../../../../common/generated_definitions';
@@ -16,28 +15,28 @@ export default function InstanceDataCollectionToggle({ item }: InstanceDataColle
     // } catch (e) {}
   }, [item]);
 
-  const getNewDataCollectionMode = useCallback(
-    (dataCollectionMode: InstanceDataCollectionMode): InstanceDataCollectionMode => {
-      switch (dataCollectionMode) {
-        case 'on':
-          return 'off';
-        case 'off':
-          return 'inherited';
-        case 'inherited':
-          return 'on';
-        default:
-          return 'on';
-      }
-    },
-    []
-  );
+  // const getNewDataCollectionMode = useCallback(
+  //   (dataCollectionMode: InstanceDataCollectionMode): InstanceDataCollectionMode => {
+  //     switch (dataCollectionMode) {
+  //       case 'on':
+  //         return 'off';
+  //       case 'off':
+  //         return 'inherited';
+  //       case 'inherited':
+  //         return 'on';
+  //       default:
+  //         return 'on';
+  //     }
+  //   },
+  //   []
+  // );
 
   return (
     <DataCollectionToggle
       // dataCollectionMode={item.dataCollectionMode}
-      dataCollectionMode={'on'}
+      // dataCollectionMode={'on'}
       // effectiveDataCollectionMode={item.effectiveDataCollectionMode}
-      effectiveDataCollectionMode={'on'}
+      // effectiveDataCollectionMode={'on'}
       onToggle={toggleHandler}
     />
   );

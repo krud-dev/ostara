@@ -1,7 +1,6 @@
 import { BaseQueryOptions, BaseUseQueryResult, useBaseQuery } from '../base/useBaseQuery';
 import { BaseMutationOptions, BaseUseMutationResult, useBaseMutation } from 'renderer/apis/base/useBaseMutation';
 import { apiKeys } from 'renderer/apis/apiKeys';
-import { HttpMethod, InstanceHttpRequestStatisticsByException } from 'infra/instance/models/httpRequestStatistics';
 import { axiosInstance } from '../axiosInstance';
 import { AxiosResponse } from 'axios';
 import { InstanceHttpRequestStatisticsRO } from '../../../common/generated_definitions';

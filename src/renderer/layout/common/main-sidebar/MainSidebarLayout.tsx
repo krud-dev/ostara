@@ -2,7 +2,7 @@ import { experimentalStyled as styled, useTheme } from '@mui/material/styles';
 import MainNavbar from 'renderer/layout/common/main-sidebar/MainNavbar';
 import { Allotment, LayoutPriority } from 'allotment';
 import { ComponentType, useEffect, useMemo, useRef } from 'react';
-import { MAIN_SCROLL_CONTAINER_ID, NAVBAR_HEIGHT, SIDEBAR_DEFAULT_WIDTH } from 'renderer/constants/ui';
+import { MAIN_SCROLL_CONTAINER_ID, SIDEBAR_DEFAULT_WIDTH } from 'renderer/constants/ui';
 import PerfectScrollbar from 'react-perfect-scrollbar';
 import { Outlet, useLocation } from 'react-router-dom';
 import useConfigurationStoreState from 'renderer/hooks/useConfigurationStoreState';
@@ -36,7 +36,10 @@ export default function MainSidebarLayout({ Sidebar }: MainSidebarLayoutProps) {
     }
   }, [pathname]);
 
-  const [sidebarWidth, setSidebarWidth] = useConfigurationStoreState<number>('sidebarWidth', SIDEBAR_DEFAULT_WIDTH);
+  const [sidebarWidth, setSidebarWidth] = useConfigurationStoreState<'sidebarWidth'>(
+    'sidebarWidth',
+    SIDEBAR_DEFAULT_WIDTH
+  );
 
   const defaultSizes = useMemo<number[]>(() => [sidebarWidth, window.innerWidth - sidebarWidth], []);
 

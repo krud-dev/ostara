@@ -61,6 +61,7 @@ const CreateInstanceDialog: FunctionComponent<CreateInstanceDialogProps & NiceMo
             dataCollectionIntervalSeconds: data.dataCollectionIntervalSeconds,
             parentApplicationId: instanceParentApplicationId,
             sort: instanceSort,
+            color: INHERITED_COLOR_VALUE,
           };
 
           const result = await createInstanceState.mutateAsync({

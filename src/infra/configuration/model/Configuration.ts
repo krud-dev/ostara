@@ -1,4 +1,3 @@
-
 export type ThemeSource = 'system' | 'light' | 'dark';
 
 export type Configuration = {
@@ -29,13 +28,19 @@ export type Configuration = {
 
   /**
    * The width of the sidebar
-   * @default DEFAULT_ROWS_PER_PAGE
+   * @default SIDEBAR_DEFAULT_WIDTH
    */
   sidebarWidth: number;
 
   /**
-   * How many rows to show per page in the table
+   * The width of the secondary sidebar
    * @default SIDEBAR_DEFAULT_WIDTH
+   */
+  secondarySidebarWidth: number;
+
+  /**
+   * How many rows to show per page in the table
+   * @default DEFAULT_ROWS_PER_PAGE
    */
   tableRowsPerPage: number;
 };

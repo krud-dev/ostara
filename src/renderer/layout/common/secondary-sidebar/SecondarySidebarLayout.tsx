@@ -28,7 +28,7 @@ export default function SecondarySidebarLayout<T>({ Sidebar, sidebarProps, conte
     }
   }, [pathname]);
 
-  const [sidebarWidth, setSidebarWidth] = useConfigurationStoreState<number>(
+  const [sidebarWidth, setSidebarWidth] = useConfigurationStoreState<'secondarySidebarWidth'>(
     'secondarySidebarWidth',
     SIDEBAR_DEFAULT_WIDTH
   );

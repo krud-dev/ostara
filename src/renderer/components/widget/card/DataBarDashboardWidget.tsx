@@ -2,19 +2,19 @@ import React, { FunctionComponent, useCallback, useMemo, useState } from 'react'
 import { DashboardWidgetCardProps, DataBarWidget } from 'renderer/components/widget/widget';
 import DashboardGenericCard from 'renderer/components/widget/card/DashboardGenericCard';
 import { chain, isNil } from 'lodash';
-import { ApplicationMetricDTO } from 'infra/metrics/metricsService';
 import { Box, CardContent, Stack, Typography } from '@mui/material';
 import HelpIcon from 'renderer/components/help/HelpIcon';
 import MetricValue from 'renderer/components/widget/metric/MetricValue';
 import useWidgetSubscribeToMetrics from 'renderer/components/widget/hooks/useWidgetSubscribeToMetrics';
+import { InstanceMetricRO } from '../../../../common/generated_definitions';
 
 const DataBarDashboardWidget: FunctionComponent<DashboardWidgetCardProps<DataBarWidget>> = ({ widget, item }) => {
-  const [data, setData] = useState<{ [key: string]: ApplicationMetricDTO }>({});
+  const [data, setData] = useState<{ [key: string]: InstanceMetricRO }>({});
   const loading = useMemo<boolean>(() => Object.keys(data).length < widget.metrics.length, [data]);
   const empty = useMemo<boolean>(() => !loading && Object.keys(data).length < widget.metrics.length, [loading, data]);
 
   const onMetricUpdate = useCallback(
-    (metricDto?: ApplicationMetricDTO): void => {
+    (metricDto?: InstanceMetricRO): void => {
       if (!metricDto) {
         return;
       }

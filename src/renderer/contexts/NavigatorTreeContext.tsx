@@ -74,39 +74,41 @@ const NavigatorTreeProvider: FunctionComponent<NavigatorTreeProviderProps> = ({ 
     }
   }, [items]);
 
-  const subscribeToHealthEventsState = useSubscribeToEvent();
+  // TODO: reimplement
+  // const subscribeToHealthEventsState = useSubscribeToEvent();
+  //
+  // useEffect(() => {
+  //   let unsubscribe: (() => void) | undefined;
+  //   (async () => {
+  //     unsubscribe = await subscribeToHealthEventsState.mutateAsync({
+  //       event: 'app:instanceHealthUpdated',
+  //       listener: () => {
+  //         queryClient.invalidateQueries(apiKeys.items());
+  //       },
+  //     });
+  //   })();
+  //   return () => {
+  //     unsubscribe?.();
+  //   };
+  // }, []);
 
-  useEffect(() => {
-    let unsubscribe: (() => void) | undefined;
-    (async () => {
-      unsubscribe = await subscribeToHealthEventsState.mutateAsync({
-        event: 'app:instanceHealthUpdated',
-        listener: () => {
-          queryClient.invalidateQueries(apiKeys.items());
-        },
-      });
-    })();
-    return () => {
-      unsubscribe?.();
-    };
-  }, []);
-
-  const subscribeToEndpointsEventsState = useSubscribeToEvent();
-
-  useEffect(() => {
-    let unsubscribe: (() => void) | undefined;
-    (async () => {
-      unsubscribe = await subscribeToEndpointsEventsState.mutateAsync({
-        event: 'app:instanceAbilitiesUpdated',
-        listener: () => {
-          queryClient.invalidateQueries(apiKeys.items());
-        },
-      });
-    })();
-    return () => {
-      unsubscribe?.();
-    };
-  }, []);
+  // TODO: reimplement
+  // const subscribeToEndpointsEventsState = useSubscribeToEvent();
+  //
+  // useEffect(() => {
+  //   let unsubscribe: (() => void) | undefined;
+  //   (async () => {
+  //     unsubscribe = await subscribeToEndpointsEventsState.mutateAsync({
+  //       event: 'app:instanceAbilitiesUpdated',
+  //       listener: () => {
+  //         queryClient.invalidateQueries(apiKeys.items());
+  //       },
+  //     });
+  //   })();
+  //   return () => {
+  //     unsubscribe?.();
+  //   };
+  // }, []);
 
   const performAction = useCallback((actionToPerform: NavigatorTreeAction) => {
     setAction(actionToPerform);

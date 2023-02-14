@@ -3,25 +3,26 @@ import Page from 'renderer/components/layout/Page';
 import { useNavigatorTree } from 'renderer/contexts/NavigatorTreeContext';
 import TableComponent from 'renderer/components/table/TableComponent';
 import { Entity } from 'renderer/entity/entity';
-import { InstanceHttpRequestStatistics } from 'infra/instance/models/httpRequestStatistics';
 import { useGetInstanceHttpRequestStatisticsQuery } from 'renderer/apis/instance/getInstanceHttpRequestStatistics';
 import { instanceHttpRequestEntity } from 'renderer/entity/entities/instanceHttpRequest.entity';
 import { Card } from '@mui/material';
-import { InstanceRO } from '../../../../../common/generated_definitions';
+import { InstanceHttpRequestStatisticsRO, InstanceRO } from '../../../../../common/generated_definitions';
 
 const InstanceHttpRequests: FunctionComponent = () => {
   const { selectedItem } = useNavigatorTree();
 
   const item = useMemo<InstanceRO>(() => selectedItem as InstanceRO, [selectedItem]);
 
-  const entity = useMemo<Entity<InstanceHttpRequestStatistics>>(() => instanceHttpRequestEntity, []);
+  const entity = useMemo<Entity<InstanceHttpRequestStatisticsRO>>(() => instanceHttpRequestEntity, []);
   const queryState = useGetInstanceHttpRequestStatisticsQuery({ instanceId: item.id });
 
-  const actionsHandler = useCallback(async (actionId: string, row: InstanceHttpRequestStatistics): Promise<void> => {},
-  []);
+  const actionsHandler = useCallback(
+    async (actionId: string, row: InstanceHttpRequestStatisticsRO): Promise<void> => {},
+    []
+  );
 
   const massActionsHandler = useCallback(
-    async (actionId: string, selectedRows: InstanceHttpRequestStatistics[]): Promise<void> => {},
+    async (actionId: string, selectedRows: InstanceHttpRequestStatisticsRO[]): Promise<void> => {},
     []
   );
 

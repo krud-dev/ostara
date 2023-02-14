@@ -1,10 +1,10 @@
 import React, { FunctionComponent, useCallback, useMemo, useState } from 'react';
 import { DashboardWidgetCardProps, ProgressCircleWidget } from 'renderer/components/widget/widget';
 import DashboardGenericCard from 'renderer/components/widget/card/DashboardGenericCard';
-import { ApplicationMetricDTO } from 'infra/metrics/metricsService';
 import useWidgetSubscribeToMetrics from 'renderer/components/widget/hooks/useWidgetSubscribeToMetrics';
 import { chain, isEmpty } from 'lodash';
 import RadialBarSingle from 'renderer/components/widget/pure/RadialBarSingle';
+import { InstanceMetricRO } from '../../../../common/generated_definitions';
 
 const ProgressCircleDashboardWidget: FunctionComponent<DashboardWidgetCardProps<ProgressCircleWidget>> = ({
   widget,
@@ -29,7 +29,7 @@ const ProgressCircleDashboardWidget: FunctionComponent<DashboardWidgetCardProps<
   }, [percent, widget]);
 
   const onMetricUpdate = useCallback(
-    (metricDto?: ApplicationMetricDTO): void => {
+    (metricDto?: InstanceMetricRO): void => {
       if (!metricDto) {
         return;
       }
