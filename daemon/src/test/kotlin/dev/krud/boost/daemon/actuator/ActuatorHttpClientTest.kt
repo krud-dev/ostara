@@ -58,7 +58,7 @@ class ActuatorHttpClientTest {
         )
         val baseUrl = server.url("/actuator").toString()
         val client = ActuatorHttpClient(baseUrl)
-        val endpoints = client.endpoints()
+        val endpoints = client.endpoints().getOrThrow()
         expectThat(endpoints)
             .isEqualTo(expectedEndpoints)
     }
@@ -70,7 +70,7 @@ class ActuatorHttpClientTest {
         )
         val baseUrl = server.url("/actuator").toString()
         val client = ActuatorHttpClient(baseUrl)
-        val health = client.health()
+        val health = client.health().getOrThrow()
         expectThat(health.status)
             .isEqualTo(ActuatorHttpClient.HealthResponse.Status.UP)
     }
@@ -82,7 +82,7 @@ class ActuatorHttpClientTest {
         )
         val baseUrl = server.url("/actuator").toString()
         val client = ActuatorHttpClient(baseUrl)
-        val health = client.healthComponent("db")
+        val health = client.healthComponent("db").getOrThrow()
         expectThat(health.status)
             .isEqualTo(ActuatorHttpClient.HealthResponse.Status.UP)
     }
@@ -92,7 +92,7 @@ class ActuatorHttpClientTest {
         server.enqueue(okJsonResponse("responses/info_response_200.json"))
         val baseUrl = server.url("/actuator").toString()
         val client = ActuatorHttpClient(baseUrl)
-        val info = client.info()
+        val info = client.info().getOrThrow()
         expectThat(info.build?.artifact)
             .isEqualTo("test")
         expectThat(info.git?.branch)
@@ -104,7 +104,7 @@ class ActuatorHttpClientTest {
         server.enqueue(okJsonResponse("responses/caches_response_200.json"))
         val baseUrl = server.url("/actuator").toString()
         val client = ActuatorHttpClient(baseUrl)
-        val caches = client.caches()
+        val caches = client.caches().getOrThrow()
         expectThat(caches.cacheManagers.size)
             .isEqualTo(2)
         expectThat(caches.cacheManagers.values.first().caches.size)
@@ -121,7 +121,7 @@ class ActuatorHttpClientTest {
         server.enqueue(okJsonResponse("responses/cache_response_200.json"))
         val baseUrl = server.url("/actuator").toString()
         val client = ActuatorHttpClient(baseUrl)
-        val cache = client.cache("cache")
+        val cache = client.cache("cache").getOrThrow()
         expectThat(cache)
             .isEqualTo(expectedResult)
     }
@@ -147,7 +147,7 @@ class ActuatorHttpClientTest {
         server.enqueue(okJsonResponse("responses/beans_response_200.json"))
         val baseUrl = server.url("/actuator").toString()
         val client = ActuatorHttpClient(baseUrl)
-        val beans = client.beans()
+        val beans = client.beans().getOrThrow()
         expectThat(beans.contexts.size)
             .isEqualTo(1)
     }
@@ -157,7 +157,7 @@ class ActuatorHttpClientTest {
         server.enqueue(okJsonResponse("responses/metrics_response_200.json"))
         val baseUrl = server.url("/actuator").toString()
         val client = ActuatorHttpClient(baseUrl)
-        val metrics = client.metrics()
+        val metrics = client.metrics().getOrThrow()
         expectThat(metrics.names.size)
             .isEqualTo(61)
     }
@@ -167,7 +167,7 @@ class ActuatorHttpClientTest {
         server.enqueue(okJsonResponse("responses/metric_response_200.json"))
         val baseUrl = server.url("/actuator").toString()
         val client = ActuatorHttpClient(baseUrl)
-        val metric = client.metric("jvm.memory.max")
+        val metric = client.metric("jvm.memory.max").getOrThrow()
         expectThat(metric.name)
             .isEqualTo("jvm.memory.max")
     }
@@ -177,7 +177,7 @@ class ActuatorHttpClientTest {
         server.enqueue(okJsonResponse("responses/env_response_200.json"))
         val baseUrl = server.url("/actuator").toString()
         val client = ActuatorHttpClient(baseUrl)
-        val env = client.env()
+        val env = client.env().getOrThrow()
         expectThat(env.activeProfiles.size)
             .isEqualTo(2)
     }
@@ -187,7 +187,7 @@ class ActuatorHttpClientTest {
         server.enqueue(okJsonResponse("responses/env_property_response_200.json"))
         val baseUrl = server.url("/actuator").toString()
         val client = ActuatorHttpClient(baseUrl)
-        val env = client.envProperty("spring.application.name")
+        val env = client.envProperty("spring.application.name").getOrThrow()
         expectThat(env.property.value)
             .isEqualTo("1")
     }
@@ -197,7 +197,7 @@ class ActuatorHttpClientTest {
         server.enqueue(okJsonResponse("responses/config_props_response_200.json"))
         val baseUrl = server.url("/actuator").toString()
         val client = ActuatorHttpClient(baseUrl)
-        val configProps = client.configProps()
+        val configProps = client.configProps().getOrThrow()
         expectThat(configProps.contexts.size)
             .isEqualTo(1)
     }
@@ -207,7 +207,7 @@ class ActuatorHttpClientTest {
         server.enqueue(okJsonResponse("responses/flyway_response_200.json"))
         val baseUrl = server.url("/actuator").toString()
         val client = ActuatorHttpClient(baseUrl)
-        val flyway = client.flyway()
+        val flyway = client.flyway().getOrThrow()
         expectThat(flyway.contexts.size)
             .isEqualTo(1)
         expectThat(flyway.contexts.values.first().flywayBeans.values.first().migrations.size)
@@ -219,7 +219,7 @@ class ActuatorHttpClientTest {
         server.enqueue(okJsonResponse("responses/liquibase_response_200.json"))
         val baseUrl = server.url("/actuator").toString()
         val client = ActuatorHttpClient(baseUrl)
-        val liquibase = client.liquibase()
+        val liquibase = client.liquibase().getOrThrow()
         expectThat(liquibase.contexts.size)
             .isEqualTo(1)
         expectThat(liquibase.contexts.values.first().liquibaseBeans.values.first().changeSets.size)
@@ -231,7 +231,7 @@ class ActuatorHttpClientTest {
         server.enqueue(okJsonResponse("responses/thread_dump_response_200.json"))
         val baseUrl = server.url("/actuator").toString()
         val client = ActuatorHttpClient(baseUrl)
-        val threadDump = client.threadDump()
+        val threadDump = client.threadDump().getOrThrow()
         expectThat(threadDump.threads.size)
             .isEqualTo(35)
     }
@@ -241,7 +241,7 @@ class ActuatorHttpClientTest {
         server.enqueue(okJsonResponse("responses/loggers_response_200.json"))
         val baseUrl = server.url("/actuator").toString()
         val client = ActuatorHttpClient(baseUrl)
-        val loggers = client.loggers()
+        val loggers = client.loggers().getOrThrow()
         expectThat(loggers.loggers.size)
             .isEqualTo(910)
     }
@@ -251,7 +251,7 @@ class ActuatorHttpClientTest {
         server.enqueue(okResponse(204))
         val baseUrl = server.url("/actuator").toString()
         val client = ActuatorHttpClient(baseUrl)
-        client.updateLogger("logger", LogLevel.OFF)
+        client.updateLogger("logger", LogLevel.OFF).getOrThrow()
     }
 
     private fun okResponse(code: Int = 200) = MockResponse()

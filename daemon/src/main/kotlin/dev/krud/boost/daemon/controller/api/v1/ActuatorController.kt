@@ -1,6 +1,7 @@
 package dev.krud.boost.daemon.controller.api.v1
 
 import dev.krud.boost.daemon.actuator.ActuatorHttpClient
+import dev.krud.boost.daemon.configuration.instance.InstanceActuatorClientProvider
 import dev.krud.boost.daemon.configuration.instance.entity.Instance
 import dev.krud.boost.daemon.exception.ResourceNotFoundException
 import dev.krud.crudframework.crud.handler.CrudHandler
@@ -17,7 +18,8 @@ import java.util.UUID
 @RequestMapping("$API_PREFIX/actuator")
 @Tag(name = "Actuator", description = "Actuator Passthrough API")
 class ActuatorController(
-    private val crudHandler: CrudHandler
+    private val crudHandler: CrudHandler,
+    private val actuatorClientProvider: InstanceActuatorClientProvider
 ) {
     @PostMapping
     @ResponseStatus(HttpStatus.OK)
@@ -38,7 +40,7 @@ class ActuatorController(
     @ApiResponse(responseCode = "200", description = "List of actuator endpoints")
     @ApiResponse(responseCode = "404", description = "Endpoint not available", content = [Content()])
     @ApiResponse(responseCode = "503", description = "Service unavailable", content = [Content()])
-    fun endpoints(@RequestParam instanceId: UUID) = getActuatorClient(instanceId).endpoints()
+    fun endpoints(@RequestParam instanceId: UUID) = actuatorClientProvider.provide(instanceId).endpoints().getOrThrow()
 
     @GetMapping("/health")
     @ResponseStatus(HttpStatus.OK)
@@ -49,7 +51,7 @@ class ActuatorController(
     @ApiResponse(responseCode = "200", description = "Health object")
     @ApiResponse(responseCode = "404", description = "Endpoint not available", content = [Content()])
     @ApiResponse(responseCode = "503", description = "Service unavailable", content = [Content()])
-    fun health(@RequestParam instanceId: UUID) = getActuatorClient(instanceId).health()
+    fun health(@RequestParam instanceId: UUID) = actuatorClientProvider.provide(instanceId).health().getOrThrow()
 
     @GetMapping("/health/{component}")
     @ResponseStatus(HttpStatus.OK)
@@ -60,7 +62,7 @@ class ActuatorController(
     @ApiResponse(responseCode = "200", description = "Health object")
     @ApiResponse(responseCode = "404", description = "Endpoint not available", content = [Content()])
     @ApiResponse(responseCode = "503", description = "Service unavailable", content = [Content()])
-    fun healthComponent(@RequestParam instanceId: UUID, @PathVariable component: String) = getActuatorClient(instanceId).healthComponent(component)
+    fun healthComponent(@RequestParam instanceId: UUID, @PathVariable component: String) = actuatorClientProvider.provide(instanceId).healthComponent(component).getOrThrow()
 
     @GetMapping("/info")
     @ResponseStatus(HttpStatus.OK)
@@ -71,7 +73,7 @@ class ActuatorController(
     @ApiResponse(responseCode = "200", description = "Info object")
     @ApiResponse(responseCode = "404", description = "Endpoint not available", content = [Content()])
     @ApiResponse(responseCode = "503", description = "Service unavailable", content = [Content()])
-    fun info(@RequestParam instanceId: UUID) = getActuatorClient(instanceId).info()
+    fun info(@RequestParam instanceId: UUID) = actuatorClientProvider.provide(instanceId).info().getOrThrow()
 
     @GetMapping("/caches")
     @ResponseStatus(HttpStatus.OK)
@@ -82,7 +84,7 @@ class ActuatorController(
     @ApiResponse(responseCode = "200", description = "Caches list")
     @ApiResponse(responseCode = "404", description = "Endpoint not available", content = [Content()])
     @ApiResponse(responseCode = "503", description = "Service unavailable", content = [Content()])
-    fun caches(@RequestParam instanceId: UUID) = getActuatorClient(instanceId).caches()
+    fun caches(@RequestParam instanceId: UUID) = actuatorClientProvider.provide(instanceId).caches().getOrThrow()
 
     @GetMapping("/caches/{cache}")
     @ResponseStatus(HttpStatus.OK)
@@ -93,7 +95,7 @@ class ActuatorController(
     @ApiResponse(responseCode = "200", description = "Cache object")
     @ApiResponse(responseCode = "404", description = "Endpoint not available", content = [Content()])
     @ApiResponse(responseCode = "503", description = "Service unavailable", content = [Content()])
-    fun cache(@RequestParam instanceId: UUID, @PathVariable cache: String) = getActuatorClient(instanceId).cache(cache)
+    fun cache(@RequestParam instanceId: UUID, @PathVariable cache: String) = actuatorClientProvider.provide(instanceId).cache(cache)
 
     @DeleteMapping("/caches")
     @ResponseStatus(HttpStatus.NO_CONTENT)
@@ -104,7 +106,7 @@ class ActuatorController(
     @ApiResponse(responseCode = "204", description = "Caches cleared")
     @ApiResponse(responseCode = "404", description = "Endpoint not available", content = [Content()])
     @ApiResponse(responseCode = "503", description = "Service unavailable", content = [Content()])
-    fun evictAllCaches(@RequestParam instanceId: UUID) = getActuatorClient(instanceId).evictAllCaches()
+    fun evictAllCaches(@RequestParam instanceId: UUID) = actuatorClientProvider.provide(instanceId).evictAllCaches()
 
     @DeleteMapping("/caches/{cache}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
@@ -115,7 +117,7 @@ class ActuatorController(
     @ApiResponse(responseCode = "204", description = "Cache cleared")
     @ApiResponse(responseCode = "404", description = "Endpoint not available", content = [Content()])
     @ApiResponse(responseCode = "503", description = "Service unavailable", content = [Content()])
-    fun evictCache(@RequestParam instanceId: UUID, @PathVariable cache: String) = getActuatorClient(instanceId).evictCache(cache)
+    fun evictCache(@RequestParam instanceId: UUID, @PathVariable cache: String) = actuatorClientProvider.provide(instanceId).evictCache(cache)
 
     @GetMapping("/beans")
     @ResponseStatus(HttpStatus.OK)
@@ -126,7 +128,7 @@ class ActuatorController(
     @ApiResponse(responseCode = "200", description = "Beans list")
     @ApiResponse(responseCode = "404", description = "Endpoint not available", content = [Content()])
     @ApiResponse(responseCode = "503", description = "Service unavailable", content = [Content()])
-    fun beans(@RequestParam instanceId: UUID) = getActuatorClient(instanceId).beans()
+    fun beans(@RequestParam instanceId: UUID) = actuatorClientProvider.provide(instanceId).beans()
 
     @GetMapping("/logfile")
     @ResponseStatus(HttpStatus.OK)
@@ -137,7 +139,7 @@ class ActuatorController(
     @ApiResponse(responseCode = "200", description = "Logfile content")
     @ApiResponse(responseCode = "404", description = "Endpoint not available", content = [Content()])
     @ApiResponse(responseCode = "503", description = "Service unavailable", content = [Content()])
-    fun logfile(@RequestParam instanceId: UUID, @RequestParam(required = false) start: Long?, @RequestParam(required = false) end: Long?) = getActuatorClient(instanceId).logfile(start, end)
+    fun logfile(@RequestParam instanceId: UUID, @RequestParam(required = false) start: Long?, @RequestParam(required = false) end: Long?) = actuatorClientProvider.provide(instanceId).logfile(start, end)
 
     @GetMapping("/metrics")
     @ResponseStatus(HttpStatus.OK)
@@ -148,7 +150,7 @@ class ActuatorController(
     @ApiResponse(responseCode = "200", description = "Metrics list")
     @ApiResponse(responseCode = "404", description = "Endpoint not available", content = [Content()])
     @ApiResponse(responseCode = "503", description = "Service unavailable", content = [Content()])
-    fun metrics(@RequestParam instanceId: UUID) = getActuatorClient(instanceId).metrics()
+    fun metrics(@RequestParam instanceId: UUID) = actuatorClientProvider.provide(instanceId).metrics()
 
     @GetMapping("/metrics/{metric}")
     @ResponseStatus(HttpStatus.OK)
@@ -159,7 +161,7 @@ class ActuatorController(
     @ApiResponse(responseCode = "200", description = "Metric object")
     @ApiResponse(responseCode = "404", description = "Endpoint not available", content = [Content()])
     @ApiResponse(responseCode = "503", description = "Service unavailable", content = [Content()])
-    fun metric(@RequestParam instanceId: UUID, @PathVariable metric: String, @RequestBody(required = false) tags: Map<String, String>?) = getActuatorClient(instanceId).metric(metric, tags ?: emptyMap())
+    fun metric(@RequestParam instanceId: UUID, @PathVariable metric: String, @RequestBody(required = false) tags: Map<String, String>?) = actuatorClientProvider.provide(instanceId).metric(metric, tags ?: emptyMap())
 
     @GetMapping("/shutdown")
     @ResponseStatus(HttpStatus.OK)
@@ -170,7 +172,7 @@ class ActuatorController(
     @ApiResponse(responseCode = "200", description = "Shutdown successful")
     @ApiResponse(responseCode = "404", description = "Endpoint not available", content = [Content()])
     @ApiResponse(responseCode = "503", description = "Service unavailable", content = [Content()])
-    fun shutdown(@RequestParam instanceId: UUID) = getActuatorClient(instanceId).shutdown()
+    fun shutdown(@RequestParam instanceId: UUID) = actuatorClientProvider.provide(instanceId).shutdown()
 
     @GetMapping("/env")
     @ResponseStatus(HttpStatus.OK)
@@ -181,7 +183,7 @@ class ActuatorController(
     @ApiResponse(responseCode = "200", description = "Environment object")
     @ApiResponse(responseCode = "404", description = "Endpoint not available", content = [Content()])
     @ApiResponse(responseCode = "503", description = "Service unavailable", content = [Content()])
-    fun env(@RequestParam instanceId: UUID) = getActuatorClient(instanceId).env()
+    fun env(@RequestParam instanceId: UUID) = actuatorClientProvider.provide(instanceId).env()
 
     @GetMapping("/env/{property}")
     @ResponseStatus(HttpStatus.OK)
@@ -192,7 +194,7 @@ class ActuatorController(
     @ApiResponse(responseCode = "200", description = "Environment property object")
     @ApiResponse(responseCode = "404", description = "Endpoint not available", content = [Content()])
     @ApiResponse(responseCode = "503", description = "Service unavailable", content = [Content()])
-    fun envProperty(@RequestParam instanceId: UUID, @PathVariable property: String) = getActuatorClient(instanceId).envProperty(property)
+    fun envProperty(@RequestParam instanceId: UUID, @PathVariable property: String) = actuatorClientProvider.provide(instanceId).envProperty(property)
 
     @GetMapping("/configProps")
     @ResponseStatus(HttpStatus.OK)
@@ -203,7 +205,7 @@ class ActuatorController(
     @ApiResponse(responseCode = "200", description = "Config props object")
     @ApiResponse(responseCode = "404", description = "Endpoint not available", content = [Content()])
     @ApiResponse(responseCode = "503", description = "Service unavailable", content = [Content()])
-    fun configProps(@RequestParam instanceId: UUID) = getActuatorClient(instanceId).configProps()
+    fun configProps(@RequestParam instanceId: UUID) = actuatorClientProvider.provide(instanceId).configProps()
 
     @GetMapping("/flyway")
     @ResponseStatus(HttpStatus.OK)
@@ -214,7 +216,7 @@ class ActuatorController(
     @ApiResponse(responseCode = "200", description = "Flyway object")
     @ApiResponse(responseCode = "404", description = "Endpoint not available", content = [Content()])
     @ApiResponse(responseCode = "503", description = "Service unavailable", content = [Content()])
-    fun flyway(@RequestParam instanceId: UUID) = getActuatorClient(instanceId).flyway()
+    fun flyway(@RequestParam instanceId: UUID) = actuatorClientProvider.provide(instanceId).flyway()
 
     @GetMapping("/liquibase")
     @ResponseStatus(HttpStatus.OK)
@@ -225,7 +227,7 @@ class ActuatorController(
     @ApiResponse(responseCode = "200", description = "Liquibase object")
     @ApiResponse(responseCode = "404", description = "Endpoint not available", content = [Content()])
     @ApiResponse(responseCode = "503", description = "Service unavailable", content = [Content()])
-    fun liquibase(@RequestParam instanceId: UUID) = getActuatorClient(instanceId).liquibase()
+    fun liquibase(@RequestParam instanceId: UUID) = actuatorClientProvider.provide(instanceId).liquibase()
 
     @GetMapping("/threadDump")
     @ResponseStatus(HttpStatus.OK)
@@ -236,7 +238,7 @@ class ActuatorController(
     @ApiResponse(responseCode = "200", description = "Thread dump object")
     @ApiResponse(responseCode = "404", description = "Endpoint not available", content = [Content()])
     @ApiResponse(responseCode = "503", description = "Service unavailable", content = [Content()])
-    fun threadDump(@RequestParam instanceId: UUID) = getActuatorClient(instanceId).threadDump()
+    fun threadDump(@RequestParam instanceId: UUID) = actuatorClientProvider.provide(instanceId).threadDump()
 
     @GetMapping("/heapDump")
     @ResponseStatus(HttpStatus.OK)
@@ -247,7 +249,7 @@ class ActuatorController(
     @ApiResponse(responseCode = "200", description = "Heap dump object")
     @ApiResponse(responseCode = "404", description = "Endpoint not available", content = [Content()])
     @ApiResponse(responseCode = "503", description = "Service unavailable", content = [Content()])
-    fun heapDump(@RequestParam instanceId: UUID) = getActuatorClient(instanceId).heapDump()
+    fun heapDump(@RequestParam instanceId: UUID) = actuatorClientProvider.provide(instanceId).heapDump()
 
     @GetMapping("/loggers")
     @ResponseStatus(HttpStatus.OK)
@@ -258,7 +260,7 @@ class ActuatorController(
     @ApiResponse(responseCode = "200", description = "Loggers object")
     @ApiResponse(responseCode = "404", description = "Endpoint not available", content = [Content()])
     @ApiResponse(responseCode = "503", description = "Service unavailable", content = [Content()])
-    fun loggers(@RequestParam instanceId: UUID) = getActuatorClient(instanceId).loggers()
+    fun loggers(@RequestParam instanceId: UUID) = actuatorClientProvider.provide(instanceId).loggers()
 
     @GetMapping("/loggers/{loggerOrGroupName}")
     @ResponseStatus(HttpStatus.OK)
@@ -269,7 +271,7 @@ class ActuatorController(
     @ApiResponse(responseCode = "200", description = "Logger object")
     @ApiResponse(responseCode = "404", description = "Endpoint not available", content = [Content()])
     @ApiResponse(responseCode = "503", description = "Service unavailable", content = [Content()])
-    fun logger(@RequestParam instanceId: UUID, @PathVariable loggerOrGroupName: String) = getActuatorClient(instanceId).logger(loggerOrGroupName)
+    fun logger(@RequestParam instanceId: UUID, @PathVariable loggerOrGroupName: String) = actuatorClientProvider.provide(instanceId).logger(loggerOrGroupName)
 
     @PostMapping("/loggers/{loggerOrGroupName}")
     @ResponseStatus(HttpStatus.OK)
@@ -280,13 +282,5 @@ class ActuatorController(
     @ApiResponse(responseCode = "200", description = "Logger object")
     @ApiResponse(responseCode = "404", description = "Endpoint not available", content = [Content()])
     @ApiResponse(responseCode = "503", description = "Service unavailable", content = [Content()])
-    fun updateLogger(@RequestParam instanceId: UUID, @PathVariable loggerOrGroupName: String, @RequestParam logLevel: LogLevel) = getActuatorClient(instanceId).updateLogger(loggerOrGroupName, logLevel)
-
-    private fun getActuatorClient(instanceId: UUID): ActuatorHttpClient {
-        val instance = crudHandler
-            .show(instanceId, Instance::class.java)
-            .applyPolicies()
-            .execute() ?: throw ResourceNotFoundException(Instance.NAME, instanceId)
-        return ActuatorHttpClient(instance.actuatorUrl)
-    }
+    fun updateLogger(@RequestParam instanceId: UUID, @PathVariable loggerOrGroupName: String, @RequestParam logLevel: LogLevel) = actuatorClientProvider.provide(instanceId).updateLogger(loggerOrGroupName, logLevel)
 }

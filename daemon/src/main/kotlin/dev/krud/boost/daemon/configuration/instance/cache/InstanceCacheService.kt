@@ -18,16 +18,21 @@ class InstanceCacheService(
     fun getCaches(instanceId: UUID): List<InstanceCacheRO> {
         val instance = instanceService.getInstanceOrThrow(instanceId)
         instanceService.hasAbilityOrThrow(instance, InstanceAbility.CACHES)
-        return actuatorClientProvider.doWith(instance) {
-            it.caches()
-        }.toROs()
+        return actuatorClientProvider.doWith(instance) { client ->
+            client.caches()
+                .fold(
+                    { it.toROs() },
+                    { emptyList() }
+                )
+
+        }
     }
 
     fun getCache(instanceId: UUID, cacheName: String): InstanceCacheRO {
         val instance = instanceService.getInstanceOrThrow(instanceId)
         instanceService.hasAbilityOrThrow(instance, InstanceAbility.CACHES)
         return actuatorClientProvider.doWith(instance) {
-            it.cache(cacheName)
+            it.cache(cacheName).getOrThrow()
         }.toRO()
     }
 
@@ -35,7 +40,7 @@ class InstanceCacheService(
         val instance = instanceService.getInstanceOrThrow(instanceId)
         instanceService.hasAbilityOrThrow(instance, InstanceAbility.CACHES)
         actuatorClientProvider.doWith(instance) {
-            it.evictCache(cacheName)
+            it.evictCache(cacheName).getOrThrow()
         }
     }
 
@@ -43,7 +48,7 @@ class InstanceCacheService(
         val instance = instanceService.getInstanceOrThrow(instanceId)
         instanceService.hasAbilityOrThrow(instance, InstanceAbility.CACHES)
         actuatorClientProvider.doWith(instance) {
-            it.evictAllCaches()
+            it.evictAllCaches().getOrThrow()
         }
     }
 
@@ -53,7 +58,9 @@ class InstanceCacheService(
         return actuatorClientProvider.doWith(instance) {
             val metrics = STATS_METRIC_NAMES.associateWith { metricName ->
                 try {
-                    it.metric(metricName, mapOf("cache" to cacheName)).measurements.firstOrNull()?.value?.toLong()
+                    it.metric(metricName, mapOf("cache" to cacheName))
+                        .getOrThrow()
+                        .measurements.firstOrNull()?.value?.toLong()
                         ?: -1L
                 } catch (e: Exception) {
                     -1L

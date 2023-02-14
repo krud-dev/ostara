@@ -21,7 +21,9 @@ class InstanceMetricService(
         instanceService.hasAbilityOrThrow(instance, InstanceAbility.METRICS)
         val response = actuatorClientProvider.doWith(instance) { client ->
             val parsedMetricName = parseMetricName(metricName)
-            client.metric(parsedMetricName.name).measurements
+            client.metric(parsedMetricName.name)
+                .getOrThrow()
+                .measurements
                 .filter { it.statistic == parsedMetricName.statistic }
                 .maxOfOrNull { it.value } ?: throwNotFound("Metric not found: $parsedMetricName")
         }

@@ -23,7 +23,7 @@ class InstancePropertyService(
         val instance = instanceService.getInstanceOrThrow(instanceId)
         instanceService.hasAbilityOrThrow(instance, InstanceAbility.PROPERTIES)
         val actuatorClient = actuatorClientProvider.provide(instance)
-        val configProps = actuatorClient.configProps()
+        val configProps = actuatorClient.configProps().getOrThrow()
         val contexts = mutableMapOf<String, Map<String, Any>>()
 
         for ((contextName, context) in configProps.contexts) {

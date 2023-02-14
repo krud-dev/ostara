@@ -1,5 +1,6 @@
 package dev.krud.boost.daemon.configuration.instance.ability
 
+import dev.krud.boost.daemon.actuator.ActuatorHttpClient
 import dev.krud.boost.daemon.configuration.instance.enums.InstanceAbility
 
 /**
@@ -17,6 +18,9 @@ sealed class AbstractMetricsAbilityResolver(
         val actuatorClient = options.actuatorClient
 
         val (metricNames) = actuatorClient.metrics()
+            .getOrElse {
+                return false
+            }
         return when (mode) {
             Mode.ALL -> metricNames.containsAll(this.metricNames)
             Mode.ANY -> metricNames.any { this.metricNames.contains(it) }

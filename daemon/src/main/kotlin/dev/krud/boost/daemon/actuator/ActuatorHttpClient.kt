@@ -2,17 +2,14 @@ package dev.krud.boost.daemon.actuator
 
 import com.google.gson.GsonBuilder
 import com.google.gson.annotations.SerializedName
-import dev.krud.boost.daemon.exception.throwInternalServerError
-import okhttp3.HttpUrl
+import dev.krud.boost.daemon.exception.*
+import okhttp3.*
 import okhttp3.HttpUrl.Companion.toHttpUrl
 import okhttp3.MediaType.Companion.toMediaType
-import okhttp3.OkHttpClient
-import okhttp3.Request
-import okhttp3.RequestBody
 import okhttp3.RequestBody.Companion.toRequestBody
-import okhttp3.Response
 import org.springframework.boot.logging.LogLevel
 import java.io.InputStream
+import java.net.ConnectException
 
 class ActuatorHttpClient(
     private val baseUrl: String,
@@ -26,7 +23,12 @@ class ActuatorHttpClient(
             baseHttpUrl,
             "GET"
         )
-        val response = httpClient.newCall(rootCall).execute()
+        val response = runRequest(rootCall)
+            .fold(
+                onSuccess = { it },
+                onFailure = { return TestConnectionResponse(0, "Failed to test connection: ${it.message}", false, false) }
+            )
+
         if (!response.isSuccessful) {
             return TestConnectionResponse(
                 response.code,
@@ -35,11 +37,10 @@ class ActuatorHttpClient(
                 false
             )
         }
-        val validActuator = try {
-            endpoints().isNotEmpty() // TODO: omit the need for extra request
-        } catch (e: Exception) {
-            false
-        }
+        val validActuator = endpoints().fold(
+            onSuccess = { it.isNotEmpty() },
+            onFailure = { false }
+        )
         return TestConnectionResponse(
             response.code,
             null,
@@ -48,32 +49,35 @@ class ActuatorHttpClient(
         )
     }
 
-    fun endpoints(): Set<String> = doGet<EndpointsResponse>(baseHttpUrl)
-        .links
-        .map { it.key }
-        .toSet()
+    fun endpoints(): Result<Set<String>> = runCatching {
+        doGet<EndpointsResponse>(baseHttpUrl)
+            .getOrThrow()
+            .links
+            .map { it.key }
+            .toSet()
+    }
 
     /**
      * Health
      */
 
-    fun health(): HealthResponse = doGet(asUrl("health"))
+    fun health(): Result<HealthResponse> = doGet(asUrl("health"))
 
-    fun healthComponent(component: String): HealthResponse = doGet(asUrl("health", component))
+    fun healthComponent(component: String): Result<HealthResponse> = doGet(asUrl("health", component))
 
     /**
      * Info
      */
 
-    fun info(): InfoResponse = doGet(asUrl("info"))
+    fun info(): Result<InfoResponse> = doGet(asUrl("info"))
 
     /**
      * Caching
      */
 
-    fun caches(): CachesResponse = doGet(asUrl("caches"))
+    fun caches(): Result<CachesResponse> = doGet(asUrl("caches"))
 
-    fun cache(cacheName: String): CacheResponse = doGet(asUrl("caches", cacheName))
+    fun cache(cacheName: String): Result<CacheResponse> = doGet(asUrl("caches", cacheName))
 
     fun evictAllCaches() = doDelete<Unit>(asUrl("caches"))
 
@@ -83,14 +87,14 @@ class ActuatorHttpClient(
      * Beans
      */
 
-    fun beans(): BeansResponse = doGet(asUrl("beans"))
+    fun beans(): Result<BeansResponse> = doGet(asUrl("beans"))
 
     /**
      * Logfile
      */
 
     // TODO: Write tests
-    fun logfile(start: Long? = null, end: Long? = null): String = doGet(asUrl("logfile")) {
+    fun logfile(start: Long? = null, end: Long? = null): Result<String> = doGet(asUrl("logfile")) {
         // Both are optional, unless 1 is specified, throw.
         start?.let {
             requireNotNull(end) { "end must be specified if start is specified" }
@@ -108,9 +112,9 @@ class ActuatorHttpClient(
      * Metrics
      */
 
-    fun metrics(): MetricsResponse = doGet(asUrl("metrics"))
+    fun metrics(): Result<MetricsResponse> = doGet(asUrl("metrics"))
 
-    fun metric(metricName: String, tags: Map<String, String> = emptyMap()): MetricResponse =
+    fun metric(metricName: String, tags: Map<String, String> = emptyMap()): Result<MetricResponse> =
         doGet(
             asUrl("metrics", metricName) {
                 tags.forEach { (key, value) ->
@@ -124,62 +128,62 @@ class ActuatorHttpClient(
      */
 
     // TODO: Write tests
-    fun shutdown() = doPost<Unit>(asUrl("shutdown"))
+    fun shutdown(): Result<Unit> = doPost(asUrl("shutdown"))
 
     /**
      * Env
      */
 
-    fun env(): EnvResponse = doGet(asUrl("env"))
+    fun env(): Result<EnvResponse> = doGet(asUrl("env"))
 
-    fun envProperty(key: String): EnvPropertyResponse = doGet(asUrl("env", key))
+    fun envProperty(key: String): Result<EnvPropertyResponse> = doGet(asUrl("env", key))
 
     /**
      * Configprops
      */
 
-    fun configProps(): ConfigPropsResponse = doGet(asUrl("configprops"))
+    fun configProps(): Result<ConfigPropsResponse> = doGet(asUrl("configprops"))
 
     /**
      * Flyway
      */
 
-    fun flyway(): FlywayResponse = doGet(asUrl("flyway"))
+    fun flyway(): Result<FlywayResponse> = doGet(asUrl("flyway"))
 
     /**
      * Liquibase
      */
 
-    fun liquibase(): LiquibaseResponse = doGet(asUrl("liquibase"))
+    fun liquibase(): Result<LiquibaseResponse> = doGet(asUrl("liquibase"))
 
     /**
      * Thread dump
      */
 
-    fun threadDump(): ThreadDumpResponse = doGet(asUrl("threaddump"))
+    fun threadDump(): Result<ThreadDumpResponse> = doGet(asUrl("threaddump"))
 
     /**
      * Heap dump
      */
 
     // TODO: Write tests
-    fun heapDump(): InputStream {
+    fun heapDump(): Result<InputStream> = runCatching {
         val request = Request.Builder()
             .url(asUrl("heapdump"))
             .build()
         val response = httpClient.newCall(request).execute()
-        return requireNotNull(response.body?.byteStream()) { "Response body was null" }
+        response.body?.byteStream() ?: throwInternalServerError("Response body of heapdump was null")
     }
 
     /**
      * Loggers
      */
 
-    fun loggers(): LoggersResponse = doGet(asUrl("loggers"))
+    fun loggers(): Result<LoggersResponse> = doGet(asUrl("loggers"))
 
-    fun logger(loggerOrGroupName: String): LoggerResponse = doGet(asUrl("loggers", loggerOrGroupName))
+    fun logger(loggerOrGroupName: String): Result<LoggerResponse> = doGet(asUrl("loggers", loggerOrGroupName))
 
-    fun updateLogger(loggerOrGroupName: String, level: LogLevel?) = doPost<Unit>(
+    fun updateLogger(loggerOrGroupName: String, level: LogLevel?): Result<Unit> = doPost(
         asUrl("loggers", loggerOrGroupName),
         GSON.toJson(LoggerUpdateRequest(level)).toRequestBody("application/json".toMediaType())
     )
@@ -465,34 +469,48 @@ class ActuatorHttpClient(
 
     data class LoggerUpdateRequest(val configuredLevel: LogLevel?)
 
-    private inline fun <reified Type> doGet(url: HttpUrl, build: Request.Builder.() -> Unit = {}): Type =
+    private inline fun <reified Type> doGet(url: HttpUrl, build: Request.Builder.() -> Unit = {}): Result<Type> =
         doRequest(url, "GET", null, build)
 
-    private inline fun <reified Type> doPost(url: HttpUrl, requestBody: RequestBody? = null, build: Request.Builder.() -> Unit = {}): Type =
+    private inline fun <reified Type> doPost(url: HttpUrl, requestBody: RequestBody? = null, build: Request.Builder.() -> Unit = {}): Result<Type> =
         doRequest(url, "POST", requestBody, build)
 
-    private inline fun <reified Type> doDelete(url: HttpUrl, build: Request.Builder.() -> Unit = {}): Type =
-        doRequest(url, "DELETE", null, build)
+    private inline fun <reified Type> doDelete(url: HttpUrl, build: Request.Builder.() -> Unit = {}): Result<Type> = doRequest(url, "DELETE", null, build)
 
     private inline fun <reified Type> doRequest(
         url: HttpUrl,
         method: String,
         requestBody: RequestBody? = null,
         build: Request.Builder.() -> Unit = {}
-    ): Type {
+    ): Result<Type> = runCatching {
         val request = buildRequest(url, method, requestBody, build)
-        val response = runRequest(request)
+        val response = runRequest(request).getOrThrow()
         val responseBody = response.body?.string()
-        return GSON.fromJson(responseBody, Type::class.java)
+        if (responseBody == null) {
+            throwInternalServerError("Actuator response body is null: $request")
+        } else {
+            GSON.fromJson(responseBody, Type::class.java)
+        }
     }
 
-    private fun runRequest(request: Request): Response {
-        val response = httpClient.newCall(request).execute()
-        if (!response.isSuccessful) {
-            throwInternalServerError("Request failed: ${request.url} with status code ${response.code}")
-        }
-        return response
+    private fun runRequest(request: Request): Result<Response> = runCatching {
+        httpClient.newCall(request).execute()
     }
+        .onSuccess { response ->
+            if (!response.isSuccessful) {
+                when (response.code) {
+                    404 -> throwNotFound("Endpoint ${request.url} not found")
+                    else -> throwStatusCode(response.code, "Actuator request failed: $request")
+                }
+            }
+        }
+        .onFailure {
+            when (it) {
+                is ConnectException -> throwServiceUnavailable("Actuator unreachable: $request")
+                is IllegalArgumentException -> throwBadRequest("Actuator request failed: $request")
+                else -> throwInternalServerError("Actuator request failed: $request")
+            }
+        }
 
     private inline fun buildRequest(
         url: HttpUrl,

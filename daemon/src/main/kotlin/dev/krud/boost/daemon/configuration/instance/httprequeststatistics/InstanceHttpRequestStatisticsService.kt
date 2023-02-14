@@ -55,6 +55,7 @@ class InstanceHttpRequestStatisticsService(
         val client = actuatorClientProvider.provide(instance)
         val metric = client.metric(METRIC_NAME, mapOf("uri" to uri))
         val availableMethods = metric
+            .getOrThrow()
             .availableTags
             .find { it.tag == "method" }
             ?.values ?: emptyList()
@@ -73,6 +74,7 @@ class InstanceHttpRequestStatisticsService(
         val client = actuatorClientProvider.provide(instance)
         val metric = client.metric(METRIC_NAME, mapOf("uri" to uri))
         val availableOutcomes = metric
+            .getOrThrow()
             .availableTags
             .find { it.tag == "outcome" }
             ?.values ?: emptyList()
@@ -91,6 +93,7 @@ class InstanceHttpRequestStatisticsService(
         val client = actuatorClientProvider.provide(instance)
         val metric = client.metric(METRIC_NAME, mapOf("uri" to uri))
         val availableStatuses = metric
+            .getOrThrow()
             .availableTags
             .find { it.tag == "status" }
             ?.values ?: emptyList()
@@ -109,6 +112,7 @@ class InstanceHttpRequestStatisticsService(
         val client = actuatorClientProvider.provide(instance)
         val metric = client.metric(METRIC_NAME, mapOf("uri" to uri))
         val availableExceptions = metric
+            .getOrThrow()
             .availableTags
             .find { it.tag == "exception" }
             ?.values ?: emptyList()
@@ -144,6 +148,7 @@ class InstanceHttpRequestStatisticsService(
     private fun ActuatorHttpClient.getAvailableUris(): List<String> {
         val metric = metric(METRIC_NAME)
         return metric
+            .getOrThrow()
             .availableTags
             .find { it.tag == "uri" }
             ?.values ?: emptyList()
@@ -151,6 +156,7 @@ class InstanceHttpRequestStatisticsService(
 
     private fun ActuatorHttpClient.getStatisticsForUri(uri: String, tags: Map<String, String> = emptyMap()): InstanceHttpRequestStatisticsRO {
         val metricResponse = this.metric(METRIC_NAME, mapOf("uri" to uri))
+            .getOrThrow()
         val count = metricResponse.measurements.find { it.statistic == "COUNT" }?.value ?: -1.0
         val max = metricResponse.measurements.find { it.statistic == "MAX" }?.value ?: -1.0
         val totalTime = metricResponse.measurements.find { it.statistic == "TOTAL_TIME" }?.value ?: -1.0

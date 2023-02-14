@@ -41,10 +41,10 @@ class InstanceService(
     /**
      * Resolves the abilities of an instance.
      */
-    @Cacheable(cacheNames = ["instanceAbilityCache"], key = "#instance.id")
+    @Cacheable(cacheNames = ["instanceAbilityCache"], key = "#instance.id", unless = "#result.isEmpty()")
     fun resolveAbilities(instance: Instance): Set<InstanceAbility> {
         val actuatorClient = actuatorClientProvider.provide(instance)
-        val endpoints = actuatorClient.endpoints()
+        val endpoints = actuatorClient.endpoints().getOrElse { return emptySet() }
         val options = InstanceAbilityResolver.Options(instance, endpoints, actuatorClient)
         return instanceAbilityResolvers
             .filter {

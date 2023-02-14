@@ -46,10 +46,8 @@ class InstanceHealthService(
             return InstanceHealthRO.invalid("URL is reachable but it is not an actuator endpoint")
         }
 
-        val health = try {
-            actuatorClient.health()
-        } catch (e: Exception) {
-            return InstanceHealthRO.unknown()
+        val health = actuatorClient.health().getOrElse {
+            return InstanceHealthRO.unknown(it.message)
         }
 
         return when (health.status) {

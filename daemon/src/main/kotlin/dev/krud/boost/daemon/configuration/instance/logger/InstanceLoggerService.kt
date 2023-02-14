@@ -17,7 +17,7 @@ class InstanceLoggerService(
         val instance = instanceService.getInstanceOrThrow(instanceId)
         instanceService.hasAbilityOrThrow(instance, InstanceAbility.LOGGERS)
         val response = actuatorClientProvider.doWith(instance) {
-            it.loggers()
+            it.loggers().getOrThrow()
         }
 
         return response.loggers.map { (name, logger) ->
@@ -33,7 +33,7 @@ class InstanceLoggerService(
         val instance = instanceService.getInstanceOrThrow(instanceId)
         instanceService.hasAbilityOrThrow(instance, InstanceAbility.LOGGERS)
         val response = actuatorClientProvider.doWith(instance) {
-            it.logger(loggerName)
+            it.logger(loggerName).getOrThrow()
         }
 
         return InstanceLoggerRO(
