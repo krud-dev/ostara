@@ -69,7 +69,7 @@ function TableProvider<EntityItem, CustomFilters>({
   const [orderColumn, setOrderColumn] = useState<string | undefined>(undefined);
   const [orderDirection, setOrderDirection] = useState<'asc' | 'desc' | undefined>(undefined);
   const [page, setPage] = useState(0);
-  const [rowsPerPage, setRowsPerPage] = useConfigurationStoreState('tableRowsPerPage', DEFAULT_ROWS_PER_PAGE);
+  const [rowsPerPage, setRowsPerPage] = useConfigurationStoreState('tableRowsPerPage', 1);
   const [selected, setSelected] = useState<string[]>([]);
   const [collapsedGroups, setCollapsedGroups] = useState<string[]>([]);
 
