@@ -31,7 +31,7 @@ class InstanceHttpRequestStatisticsService(
         executor.shutdown()
     }
 
-    @Cacheable(cacheNames = ["httpRequestStatistics"], key = "'all_uris_' + #instanceId")
+    @Cacheable(cacheNames = ["httpRequestStatisticsCache"], key = "'all_uris_' + #instanceId")
     fun getStatistics(instanceId: UUID): List<InstanceHttpRequestStatisticsRO> {
         val instance = instanceService.getInstanceOrThrow(instanceId)
         instanceService.hasAbilityOrThrow(instance, InstanceAbility.HTTP_REQUEST_STATISTICS)
@@ -48,7 +48,7 @@ class InstanceHttpRequestStatisticsService(
         return futures.map { it.get() }
     }
 
-    @Cacheable(cacheNames = ["httpRequestStatistics"], key = "'by_uri_and_method_' + #instanceId")
+    @Cacheable(cacheNames = ["httpRequestStatisticsCache"], key = "'by_uri_and_method_' + #instanceId")
     fun getStatisticsByUriAndMethod(instanceId: UUID, uri: String): Map<HttpMethod, InstanceHttpRequestStatisticsRO> {
         val instance = instanceService.getInstanceOrThrow(instanceId)
         instanceService.hasAbilityOrThrow(instance, InstanceAbility.HTTP_REQUEST_STATISTICS)
@@ -66,7 +66,7 @@ class InstanceHttpRequestStatisticsService(
         return futures.associate { it.get() }
     }
 
-    @Cacheable(cacheNames = ["httpRequestStatistics"], key = "'by_uri_and_outcome_' + #instanceId")
+    @Cacheable(cacheNames = ["httpRequestStatisticsCache"], key = "'by_uri_and_outcome_' + #instanceId")
     fun getStatisticsByUriAndOutcome(instanceId: UUID, uri: String): Map<String, InstanceHttpRequestStatisticsRO> {
         val instance = instanceService.getInstanceOrThrow(instanceId)
         instanceService.hasAbilityOrThrow(instance, InstanceAbility.HTTP_REQUEST_STATISTICS)
@@ -84,7 +84,7 @@ class InstanceHttpRequestStatisticsService(
         return futures.associate { it.get() }
     }
 
-    @Cacheable(cacheNames = ["httpRequestStatistics"], key = "'by_uri_and_status_' + #instanceId")
+    @Cacheable(cacheNames = ["httpRequestStatisticsCache"], key = "'by_uri_and_status_' + #instanceId")
     fun getStatisticsByUriAndStatus(instanceId: UUID, uri: String): Map<Int, InstanceHttpRequestStatisticsRO> {
         val instance = instanceService.getInstanceOrThrow(instanceId)
         instanceService.hasAbilityOrThrow(instance, InstanceAbility.HTTP_REQUEST_STATISTICS)
@@ -102,7 +102,7 @@ class InstanceHttpRequestStatisticsService(
         return futures.associate { it.get() }
     }
 
-    @Cacheable(cacheNames = ["httpRequestStatistics"], key = "'by_uri_and_exception_' + #instanceId")
+    @Cacheable(cacheNames = ["httpRequestStatisticsCache"], key = "'by_uri_and_exception_' + #instanceId")
     fun getStatisticsByUriAndException(instanceId: UUID, uri: String): Map<String, InstanceHttpRequestStatisticsRO> {
         val instance = instanceService.getInstanceOrThrow(instanceId)
         instanceService.hasAbilityOrThrow(instance, InstanceAbility.HTTP_REQUEST_STATISTICS)
