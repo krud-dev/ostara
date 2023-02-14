@@ -17,10 +17,8 @@ import MenuBuilder from './menu';
 import { resolveHtmlPath } from './util';
 import '../infra';
 import { dataSource } from '../infra/dataSource';
-import { taskService } from '../infra/tasks/taskService';
-import { instanceService } from '../infra/instance/instanceService';
 import { uiService } from '../infra/ui/uiService';
-import { DaemonController, initDaemon } from '../infra/daemon/daemon';
+import { initDaemon } from '../infra/daemon/daemon';
 import { systemEvents } from '../infra/events';
 import { isMac, isWindows } from '../infra/utils/platform';
 
@@ -117,8 +115,6 @@ const createMainWindow = async () => {
     app.quit();
   }
 
-  await taskService.initialize();
-
   const backgroundColor = nativeTheme.shouldUseDarkColors ? '#161C24' : '#ffffff';
   const color = nativeTheme.shouldUseDarkColors ? '#ffffff' : '#212B36';
 
@@ -171,7 +167,6 @@ const createMainWindow = async () => {
     return { action: 'deny' };
   });
 
-  instanceService.initialize(mainWindow);
   uiService.initialize(mainWindow);
 
   // Remove this if your app does not use auto updates
