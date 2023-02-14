@@ -1,4 +1,3 @@
-
 import cz.habarta.typescript.generator.gradle.GenerateTask
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 import org.springframework.boot.gradle.tasks.bundling.BootJar
@@ -85,6 +84,10 @@ tasks.withType<GenerateTask> {
     classesWithAnnotations = listOf(
         "dev.krud.boost.daemon.base.annotations.GenerateTypescript"
     )
+    val classDelimiter = '$'
+    customTypeNamingFunction = """
+        (name, simpleName) => name.split('.').pop().replaceAll('$', '${classDelimiter}')
+    """.trimIndent()
     noFileComment = true
     outputKind = cz.habarta.typescript.generator.TypeScriptOutputKind.module
     outputFile = Paths.get(project.projectDir.path, "..", "src", "common", "generated_definitions.d.ts").toString()
