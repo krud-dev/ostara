@@ -1,10 +1,12 @@
 import { BaseQueryOptions, BaseUseQueryResult, useBaseQuery } from '../base/useBaseQuery';
 import { BaseMutationOptions, BaseUseMutationResult, useBaseMutation } from 'renderer/apis/base/useBaseMutation';
 import { apiKeys } from 'renderer/apis/apiKeys';
-import { ActuatorBean } from 'infra/actuator/model/beans';
 import { chain, map } from 'lodash';
+import { axiosInstance } from '../axiosInstance';
+import { AxiosResponse } from 'axios';
+import { BeansActuatorResponse, BeansActuatorResponse$Context$Bean } from '../../../common/generated_definitions';
 
-export type InstanceBean = ActuatorBean & {
+export type InstanceBean = BeansActuatorResponse$Context$Bean & {
   name: string;
   package: string;
 };
@@ -16,7 +18,11 @@ type Variables = {
 type Data = InstanceBean[];
 
 export const getInstanceBeans = async (variables: Variables): Promise<Data> => {
-  const result = await window.actuator.beans(variables.instanceId);
+  const result = (
+    await axiosInstance.get<BeansActuatorResponse, AxiosResponse<BeansActuatorResponse>>(
+      `actuator/beans?instanceId=${variables.instanceId}`
+    )
+  ).data;
   return chain(result.contexts)
     .values()
     .map((beansMap) => beansMap.beans)

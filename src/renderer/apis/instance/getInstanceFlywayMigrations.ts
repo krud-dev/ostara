@@ -1,20 +1,21 @@
 import { BaseQueryOptions, BaseUseQueryResult, useBaseQuery } from '../base/useBaseQuery';
 import { BaseMutationOptions, BaseUseMutationResult, useBaseMutation } from 'renderer/apis/base/useBaseMutation';
 import { apiKeys } from 'renderer/apis/apiKeys';
-import { ActuatorFlywayMigration } from 'infra/actuator/model/flyway';
 import { chain } from 'lodash';
+import { getInstanceFlyway } from './getInstanceFlyway';
+import { FlywayActuatorResponse$Context$FlywayBean$Migration } from '../../../common/generated_definitions';
 
-export type EnrichedActuatorFlywayMigration = ActuatorFlywayMigration & { bean: string };
+export type EnrichedFlywayMigration = FlywayActuatorResponse$Context$FlywayBean$Migration & { bean: string };
 
 type Variables = {
   instanceId: string;
   context: string;
 };
 
-type Data = EnrichedActuatorFlywayMigration[];
+type Data = EnrichedFlywayMigration[];
 
 export const getInstanceFlywayMigrations = async (variables: Variables): Promise<Data> => {
-  const result = await window.actuator.flyway(variables.instanceId);
+  const result = await getInstanceFlyway({ instanceId: variables.instanceId });
   return chain(result.contexts[variables.context]?.flywayBeans)
     .flatMap((bean, beanName) => bean.migrations.map((migration) => ({ ...migration, bean: beanName })))
     .value();

@@ -1,12 +1,12 @@
 import React from 'react';
-import { EnrichedActuatorLiquibaseChangeset } from 'renderer/apis/instance/getInstanceLiquibaseChangesets';
+import { EnrichedLiquibaseChangeSet } from 'renderer/apis/instance/getInstanceLiquibaseChangesets';
 import TableDetailsLabelValue from 'renderer/components/table/details/TableDetailsLabelValue';
 import { FormattedMessage } from 'react-intl';
 import { Card, CardContent } from '@mui/material';
 import { DEFAULT_TABLE_COLUMN_WIDTH } from 'renderer/constants/ui';
 
 type LiquibaseChangesetDetailsProps = {
-  row: EnrichedActuatorLiquibaseChangeset;
+  row: EnrichedLiquibaseChangeSet;
 };
 
 export default function LiquibaseChangesetDetails({ row }: LiquibaseChangesetDetailsProps) {

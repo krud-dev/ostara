@@ -1,6 +1,6 @@
 import { BaseMutationOptions, BaseUseMutationResult, useBaseMutation } from 'renderer/apis/base/useBaseMutation';
 import { axiosInstance } from '../axiosInstance';
-import { AxiosResponse } from 'axios/index';
+import { AxiosResponse } from 'axios';
 
 type Variables = {
   instanceId: string;

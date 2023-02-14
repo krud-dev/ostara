@@ -1,9 +1,9 @@
 import React, { FunctionComponent, useCallback, useMemo } from 'react';
 import TableComponent from 'renderer/components/table/TableComponent';
 import { Entity } from 'renderer/entity/entity';
-import { instanceLiquibaseChangesetEntity } from 'renderer/entity/entities/instanceLiquibaseChangeset.entity';
+import { instanceLiquibaseChangeSetEntity } from 'renderer/entity/entities/instanceLiquibaseChangeSetEntity';
 import {
-  EnrichedActuatorLiquibaseChangeset,
+  EnrichedLiquibaseChangeSet,
   useGetInstanceLiquibaseChangesetsQuery,
 } from 'renderer/apis/instance/getInstanceLiquibaseChangesets';
 
@@ -13,16 +13,14 @@ type LiquibaseChangesetsTableProps = {
 };
 
 const LiquibaseChangesetsTable: FunctionComponent<LiquibaseChangesetsTableProps> = ({ instanceId, context }) => {
-  const entity = useMemo<Entity<EnrichedActuatorLiquibaseChangeset>>(() => instanceLiquibaseChangesetEntity, []);
+  const entity = useMemo<Entity<EnrichedLiquibaseChangeSet>>(() => instanceLiquibaseChangeSetEntity, []);
   const queryState = useGetInstanceLiquibaseChangesetsQuery({ instanceId, context });
 
-  const actionsHandler = useCallback(
-    async (actionId: string, row: EnrichedActuatorLiquibaseChangeset): Promise<void> => {},
-    []
-  );
+  const actionsHandler = useCallback(async (actionId: string, row: EnrichedLiquibaseChangeSet): Promise<void> => {},
+  []);
 
   const massActionsHandler = useCallback(
-    async (actionId: string, selectedRows: EnrichedActuatorLiquibaseChangeset[]): Promise<void> => {},
+    async (actionId: string, selectedRows: EnrichedLiquibaseChangeSet[]): Promise<void> => {},
     []
   );
 

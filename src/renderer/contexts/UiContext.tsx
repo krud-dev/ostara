@@ -28,10 +28,7 @@ interface UiProviderProps extends PropsWithChildren<any> {}
 const UiProvider: FunctionComponent<UiProviderProps> = ({ children }) => {
   const [developerMode, setDeveloperMode] = useConfigurationStoreState<'developerMode'>('developerMode', false);
 
-  const [themeSource, setThemeSourceInternal] = useConfigurationStoreState<'themeSource'>(
-    'themeSource',
-    'system' as const
-  );
+  const [themeSource, setThemeSourceInternal] = useConfigurationStoreState<'themeSource'>('themeSource', 'system');
   const [darkMode, setDarkMode] = useConfigurationStoreState<'darkMode'>('darkMode', true);
 
   const [locale, setLocaleInternal] = useConfigurationStoreState<'locale'>('locale', 'en');

@@ -1,8 +1,9 @@
 import { BaseQueryOptions, BaseUseQueryResult, useBaseQuery } from '../base/useBaseQuery';
 import { BaseMutationOptions, BaseUseMutationResult, useBaseMutation } from 'renderer/apis/base/useBaseMutation';
 import { apiKeys } from 'renderer/apis/apiKeys';
-import { ActuatorProperty } from 'infra/actuator/model/env';
 import { chain, toString } from 'lodash';
+import { getInstanceEnv } from './getInstanceEnv';
+import { EnvPropertyActuatorResponse$PropertySource$Property } from '../../../common/generated_definitions';
 
 export type EnvProperty = {
   source: string;
@@ -18,12 +19,12 @@ type Variables = {
 type Data = EnvProperty[];
 
 export const getInstanceEnvProperties = async (variables: Variables): Promise<Data> => {
-  const result = await window.actuator.env(variables.instanceId);
+  const result = await getInstanceEnv({ instanceId: variables.instanceId });
   return chain(result.propertySources)
     .map(
       (source) =>
         chain(source.properties)
-          .map<EnvProperty>((value: ActuatorProperty, name: string) => ({
+          .map<EnvProperty>((value: EnvPropertyActuatorResponse$PropertySource$Property, name: string) => ({
             source: source.name,
             name,
             value: toString(value.value),

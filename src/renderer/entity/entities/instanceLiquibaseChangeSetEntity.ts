@@ -1,9 +1,9 @@
 import { Entity } from 'renderer/entity/entity';
-import { EnrichedActuatorLiquibaseChangeset } from 'renderer/apis/instance/getInstanceLiquibaseChangesets';
+import { EnrichedLiquibaseChangeSet } from 'renderer/apis/instance/getInstanceLiquibaseChangesets';
 import LiquibaseChangesetDetails from 'renderer/pages/navigator/instance/liquibase/components/LiquibaseChangesetDetails';
 
-export const instanceLiquibaseChangesetEntity: Entity<EnrichedActuatorLiquibaseChangeset> = {
-  id: 'instanceLiquibaseChangeset',
+export const instanceLiquibaseChangeSetEntity: Entity<EnrichedLiquibaseChangeSet> = {
+  id: 'instanceLiquibaseChangeSet',
   columns: [
     {
       id: 'author',

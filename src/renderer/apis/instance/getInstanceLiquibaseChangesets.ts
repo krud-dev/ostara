@@ -2,19 +2,22 @@ import { BaseQueryOptions, BaseUseQueryResult, useBaseQuery } from '../base/useB
 import { BaseMutationOptions, BaseUseMutationResult, useBaseMutation } from 'renderer/apis/base/useBaseMutation';
 import { apiKeys } from 'renderer/apis/apiKeys';
 import { chain } from 'lodash';
-import { ActuatorLiquibaseChangeset } from 'infra/actuator/model/liquibase';
+import { getInstanceLiquibase } from './getInstanceLiquibase';
+import { LiquibaseActuatorResponse$Context$LiquibaseBean$ChangeSet } from '../../../common/generated_definitions';
 
-export type EnrichedActuatorLiquibaseChangeset = ActuatorLiquibaseChangeset & { bean: string };
+export type EnrichedLiquibaseChangeSet = LiquibaseActuatorResponse$Context$LiquibaseBean$ChangeSet & {
+  bean: string;
+};
 
 type Variables = {
   instanceId: string;
   context: string;
 };
 
-type Data = EnrichedActuatorLiquibaseChangeset[];
+type Data = EnrichedLiquibaseChangeSet[];
 
 export const getInstanceLiquibaseChangesets = async (variables: Variables): Promise<Data> => {
-  const result = await window.actuator.liquibase(variables.instanceId);
+  const result = await getInstanceLiquibase({ instanceId: variables.instanceId });
   return chain(result.contexts[variables.context]?.liquibaseBeans)
     .flatMap((bean, beanName) => bean.changeSets.map((changeset) => ({ ...changeset, bean: beanName })))
     .value();

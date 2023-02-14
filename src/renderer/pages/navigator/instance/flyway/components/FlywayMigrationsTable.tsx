@@ -3,7 +3,7 @@ import Page from 'renderer/components/layout/Page';
 import TableComponent from 'renderer/components/table/TableComponent';
 import { Entity } from 'renderer/entity/entity';
 import {
-  EnrichedActuatorFlywayMigration,
+  EnrichedFlywayMigration,
   useGetInstanceFlywayMigrationsQuery,
 } from 'renderer/apis/instance/getInstanceFlywayMigrations';
 import { instanceFlywayMigrationEntity } from 'renderer/entity/entities/instanceFlywayMigration.entity';
@@ -14,16 +14,13 @@ type FlywayMigrationsTableProps = {
 };
 
 const FlywayMigrationsTable: FunctionComponent<FlywayMigrationsTableProps> = ({ instanceId, context }) => {
-  const entity = useMemo<Entity<EnrichedActuatorFlywayMigration>>(() => instanceFlywayMigrationEntity, []);
+  const entity = useMemo<Entity<EnrichedFlywayMigration>>(() => instanceFlywayMigrationEntity, []);
   const queryState = useGetInstanceFlywayMigrationsQuery({ instanceId, context });
 
-  const actionsHandler = useCallback(
-    async (actionId: string, row: EnrichedActuatorFlywayMigration): Promise<void> => {},
-    []
-  );
+  const actionsHandler = useCallback(async (actionId: string, row: EnrichedFlywayMigration): Promise<void> => {}, []);
 
   const massActionsHandler = useCallback(
-    async (actionId: string, selectedRows: EnrichedActuatorFlywayMigration[]): Promise<void> => {},
+    async (actionId: string, selectedRows: EnrichedFlywayMigration[]): Promise<void> => {},
     []
   );
 

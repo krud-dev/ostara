@@ -1,12 +1,12 @@
 import { useEffect } from 'react';
 import { useSubscribeToMetric } from 'renderer/apis/metrics/subscribeToMetric';
-import { ApplicationMetricDTO } from 'infra/metrics/metricsService';
 import { isEmpty } from 'lodash';
+import { InstanceMetricRO } from '../../../../common/generated_definitions';
 
 const useWidgetSubscribeToMetrics = (
   itemId: string,
   metricNames: string[],
-  callback: (metricDto: ApplicationMetricDTO) => void,
+  callback: (metricDto: InstanceMetricRO) => void,
   options: { active?: boolean } = {}
 ): void => {
   const { active = true } = options;

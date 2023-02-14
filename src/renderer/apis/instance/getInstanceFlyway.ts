@@ -1,16 +1,19 @@
 import { BaseQueryOptions, BaseUseQueryResult, useBaseQuery } from '../base/useBaseQuery';
 import { BaseMutationOptions, BaseUseMutationResult, useBaseMutation } from 'renderer/apis/base/useBaseMutation';
 import { apiKeys } from 'renderer/apis/apiKeys';
-import { ActuatorFlywayResponse } from 'infra/actuator/model/flyway';
+import { FlywayActuatorResponse } from '../../../common/generated_definitions';
+import { axiosInstance } from '../axiosInstance';
+import { AxiosResponse } from 'axios';
 
 type Variables = {
   instanceId: string;
 };
 
-type Data = ActuatorFlywayResponse;
+type Data = FlywayActuatorResponse;
 
 export const getInstanceFlyway = async (variables: Variables): Promise<Data> => {
-  return await window.actuator.flyway(variables.instanceId);
+  return (await axiosInstance.get<Data, AxiosResponse<Data>>(`actuator/flyway?instanceId=${variables.instanceId}`))
+    .data;
 };
 
 export const useGetInstanceFlyway = (
