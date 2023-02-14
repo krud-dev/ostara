@@ -1,17 +1,18 @@
 import { BaseQueryOptions, BaseUseQueryResult, useBaseQuery } from '../base/useBaseQuery';
 import { BaseMutationOptions, BaseUseMutationResult, useBaseMutation } from 'renderer/apis/base/useBaseMutation';
 import { apiKeys } from 'renderer/apis/apiKeys';
-
-export type InstanceProperties = { [key: string]: { [key: string]: unknown } };
+import { InstancePropertyRO } from '../../../common/generated_definitions';
+import { axiosInstance } from '../axiosInstance';
+import { AxiosResponse } from 'axios';
 
 type Variables = {
   instanceId: string;
 };
 
-type Data = InstanceProperties;
+type Data = InstancePropertyRO;
 
 export const getInstanceProperties = async (variables: Variables): Promise<Data> => {
-  return await window.instance.propertyService.getProperties(variables.instanceId);
+  return (await axiosInstance.get<Data, AxiosResponse<Data>>(`instances/${variables.instanceId}/properties`)).data;
 };
 
 export const useGetInstanceProperties = (

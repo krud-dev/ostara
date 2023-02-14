@@ -23,7 +23,7 @@ const InstanceProperties: FunctionComponent = () => {
   const tabs = useMemo<TabInfo[] | undefined>(
     () =>
       propertiesState.data
-        ? map(propertiesState.data, (properties, context) => ({ id: context, label: context, lazy: true }))
+        ? map(propertiesState.data.contexts, (properties, context) => ({ id: context, label: context, lazy: true }))
         : undefined,
     [propertiesState.data]
   );
@@ -46,7 +46,7 @@ const InstanceProperties: FunctionComponent = () => {
             sxTabContainer={{ backgroundColor: (theme) => theme.palette.background.paper }}
           >
             {tabs.map((tab) => (
-              <InstancePropertiesCode properties={propertiesState.data?.[tab.id] || {}} key={tab.id} />
+              <InstancePropertiesCode properties={propertiesState.data?.contexts[tab.id] || {}} key={tab.id} />
             ))}
           </TabPanel>
         </Card>
