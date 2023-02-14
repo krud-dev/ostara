@@ -16,7 +16,6 @@ import log from 'electron-log';
 import MenuBuilder from './menu';
 import { resolveHtmlPath } from './util';
 import '../infra';
-import { dataSource } from '../infra/dataSource';
 import { uiService } from '../infra/ui/uiService';
 import { initDaemon } from '../infra/daemon/daemon';
 import { systemEvents } from '../infra/events';
@@ -106,14 +105,6 @@ const createMainWindow = async () => {
   const getAssetPath = (...paths: string[]): string => {
     return path.join(RESOURCES_PATH, ...paths);
   };
-
-  try {
-    log.debug('Initializing data source...');
-    await dataSource.initialize();
-    log.debug('Data source initialized');
-  } catch (e) {
-    app.quit();
-  }
 
   const backgroundColor = nativeTheme.shouldUseDarkColors ? '#161C24' : '#ffffff';
   const color = nativeTheme.shouldUseDarkColors ? '#ffffff' : '#212B36';
