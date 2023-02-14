@@ -19,6 +19,16 @@ import java.util.UUID
 class ActuatorController(
     private val crudHandler: CrudHandler
 ) {
+    @PostMapping
+    @ResponseStatus(HttpStatus.OK)
+    @Operation(
+        summary = "Test Connection",
+        description = "Test the connection to a given URL"
+    )
+    @ApiResponse(responseCode = "200", description = "Connection successful")
+    @ApiResponse(responseCode = "500", description = "Test Connection failed", content = [Content()])
+    fun testConnection(@RequestParam url: String) = ActuatorHttpClient(url).testConnection()
+
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
     @Operation(
