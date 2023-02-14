@@ -113,8 +113,4 @@ export const urls = asUrlInfos({
     url: '/settings/application',
     path: 'application',
   },
-  tasks: {
-    url: '/settings/tasks',
-    path: 'tasks',
-  },
 });

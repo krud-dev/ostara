@@ -8,7 +8,6 @@ import InstanceDashboard from 'renderer/pages/navigator/instance/dashboard';
 import FolderPage from 'renderer/pages/navigator/folder';
 import InstanceLayout from 'renderer/layout/instance/InstanceLayout';
 import SettingsLayout from 'renderer/layout/settings/SettingsLayout';
-import TasksPage from 'renderer/pages/navigator/settings/tasks';
 import ApplicationLayout from 'renderer/layout/application/ApplicationLayout';
 import ApplicationDashboard from 'renderer/pages/navigator/application/dashboard';
 import InstanceEnvironment from 'renderer/pages/navigator/instance/environment';
@@ -140,10 +139,6 @@ export default function Router() {
         {
           path: urls.applicationSettings.path,
           element: <ApplicationSettingsPage />,
-        },
-        {
-          path: urls.tasks.path,
-          element: <TasksPage />,
         },
       ],
     },

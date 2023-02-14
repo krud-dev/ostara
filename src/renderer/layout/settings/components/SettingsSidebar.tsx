@@ -1,6 +1,6 @@
 import Sidebar from 'renderer/components/menu/sidebar/Sidebar';
 import { SidebarConfig } from 'renderer/components/menu/sidebar/SidebarSection';
-import { AssignmentOutlined, DisplaySettingsOutlined } from '@mui/icons-material';
+import { DisplaySettingsOutlined } from '@mui/icons-material';
 import { urls } from 'renderer/routes/urls';
 import { useMemo } from 'react';
 import { FormattedMessage } from 'react-intl';
@@ -20,12 +20,6 @@ export default function SettingsSidebar({ width }: SettingsSidebarProps) {
             icon: <DisplaySettingsOutlined />,
             label: <FormattedMessage id={'application'} />,
             to: urls.applicationSettings.url,
-          },
-          {
-            id: 'tasks',
-            icon: <AssignmentOutlined />,
-            label: <FormattedMessage id={'tasks'} />,
-            to: urls.tasks.url,
           },
         ],
       },
