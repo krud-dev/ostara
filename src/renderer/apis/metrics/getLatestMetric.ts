@@ -1,17 +1,23 @@
 import { BaseQueryOptions, BaseUseQueryResult, useBaseQuery } from '../base/useBaseQuery';
 import { BaseMutationOptions, BaseUseMutationResult, useBaseMutation } from 'renderer/apis/base/useBaseMutation';
-import { ApplicationMetricDTO } from 'infra/metrics/metricsService';
 import { apiKeys } from 'renderer/apis/apiKeys';
+import { axiosInstance } from '../axiosInstance';
+import { InstanceMetricRO } from '../../../common/generated_definitions';
+import { AxiosResponse } from 'axios';
 
 type Variables = {
   instanceId: string;
   metricName: string;
 };
 
-type Data = ApplicationMetricDTO | undefined;
+type Data = InstanceMetricRO;
 
 export const getLatestMetric = async (variables: Variables): Promise<Data> => {
-  return await window.metrics.getLatestMetric(variables.instanceId, variables.metricName);
+  return (
+    await axiosInstance.get<Data, AxiosResponse<Data>>(
+      `instances/${variables.instanceId}/metrics/latest?metricName=${encodeURIComponent(variables.metricName)}`
+    )
+  ).data;
 };
 
 export const useGetLatestMetric = (

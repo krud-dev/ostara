@@ -1,11 +1,11 @@
 import { useEffect } from 'react';
-import { ApplicationMetricDTO } from 'infra/metrics/metricsService';
 import { useGetLatestMetric } from 'renderer/apis/metrics/getLatestMetric';
+import { InstanceMetricRO } from '../../../../common/generated_definitions';
 
 const useWidgetLatestMetrics = (
   itemId: string,
   metricNames: string[],
-  callback: (metricDtos: (ApplicationMetricDTO | undefined)[]) => void
+  callback: (metricDtos: InstanceMetricRO[]) => void
 ): void => {
   const getLatestMetricState = useGetLatestMetric();
 
@@ -14,7 +14,7 @@ const useWidgetLatestMetrics = (
       try {
         const results = await Promise.all(
           metricNames.map(
-            async (metricName): Promise<ApplicationMetricDTO | undefined> =>
+            async (metricName): Promise<InstanceMetricRO> =>
               await getLatestMetricState.mutateAsync({
                 instanceId: itemId,
                 metricName: metricName,
