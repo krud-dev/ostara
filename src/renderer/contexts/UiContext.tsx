@@ -26,15 +26,15 @@ const UiContext = React.createContext<UiContextProps>(undefined!);
 interface UiProviderProps extends PropsWithChildren<any> {}
 
 const UiProvider: FunctionComponent<UiProviderProps> = ({ children }) => {
-  const [developerMode, setDeveloperMode] = useConfigurationStoreState<boolean>('developerMode', false);
+  const [developerMode, setDeveloperMode] = useConfigurationStoreState<'developerMode'>('developerMode', false);
 
-  const [themeSource, setThemeSourceInternal] = useConfigurationStoreState<ThemeSource>(
+  const [themeSource, setThemeSourceInternal] = useConfigurationStoreState<'themeSource'>(
     'themeSource',
     'system' as const
   );
-  const [darkMode, setDarkMode] = useConfigurationStoreState<boolean>('darkMode', true);
+  const [darkMode, setDarkMode] = useConfigurationStoreState<'darkMode'>('darkMode', true);
 
-  const [locale, setLocaleInternal] = useConfigurationStoreState<string>('locale', 'en');
+  const [locale, setLocaleInternal] = useConfigurationStoreState<'locale'>('locale', 'en');
   const localeInfo = useMemo<LocaleInfo>(() => locales[locale], [locale]);
 
   const getThemeState = useGetTheme();
