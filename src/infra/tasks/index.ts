@@ -1,2 +1,0 @@
-import './tasks';
-import './main';
