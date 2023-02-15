@@ -1,12 +1,12 @@
 import React, { PropsWithChildren, useCallback, useContext, useMemo, useState } from 'react';
 import { Entity } from 'renderer/entity/entity';
 import { isEmpty, orderBy } from 'lodash';
-import useConfigurationStoreState from 'renderer/hooks/useConfigurationStoreState';
 import { DEFAULT_ROWS_PER_PAGE } from 'renderer/constants/ui';
 import { notEmpty } from 'renderer/utils/objectUtils';
 import { BaseUseQueryResult } from 'renderer/apis/base/useBaseQuery';
 import { useUpdateEffect } from 'react-use';
 import { getTableDisplayItems } from 'renderer/components/table/utils/tableUtils';
+import { useLocalStorageState } from '../../hooks/useLocalStorageState';
 
 export type DisplayItem<EntityItem> =
   | { type: 'Row'; row: EntityItem }
@@ -69,7 +69,7 @@ function TableProvider<EntityItem, CustomFilters>({
   const [orderColumn, setOrderColumn] = useState<string | undefined>(undefined);
   const [orderDirection, setOrderDirection] = useState<'asc' | 'desc' | undefined>(undefined);
   const [page, setPage] = useState(0);
-  const [rowsPerPage, setRowsPerPage] = useConfigurationStoreState('tableRowsPerPage', 1);
+  const [rowsPerPage, setRowsPerPage] = useLocalStorageState<number>('tableRowsPerPage', DEFAULT_ROWS_PER_PAGE);
   const [selected, setSelected] = useState<string[]>([]);
   const [collapsedGroups, setCollapsedGroups] = useState<string[]>([]);
 

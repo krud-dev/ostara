@@ -1,6 +1,6 @@
 import { BaseMutationOptions, BaseUseMutationResult, useBaseMutation } from 'renderer/apis/base/useBaseMutation';
 import { apiKeys } from 'renderer/apis/apiKeys';
-import { ThemeSource } from 'renderer/apis/ui/getThemeSource';
+import { ThemeSource } from '../../../infra/ui/models/electronTheme';
 
 type Variables = {
   themeSource: ThemeSource;

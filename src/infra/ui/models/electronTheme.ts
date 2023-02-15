@@ -3,3 +3,5 @@ export type ElectronTheme = {
   shouldUseHighContrastColors: boolean;
   shouldUseInvertedColorScheme: boolean;
 };
+
+export type ThemeSource = 'system' | 'light' | 'dark';

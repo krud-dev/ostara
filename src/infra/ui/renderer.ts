@@ -1,16 +1,16 @@
 import { ipcRenderer } from 'electron';
-import { ElectronTheme } from './models/electronTheme';
+import { ElectronTheme, ThemeSource } from './models/electronTheme';
 import { isLinux, isMac, isWindows } from '../utils/platform';
 
 export const uiServiceBridge: UiServiceBridge = {
   getTheme(): Promise<ElectronTheme> {
     return ipcRenderer.invoke('uiService:getTheme');
   },
-  getThemeSource(): Promise<'system' | 'light' | 'dark'> {
+  getThemeSource(): Promise<ThemeSource> {
     return ipcRenderer.invoke('uiService:getThemeSource');
   },
 
-  setThemeSource(themeSource: 'system' | 'light' | 'dark'): Promise<void> {
+  setThemeSource(themeSource: ThemeSource): Promise<void> {
     return ipcRenderer.invoke('uiService:setThemeSource', themeSource);
   },
 

@@ -1,10 +1,10 @@
-import { ElectronTheme } from './models/electronTheme';
+import { ElectronTheme, ThemeSource } from './models/electronTheme';
 
 declare global {
   type UiServiceBridge = {
     getTheme(): Promise<ElectronTheme>;
-    getThemeSource(): Promise<'system' | 'light' | 'dark'>;
-    setThemeSource(themeSource: 'system' | 'light' | 'dark'): Promise<void>;
+    getThemeSource(): Promise<ThemeSource>;
+    setThemeSource(themeSource: ThemeSource): Promise<void>;
     minimizeWindow(): Promise<void>;
     maximizeWindow(): Promise<void>;
     closeWindow(): Promise<void>;

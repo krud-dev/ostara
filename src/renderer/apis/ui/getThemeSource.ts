@@ -1,8 +1,7 @@
 import { BaseQueryOptions, BaseUseQueryResult, useBaseQuery } from '../base/useBaseQuery';
 import { BaseMutationOptions, BaseUseMutationResult, useBaseMutation } from 'renderer/apis/base/useBaseMutation';
 import { apiKeys } from 'renderer/apis/apiKeys';
-
-export type ThemeSource = 'system' | 'light' | 'dark';
+import { ThemeSource } from '../../../infra/ui/models/electronTheme';
 
 type Variables = {};
 

@@ -1,5 +1,5 @@
 import { BrowserWindow, nativeTheme } from 'electron';
-import { ElectronTheme } from './models/electronTheme';
+import { ElectronTheme, ThemeSource } from './models/electronTheme';
 import log from 'electron-log';
 
 class UiService {
@@ -23,11 +23,11 @@ class UiService {
     };
   }
 
-  getThemeSource(): 'system' | 'light' | 'dark' {
+  getThemeSource(): ThemeSource {
     return nativeTheme.themeSource;
   }
 
-  setThemeSource(themeSource: 'system' | 'light' | 'dark') {
+  setThemeSource(themeSource: ThemeSource) {
     nativeTheme.themeSource = themeSource;
   }
 

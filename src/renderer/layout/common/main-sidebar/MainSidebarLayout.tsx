@@ -5,8 +5,8 @@ import { ComponentType, useEffect, useMemo, useRef } from 'react';
 import { MAIN_SCROLL_CONTAINER_ID, SIDEBAR_DEFAULT_WIDTH } from 'renderer/constants/ui';
 import PerfectScrollbar from 'react-perfect-scrollbar';
 import { Outlet, useLocation } from 'react-router-dom';
-import useConfigurationStoreState from 'renderer/hooks/useConfigurationStoreState';
 import { Box } from '@mui/material';
+import { useLocalStorageState } from '../../../hooks/useLocalStorageState';
 
 const RootStyle = styled('div')({
   height: '100%',
@@ -36,10 +36,7 @@ export default function MainSidebarLayout({ Sidebar }: MainSidebarLayoutProps) {
     }
   }, [pathname]);
 
-  const [sidebarWidth, setSidebarWidth] = useConfigurationStoreState<'sidebarWidth'>(
-    'sidebarWidth',
-    SIDEBAR_DEFAULT_WIDTH
-  );
+  const [sidebarWidth, setSidebarWidth] = useLocalStorageState<number>('sidebarWidth', SIDEBAR_DEFAULT_WIDTH);
 
   const defaultSizes = useMemo<number[]>(() => [sidebarWidth, window.innerWidth - sidebarWidth], []);
 

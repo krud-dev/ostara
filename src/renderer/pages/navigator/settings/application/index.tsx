@@ -1,11 +1,11 @@
 import React, { FunctionComponent } from 'react';
 import Page from 'renderer/components/layout/Page';
-import { Box, Card, CardContent, CardHeader, ListItemIcon, ListItemText, MenuItem, TextField } from '@mui/material';
+import { Card, CardContent, CardHeader, MenuItem, TextField } from '@mui/material';
 import { FormattedMessage } from 'react-intl';
 import { useUi } from 'renderer/contexts/UiContext';
-import { ThemeSource } from 'renderer/apis/ui/getThemeSource';
 import { map } from 'lodash';
 import locales from '../../../../lang';
+import { ThemeSource } from '../../../../../infra/ui/models/electronTheme';
 
 const ApplicationSettingsPage: FunctionComponent = () => {
   const { themeSource, setThemeSource, developerMode, setDeveloperMode, localeInfo, setLocale } = useUi();

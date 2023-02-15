@@ -8,8 +8,8 @@ import {
   SECONDARY_SCROLL_CONTAINER_ID,
   SIDEBAR_DEFAULT_WIDTH,
 } from 'renderer/constants/ui';
-import useConfigurationStoreState from 'renderer/hooks/useConfigurationStoreState';
 import PerfectScrollbar from 'react-perfect-scrollbar';
+import { useLocalStorageState } from '../../../hooks/useLocalStorageState';
 
 type SecondarySidebarLayoutProps<T> = {
   Sidebar: ComponentType<{ width: number } & T>;
@@ -28,10 +28,7 @@ export default function SecondarySidebarLayout<T>({ Sidebar, sidebarProps, conte
     }
   }, [pathname]);
 
-  const [sidebarWidth, setSidebarWidth] = useConfigurationStoreState<'secondarySidebarWidth'>(
-    'secondarySidebarWidth',
-    SIDEBAR_DEFAULT_WIDTH
-  );
+  const [sidebarWidth, setSidebarWidth] = useLocalStorageState<number>('secondarySidebarWidth', SIDEBAR_DEFAULT_WIDTH);
 
   const defaultSizes = useMemo<number[]>(() => [sidebarWidth, window.innerWidth - sidebarWidth], []);
 
