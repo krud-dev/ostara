@@ -27,7 +27,7 @@ export default function ChooseColorMenuItem({ item, onClose }: ChooseColorMenuIt
   const updateItemState = useUpdateItem();
 
   const setColorHandler = useCallback(
-    async (newColor: string | undefined): Promise<void> => {
+    async (newColor: string): Promise<void> => {
       setSelectedColor(newColor);
       try {
         await updateItemState.mutateAsync({ item: { ...item, color: newColor } });
@@ -39,7 +39,7 @@ export default function ChooseColorMenuItem({ item, onClose }: ChooseColorMenuIt
   const noColor = useMemo<string>(() => theme.palette.text.primary, []);
   const defaultColor = useMemo<string>(() => theme.palette.text.secondary, []);
 
-  const colors = useMemo<{ color: string; fillColor: string; value: string | undefined }[]>(() => {
+  const colors = useMemo<{ color: string; fillColor: string; value: string }[]>(() => {
     const colorsIndex = 400;
     return [
       { color: noColor, fillColor: 'transparent', value: INHERITED_COLOR_VALUE },
@@ -80,10 +80,10 @@ export default function ChooseColorMenuItem({ item, onClose }: ChooseColorMenuIt
 type ColorSwitchProps = {
   color: string;
   fillColor?: string;
-  value?: string;
+  value: string;
   size?: number;
   selected?: boolean;
-  onClick?: (value: string | undefined) => void;
+  onClick?: (value: string) => void;
 };
 
 function ColorSwitch({ color, fillColor, value, size = 18, selected, onClick }: ColorSwitchProps) {
