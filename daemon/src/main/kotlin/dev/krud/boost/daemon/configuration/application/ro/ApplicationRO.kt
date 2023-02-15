@@ -1,6 +1,7 @@
 package dev.krud.boost.daemon.configuration.application.ro
 
 import dev.krud.boost.daemon.configuration.application.enums.ApplicationType
+import dev.krud.boost.daemon.utils.DEFAULT_COLOR
 import java.util.*
 
 class ApplicationRO(
@@ -9,8 +10,8 @@ class ApplicationRO(
     var type: ApplicationType,
     var instanceCount: Int = 0,
     val description: String? = null,
-    val color: String? = null,
-    var effectiveColor: String? = null,
+    val color: String = DEFAULT_COLOR,
+    var effectiveColor: String = DEFAULT_COLOR,
     val icon: String? = null,
     val sort: Int? = null,
     val parentFolderId: UUID? = null,

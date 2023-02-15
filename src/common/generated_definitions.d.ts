@@ -154,8 +154,8 @@ export interface ApplicationRO {
     type: ApplicationType;
     instanceCount: number;
     description?: string;
-    color?: string;
-    effectiveColor?: string;
+    color: string;
+    effectiveColor: string;
     icon?: string;
     sort?: number;
     parentFolderId?: string;
@@ -175,8 +175,8 @@ export interface FolderRO {
     id: string;
     alias: string;
     description?: string;
-    color?: string;
-    effectiveColor?: string;
+    color: string;
+    effectiveColor: string;
     icon?: string;
     sort?: number;
     parentFolderId?: string;
@@ -251,8 +251,8 @@ export interface InstanceRO {
     actuatorUrl: string;
     dataCollectionIntervalSeconds: number;
     description?: string;
-    color?: string;
-    effectiveColor?: string;
+    color: string;
+    effectiveColor: string;
     icon?: string;
     sort?: number;
     parentApplicationId?: string;
