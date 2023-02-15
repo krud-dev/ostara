@@ -28,6 +28,13 @@ class InstanceService(
 ) {
     private val instanceAbilityCache = cacheManager.getCache("instanceAbilityCache")!!
 
+    fun getAllInstances(): List<Instance> {
+        return crudHandler
+            .index(null, Instance::class.java)
+            .execute()
+            .results
+    }
+
     fun getInstance(instanceId: UUID): Instance? {
         return crudHandler
             .show(instanceId, Instance::class.java)

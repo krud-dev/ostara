@@ -6,16 +6,31 @@ import dev.krud.boost.daemon.configuration.application.ro.ApplicationHealthRO
 import dev.krud.boost.daemon.configuration.instance.health.InstanceHealthService
 import org.springframework.stereotype.Service
 import java.time.LocalDateTime
+import java.util.*
 
 @Service
 class ApplicationHealthService(
+    private val applicationService: ApplicationService,
     private val instanceHealthService: InstanceHealthService
 ) {
-    fun getApplicationHealth(application: Application): ApplicationHealthRO {
+    fun getCachedHealth(application: Application): ApplicationHealthRO {
         if (application.instances.isEmpty()) {
             return ApplicationHealthRO.pending()
         }
-        val statuses = application.instances.map { instanceHealthService.getHealth(it).status }
+        val statuses = application.instances.map { instanceHealthService.getCachedHealth(it).status }
+        return ApplicationHealthRO(
+            statuses.toApplicationHealthStatus(),
+            LocalDateTime.now(),
+            LocalDateTime.now()
+        )
+    }
+
+    fun getLiveHealth(applicationId: UUID): ApplicationHealthRO {
+        val application = applicationService.getApplicationOrThrow(applicationId)
+        if (application.instances.isEmpty()) {
+            return ApplicationHealthRO.pending()
+        }
+        val statuses = application.instances.map { instanceHealthService.getLiveHealth(it).status }
         return ApplicationHealthRO(
             statuses.toApplicationHealthStatus(),
             LocalDateTime.now(),

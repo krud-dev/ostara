@@ -19,7 +19,7 @@ class InstanceToRoMappingDecorator(
 ) : MappingDecorator<Instance, InstanceRO> {
     override fun decorate(context: MappingDecoratorContext<Instance, InstanceRO>) {
         context.to.effectiveColor = context.from.effectiveColor
-        val health = instanceHealthService.getHealth(context.from.id)
+        val health = instanceHealthService.getCachedHealth(context.from.id)
         context.to.health = health
         if (health.status.running) {
             context.to.abilities = instanceService.resolveAbilities(context.from)

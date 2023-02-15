@@ -198,6 +198,13 @@ export interface InstanceCacheStatisticsRO {
     size: number;
 }
 
+export interface InstanceHealthLogRO {
+    creationTime: DateAsNumber;
+    instanceId: string;
+    status: InstanceHealthStatus;
+    statusText?: string;
+}
+
 export interface InstanceHealthRO {
     status: InstanceHealthStatus;
     statusText?: string;
@@ -258,6 +265,15 @@ export interface InstanceRO {
     parentApplicationId?: string;
     abilities: InstanceAbility[];
     health: InstanceHealthRO;
+}
+
+export interface EventLogRO {
+    id: string;
+    creationTime: DateAsNumber;
+    type: EventLogType;
+    severity: EventLogSeverity;
+    targetId: string;
+    message?: string;
 }
 
 export interface OrderDTO {
@@ -480,6 +496,10 @@ export type ApplicationType = "SPRING_BOOT";
 export type InstanceHealthStatus = "UP" | "DOWN" | "UNKNOWN" | "OUT_OF_SERVICE" | "UNREACHABLE" | "PENDING" | "INVALID";
 
 export type InstanceAbility = "METRICS" | "ENV" | "BEANS" | "QUARTZ" | "FLYWAY" | "LIQUIBASE" | "LOGGERS" | "CACHES" | "THREADDUMP" | "HEAPDUMP" | "CACHE_STATISTICS" | "SHUTDOWN" | "REFRESH" | "HTTP_REQUEST_STATISTICS" | "INTEGRATIONGRAPH" | "PROPERTIES" | "MAPPINGS" | "SCHEDULEDTASKS" | "HEALTH" | "INFO";
+
+export type EventLogType = "INSTANCE_HEALTH_CHANGED";
+
+export type EventLogSeverity = "INFO" | "WARN" | "ERROR";
 
 export type FilterFieldOperation = "Equal" | "NotEqual" | "In" | "NotIn" | "GreaterThan" | "GreaterEqual" | "LowerThan" | "LowerEqual" | "Between" | "Contains" | "IsNull" | "IsNotNull" | "IsEmpty" | "IsNotEmpty" | "And" | "Or" | "Not" | "Noop";
 
