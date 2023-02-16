@@ -5,6 +5,7 @@ import dev.krud.boost.daemon.configuration.application.cache.ro.ApplicationCache
 import dev.krud.boost.daemon.configuration.application.cache.ro.ApplicationCacheStatisticsRO
 import dev.krud.boost.daemon.configuration.instance.cache.InstanceCacheService
 import dev.krud.boost.daemon.configuration.instance.cache.ro.InstanceCacheStatisticsRO.Companion.toApplicationRO
+import dev.krud.boost.daemon.configuration.instance.enums.InstanceAbility
 import org.springframework.stereotype.Service
 import java.util.*
 
@@ -16,7 +17,7 @@ class ApplicationCacheService(
 ) {
     fun getCaches(applicationId: UUID): List<ApplicationCacheRO> {
         val application = applicationService.getApplicationOrThrow(applicationId)
-        // TODO: check app ability
+        applicationService.hasAbilityOrThrow(application, InstanceAbility.CACHES)
         return application.instances.flatMap { instance ->
             try {
                 instanceCacheService.getCaches(instance.id)
@@ -36,7 +37,7 @@ class ApplicationCacheService(
 
     fun getCache(applicationId: UUID, cacheName: String): ApplicationCacheRO {
         val application = applicationService.getApplicationOrThrow(applicationId)
-        // TODO: check app ability
+        applicationService.hasAbilityOrThrow(application, InstanceAbility.CACHES)
         val instanceCacheSample = application.instances.mapNotNull { instance ->
             try {
                 instanceCacheService.getCache(instance.id, cacheName)
@@ -54,7 +55,7 @@ class ApplicationCacheService(
 
     fun evictAllCaches(applicationId: UUID) {
         val application = applicationService.getApplicationOrThrow(applicationId)
-        // TODO: check app ability
+        applicationService.hasAbilityOrThrow(application, InstanceAbility.CACHES)
         application.instances.forEach { instance ->
             try {
                 instanceCacheService.evictAllCaches(instance.id)
@@ -66,7 +67,7 @@ class ApplicationCacheService(
 
     fun evictCache(applicationId: UUID, cacheName: String) {
         val application = applicationService.getApplicationOrThrow(applicationId)
-        // TODO: check app ability
+        applicationService.hasAbilityOrThrow(application, InstanceAbility.CACHES)
         application.instances.forEach { instance ->
             try {
                 instanceCacheService.evictCache(instance.id, cacheName)
@@ -78,7 +79,7 @@ class ApplicationCacheService(
 
     fun getCacheStatistics(applicationId: UUID, cacheName: String): ApplicationCacheStatisticsRO {
         val application = applicationService.getApplicationOrThrow(applicationId)
-        // TODO: check app ability
+        applicationService.hasAbilityOrThrow(application, InstanceAbility.CACHE_STATISTICS)
         return application.instances.mapNotNull { instance ->
             try {
                 instanceCacheService.getCacheStatistics(instance.id, cacheName)
