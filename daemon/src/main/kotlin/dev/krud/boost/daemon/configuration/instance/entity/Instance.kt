@@ -43,7 +43,7 @@ class Instance(
     var icon: String? = null,
     @MappedField
     @Column(nullable = true)
-    var sort: Int? = null
+    var sort: Double? = null
 ) : AbstractEntity() {
     @ManyToOne
     @JoinColumn(name = "parent_application_id", insertable = false, updatable = false, nullable = false)

@@ -36,7 +36,7 @@ class Application(
     var icon: String? = null,
     @MappedField
     @Column(nullable = true)
-    var sort: Int? = null,
+    var sort: Double? = null,
     @MappedField
     @Column(name = "parent_folder_id", nullable = true)
     var parentFolderId: UUID? = null

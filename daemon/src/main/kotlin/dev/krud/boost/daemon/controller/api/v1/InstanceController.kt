@@ -42,7 +42,7 @@ class InstanceController(
     )
     @ApiResponse(responseCode = "200", description = "Move operation")
     @ApiResponse(responseCode = "404", description = "Instance or application not found")
-    fun moveInstance(@PathVariable instanceId: UUID, @RequestParam newParentApplicationId: UUID, @RequestParam(required = false) newSort: Int? = null): InstanceRO {
+    fun moveInstance(@PathVariable instanceId: UUID, @RequestParam newParentApplicationId: UUID, @RequestParam(required = false) newSort: Double? = null): InstanceRO {
         val instance = instanceService.moveInstance(instanceId, newParentApplicationId, newSort)
         return shapeShift.map(instance)
     }

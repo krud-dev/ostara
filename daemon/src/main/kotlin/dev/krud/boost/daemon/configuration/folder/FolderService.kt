@@ -20,7 +20,7 @@ class FolderService(
         return getFolder(folderId) ?: throwNotFound("Folder $folderId not found")
     }
 
-    fun moveFolder(folderId: UUID, newParentFolderId: UUID?, newSort: Int?): Folder {
+    fun moveFolder(folderId: UUID, newParentFolderId: UUID?, newSort: Double?): Folder {
         val folder = getFolderOrThrow(folderId)
         if (folder.parentFolderId == newParentFolderId) {
             return folder

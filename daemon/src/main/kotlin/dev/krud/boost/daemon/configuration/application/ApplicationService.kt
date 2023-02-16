@@ -38,7 +38,7 @@ class ApplicationService(
         }
     }
 
-    fun moveApplication(applicationId: UUID, newParentFolderId: UUID?, newSort: Int?): Application {
+    fun moveApplication(applicationId: UUID, newParentFolderId: UUID?, newSort: Double?): Application {
         val application = getApplicationOrThrow(applicationId)
         if (application.parentFolderId == newParentFolderId) {
             return application

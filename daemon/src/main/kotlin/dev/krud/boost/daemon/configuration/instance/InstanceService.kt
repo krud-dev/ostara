@@ -76,7 +76,7 @@ class InstanceService(
         }
     }
 
-    fun moveInstance(instanceId: UUID, newParentApplicationId: UUID, newSort: Int?): Instance {
+    fun moveInstance(instanceId: UUID, newParentApplicationId: UUID, newSort: Double?): Instance {
         val instance = getInstanceOrThrow(instanceId)
         if (instance.parentApplicationId == newParentApplicationId) {
             return instance

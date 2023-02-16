@@ -33,7 +33,7 @@ class ApplicationController(
     @ApiResponse(responseCode = "200", description = "Move operation")
     @ApiResponse(responseCode = "404", description = "Application not found")
     @ApiResponse(responseCode = "503", description = "Folder invalid")
-    fun moveApplication(@PathVariable applicationId: UUID, @RequestParam(required = false) newParentFolderId: UUID? = null, @RequestParam(required = false) newSort: Int? = null): ApplicationRO {
+    fun moveApplication(@PathVariable applicationId: UUID, @RequestParam(required = false) newParentFolderId: UUID? = null, @RequestParam(required = false) newSort: Double? = null): ApplicationRO {
         val application = applicationService.moveApplication(applicationId, newParentFolderId, newSort)
         return shapeShift.map(application)
     }

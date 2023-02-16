@@ -24,7 +24,7 @@ data class InstanceModifyRequestRO(
     @MappedField
     val icon: String? = null,
     @MappedField
-    val sort: Int? = null,
+    val sort: Double? = null,
     @MappedField
     val parentApplicationId: UUID? = null
 )

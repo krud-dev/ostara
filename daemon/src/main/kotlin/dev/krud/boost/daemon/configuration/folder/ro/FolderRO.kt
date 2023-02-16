@@ -10,6 +10,6 @@ class FolderRO(
     val color: String = DEFAULT_COLOR,
     var effectiveColor: String = DEFAULT_COLOR,
     val icon: String? = null,
-    val sort: Int? = null,
+    val sort: Double? = null,
     val parentFolderId: UUID? = null
 )

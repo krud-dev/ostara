@@ -22,7 +22,7 @@ data class ApplicationModifyRequestRO(
     @MappedField
     val icon: String? = null,
     @MappedField
-    val sort: Int? = null,
+    val sort: Double? = null,
     @MappedField
     val parentFolderId: UUID? = null
 )
