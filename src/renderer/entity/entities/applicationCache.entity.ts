@@ -11,6 +11,11 @@ export const applicationCacheEntity: Entity<EnrichedApplicationCacheRO> = {
       type: 'Text',
       labelId: 'name',
     },
+    {
+      id: 'cacheManager',
+      type: 'Text',
+      labelId: 'cacheManager',
+    },
   ],
   actions: [
     {
@@ -44,8 +49,12 @@ export const applicationCacheEntity: Entity<EnrichedApplicationCacheRO> = {
       direction: 'asc',
     },
   ],
-  paging: false,
+  paging: true,
   getId: (item) => item.name,
-  getGrouping: (item) => item.cacheManager,
-  filterData: (data, filter) => data.filter((item) => item.name?.toLowerCase().includes(filter.toLowerCase())),
+  filterData: (data, filter) =>
+    data.filter(
+      (item) =>
+        item.name?.toLowerCase().includes(filter.toLowerCase()) ||
+        item.cacheManager?.toLowerCase().includes(filter.toLowerCase())
+    ),
 };

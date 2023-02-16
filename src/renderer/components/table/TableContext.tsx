@@ -1,12 +1,13 @@
 import React, { PropsWithChildren, useCallback, useContext, useMemo, useState } from 'react';
 import { Entity } from 'renderer/entity/entity';
 import { isEmpty, orderBy } from 'lodash';
-import { DEFAULT_ROWS_PER_PAGE } from 'renderer/constants/ui';
+import { DEFAULT_ROWS_PER_PAGE, TABLE_SCROLL_CONTAINER_ID } from 'renderer/constants/ui';
 import { notEmpty } from 'renderer/utils/objectUtils';
 import { BaseUseQueryResult } from 'renderer/apis/base/useBaseQuery';
 import { useUpdateEffect } from 'react-use';
 import { getTableDisplayItems } from 'renderer/components/table/utils/tableUtils';
 import { useLocalStorageState } from '../../hooks/useLocalStorageState';
+import { useScrollAndHighlightElement } from '../../hooks/useScrollAndHighlightElement';
 
 export type DisplayItem<EntityItem> =
   | { type: 'Row'; row: EntityItem }
@@ -15,7 +16,7 @@ export type DisplayItem<EntityItem> =
 export type TableContextProps<EntityItem, CustomFilters> = {
   entity: Entity<EntityItem, CustomFilters>;
   rows: EntityItem[];
-  visibleRows: EntityItem[];
+  allDisplayRows: DisplayItem<EntityItem>[];
   displayRows: DisplayItem<EntityItem>[];
   selectedRows: EntityItem[];
   hasSelectedRows: boolean;
@@ -44,6 +45,7 @@ export type TableContextProps<EntityItem, CustomFilters> = {
   actionsHandler: (actionId: string, row: EntityItem) => Promise<void>;
   massActionsHandler: (actionId: string, selectedRows: EntityItem[]) => Promise<void>;
   globalActionsHandler: (actionId: string) => Promise<void>;
+  highlightHandler: (anchor: string) => void;
 };
 
 const TableContext = React.createContext<TableContextProps<any, any>>(undefined!);
@@ -87,14 +89,16 @@ function TableProvider<EntityItem, CustomFilters>({
       ),
     [entity, tableData, filter, customFilters, orderDirection, orderColumn]
   );
-  const visibleTableData = useMemo<EntityItem[]>(
-    () =>
-      entity.paging ? filteredTableData.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage) : filteredTableData,
-    [entity, filteredTableData, page, rowsPerPage]
+  const allDisplayTableData = useMemo<DisplayItem<EntityItem>[]>(
+    () => getTableDisplayItems(entity, filteredTableData, collapsedGroups),
+    [entity, filteredTableData, collapsedGroups]
   );
   const displayTableData = useMemo<DisplayItem<EntityItem>[]>(
-    () => getTableDisplayItems(entity, visibleTableData, collapsedGroups),
-    [entity, visibleTableData, collapsedGroups]
+    () =>
+      entity.paging
+        ? allDisplayTableData.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+        : allDisplayTableData,
+    [entity, allDisplayTableData, page, rowsPerPage]
   );
 
   const loading = useMemo<boolean>(() => queryState.isLoading, [queryState.isLoading]);
@@ -199,12 +203,46 @@ function TableProvider<EntityItem, CustomFilters>({
     [setRowsPerPage, setPage]
   );
 
+  const highlightAndScroll = useScrollAndHighlightElement();
+
+  const [highlightAnchor, setHighlightAnchor] = useState<string | undefined>(undefined);
+
+  useUpdateEffect(() => {
+    if (highlightAnchor) {
+      highlightAndScroll(highlightAnchor, { containerId: TABLE_SCROLL_CONTAINER_ID });
+      setHighlightAnchor(undefined);
+    }
+  }, [highlightAnchor]);
+
+  const highlightHandler = useCallback(
+    (anchor: string): void => {
+      if (!entity.getAnchor) {
+        return;
+      }
+
+      const anchorIndex = allDisplayTableData.findIndex(
+        (item) => item.type === 'Row' && entity.getAnchor!(item.row) === anchor
+      );
+      if (anchorIndex < 0) {
+        return;
+      }
+
+      const anchorPage = Math.floor(anchorIndex / rowsPerPage);
+      if (anchorPage !== page) {
+        changePageHandler(anchorPage);
+      }
+
+      setHighlightAnchor(anchor);
+    },
+    [entity, allDisplayTableData, rowsPerPage, changePageHandler, setHighlightAnchor]
+  );
+
   return (
     <TableContext.Provider
       value={{
         entity,
         rows: filteredTableData,
-        visibleRows: visibleTableData,
+        allDisplayRows: allDisplayTableData,
         displayRows: displayTableData,
         selectedRows,
         hasSelectedRows,
@@ -233,6 +271,7 @@ function TableProvider<EntityItem, CustomFilters>({
         actionsHandler,
         massActionsHandler,
         globalActionsHandler,
+        highlightHandler,
       }}
     >
       {children}

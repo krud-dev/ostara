@@ -20,6 +20,7 @@ export default function LiquibaseChangesetDetails({ row }: LiquibaseChangesetDet
         }}
       >
         <TableDetailsLabelValue label={<FormattedMessage id={'id'} />} value={row.id} />
+        <TableDetailsLabelValue label={<FormattedMessage id={'bean'} />} value={row.bean} />
         <TableDetailsLabelValue label={<FormattedMessage id={'changelog'} />} value={row.changeLog} />
         <TableDetailsLabelValue label={<FormattedMessage id={'comments'} />} value={row.comments} />
         <TableDetailsLabelValue label={<FormattedMessage id={'deploymentId'} />} value={row.deploymentId} />

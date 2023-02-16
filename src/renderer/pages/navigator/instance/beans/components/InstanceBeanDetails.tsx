@@ -1,25 +1,26 @@
 import { Box, Card, CardContent, Link, Stack, Typography } from '@mui/material';
 import { InstanceBean } from 'renderer/apis/instance/getInstanceBeans';
 import { FormattedMessage } from 'react-intl';
-import { COMPONENTS_SPACING, SECONDARY_SCROLL_CONTAINER_ID, TABLE_SCROLL_CONTAINER_ID } from 'renderer/constants/ui';
-import { useScrollAndHighlightElement } from 'renderer/hooks/useScrollAndHighlightElement';
+import { COMPONENTS_SPACING } from 'renderer/constants/ui';
 import React, { useCallback } from 'react';
 import { InlineCodeLabel } from 'renderer/components/code/InlineCodeLabel';
 import TableDetailsLabelValue from 'renderer/components/table/details/TableDetailsLabelValue';
+import { useTable } from '../../../../../components/table/TableContext';
 
 type InstanceBeanDetailsProps = {
   row: InstanceBean;
 };
 
 export default function InstanceBeanDetails({ row }: InstanceBeanDetailsProps) {
-  const highlightAndScroll = useScrollAndHighlightElement();
+  const { highlightHandler } = useTable<InstanceBean, unknown>();
 
   const dependencyClickHandler = useCallback(
     (event: React.MouseEvent, dependency: string) => {
       event.preventDefault();
-      highlightAndScroll(dependency, { containerId: TABLE_SCROLL_CONTAINER_ID });
+
+      highlightHandler(dependency);
     },
-    [highlightAndScroll]
+    [highlightHandler]
   );
 
   return (

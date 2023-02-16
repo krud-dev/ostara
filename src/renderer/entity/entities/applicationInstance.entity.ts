@@ -44,7 +44,7 @@ export const applicationInstanceEntity: Entity<InstanceRO> = {
       direction: 'asc',
     },
   ],
-  paging: false,
+  paging: true,
   getId: (item) => item.id,
   filterData: (data, filter) => data.filter((item) => item.alias?.toLowerCase().includes(filter.toLowerCase())),
 };

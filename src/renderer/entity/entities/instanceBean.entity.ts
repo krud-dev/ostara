@@ -42,7 +42,7 @@ export const instanceBeanEntity: Entity<InstanceBean> = {
       direction: 'asc',
     },
   ],
-  paging: false,
+  paging: true,
   getId: (item) => `${item.type}.${item.name}`,
   getAnchor: (item) => item.name,
   // getGrouping: (item) => item.package,

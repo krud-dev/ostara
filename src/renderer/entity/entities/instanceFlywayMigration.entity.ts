@@ -53,16 +53,13 @@ export const instanceFlywayMigrationEntity: Entity<EnrichedFlywayMigration> = {
       direction: 'desc',
     },
   ],
-  paging: false,
+  paging: true,
   getId: (item) => `${item.script}_${item.installedOn}`,
-  getGrouping: (item) => item.bean,
   filterData: (data, filter) =>
     data.filter(
       (item) =>
         item.description?.toLowerCase().includes(filter.toLowerCase()) ||
-        item.script?.toLowerCase().includes(filter.toLowerCase()) ||
-        item.type?.toLowerCase().includes(filter.toLowerCase()) ||
         item.installedBy?.toLowerCase().includes(filter.toLowerCase()) ||
-        item.version?.toLowerCase().includes(filter.toLowerCase())
+        item.installedRank?.toString().toLowerCase().includes(filter.toLowerCase())
     ),
 };

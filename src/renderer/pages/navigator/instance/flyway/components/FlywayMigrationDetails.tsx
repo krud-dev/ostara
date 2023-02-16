@@ -19,6 +19,7 @@ export default function FlywayMigrationDetails({ row }: FlywayMigrationDetailsPr
           gridGap: (theme) => theme.spacing(1),
         }}
       >
+        <TableDetailsLabelValue label={<FormattedMessage id={'bean'} />} value={row.bean} />
         <TableDetailsLabelValue label={<FormattedMessage id={'type'} />} value={row.type} />
         <TableDetailsLabelValue label={<FormattedMessage id={'script'} />} value={row.script} />
         <TableDetailsLabelValue label={<FormattedMessage id={'executionTime'} />} value={row.executionTime} />

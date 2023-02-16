@@ -12,6 +12,11 @@ export const instanceCacheEntity: Entity<EnrichedInstanceCacheRO> = {
       labelId: 'name',
       getTooltip: (item) => item.target,
     },
+    {
+      id: 'cacheManager',
+      type: 'Text',
+      labelId: 'cacheManager',
+    },
   ],
   actions: [
     {
@@ -45,8 +50,12 @@ export const instanceCacheEntity: Entity<EnrichedInstanceCacheRO> = {
       direction: 'asc',
     },
   ],
-  paging: false,
+  paging: true,
   getId: (item) => item.name,
-  getGrouping: (item) => item.cacheManager,
-  filterData: (data, filter) => data.filter((item) => item.name?.toLowerCase().includes(filter.toLowerCase())),
+  filterData: (data, filter) =>
+    data.filter(
+      (item) =>
+        item.name?.toLowerCase().includes(filter.toLowerCase()) ||
+        item.cacheManager?.toLowerCase().includes(filter.toLowerCase())
+    ),
 };

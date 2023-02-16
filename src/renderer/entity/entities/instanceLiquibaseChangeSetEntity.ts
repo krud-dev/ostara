@@ -59,15 +59,13 @@ export const instanceLiquibaseChangeSetEntity: Entity<EnrichedLiquibaseChangeSet
       direction: 'desc',
     },
   ],
-  paging: false,
+  paging: true,
   getId: (item) => item.id,
-  getGrouping: (item) => item.bean,
   filterData: (data, filter) =>
     data.filter(
       (item) =>
         item.description?.toLowerCase().includes(filter.toLowerCase()) ||
         item.author?.toLowerCase().includes(filter.toLowerCase()) ||
-        item.changeLog?.toLowerCase().includes(filter.toLowerCase()) ||
-        item.comments?.toLowerCase().includes(filter.toLowerCase())
+        item.orderExecuted?.toString().toLowerCase().includes(filter.toLowerCase())
     ),
 };
