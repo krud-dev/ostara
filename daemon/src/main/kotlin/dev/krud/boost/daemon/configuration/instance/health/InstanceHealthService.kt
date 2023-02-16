@@ -5,11 +5,11 @@ import dev.krud.boost.daemon.configuration.instance.InstanceActuatorClientProvid
 import dev.krud.boost.daemon.configuration.instance.InstanceService
 import dev.krud.boost.daemon.configuration.instance.entity.Instance
 import dev.krud.boost.daemon.configuration.instance.enums.InstanceHealthStatus
+import dev.krud.boost.daemon.configuration.instance.health.instancehealthlog.model.InstanceHealthLog
 import dev.krud.boost.daemon.configuration.instance.health.ro.InstanceHealthRO
 import dev.krud.boost.daemon.configuration.instance.messaging.InstanceCreatedEventMessage
 import dev.krud.boost.daemon.configuration.instance.messaging.InstanceDeletedEventMessage
 import dev.krud.boost.daemon.configuration.instance.messaging.InstanceUpdatedEventMessage
-import dev.krud.boost.daemon.configuration.instance.health.instancehealthlog.model.InstanceHealthLog
 import dev.krud.boost.daemon.eventlog.EventLogService
 import dev.krud.boost.daemon.eventlog.enums.EventLogSeverity
 import dev.krud.boost.daemon.eventlog.enums.EventLogType
@@ -32,25 +32,15 @@ class InstanceHealthService(
     private val cacheManager: CacheManager
 ) {
     private val instanceHealthCache = cacheManager.getCache("instanceHealthCache")!!
-    private val lastInstanceHealth = mutableMapOf<UUID, InstanceHealthRO>()
 
     @Cacheable(cacheNames = ["instanceHealthCache"], key = "#instanceId")
-    fun getCachedHealth(instanceId: UUID): InstanceHealthRO {
+    fun getHealth(instanceId: UUID): InstanceHealthRO {
         val instance = instanceService.getInstanceOrThrow(instanceId)
-        return getCachedHealth(instance)
+        return getHealth(instance)
     }
 
     @Cacheable(cacheNames = ["instanceHealthCache"], key = "#instance.id")
-    fun getCachedHealth(instance: Instance): InstanceHealthRO {
-        return lastInstanceHealth[instance.id] ?: updateInstanceHealth(instance)
-    }
-
-    fun getLiveHealth(instanceId: UUID): InstanceHealthRO {
-        val instance = instanceService.getInstanceOrThrow(instanceId)
-        return getLiveHealth(instance)
-    }
-
-    fun getLiveHealth(instance: Instance): InstanceHealthRO {
+    fun getHealth(instance: Instance): InstanceHealthRO {
         val actuatorClient = actuatorClientProvider.provide(instance)
         val testConnection = try {
             actuatorClient.testConnection()
@@ -123,8 +113,8 @@ class InstanceHealthService(
     }
 
     private fun updateInstanceHealth(instance: Instance): InstanceHealthRO {
-        val currentHealth = getLiveHealth(instance)
-        val prevHealth = lastInstanceHealth[instance.id]
+        val currentHealth = getHealth(instance)
+        val prevHealth = instanceHealthCache.get(instance.id, InstanceHealthRO::class.java)
         crudHandler.create(InstanceHealthLog(instance.id, currentHealth.status, currentHealth.statusText)).execute()
 
         if (prevHealth?.status != currentHealth.status) {
@@ -142,7 +132,7 @@ class InstanceHealthService(
             )
         }
 
-        lastInstanceHealth[instance.id] = currentHealth
+        instanceHealthCache.put(instance.id, currentHealth)
         return currentHealth
     }
 }

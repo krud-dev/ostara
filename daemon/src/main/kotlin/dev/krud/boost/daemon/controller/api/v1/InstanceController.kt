@@ -5,13 +5,10 @@ import dev.krud.boost.daemon.configuration.instance.entity.Instance
 import dev.krud.boost.daemon.configuration.instance.health.InstanceHealthService
 import dev.krud.boost.daemon.configuration.instance.health.instancehealthlog.model.InstanceHealthLog
 import dev.krud.boost.daemon.configuration.instance.health.instancehealthlog.ro.InstanceHealthLogRO
-import dev.krud.boost.daemon.configuration.instance.health.ro.InstanceHealthRO
 import dev.krud.boost.daemon.configuration.instance.ro.InstanceModifyRequestRO
 import dev.krud.boost.daemon.configuration.instance.ro.InstanceRO
 import dev.krud.crudframework.crud.handler.CrudHandler
 import dev.krud.crudframework.modelfilter.dsl.filter
-import dev.krud.crudframework.modelfilter.dsl.where
-import dev.krud.crudframework.ro.PagedResult
 import dev.krud.shapeshift.ShapeShift
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.responses.ApiResponse
@@ -45,18 +42,6 @@ class InstanceController(
     fun moveInstance(@PathVariable instanceId: UUID, @RequestParam newParentApplicationId: UUID, @RequestParam(required = false) newSort: Double? = null): InstanceRO {
         val instance = instanceService.moveInstance(instanceId, newParentApplicationId, newSort)
         return shapeShift.map(instance)
-    }
-
-    @PostMapping("/{instanceId}/health/live")
-    @ResponseStatus(HttpStatus.OK)
-    @Operation(
-        summary = "Get the live health of the instance",
-        description = "Get the live health of the instance"
-    )
-    @ApiResponse(responseCode = "200", description = "Live health")
-    @ApiResponse(responseCode = "404", description = "Instance not found")
-    fun getLiveHealth(@PathVariable instanceId: UUID): InstanceHealthRO {
-        return instanceHealthService.getLiveHealth(instanceId)
     }
 
     @PostMapping("/{instanceId}/health/history")

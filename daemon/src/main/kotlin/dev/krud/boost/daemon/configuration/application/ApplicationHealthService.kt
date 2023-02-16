@@ -17,7 +17,7 @@ class ApplicationHealthService(
         if (application.instances.isEmpty()) {
             return ApplicationHealthRO.pending()
         }
-        val statuses = application.instances.map { instanceHealthService.getCachedHealth(it).status }
+        val statuses = application.instances.map { instanceHealthService.getHealth(it).status }
         return ApplicationHealthRO(
             statuses.toApplicationHealthStatus(),
             LocalDateTime.now(),
@@ -30,7 +30,7 @@ class ApplicationHealthService(
         if (application.instances.isEmpty()) {
             return ApplicationHealthRO.pending()
         }
-        val statuses = application.instances.map { instanceHealthService.getLiveHealth(it).status }
+        val statuses = application.instances.map { instanceHealthService.getHealth(it).status }
         return ApplicationHealthRO(
             statuses.toApplicationHealthStatus(),
             LocalDateTime.now(),
