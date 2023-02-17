@@ -280,12 +280,12 @@ export interface EventLogRO {
     message?: string;
 }
 
-export interface ResultAggregation<T> {
+export interface ResultAggregationSummary<T> {
     totalCount: number;
     successCount: number;
     failureCount: number;
     errors: (string | undefined)[];
-    status: ResultAggregation$Status;
+    status: ResultAggregationSummary$Status;
 }
 
 export interface OrderDTO {
@@ -513,7 +513,7 @@ export type EventLogType = "INSTANCE_HEALTH_CHANGED";
 
 export type EventLogSeverity = "INFO" | "WARN" | "ERROR";
 
-export type ResultAggregation$Status = "SUCCESS" | "PARTIAL_SUCCESS" | "FAILURE";
+export type ResultAggregationSummary$Status = "SUCCESS" | "PARTIAL_SUCCESS" | "FAILURE";
 
 export type FilterFieldOperation = "Equal" | "NotEqual" | "In" | "NotIn" | "GreaterThan" | "GreaterEqual" | "LowerThan" | "LowerEqual" | "Between" | "Contains" | "IsNull" | "IsNotNull" | "IsEmpty" | "IsNotEmpty" | "And" | "Or" | "Not" | "Noop";
 

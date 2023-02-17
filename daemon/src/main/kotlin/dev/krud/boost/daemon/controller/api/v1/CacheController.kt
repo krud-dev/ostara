@@ -7,8 +7,7 @@ import dev.krud.boost.daemon.configuration.instance.cache.InstanceCacheService
 import dev.krud.boost.daemon.configuration.instance.cache.ro.EvictCachesRequestRO
 import dev.krud.boost.daemon.configuration.instance.cache.ro.InstanceCacheRO
 import dev.krud.boost.daemon.configuration.instance.cache.ro.InstanceCacheStatisticsRO
-import dev.krud.boost.daemon.utils.ResultAggregation
-import dev.krud.boost.daemon.utils.ResultAggregation.Companion.aggregate
+import dev.krud.boost.daemon.utils.ResultAggregationSummary
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.media.Content
 import io.swagger.v3.oas.annotations.responses.ApiResponse
@@ -72,15 +71,12 @@ class CacheController(
     @ApiResponse(responseCode = "206", description = "Some Caches evicted successfully")
     @ApiResponse(responseCode = "400", description = "Instance is missing ability or bad request", content = [Content()])
     @ApiResponse(responseCode = "500", description = "Bulk request failed")
-    fun evictInstanceCaches(@PathVariable instanceId: UUID, @RequestBody request: EvictCachesRequestRO): ResponseEntity<ResultAggregation<Unit>> {
-        val result = request.cacheNames.map {
-            instanceCacheService.evictCache(instanceId, it)
-        }
-            .aggregate()
+    fun evictInstanceCaches(@PathVariable instanceId: UUID, @RequestBody request: EvictCachesRequestRO): ResponseEntity<ResultAggregationSummary<Unit>> {
+        val result = instanceCacheService.evictCaches(instanceId, request)
         return when (result.status) {
-            ResultAggregation.Status.SUCCESS -> ResponseEntity.ok(result)
-            ResultAggregation.Status.FAILURE -> ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(result)
-            ResultAggregation.Status.PARTIAL_SUCCESS -> ResponseEntity.status(HttpStatus.PARTIAL_CONTENT).body(result)
+            ResultAggregationSummary.Status.SUCCESS -> ResponseEntity.ok(result)
+            ResultAggregationSummary.Status.FAILURE -> ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(result)
+            ResultAggregationSummary.Status.PARTIAL_SUCCESS -> ResponseEntity.status(HttpStatus.PARTIAL_CONTENT).body(result)
         }
     }
 

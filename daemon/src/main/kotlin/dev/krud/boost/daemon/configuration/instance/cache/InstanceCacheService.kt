@@ -9,14 +9,20 @@ import dev.krud.boost.daemon.configuration.instance.cache.ro.InstanceCacheRO.Com
 import dev.krud.boost.daemon.configuration.instance.cache.ro.InstanceCacheStatisticsRO
 import dev.krud.boost.daemon.configuration.instance.enums.InstanceAbility
 import dev.krud.boost.daemon.utils.ResultAggregationSummary
+import dev.krud.boost.daemon.utils.ResultAggregationSummary.Companion.aggregate
+import org.springframework.beans.factory.DisposableBean
 import org.springframework.stereotype.Service
 import java.util.*
+import java.util.concurrent.Executors
 
 @Service
 class InstanceCacheService(
     private val instanceService: InstanceService,
     private val actuatorClientProvider: InstanceActuatorClientProvider
-) {
+) : DisposableBean {
+    // TODO: replace with a lighter solution
+    private val executorService = Executors.newFixedThreadPool(8)
+
     fun getCaches(instanceId: UUID): List<InstanceCacheRO> {
         val instance = instanceService.getInstanceOrThrow(instanceId)
         instanceService.hasAbilityOrThrow(instance, InstanceAbility.CACHES)
@@ -71,6 +77,22 @@ class InstanceCacheService(
                 .toInstanceCacheStatistics()
             metrics
         }
+    }
+
+    fun evictCaches(instanceId: UUID, request: EvictCachesRequestRO): ResultAggregationSummary<Unit> {
+        val instance = instanceService.getInstanceOrThrow(instanceId)
+        instanceService.hasAbilityOrThrow(instance, InstanceAbility.CACHES)
+        val results = request.cacheNames.map { cacheName ->
+            executorService.submit<Result<Unit>> {
+                evictCache(instanceId, cacheName)
+            }
+        }
+            .map { it.get() }
+        return results.aggregate()
+    }
+
+    override fun destroy() {
+        executorService.shutdown()
     }
 
     companion object {
