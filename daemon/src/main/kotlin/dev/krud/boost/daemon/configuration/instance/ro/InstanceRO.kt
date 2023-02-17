@@ -7,7 +7,9 @@ import java.util.*
 
 class InstanceRO(
     val id: UUID,
-    val alias: String,
+    var displayName: String,
+    var hostname: String?,
+    val alias: String?,
     var actuatorUrl: String,
     val dataCollectionIntervalSeconds: Int,
     val description: String? = null,

@@ -4,7 +4,9 @@ import dev.krud.boost.daemon.configuration.instance.InstanceService
 import dev.krud.boost.daemon.configuration.instance.entity.Instance
 import dev.krud.boost.daemon.configuration.instance.entity.Instance.Companion.effectiveColor
 import dev.krud.boost.daemon.configuration.instance.health.InstanceHealthService
+import dev.krud.boost.daemon.configuration.instance.hostname.InstanceHostnameResolver
 import dev.krud.boost.daemon.configuration.instance.ro.InstanceRO
+import dev.krud.boost.daemon.utils.toShortString
 import dev.krud.shapeshift.decorator.MappingDecorator
 import dev.krud.shapeshift.decorator.MappingDecoratorContext
 import org.springframework.context.annotation.Lazy
@@ -15,14 +17,28 @@ class InstanceToRoMappingDecorator(
     @Lazy
     private val instanceService: InstanceService,
     @Lazy
-    private val instanceHealthService: InstanceHealthService
+    private val instanceHealthService: InstanceHealthService,
+    private val instanceHostnameResolver: InstanceHostnameResolver
 ) : MappingDecorator<Instance, InstanceRO> {
     override fun decorate(context: MappingDecoratorContext<Instance, InstanceRO>) {
         context.to.effectiveColor = context.from.effectiveColor
+        context.from.alias?.let {
+            context.to.displayName = it
+        }
+
         val health = instanceHealthService.getHealth(context.from.id)
         context.to.health = health
         if (health.status.running) {
             context.to.abilities = instanceService.resolveAbilities(context.from)
+            if (context.from.alias == null) {
+                val hostname = instanceHostnameResolver.resolveHostname(context.from.id)
+                if (hostname != null) {
+                    context.to.displayName = hostname
+                    context.to.hostname = hostname
+                } else {
+                    context.to.displayName = context.from.id.toShortString()
+                }
+            }
         }
     }
 }

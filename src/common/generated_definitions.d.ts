@@ -263,7 +263,9 @@ export interface InstanceModifyRequestRO {
 
 export interface InstanceRO {
     id: string;
-    alias: string;
+    displayName: string;
+    hostname?: string;
+    alias?: string;
     actuatorUrl: string;
     dataCollectionIntervalSeconds: number;
     description?: string;

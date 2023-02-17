@@ -20,8 +20,8 @@ import java.util.*
 @Deleteable(softDelete = false)
 class Instance(
     @MappedField
-    @Column(nullable = false)
-    var alias: String,
+    @Column(nullable = true)
+    var alias: String?,
     @MappedField
     @Column(nullable = false)
     var actuatorUrl: String,
