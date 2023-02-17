@@ -4,13 +4,17 @@ import dev.krud.boost.daemon.configuration.application.cache.ApplicationCacheSer
 import dev.krud.boost.daemon.configuration.application.cache.ro.ApplicationCacheRO
 import dev.krud.boost.daemon.configuration.application.cache.ro.ApplicationCacheStatisticsRO
 import dev.krud.boost.daemon.configuration.instance.cache.InstanceCacheService
+import dev.krud.boost.daemon.configuration.instance.cache.ro.EvictCachesRequestRO
 import dev.krud.boost.daemon.configuration.instance.cache.ro.InstanceCacheRO
 import dev.krud.boost.daemon.configuration.instance.cache.ro.InstanceCacheStatisticsRO
+import dev.krud.boost.daemon.utils.ResultAggregation
+import dev.krud.boost.daemon.utils.ResultAggregation.Companion.aggregate
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.media.Content
 import io.swagger.v3.oas.annotations.responses.ApiResponse
 import io.swagger.v3.oas.annotations.tags.Tag
 import org.springframework.http.HttpStatus
+import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
 import java.util.*
 
@@ -47,16 +51,39 @@ class CacheController(
         return instanceCacheService.getCache(instanceId, cacheName)
     }
 
-    @DeleteMapping("/instance/{instanceId}")
+    @DeleteMapping("/instance/{instanceId}/all")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     @Operation(
         summary = "Evict all caches for the instance"
     )
     @ApiResponse(responseCode = "204", description = "Caches evicted")
     @ApiResponse(responseCode = "400", description = "Instance is missing ability", content = [Content()])
-    fun evictInstanceCaches(@PathVariable instanceId: UUID) {
+    fun evictAllInstanceCaches(@PathVariable instanceId: UUID) {
         instanceCacheService.evictAllCaches(instanceId)
+            .getOrThrow()
     }
+
+    @DeleteMapping("/instance/{instanceId}/bulk")
+    @ResponseStatus(HttpStatus.OK)
+    @Operation(
+        summary = "Evict specified caches for the instance"
+    )
+    @ApiResponse(responseCode = "200", description = "All Caches evicted successfully")
+    @ApiResponse(responseCode = "206", description = "Some Caches evicted successfully")
+    @ApiResponse(responseCode = "400", description = "Instance is missing ability or bad request", content = [Content()])
+    @ApiResponse(responseCode = "500", description = "Bulk request failed")
+    fun evictInstanceCaches(@PathVariable instanceId: UUID, @RequestBody request: EvictCachesRequestRO): ResponseEntity<ResultAggregation<Unit>> {
+        val result = request.cacheNames.map {
+            instanceCacheService.evictCache(instanceId, it)
+        }
+            .aggregate()
+        return when (result.status) {
+            ResultAggregation.Status.SUCCESS -> ResponseEntity.ok(result)
+            ResultAggregation.Status.FAILURE -> ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(result)
+            ResultAggregation.Status.PARTIAL_SUCCESS -> ResponseEntity.status(HttpStatus.PARTIAL_CONTENT).body(result)
+        }
+    }
+
 
     @DeleteMapping("/instance/{instanceId}/{cacheName}")
     @ResponseStatus(HttpStatus.NO_CONTENT)

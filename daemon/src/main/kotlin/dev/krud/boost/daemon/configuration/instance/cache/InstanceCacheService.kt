@@ -2,11 +2,13 @@ package dev.krud.boost.daemon.configuration.instance.cache
 
 import dev.krud.boost.daemon.configuration.instance.InstanceActuatorClientProvider
 import dev.krud.boost.daemon.configuration.instance.InstanceService
+import dev.krud.boost.daemon.configuration.instance.cache.ro.EvictCachesRequestRO
 import dev.krud.boost.daemon.configuration.instance.cache.ro.InstanceCacheRO
 import dev.krud.boost.daemon.configuration.instance.cache.ro.InstanceCacheRO.Companion.toRO
 import dev.krud.boost.daemon.configuration.instance.cache.ro.InstanceCacheRO.Companion.toROs
 import dev.krud.boost.daemon.configuration.instance.cache.ro.InstanceCacheStatisticsRO
 import dev.krud.boost.daemon.configuration.instance.enums.InstanceAbility
+import dev.krud.boost.daemon.utils.ResultAggregationSummary
 import org.springframework.stereotype.Service
 import java.util.*
 
@@ -36,19 +38,19 @@ class InstanceCacheService(
         }.toRO()
     }
 
-    fun evictCache(instanceId: UUID, cacheName: String) {
+    fun evictCache(instanceId: UUID, cacheName: String): Result<Unit> {
         val instance = instanceService.getInstanceOrThrow(instanceId)
         instanceService.hasAbilityOrThrow(instance, InstanceAbility.CACHES)
-        actuatorClientProvider.doWith(instance) {
-            it.evictCache(cacheName).getOrThrow()
+        return actuatorClientProvider.doWith(instance) {
+            it.evictCache(cacheName)
         }
     }
 
-    fun evictAllCaches(instanceId: UUID) {
+    fun evictAllCaches(instanceId: UUID): Result<Unit> {
         val instance = instanceService.getInstanceOrThrow(instanceId)
         instanceService.hasAbilityOrThrow(instance, InstanceAbility.CACHES)
-        actuatorClientProvider.doWith(instance) {
-            it.evictAllCaches().getOrThrow()
+        return actuatorClientProvider.doWith(instance) {
+            it.evictAllCaches()
         }
     }
 

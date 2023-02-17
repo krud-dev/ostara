@@ -182,6 +182,10 @@ export interface FolderRO {
     parentFolderId?: string;
 }
 
+export interface EvictCachesRequestRO {
+    cacheNames: string[];
+}
+
 export interface InstanceCacheRO {
     name: string;
     cacheManager: string;
@@ -274,6 +278,14 @@ export interface EventLogRO {
     severity: EventLogSeverity;
     targetId: string;
     message?: string;
+}
+
+export interface ResultAggregation<T> {
+    totalCount: number;
+    successCount: number;
+    failureCount: number;
+    errors: (string | undefined)[];
+    status: ResultAggregation$Status;
 }
 
 export interface OrderDTO {
@@ -500,6 +512,8 @@ export type InstanceAbility = "METRICS" | "ENV" | "BEANS" | "QUARTZ" | "FLYWAY" 
 export type EventLogType = "INSTANCE_HEALTH_CHANGED";
 
 export type EventLogSeverity = "INFO" | "WARN" | "ERROR";
+
+export type ResultAggregation$Status = "SUCCESS" | "PARTIAL_SUCCESS" | "FAILURE";
 
 export type FilterFieldOperation = "Equal" | "NotEqual" | "In" | "NotIn" | "GreaterThan" | "GreaterEqual" | "LowerThan" | "LowerEqual" | "Between" | "Contains" | "IsNull" | "IsNotNull" | "IsEmpty" | "IsNotEmpty" | "And" | "Or" | "Not" | "Noop";
 
