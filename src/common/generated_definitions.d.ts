@@ -127,6 +127,11 @@ export interface ApplicationCacheStatisticsRO {
     size: number;
 }
 
+export interface EvictApplicationCachesResultRO {
+    summaries: { [index: string]: ResultAggregationSummary<Unit> };
+    status: ResultAggregationSummary$Status;
+}
+
 export interface ApplicationLoggerRO {
     name: string;
     loggers: { [index: string]: InstanceLoggerRO };
@@ -400,6 +405,9 @@ export interface ThreadDumpActuatorResponse$Thread {
     lockedSynchronizers: ThreadDumpActuatorResponse$Thread$LockedSynchronizer[];
 }
 
+export interface Unit {
+}
+
 export interface BeansActuatorResponse$Context$Bean {
     aliases: string[];
     scope: string;
@@ -501,6 +509,8 @@ export type HealthActuatorResponse$Status = "UP" | "DOWN" | "OUT_OF_SERVICE" | "
 
 export type LogLevel = "TRACE" | "DEBUG" | "INFO" | "WARN" | "ERROR" | "FATAL" | "OFF";
 
+export type ResultAggregationSummary$Status = "SUCCESS" | "PARTIAL_SUCCESS" | "FAILURE";
+
 export type ApplicationHealthStatus = "ALL_UP" | "ALL_DOWN" | "SOME_DOWN" | "UNKNOWN" | "PENDING";
 
 export type ApplicationType = "SPRING_BOOT";
@@ -512,8 +522,6 @@ export type InstanceAbility = "METRICS" | "ENV" | "BEANS" | "QUARTZ" | "FLYWAY" 
 export type EventLogType = "INSTANCE_HEALTH_CHANGED";
 
 export type EventLogSeverity = "INFO" | "WARN" | "ERROR";
-
-export type ResultAggregationSummary$Status = "SUCCESS" | "PARTIAL_SUCCESS" | "FAILURE";
 
 export type FilterFieldOperation = "Equal" | "NotEqual" | "In" | "NotIn" | "GreaterThan" | "GreaterEqual" | "LowerThan" | "LowerEqual" | "Between" | "Contains" | "IsNull" | "IsNotNull" | "IsEmpty" | "IsNotEmpty" | "And" | "Or" | "Not" | "Noop";
 

@@ -3,9 +3,13 @@ package dev.krud.boost.daemon.configuration.application.cache
 import dev.krud.boost.daemon.configuration.application.ApplicationService
 import dev.krud.boost.daemon.configuration.application.cache.ro.ApplicationCacheRO
 import dev.krud.boost.daemon.configuration.application.cache.ro.ApplicationCacheStatisticsRO
+import dev.krud.boost.daemon.configuration.application.cache.ro.EvictApplicationCachesResultRO
 import dev.krud.boost.daemon.configuration.instance.cache.InstanceCacheService
+import dev.krud.boost.daemon.configuration.instance.cache.ro.EvictCachesRequestRO
 import dev.krud.boost.daemon.configuration.instance.cache.ro.InstanceCacheStatisticsRO.Companion.toApplicationRO
 import dev.krud.boost.daemon.configuration.instance.enums.InstanceAbility
+import dev.krud.boost.daemon.utils.ResultAggregationSummary
+import dev.krud.boost.daemon.utils.ResultAggregationSummary.Companion.concat
 import org.springframework.stereotype.Service
 import java.util.*
 
@@ -63,6 +67,19 @@ class ApplicationCacheService(
                 // ignore
             }
         }
+    }
+
+    fun evictCaches(applicationId: UUID, request: EvictCachesRequestRO): EvictApplicationCachesResultRO {
+        val application = applicationService.getApplicationOrThrow(applicationId)
+        applicationService.hasAbilityOrThrow(application, InstanceAbility.CACHES)
+
+        val summaries = application
+            .instances.associate {
+                it.id to instanceCacheService.evictCaches(it.id, request)
+            }
+        return EvictApplicationCachesResultRO(
+            summaries
+        )
     }
 
     fun evictCache(applicationId: UUID, cacheName: String) {

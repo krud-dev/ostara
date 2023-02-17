@@ -16,14 +16,11 @@ data class ResultAggregationSummary<T>(
      * Number of failed results
      */
     val failureCount: Int,
+
     /**
      * List of error messages, ordered by the original order of results
      */
-    val errors: List<String?>,
-    /**
-     * Map of exceptions and their frequency
-     */
-    private val exceptionsByFrequency: Map<Throwable, Int>
+    val errors: List<String?>
 ) {
     val status: Status
         get() = when {
@@ -39,6 +36,15 @@ data class ResultAggregationSummary<T>(
     }
 
     companion object {
+        val Collection<ResultAggregationSummary<*>>.aggregateErrors: List<String>
+            get() {
+                val errors = this.map { it.errors }
+                val maxErrors = errors.maxOf { it.size }
+                return (0 until maxErrors).map { index ->
+                    errors.map { it.getOrNull(index) }.joinToString(", ")
+                }
+            }
+
         fun <T> Collection<Result<T>>.aggregate(): ResultAggregationSummary<T> {
             val totalCount = this.size
             val successCount = this.count { it.isSuccess }
@@ -46,22 +52,20 @@ data class ResultAggregationSummary<T>(
             val errors = this.map {
                 it.exceptionOrNull()?.message
             }
-            val exceptionsByFrequency = this
-                .filter { it.isFailure }.mapNotNull { it.exceptionOrNull() }
-                .groupBy { it }
-                .mapValues { it.value.size }
-            return ResultAggregationSummary(totalCount, successCount, failureCount, errors, exceptionsByFrequency)
+            return ResultAggregationSummary(totalCount, successCount, failureCount, errors)
         }
 
-        fun <T> ResultAggregationSummary<T>.throwIfFailure(): ResultAggregationSummary<T> {
-            if (this.failureCount > 0) {
-                this.exceptionsByFrequency
-                    .maxByOrNull { it.value }
-                    ?.key
-                    ?.let { throw it }
-                    ?: error("Unknown error")
+        fun <T> Collection<ResultAggregationSummary<T>>.concat(): ResultAggregationSummary<T> {
+            if (this.isEmpty()) {
+                return ResultAggregationSummary(0, 0, 0, emptyList())
             }
-            return this
+
+            val totalCount = this.sumOf { it.totalCount }
+            val successCount = this.sumOf { it.successCount }
+            val failureCount = this.sumOf { it.failureCount }
+            val errors = this.flatMap { it.errors }
+
+            return ResultAggregationSummary(totalCount, successCount, failureCount, errors)
         }
     }
 }

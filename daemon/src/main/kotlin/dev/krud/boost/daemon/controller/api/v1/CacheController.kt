@@ -3,6 +3,7 @@ package dev.krud.boost.daemon.controller.api.v1
 import dev.krud.boost.daemon.configuration.application.cache.ApplicationCacheService
 import dev.krud.boost.daemon.configuration.application.cache.ro.ApplicationCacheRO
 import dev.krud.boost.daemon.configuration.application.cache.ro.ApplicationCacheStatisticsRO
+import dev.krud.boost.daemon.configuration.application.cache.ro.EvictApplicationCachesResultRO
 import dev.krud.boost.daemon.configuration.instance.cache.InstanceCacheService
 import dev.krud.boost.daemon.configuration.instance.cache.ro.EvictCachesRequestRO
 import dev.krud.boost.daemon.configuration.instance.cache.ro.InstanceCacheRO
@@ -132,15 +133,33 @@ class CacheController(
         return applicationCacheService.getCache(applicationId, cacheName)
     }
 
-    @DeleteMapping("/application/{applicationId}")
+    @DeleteMapping("/application/{applicationId}/all")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     @Operation(
         summary = "Evict all caches for the application"
     )
-    @ApiResponse(responseCode = "204", description = "Caches evicted")
+    @ApiResponse(responseCode = "204", description = "All Caches evicted")
     @ApiResponse(responseCode = "400", description = "Application is missing ability", content = [Content()])
-    fun evictApplicationCaches(@PathVariable applicationId: UUID) {
+    fun evictAllApplicationCaches(@PathVariable applicationId: UUID) {
         applicationCacheService.evictAllCaches(applicationId)
+    }
+
+    @DeleteMapping("/application/{applicationId}/bulk")
+    @ResponseStatus(HttpStatus.OK)
+    @Operation(
+        summary = "Evict specified caches for the application"
+    )
+    @ApiResponse(responseCode = "200", description = "All Caches evicted successfully")
+    @ApiResponse(responseCode = "206", description = "Some Caches evicted successfully")
+    @ApiResponse(responseCode = "400", description = "Application is missing ability or bad request", content = [Content()])
+    @ApiResponse(responseCode = "500", description = "Bulk request failed")
+    fun evictApplicationCaches(@PathVariable applicationId: UUID, @RequestBody request: EvictCachesRequestRO): ResponseEntity<EvictApplicationCachesResultRO> {
+        val result = applicationCacheService.evictCaches(applicationId, request)
+        return when (result.status) {
+            ResultAggregationSummary.Status.SUCCESS -> ResponseEntity.ok(result)
+            ResultAggregationSummary.Status.FAILURE -> ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(result)
+            ResultAggregationSummary.Status.PARTIAL_SUCCESS -> ResponseEntity.status(HttpStatus.PARTIAL_CONTENT).body(result)
+        }
     }
 
     @DeleteMapping("/application/{applicationId}/{cacheName}")
