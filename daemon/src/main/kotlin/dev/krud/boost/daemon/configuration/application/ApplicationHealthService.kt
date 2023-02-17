@@ -5,7 +5,6 @@ import dev.krud.boost.daemon.configuration.application.enums.ApplicationHealthSt
 import dev.krud.boost.daemon.configuration.application.ro.ApplicationHealthRO
 import dev.krud.boost.daemon.configuration.instance.health.InstanceHealthService
 import org.springframework.stereotype.Service
-import java.time.LocalDateTime
 import java.util.*
 
 @Service
@@ -20,8 +19,8 @@ class ApplicationHealthService(
         val statuses = application.instances.map { instanceHealthService.getHealth(it).status }
         return ApplicationHealthRO(
             statuses.toApplicationHealthStatus(),
-            LocalDateTime.now(),
-            LocalDateTime.now()
+            Date(),
+            Date()
         )
     }
 
@@ -33,8 +32,8 @@ class ApplicationHealthService(
         val statuses = application.instances.map { instanceHealthService.getHealth(it).status }
         return ApplicationHealthRO(
             statuses.toApplicationHealthStatus(),
-            LocalDateTime.now(),
-            LocalDateTime.now()
+            Date(),
+            Date()
         )
     }
 }

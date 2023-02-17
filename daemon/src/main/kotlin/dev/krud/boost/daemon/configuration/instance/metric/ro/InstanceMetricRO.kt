@@ -1,6 +1,6 @@
 package dev.krud.boost.daemon.configuration.instance.metric.ro
 
-import java.time.LocalDateTime
+import java.util.*
 
 data class InstanceMetricRO(
     val name: String,
@@ -11,5 +11,5 @@ data class InstanceMetricRO(
 
 data class InstanceMetricValueRO(
     val value: Number,
-    val timestamp: LocalDateTime
+    val timestamp: Date
 )

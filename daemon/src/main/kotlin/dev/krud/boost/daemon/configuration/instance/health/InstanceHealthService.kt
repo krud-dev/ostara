@@ -14,6 +14,7 @@ import dev.krud.boost.daemon.eventlog.EventLogService
 import dev.krud.boost.daemon.eventlog.enums.EventLogSeverity
 import dev.krud.boost.daemon.eventlog.enums.EventLogType
 import dev.krud.crudframework.crud.handler.CrudHandler
+import dev.krud.crudframework.modelfilter.dsl.where
 import org.springframework.cache.CacheManager
 import org.springframework.cache.annotation.Cacheable
 import org.springframework.integration.annotation.ServiceActivator
@@ -21,6 +22,7 @@ import org.springframework.messaging.Message
 import org.springframework.scheduling.annotation.Scheduled
 import org.springframework.stereotype.Service
 import java.time.LocalDateTime
+import java.time.ZoneId
 import java.util.*
 
 @Service
@@ -78,18 +80,24 @@ class InstanceHealthService(
 
     @Scheduled(fixedDelay = 3600000)
     fun deleteOldLogs() {
-        //TODO: fix filter
-//        val filter = WHERE<InstanceHealthLog> {
-//            InstanceHealthLog::creationTime isNull         }
+        val filter = where<InstanceHealthLog> {
+            InstanceHealthLog::creationTime.isNull()
+        }
 
         val oldLogs = crudHandler
-            .index(null, InstanceHealthLog::class.java)
+            .index(filter, InstanceHealthLog::class.java)
             .execute()
             .results
 
-        val cutoffDate = LocalDateTime.now().minusHours(24)
+        val cutoffDate = Date(
+            LocalDateTime.now()
+                .minusDays(1)
+                .atZone(ZoneId.systemDefault())
+                .toInstant()
+                .toEpochMilli()
+        )
         oldLogs.forEach {
-            if(it.creationTime < cutoffDate) {
+            if (it.creationTime < cutoffDate) {
                 crudHandler.delete(it.id, InstanceHealthLog::class.java).execute()
             }
         }

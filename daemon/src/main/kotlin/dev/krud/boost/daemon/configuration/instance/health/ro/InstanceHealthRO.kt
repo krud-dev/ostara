@@ -1,69 +1,69 @@
 package dev.krud.boost.daemon.configuration.instance.health.ro
 
 import dev.krud.boost.daemon.configuration.instance.enums.InstanceHealthStatus
-import java.time.LocalDateTime
+import java.util.*
 
 data class InstanceHealthRO(
     val status: InstanceHealthStatus,
     val statusText: String?,
-    val lastUpdateTime: LocalDateTime,
-    val lastStatusChangeTime: LocalDateTime
+    val lastUpdateTime: Date,
+    val lastStatusChangeTime: Date
 ) {
     companion object {
         val UNKNOWN = InstanceHealthRO(
             InstanceHealthStatus.UNKNOWN,
             null,
-            LocalDateTime.now(),
-            LocalDateTime.now()
+            Date(),
+            Date()
         )
 
         fun up() = InstanceHealthRO(
             InstanceHealthStatus.UP,
             null,
-            LocalDateTime.now(),
-            LocalDateTime.now()
+            Date(),
+            Date()
         )
 
         fun down(statusText: String? = null) = InstanceHealthRO(
             InstanceHealthStatus.DOWN,
             statusText,
-            LocalDateTime.now(),
-            LocalDateTime.now()
+            Date(),
+            Date()
         )
 
         fun outOfService(statusText: String? = null) = InstanceHealthRO(
             InstanceHealthStatus.OUT_OF_SERVICE,
             statusText,
-            LocalDateTime.now(),
-            LocalDateTime.now()
+            Date(),
+            Date()
         )
 
         fun unreachable(statusText: String? = null) = InstanceHealthRO(
             InstanceHealthStatus.UNREACHABLE,
             statusText,
-            LocalDateTime.now(),
-            LocalDateTime.now()
+            Date(),
+            Date()
         )
 
         fun pending(statusText: String? = null) = InstanceHealthRO(
             InstanceHealthStatus.PENDING,
             statusText,
-            LocalDateTime.now(),
-            LocalDateTime.now()
+            Date(),
+            Date()
         )
 
         fun invalid(statusText: String? = null) = InstanceHealthRO(
             InstanceHealthStatus.INVALID,
             statusText,
-            LocalDateTime.now(),
-            LocalDateTime.now()
+            Date(),
+            Date()
         )
 
         fun unknown(statusText: String? = null) = InstanceHealthRO(
             InstanceHealthStatus.UNKNOWN,
             statusText,
-            LocalDateTime.now(),
-            LocalDateTime.now()
+            Date(),
+            Date()
         )
     }
 }

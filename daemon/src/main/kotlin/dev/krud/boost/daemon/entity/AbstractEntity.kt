@@ -5,7 +5,6 @@ import dev.krud.crudframework.model.BaseCrudEntity
 import jakarta.persistence.*
 import org.hibernate.annotations.CreationTimestamp
 import org.hibernate.annotations.UpdateTimestamp
-import java.time.LocalDateTime
 import java.util.*
 
 @MappedSuperclass
@@ -22,11 +21,11 @@ abstract class AbstractEntity : BaseCrudEntity<UUID>() {
 
     @CreationTimestamp
     @Column(nullable = false, updatable = false)
-    var creationTime: LocalDateTime = LocalDateTime.now()
+    var creationTime: Date = Date()
 
     @UpdateTimestamp
     @Column(nullable = false)
-    var lastUpdateTime: LocalDateTime = LocalDateTime.now()
+    var lastUpdateTime: Date = Date()
 
     override fun exists(): Boolean = this::id.isInitialized
 

@@ -8,7 +8,6 @@ import dev.krud.boost.daemon.configuration.instance.metric.ro.InstanceMetricValu
 import dev.krud.boost.daemon.exception.throwBadRequest
 import dev.krud.boost.daemon.exception.throwNotFound
 import org.springframework.stereotype.Service
-import java.time.LocalDateTime
 import java.util.*
 
 @Service
@@ -34,7 +33,7 @@ class InstanceMetricService(
             values = listOf(
                 InstanceMetricValueRO(
                     value = response,
-                    timestamp = LocalDateTime.now()
+                    timestamp = Date()
                 )
             )
         )
