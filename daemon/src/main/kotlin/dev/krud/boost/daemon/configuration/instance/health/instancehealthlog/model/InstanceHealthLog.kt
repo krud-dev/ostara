@@ -1,8 +1,8 @@
 package dev.krud.boost.daemon.configuration.instance.health.instancehealthlog.model
 
 import dev.krud.boost.daemon.configuration.instance.enums.InstanceHealthStatus
-import dev.krud.boost.daemon.entity.AbstractEntity
 import dev.krud.boost.daemon.configuration.instance.health.instancehealthlog.ro.InstanceHealthLogRO
+import dev.krud.boost.daemon.entity.AbstractEntity
 import dev.krud.crudframework.crud.annotation.Deleteable
 import dev.krud.shapeshift.resolver.annotation.DefaultMappingTarget
 import dev.krud.shapeshift.resolver.annotation.MappedField

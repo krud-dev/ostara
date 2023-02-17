@@ -2,7 +2,7 @@ package dev.krud.boost.daemon.actuator.model
 
 data class ThreadDumpActuatorResponse(
     val threads: List<Thread>
-)  {
+) {
     data class Thread(
         val threadName: String,
         val threadId: Long,

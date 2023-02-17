@@ -12,5 +12,5 @@ import java.util.*
 @RequestMapping("$API_PREFIX/eventlogs")
 @Tag(name = "EventLog", description = "Event Log API")
 class EventLogController(
-    private val crudHandler: CrudHandler,
+    private val crudHandler: CrudHandler
 ) : AbstractCrudController<EventLog, EventLogRO, EventLogRO, EventLogRO>(EventLog::class, EventLogRO::class, crudHandler)

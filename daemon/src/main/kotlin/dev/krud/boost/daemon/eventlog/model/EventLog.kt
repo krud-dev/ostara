@@ -32,5 +32,5 @@ class EventLog(
     @MappedField
     @Enumerated(EnumType.STRING)
     @Column(nullable = false, columnDefinition = "varchar(10) default 'INFO'")
-    var severity: EventLogSeverity = EventLogSeverity.INFO,
+    var severity: EventLogSeverity = EventLogSeverity.INFO
 ) : AbstractEntity()

@@ -53,17 +53,21 @@ class InstanceController(
     @ApiResponse(responseCode = "200", description = "Health history")
     @ApiResponse(responseCode = "404", description = "Instance not found")
     fun getHealthHistory(@PathVariable instanceId: UUID): List<InstanceHealthLogRO> {
-        //TODO: fix filter
+        // TODO: fix filter
         return crudHandler
-            .index(filter<InstanceHealthLog> {
-                where {
+            .index(
+                filter<InstanceHealthLog> {
+                    where {
 //                InstanceHealthLog::instanceId eq
-                }
-                order {
-                    by = InstanceHealthLog::creationTime
-                    descending
-                }
-            }, InstanceHealthLog::class.java, InstanceHealthLogRO::class.java)
+                    }
+                    order {
+                        by = InstanceHealthLog::creationTime
+                        descending
+                    }
+                },
+                InstanceHealthLog::class.java,
+                InstanceHealthLogRO::class.java
+            )
             .execute()
             .results
             .filter { it.instanceId == instanceId }

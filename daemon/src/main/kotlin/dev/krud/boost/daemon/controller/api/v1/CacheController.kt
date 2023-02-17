@@ -81,7 +81,6 @@ class CacheController(
         }
     }
 
-
     @DeleteMapping("/instance/{instanceId}/{cacheName}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     @Operation(

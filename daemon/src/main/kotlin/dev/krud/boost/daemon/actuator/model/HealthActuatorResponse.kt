@@ -4,7 +4,7 @@ data class HealthActuatorResponse(
     val status: Status,
     val components: Map<String, Component>,
     val groups: List<String>?
-)  {
+) {
     enum class Status {
         UP, DOWN, OUT_OF_SERVICE, UNKNOWN
     }

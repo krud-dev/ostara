@@ -2,8 +2,6 @@ package dev.krud.boost.daemon.controller.api.v1
 
 import dev.krud.boost.daemon.actuator.ActuatorHttpClient
 import dev.krud.boost.daemon.configuration.instance.InstanceActuatorClientProvider
-import dev.krud.boost.daemon.configuration.instance.entity.Instance
-import dev.krud.boost.daemon.exception.ResourceNotFoundException
 import dev.krud.crudframework.crud.handler.CrudHandler
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.media.Content

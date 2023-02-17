@@ -6,7 +6,7 @@ data class MetricActuatorResponse(
     val baseUnit: String?,
     val availableTags: List<Tag>,
     val measurements: List<Measurement>
-)  {
+) {
     data class Measurement(
         val statistic: String,
         val value: Double

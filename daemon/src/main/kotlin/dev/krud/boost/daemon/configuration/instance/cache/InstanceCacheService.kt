@@ -32,7 +32,6 @@ class InstanceCacheService(
                     { it.toROs() },
                     { emptyList() }
                 )
-
         }
     }
 

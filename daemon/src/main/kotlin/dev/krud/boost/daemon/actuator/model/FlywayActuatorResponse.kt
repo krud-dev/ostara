@@ -2,7 +2,7 @@ package dev.krud.boost.daemon.actuator.model
 
 data class FlywayActuatorResponse(
     val contexts: Map<String, Context>
-)  {
+) {
     data class Context(
         val flywayBeans: Map<String, FlywayBean>
     ) {

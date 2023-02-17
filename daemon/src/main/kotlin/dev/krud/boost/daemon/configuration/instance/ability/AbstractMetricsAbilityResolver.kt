@@ -1,6 +1,5 @@
 package dev.krud.boost.daemon.configuration.instance.ability
 
-import dev.krud.boost.daemon.actuator.ActuatorHttpClient
 import dev.krud.boost.daemon.configuration.instance.enums.InstanceAbility
 
 /**

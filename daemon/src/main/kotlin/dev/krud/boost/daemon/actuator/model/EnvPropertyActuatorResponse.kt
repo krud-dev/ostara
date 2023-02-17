@@ -4,7 +4,7 @@ data class EnvPropertyActuatorResponse(
     val property: Property,
     val activeProfiles: Set<String>,
     val propertySources: List<PropertySource>
-)  {
+) {
     data class Property(
         val value: String,
         val source: String

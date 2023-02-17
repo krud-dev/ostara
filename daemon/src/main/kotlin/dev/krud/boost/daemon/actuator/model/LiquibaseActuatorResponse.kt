@@ -2,7 +2,7 @@ package dev.krud.boost.daemon.actuator.model
 
 data class LiquibaseActuatorResponse(
     val contexts: Map<String, Context>
-)  {
+) {
     data class Context(
         val liquibaseBeans: Map<String, LiquibaseBean>
     ) {

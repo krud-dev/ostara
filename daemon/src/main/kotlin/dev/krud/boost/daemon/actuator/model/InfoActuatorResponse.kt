@@ -3,7 +3,7 @@ package dev.krud.boost.daemon.actuator.model
 data class InfoActuatorResponse(
     val build: Build?,
     val git: Git?
-)  {
+) {
     data class Build(
         val artifact: String,
         val group: String,
