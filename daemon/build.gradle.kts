@@ -15,7 +15,7 @@ plugins {
 group = "dev.krud.boost"
 version = "0.0.1-SNAPSHOT"
 
-val crudFrameworkVersion = "0.17.0"
+val crudFrameworkVersion = "0.18.0"
 val shapeShiftVersion = "0.8.0"
 
 kotlin {

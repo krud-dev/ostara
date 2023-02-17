@@ -305,9 +305,6 @@ export interface FilterField {
     enumType: string;
     values: any[];
     children: FilterField[];
-    validated: boolean;
-    value1: any;
-    value2: any;
 }
 
 export interface BeansActuatorResponse$Context {
