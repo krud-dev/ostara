@@ -1,5 +1,6 @@
 package dev.krud.boost.daemon.configuration.instance.ro
 
+import dev.krud.boost.daemon.configuration.application.validation.ValidApplicationId
 import dev.krud.boost.daemon.configuration.instance.entity.Instance
 import dev.krud.boost.daemon.utils.DEFAULT_COLOR
 import dev.krud.shapeshift.resolver.annotation.DefaultMappingTarget
@@ -10,13 +11,16 @@ import java.util.*
 @DefaultMappingTarget(Instance::class)
 data class InstanceModifyRequestRO(
     @MappedField
-    @NotBlank
+    @get:NotBlank
     val alias: String,
     @MappedField
-    @NotBlank
+    @get:NotBlank
     var actuatorUrl: String,
     @MappedField
     val dataCollectionIntervalSeconds: Int,
+    @MappedField
+    @get:ValidApplicationId
+    val parentApplicationId: UUID,
     @MappedField
     val color: String = DEFAULT_COLOR,
     @MappedField
@@ -24,7 +28,5 @@ data class InstanceModifyRequestRO(
     @MappedField
     val icon: String? = null,
     @MappedField
-    val sort: Double? = null,
-    @MappedField
-    val parentApplicationId: UUID? = null
+    val sort: Double? = null
 )

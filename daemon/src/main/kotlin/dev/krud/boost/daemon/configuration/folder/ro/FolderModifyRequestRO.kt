@@ -1,6 +1,7 @@
 package dev.krud.boost.daemon.configuration.folder.ro
 
 import dev.krud.boost.daemon.configuration.folder.entity.Folder
+import dev.krud.boost.daemon.configuration.folder.validation.ValidFolderId
 import dev.krud.boost.daemon.utils.DEFAULT_COLOR
 import dev.krud.shapeshift.resolver.annotation.DefaultMappingTarget
 import dev.krud.shapeshift.resolver.annotation.MappedField
@@ -10,7 +11,7 @@ import java.util.*
 @DefaultMappingTarget(Folder::class)
 data class FolderModifyRequestRO(
     @MappedField
-    @NotBlank
+    @get:NotBlank
     val alias: String,
     @MappedField
     val color: String = DEFAULT_COLOR,
@@ -21,6 +22,7 @@ data class FolderModifyRequestRO(
     @MappedField
     val sort: Double? = null,
     @MappedField
+    @get:ValidFolderId
     val parentFolderId: UUID? = null
 ) {
     companion object {

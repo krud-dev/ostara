@@ -8,6 +8,7 @@ import dev.krud.crudframework.ro.PagedResult
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.media.Content
 import io.swagger.v3.oas.annotations.responses.ApiResponse
+import jakarta.validation.Valid
 import org.springframework.http.HttpStatus
 import org.springframework.web.bind.annotation.*
 import java.util.*
@@ -29,7 +30,10 @@ abstract class AbstractCrudController<Entity : AbstractEntity, RO : Any, CreateD
     )
     @ApiResponse(responseCode = "200", description = "List operation")
     @ApiResponse(responseCode = "400", description = "Bad request", content = [Content()])
-    fun search(@RequestBody filter: DynamicModelFilter): PagedResult<RO> {
+    fun search(
+        @Valid @RequestBody
+        filter: DynamicModelFilter
+    ): PagedResult<RO> {
         return crudHandler
             .index(filter, entityClazz.java, roClazz.java)
             .applyPolicies()
@@ -44,7 +48,10 @@ abstract class AbstractCrudController<Entity : AbstractEntity, RO : Any, CreateD
     )
     @ApiResponse(responseCode = "200", description = "Count operation")
     @ApiResponse(responseCode = "400", description = "Bad request", content = [Content()])
-    fun count(@RequestBody filter: DynamicModelFilter): CountResultRO {
+    fun count(
+        @Valid @RequestBody
+        filter: DynamicModelFilter
+    ): CountResultRO {
         val count = crudHandler
             .index(filter, entityClazz.java)
             .apply {
@@ -83,7 +90,10 @@ abstract class AbstractCrudController<Entity : AbstractEntity, RO : Any, CreateD
     )
     @ApiResponse(responseCode = "201", description = "Resource created")
     @ApiResponse(responseCode = "400", description = "Bad request", content = [Content()])
-    fun create(@RequestBody dto: CreateDTO): RO {
+    fun create(
+        @Valid @RequestBody
+        dto: CreateDTO
+    ): RO {
         return crudHandler
             .createFrom(dto, entityClazz.java, roClazz.java)
             .applyPolicies()
@@ -102,7 +112,7 @@ abstract class AbstractCrudController<Entity : AbstractEntity, RO : Any, CreateD
     @ApiResponse(responseCode = "200", description = "Resource updated")
     @ApiResponse(responseCode = "400", description = "Bad request", content = [Content()])
     @ApiResponse(responseCode = "404", description = "Resource not found", content = [Content()])
-    fun update(@PathVariable id: UUID, @RequestBody dto: UpdateDTO): RO {
+    fun update(@PathVariable id: UUID, @Valid @RequestBody dto: UpdateDTO): RO {
         return crudHandler
             .updateFrom(id, dto, entityClazz.java, roClazz.java)
             .applyPolicies()

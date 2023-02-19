@@ -2,9 +2,9 @@ package dev.krud.boost.daemon.configuration.application
 
 import dev.krud.boost.daemon.configuration.application.entity.Application
 import dev.krud.boost.daemon.configuration.application.enums.ApplicationHealthStatus.Companion.toApplicationHealthStatus
+import dev.krud.boost.daemon.configuration.application.messaging.ApplicationHealthUpdatedEventMessage
 import dev.krud.boost.daemon.configuration.application.ro.ApplicationHealthRO
 import dev.krud.boost.daemon.configuration.instance.health.InstanceHealthService
-import dev.krud.boost.daemon.configuration.application.messaging.ApplicationHealthUpdatedEventMessage
 import dev.krud.boost.daemon.configuration.instance.messaging.InstanceHealthChangedEventMessage
 import org.springframework.cache.CacheManager
 import org.springframework.integration.annotation.ServiceActivator
@@ -18,7 +18,7 @@ class ApplicationHealthService(
     private val applicationService: ApplicationService,
     private val instanceHealthService: InstanceHealthService,
     private val systemEventsChannel: PublishSubscribeChannel,
-    private val cacheManager: CacheManager,
+    private val cacheManager: CacheManager
 ) {
     private val applicationHealthCache = cacheManager.getCache("applicationHealthCache")!!
 

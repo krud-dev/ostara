@@ -254,11 +254,11 @@ export interface InstanceModifyRequestRO {
     alias: string;
     actuatorUrl: string;
     dataCollectionIntervalSeconds: number;
+    parentApplicationId: string;
     color: string;
     description?: string;
     icon?: string;
     sort?: number;
-    parentApplicationId?: string;
 }
 
 export interface InstanceRO {
