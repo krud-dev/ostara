@@ -31,3 +31,5 @@ cache:
       expire-after-write: 1m
     - name: instanceHostnameCache
       expire-after-write: 10m
+    - name: applicationHealthCache
+      expire-after-write: 10m
