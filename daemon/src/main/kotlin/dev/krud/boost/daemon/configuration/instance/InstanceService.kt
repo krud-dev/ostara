@@ -79,11 +79,8 @@ class InstanceService(
 
     fun moveInstance(instanceId: UUID, newParentApplicationId: UUID, newSort: Double?): Instance {
         val instance = getInstanceOrThrow(instanceId)
-        if (instance.parentApplicationId == newParentApplicationId) {
-            return instance
-        }
         val oldParentApplicationId = instance.parentApplicationId
-        instance.parentApplicationId = newParentApplicationId // TODO: check if application exists, should fail on foreign key for now
+        instance.parentApplicationId = newParentApplicationId
         instance.sort = newSort
         val updatedInstance = crudHandler
             .update(instance)

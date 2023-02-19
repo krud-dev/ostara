@@ -1,5 +1,6 @@
 package dev.krud.boost.daemon.controller.api.v1
 
+import dev.krud.boost.daemon.configuration.application.validation.ValidApplicationId
 import dev.krud.boost.daemon.configuration.instance.InstanceService
 import dev.krud.boost.daemon.configuration.instance.entity.Instance
 import dev.krud.boost.daemon.configuration.instance.health.InstanceHealthService
@@ -13,6 +14,7 @@ import dev.krud.shapeshift.ShapeShift
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.responses.ApiResponse
 import io.swagger.v3.oas.annotations.tags.Tag
+import jakarta.validation.Valid
 import org.springframework.http.HttpStatus
 import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.PostMapping
@@ -39,7 +41,7 @@ class InstanceController(
     )
     @ApiResponse(responseCode = "200", description = "Move operation")
     @ApiResponse(responseCode = "404", description = "Instance or application not found")
-    fun moveInstance(@PathVariable instanceId: UUID, @RequestParam newParentApplicationId: UUID, @RequestParam(required = false) newSort: Double? = null): InstanceRO {
+    fun moveInstance(@PathVariable instanceId: UUID, @RequestParam @Valid @ValidApplicationId newParentApplicationId: UUID, @RequestParam(required = false) newSort: Double? = null): InstanceRO {
         val instance = instanceService.moveInstance(instanceId, newParentApplicationId, newSort)
         return shapeShift.map(instance)
     }
