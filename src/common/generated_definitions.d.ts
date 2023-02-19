@@ -268,12 +268,12 @@ export interface InstanceRO {
     alias?: string;
     actuatorUrl: string;
     dataCollectionIntervalSeconds: number;
+    parentApplicationId: string;
     description?: string;
     color: string;
     effectiveColor: string;
     icon?: string;
     sort?: number;
-    parentApplicationId?: string;
     abilities: InstanceAbility[];
     health: InstanceHealthRO;
 }

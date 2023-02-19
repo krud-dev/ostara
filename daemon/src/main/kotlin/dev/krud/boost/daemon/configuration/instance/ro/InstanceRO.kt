@@ -12,12 +12,12 @@ class InstanceRO(
     val alias: String?,
     var actuatorUrl: String,
     val dataCollectionIntervalSeconds: Int,
+    val parentApplicationId: UUID,
     val description: String? = null,
     val color: String = DEFAULT_COLOR,
     var effectiveColor: String = DEFAULT_COLOR,
     val icon: String? = null,
     val sort: Double? = null,
-    val parentApplicationId: UUID? = null,
     var abilities: Set<InstanceAbility> = emptySet(),
     var health: InstanceHealthRO = InstanceHealthRO.unknown()
 )
