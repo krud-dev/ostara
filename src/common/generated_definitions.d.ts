@@ -287,6 +287,18 @@ export interface EventLogRO {
     message?: string;
 }
 
+export interface ApplicationHealthUpdatedEventMessage$Payload {
+    applicationId: string;
+    newStatus: ApplicationHealthStatus;
+}
+
+export interface InstanceHealthChangedEventMessage$Payload {
+    parentApplicationId: string;
+    instanceId: string;
+    oldStatus: InstanceHealthStatus;
+    newStatus: InstanceHealthStatus;
+}
+
 export interface ResultAggregationSummary<T> {
     totalCount: number;
     successCount: number;

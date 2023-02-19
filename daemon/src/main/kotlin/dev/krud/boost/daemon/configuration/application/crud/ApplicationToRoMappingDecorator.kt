@@ -16,7 +16,7 @@ class ApplicationToRoMappingDecorator(
 ) : MappingDecorator<Application, ApplicationRO> {
     override fun decorate(context: MappingDecoratorContext<Application, ApplicationRO>) {
         context.to.effectiveColor = context.from.effectiveColor
-        val health = applicationHealthService.getCachedHealth(context.from)
+        val health = applicationHealthService.getHealth(context.from.id)
         context.to.health = health
     }
 }

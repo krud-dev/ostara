@@ -1,9 +1,9 @@
 package dev.krud.boost.daemon.configuration.application.crud
 
 import dev.krud.boost.daemon.configuration.application.entity.Application
-import dev.krud.boost.daemon.configuration.application.message.ApplicationCreatedEventMessage
-import dev.krud.boost.daemon.configuration.application.message.ApplicationDeletedEventMessage
-import dev.krud.boost.daemon.configuration.application.message.ApplicationUpdatedEventMessage
+import dev.krud.boost.daemon.configuration.application.messaging.ApplicationCreatedEventMessage
+import dev.krud.boost.daemon.configuration.application.messaging.ApplicationDeletedEventMessage
+import dev.krud.boost.daemon.configuration.application.messaging.ApplicationUpdatedEventMessage
 import dev.krud.crudframework.crud.hooks.interfaces.CreateFromHooks
 import dev.krud.crudframework.crud.hooks.interfaces.CreateHooks
 import dev.krud.crudframework.crud.hooks.interfaces.DeleteHooks

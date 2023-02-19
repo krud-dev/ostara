@@ -47,6 +47,6 @@ class ApplicationController(
     @ApiResponse(responseCode = "200", description = "Live health")
     @ApiResponse(responseCode = "404", description = "Application not found")
     fun getLiveHealth(@PathVariable applicationId: UUID): ApplicationHealthRO {
-        return applicationHealthService.getLiveHealth(applicationId)
+        return applicationHealthService.getHealth(applicationId)
     }
 }

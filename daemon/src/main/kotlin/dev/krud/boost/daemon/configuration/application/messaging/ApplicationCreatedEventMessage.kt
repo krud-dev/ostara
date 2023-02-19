@@ -1,4 +1,4 @@
-package dev.krud.boost.daemon.configuration.application.message
+package dev.krud.boost.daemon.configuration.application.messaging
 
 import dev.krud.boost.daemon.base.messaging.AbstractMessage
 import java.util.*

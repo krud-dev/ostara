@@ -9,15 +9,14 @@ import dev.krud.boost.daemon.configuration.instance.health.instancehealthlog.mod
 import dev.krud.boost.daemon.configuration.instance.health.ro.InstanceHealthRO
 import dev.krud.boost.daemon.configuration.instance.messaging.InstanceCreatedEventMessage
 import dev.krud.boost.daemon.configuration.instance.messaging.InstanceDeletedEventMessage
+import dev.krud.boost.daemon.configuration.instance.messaging.InstanceHealthChangedEventMessage
 import dev.krud.boost.daemon.configuration.instance.messaging.InstanceUpdatedEventMessage
-import dev.krud.boost.daemon.eventlog.EventLogService
-import dev.krud.boost.daemon.eventlog.enums.EventLogSeverity
-import dev.krud.boost.daemon.eventlog.enums.EventLogType
 import dev.krud.crudframework.crud.handler.CrudHandler
 import dev.krud.crudframework.modelfilter.dsl.where
 import org.springframework.cache.CacheManager
 import org.springframework.cache.annotation.Cacheable
 import org.springframework.integration.annotation.ServiceActivator
+import org.springframework.integration.channel.PublishSubscribeChannel
 import org.springframework.messaging.Message
 import org.springframework.scheduling.annotation.Scheduled
 import org.springframework.stereotype.Service
@@ -30,8 +29,8 @@ class InstanceHealthService(
     private val instanceService: InstanceService,
     private val actuatorClientProvider: InstanceActuatorClientProvider,
     private val crudHandler: CrudHandler,
-    private val eventLogService: EventLogService,
-    private val cacheManager: CacheManager
+    private val cacheManager: CacheManager,
+    private val systemEventsChannel: PublishSubscribeChannel
 ) {
     private val instanceHealthCache = cacheManager.getCache("instanceHealthCache")!!
 
@@ -107,11 +106,15 @@ class InstanceHealthService(
     protected fun onInstanceEvent(event: Message<*>) {
         when (event) {
             is InstanceCreatedEventMessage -> {
-                instanceHealthCache.evict(event.payload.instanceId)
+                updateInstanceHealth(
+                    instanceService.getInstanceOrThrow(event.payload.instanceId)
+                )
             }
 
             is InstanceUpdatedEventMessage -> {
-                instanceHealthCache.evict(event.payload.instanceId)
+                updateInstanceHealth(
+                    instanceService.getInstanceOrThrow(event.payload.instanceId)
+                )
             }
 
             is InstanceDeletedEventMessage -> {
@@ -126,17 +129,15 @@ class InstanceHealthService(
         crudHandler.create(InstanceHealthLog(instance.id, currentHealth.status, currentHealth.statusText)).execute()
 
         if (prevHealth?.status != currentHealth.status) {
-            val severity = if (prevHealth?.status == InstanceHealthStatus.UP) {
-                EventLogSeverity.ERROR
-            } else {
-                EventLogSeverity.INFO
-            }
-
-            eventLogService.logEvent(
-                EventLogType.INSTANCE_HEALTH_CHANGED,
-                instance.id,
-                "Instance ${instance.alias} [ ${instance.id} ] health status changed from ${prevHealth?.status ?: InstanceHealthStatus.UNKNOWN} to ${currentHealth.status}",
-                severity
+            systemEventsChannel.send(
+                InstanceHealthChangedEventMessage(
+                    InstanceHealthChangedEventMessage.Payload(
+                        instance.parentApplicationId,
+                        instance.id,
+                        prevHealth?.status ?: InstanceHealthStatus.UNKNOWN,
+                        currentHealth.status
+                    )
+                )
             )
         }
 
