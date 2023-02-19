@@ -11,7 +11,6 @@ import java.util.*
 @DefaultMappingTarget(Instance::class)
 data class InstanceModifyRequestRO(
     @MappedField
-    @get:NotBlank
     val alias: String?,
     @MappedField
     @get:NotBlank
