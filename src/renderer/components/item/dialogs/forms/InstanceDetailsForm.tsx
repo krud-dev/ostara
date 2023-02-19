@@ -5,7 +5,7 @@ import { Box, Button, DialogActions, DialogContent, TextField } from '@mui/mater
 import { useModal } from '@ebay/nice-modal-react';
 import { LoadingButton } from '@mui/lab';
 import { useSnackbar } from 'notistack';
-import { useTestConnectionByUrl } from 'renderer/apis/actuator/testConnectionByUrl';
+import { useTestConnectionByUrl } from 'renderer/apis/requests/actuator/testConnectionByUrl';
 import { getErrorMessage } from 'renderer/utils/errorUtils';
 import InputAdornment from '@mui/material/InputAdornment';
 import ItemIconFormField from 'renderer/components/item/dialogs/forms/fields/ItemIconFormField';

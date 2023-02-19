@@ -1,5 +1,5 @@
 import { Entity } from 'renderer/entity/entity';
-import { EnrichedLiquibaseChangeSet } from 'renderer/apis/instance/getInstanceLiquibaseChangesets';
+import { EnrichedLiquibaseChangeSet } from 'renderer/apis/requests/instance/getInstanceLiquibaseChangesets';
 import LiquibaseChangesetDetails from 'renderer/pages/navigator/instance/liquibase/components/LiquibaseChangesetDetails';
 
 export const instanceLiquibaseChangeSetEntity: Entity<EnrichedLiquibaseChangeSet> = {

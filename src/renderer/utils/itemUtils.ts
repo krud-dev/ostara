@@ -12,10 +12,10 @@ import {
   InstanceHealthRO,
   InstanceRO,
 } from '../../common/generated_definitions';
-import { CrudEntity } from '../apis/crud/entity/entity';
-import { applicationCrudEntity } from '../apis/crud/entity/entities/application.crud-entity';
-import { instanceCrudEntity } from '../apis/crud/entity/entities/instance.crud-entity';
-import { folderCrudEntity } from '../apis/crud/entity/entities/folder.crud-entity';
+import { CrudEntity } from '../apis/requests/crud/entity/entity';
+import { applicationCrudEntity } from '../apis/requests/crud/entity/entities/application.crud-entity';
+import { instanceCrudEntity } from '../apis/requests/crud/entity/entities/instance.crud-entity';
+import { folderCrudEntity } from '../apis/requests/crud/entity/entities/folder.crud-entity';
 
 export function isApplication(item: ItemRO): item is ApplicationRO {
   return 'instanceCount' in item;

@@ -1,5 +1,5 @@
 import { useEffect } from 'react';
-import { useGetLatestMetric } from 'renderer/apis/metrics/getLatestMetric';
+import { useGetLatestMetric } from 'renderer/apis/requests/metrics/getLatestMetric';
 import { InstanceMetricRO } from '../../../../common/generated_definitions';
 
 const useWidgetLatestMetrics = (

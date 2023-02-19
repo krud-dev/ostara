@@ -6,9 +6,9 @@ import DialogTitleEnhanced from 'renderer/components/dialog/DialogTitleEnhanced'
 import ApplicationDetailsForm, {
   ApplicationFormValues,
 } from 'renderer/components/item/dialogs/forms/ApplicationDetailsForm';
-import { useCrudCreate } from '../../../../apis/crud/crudCreate';
+import { useCrudCreate } from '../../../../apis/requests/crud/crudCreate';
 import { ApplicationModifyRequestRO, ApplicationRO } from '../../../../../common/generated_definitions';
-import { applicationCrudEntity } from '../../../../apis/crud/entity/entities/application.crud-entity';
+import { applicationCrudEntity } from '../../../../apis/requests/crud/entity/entities/application.crud-entity';
 import { INHERITED_COLOR_VALUE } from '../../../../hooks/useItemColor';
 
 export type CreateApplicationDialogProps = {

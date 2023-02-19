@@ -1,5 +1,5 @@
 import { Entity } from 'renderer/entity/entity';
-import { InstanceBean } from 'renderer/apis/instance/getInstanceBeans';
+import { InstanceBean } from 'renderer/apis/requests/instance/getInstanceBeans';
 import InstanceBeanDetails from 'renderer/pages/navigator/instance/beans/components/InstanceBeanDetails';
 
 export const instanceBeanEntity: Entity<InstanceBean> = {

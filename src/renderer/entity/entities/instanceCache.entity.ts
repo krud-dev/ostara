@@ -1,7 +1,7 @@
 import { Entity } from 'renderer/entity/entity';
 import { EVICT_CACHE_ID } from 'renderer/entity/actions';
 import InstanceCacheDetails from 'renderer/pages/navigator/instance/caches/components/InstanceCacheDetails';
-import { EnrichedInstanceCacheRO } from 'renderer/apis/instance/getInstanceCaches';
+import { EnrichedInstanceCacheRO } from 'renderer/apis/requests/instance/getInstanceCaches';
 
 export const instanceCacheEntity: Entity<EnrichedInstanceCacheRO> = {
   id: 'instanceCache',

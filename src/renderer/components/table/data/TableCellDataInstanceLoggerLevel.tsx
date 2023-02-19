@@ -1,8 +1,8 @@
 import { EntityBaseColumn } from 'renderer/entity/entity';
 import { useCallback, useMemo } from 'react';
 import LogLevelToggleGroup from 'renderer/components/item/logger/LogLevelToggleGroup';
-import { useSetInstanceLoggerLevel } from 'renderer/apis/instance/setInstanceLoggerLevel';
-import { EnrichedInstanceLoggerRO } from 'renderer/apis/instance/getInstanceLoggers';
+import { useSetInstanceLoggerLevel } from 'renderer/apis/requests/instance/setInstanceLoggerLevel';
+import { EnrichedInstanceLoggerRO } from 'renderer/apis/requests/instance/getInstanceLoggers';
 import { LogLevel } from '../../../../common/generated_definitions';
 
 type TableCellDataLoggerLevelProps<EntityItem extends EnrichedInstanceLoggerRO> = {

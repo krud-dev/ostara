@@ -1,6 +1,11 @@
 import React, { useCallback, useMemo } from 'react';
 import { Avatar, Badge, Box, IconButton, Tooltip, Typography } from '@mui/material';
-import { getItemHealthStatusColor, getItemHealthStatusTextId, getItemNameTooltip } from 'renderer/utils/itemUtils';
+import {
+  getItemDisplayName,
+  getItemHealthStatusColor,
+  getItemHealthStatusTextId,
+  getItemNameTooltip,
+} from 'renderer/utils/itemUtils';
 import { COMPONENTS_SPACING, SIDEBAR_HEADER_HEIGHT } from 'renderer/constants/ui';
 import useItemColor from 'renderer/hooks/useItemColor';
 import { FormattedMessage } from 'react-intl';
@@ -16,7 +21,8 @@ export default function ItemHeader({ item }: ItemHeaderProps) {
   const menuState = usePopupState({ variant: 'popover' });
 
   const color = useItemColor(item);
-  const nameTooltip = useMemo<string | undefined>(() => getItemNameTooltip(item), [item]);
+  const displayName = useMemo<string>(() => getItemDisplayName(item), [item]);
+  const displayNameTooltip = useMemo<string | undefined>(() => getItemNameTooltip(item), [item]);
   const healthStatusColor = useMemo<string | undefined>(() => getItemHealthStatusColor(item), [item]);
   const healthTextId = useMemo<string | undefined>(() => getItemHealthStatusTextId(item), [item]);
   const itemIcon = useItemIcon(item);
@@ -59,13 +65,13 @@ export default function ItemHeader({ item }: ItemHeaderProps) {
         </IconButton>
 
         <Box sx={{ ml: 2, overflow: 'hidden' }}>
-          <Tooltip title={nameTooltip}>
+          <Tooltip title={displayNameTooltip}>
             <Typography
               variant="subtitle2"
               sx={{ color: 'text.primary', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}
               noWrap
             >
-              {item.alias}
+              {displayName || '\u00A0'}
             </Typography>
           </Tooltip>
 

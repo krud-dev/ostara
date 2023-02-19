@@ -1,5 +1,5 @@
 import React from 'react';
-import { BaseUseQueryResult } from 'renderer/apis/base/useBaseQuery';
+import { BaseUseQueryResult } from 'renderer/apis/requests/base/useBaseQuery';
 import { Entity } from 'renderer/entity/entity';
 import { TableProvider } from 'renderer/components/table/TableContext';
 import TableCustom from 'renderer/components/table/TableCustom';

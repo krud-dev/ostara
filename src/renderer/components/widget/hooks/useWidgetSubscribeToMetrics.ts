@@ -1,5 +1,5 @@
 import { useEffect } from 'react';
-import { useSubscribeToMetric } from 'renderer/apis/metrics/subscribeToMetric';
+import { useSubscribeToMetric } from 'renderer/apis/requests/metrics/subscribeToMetric';
 import { isEmpty } from 'lodash';
 import { InstanceMetricRO } from '../../../../common/generated_definitions';
 

@@ -7,14 +7,21 @@ import { NAVIGATOR_ITEM_HEIGHT } from 'renderer/constants/ui';
 import { experimentalStyled as styled } from '@mui/material/styles';
 import { FormattedMessage } from 'react-intl';
 import { useNavigatorTree } from 'renderer/contexts/NavigatorTreeContext';
-import { useUpdateItem } from 'renderer/apis/item/updateItem';
-import { useDeleteItem } from 'renderer/apis/item/deleteItem';
+import { useUpdateItem } from 'renderer/apis/requests/item/updateItem';
+import { useDeleteItem } from 'renderer/apis/requests/item/deleteItem';
 import { showDeleteConfirmationDialog } from 'renderer/utils/dialogUtils';
-import { useMoveItem } from 'renderer/apis/item/moveItem';
+import { useMoveItem } from 'renderer/apis/requests/item/moveItem';
 import NiceModal from '@ebay/nice-modal-react';
 import CreateInstanceDialog from 'renderer/components/item/dialogs/create/CreateInstanceDialog';
 import { matchPath, useLocation, useNavigate } from 'react-router-dom';
-import { getItemType, getItemUrl, isApplication, isFolder, isInstance } from 'renderer/utils/itemUtils';
+import {
+  getItemDisplayName,
+  getItemType,
+  getItemUrl,
+  isApplication,
+  isFolder,
+  isInstance,
+} from 'renderer/utils/itemUtils';
 import { OpenMap } from 'react-arborist/src/state/open-slice';
 import { InstanceRO } from '../../../../../../common/generated_definitions';
 import { ItemRO, ItemType } from '../../../../../definitions/daemon';
@@ -286,7 +293,7 @@ export default function NavigatorTree({ width, search }: NavigatorTreeProps) {
           paddingBottom={NAVIGATOR_TREE_PADDING_BOTTOM}
           rowHeight={NAVIGATOR_ITEM_HEIGHT}
           searchTerm={search}
-          searchMatch={(node, term) => node.data.alias.toLowerCase().includes(term.toLowerCase())}
+          searchMatch={(node, term) => getItemDisplayName(node.data).toLowerCase().includes(term.toLowerCase())}
           onCreate={onCreate}
           onRename={onRename}
           onMove={onMove}

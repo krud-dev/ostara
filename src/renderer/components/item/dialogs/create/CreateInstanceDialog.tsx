@@ -4,15 +4,15 @@ import { Dialog } from '@mui/material';
 import NiceModal, { NiceModalHocProps, useModal } from '@ebay/nice-modal-react';
 import DialogTitleEnhanced from 'renderer/components/dialog/DialogTitleEnhanced';
 import InstanceDetailsForm, { InstanceFormValues } from 'renderer/components/item/dialogs/forms/InstanceDetailsForm';
-import { useCrudCreate } from '../../../../apis/crud/crudCreate';
+import { useCrudCreate } from '../../../../apis/requests/crud/crudCreate';
 import {
   ApplicationModifyRequestRO,
   ApplicationRO,
   InstanceModifyRequestRO,
   InstanceRO,
 } from '../../../../../common/generated_definitions';
-import { applicationCrudEntity } from '../../../../apis/crud/entity/entities/application.crud-entity';
-import { instanceCrudEntity } from '../../../../apis/crud/entity/entities/instance.crud-entity';
+import { applicationCrudEntity } from '../../../../apis/requests/crud/entity/entities/application.crud-entity';
+import { instanceCrudEntity } from '../../../../apis/requests/crud/entity/entities/instance.crud-entity';
 import { INHERITED_COLOR_VALUE } from '../../../../hooks/useItemColor';
 
 export type CreateInstanceDialogProps = {

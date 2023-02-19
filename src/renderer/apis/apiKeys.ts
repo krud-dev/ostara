@@ -47,7 +47,4 @@ export const apiKeys = {
 
   metrics: () => ['metrics'],
   metricLatest: (instanceId: string, metricName: string) => [...apiKeys.metrics(), 'latest', instanceId, metricName],
-
-  tasks: () => ['tasks'],
-  task: (name: string) => [...apiKeys.tasks(), name],
 };

@@ -10,16 +10,17 @@ import React, {
 import { TreeItem } from 'renderer/layout/navigator/components/sidebar/tree/tree';
 import { useNavigate, useParams } from 'react-router-dom';
 import { urls } from 'renderer/routes/urls';
-import { useSubscribeToEvent } from 'renderer/apis/subscriptions/subscribeToEvent';
 import { useQueryClient } from '@tanstack/react-query';
 import { apiKeys } from '../apis/apiKeys';
 import { ItemRO } from '../definitions/daemon';
-import { useCrudSearchQuery } from '../apis/crud/crudSearch';
+import { useCrudSearchQuery } from '../apis/requests/crud/crudSearch';
 import { ApplicationRO, FolderRO, InstanceRO } from '../../common/generated_definitions';
-import { instanceCrudEntity } from '../apis/crud/entity/entities/instance.crud-entity';
-import { folderCrudEntity } from '../apis/crud/entity/entities/folder.crud-entity';
-import { applicationCrudEntity } from '../apis/crud/entity/entities/application.crud-entity';
+import { instanceCrudEntity } from '../apis/requests/crud/entity/entities/instance.crud-entity';
+import { folderCrudEntity } from '../apis/requests/crud/entity/entities/folder.crud-entity';
+import { applicationCrudEntity } from '../apis/requests/crud/entity/entities/application.crud-entity';
 import { buildTree } from '../utils/treeUtils';
+import { useStomp } from '../apis/websockets/StompContext';
+import { crudKeys } from '../apis/requests/crud/crudKeys';
 
 type NavigatorTreeAction = 'expandAll' | 'collapseAll';
 
@@ -41,6 +42,7 @@ interface NavigatorTreeProviderProps extends PropsWithChildren<any> {}
 const NavigatorTreeProvider: FunctionComponent<NavigatorTreeProviderProps> = ({ children }) => {
   const navigate = useNavigate();
   const queryClient = useQueryClient();
+  const { subscribe } = useStomp();
   const params = useParams<{ id?: string }>();
 
   const [action, setAction] = useState<NavigatorTreeAction | undefined>(undefined);
@@ -74,41 +76,23 @@ const NavigatorTreeProvider: FunctionComponent<NavigatorTreeProviderProps> = ({ 
     }
   }, [items]);
 
-  // TODO: reimplement
-  // const subscribeToHealthEventsState = useSubscribeToEvent();
-  //
-  // useEffect(() => {
-  //   let unsubscribe: (() => void) | undefined;
-  //   (async () => {
-  //     unsubscribe = await subscribeToHealthEventsState.mutateAsync({
-  //       event: 'app:instanceHealthUpdated',
-  //       listener: () => {
-  //         queryClient.invalidateQueries(apiKeys.items());
-  //       },
-  //     });
-  //   })();
-  //   return () => {
-  //     unsubscribe?.();
-  //   };
-  // }, []);
+  useEffect(() => {
+    const unsubscribe = subscribe('/topic/applicationHealth', () => {
+      queryClient.invalidateQueries(crudKeys.entity(applicationCrudEntity));
+    });
+    return () => {
+      unsubscribe();
+    };
+  }, []);
 
-  // TODO: reimplement
-  // const subscribeToEndpointsEventsState = useSubscribeToEvent();
-  //
-  // useEffect(() => {
-  //   let unsubscribe: (() => void) | undefined;
-  //   (async () => {
-  //     unsubscribe = await subscribeToEndpointsEventsState.mutateAsync({
-  //       event: 'app:instanceAbilitiesUpdated',
-  //       listener: () => {
-  //         queryClient.invalidateQueries(apiKeys.items());
-  //       },
-  //     });
-  //   })();
-  //   return () => {
-  //     unsubscribe?.();
-  //   };
-  // }, []);
+  useEffect(() => {
+    const unsubscribe = subscribe('/topic/instanceHealth', () => {
+      queryClient.invalidateQueries(crudKeys.entity(instanceCrudEntity));
+    });
+    return () => {
+      unsubscribe();
+    };
+  }, []);
 
   const performAction = useCallback((actionToPerform: NavigatorTreeAction) => {
     setAction(actionToPerform);

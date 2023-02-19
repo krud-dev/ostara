@@ -6,7 +6,7 @@ import { isEmpty, map } from 'lodash';
 import EmptyContent from 'renderer/components/help/EmptyContent';
 import { FormattedMessage } from 'react-intl';
 import TabPanel, { TabInfo } from 'renderer/components/layout/TabPanel';
-import { useGetInstanceFlywayQuery } from 'renderer/apis/instance/getInstanceFlyway';
+import { useGetInstanceFlywayQuery } from 'renderer/apis/requests/instance/getInstanceFlyway';
 import FlywayMigrationsTable from 'renderer/pages/navigator/instance/flyway/components/FlywayMigrationsTable';
 import { InstanceRO } from '../../../../../common/generated_definitions';
 

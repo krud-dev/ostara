@@ -6,7 +6,7 @@ import { isEmpty, map } from 'lodash';
 import EmptyContent from 'renderer/components/help/EmptyContent';
 import { FormattedMessage } from 'react-intl';
 import TabPanel, { TabInfo } from 'renderer/components/layout/TabPanel';
-import { useGetInstanceLiquibaseQuery } from 'renderer/apis/instance/getInstanceLiquibase';
+import { useGetInstanceLiquibaseQuery } from 'renderer/apis/requests/instance/getInstanceLiquibase';
 import LiquibaseChangesetsTable from 'renderer/pages/navigator/instance/liquibase/components/LiquibaseChangesetsTable';
 import { InstanceRO } from '../../../../../common/generated_definitions';
 

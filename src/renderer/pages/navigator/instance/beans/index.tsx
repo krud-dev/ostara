@@ -4,7 +4,7 @@ import { useNavigatorTree } from 'renderer/contexts/NavigatorTreeContext';
 import TableComponent from 'renderer/components/table/TableComponent';
 import { Entity } from 'renderer/entity/entity';
 import { instanceBeanEntity } from 'renderer/entity/entities/instanceBean.entity';
-import { InstanceBean, useGetInstanceBeansQuery } from 'renderer/apis/instance/getInstanceBeans';
+import { InstanceBean, useGetInstanceBeansQuery } from 'renderer/apis/requests/instance/getInstanceBeans';
 import { Card } from '@mui/material';
 import { InstanceRO } from '../../../../../common/generated_definitions';
 

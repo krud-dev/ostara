@@ -10,9 +10,9 @@ import { applicationCacheEntity } from 'renderer/entity/entities/applicationCach
 import {
   EnrichedApplicationCacheRO,
   useGetApplicationCachesQuery,
-} from 'renderer/apis/application/getApplicationCaches';
-import { useEvictApplicationCaches } from 'renderer/apis/application/evictApplicationCaches';
-import { useEvictAllApplicationCaches } from 'renderer/apis/application/evictAllApplicationCaches';
+} from 'renderer/apis/requests/application/getApplicationCaches';
+import { useEvictApplicationCaches } from 'renderer/apis/requests/application/evictApplicationCaches';
+import { useEvictAllApplicationCaches } from 'renderer/apis/requests/application/evictAllApplicationCaches';
 import { Card } from '@mui/material';
 import { ApplicationRO } from '../../../../../common/generated_definitions';
 

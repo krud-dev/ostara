@@ -4,7 +4,7 @@ import { Theme } from '@mui/material/styles';
 import { IconViewer, MUIconType } from '../../../../components/common/IconViewer';
 import { SxProps } from '@mui/system';
 import { useCallback } from 'react';
-import { useMinimizeWindow } from '../../../../apis/ui/minimizeWindow';
+import { useMinimizeWindow } from '../../../../apis/requests/ui/minimizeWindow';
 
 type WindowControlsProps = {
   sx?: SxProps<Theme>;

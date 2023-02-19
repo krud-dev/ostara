@@ -1,7 +1,7 @@
 import { Entity } from 'renderer/entity/entity';
 import TableCellDataInstanceLoggerLevel from 'renderer/components/table/data/TableCellDataInstanceLoggerLevel';
 import { RESET_ID } from 'renderer/entity/actions';
-import { EnrichedInstanceLoggerRO } from 'renderer/apis/instance/getInstanceLoggers';
+import { EnrichedInstanceLoggerRO } from 'renderer/apis/requests/instance/getInstanceLoggers';
 import { isClassName } from 'renderer/utils/classUtils';
 import LoggerCustomFiltersComponent, {
   LoggerCustomFilters,

@@ -1,12 +1,12 @@
 import React, { FunctionComponent, PropsWithChildren, useCallback, useContext, useEffect, useMemo } from 'react';
 import { LocaleInfo } from 'renderer/lang/lang';
 import locales from 'renderer/lang';
-import { useSubscribeToEvent } from 'renderer/apis/subscriptions/subscribeToEvent';
+import { useSubscribeToEvent } from 'renderer/apis/requests/subscriptions/subscribeToEvent';
 import { IpcRendererEvent } from 'electron';
 import { ElectronTheme, ThemeSource } from 'infra/ui/models/electronTheme';
-import { useGetThemeSource } from 'renderer/apis/ui/getThemeSource';
-import { useSetThemeSource } from 'renderer/apis/ui/setThemeSource';
-import { useGetTheme } from 'renderer/apis/ui/getTheme';
+import { useGetThemeSource } from 'renderer/apis/requests/ui/getThemeSource';
+import { useSetThemeSource } from 'renderer/apis/requests/ui/setThemeSource';
+import { useGetTheme } from 'renderer/apis/requests/ui/getTheme';
 import { useLocalStorageState } from '../hooks/useLocalStorageState';
 
 export type UiContextProps = {
@@ -76,22 +76,22 @@ const UiProvider: FunctionComponent<UiProviderProps> = ({ children }) => {
 
   const isRtl = useMemo<boolean>(() => localeInfo.direction === 'rtl', [localeInfo]);
 
-  // const subscribeToThemeEventsState = useSubscribeToEvent();
-  //
-  // useEffect(() => {
-  //   let unsubscribe: (() => void) | undefined;
-  //   (async () => {
-  //     unsubscribe = await subscribeToThemeEventsState.mutateAsync({
-  //       event: 'app:themeUpdated',
-  //       listener: (event: IpcRendererEvent, data: ElectronTheme) => {
-  //         setDarkMode(data.shouldUseDarkColors);
-  //       },
-  //     });
-  //   })();
-  //   return () => {
-  //     unsubscribe?.();
-  //   };
-  // }, []);
+  const subscribeToThemeEventsState = useSubscribeToEvent();
+
+  useEffect(() => {
+    let unsubscribe: (() => void) | undefined;
+    (async () => {
+      unsubscribe = await subscribeToThemeEventsState.mutateAsync({
+        event: 'app:themeUpdated',
+        listener: (event: IpcRendererEvent, data: ElectronTheme) => {
+          setDarkMode(data.shouldUseDarkColors);
+        },
+      });
+    })();
+    return () => {
+      unsubscribe?.();
+    };
+  }, []);
 
   return (
     <UiContext.Provider

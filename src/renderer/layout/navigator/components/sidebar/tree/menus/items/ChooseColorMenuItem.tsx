@@ -5,7 +5,7 @@ import { amber, blue, deepOrange, green, indigo, orange, pink, purple, red } fro
 import { CheckOutlined } from '@mui/icons-material';
 import { DEFAULT_COLOR_VALUE, INHERITED_COLOR_VALUE } from 'renderer/hooks/useItemColor';
 import { ItemRO } from '../../../../../../../definitions/daemon';
-import { useUpdateItem } from '../../../../../../../apis/item/updateItem';
+import { useUpdateItem } from '../../../../../../../apis/requests/item/updateItem';
 
 const MenuItemStyle = styled(MenuItem)(({ theme }) => ({
   cursor: 'default',

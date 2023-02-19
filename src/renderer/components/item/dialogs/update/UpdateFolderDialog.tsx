@@ -4,9 +4,9 @@ import { Dialog } from '@mui/material';
 import NiceModal, { NiceModalHocProps, useModal } from '@ebay/nice-modal-react';
 import DialogTitleEnhanced from 'renderer/components/dialog/DialogTitleEnhanced';
 import FolderDetailsForm, { FolderFormValues } from 'renderer/components/item/dialogs/forms/FolderDetailsForm';
-import { useCrudUpdate } from '../../../../apis/crud/crudUpdate';
+import { useCrudUpdate } from '../../../../apis/requests/crud/crudUpdate';
 import { FolderModifyRequestRO, FolderRO } from '../../../../../common/generated_definitions';
-import { folderCrudEntity } from '../../../../apis/crud/entity/entities/folder.crud-entity';
+import { folderCrudEntity } from '../../../../apis/requests/crud/entity/entities/folder.crud-entity';
 
 export type UpdateFolderDialogProps = {
   item: FolderRO;

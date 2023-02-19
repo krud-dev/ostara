@@ -5,8 +5,8 @@ import NiceModal, { NiceModalHocProps, useModal } from '@ebay/nice-modal-react';
 import DialogTitleEnhanced from 'renderer/components/dialog/DialogTitleEnhanced';
 import InstanceDetailsForm, { InstanceFormValues } from 'renderer/components/item/dialogs/forms/InstanceDetailsForm';
 import { InstanceModifyRequestRO, InstanceRO } from '../../../../../common/generated_definitions';
-import { useCrudUpdate } from '../../../../apis/crud/crudUpdate';
-import { instanceCrudEntity } from '../../../../apis/crud/entity/entities/instance.crud-entity';
+import { useCrudUpdate } from '../../../../apis/requests/crud/crudUpdate';
+import { instanceCrudEntity } from '../../../../apis/requests/crud/entity/entities/instance.crud-entity';
 
 export type UpdateInstanceDialogProps = {
   item: InstanceRO;

@@ -1,5 +1,5 @@
 import React, { useCallback } from 'react';
-import { useUpdateItem } from 'renderer/apis/item/updateItem';
+import { useUpdateItem } from 'renderer/apis/requests/item/updateItem';
 import DataCollectionToggle from 'renderer/components/item/data-collection/DataCollectionToggle';
 import { ApplicationRO } from '../../../../common/generated_definitions';
 

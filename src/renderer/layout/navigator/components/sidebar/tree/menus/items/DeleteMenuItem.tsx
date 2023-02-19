@@ -1,6 +1,6 @@
 import { useCallback } from 'react';
 import { FormattedMessage } from 'react-intl';
-import { useDeleteItem } from 'renderer/apis/item/deleteItem';
+import { useDeleteItem } from 'renderer/apis/requests/item/deleteItem';
 import { showDeleteConfirmationDialog } from 'renderer/utils/dialogUtils';
 import CustomMenuItem from 'renderer/components/menu/item/CustomMenuItem';
 import { ItemRO } from '../../../../../../../definitions/daemon';

@@ -7,8 +7,8 @@ import ApplicationDetailsForm, {
   ApplicationFormValues,
 } from 'renderer/components/item/dialogs/forms/ApplicationDetailsForm';
 import { ApplicationModifyRequestRO, ApplicationRO } from '../../../../../common/generated_definitions';
-import { useCrudUpdate } from '../../../../apis/crud/crudUpdate';
-import { applicationCrudEntity } from '../../../../apis/crud/entity/entities/application.crud-entity';
+import { useCrudUpdate } from '../../../../apis/requests/crud/crudUpdate';
+import { applicationCrudEntity } from '../../../../apis/requests/crud/entity/entities/application.crud-entity';
 
 export type UpdateApplicationDialogProps = {
   item: ApplicationRO;

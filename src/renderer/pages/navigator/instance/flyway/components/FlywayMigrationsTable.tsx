@@ -5,7 +5,7 @@ import { Entity } from 'renderer/entity/entity';
 import {
   EnrichedFlywayMigration,
   useGetInstanceFlywayMigrationsQuery,
-} from 'renderer/apis/instance/getInstanceFlywayMigrations';
+} from 'renderer/apis/requests/instance/getInstanceFlywayMigrations';
 import { instanceFlywayMigrationEntity } from 'renderer/entity/entities/instanceFlywayMigration.entity';
 
 type FlywayMigrationsTableProps = {

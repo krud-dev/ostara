@@ -1,5 +1,5 @@
 import { Entity } from 'renderer/entity/entity';
-import { EnrichedFlywayMigration } from 'renderer/apis/instance/getInstanceFlywayMigrations';
+import { EnrichedFlywayMigration } from 'renderer/apis/requests/instance/getInstanceFlywayMigrations';
 import FlywayMigrationDetails from 'renderer/pages/navigator/instance/flyway/components/FlywayMigrationDetails';
 
 export const instanceFlywayMigrationEntity: Entity<EnrichedFlywayMigration> = {

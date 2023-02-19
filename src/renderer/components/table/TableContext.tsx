@@ -3,7 +3,7 @@ import { Entity } from 'renderer/entity/entity';
 import { isEmpty, orderBy } from 'lodash';
 import { DEFAULT_ROWS_PER_PAGE, TABLE_SCROLL_CONTAINER_ID } from 'renderer/constants/ui';
 import { notEmpty } from 'renderer/utils/objectUtils';
-import { BaseUseQueryResult } from 'renderer/apis/base/useBaseQuery';
+import { BaseUseQueryResult } from 'renderer/apis/requests/base/useBaseQuery';
 import { useUpdateEffect } from 'react-use';
 import { getTableDisplayItems } from 'renderer/components/table/utils/tableUtils';
 import { useLocalStorageState } from '../../hooks/useLocalStorageState';

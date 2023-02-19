@@ -1,8 +1,8 @@
 import { EntityBaseColumn } from 'renderer/entity/entity';
 import { useCallback, useMemo } from 'react';
 import LogLevelToggleGroup from 'renderer/components/item/logger/LogLevelToggleGroup';
-import { EnrichedApplicationLoggerRO } from 'renderer/apis/application/getApplicationLoggers';
-import { useSetApplicationLoggerLevel } from 'renderer/apis/application/setApplicationLoggerLevel';
+import { EnrichedApplicationLoggerRO } from 'renderer/apis/requests/application/getApplicationLoggers';
+import { useSetApplicationLoggerLevel } from 'renderer/apis/requests/application/setApplicationLoggerLevel';
 import { map } from 'lodash';
 import { notEmpty } from 'renderer/utils/objectUtils';
 import { LogLevel } from '../../../../common/generated_definitions';
