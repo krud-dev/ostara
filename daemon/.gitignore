@@ -39,3 +39,6 @@ out/
 
 ### SQlite ###
 *.db
+
+### Heapdumps ###
+heapdumps/

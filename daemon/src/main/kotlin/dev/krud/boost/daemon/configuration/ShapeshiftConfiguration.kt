@@ -6,6 +6,8 @@ import dev.krud.boost.daemon.configuration.application.ro.ApplicationRO
 import dev.krud.boost.daemon.configuration.folder.ro.FolderModifyRequestRO
 import dev.krud.boost.daemon.configuration.folder.ro.FolderRO
 import dev.krud.boost.daemon.configuration.instance.health.instancehealthlog.ro.InstanceHealthLogRO
+import dev.krud.boost.daemon.configuration.instance.heapdump.model.InstanceHeapdumpReference
+import dev.krud.boost.daemon.configuration.instance.heapdump.ro.InstanceHeapdumpReferenceRO
 import dev.krud.boost.daemon.configuration.instance.ro.InstanceModifyRequestRO
 import dev.krud.boost.daemon.configuration.instance.ro.InstanceRO
 import dev.krud.boost.daemon.eventlog.enums.EventLogSeverity
@@ -29,5 +31,7 @@ class ShapeshiftConfiguration : ShapeShiftBuilderCustomizer, ShapeShiftAutoConfi
             .withObjectSupplier { InstanceRO(UUID.randomUUID(), "", "", "", "", -1, UUID.randomUUID()) }
             .withObjectSupplier { EventLogRO(UUID.randomUUID(), Date(), EventLogType.INSTANCE_HEALTH_CHANGED, EventLogSeverity.INFO, UUID.randomUUID()) }
             .withObjectSupplier { InstanceHealthLogRO(Date(), UUID.randomUUID()) }
+            .withObjectSupplier { InstanceHeapdumpReference(UUID.randomUUID()) }
+            .withObjectSupplier { InstanceHeapdumpReferenceRO(UUID.randomUUID(), UUID.randomUUID()) }
     }
 }

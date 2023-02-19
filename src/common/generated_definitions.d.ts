@@ -221,6 +221,15 @@ export interface InstanceHealthRO {
     lastStatusChangeTime: DateAsNumber;
 }
 
+export interface InstanceHeapdumpReferenceRO {
+    id: string;
+    instanceId: string;
+    status: InstanceHeapdumpReference$Status;
+    path?: string;
+    size?: number;
+    downloadTime?: DateAsNumber;
+}
+
 export interface InstanceHttpRequestStatisticsRO {
     uri: string;
     count: number;
@@ -527,6 +536,8 @@ export type ApplicationHealthStatus = "ALL_UP" | "ALL_DOWN" | "SOME_DOWN" | "UNK
 export type ApplicationType = "SPRING_BOOT";
 
 export type InstanceHealthStatus = "UP" | "DOWN" | "UNKNOWN" | "OUT_OF_SERVICE" | "UNREACHABLE" | "PENDING" | "INVALID";
+
+export type InstanceHeapdumpReference$Status = "PENDING_DOWNLOAD" | "DOWNLOADING" | "READY" | "FAILED";
 
 export type InstanceAbility = "METRICS" | "ENV" | "BEANS" | "QUARTZ" | "FLYWAY" | "LIQUIBASE" | "LOGGERS" | "CACHES" | "THREADDUMP" | "HEAPDUMP" | "CACHE_STATISTICS" | "SHUTDOWN" | "REFRESH" | "HTTP_REQUEST_STATISTICS" | "INTEGRATIONGRAPH" | "PROPERTIES" | "MAPPINGS" | "SCHEDULEDTASKS" | "HEALTH" | "INFO";
 
