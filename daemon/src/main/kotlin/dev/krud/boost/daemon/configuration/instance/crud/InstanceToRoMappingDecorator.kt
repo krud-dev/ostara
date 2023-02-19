@@ -38,6 +38,8 @@ class InstanceToRoMappingDecorator(
                 } else {
                     context.to.displayName = context.from.id.toShortString()
                 }
+            } else {
+                context.to.displayName = context.from.alias!!
             }
         }
     }
