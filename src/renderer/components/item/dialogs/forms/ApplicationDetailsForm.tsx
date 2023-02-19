@@ -45,6 +45,7 @@ const ApplicationDetailsForm: FunctionComponent<ApplicationDetailsFormProps> = (
             name="alias"
             rules={{
               required: intl.formatMessage({ id: 'requiredField' }),
+              validate: (value) => !!value?.trim() || intl.formatMessage({ id: 'requiredField' }),
             }}
             control={control}
             defaultValue=""

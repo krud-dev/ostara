@@ -155,6 +155,7 @@ const InstanceDetailsForm: FunctionComponent<InstanceDetailsFormProps> = ({
               name="parentApplicationName"
               rules={{
                 required: intl.formatMessage({ id: 'requiredField' }),
+                validate: (value) => !!value?.trim() || intl.formatMessage({ id: 'requiredField' }),
               }}
               control={control}
               defaultValue=""

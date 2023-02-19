@@ -45,6 +45,7 @@ const FolderDetailsForm: FunctionComponent<FolderDetailsFormProps> = ({
             name="alias"
             rules={{
               required: intl.formatMessage({ id: 'requiredField' }),
+              validate: (value) => !!value?.trim() || intl.formatMessage({ id: 'requiredField' }),
             }}
             control={control}
             defaultValue=""
