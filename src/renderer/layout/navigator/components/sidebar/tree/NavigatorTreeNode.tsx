@@ -7,6 +7,7 @@ import typography from 'renderer/theme/config/typography';
 import { KeyboardArrowDown, KeyboardArrowRight, MoreVert, SvgIconComponent } from '@mui/icons-material';
 import { NAVIGATOR_ITEM_HEIGHT } from 'renderer/constants/ui';
 import {
+  getItemDisplayName,
   getItemHealthStatusColor,
   getItemNameTooltip,
   getItemUrl,
@@ -120,7 +121,8 @@ export default function NavigatorTreeNode({ style, node, tree, dragHandle, previ
   );
 
   const color = useItemColor(node.data);
-  const nameTooltip = useMemo<string | undefined>(() => getItemNameTooltip(node.data), [node.data]);
+  const displayName = useMemo<string>(() => getItemDisplayName(node.data), [node.data]);
+  const displayNameTooltip = useMemo<string | undefined>(() => getItemNameTooltip(node.data), [node.data]);
   const healthStatusColor = useMemo<string | undefined>(() => getItemHealthStatusColor(node.data), [node.data]);
   const itemIcon = useItemIcon(node.data);
   const ToggleIcon = useMemo<SvgIconComponent>(
@@ -238,8 +240,8 @@ export default function NavigatorTreeNode({ style, node, tree, dragHandle, previ
           <ListItemText
             disableTypography
             primary={
-              <Tooltip title={nameTooltip}>
-                <span>{node.data.alias}</span>
+              <Tooltip title={displayNameTooltip}>
+                <span>{displayName}</span>
               </Tooltip>
             }
             sx={{
@@ -252,7 +254,7 @@ export default function NavigatorTreeNode({ style, node, tree, dragHandle, previ
           <TextField
             autoFocus
             type={'text'}
-            defaultValue={node.data.alias}
+            defaultValue={displayName}
             size={'small'}
             variant={'outlined'}
             margin={'none'}

@@ -42,6 +42,19 @@ export const getItemType = (item: ItemRO): ItemType => {
   throw new Error(`Unknown item type`);
 };
 
+export const getItemDisplayName = (item: ItemRO): string => {
+  if (isApplication(item)) {
+    return item.alias;
+  }
+  if (isFolder(item)) {
+    return item.alias;
+  }
+  if (isInstance(item)) {
+    return item.displayName;
+  }
+  throw new Error(`Unknown item type`);
+};
+
 export const getItemEntity = (item: ItemRO): CrudEntity => {
   return getItemTypeEntity(getItemType(item));
 };
@@ -73,16 +86,17 @@ export const getItemTypeIcon = (itemType: ItemType): MUIconType => {
 };
 
 export const getItemUrl = (item: ItemRO): string => {
-  if (isApplication(item)) {
-    return generatePath(urls.application.url, { id: item.id });
+  const itemType = getItemType(item);
+  switch (itemType) {
+    case 'folder':
+      return generatePath(urls.folder.url, { id: item.id });
+    case 'application':
+      return generatePath(urls.application.url, { id: item.id });
+    case 'instance':
+      return generatePath(urls.instance.url, { id: item.id });
+    default:
+      throw new Error(`Unknown item type`);
   }
-  if (isFolder(item)) {
-    return generatePath(urls.folder.url, { id: item.id });
-  }
-  if (isInstance(item)) {
-    return generatePath(urls.instance.url, { id: item.id });
-  }
-  throw new Error(`Unknown item type`);
 };
 
 export const getItemNameTooltip = (item: ItemRO): string | undefined => {

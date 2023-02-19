@@ -12,16 +12,18 @@ import ItemIconFormField from 'renderer/components/item/dialogs/forms/fields/Ite
 import { DIGITS_REGEX, URL_REGEX } from 'renderer/constants/regex';
 
 export type InstanceDetailsFormProps = {
-  defaultValues?: InstanceFormValues;
+  defaultValues?: Partial<InstanceFormValues>;
   onSubmit: (data: InstanceFormValues) => Promise<void>;
   onCancel: () => void;
 };
 
 export type InstanceFormValues = {
-  alias: string;
+  alias?: string;
   icon?: string;
   actuatorUrl: string;
   dataCollectionIntervalSeconds: number;
+  parentApplicationId?: string;
+  parentApplicationName?: string;
 };
 
 const InstanceDetailsForm: FunctionComponent<InstanceDetailsFormProps> = ({
@@ -67,38 +69,6 @@ const InstanceDetailsForm: FunctionComponent<InstanceDetailsFormProps> = ({
       <Box component="form" onSubmit={submitHandler} noValidate>
         <DialogContent>
           <Controller
-            name="alias"
-            rules={{
-              required: intl.formatMessage({ id: 'requiredField' }),
-            }}
-            control={control}
-            defaultValue=""
-            render={({ field: { ref, ...field }, fieldState: { invalid, error } }) => {
-              return (
-                <TextField
-                  {...field}
-                  inputRef={ref}
-                  margin="normal"
-                  required
-                  fullWidth
-                  label={<FormattedMessage id="name" />}
-                  type="text"
-                  autoComplete="off"
-                  autoFocus
-                  error={invalid}
-                  helperText={error?.message}
-                  InputProps={{
-                    startAdornment: (
-                      <InputAdornment position="start">
-                        <ItemIconFormField type={'instance'} />
-                      </InputAdornment>
-                    ),
-                  }}
-                />
-              );
-            }}
-          />
-          <Controller
             name="actuatorUrl"
             rules={{
               required: intl.formatMessage({ id: 'requiredField' }),
@@ -117,8 +87,16 @@ const InstanceDetailsForm: FunctionComponent<InstanceDetailsFormProps> = ({
                   label={<FormattedMessage id="actuatorUrl" />}
                   type="url"
                   autoComplete="off"
+                  autoFocus
                   error={invalid}
                   helperText={error?.message}
+                  InputProps={{
+                    startAdornment: (
+                      <InputAdornment position="start">
+                        <ItemIconFormField type={'instance'} />
+                      </InputAdornment>
+                    ),
+                  }}
                 />
               );
             }}
@@ -150,6 +128,54 @@ const InstanceDetailsForm: FunctionComponent<InstanceDetailsFormProps> = ({
               );
             }}
           />
+
+          <Controller
+            name="alias"
+            control={control}
+            defaultValue=""
+            render={({ field: { ref, ...field }, fieldState: { invalid, error } }) => {
+              return (
+                <TextField
+                  {...field}
+                  inputRef={ref}
+                  margin="normal"
+                  fullWidth
+                  label={<FormattedMessage id="alias" />}
+                  type="text"
+                  autoComplete="off"
+                  error={invalid}
+                  helperText={error?.message}
+                />
+              );
+            }}
+          />
+
+          {!defaultValues?.parentApplicationId && (
+            <Controller
+              name="parentApplicationName"
+              rules={{
+                required: intl.formatMessage({ id: 'requiredField' }),
+              }}
+              control={control}
+              defaultValue=""
+              render={({ field: { ref, ...field }, fieldState: { invalid, error } }) => {
+                return (
+                  <TextField
+                    {...field}
+                    inputRef={ref}
+                    margin="normal"
+                    required
+                    fullWidth
+                    label={<FormattedMessage id="applicationName" />}
+                    type="text"
+                    autoComplete="off"
+                    error={invalid}
+                    helperText={error?.message}
+                  />
+                );
+              }}
+            />
+          )}
         </DialogContent>
         <DialogActions>
           <LoadingButton

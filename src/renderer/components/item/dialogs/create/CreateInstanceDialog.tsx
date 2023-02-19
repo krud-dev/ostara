@@ -38,7 +38,7 @@ const CreateInstanceDialog: FunctionComponent<CreateInstanceDialogProps & NiceMo
           if (!instanceParentApplicationId) {
             const applicationToCreate: ApplicationModifyRequestRO = {
               // dataCollectionMode: 'on',
-              alias: data.alias,
+              alias: data.parentApplicationName || '',
               type: 'SPRING_BOOT',
               parentFolderId: parentFolderId,
               sort: sort ?? 1,
@@ -97,7 +97,11 @@ const CreateInstanceDialog: FunctionComponent<CreateInstanceDialogProps & NiceMo
         <DialogTitleEnhanced onClose={cancelHandler}>
           <FormattedMessage id={'createInstance'} />
         </DialogTitleEnhanced>
-        <InstanceDetailsForm onSubmit={submitHandler} onCancel={cancelHandler} />
+        <InstanceDetailsForm
+          defaultValues={{ parentApplicationId: parentApplicationId }}
+          onSubmit={submitHandler}
+          onCancel={cancelHandler}
+        />
       </Dialog>
     );
   }
