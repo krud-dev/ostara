@@ -8,7 +8,7 @@ import locales from '../../../../lang';
 import { ThemeSource } from '../../../../../infra/ui/models/electronTheme';
 
 const ApplicationSettingsPage: FunctionComponent = () => {
-  const { themeSource, setThemeSource, developerMode, setDeveloperMode, localeInfo, setLocale } = useUi();
+  const { themeSource, setThemeSource, localeInfo, setLocale } = useUi();
 
   return (
     <Page>
@@ -31,22 +31,6 @@ const ApplicationSettingsPage: FunctionComponent = () => {
             </MenuItem>
             <MenuItem value={'light'}>
               <FormattedMessage id="light" />
-            </MenuItem>
-          </TextField>
-
-          <TextField
-            fullWidth
-            label={<FormattedMessage id="developerMode" />}
-            margin="normal"
-            select
-            value={developerMode.toString()}
-            onChange={(e) => setDeveloperMode(e.target.value === 'true')}
-          >
-            <MenuItem value={'false'}>
-              <FormattedMessage id="off" />
-            </MenuItem>
-            <MenuItem value={'true'}>
-              <FormattedMessage id="on" />
             </MenuItem>
           </TextField>
 

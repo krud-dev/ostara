@@ -11,7 +11,6 @@ import { useLocalStorageState } from '../hooks/useLocalStorageState';
 
 export type UiContextProps = {
   developerMode: boolean;
-  setDeveloperMode: (developerMode: boolean) => void;
   themeSource: ThemeSource;
   setThemeSource: (themeSource: ThemeSource) => void;
   darkMode: boolean;
@@ -26,7 +25,7 @@ const UiContext = React.createContext<UiContextProps>(undefined!);
 interface UiProviderProps extends PropsWithChildren<any> {}
 
 const UiProvider: FunctionComponent<UiProviderProps> = ({ children }) => {
-  const [developerMode, setDeveloperMode] = useLocalStorageState<boolean>('developerMode', false);
+  const developerMode = useMemo<boolean>(() => window.NODE_ENV === 'development', []);
 
   const [themeSource, setThemeSourceInternal] = useLocalStorageState<ThemeSource>('themeSource', 'system');
   const [darkMode, setDarkMode] = useLocalStorageState<boolean>('darkMode', true);
@@ -98,7 +97,6 @@ const UiProvider: FunctionComponent<UiProviderProps> = ({ children }) => {
     <UiContext.Provider
       value={{
         developerMode,
-        setDeveloperMode,
         themeSource,
         setThemeSource,
         darkMode,
