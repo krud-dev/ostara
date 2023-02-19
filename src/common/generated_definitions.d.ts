@@ -251,7 +251,7 @@ export interface InstancePropertyRO {
 }
 
 export interface InstanceModifyRequestRO {
-    alias: string;
+    alias?: string;
     actuatorUrl: string;
     dataCollectionIntervalSeconds: number;
     parentApplicationId: string;

@@ -12,7 +12,7 @@ import java.util.*
 data class InstanceModifyRequestRO(
     @MappedField
     @get:NotBlank
-    val alias: String,
+    val alias: String?,
     @MappedField
     @get:NotBlank
     var actuatorUrl: String,
