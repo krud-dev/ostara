@@ -13,14 +13,17 @@ class LocalInstanceHeapdumpStoreImpl(
 ) : InstanceHeapdumpStore {
     override val type = "local"
 
-    override fun storeHeapdump(referenceId: UUID, heapdump: InputStream): Result<String> = runCatching {
+    override fun storeHeapdump(referenceId: UUID, heapdump: InputStream): Result<InstanceHeapdumpStore.StoreHeapdumpResult> = runCatching {
         val path = Path(
             appMainProperties.heapdumpDirectory,
             "$referenceId.hprof"
         )
         path.parent.createDirectories()
-        path.toFile().outputStream().use { heapdump.copyTo(it) }
-        path.toString()
+        val size = path.toFile().outputStream().use { heapdump.copyTo(it) }
+        InstanceHeapdumpStore.StoreHeapdumpResult(
+            path.toString(),
+            size
+        )
     }
 
     override fun getHeapdump(referenceId: UUID): Result<InputStream> = runCatching {

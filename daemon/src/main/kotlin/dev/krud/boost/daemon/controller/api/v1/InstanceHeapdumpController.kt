@@ -11,6 +11,7 @@ import io.swagger.v3.oas.annotations.tags.Tag
 import org.springframework.core.io.InputStreamResource
 import org.springframework.http.HttpStatus
 import org.springframework.http.MediaType
+import org.springframework.web.bind.annotation.DeleteMapping
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.PostMapping
@@ -52,5 +53,19 @@ class InstanceHeapdumpController(
         return InputStreamResource(
             instanceHeapdumpService.downloadHeapdump(referenceId)
         )
+    }
+
+    /**
+     * Delete an existing heapdump
+     */
+    @DeleteMapping("/{referenceId}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    @Operation(
+        summary = "Delete a heapdump"
+    )
+    @ApiResponse(responseCode = "204", description = "Heapdump deleted", content = [Content()])
+    @ApiResponse(responseCode = "404", description = "Heapdump not found", content = [Content()])
+    fun delete(@PathVariable referenceId: UUID) {
+        instanceHeapdumpService.deleteHeapdump(referenceId)
     }
 }

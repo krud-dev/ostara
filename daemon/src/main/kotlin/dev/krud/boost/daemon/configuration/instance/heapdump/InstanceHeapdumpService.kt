@@ -85,12 +85,11 @@ class InstanceHeapdumpService(
                 val client = actuatorClientProvider.provide(reference.instanceId)
                 val heapdumpInputStream = client.heapDump()
                     .getOrThrow()
-                val fileSize = heapdumpInputStream.available()
-                val path = instanceHeapdumpStore.storeHeapdump(reference.id, heapdumpInputStream)
+                val (path, size) = instanceHeapdumpStore.storeHeapdump(reference.id, heapdumpInputStream)
                     .getOrThrow()
                 reference.ready(
                     path = path,
-                    size = fileSize.toLong()
+                    size = size
                 )
             } catch (e: Exception) {
                 reference.failed(e)
@@ -107,5 +106,15 @@ class InstanceHeapdumpService(
         }
         return instanceHeapdumpStore.getHeapdump(referenceId)
             .getOrThrow()
+    }
+
+    fun deleteHeapdump(referenceId: UUID) {
+        val reference = getHeapdumpReferenceOrThrow(referenceId)
+        if (reference.status == InstanceHeapdumpReference.Status.DOWNLOADING) {
+            throwBadRequest("Heapdump $referenceId is downloading, please wait.")
+        }
+        instanceHeapdumpStore.deleteHeapdump(referenceId)
+            .getOrThrow()
+        crudHandler.delete(referenceId, InstanceHeapdumpReference::class.java).execute()
     }
 }

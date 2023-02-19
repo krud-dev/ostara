@@ -3,6 +3,7 @@ package dev.krud.boost.daemon.configuration.instance.heapdump.model
 import dev.krud.boost.daemon.configuration.instance.entity.Instance
 import dev.krud.boost.daemon.configuration.instance.heapdump.ro.InstanceHeapdumpReferenceRO
 import dev.krud.boost.daemon.entity.AbstractEntity
+import dev.krud.crudframework.crud.annotation.Deleteable
 import dev.krud.shapeshift.resolver.annotation.DefaultMappingTarget
 import dev.krud.shapeshift.resolver.annotation.MappedField
 import jakarta.persistence.Column
@@ -21,6 +22,7 @@ import java.util.UUID
 @Entity
 @DefaultMappingTarget(InstanceHeapdumpReferenceRO::class)
 @MappedField(mapFrom = "id")
+@Deleteable(false)
 class InstanceHeapdumpReference(
     @Column(name = "instance_id", nullable = false)
     @MappedField
