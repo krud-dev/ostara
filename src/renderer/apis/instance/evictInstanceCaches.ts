@@ -1,6 +1,7 @@
 import { BaseMutationOptions, BaseUseMutationResult, useBaseMutation } from 'renderer/apis/base/useBaseMutation';
 import { axiosInstance } from '../axiosInstance';
 import { AxiosResponse } from 'axios';
+import { EvictCachesRequestRO } from '../../../common/generated_definitions';
 
 type Variables = {
   instanceId: string;
@@ -10,8 +11,12 @@ type Variables = {
 type Data = void;
 
 export const evictInstanceCaches = async (variables: Variables): Promise<Data> => {
-  // TODO: evict by cache name
-  return (await axiosInstance.delete<Data, AxiosResponse<Data>>(`cache/instance/${variables.instanceId}`)).data;
+  return (
+    await axiosInstance.delete<Data, AxiosResponse<Data>, EvictCachesRequestRO>(
+      `cache/instance/${variables.instanceId}/bulk`,
+      { data: { cacheNames: variables.cacheNames } }
+    )
+  ).data;
 };
 
 export const useEvictInstanceCaches = (

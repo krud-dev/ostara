@@ -9,7 +9,7 @@ type Variables = {
 type Data = void;
 
 export const evictAllInstanceCaches = async (variables: Variables): Promise<Data> => {
-  return (await axiosInstance.delete<Data, AxiosResponse<Data>>(`cache/instance/${variables.instanceId}`)).data;
+  return (await axiosInstance.delete<Data, AxiosResponse<Data>>(`cache/instance/${variables.instanceId}/all`)).data;
 };
 
 export const useEvictAllInstanceCaches = (
