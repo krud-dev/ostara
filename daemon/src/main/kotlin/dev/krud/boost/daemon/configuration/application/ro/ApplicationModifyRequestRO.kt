@@ -2,7 +2,7 @@ package dev.krud.boost.daemon.configuration.application.ro
 
 import dev.krud.boost.daemon.configuration.application.entity.Application
 import dev.krud.boost.daemon.configuration.application.enums.ApplicationType
-import dev.krud.boost.daemon.configuration.folder.validation.ValidFolderId
+import dev.krud.boost.daemon.configuration.folder.validation.ValidFolderIdOrNull
 import dev.krud.boost.daemon.utils.DEFAULT_COLOR
 import dev.krud.shapeshift.resolver.annotation.DefaultMappingTarget
 import dev.krud.shapeshift.resolver.annotation.MappedField
@@ -25,6 +25,6 @@ data class ApplicationModifyRequestRO(
     @MappedField
     val sort: Double? = null,
     @MappedField
-    @get:ValidFolderId
+    @get:ValidFolderIdOrNull
     val parentFolderId: UUID? = null
 )

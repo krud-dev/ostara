@@ -1,7 +1,7 @@
 package dev.krud.boost.daemon.configuration.folder.ro
 
 import dev.krud.boost.daemon.configuration.folder.entity.Folder
-import dev.krud.boost.daemon.configuration.folder.validation.ValidFolderId
+import dev.krud.boost.daemon.configuration.folder.validation.ValidFolderIdOrNull
 import dev.krud.boost.daemon.utils.DEFAULT_COLOR
 import dev.krud.shapeshift.resolver.annotation.DefaultMappingTarget
 import dev.krud.shapeshift.resolver.annotation.MappedField
@@ -22,7 +22,7 @@ data class FolderModifyRequestRO(
     @MappedField
     val sort: Double? = null,
     @MappedField
-    @get:ValidFolderId
+    @get:ValidFolderIdOrNull
     val parentFolderId: UUID? = null
 ) {
     companion object {
