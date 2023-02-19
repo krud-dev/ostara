@@ -1,39 +1,26 @@
 import { ChildProcessWithoutNullStreams, spawn } from 'child_process';
 import path from 'path';
-import { app, dialog } from 'electron';
+import { app } from 'electron';
 import axios from 'axios';
 import log from 'electron-log';
 import { systemEvents } from '../events';
 import { isWindows } from '../utils/platform';
 
-type InternalDaemonOptions = {
-  type: 'internal';
+type DaemonOptions = {
   protocol: 'http' | 'https';
   host: string;
   port: number | 'random';
+  external: Boolean;
 };
-
-type ExternalDaemonOptions = {
-  type: 'external';
-  address: string;
-};
-
-function isInternalOptions(options: InternalDaemonOptions | ExternalDaemonOptions): options is InternalDaemonOptions {
-  return options.type === 'internal';
-}
-
-function isExternalDaemonOptions(
-  options: InternalDaemonOptions | ExternalDaemonOptions
-): options is ExternalDaemonOptions {
-  return options.type === 'external';
-}
 
 export class DaemonController {
-  private readonly options: InternalDaemonOptions | ExternalDaemonOptions;
+  private readonly options: DaemonOptions;
 
   private readonly internalPort: number | undefined;
 
   readonly daemonAddress: string;
+
+  readonly daemonWsAddress: string;
 
   private started: boolean = false;
 
@@ -49,23 +36,23 @@ export class DaemonController {
 
   private daemonProcess?: ChildProcessWithoutNullStreams = undefined;
 
-  constructor(options: InternalDaemonOptions | ExternalDaemonOptions) {
+  constructor(options: DaemonOptions) {
     this.options = options;
-    if (isInternalOptions(options)) {
-      let { port } = options;
-      if (port === 'random') {
-        port = Math.floor(Math.random() * 10000) + 10000; // todo: check if port is available
+    let { port } = options;
+    if (port === 'random') {
+      if (options.external) {
+        throw new Error('Cannot use random port with external daemon');
       }
-      this.daemonAddress = `${options.protocol}://${options.host}:${port}`;
-      this.internalPort = port;
-    } else {
-      this.daemonAddress = options.address;
+      port = Math.floor(Math.random() * 10000) + 10000; // todo: check if port is available
     }
+    this.daemonAddress = `${options.protocol}://${options.host}:${port}`;
+    this.daemonWsAddress = `${options.protocol === 'http' ? 'ws' : 'wss'}://${options.host}:${port}/ws`;
+    this.internalPort = port;
   }
 
   async start() {
     return new Promise<void>((resolve) => {
-      if (isInternalOptions(this.options)) {
+      if (!this.options.external) {
         log.info(`Starting daemon on ${this.daemonAddress}...`);
         this.initDaemonProcess();
       } else {
@@ -130,8 +117,8 @@ export class DaemonController {
     if (this.daemonProcess) {
       throw new Error('Daemon is already running');
     }
-    if (!isInternalOptions(this.options)) {
-      throw new Error('Cannot start internal daemon process with external options');
+    if (this.options.external) {
+      throw new Error('Cannot start internal daemon process with external flag');
     }
 
     const env = {
@@ -191,15 +178,17 @@ export async function initDaemon(): Promise<DaemonController> {
   }
   if (app.isPackaged) {
     daemonController = new DaemonController({
-      type: 'internal',
       protocol: 'http',
       host: '127.0.0.1',
       port: 'random',
+      external: false,
     });
   } else {
     daemonController = new DaemonController({
-      type: 'external',
-      address: 'http://127.0.0.1:12222',
+      host: '127.0.0.1',
+      port: 12222,
+      protocol: 'http',
+      external: true,
     });
   }
   daemonController.start().catch((e) => {
