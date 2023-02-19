@@ -9,6 +9,7 @@ import dev.krud.boost.daemon.configuration.instance.messaging.InstanceMovedEvent
 import dev.krud.boost.daemon.configuration.instance.messaging.InstanceUpdatedEventMessage
 import dev.krud.boost.daemon.exception.throwBadRequest
 import dev.krud.boost.daemon.exception.throwNotFound
+import dev.krud.boost.daemon.utils.resolve
 import dev.krud.crudframework.crud.handler.CrudHandler
 import org.springframework.cache.CacheManager
 import org.springframework.cache.annotation.Cacheable
@@ -24,9 +25,9 @@ class InstanceService(
     private val instanceAbilityResolvers: List<InstanceAbilityResolver>,
     private val actuatorClientProvider: InstanceActuatorClientProvider,
     private val systemEventsChannel: PublishSubscribeChannel,
-    private val cacheManager: CacheManager
+    cacheManager: CacheManager
 ) {
-    private val instanceAbilityCache = cacheManager.getCache("instanceAbilityCache")!!
+    private val instanceAbilityCache by cacheManager.resolve()
 
     fun getAllInstances(): List<Instance> {
         return crudHandler

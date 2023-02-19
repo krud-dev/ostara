@@ -6,6 +6,7 @@ import dev.krud.boost.daemon.configuration.application.messaging.ApplicationHeal
 import dev.krud.boost.daemon.configuration.application.ro.ApplicationHealthRO
 import dev.krud.boost.daemon.configuration.instance.health.InstanceHealthService
 import dev.krud.boost.daemon.configuration.instance.messaging.InstanceHealthChangedEventMessage
+import dev.krud.boost.daemon.utils.resolve
 import org.springframework.cache.CacheManager
 import org.springframework.integration.annotation.ServiceActivator
 import org.springframework.integration.channel.PublishSubscribeChannel
@@ -18,9 +19,9 @@ class ApplicationHealthService(
     private val applicationService: ApplicationService,
     private val instanceHealthService: InstanceHealthService,
     private val systemEventsChannel: PublishSubscribeChannel,
-    private val cacheManager: CacheManager
+    cacheManager: CacheManager
 ) {
-    private val applicationHealthCache = cacheManager.getCache("applicationHealthCache")!!
+    private val applicationHealthCache by cacheManager.resolve()
 
     fun getHealth(application: Application): ApplicationHealthRO {
         if (application.instances.isEmpty()) {

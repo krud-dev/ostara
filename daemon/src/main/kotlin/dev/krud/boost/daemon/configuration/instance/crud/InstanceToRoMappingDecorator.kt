@@ -30,17 +30,14 @@ class InstanceToRoMappingDecorator(
         context.to.health = health
         if (health.status.running) {
             context.to.abilities = instanceService.resolveAbilities(context.from)
-            if (context.from.alias == null) {
-                val hostname = instanceHostnameResolver.resolveHostname(context.from.id)
-                if (hostname != null) {
-                    context.to.displayName = hostname
-                    context.to.hostname = hostname
-                } else {
-                    context.to.displayName = context.from.id.toShortString()
-                }
-            } else {
-                context.to.displayName = context.from.alias!!
-            }
+            context.to.hostname = instanceHostnameResolver.resolveHostname(context.from.id)
+        }
+
+        if (context.from.alias.isNullOrBlank()) {
+            context.to.displayName = context.to.hostname
+                ?: context.from.id.toShortString()
+        } else {
+            context.to.displayName = context.from.alias!!
         }
     }
 }

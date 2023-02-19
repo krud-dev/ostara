@@ -11,6 +11,7 @@ import dev.krud.boost.daemon.configuration.instance.messaging.InstanceCreatedEve
 import dev.krud.boost.daemon.configuration.instance.messaging.InstanceDeletedEventMessage
 import dev.krud.boost.daemon.configuration.instance.messaging.InstanceHealthChangedEventMessage
 import dev.krud.boost.daemon.configuration.instance.messaging.InstanceUpdatedEventMessage
+import dev.krud.boost.daemon.utils.resolve
 import dev.krud.crudframework.crud.handler.CrudHandler
 import dev.krud.crudframework.modelfilter.dsl.where
 import org.springframework.cache.CacheManager
@@ -29,10 +30,10 @@ class InstanceHealthService(
     private val instanceService: InstanceService,
     private val actuatorClientProvider: InstanceActuatorClientProvider,
     private val crudHandler: CrudHandler,
-    private val cacheManager: CacheManager,
-    private val systemEventsChannel: PublishSubscribeChannel
+    private val systemEventsChannel: PublishSubscribeChannel,
+    cacheManager: CacheManager
 ) {
-    private val instanceHealthCache = cacheManager.getCache("instanceHealthCache")!!
+    private val instanceHealthCache by cacheManager.resolve()
 
     @Cacheable(cacheNames = ["instanceHealthCache"], key = "#instanceId")
     fun getHealth(instanceId: UUID): InstanceHealthRO {

@@ -9,6 +9,7 @@ import dev.krud.boost.daemon.configuration.instance.httprequeststatistics.ro.Ins
 import dev.krud.boost.daemon.configuration.instance.messaging.InstanceCreatedEventMessage
 import dev.krud.boost.daemon.configuration.instance.messaging.InstanceDeletedEventMessage
 import dev.krud.boost.daemon.configuration.instance.messaging.InstanceUpdatedEventMessage
+import dev.krud.boost.daemon.utils.resolve
 import org.springframework.beans.factory.DisposableBean
 import org.springframework.cache.CacheManager
 import org.springframework.cache.annotation.Cacheable
@@ -22,9 +23,9 @@ import java.util.concurrent.Executors
 class InstanceHttpRequestStatisticsService(
     private val instanceService: InstanceService,
     private val actuatorClientProvider: InstanceActuatorClientProvider,
-    private val cacheManager: CacheManager
+    cacheManager: CacheManager
 ) : DisposableBean {
-    private val httpRequestStatisticsCache = cacheManager.getCache("httpRequestStatisticsCache")!!
+    private val httpRequestStatisticsCache by cacheManager.resolve()
     private val executor = Executors.newCachedThreadPool()
 
     override fun destroy() {

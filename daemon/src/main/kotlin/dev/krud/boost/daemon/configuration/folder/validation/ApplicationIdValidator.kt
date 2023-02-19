@@ -18,7 +18,6 @@ annotation class ValidFolderIdOrNull(val message: String = "Invalid folder ID", 
 class FolderIdOrNullValidator(
     private val crudHandler: CrudHandler
 ) : ConstraintValidator<ValidFolderIdOrNull, UUID> {
-
     override fun isValid(value: UUID?, context: ConstraintValidatorContext?): Boolean {
         return value == null || crudHandler.show(value, Folder::class.java)
             .execute() != null // TODO: we should do a count query instead of a full select

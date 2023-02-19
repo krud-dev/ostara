@@ -12,7 +12,11 @@ class EnvInstanceHostnameResolverImpl(
     @Cacheable(cacheNames = ["instanceHostnameCache"], key = "#instanceId")
     override fun resolveHostname(instanceId: UUID): String? {
         val client = instanceActuatorClientProvider.provide(instanceId)
-        return client.envProperty(HOSTNAME_ENV_KEY).getOrNull()?.property?.value
+        return client.envProperty(HOSTNAME_ENV_KEY).getOrNull()?.property?.value.apply {
+            if (isNullOrBlank()) {
+                return null
+            }
+        }
     }
 
     companion object {
