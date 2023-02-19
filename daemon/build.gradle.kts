@@ -1,7 +1,7 @@
-import cz.habarta.typescript.generator.gradle.GenerateTask
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 import org.springframework.boot.gradle.tasks.bundling.BootJar
 import java.nio.file.Paths
+import cz.habarta.typescript.generator.gradle.GenerateTask
 
 plugins {
     id("org.springframework.boot") version "3.0.2"
@@ -26,23 +26,59 @@ repositories {
     mavenCentral()
 }
 
+val implementationDev by configurations.creating
+
+if (!project.hasProperty("prod")) {
+    configurations {
+        implementation {
+            extendsFrom(implementationDev)
+        }
+    }
+
+    tasks.withType<GenerateTask> {
+        jsonLibrary = cz.habarta.typescript.generator.JsonLibrary.jackson2
+        classPatterns = listOf(
+            "dev.krud.boost.**.*RO",
+            "dev.krud.boost.daemon.actuator.model.*"
+        )
+        excludeClasses = listOf(
+            "java.io.Serializable",
+        )
+        classes = listOf(
+            "dev.krud.crudframework.modelfilter.DynamicModelFilter",
+            "dev.krud.crudframework.ro.PagedResult",
+        )
+        classesWithAnnotations = listOf(
+            "dev.krud.boost.daemon.base.annotations.GenerateTypescript"
+        )
+        val classDelimiter = '$'
+        customTypeNamingFunction = """
+        (name, simpleName) => name.split('.').pop().replaceAll('$', '${classDelimiter}')
+    """.trimIndent()
+        noFileComment = true
+        outputKind = cz.habarta.typescript.generator.TypeScriptOutputKind.module
+        outputFile = Paths.get(project.projectDir.path, "..", "src", "common", "generated_definitions.d.ts").toString()
+        nullabilityDefinition = cz.habarta.typescript.generator.NullabilityDefinition.undefinedInlineUnion
+        mapDate = cz.habarta.typescript.generator.DateMapping.asNumber
+    }
+}
+
+
 dependencies {
     implementation("org.springframework.boot:spring-boot-starter-web")
     implementation("org.springframework.boot:spring-boot-starter-data-jpa")
     implementation("org.springframework.boot:spring-boot-starter-integration")
     implementation("org.springframework.boot:spring-boot-starter-cache")
-    implementation("org.springframework.boot:spring-boot-starter-actuator")
     implementation("org.springframework.boot:spring-boot-starter-websocket")
     implementation("org.jetbrains.kotlin:kotlin-reflect")
     implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
     implementation("org.hibernate.orm:hibernate-community-dialects")
-    implementation("org.jetbrains.kotlin:kotlin-reflect")
     implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8")
     implementation("org.xerial:sqlite-jdbc:3.40.0.0")
     implementation("com.squareup.okhttp3:okhttp:4.10.0")
     implementation("com.google.code.gson:gson:2.10.1")
     implementation("org.flywaydb:flyway-core:9.12.0")
-    implementation("org.springdoc:springdoc-openapi-starter-webmvc-ui:2.0.2")
+    implementationDev("org.springdoc:springdoc-openapi-starter-webmvc-ui:2.0.2")
     implementation("dev.krud:crud-framework-core:$crudFrameworkVersion")
     implementation("dev.krud:crud-framework-hibernate5-connector:$crudFrameworkVersion")
     implementation("dev.krud:shapeshift:$shapeShiftVersion")
@@ -62,38 +98,13 @@ tasks.withType<BootJar> {
 }
 
 tasks.withType<KotlinCompile> {
-    finalizedBy("generateTypeScript")
+    if (!project.hasProperty("prod")) {
+        finalizedBy("generateTypeScript")
+    }
     kotlinOptions {
         freeCompilerArgs = listOf("-Xjsr305=strict")
         jvmTarget = "17"
     }
-}
-
-tasks.withType<GenerateTask> {
-    jsonLibrary = cz.habarta.typescript.generator.JsonLibrary.jackson2
-    classPatterns = listOf(
-        "dev.krud.boost.**.*RO",
-        "dev.krud.boost.daemon.actuator.model.*"
-    )
-    excludeClasses = listOf(
-        "java.io.Serializable",
-    )
-    classes = listOf(
-        "dev.krud.crudframework.modelfilter.DynamicModelFilter",
-        "dev.krud.crudframework.ro.PagedResult",
-    )
-    classesWithAnnotations = listOf(
-        "dev.krud.boost.daemon.base.annotations.GenerateTypescript"
-    )
-    val classDelimiter = '$'
-    customTypeNamingFunction = """
-        (name, simpleName) => name.split('.').pop().replaceAll('$', '${classDelimiter}')
-    """.trimIndent()
-    noFileComment = true
-    outputKind = cz.habarta.typescript.generator.TypeScriptOutputKind.module
-    outputFile = Paths.get(project.projectDir.path, "..", "src", "common", "generated_definitions.d.ts").toString()
-    nullabilityDefinition = cz.habarta.typescript.generator.NullabilityDefinition.undefinedInlineUnion
-    mapDate = cz.habarta.typescript.generator.DateMapping.asNumber
 }
 
 noArg {
