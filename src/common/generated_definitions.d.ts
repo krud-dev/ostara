@@ -224,10 +224,11 @@ export interface InstanceHealthRO {
 export interface InstanceHeapdumpReferenceRO {
     id: string;
     instanceId: string;
+    creationTime: DateAsNumber;
     status: InstanceHeapdumpReference$Status;
     path?: string;
     size?: number;
-    downloadTime?: DateAsNumber;
+    error?: string;
 }
 
 export interface InstanceHttpRequestStatisticsRO {

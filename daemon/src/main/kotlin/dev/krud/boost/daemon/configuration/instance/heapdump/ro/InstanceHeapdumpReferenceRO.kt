@@ -6,8 +6,9 @@ import java.util.*
 class InstanceHeapdumpReferenceRO(
     var id: UUID,
     var instanceId: UUID,
+    var creationTime: Date,
     var status: InstanceHeapdumpReference.Status = InstanceHeapdumpReference.Status.PENDING_DOWNLOAD,
     var path: String? = null,
     var size: Long? = null,
-    var downloadTime: Date? = null
+    var error: String? = null
 )

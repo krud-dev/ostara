@@ -22,6 +22,7 @@ import java.util.UUID
 @Entity
 @DefaultMappingTarget(InstanceHeapdumpReferenceRO::class)
 @MappedField(mapFrom = "id")
+@MappedField(mapFrom = "creationTime")
 @Deleteable(false)
 class InstanceHeapdumpReference(
     @Column(name = "instance_id", nullable = false)
@@ -47,11 +48,11 @@ class InstanceHeapdumpReference(
 
     @Column(nullable = true)
     @Temporal(TemporalType.TIMESTAMP)
-    @MappedField
     var downloadTime: Date? = null
 
     @Column(nullable = true)
     @Lob
+    @MappedField
     var error: String? = null
 
     enum class Status {

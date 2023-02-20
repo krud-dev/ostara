@@ -32,6 +32,6 @@ class ShapeshiftConfiguration : ShapeShiftBuilderCustomizer, ShapeShiftAutoConfi
             .withObjectSupplier { EventLogRO(UUID.randomUUID(), Date(), EventLogType.INSTANCE_HEALTH_CHANGED, EventLogSeverity.INFO, UUID.randomUUID()) }
             .withObjectSupplier { InstanceHealthLogRO(Date(), UUID.randomUUID()) }
             .withObjectSupplier { InstanceHeapdumpReference(UUID.randomUUID()) }
-            .withObjectSupplier { InstanceHeapdumpReferenceRO(UUID.randomUUID(), UUID.randomUUID()) }
+            .withObjectSupplier { InstanceHeapdumpReferenceRO(UUID.randomUUID(), UUID.randomUUID(), Date()) }
     }
 }
