@@ -14,23 +14,27 @@ import {
 import { applicationCrudEntity } from '../../../../apis/requests/crud/entity/entities/application.crudEntity';
 import { instanceCrudEntity } from '../../../../apis/requests/crud/entity/entities/instance.crudEntity';
 import { INHERITED_COLOR_VALUE } from '../../../../hooks/useItemColor';
+import { getActuatorUrls } from '../../../../utils/itemUtils';
+import { useQueryClient } from '@tanstack/react-query';
+import { crudKeys } from '../../../../apis/requests/crud/crudKeys';
 
 export type CreateInstanceDialogProps = {
   parentApplicationId?: string;
   parentFolderId?: string;
   sort?: number;
-  onCreated?: (item: InstanceRO) => void;
+  onCreated?: (item: InstanceRO[]) => void;
 };
 
 const CreateInstanceDialog: FunctionComponent<CreateInstanceDialogProps & NiceModalHocProps> = NiceModal.create(
   ({ parentApplicationId, parentFolderId, sort, onCreated }) => {
     const modal = useModal();
+    const queryClient = useQueryClient();
 
     const createApplicationState = useCrudCreate<ApplicationRO, ApplicationModifyRequestRO>({ refetchNone: true });
-    const createInstanceState = useCrudCreate<InstanceRO, InstanceModifyRequestRO>();
+    const createInstanceState = useCrudCreate<InstanceRO, InstanceModifyRequestRO>({ refetchNone: true });
 
     const submitHandler = useCallback(
-      async (data: InstanceFormValues): Promise<void> => {
+      async (data: InstanceFormValues & { multipleInstances: boolean }): Promise<void> => {
         try {
           let instanceParentApplicationId = parentApplicationId;
           let instanceSort = sort ?? 1;
@@ -54,21 +58,32 @@ const CreateInstanceDialog: FunctionComponent<CreateInstanceDialogProps & NiceMo
             instanceSort = 1;
           }
 
-          const instanceToCreate: InstanceModifyRequestRO = {
-            // dataCollectionMode: 'inherited',
-            alias: data.alias,
-            actuatorUrl: data.actuatorUrl,
-            dataCollectionIntervalSeconds: data.dataCollectionIntervalSeconds,
-            parentApplicationId: instanceParentApplicationId,
-            sort: instanceSort,
-            color: INHERITED_COLOR_VALUE,
-          };
-
-          const result = await createInstanceState.mutateAsync({
-            entity: instanceCrudEntity,
-            item: instanceToCreate,
+          const actuatorUrls = data.multipleInstances ? getActuatorUrls(data.actuatorUrl) : [data.actuatorUrl];
+          const instancesToCreate = actuatorUrls.map((actuatorUrl, index) => {
+            return {
+              // dataCollectionMode: 'inherited',
+              alias: data.alias && actuatorUrls.length > 1 ? `${data.alias} (${index + 1})` : data.alias,
+              actuatorUrl,
+              dataCollectionIntervalSeconds: data.dataCollectionIntervalSeconds,
+              parentApplicationId: instanceParentApplicationId!,
+              sort: instanceSort + index,
+              color: INHERITED_COLOR_VALUE,
+              icon: data.icon,
+            };
           });
+
+          const promises = instancesToCreate.map((instanceToCreate) =>
+            createInstanceState.mutateAsync({
+              entity: instanceCrudEntity,
+              item: instanceToCreate,
+            })
+          );
+          const result = await Promise.all(promises);
           if (result) {
+            // TODO: Remove application invalidation once health events sent correctly
+            queryClient.invalidateQueries(crudKeys.entity(applicationCrudEntity));
+            queryClient.invalidateQueries(crudKeys.entity(instanceCrudEntity));
+
             onCreated?.(result);
 
             modal.resolve(result);

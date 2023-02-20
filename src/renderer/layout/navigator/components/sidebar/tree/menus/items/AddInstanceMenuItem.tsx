@@ -28,7 +28,7 @@ export default function AddInstanceMenuItem({ node, onClose, onCreated }: AddIns
     const parentApplicationId = isApplication(node.data) ? node.data.id : undefined;
     const parentFolderId = isFolder(node.data) ? node.data.id : undefined;
 
-    NiceModal.show<InstanceRO | undefined>(CreateInstanceDialog, {
+    NiceModal.show<InstanceRO[] | undefined>(CreateInstanceDialog, {
       parentApplicationId: parentApplicationId,
       parentFolderId: parentFolderId,
       sort: getNewItemSort(node),

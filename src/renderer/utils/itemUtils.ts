@@ -15,6 +15,7 @@ import { CrudEntity } from '../apis/requests/crud/entity/entity';
 import { applicationCrudEntity } from '../apis/requests/crud/entity/entities/application.crudEntity';
 import { instanceCrudEntity } from '../apis/requests/crud/entity/entities/instance.crudEntity';
 import { folderCrudEntity } from '../apis/requests/crud/entity/entities/folder.crudEntity';
+import { useCallback } from 'react';
 
 export function isApplication(item: ItemRO): item is ApplicationRO {
   return 'instanceCount' in item;
@@ -221,4 +222,11 @@ export const getItemHealthStatusTextId = (item: ItemRO): string | undefined => {
 
 export const isServiceInactive = (item: InstanceRO, ability: InstanceAbility): boolean => {
   return item.abilities.indexOf(ability) === -1;
+};
+
+export const getActuatorUrls = (value: string): string[] => {
+  return value
+    .split(/[,\n ]/)
+    .map((url) => url.trim())
+    .filter((url) => url.length > 0);
 };

@@ -124,9 +124,9 @@ export default function NavigatorTree({ width, search }: NavigatorTreeProps) {
   }, [data]);
 
   const createInstanceHandler = useCallback(async (): Promise<void> => {
-    const instance = await NiceModal.show<InstanceRO | undefined>(CreateInstanceDialog, {});
-    if (instance) {
-      navigate(getItemUrl(instance));
+    const instances = await NiceModal.show<InstanceRO[] | undefined>(CreateInstanceDialog, {});
+    if (instances && !!instances.length) {
+      navigate(getItemUrl(instances[0]));
     }
   }, []);
 

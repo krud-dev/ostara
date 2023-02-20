@@ -11,7 +11,6 @@ import { TreeItem } from 'renderer/layout/navigator/components/sidebar/tree/tree
 import { useNavigate, useParams } from 'react-router-dom';
 import { urls } from 'renderer/routes/urls';
 import { useQueryClient } from '@tanstack/react-query';
-import { apiKeys } from '../apis/apiKeys';
 import { ItemRO } from '../definitions/daemon';
 import { useCrudSearchQuery } from '../apis/requests/crud/crudSearch';
 import { ApplicationRO, FolderRO, InstanceRO } from '../../common/generated_definitions';

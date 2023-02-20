@@ -36,6 +36,7 @@ export default {
   delete: 'Delete',
   areYouSureYouWantToDelete: 'Are you sure you want to delete "{name}"?',
   actuatorUrl: 'Actuator URL',
+  actuatorUrls: 'Actuator URLs',
   requiredField: 'Required field',
   setColor: 'Set Color',
   chooseColor: 'Choose Color',
@@ -170,4 +171,6 @@ export default {
   downloading: 'Downloading',
   ready: 'Ready',
   failed: 'Failed',
+  createMultipleInstances: 'Create Multiple Instances',
+  createSingleInstance: 'Create Single Instance',
 };

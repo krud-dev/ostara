@@ -1,5 +1,5 @@
 import { FormattedMessage, useIntl } from 'react-intl';
-import React, { FunctionComponent, useCallback } from 'react';
+import React, { FunctionComponent, useCallback, useMemo, useState } from 'react';
 import { Controller, FormProvider, useForm } from 'react-hook-form';
 import { Box, Button, DialogActions, DialogContent, TextField } from '@mui/material';
 import { useModal } from '@ebay/nice-modal-react';
@@ -10,14 +10,17 @@ import { getErrorMessage } from 'renderer/utils/errorUtils';
 import InputAdornment from '@mui/material/InputAdornment';
 import ItemIconFormField from 'renderer/components/item/dialogs/forms/fields/ItemIconFormField';
 import { DIGITS_REGEX, URL_REGEX } from 'renderer/constants/regex';
+import { IconViewer } from '../../../common/IconViewer';
+import { getActuatorUrls } from '../../../../utils/itemUtils';
 
 export type InstanceDetailsFormProps = {
   defaultValues?: Partial<InstanceFormValues>;
-  onSubmit: (data: InstanceFormValues) => Promise<void>;
+  onSubmit: (data: InstanceFormValues & { multipleInstances: boolean }) => Promise<void>;
   onCancel: () => void;
 };
 
 export type InstanceFormValues = {
+  id?: string;
   alias?: string;
   icon?: string;
   actuatorUrl: string;
@@ -38,8 +41,16 @@ const InstanceDetailsForm: FunctionComponent<InstanceDetailsFormProps> = ({
   const methods = useForm<InstanceFormValues>({ defaultValues });
   const { control, handleSubmit, watch } = methods;
 
+  const [multipleInstances, setMultipleInstances] = useState<boolean>(false);
+
+  const showMultipleInstancesToggle = useMemo<boolean>(() => !defaultValues?.id, [defaultValues]);
+
+  const toggleMultipleInstances = useCallback((): void => {
+    setMultipleInstances((prev) => !prev);
+  }, [setMultipleInstances]);
+
   const submitHandler = handleSubmit(async (data): Promise<void> => {
-    onSubmit?.(data);
+    onSubmit?.({ ...data, multipleInstances });
   });
 
   const cancelHandler = useCallback((): void => {
@@ -72,7 +83,12 @@ const InstanceDetailsForm: FunctionComponent<InstanceDetailsFormProps> = ({
             name="actuatorUrl"
             rules={{
               required: intl.formatMessage({ id: 'requiredField' }),
-              pattern: { value: URL_REGEX, message: intl.formatMessage({ id: 'invalidUrl' }) },
+              validate: (value) =>
+                (!!value.trim() &&
+                  (multipleInstances
+                    ? getActuatorUrls(value).every((url) => URL_REGEX.test(url))
+                    : URL_REGEX.test(value))) ||
+                intl.formatMessage({ id: 'invalidUrl' }),
             }}
             control={control}
             defaultValue=""
@@ -84,23 +100,28 @@ const InstanceDetailsForm: FunctionComponent<InstanceDetailsFormProps> = ({
                   margin="normal"
                   required
                   fullWidth
-                  label={<FormattedMessage id="actuatorUrl" />}
+                  label={<FormattedMessage id={multipleInstances ? 'actuatorUrls' : 'actuatorUrl'} />}
                   type="url"
                   autoComplete="off"
                   autoFocus
+                  rows={5}
+                  multiline={multipleInstances}
                   error={invalid}
                   helperText={error?.message}
-                  InputProps={{
-                    startAdornment: (
-                      <InputAdornment position="start">
-                        <ItemIconFormField type={'instance'} />
-                      </InputAdornment>
-                    ),
-                  }}
                 />
               );
             }}
           />
+          {showMultipleInstancesToggle && (
+            <Button variant={'text'} size={'small'} onClick={toggleMultipleInstances}>
+              <IconViewer
+                icon={multipleInstances ? 'ControlPointOutlined' : 'ControlPointDuplicateOutlined'}
+                fontSize={'small'}
+                sx={{ mr: 1 }}
+              />
+              <FormattedMessage id={multipleInstances ? 'createSingleInstance' : 'createMultipleInstances'} />
+            </Button>
+          )}
 
           <Controller
             name="dataCollectionIntervalSeconds"
@@ -145,6 +166,13 @@ const InstanceDetailsForm: FunctionComponent<InstanceDetailsFormProps> = ({
                   autoComplete="off"
                   error={invalid}
                   helperText={error?.message}
+                  InputProps={{
+                    startAdornment: (
+                      <InputAdornment position="start">
+                        <ItemIconFormField type={'instance'} />
+                      </InputAdornment>
+                    ),
+                  }}
                 />
               );
             }}
@@ -179,14 +207,16 @@ const InstanceDetailsForm: FunctionComponent<InstanceDetailsFormProps> = ({
           )}
         </DialogContent>
         <DialogActions>
-          <LoadingButton
-            variant="text"
-            color="primary"
-            loading={testConnectionState.isLoading}
-            onClick={testConnectionHandler}
-          >
-            <FormattedMessage id={'testConnection'} />
-          </LoadingButton>
+          {!multipleInstances && (
+            <LoadingButton
+              variant="text"
+              color="primary"
+              loading={testConnectionState.isLoading}
+              onClick={testConnectionHandler}
+            >
+              <FormattedMessage id={'testConnection'} />
+            </LoadingButton>
+          )}
           <Box sx={{ flexGrow: 1 }} />
           <Button variant="outlined" color="primary" onClick={cancelHandler}>
             <FormattedMessage id={'cancel'} />

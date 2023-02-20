@@ -47,7 +47,7 @@ export default function CreateItemMenuItems({ menuState }: CreateItemMenuItemsPr
   const createInstanceHandler = useCallback((): void => {
     menuState.close();
 
-    NiceModal.show<InstanceRO | undefined>(CreateInstanceDialog, {
+    NiceModal.show<InstanceRO[] | undefined>(CreateInstanceDialog, {
       sort: getNewItemOrder(),
     });
   }, [menuState, getNewItemOrder]);
