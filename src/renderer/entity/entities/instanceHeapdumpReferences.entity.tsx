@@ -7,20 +7,15 @@ export const instanceHeapdumpReferencesEntity: Entity<InstanceHeapdumpReferenceR
   id: 'instanceHeapdumpReference',
   columns: [
     {
-      id: 'id',
-      type: 'Text',
-      labelId: 'id',
-    },
-    {
-      id: 'downloadTime',
+      id: 'creationTime',
       type: 'Date',
-      labelId: 'downloadTime',
+      labelId: 'requestTime',
     },
     {
       id: 'status',
       type: 'Label',
       labelId: 'status',
-      width: 125,
+      getTooltip: (item) => (item.status === 'FAILED' ? item.error : undefined),
       getColor: (item) => {
         switch (item.status) {
           case 'PENDING_DOWNLOAD':
@@ -51,15 +46,9 @@ export const instanceHeapdumpReferencesEntity: Entity<InstanceHeapdumpReferenceR
       },
     },
     {
-      id: 'path',
-      type: 'Text',
-      labelId: 'path',
-    },
-    {
       id: 'size',
       type: 'Bytes',
       labelId: 'size',
-      width: 125,
     },
   ],
   actions: [
@@ -73,6 +62,7 @@ export const instanceHeapdumpReferencesEntity: Entity<InstanceHeapdumpReferenceR
       id: DELETE_ID,
       labelId: 'delete',
       icon: 'DeleteOutlined',
+      isDisabled: (item) => item.status !== 'READY' && item.status !== 'FAILED',
     },
   ],
   massActions: [],
@@ -85,7 +75,7 @@ export const instanceHeapdumpReferencesEntity: Entity<InstanceHeapdumpReferenceR
   ],
   defaultOrder: [
     {
-      id: 'downloadTime',
+      id: 'creationTime',
       direction: 'desc',
     },
   ],

@@ -31,7 +31,11 @@ const InstanceHeapdumpReferences: FunctionComponent = () => {
       case DOWNLOAD_ID:
         try {
           await downloadHeapdumpState.mutateAsync({ reference: row });
-        } catch (e) {}
+        } catch (e) {
+          enqueueSnackbar(<FormattedMessage id={'heapdumpDownloadFailed'} />, {
+            variant: 'error',
+          });
+        }
         break;
       case DELETE_ID:
         try {
