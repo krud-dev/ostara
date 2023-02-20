@@ -6,7 +6,7 @@ import DialogTitleEnhanced from 'renderer/components/dialog/DialogTitleEnhanced'
 import FolderDetailsForm, { FolderFormValues } from 'renderer/components/item/dialogs/forms/FolderDetailsForm';
 import { FolderModifyRequestRO, FolderRO } from '../../../../../common/generated_definitions';
 import { useCrudCreate } from '../../../../apis/requests/crud/crudCreate';
-import { folderCrudEntity } from '../../../../apis/requests/crud/entity/entities/folder.crud-entity';
+import { folderCrudEntity } from '../../../../apis/requests/crud/entity/entities/folder.crudEntity';
 import { INHERITED_COLOR_VALUE } from '../../../../hooks/useItemColor';
 
 export type CreateFolderDialogProps = {

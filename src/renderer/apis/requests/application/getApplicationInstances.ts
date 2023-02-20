@@ -1,9 +1,13 @@
 import { BaseQueryOptions, BaseUseQueryResult, useBaseQuery } from '../base/useBaseQuery';
-import { BaseMutationOptions, BaseUseMutationResult, useBaseMutation } from 'renderer/apis/requests/base/useBaseMutation';
+import {
+  BaseMutationOptions,
+  BaseUseMutationResult,
+  useBaseMutation,
+} from 'renderer/apis/requests/base/useBaseMutation';
 import { apiKeys } from 'renderer/apis/apiKeys';
 import { InstanceRO } from '../../../../common/generated_definitions';
 import { crudSearch } from '../crud/crudSearch';
-import { instanceCrudEntity } from '../crud/entity/entities/instance.crud-entity';
+import { instanceCrudEntity } from '../crud/entity/entities/instance.crudEntity';
 
 type Variables = {
   applicationId: string;

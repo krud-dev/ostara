@@ -21,10 +21,7 @@ export const formatWidgetValue = (value: unknown, valueType: WidgetValueType, in
       if (!isNumber(value)) {
         return toString(value);
       }
-      if (value >= 1024 * 1024 * 1024) {
-        return `${roundNumber(value / 1024 / 1024 / 1024, 2)} GB`;
-      }
-      return `${roundNumber(value / 1024 / 1024, 2)} MB`;
+      return formatBytes(value);
     }
     case 'seconds': {
       if (!isNumber(value)) {
@@ -63,4 +60,11 @@ export const formatWidgetChartValue = (value: unknown, valueType: WidgetValueTyp
     default:
       return value;
   }
+};
+
+export const formatBytes = (bytes: number): string => {
+  if (bytes >= 1024 * 1024 * 1024) {
+    return `${roundNumber(bytes / 1024 / 1024 / 1024, 2)} GB`;
+  }
+  return `${roundNumber(bytes / 1024 / 1024, 2)} MB`;
 };

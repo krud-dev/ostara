@@ -9,7 +9,7 @@ type TableCellDataLabelProps<EntityItem> = {
 };
 
 export default function TableCellDataLabel<EntityItem>({ row, column }: TableCellDataLabelProps<EntityItem>) {
-  const value = useMemo(() => get(row, column.id), [row, column]);
+  const value = useMemo(() => (column.getText ? column.getText(row) : get(row, column.id)), [row, column]);
   const color = useMemo(() => column.getColor(row), [value, column]);
 
   return (

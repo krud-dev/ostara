@@ -1,4 +1,5 @@
 import { ElectronTheme, ThemeSource } from './models/electronTheme';
+import electronDl from 'electron-dl';
 
 declare global {
   type UiServiceBridge = {
@@ -8,6 +9,7 @@ declare global {
     minimizeWindow(): Promise<void>;
     maximizeWindow(): Promise<void>;
     closeWindow(): Promise<void>;
+    downloadFile(url: string, options?: electronDl.Options): Promise<void>;
     isMac: boolean;
     isWindows: boolean;
     isLinux: boolean;

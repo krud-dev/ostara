@@ -161,4 +161,11 @@ export default {
   invalidNumber: 'Invalid number',
   overview: 'Overview',
   language: 'Language',
+  download: 'Download',
+  requestHeapdump: 'Request Heapdump',
+  heapdumpRequestedSuccessfully: 'Heapdump requested successfully',
+  pending: 'Pending',
+  downloading: 'Downloading',
+  ready: 'Ready',
+  failed: 'Failed',
 };

@@ -41,6 +41,7 @@ export const apiKeys = {
     'exceptions',
   ],
   itemInstances: (id: string) => [...apiKeys.item(id), 'instances'],
+  itemHeapdumps: (id: string) => [...apiKeys.item(id), 'heapdumps'],
 
   actuator: () => ['actuator'],
   actuatorConnection: (url: string) => [...apiKeys.actuator(), 'connection', url],

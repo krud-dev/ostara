@@ -1,5 +1,5 @@
 import { MUIconType } from 'renderer/components/common/IconViewer';
-import { ComponentType } from 'react';
+import { ComponentType, ReactNode } from 'react';
 import { LabelColor } from 'renderer/components/common/Label';
 
 export type Entity<EntityItem, CustomFilters = never> = {
@@ -48,9 +48,14 @@ export type EntityDateColumn<EntityItem> = EntityBaseColumn<EntityItem> & {
   readonly type: 'Date';
 };
 
+export type EntityBytesColumn<EntityItem> = EntityBaseColumn<EntityItem> & {
+  readonly type: 'Bytes';
+};
+
 export type EntityLabelColumn<EntityItem> = EntityBaseColumn<EntityItem> & {
   readonly type: 'Label';
   getColor: (item: EntityItem) => LabelColor;
+  getText?: (item: EntityItem) => ReactNode;
 };
 
 export type EntityCustomColumn<EntityItem> = EntityBaseColumn<EntityItem> & {
@@ -63,6 +68,7 @@ export type EntityColumn<EntityItem> =
   | EntityNumberColumn<EntityItem>
   | EntityCronColumn<EntityItem>
   | EntityDateColumn<EntityItem>
+  | EntityBytesColumn<EntityItem>
   | EntityLabelColumn<EntityItem>
   | EntityCustomColumn<EntityItem>;
 

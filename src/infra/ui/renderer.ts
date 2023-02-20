@@ -1,6 +1,7 @@
 import { ipcRenderer } from 'electron';
 import { ElectronTheme, ThemeSource } from './models/electronTheme';
 import { isLinux, isMac, isWindows } from '../utils/platform';
+import electronDl from 'electron-dl';
 
 export const uiServiceBridge: UiServiceBridge = {
   getTheme(): Promise<ElectronTheme> {
@@ -22,6 +23,10 @@ export const uiServiceBridge: UiServiceBridge = {
   },
   closeWindow(): Promise<void> {
     return ipcRenderer.invoke('uiService:closeWindow');
+  },
+
+  downloadFile(url: string, options?: electronDl.Options): Promise<void> {
+    return ipcRenderer.invoke('uiService:downloadFile', url, options);
   },
 
   isMac: isMac,

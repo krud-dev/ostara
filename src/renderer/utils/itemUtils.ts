@@ -1,7 +1,6 @@
 import { generatePath } from 'react-router-dom';
 import { urls } from 'renderer/routes/urls';
 import { green, orange, pink, red, yellow } from '@mui/material/colors';
-import { ColorSchema } from 'renderer/theme/config/palette';
 import blueGrey from '@mui/material/colors/blueGrey';
 import { MUIconType } from 'renderer/components/common/IconViewer';
 import { ItemRO, ItemType } from '../definitions/daemon';
@@ -13,9 +12,9 @@ import {
   InstanceRO,
 } from '../../common/generated_definitions';
 import { CrudEntity } from '../apis/requests/crud/entity/entity';
-import { applicationCrudEntity } from '../apis/requests/crud/entity/entities/application.crud-entity';
-import { instanceCrudEntity } from '../apis/requests/crud/entity/entities/instance.crud-entity';
-import { folderCrudEntity } from '../apis/requests/crud/entity/entities/folder.crud-entity';
+import { applicationCrudEntity } from '../apis/requests/crud/entity/entities/application.crudEntity';
+import { instanceCrudEntity } from '../apis/requests/crud/entity/entities/instance.crudEntity';
+import { folderCrudEntity } from '../apis/requests/crud/entity/entities/folder.crudEntity';
 
 export function isApplication(item: ItemRO): item is ApplicationRO {
   return 'instanceCount' in item;

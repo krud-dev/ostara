@@ -6,6 +6,7 @@ import TableCellDataDate from 'renderer/components/table/data/TableCellDataDate'
 import TableCellDataCustom from 'renderer/components/table/data/TableCellDataCustom';
 import TableCellDataLabel from 'renderer/components/table/data/TableCellDataLabel';
 import TableCellDataNumber from 'renderer/components/table/data/TableCellDataNumber';
+import TableCellDataBytes from './TableCellDataBytes';
 
 type TableCellDataProps<EntityItem> = {
   row: EntityItem;
@@ -23,6 +24,8 @@ export default function TableCellData<EntityItem>({ row, column }: TableCellData
         return <TableCellDataCron row={row} column={column} />;
       case 'Date':
         return <TableCellDataDate row={row} column={column} />;
+      case 'Bytes':
+        return <TableCellDataBytes row={row} column={column} />;
       case 'Label':
         return <TableCellDataLabel row={row} column={column} />;
       case 'Custom':

@@ -11,8 +11,8 @@ import {
   InstanceModifyRequestRO,
   InstanceRO,
 } from '../../../../../common/generated_definitions';
-import { applicationCrudEntity } from '../../../../apis/requests/crud/entity/entities/application.crud-entity';
-import { instanceCrudEntity } from '../../../../apis/requests/crud/entity/entities/instance.crud-entity';
+import { applicationCrudEntity } from '../../../../apis/requests/crud/entity/entities/application.crudEntity';
+import { instanceCrudEntity } from '../../../../apis/requests/crud/entity/entities/instance.crudEntity';
 import { INHERITED_COLOR_VALUE } from '../../../../hooks/useItemColor';
 
 export type CreateInstanceDialogProps = {

@@ -22,6 +22,7 @@ import ApplicationSettingsPage from 'renderer/pages/navigator/settings/applicati
 import InstanceLiquibase from 'renderer/pages/navigator/instance/liquibase';
 import InstanceLoggers from 'renderer/pages/navigator/instance/loggers';
 import ApplicationLoggers from 'renderer/pages/navigator/application/loggers';
+import InstanceHeapdumpReferences from '../pages/navigator/instance/heapdumps';
 
 export default function Router() {
   return useRoutes([
@@ -122,7 +123,7 @@ export default function Router() {
             },
             {
               path: urls.instanceHeapDump.path,
-              element: <InstanceDashboard />,
+              element: <InstanceHeapdumpReferences />,
             },
           ],
         },

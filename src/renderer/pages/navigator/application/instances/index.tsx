@@ -11,11 +11,10 @@ import { ApplicationRO, InstanceRO } from '../../../../../common/generated_defin
 const ApplicationInstances: FunctionComponent = () => {
   const { selectedItem } = useNavigatorTree();
 
-  const item = useMemo<ApplicationRO | undefined>(() => selectedItem as ApplicationRO | undefined, [selectedItem]);
-  const itemId = useMemo<string>(() => item?.id || '', [item]);
+  const item = useMemo<ApplicationRO>(() => selectedItem as ApplicationRO, [selectedItem]);
 
   const entity = useMemo<Entity<InstanceRO>>(() => applicationInstanceEntity, []);
-  const queryState = useGetApplicationInstancesQuery({ applicationId: itemId });
+  const queryState = useGetApplicationInstancesQuery({ applicationId: item.id });
 
   const actionsHandler = useCallback(async (actionId: string, row: InstanceRO): Promise<void> => {}, []);
 

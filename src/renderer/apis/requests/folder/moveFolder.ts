@@ -1,8 +1,12 @@
-import { BaseMutationOptions, BaseUseMutationResult, useBaseMutation } from 'renderer/apis/requests/base/useBaseMutation';
+import {
+  BaseMutationOptions,
+  BaseUseMutationResult,
+  useBaseMutation,
+} from 'renderer/apis/requests/base/useBaseMutation';
 import { axiosInstance } from '../../axiosInstance';
 import { AxiosResponse } from 'axios';
 import { FolderRO } from '../../../../common/generated_definitions';
-import { folderCrudEntity } from '../crud/entity/entities/folder.crud-entity';
+import { folderCrudEntity } from '../crud/entity/entities/folder.crudEntity';
 import { crudKeys } from '../crud/crudKeys';
 
 type Variables = {

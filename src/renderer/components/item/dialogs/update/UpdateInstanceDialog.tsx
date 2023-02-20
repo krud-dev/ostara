@@ -6,7 +6,7 @@ import DialogTitleEnhanced from 'renderer/components/dialog/DialogTitleEnhanced'
 import InstanceDetailsForm, { InstanceFormValues } from 'renderer/components/item/dialogs/forms/InstanceDetailsForm';
 import { InstanceModifyRequestRO, InstanceRO } from '../../../../../common/generated_definitions';
 import { useCrudUpdate } from '../../../../apis/requests/crud/crudUpdate';
-import { instanceCrudEntity } from '../../../../apis/requests/crud/entity/entities/instance.crud-entity';
+import { instanceCrudEntity } from '../../../../apis/requests/crud/entity/entities/instance.crudEntity';
 
 export type UpdateInstanceDialogProps = {
   item: InstanceRO;
