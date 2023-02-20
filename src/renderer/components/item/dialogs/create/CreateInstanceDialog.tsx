@@ -26,7 +26,7 @@ const CreateInstanceDialog: FunctionComponent<CreateInstanceDialogProps & NiceMo
   ({ parentApplicationId, parentFolderId, sort, onCreated }) => {
     const modal = useModal();
 
-    const createApplicationState = useCrudCreate<ApplicationRO, ApplicationModifyRequestRO>();
+    const createApplicationState = useCrudCreate<ApplicationRO, ApplicationModifyRequestRO>({ refetchNone: true });
     const createInstanceState = useCrudCreate<InstanceRO, InstanceModifyRequestRO>();
 
     const submitHandler = useCallback(

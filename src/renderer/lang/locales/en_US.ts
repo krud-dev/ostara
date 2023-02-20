@@ -162,6 +162,7 @@ export default {
   overview: 'Overview',
   language: 'Language',
   download: 'Download',
+  downloadTime: 'Download Time',
   requestHeapdump: 'Request Heapdump',
   heapdumpRequestedSuccessfully: 'Heapdump requested successfully',
   pending: 'Pending',
