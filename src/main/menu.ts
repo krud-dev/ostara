@@ -43,17 +43,17 @@ export default class MenuBuilder {
 
   buildMacTemplate(): MenuItemConstructorOptions[] {
     const subMenuAbout: DarwinMenuItemConstructorOptions = {
-      label: 'Electron',
+      label: 'SpringBoost',
       submenu: [
         {
-          label: 'About ElectronReact',
+          label: 'About SpringBoost',
           selector: 'orderFrontStandardAboutPanel:',
         },
         { type: 'separator' },
         { label: 'Services', submenu: [] },
         { type: 'separator' },
         {
-          label: 'Hide ElectronReact',
+          label: 'Hide SpringBoost',
           accelerator: 'Command+H',
           selector: 'hide:',
         },
