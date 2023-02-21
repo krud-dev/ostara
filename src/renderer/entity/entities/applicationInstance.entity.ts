@@ -8,7 +8,7 @@ export const applicationInstanceEntity: Entity<InstanceRO> = {
   id: 'applicationInstance',
   columns: [
     {
-      id: 'alias',
+      id: 'displayName',
       type: 'Text',
       labelId: 'name',
       getTooltip: (item) => item.actuatorUrl,
