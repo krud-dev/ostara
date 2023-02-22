@@ -80,14 +80,13 @@ const CreateInstanceDialog: FunctionComponent<CreateInstanceDialogProps & NiceMo
           );
           const result = await Promise.all(promises);
           if (result) {
-            // TODO: Remove application invalidation once health events sent correctly
             queryClient.invalidateQueries(crudKeys.entity(applicationCrudEntity));
             queryClient.invalidateQueries(crudKeys.entity(instanceCrudEntity));
 
             onCreated?.(result);
 
             modal.resolve(result);
-            modal.hide();
+            await modal.hide();
           }
         } catch (e) {}
       },

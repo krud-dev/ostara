@@ -32,7 +32,7 @@ const UpdateApplicationDialog: FunctionComponent<UpdateApplicationDialogProps & 
           onUpdated?.(result);
 
           modal.resolve(result);
-          modal.hide();
+          await modal.hide();
         }
       } catch (e) {}
     }, []);

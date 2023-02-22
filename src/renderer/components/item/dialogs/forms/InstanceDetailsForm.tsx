@@ -39,7 +39,12 @@ const InstanceDetailsForm: FunctionComponent<InstanceDetailsFormProps> = ({
   const { enqueueSnackbar } = useSnackbar();
 
   const methods = useForm<InstanceFormValues>({ defaultValues });
-  const { control, handleSubmit, watch } = methods;
+  const {
+    control,
+    handleSubmit,
+    formState: { isSubmitting },
+    watch,
+  } = methods;
 
   const [multipleInstances, setMultipleInstances] = useState<boolean>(false);
 
@@ -50,7 +55,7 @@ const InstanceDetailsForm: FunctionComponent<InstanceDetailsFormProps> = ({
   }, [setMultipleInstances]);
 
   const submitHandler = handleSubmit(async (data): Promise<void> => {
-    onSubmit?.({ ...data, multipleInstances });
+    await onSubmit?.({ ...data, multipleInstances });
   });
 
   const cancelHandler = useCallback((): void => {
@@ -218,10 +223,10 @@ const InstanceDetailsForm: FunctionComponent<InstanceDetailsFormProps> = ({
             </LoadingButton>
           )}
           <Box sx={{ flexGrow: 1 }} />
-          <Button variant="outlined" color="primary" onClick={cancelHandler}>
+          <Button variant="outlined" color="primary" disabled={isSubmitting} onClick={cancelHandler}>
             <FormattedMessage id={'cancel'} />
           </Button>
-          <LoadingButton variant="contained" color="primary" type={'submit'}>
+          <LoadingButton variant="contained" color="primary" loading={isSubmitting} type={'submit'}>
             <FormattedMessage id={'save'} />
           </LoadingButton>
         </DialogActions>

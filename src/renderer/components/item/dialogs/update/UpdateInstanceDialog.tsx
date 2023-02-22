@@ -30,7 +30,7 @@ const UpdateInstanceDialog: FunctionComponent<UpdateInstanceDialogProps & NiceMo
           onUpdated?.(result);
 
           modal.resolve(result);
-          modal.hide();
+          await modal.hide();
         }
       } catch (e) {}
     }, []);

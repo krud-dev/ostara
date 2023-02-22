@@ -1,5 +1,5 @@
 import { FormattedMessage, useIntl } from 'react-intl';
-import React, { FunctionComponent, useCallback } from 'react';
+import React, { FunctionComponent, useCallback, useState } from 'react';
 import { Controller, FormProvider, useForm } from 'react-hook-form';
 import { Box, Button, DialogActions, DialogContent, TextField } from '@mui/material';
 import { useModal } from '@ebay/nice-modal-react';
@@ -27,10 +27,14 @@ const FolderDetailsForm: FunctionComponent<FolderDetailsFormProps> = ({
   const intl = useIntl();
 
   const methods = useForm<FolderFormValues>({ defaultValues });
-  const { control, handleSubmit } = methods;
+  const {
+    control,
+    handleSubmit,
+    formState: { isSubmitting },
+  } = methods;
 
   const submitHandler = handleSubmit(async (data): Promise<void> => {
-    onSubmit?.(data);
+    await onSubmit?.(data);
   });
 
   const cancelHandler = useCallback((): void => {
@@ -77,10 +81,10 @@ const FolderDetailsForm: FunctionComponent<FolderDetailsFormProps> = ({
         </DialogContent>
         <DialogActions>
           <Box sx={{ flexGrow: 1 }} />
-          <Button variant="outlined" color="primary" onClick={cancelHandler}>
+          <Button variant="outlined" color="primary" disabled={isSubmitting} onClick={cancelHandler}>
             <FormattedMessage id={'cancel'} />
           </Button>
-          <LoadingButton variant="contained" color="primary" type={'submit'}>
+          <LoadingButton variant="contained" color="primary" loading={isSubmitting} type={'submit'}>
             <FormattedMessage id={'save'} />
           </LoadingButton>
         </DialogActions>
