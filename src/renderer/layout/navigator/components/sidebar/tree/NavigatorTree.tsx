@@ -26,6 +26,7 @@ import { OpenMap } from 'react-arborist/src/state/open-slice';
 import { InstanceRO } from '../../../../../../common/generated_definitions';
 import { ItemRO, ItemType } from '../../../../../definitions/daemon';
 import { NodeApi } from 'react-arborist/dist/interfaces/node-api';
+import { useUpdateEffect } from 'react-use';
 
 const TreeStyle = styled(Tree<TreeItem>)(({ theme }) => ({
   '& [role="treeitem"]': {
@@ -146,13 +147,22 @@ export default function NavigatorTree({ width, search }: NavigatorTreeProps) {
     [updateItemState]
   );
 
+  const [disableDrag, setDisableDrag] = useState<boolean>(false);
+
+  useUpdateEffect(() => {
+    setDisableDrag(false);
+  }, [data]);
+
   const moveItemState = useMoveItem();
 
   const moveItem = useCallback(
     async (id: string, type: ItemType, parentId: string | undefined, sort: number): Promise<ItemRO | undefined> => {
+      setDisableDrag(true);
       try {
         return await moveItemState.mutateAsync({ id, type, parentId, sort });
-      } catch (e) {}
+      } catch (e) {
+        setDisableDrag(false);
+      }
       return undefined;
     },
     [moveItemState]
@@ -299,6 +309,7 @@ export default function NavigatorTree({ width, search }: NavigatorTreeProps) {
           onMove={onMove}
           onDelete={onDelete}
           onToggle={onToggle}
+          disableDrag={disableDrag}
           disableDrop={disableDrop}
         >
           {NavigatorTreeNode}
