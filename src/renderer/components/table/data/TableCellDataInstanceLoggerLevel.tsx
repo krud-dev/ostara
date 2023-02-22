@@ -1,9 +1,10 @@
 import { EntityBaseColumn } from 'renderer/entity/entity';
-import { useCallback, useMemo } from 'react';
+import { useCallback, useMemo, useState } from 'react';
 import LogLevelToggleGroup from 'renderer/components/item/logger/LogLevelToggleGroup';
 import { useSetInstanceLoggerLevel } from 'renderer/apis/requests/instance/setInstanceLoggerLevel';
 import { EnrichedInstanceLoggerRO } from 'renderer/apis/requests/instance/getInstanceLoggers';
 import { LogLevel } from '../../../../common/generated_definitions';
+import { useUpdateEffect } from 'react-use';
 
 type TableCellDataLoggerLevelProps<EntityItem extends EnrichedInstanceLoggerRO> = {
   row: EntityItem;
@@ -14,17 +15,28 @@ export default function TableCellDataInstanceLoggerLevel<EntityItem extends Enri
   row,
   column,
 }: TableCellDataLoggerLevelProps<EntityItem>) {
-  const setLevelState = useSetInstanceLoggerLevel();
+  const [disabled, setDisabled] = useState<boolean>(false);
 
+  const setLevelState = useSetInstanceLoggerLevel();
   const changeHandler = useCallback(
-    (newLevel: LogLevel | undefined) => {
+    async (newLevel: LogLevel | undefined): Promise<void> => {
       if (setLevelState.isLoading) {
         return;
       }
-      setLevelState.mutate({ instanceId: row.instanceId, loggerName: row.name, level: newLevel });
+
+      setDisabled(true);
+      try {
+        await setLevelState.mutateAsync({ instanceId: row.instanceId, loggerName: row.name, level: newLevel });
+      } catch (e) {
+        setDisabled(false);
+      }
     },
     [row, setLevelState]
   );
+
+  useUpdateEffect(() => {
+    setDisabled(false);
+  }, [row.effectiveLevel, row.configuredLevel]);
 
   const effectiveLevels = useMemo<LogLevel[]>(
     () => (row.effectiveLevel ? [row.effectiveLevel] : []),
@@ -39,6 +51,7 @@ export default function TableCellDataInstanceLoggerLevel<EntityItem extends Enri
     <LogLevelToggleGroup
       effectiveLevels={effectiveLevels}
       configuredLevels={configuredLevels}
+      disabled={disabled}
       onChange={changeHandler}
     />
   );
