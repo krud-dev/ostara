@@ -6,7 +6,7 @@ import dev.krud.boost.daemon.configuration.instance.entity.Instance.Companion.ef
 import dev.krud.boost.daemon.configuration.instance.health.InstanceHealthService
 import dev.krud.boost.daemon.configuration.instance.hostname.InstanceHostnameResolver
 import dev.krud.boost.daemon.configuration.instance.ro.InstanceRO
-import dev.krud.boost.daemon.utils.toShortString
+import dev.krud.boost.daemon.utils.stripHttpProtocolIfPresent
 import dev.krud.shapeshift.decorator.MappingDecorator
 import dev.krud.shapeshift.decorator.MappingDecoratorContext
 import org.springframework.context.annotation.Lazy
@@ -35,7 +35,8 @@ class InstanceToRoMappingDecorator(
 
         if (context.from.alias.isNullOrBlank()) {
             context.to.displayName = context.to.hostname
-                ?: context.from.id.toShortString()
+                ?: context.from.actuatorUrl
+                    .stripHttpProtocolIfPresent()
         } else {
             context.to.displayName = context.from.alias!!
         }

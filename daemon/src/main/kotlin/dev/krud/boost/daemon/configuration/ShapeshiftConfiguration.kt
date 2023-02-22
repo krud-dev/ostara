@@ -28,7 +28,7 @@ class ShapeshiftConfiguration : ShapeShiftBuilderCustomizer, ShapeShiftAutoConfi
             .withObjectSupplier { ApplicationModifyRequestRO("", ApplicationType.SPRING_BOOT) }
             .withObjectSupplier { ApplicationRO(UUID.randomUUID(), "", ApplicationType.SPRING_BOOT) }
             .withObjectSupplier { InstanceModifyRequestRO("", "", -1, UUID.randomUUID()) }
-            .withObjectSupplier { InstanceRO(UUID.randomUUID(), "", "", "", "", -1, UUID.randomUUID()) }
+            .withObjectSupplier { InstanceRO(UUID.randomUUID(), "", null, null, "", -1, UUID.randomUUID()) }
             .withObjectSupplier { EventLogRO(UUID.randomUUID(), Date(), EventLogType.INSTANCE_HEALTH_CHANGED, EventLogSeverity.INFO, UUID.randomUUID()) }
             .withObjectSupplier { InstanceHealthLogRO(Date(), UUID.randomUUID()) }
             .withObjectSupplier { InstanceHeapdumpReference(UUID.randomUUID()) }

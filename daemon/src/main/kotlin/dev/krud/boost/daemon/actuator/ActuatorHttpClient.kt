@@ -215,15 +215,16 @@ class ActuatorHttpClient(
     private fun runRequest(request: Request): Result<Response> = runCatching {
         httpClient.newCall(request).execute()
     }
-        .onSuccess { response ->
+        .mapCatching { response ->
             if (!response.isSuccessful) {
                 when (response.code) {
                     404 -> throwNotFound("Endpoint ${request.url} not found")
                     else -> throwStatusCode(response.code, "Actuator request failed: $request")
                 }
             }
+            response
         }
-        .onFailure {
+        .recoverCatching {
             when (it) {
                 is ConnectException -> throwServiceUnavailable("Actuator unreachable: $request")
                 is IllegalArgumentException -> throwBadRequest("Actuator request failed: $request")
