@@ -24,6 +24,8 @@ export const instanceFlywayMigrationEntity: Entity<EnrichedFlywayMigration> = {
           case 'SUCCESS':
           case 'FUTURE_SUCCESS':
             return 'success';
+          case 'OUT_OF_ORDER':
+            return 'warning';
           default:
             return 'default';
         }
