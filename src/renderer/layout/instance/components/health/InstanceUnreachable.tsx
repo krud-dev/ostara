@@ -53,7 +53,7 @@ export default function InstanceUnreachable({ item }: InstanceUnreachableProps) 
           <IconViewer icon={'CrisisAlertOutlined'} sx={{ color: healthStatusColor, fontSize: 48 }} />
 
           <Typography variant="h5" gutterBottom sx={{ mt: 2 }}>
-            <FormattedMessage id={'instanceAliasUnreachable'} values={{ alias: item.alias }} />
+            <FormattedMessage id={'instanceAliasUnreachable'} values={{ alias: item.displayName }} />
           </Typography>
 
           <Typography sx={{ color: 'text.secondary' }}>

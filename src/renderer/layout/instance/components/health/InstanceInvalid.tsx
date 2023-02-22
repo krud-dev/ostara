@@ -53,7 +53,7 @@ export default function InstanceInvalid({ item }: InstanceInvalidProps) {
           <IconViewer icon={'LinkOffOutlined'} sx={{ color: healthStatusColor, fontSize: 48 }} />
 
           <Typography variant="h5" gutterBottom sx={{ mt: 2 }}>
-            <FormattedMessage id={'instanceAliasInvalid'} values={{ alias: item.alias }} />
+            <FormattedMessage id={'instanceAliasInvalid'} values={{ alias: item.displayName }} />
           </Typography>
 
           <Typography sx={{ color: 'text.secondary' }}>

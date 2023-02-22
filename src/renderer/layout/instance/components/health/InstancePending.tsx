@@ -29,7 +29,7 @@ export default function InstancePending({ item }: InstancePendingProps) {
           <IconViewer icon={'HourglassEmptyOutlined'} sx={{ color: healthStatusColor, fontSize: 48 }} />
 
           <Typography variant="h5" gutterBottom sx={{ mt: 2 }}>
-            <FormattedMessage id={'instanceAliasPending'} values={{ alias: item.alias }} />
+            <FormattedMessage id={'instanceAliasPending'} values={{ alias: item.displayName }} />
           </Typography>
 
           <Typography sx={{ color: 'text.secondary' }}>
