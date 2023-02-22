@@ -69,7 +69,9 @@ export default function InstanceInvalid({ item }: InstanceInvalidProps) {
                   <Typography variant="body2" sx={{ color: 'text.secondary' }}>
                     <FormattedMessage id={'actuatorUrl'} />
                   </Typography>
-                  <Typography variant="subtitle2">{item.actuatorUrl}</Typography>
+                  <Typography variant="subtitle2" sx={{ textAlign: 'right' }}>
+                    {item.actuatorUrl}
+                  </Typography>
                 </Stack>
 
                 <Divider />
@@ -78,7 +80,7 @@ export default function InstanceInvalid({ item }: InstanceInvalidProps) {
                   <Typography variant="body2" sx={{ color: 'text.secondary' }}>
                     <FormattedMessage id={'lastUpdateTime'} />
                   </Typography>
-                  <Typography variant="subtitle2">
+                  <Typography variant="subtitle2" sx={{ textAlign: 'right' }}>
                     <FormattedDateAndRelativeTime value={health.lastUpdateTime} />
                   </Typography>
                 </Stack>
@@ -87,7 +89,7 @@ export default function InstanceInvalid({ item }: InstanceInvalidProps) {
                   <Typography variant="body2" sx={{ color: 'text.secondary' }}>
                     <FormattedMessage id={'lastStatusChangeTime'} />
                   </Typography>
-                  <Typography variant="subtitle2">
+                  <Typography variant="subtitle2" sx={{ textAlign: 'right' }}>
                     <FormattedDateAndRelativeTime value={health.lastStatusChangeTime} />
                   </Typography>
                 </Stack>

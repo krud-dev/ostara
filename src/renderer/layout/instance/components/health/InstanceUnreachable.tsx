@@ -69,14 +69,18 @@ export default function InstanceUnreachable({ item }: InstanceUnreachableProps) 
                   <Typography variant="body2" sx={{ color: 'text.secondary' }}>
                     <FormattedMessage id={'actuatorUrl'} />
                   </Typography>
-                  <Typography variant="subtitle2">{item.actuatorUrl}</Typography>
+                  <Typography variant="subtitle2" sx={{ textAlign: 'right' }}>
+                    {item.actuatorUrl}
+                  </Typography>
                 </Stack>
 
                 <Stack direction="row" spacing={2} justifyContent="space-between">
                   <Typography variant="body2" sx={{ color: 'text.secondary' }}>
                     <FormattedMessage id={'error'} />
                   </Typography>
-                  <Typography variant="subtitle2">{health.statusText}</Typography>
+                  <Typography variant="subtitle2" sx={{ textAlign: 'right', color: 'error.main' }}>
+                    {health.statusText}
+                  </Typography>
                 </Stack>
 
                 <Divider />
@@ -85,7 +89,7 @@ export default function InstanceUnreachable({ item }: InstanceUnreachableProps) 
                   <Typography variant="body2" sx={{ color: 'text.secondary' }}>
                     <FormattedMessage id={'lastUpdateTime'} />
                   </Typography>
-                  <Typography variant="subtitle2">
+                  <Typography variant="subtitle2" sx={{ textAlign: 'right' }}>
                     <FormattedDateAndRelativeTime value={health.lastUpdateTime} />
                   </Typography>
                 </Stack>
@@ -94,7 +98,7 @@ export default function InstanceUnreachable({ item }: InstanceUnreachableProps) 
                   <Typography variant="body2" sx={{ color: 'text.secondary' }}>
                     <FormattedMessage id={'lastStatusChangeTime'} />
                   </Typography>
-                  <Typography variant="subtitle2">
+                  <Typography variant="subtitle2" sx={{ textAlign: 'right' }}>
                     <FormattedDateAndRelativeTime value={health.lastStatusChangeTime} />
                   </Typography>
                 </Stack>
