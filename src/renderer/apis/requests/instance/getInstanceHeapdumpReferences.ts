@@ -19,6 +19,9 @@ export const getInstanceHeapdumpReferences = async (variables: Variables): Promi
   const result = await crudSearch<InstanceHeapdumpReferenceRO>({
     entity: heapdumpReferenceCrudEntity,
     filterFields: [{ fieldName: 'instanceId', operation: 'Equal', values: [variables.instanceId] }],
+    orders: [{ by: 'creationTime', descending: true }],
+    currentPage: 1,
+    pageSize: 500,
   });
   return result.results;
 };
