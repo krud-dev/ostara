@@ -106,6 +106,11 @@ const InstanceDetailsForm: FunctionComponent<InstanceDetailsFormProps> = ({
                   required
                   fullWidth
                   label={<FormattedMessage id={multipleInstances ? 'actuatorUrls' : 'actuatorUrl'} />}
+                  placeholder={
+                    multipleInstances
+                      ? 'https://example1.dev/actuator\nhttps://example2.dev/actuator\nhttps://example3.dev/actuator'
+                      : 'https://example.dev/actuator'
+                  }
                   type="url"
                   autoComplete="off"
                   autoFocus
