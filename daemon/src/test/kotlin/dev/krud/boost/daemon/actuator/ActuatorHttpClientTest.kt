@@ -1,5 +1,8 @@
 package dev.krud.boost.daemon.actuator
 
+import dev.krud.boost.daemon.actuator.model.CacheActuatorResponse
+import dev.krud.boost.daemon.actuator.model.HealthActuatorResponse
+import dev.krud.boost.daemon.actuator.model.TestConnectionResponse
 import okhttp3.mockwebserver.MockResponse
 import okhttp3.mockwebserver.MockWebServer
 import org.junit.jupiter.api.AfterEach
@@ -20,6 +23,41 @@ class ActuatorHttpClientTest {
     @AfterEach
     internal fun tearDown() {
         server.shutdown()
+    }
+
+    @Test
+    fun `test connection should return success false, actuator false on non-2xx status`() {
+        server.enqueue(
+            MockResponse()
+                .setResponseCode(404)
+        )
+        val baseUrl = server.url("/actuator").toString()
+        val client = ActuatorHttpClient(baseUrl)
+        val response = client.testConnection()
+        expectThat(response.success)
+            .isEqualTo(false)
+        expectThat(response.validActuator)
+            .isEqualTo(false)
+        expectThat(response.statusCode)
+            .isEqualTo(0)
+    }
+
+    @Test
+    fun `test connection should return success true, actuator false on non-actuator response`() {
+        server.enqueue(
+            MockResponse()
+                .setResponseCode(200)
+                .setBody("Test")
+        )
+        val baseUrl = server.url("/actuator").toString()
+        val client = ActuatorHttpClient(baseUrl)
+        val response = client.testConnection()
+        expectThat(response.success)
+            .isEqualTo(true)
+        expectThat(response.validActuator)
+            .isEqualTo(false)
+        expectThat(response.statusCode)
+            .isEqualTo(200)
     }
 
     @Test
@@ -72,7 +110,7 @@ class ActuatorHttpClientTest {
         val client = ActuatorHttpClient(baseUrl)
         val health = client.health().getOrThrow()
         expectThat(health.status)
-            .isEqualTo(ActuatorHttpClient.HealthResponse.Status.UP)
+            .isEqualTo(HealthActuatorResponse.Status.UP)
     }
 
     @Test
@@ -84,7 +122,7 @@ class ActuatorHttpClientTest {
         val client = ActuatorHttpClient(baseUrl)
         val health = client.healthComponent("db").getOrThrow()
         expectThat(health.status)
-            .isEqualTo(ActuatorHttpClient.HealthResponse.Status.UP)
+            .isEqualTo(HealthActuatorResponse.Status.UP)
     }
 
     @Test
@@ -113,7 +151,7 @@ class ActuatorHttpClientTest {
 
     @Test
     internal fun `cache should return correct response`() {
-        val expectedResult = ActuatorHttpClient.CacheResponse(
+        val expectedResult = CacheActuatorResponse(
             target = "java.util.concurrent.ConcurrentHashMap",
             name = "example28",
             cacheManager = "primeCacheManager"
