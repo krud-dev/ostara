@@ -34,6 +34,6 @@ class InstanceEventPersistentHooks(
     }
 
     override fun postDelete(entity: Instance) {
-        systemEventsChannel.send(InstanceDeletedEventMessage(InstanceDeletedEventMessage.Payload(entity.id)))
+        systemEventsChannel.send(InstanceDeletedEventMessage(InstanceDeletedEventMessage.Payload(entity.id, entity.parentApplicationId)))
     }
 }

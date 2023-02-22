@@ -10,20 +10,22 @@ enum class ApplicationHealthStatus {
     PENDING;
 
     companion object {
-        fun Collection<InstanceHealthStatus>.toApplicationHealthStatus(): ApplicationHealthStatus {
+        fun Collection<InstanceHealthStatus?>.toApplicationHealthStatus(): ApplicationHealthStatus {
             if (this.isEmpty()) {
                 return PENDING
             }
 
-            if (this.any { it in listOf(InstanceHealthStatus.UNKNOWN, InstanceHealthStatus.PENDING) }) {
+            val withoutNulls = this.filterNotNull()
+
+            if (withoutNulls.any { it in listOf(InstanceHealthStatus.UNKNOWN, InstanceHealthStatus.PENDING) }) {
                 return PENDING
             }
 
-            if (this.all { it == InstanceHealthStatus.UP }) {
+            if (withoutNulls.all { it == InstanceHealthStatus.UP }) {
                 return ALL_UP
             }
 
-            if (this.all { it in listOf(InstanceHealthStatus.DOWN, InstanceHealthStatus.UNREACHABLE, InstanceHealthStatus.INVALID, InstanceHealthStatus.OUT_OF_SERVICE) }) {
+            if (withoutNulls.all { it in listOf(InstanceHealthStatus.DOWN, InstanceHealthStatus.UNREACHABLE, InstanceHealthStatus.INVALID, InstanceHealthStatus.OUT_OF_SERVICE) }) {
                 return ALL_DOWN
             }
 

@@ -4,8 +4,11 @@ import dev.krud.boost.daemon.configuration.application.entity.Application
 import dev.krud.boost.daemon.configuration.application.enums.ApplicationHealthStatus.Companion.toApplicationHealthStatus
 import dev.krud.boost.daemon.configuration.application.messaging.ApplicationHealthUpdatedEventMessage
 import dev.krud.boost.daemon.configuration.application.ro.ApplicationHealthRO
+import dev.krud.boost.daemon.configuration.instance.enums.InstanceHealthStatus
 import dev.krud.boost.daemon.configuration.instance.health.InstanceHealthService
+import dev.krud.boost.daemon.configuration.instance.messaging.InstanceDeletedEventMessage
 import dev.krud.boost.daemon.configuration.instance.messaging.InstanceHealthChangedEventMessage
+import dev.krud.boost.daemon.configuration.instance.messaging.InstanceMovedEventMessage
 import dev.krud.boost.daemon.utils.resolve
 import org.springframework.cache.CacheManager
 import org.springframework.integration.annotation.ServiceActivator
@@ -46,17 +49,28 @@ class ApplicationHealthService(
     protected fun onInstanceEvent(event: Message<*>) {
         when (event) {
             is InstanceHealthChangedEventMessage -> {
-                handleInstanceHealthChangedEvent(event)
+                handleInstanceHealthChange(event.payload.parentApplicationId, event.payload.instanceId, event.payload.newStatus)
+            }
+            is InstanceDeletedEventMessage -> {
+                handleInstanceHealthChange(event.payload.parentApplicationId, event.payload.instanceId, null)
+            }
+            is InstanceMovedEventMessage -> {
+                val health = instanceHealthService.getHealth(event.payload.instanceId)
+                handleInstanceHealthChange(event.payload.newParentApplicationId, event.payload.instanceId, health.status)
+                handleInstanceHealthChange(event.payload.oldParentApplicationId, event.payload.instanceId, null)
             }
         }
     }
 
-    protected fun handleInstanceHealthChangedEvent(event: InstanceHealthChangedEventMessage) {
-        val (parentApplicationId, instanceId, oldStatus, newStatus) = event.payload
-        val value = applicationHealthCache.get(parentApplicationId) {
-            mapOf(
-                instanceId to newStatus
-            )
+    protected fun handleInstanceHealthChange(applicationId: UUID, instanceId: UUID, newStatus: InstanceHealthStatus?) {
+        val value = applicationHealthCache.get(applicationId) {
+            if (newStatus == null) {
+                emptyMap()
+            } else {
+                mapOf(
+                    instanceId to newStatus
+                )
+            }
         }!!
         if (value[instanceId] == newStatus) {
             return
@@ -67,14 +81,14 @@ class ApplicationHealthService(
         )
 
         applicationHealthCache.put(
-            parentApplicationId,
+            applicationId,
             newValue
         )
 
         systemEventsChannel.send(
             ApplicationHealthUpdatedEventMessage(
                 ApplicationHealthUpdatedEventMessage.Payload(
-                    parentApplicationId,
+                    applicationId,
                     newValue.values.toApplicationHealthStatus()
                 )
             )

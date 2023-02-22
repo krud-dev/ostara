@@ -8,7 +8,6 @@ import dev.krud.boost.daemon.configuration.instance.enums.InstanceHealthStatus
 import dev.krud.boost.daemon.configuration.instance.health.instancehealthlog.model.InstanceHealthLog
 import dev.krud.boost.daemon.configuration.instance.health.ro.InstanceHealthRO
 import dev.krud.boost.daemon.configuration.instance.messaging.InstanceCreatedEventMessage
-import dev.krud.boost.daemon.configuration.instance.messaging.InstanceDeletedEventMessage
 import dev.krud.boost.daemon.configuration.instance.messaging.InstanceHealthChangedEventMessage
 import dev.krud.boost.daemon.configuration.instance.messaging.InstanceUpdatedEventMessage
 import dev.krud.boost.daemon.utils.resolve
@@ -116,10 +115,6 @@ class InstanceHealthService(
                 updateInstanceHealth(
                     instanceService.getInstanceOrThrow(event.payload.instanceId)
                 )
-            }
-
-            is InstanceDeletedEventMessage -> {
-                instanceHealthCache.evict(event.payload.instanceId)
             }
         }
     }
