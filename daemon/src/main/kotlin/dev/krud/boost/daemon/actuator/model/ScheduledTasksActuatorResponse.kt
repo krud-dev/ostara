@@ -8,13 +8,13 @@ data class ScheduledTasksActuatorResponse(
 ) {
     data class Cron(
         val runnable: Runnable,
-        val expression: String,
+        val expression: String
     )
 
     data class FixedDelayOrRate(
         val runnable: Runnable,
         val initialDelay: Long,
-        val interval: Long,
+        val interval: Long
     )
 
     data class Custom(

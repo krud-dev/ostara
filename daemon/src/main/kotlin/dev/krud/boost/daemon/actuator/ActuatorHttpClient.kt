@@ -200,6 +200,20 @@ class ActuatorHttpClient(
 
     fun scheduledTasks(): Result<ScheduledTasksActuatorResponse> = doGet(asUrl("scheduledtasks"))
 
+    /**
+     * Quartz
+     */
+
+    fun quartz(): Result<QuartzActuatorResponse> = doGet(asUrl("quartz"))
+
+    fun quartzJobs(group: String): Result<QuartzJobsResponse> = doGet(asUrl("quartz", "jobs", group))
+
+    fun quartzJob(group: String, name: String): Result<QuartzJobResponse> = doGet(asUrl("quartz", "jobs", group, name))
+
+    fun quartzTriggers(group: String): Result<QuartzTriggersResponse> = doGet(asUrl("quartz", "triggers", group))
+
+    fun quartzTrigger(group: String, name: String): Result<QuartzTriggerResponse> = doGet(asUrl("quartz", "triggers", group, name))
+
     private inline fun <reified Type> doGet(url: HttpUrl, build: Request.Builder.() -> Unit = {}): Result<Type> =
         doRequest(url, "GET", null, build)
 

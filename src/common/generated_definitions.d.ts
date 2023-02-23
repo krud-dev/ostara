@@ -102,6 +102,52 @@ export interface MetricsActuatorResponse {
     names: string[];
 }
 
+export interface QuartzActuatorResponse {
+    jobs: QuartzActuatorResponse$JobsOrTriggers;
+    triggers: QuartzActuatorResponse$JobsOrTriggers;
+}
+
+export interface QuartzJobResponse {
+    group: string;
+    name: string;
+    description: string;
+    className: string;
+    durable: boolean;
+    requestRecovery: boolean;
+    data: { [index: string]: string };
+    triggers: QuartzJobResponse$Trigger[];
+}
+
+export interface QuartzJobsResponse {
+    group: string;
+    jobs: { [index: string]: QuartzJobsResponse$Job };
+}
+
+export interface QuartzTriggerResponse {
+    group: string;
+    name: string;
+    description: string;
+    state: QuartzTriggerResponse$State;
+    type: QuartzTriggerResponse$Type;
+    calendarName?: string;
+    startTime?: DateAsNumber;
+    endTime?: DateAsNumber;
+    previousFireTime?: DateAsNumber;
+    nextFireTime?: DateAsNumber;
+    priority: number;
+    finalFireTime?: DateAsNumber;
+    data?: { [index: string]: string };
+    calendarInterval?: QuartzTriggerResponse$CalendarInterval;
+    custom?: QuartzTriggerResponse$Custom;
+    cron?: QuartzTriggerResponse$Cron;
+    dailyTimeInterval?: QuartzTriggerResponse$DailyTimeInterval;
+    simple?: QuartzTriggerResponse$Simple;
+}
+
+export interface QuartzTriggersResponse {
+    groups: { [index: string]: QuartzTriggersResponse$Group };
+}
+
 export interface ScheduledTasksActuatorResponse {
     cron: ScheduledTasksActuatorResponse$Cron[];
     fixedDelay: ScheduledTasksActuatorResponse$FixedDelayOrRate[];
@@ -443,6 +489,59 @@ export interface MetricActuatorResponse$Measurement {
     value: number;
 }
 
+export interface QuartzActuatorResponse$JobsOrTriggers {
+    groups: string[];
+}
+
+export interface QuartzJobResponse$Trigger {
+    group: string;
+    name: string;
+    previousFireTime?: DateAsNumber;
+    nextFireTime?: DateAsNumber;
+    priority: number;
+}
+
+export interface QuartzJobsResponse$Job {
+    className: string;
+}
+
+export interface QuartzTriggerResponse$CalendarInterval {
+    interval: number;
+    timeZone: string;
+    timesTriggered: number;
+    preserveHourOfDayAcrossDaylightSavings: boolean;
+    skipDayIfHourDoesNotExist: boolean;
+}
+
+export interface QuartzTriggerResponse$Custom {
+    trigger: string;
+}
+
+export interface QuartzTriggerResponse$Cron {
+    expression: string;
+    timeZone: string;
+}
+
+export interface QuartzTriggerResponse$DailyTimeInterval {
+    interval: number;
+    daysOfWeek: number[];
+    startTimeOfDay: string;
+    endTimeOfDay: string;
+    repeatCount: number;
+    timesTriggered: number;
+}
+
+export interface QuartzTriggerResponse$Simple {
+    interval: number;
+    repeatCount: number;
+    timesTriggered: number;
+}
+
+export interface QuartzTriggersResponse$Group {
+    paused: boolean;
+    triggers: string[];
+}
+
 export interface ScheduledTasksActuatorResponse$Cron {
     runnable: ScheduledTasksActuatorResponse$Runnable;
     expression: string;
@@ -592,6 +691,10 @@ export type HttpMethod = "GET" | "POST" | "PUT" | "DELETE" | "PATCH" | "HEAD" | 
 export type HealthActuatorResponse$Status = "UP" | "DOWN" | "OUT_OF_SERVICE" | "UNKNOWN";
 
 export type LogLevel = "TRACE" | "DEBUG" | "INFO" | "WARN" | "ERROR" | "FATAL" | "OFF";
+
+export type QuartzTriggerResponse$State = "NONE" | "NORMAL" | "PAUSED" | "COMPLETE" | "ERROR" | "BLOCKED";
+
+export type QuartzTriggerResponse$Type = "CALENDAR_INTERVAL" | "CRON" | "CUSTOM" | "DAILY_TIME_INTERVAL" | "SIMPLE";
 
 export type ResultAggregationSummary$Status = "SUCCESS" | "PARTIAL_SUCCESS" | "FAILURE";
 

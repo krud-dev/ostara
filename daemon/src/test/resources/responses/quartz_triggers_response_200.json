@@ -1,0 +1,13 @@
+{
+    "groups": {
+        "DEFAULT": {
+            "paused": false,
+            "triggers": [
+                "Quartz_CronTrigger",
+                "Quartz_DailyTrigger",
+                "Quartz_CalendarTrigger",
+                "Quartz_SimpleTrigger"
+            ]
+        }
+    }
+}

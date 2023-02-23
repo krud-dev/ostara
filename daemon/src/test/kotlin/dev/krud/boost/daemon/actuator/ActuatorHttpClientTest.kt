@@ -11,6 +11,8 @@ import org.junit.jupiter.api.Test
 import org.springframework.boot.logging.LogLevel
 import strikt.api.expectThat
 import strikt.assertions.isEqualTo
+import strikt.assertions.isNotEmpty
+import strikt.assertions.isNotNull
 
 class ActuatorHttpClientTest {
     private val server = MockWebServer()
@@ -319,6 +321,70 @@ class ActuatorHttpClientTest {
         val scheduledTasks = client.scheduledTasks().getOrThrow()
         expectThat(scheduledTasks.cron.size)
             .isEqualTo(1)
+    }
+
+    @Test
+    fun `quartz should return correct response`() {
+        server.enqueue(okJsonResponse("responses/quartz_response_200.json"))
+        val baseUrl = server.url("/actuator").toString()
+        val client = ActuatorHttpClient(baseUrl)
+        val quartz = client.quartz().getOrThrow()
+        expectThat(quartz.jobs.groups.size)
+            .isEqualTo(1)
+    }
+
+    @Test
+    fun `quartz jobs should return correct response`() {
+        server.enqueue(okJsonResponse("responses/quartz_jobs_response_200.json"))
+        val baseUrl = server.url("/actuator").toString()
+        val client = ActuatorHttpClient(baseUrl)
+        val quartzJobs = client.quartzJobs("DEFAULT").getOrThrow()
+        expectThat(quartzJobs.jobs.size)
+            .isEqualTo(1)
+    }
+
+    @Test
+    fun `quartz job should return correct response`() {
+        server.enqueue(okJsonResponse("responses/quartz_job_response_200.json"))
+        val baseUrl = server.url("/actuator").toString()
+        val client = ActuatorHttpClient(baseUrl)
+        val quartzJob = client.quartzJob("DEFAULT", "sampleSimpleJob").getOrThrow()
+        expectThat(quartzJob.name)
+            .isEqualTo("sampleSimpleJob")
+        expectThat(quartzJob.group)
+            .isEqualTo("DEFAULT")
+        expectThat(quartzJob.className)
+            .isEqualTo("dev.krud.springbootadmin.client.SampleJob")
+        expectThat(quartzJob.triggers)
+            .isNotEmpty()
+        val firstTrigger = quartzJob.triggers.first()
+        expectThat(firstTrigger.name)
+            .isEqualTo("Quartz_CronTrigger")
+    }
+
+    @Test
+    fun `quartz triggers should return correct response`() {
+        server.enqueue(okJsonResponse("responses/quartz_triggers_response_200.json"))
+        val baseUrl = server.url("/actuator").toString()
+        val client = ActuatorHttpClient(baseUrl)
+        val quartzTriggers = client.quartzTriggers("DEFAULT").getOrThrow()
+        expectThat(quartzTriggers.groups.size)
+            .isEqualTo(1)
+        val firstGroup = quartzTriggers.groups["DEFAULT"]
+        expectThat(firstGroup)
+            .isNotNull()
+        expectThat(firstGroup!!.triggers.size)
+            .isEqualTo(4)
+    }
+
+    @Test
+    fun `quartz trigger should return correct response`() {
+        server.enqueue(okJsonResponse("responses/quartz_trigger_response_200.json"))
+        val baseUrl = server.url("/actuator").toString()
+        val client = ActuatorHttpClient(baseUrl)
+        val quartzTrigger = client.quartzTrigger("DEFAULT", "Quartz_CronTrigger").getOrThrow()
+        expectThat(quartzTrigger.name)
+            .isEqualTo("Quartz_CronTrigger")
     }
 
     private fun okResponse(code: Int = 200) = MockResponse()

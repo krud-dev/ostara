@@ -1,0 +1,16 @@
+{
+    "group": "DEFAULT",
+    "name": "Quartz_CronTrigger",
+    "description": "Cron Trigger example every 5 seconds",
+    "state": "NORMAL",
+    "type": "cron",
+    "startTime": "2023-02-23T07:25:25.000+00:00",
+    "previousFireTime": "2023-02-23T08:00:15.000+00:00",
+    "nextFireTime": "2023-02-23T08:00:20.000+00:00",
+    "priority": 5,
+    "data": {},
+    "cron": {
+        "expression": "0/5 * * * * ?",
+        "timeZone": "GMT"
+    }
+}

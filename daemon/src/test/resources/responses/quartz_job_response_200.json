@@ -1,0 +1,36 @@
+{
+    "group": "DEFAULT",
+    "name": "sampleSimpleJob",
+    "description": "This is a sample simple job",
+    "className": "dev.krud.springbootadmin.client.SampleJob",
+    "durable": true,
+    "requestRecovery": false,
+    "data": {},
+    "triggers": [
+        {
+            "group": "DEFAULT",
+            "name": "Quartz_CronTrigger",
+            "previousFireTime": "2023-02-23T07:59:50.000+00:00",
+            "nextFireTime": "2023-02-23T07:59:55.000+00:00",
+            "priority": 5
+        },
+        {
+            "group": "DEFAULT",
+            "name": "Quartz_SimpleTrigger",
+            "nextFireTime": "2023-02-23T08:25:25.717+00:00",
+            "priority": 5
+        },
+        {
+            "group": "DEFAULT",
+            "name": "Quartz_DailyTrigger",
+            "nextFireTime": "2023-02-23T12:00:00.000+00:00",
+            "priority": 5
+        },
+        {
+            "group": "DEFAULT",
+            "name": "Quartz_CalendarTrigger",
+            "nextFireTime": "2023-02-23T12:00:00.000+00:00",
+            "priority": 5
+        }
+    ]
+}

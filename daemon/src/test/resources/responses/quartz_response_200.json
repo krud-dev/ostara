@@ -1,0 +1,12 @@
+{
+    "jobs": {
+        "groups": [
+            "DEFAULT"
+        ]
+    },
+    "triggers": {
+        "groups": [
+            "DEFAULT"
+        ]
+    }
+}
