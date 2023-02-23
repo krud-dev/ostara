@@ -16,7 +16,7 @@ data class QuartzTriggerResponse(
     val nextFireTime: Date?,
     val priority: Int,
     val finalFireTime: Date?,
-    val data: Map<String, String>?,
+    val data: Map<String, Any>?,
     val calendarInterval: CalendarInterval?,
     val custom: Custom?,
     val cron: Cron?,

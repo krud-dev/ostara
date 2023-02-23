@@ -9,7 +9,7 @@ data class QuartzJobResponse(
     val className: String,
     val durable: Boolean,
     val requestRecovery: Boolean,
-    val data: Map<String, String>,
+    val data: Map<String, Any>,
     val triggers: List<Trigger>
 ) {
     data class Trigger(
