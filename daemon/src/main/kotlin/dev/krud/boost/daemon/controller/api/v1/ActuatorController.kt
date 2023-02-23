@@ -281,4 +281,15 @@ class ActuatorController(
     @ApiResponse(responseCode = "404", description = "Endpoint not available", content = [Content()])
     @ApiResponse(responseCode = "503", description = "Service unavailable", content = [Content()])
     fun updateLogger(@RequestParam instanceId: UUID, @PathVariable loggerOrGroupName: String, @RequestParam logLevel: LogLevel) = actuatorClientProvider.provide(instanceId).updateLogger(loggerOrGroupName, logLevel)
+
+    @GetMapping("/integrationgraph")
+    @ResponseStatus(HttpStatus.OK)
+    @Operation(
+        summary = "Get integration graph",
+        description = "Equivalent call to actuator integrationgraph /integrationgraph"
+    )
+    @ApiResponse(responseCode = "200", description = "Integration graph object")
+    @ApiResponse(responseCode = "404", description = "Endpoint not available", content = [Content()])
+    @ApiResponse(responseCode = "503", description = "Service unavailable", content = [Content()])
+    fun integrationGraph(@RequestParam instanceId: UUID) = actuatorClientProvider.provide(instanceId).integrationGraph()
 }

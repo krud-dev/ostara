@@ -2,7 +2,7 @@ package dev.krud.boost.daemon.actuator
 
 import dev.krud.boost.daemon.actuator.model.CacheActuatorResponse
 import dev.krud.boost.daemon.actuator.model.HealthActuatorResponse
-import dev.krud.boost.daemon.actuator.model.TestConnectionResponse
+import dev.krud.boost.daemon.actuator.model.IntegrationGraphActuatorResponse
 import okhttp3.mockwebserver.MockResponse
 import okhttp3.mockwebserver.MockWebServer
 import org.junit.jupiter.api.AfterEach
@@ -282,6 +282,25 @@ class ActuatorHttpClientTest {
         val loggers = client.loggers().getOrThrow()
         expectThat(loggers.loggers.size)
             .isEqualTo(910)
+    }
+
+    @Test
+    fun `integrationgraph should return correct response`() {
+        server.enqueue(okJsonResponse("responses/integrationgraph_response_200.json"))
+        val baseUrl = server.url("/actuator").toString()
+        val client = ActuatorHttpClient(baseUrl)
+        val integrationGraph = client.integrationGraph().getOrThrow()
+        expectThat(integrationGraph.nodes.size)
+            .isEqualTo(36)
+        expectThat(integrationGraph.links.size)
+            .isEqualTo(28)
+        val firstLink = integrationGraph.links.first()
+        expectThat(firstLink.from)
+            .isEqualTo(19)
+        expectThat(firstLink.to)
+            .isEqualTo(15)
+        expectThat(firstLink.type)
+            .isEqualTo(IntegrationGraphActuatorResponse.Link.Type.OUTPUT)
     }
 
     @Test

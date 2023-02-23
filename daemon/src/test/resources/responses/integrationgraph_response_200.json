@@ -1,0 +1,902 @@
+{
+    "contentDescriptor": {
+        "providerVersion": "5.5.15",
+        "providerFormatVersion": 1.2,
+        "provider": "spring-integration",
+        "name": "first"
+    },
+    "nodes": [
+        {
+            "nodeId": 1,
+            "componentType": "null-channel",
+            "integrationPatternType": "null_channel",
+            "integrationPatternCategory": "messaging_channel",
+            "properties": {},
+            "sendTimers": {
+                "successes": {
+                    "count": 0,
+                    "mean": 0.0,
+                    "max": 0.0
+                },
+                "failures": {
+                    "count": 0,
+                    "mean": 0.0,
+                    "max": 0.0
+                }
+            },
+            "receiveCounters": {
+                "successes": 0,
+                "failures": 0
+            },
+            "name": "nullChannel"
+        },
+        {
+            "nodeId": 2,
+            "componentType": "publish-subscribe-channel",
+            "integrationPatternType": "publish_subscribe_channel",
+            "integrationPatternCategory": "messaging_channel",
+            "properties": {},
+            "sendTimers": {
+                "successes": {
+                    "count": 0,
+                    "mean": 0.0,
+                    "max": 0.0
+                },
+                "failures": {
+                    "count": 0,
+                    "mean": 0.0,
+                    "max": 0.0
+                }
+            },
+            "name": "errorChannel"
+        },
+        {
+            "nodeId": 3,
+            "componentType": "channel",
+            "integrationPatternType": "message_channel",
+            "integrationPatternCategory": "messaging_channel",
+            "properties": {},
+            "sendTimers": {
+                "successes": {
+                    "count": 0,
+                    "mean": 0.0,
+                    "max": 0.0
+                },
+                "failures": {
+                    "count": 0,
+                    "mean": 0.0,
+                    "max": 0.0
+                }
+            },
+            "name": "pizzaReceptionNY"
+        },
+        {
+            "nodeId": 4,
+            "componentType": "channel",
+            "integrationPatternType": "message_channel",
+            "integrationPatternCategory": "messaging_channel",
+            "properties": {},
+            "sendTimers": {
+                "successes": {
+                    "count": 0,
+                    "mean": 0.0,
+                    "max": 0.0
+                },
+                "failures": {
+                    "count": 0,
+                    "mean": 0.0,
+                    "max": 0.0
+                }
+            },
+            "name": "pizzaReceptionNyFlow.subFlow#0.channel#0"
+        },
+        {
+            "nodeId": 5,
+            "componentType": "channel",
+            "integrationPatternType": "message_channel",
+            "integrationPatternCategory": "messaging_channel",
+            "properties": {},
+            "sendTimers": {
+                "successes": {
+                    "count": 0,
+                    "mean": 0.0,
+                    "max": 0.0
+                },
+                "failures": {
+                    "count": 0,
+                    "mean": 0.0,
+                    "max": 0.0
+                }
+            },
+            "name": "pizzaReceptionNyFlow.channel#0"
+        },
+        {
+            "nodeId": 6,
+            "componentType": "channel",
+            "integrationPatternType": "message_channel",
+            "integrationPatternCategory": "messaging_channel",
+            "properties": {},
+            "sendTimers": {
+                "successes": {
+                    "count": 0,
+                    "mean": 0.0,
+                    "max": 0.0
+                },
+                "failures": {
+                    "count": 0,
+                    "mean": 0.0,
+                    "max": 0.0
+                }
+            },
+            "name": "pizzaPreparationNY"
+        },
+        {
+            "nodeId": 7,
+            "componentType": "channel",
+            "integrationPatternType": "message_channel",
+            "integrationPatternCategory": "messaging_channel",
+            "properties": {},
+            "sendTimers": {
+                "successes": {
+                    "count": 0,
+                    "mean": 0.0,
+                    "max": 0.0
+                },
+                "failures": {
+                    "count": 0,
+                    "mean": 0.0,
+                    "max": 0.0
+                }
+            },
+            "name": "pizzaPreparationNyFlow.subFlow#0.channel#0"
+        },
+        {
+            "nodeId": 8,
+            "componentType": "channel",
+            "integrationPatternType": "message_channel",
+            "integrationPatternCategory": "messaging_channel",
+            "properties": {},
+            "sendTimers": {
+                "successes": {
+                    "count": 0,
+                    "mean": 0.0,
+                    "max": 0.0
+                },
+                "failures": {
+                    "count": 0,
+                    "mean": 0.0,
+                    "max": 0.0
+                }
+            },
+            "name": "pizzaPreparationNyFlow.channel#0"
+        },
+        {
+            "nodeId": 9,
+            "componentType": "channel",
+            "integrationPatternType": "message_channel",
+            "integrationPatternCategory": "messaging_channel",
+            "properties": {},
+            "sendTimers": {
+                "successes": {
+                    "count": 0,
+                    "mean": 0.0,
+                    "max": 0.0
+                },
+                "failures": {
+                    "count": 0,
+                    "mean": 0.0,
+                    "max": 0.0
+                }
+            },
+            "name": "pizzaDeliveryNY"
+        },
+        {
+            "nodeId": 10,
+            "componentType": "channel",
+            "integrationPatternType": "message_channel",
+            "integrationPatternCategory": "messaging_channel",
+            "properties": {},
+            "sendTimers": {
+                "successes": {
+                    "count": 0,
+                    "mean": 0.0,
+                    "max": 0.0
+                },
+                "failures": {
+                    "count": 0,
+                    "mean": 0.0,
+                    "max": 0.0
+                }
+            },
+            "name": "pizzaDeliveryNyFlow.subFlow#0.channel#0"
+        },
+        {
+            "nodeId": 11,
+            "componentType": "channel",
+            "integrationPatternType": "message_channel",
+            "integrationPatternCategory": "messaging_channel",
+            "properties": {},
+            "sendTimers": {
+                "successes": {
+                    "count": 0,
+                    "mean": 0.0,
+                    "max": 0.0
+                },
+                "failures": {
+                    "count": 0,
+                    "mean": 0.0,
+                    "max": 0.0
+                }
+            },
+            "name": "pizzaDeliveryNyFlow.channel#0"
+        },
+        {
+            "nodeId": 12,
+            "componentType": "channel",
+            "integrationPatternType": "message_channel",
+            "integrationPatternCategory": "messaging_channel",
+            "properties": {},
+            "sendTimers": {
+                "successes": {
+                    "count": 0,
+                    "mean": 0.0,
+                    "max": 0.0
+                },
+                "failures": {
+                    "count": 0,
+                    "mean": 0.0,
+                    "max": 0.0
+                }
+            },
+            "name": "discardedOrders"
+        },
+        {
+            "nodeId": 13,
+            "componentType": "channel",
+            "integrationPatternType": "message_channel",
+            "integrationPatternCategory": "messaging_channel",
+            "properties": {},
+            "sendTimers": {
+                "successes": {
+                    "count": 0,
+                    "mean": 0.0,
+                    "max": 0.0
+                },
+                "failures": {
+                    "count": 0,
+                    "mean": 0.0,
+                    "max": 0.0
+                }
+            },
+            "name": "discardedOrdersFlow.subFlow#0.channel#0"
+        },
+        {
+            "nodeId": 14,
+            "componentType": "channel",
+            "integrationPatternType": "message_channel",
+            "integrationPatternCategory": "messaging_channel",
+            "properties": {},
+            "sendTimers": {
+                "successes": {
+                    "count": 0,
+                    "mean": 0.0,
+                    "max": 0.0
+                },
+                "failures": {
+                    "count": 0,
+                    "mean": 0.0,
+                    "max": 0.0
+                }
+            },
+            "name": "discardedOrdersFlow.channel#0"
+        },
+        {
+            "nodeId": 15,
+            "componentType": "channel",
+            "integrationPatternType": "message_channel",
+            "integrationPatternCategory": "messaging_channel",
+            "properties": {},
+            "sendTimers": {
+                "successes": {
+                    "count": 0,
+                    "mean": 0.0,
+                    "max": 0.0
+                },
+                "failures": {
+                    "count": 0,
+                    "mean": 0.0,
+                    "max": 0.0
+                }
+            },
+            "name": "pizzaDeliveryFlow.channel#0"
+        },
+        {
+            "nodeId": 16,
+            "componentType": "channel",
+            "integrationPatternType": "message_channel",
+            "integrationPatternCategory": "messaging_channel",
+            "properties": {},
+            "sendTimers": {
+                "successes": {
+                    "count": 0,
+                    "mean": 0.0,
+                    "max": 0.0
+                },
+                "failures": {
+                    "count": 0,
+                    "mean": 0.0,
+                    "max": 0.0
+                }
+            },
+            "name": "pizzaDeliveryFlow.subFlow#0.channel#0"
+        },
+        {
+            "nodeId": 17,
+            "componentType": "channel",
+            "integrationPatternType": "message_channel",
+            "integrationPatternCategory": "messaging_channel",
+            "properties": {},
+            "sendTimers": {
+                "successes": {
+                    "count": 0,
+                    "mean": 0.0,
+                    "max": 0.0
+                },
+                "failures": {
+                    "count": 0,
+                    "mean": 0.0,
+                    "max": 0.0
+                }
+            },
+            "name": "pizzaDeliveryFlow.channel#1"
+        },
+        {
+            "nodeId": 18,
+            "componentType": "channel",
+            "integrationPatternType": "message_channel",
+            "integrationPatternCategory": "messaging_channel",
+            "properties": {},
+            "sendTimers": {
+                "successes": {
+                    "count": 0,
+                    "mean": 0.0,
+                    "max": 0.0
+                },
+                "failures": {
+                    "count": 0,
+                    "mean": 0.0,
+                    "max": 0.0
+                }
+            },
+            "name": "pizzaDeliveryFlow.channel#2"
+        },
+        {
+            "nodeId": 19,
+            "componentType": "http:inbound-gateway",
+            "integrationPatternType": "inbound_gateway",
+            "integrationPatternCategory": "messaging_endpoint",
+            "properties": {},
+            "output": "pizzaDeliveryFlow.channel#0",
+            "errors": null,
+            "name": "pizzaDeliveryFlow.http:inbound-gateway#0"
+        },
+        {
+            "nodeId": 20,
+            "componentType": "logging-channel-adapter",
+            "integrationPatternType": "outbound_channel_adapter",
+            "integrationPatternCategory": "messaging_endpoint",
+            "properties": {},
+            "output": null,
+            "input": "errorChannel",
+            "sendTimers": {
+                "successes": {
+                    "count": 0,
+                    "mean": 0.0,
+                    "max": 0.0
+                },
+                "failures": {
+                    "count": 0,
+                    "mean": 0.0,
+                    "max": 0.0
+                }
+            },
+            "name": "errorLogger"
+        },
+        {
+            "nodeId": 21,
+            "componentType": "header-enricher",
+            "integrationPatternType": "header_enricher",
+            "integrationPatternCategory": "message_transformation",
+            "properties": {},
+            "output": "pizzaReceptionNyFlow.channel#0",
+            "input": "pizzaReceptionNY",
+            "sendTimers": {
+                "successes": {
+                    "count": 0,
+                    "mean": 0.0,
+                    "max": 0.0
+                },
+                "failures": {
+                    "count": 0,
+                    "mean": 0.0,
+                    "max": 0.0
+                }
+            },
+            "name": "pizzaReceptionNyFlow.org.springframework.integration.config.ConsumerEndpointFactoryBean#0"
+        },
+        {
+            "nodeId": 22,
+            "componentType": "KotlinIntegrationFlowDefinition$$Lambda$1014/0x000000080088b840",
+            "integrationPatternType": "service_activator",
+            "integrationPatternCategory": "messaging_endpoint",
+            "properties": {},
+            "output": null,
+            "input": "pizzaReceptionNyFlow.subFlow#0.channel#0",
+            "sendTimers": {
+                "successes": {
+                    "count": 0,
+                    "mean": 0.0,
+                    "max": 0.0
+                },
+                "failures": {
+                    "count": 0,
+                    "mean": 0.0,
+                    "max": 0.0
+                }
+            },
+            "name": "pizzaReceptionNyFlow.subFlow#0.org.springframework.integration.config.ConsumerEndpointFactoryBean#0"
+        },
+        {
+            "nodeId": 23,
+            "componentType": "transformer",
+            "integrationPatternType": "transformer",
+            "integrationPatternCategory": "message_transformation",
+            "properties": {},
+            "output": "pizzaPreparationNY",
+            "input": "pizzaReceptionNyFlow.channel#0",
+            "sendTimers": {
+                "successes": {
+                    "count": 0,
+                    "mean": 0.0,
+                    "max": 0.0
+                },
+                "failures": {
+                    "count": 0,
+                    "mean": 0.0,
+                    "max": 0.0
+                }
+            },
+            "name": "pizzaReceptionNyFlow.org.springframework.integration.config.ConsumerEndpointFactoryBean#1"
+        },
+        {
+            "nodeId": 24,
+            "componentType": "header-enricher",
+            "integrationPatternType": "header_enricher",
+            "integrationPatternCategory": "message_transformation",
+            "properties": {},
+            "output": "pizzaPreparationNyFlow.channel#0",
+            "input": "pizzaPreparationNY",
+            "sendTimers": {
+                "successes": {
+                    "count": 0,
+                    "mean": 0.0,
+                    "max": 0.0
+                },
+                "failures": {
+                    "count": 0,
+                    "mean": 0.0,
+                    "max": 0.0
+                }
+            },
+            "name": "pizzaPreparationNyFlow.org.springframework.integration.config.ConsumerEndpointFactoryBean#0"
+        },
+        {
+            "nodeId": 25,
+            "componentType": "KotlinIntegrationFlowDefinition$$Lambda$1014/0x000000080088b840",
+            "integrationPatternType": "service_activator",
+            "integrationPatternCategory": "messaging_endpoint",
+            "properties": {},
+            "output": null,
+            "input": "pizzaPreparationNyFlow.subFlow#0.channel#0",
+            "sendTimers": {
+                "successes": {
+                    "count": 0,
+                    "mean": 0.0,
+                    "max": 0.0
+                },
+                "failures": {
+                    "count": 0,
+                    "mean": 0.0,
+                    "max": 0.0
+                }
+            },
+            "name": "pizzaPreparationNyFlow.subFlow#0.org.springframework.integration.config.ConsumerEndpointFactoryBean#0"
+        },
+        {
+            "nodeId": 26,
+            "componentType": "delayer",
+            "integrationPatternType": "delayer",
+            "integrationPatternCategory": "message_routing",
+            "properties": {},
+            "output": "pizzaDeliveryNY",
+            "input": "pizzaPreparationNyFlow.channel#0",
+            "sendTimers": {
+                "successes": {
+                    "count": 0,
+                    "mean": 0.0,
+                    "max": 0.0
+                },
+                "failures": {
+                    "count": 0,
+                    "mean": 0.0,
+                    "max": 0.0
+                }
+            },
+            "name": "pizzaPreparationNyFlow.org.springframework.integration.config.ConsumerEndpointFactoryBean#1"
+        },
+        {
+            "nodeId": 27,
+            "componentType": "header-enricher",
+            "integrationPatternType": "header_enricher",
+            "integrationPatternCategory": "message_transformation",
+            "properties": {},
+            "output": "pizzaDeliveryNyFlow.channel#0",
+            "input": "pizzaDeliveryNY",
+            "sendTimers": {
+                "successes": {
+                    "count": 0,
+                    "mean": 0.0,
+                    "max": 0.0
+                },
+                "failures": {
+                    "count": 0,
+                    "mean": 0.0,
+                    "max": 0.0
+                }
+            },
+            "name": "pizzaDeliveryNyFlow.org.springframework.integration.config.ConsumerEndpointFactoryBean#0"
+        },
+        {
+            "nodeId": 28,
+            "componentType": "KotlinIntegrationFlowDefinition$$Lambda$1014/0x000000080088b840",
+            "integrationPatternType": "service_activator",
+            "integrationPatternCategory": "messaging_endpoint",
+            "properties": {},
+            "output": null,
+            "input": "pizzaDeliveryNyFlow.subFlow#0.channel#0",
+            "sendTimers": {
+                "successes": {
+                    "count": 0,
+                    "mean": 0.0,
+                    "max": 0.0
+                },
+                "failures": {
+                    "count": 0,
+                    "mean": 0.0,
+                    "max": 0.0
+                }
+            },
+            "name": "pizzaDeliveryNyFlow.subFlow#0.org.springframework.integration.config.ConsumerEndpointFactoryBean#0"
+        },
+        {
+            "nodeId": 29,
+            "componentType": "bridge",
+            "integrationPatternType": "bridge",
+            "integrationPatternCategory": "messaging_endpoint",
+            "properties": {},
+            "output": "nullChannel",
+            "input": "pizzaDeliveryNyFlow.channel#0",
+            "sendTimers": {
+                "successes": {
+                    "count": 0,
+                    "mean": 0.0,
+                    "max": 0.0
+                },
+                "failures": {
+                    "count": 0,
+                    "mean": 0.0,
+                    "max": 0.0
+                }
+            },
+            "name": "pizzaDeliveryNyFlow.org.springframework.integration.config.ConsumerEndpointFactoryBean#1"
+        },
+        {
+            "nodeId": 30,
+            "componentType": "header-enricher",
+            "integrationPatternType": "header_enricher",
+            "integrationPatternCategory": "message_transformation",
+            "properties": {},
+            "output": "discardedOrdersFlow.channel#0",
+            "input": "discardedOrders",
+            "sendTimers": {
+                "successes": {
+                    "count": 0,
+                    "mean": 0.0,
+                    "max": 0.0
+                },
+                "failures": {
+                    "count": 0,
+                    "mean": 0.0,
+                    "max": 0.0
+                }
+            },
+            "name": "discardedOrdersFlow.org.springframework.integration.config.ConsumerEndpointFactoryBean#0"
+        },
+        {
+            "nodeId": 31,
+            "componentType": "KotlinIntegrationFlowDefinition$$Lambda$1014/0x000000080088b840",
+            "integrationPatternType": "service_activator",
+            "integrationPatternCategory": "messaging_endpoint",
+            "properties": {},
+            "output": null,
+            "input": "discardedOrdersFlow.subFlow#0.channel#0",
+            "sendTimers": {
+                "successes": {
+                    "count": 0,
+                    "mean": 0.0,
+                    "max": 0.0
+                },
+                "failures": {
+                    "count": 0,
+                    "mean": 0.0,
+                    "max": 0.0
+                }
+            },
+            "name": "discardedOrdersFlow.subFlow#0.org.springframework.integration.config.ConsumerEndpointFactoryBean#0"
+        },
+        {
+            "nodeId": 32,
+            "componentType": "bridge",
+            "integrationPatternType": "bridge",
+            "integrationPatternCategory": "messaging_endpoint",
+            "properties": {},
+            "output": "nullChannel",
+            "input": "discardedOrdersFlow.channel#0",
+            "sendTimers": {
+                "successes": {
+                    "count": 0,
+                    "mean": 0.0,
+                    "max": 0.0
+                },
+                "failures": {
+                    "count": 0,
+                    "mean": 0.0,
+                    "max": 0.0
+                }
+            },
+            "name": "discardedOrdersFlow.org.springframework.integration.config.ConsumerEndpointFactoryBean#1"
+        },
+        {
+            "nodeId": 33,
+            "componentType": "KotlinIntegrationFlowDefinition$$Lambda$1014/0x000000080088b840",
+            "integrationPatternType": "service_activator",
+            "integrationPatternCategory": "messaging_endpoint",
+            "properties": {},
+            "output": null,
+            "input": "pizzaDeliveryFlow.subFlow#0.channel#0",
+            "sendTimers": {
+                "successes": {
+                    "count": 0,
+                    "mean": 0.0,
+                    "max": 0.0
+                },
+                "failures": {
+                    "count": 0,
+                    "mean": 0.0,
+                    "max": 0.0
+                }
+            },
+            "name": "pizzaDeliveryFlow.subFlow#0.org.springframework.integration.config.ConsumerEndpointFactoryBean#0"
+        },
+        {
+            "nodeId": 34,
+            "componentType": "splitter",
+            "integrationPatternType": "splitter",
+            "integrationPatternCategory": "message_routing",
+            "properties": {},
+            "output": "pizzaDeliveryFlow.channel#1",
+            "input": "pizzaDeliveryFlow.channel#0",
+            "sendTimers": {
+                "successes": {
+                    "count": 0,
+                    "mean": 0.0,
+                    "max": 0.0
+                },
+                "failures": {
+                    "count": 0,
+                    "mean": 0.0,
+                    "max": 0.0
+                }
+            },
+            "discards": null,
+            "name": "pizzaDeliveryFlow.org.springframework.integration.config.ConsumerEndpointFactoryBean#0"
+        },
+        {
+            "nodeId": 35,
+            "componentType": "header-enricher",
+            "integrationPatternType": "header_enricher",
+            "integrationPatternCategory": "message_transformation",
+            "properties": {},
+            "output": "pizzaDeliveryFlow.channel#2",
+            "input": "pizzaDeliveryFlow.channel#1",
+            "sendTimers": {
+                "successes": {
+                    "count": 0,
+                    "mean": 0.0,
+                    "max": 0.0
+                },
+                "failures": {
+                    "count": 0,
+                    "mean": 0.0,
+                    "max": 0.0
+                }
+            },
+            "name": "pizzaDeliveryFlow.org.springframework.integration.config.ConsumerEndpointFactoryBean#1"
+        },
+        {
+            "nodeId": 36,
+            "componentType": "router",
+            "integrationPatternType": "router",
+            "integrationPatternCategory": "message_routing",
+            "properties": {},
+            "output": null,
+            "input": "pizzaDeliveryFlow.channel#2",
+            "sendTimers": {
+                "successes": {
+                    "count": 0,
+                    "mean": 0.0,
+                    "max": 0.0
+                },
+                "failures": {
+                    "count": 0,
+                    "mean": 0.0,
+                    "max": 0.0
+                }
+            },
+            "routes": [],
+            "name": "pizzaDeliveryFlow.org.springframework.integration.config.ConsumerEndpointFactoryBean#2"
+        }
+    ],
+    "links": [
+        {
+            "from": 19,
+            "to": 15,
+            "type": "output"
+        },
+        {
+            "from": 2,
+            "to": 20,
+            "type": "input"
+        },
+        {
+            "from": 3,
+            "to": 21,
+            "type": "input"
+        },
+        {
+            "from": 21,
+            "to": 5,
+            "type": "output"
+        },
+        {
+            "from": 4,
+            "to": 22,
+            "type": "input"
+        },
+        {
+            "from": 5,
+            "to": 23,
+            "type": "input"
+        },
+        {
+            "from": 23,
+            "to": 6,
+            "type": "output"
+        },
+        {
+            "from": 6,
+            "to": 24,
+            "type": "input"
+        },
+        {
+            "from": 24,
+            "to": 8,
+            "type": "output"
+        },
+        {
+            "from": 7,
+            "to": 25,
+            "type": "input"
+        },
+        {
+            "from": 8,
+            "to": 26,
+            "type": "input"
+        },
+        {
+            "from": 26,
+            "to": 9,
+            "type": "output"
+        },
+        {
+            "from": 9,
+            "to": 27,
+            "type": "input"
+        },
+        {
+            "from": 27,
+            "to": 11,
+            "type": "output"
+        },
+        {
+            "from": 10,
+            "to": 28,
+            "type": "input"
+        },
+        {
+            "from": 11,
+            "to": 29,
+            "type": "input"
+        },
+        {
+            "from": 29,
+            "to": 1,
+            "type": "output"
+        },
+        {
+            "from": 12,
+            "to": 30,
+            "type": "input"
+        },
+        {
+            "from": 30,
+            "to": 14,
+            "type": "output"
+        },
+        {
+            "from": 13,
+            "to": 31,
+            "type": "input"
+        },
+        {
+            "from": 14,
+            "to": 32,
+            "type": "input"
+        },
+        {
+            "from": 32,
+            "to": 1,
+            "type": "output"
+        },
+        {
+            "from": 16,
+            "to": 33,
+            "type": "input"
+        },
+        {
+            "from": 15,
+            "to": 34,
+            "type": "input"
+        },
+        {
+            "from": 34,
+            "to": 17,
+            "type": "output"
+        },
+        {
+            "from": 17,
+            "to": 35,
+            "type": "input"
+        },
+        {
+            "from": 35,
+            "to": 18,
+            "type": "output"
+        },
+        {
+            "from": 18,
+            "to": 36,
+            "type": "input"
+        }
+    ]
+}

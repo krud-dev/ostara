@@ -188,6 +188,11 @@ class ActuatorHttpClient(
         GSON.toJson(LoggerUpdateRequest(level)).toRequestBody("application/json".toMediaType())
     )
 
+    /**
+     * Integration Graph
+     */
+    fun integrationGraph(): Result<IntegrationGraphActuatorResponse> = doGet(asUrl("integrationgraph"))
+
     private inline fun <reified Type> doGet(url: HttpUrl, build: Request.Builder.() -> Unit = {}): Result<Type> =
         doRequest(url, "GET", null, build)
 

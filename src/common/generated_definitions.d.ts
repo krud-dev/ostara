@@ -65,6 +65,12 @@ export interface InfoActuatorResponse {
     git?: InfoActuatorResponse$Git;
 }
 
+export interface IntegrationGraphActuatorResponse {
+    contentDescriptor: IntegrationGraphActuatorResponse$ContentDescriptor;
+    nodes: IntegrationGraphActuatorResponse$Node[];
+    links: IntegrationGraphActuatorResponse$Link[];
+}
+
 export interface LiquibaseActuatorResponse {
     contexts: { [index: string]: LiquibaseActuatorResponse$Context };
 }
@@ -387,6 +393,30 @@ export interface InfoActuatorResponse$Git {
     commit: InfoActuatorResponse$Git$Commit;
 }
 
+export interface IntegrationGraphActuatorResponse$ContentDescriptor {
+    providerVersion: string;
+    providerFormatVersion: number;
+    provider: string;
+    name: string;
+}
+
+export interface IntegrationGraphActuatorResponse$Node {
+    nodeId: number;
+    componentType: string;
+    integrationPatternType: string;
+    integrationPatternCategory: string;
+    properties: { [index: string]: string };
+    sendTimers: { [index: string]: IntegrationGraphActuatorResponse$Node$SendTimer };
+    receiveCounters: { [index: string]: number };
+    name: string;
+}
+
+export interface IntegrationGraphActuatorResponse$Link {
+    from: number;
+    to: number;
+    type: IntegrationGraphActuatorResponse$Link$Type;
+}
+
 export interface LiquibaseActuatorResponse$Context {
     liquibaseBeans: { [index: string]: LiquibaseActuatorResponse$Context$LiquibaseBean };
 }
@@ -464,6 +494,12 @@ export interface FlywayActuatorResponse$Context$FlywayBean {
 export interface InfoActuatorResponse$Git$Commit {
     id: string;
     time: string;
+}
+
+export interface IntegrationGraphActuatorResponse$Node$SendTimer {
+    count: number;
+    mean: number;
+    max: number;
 }
 
 export interface LiquibaseActuatorResponse$Context$LiquibaseBean {
@@ -549,3 +585,5 @@ export type EventLogSeverity = "INFO" | "WARN" | "ERROR";
 export type FilterFieldOperation = "Equal" | "NotEqual" | "In" | "NotIn" | "GreaterThan" | "GreaterEqual" | "LowerThan" | "LowerEqual" | "Between" | "Contains" | "IsNull" | "IsNotNull" | "IsEmpty" | "IsNotEmpty" | "And" | "Or" | "Not" | "Noop";
 
 export type FilterFieldDataType = "String" | "Integer" | "Long" | "Double" | "Boolean" | "Date" | "Object" | "Enum" | "UUID" | "None";
+
+export type IntegrationGraphActuatorResponse$Link$Type = "INPUT" | "OUTPUT";
