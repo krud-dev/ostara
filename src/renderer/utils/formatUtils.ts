@@ -27,15 +27,7 @@ export const formatWidgetValue = (value: unknown, valueType: WidgetValueType, in
       if (!isNumber(value)) {
         return toString(value);
       }
-
-      const d = Math.floor(value / 86400);
-      const h = padValue(Math.floor((value % 86400) / 3600));
-      const m = padValue(Math.floor((value % 3600) / 60));
-      const s = padValue(Math.floor(value % 60));
-
-      return `${d}${intl.formatMessage({ id: 'daysShort' })} ${h}${intl.formatMessage({
-        id: 'hoursShort',
-      })} ${m}${intl.formatMessage({ id: 'minutesShort' })} ${s}${intl.formatMessage({ id: 'secondsShort' })}`;
+      return formatCountdown(value * 1000, intl);
     }
     case 'boolean':
       return intl.formatMessage({ id: value ? 'true' : 'false' });
@@ -60,6 +52,40 @@ export const formatWidgetChartValue = (value: unknown, valueType: WidgetValueTyp
     default:
       return value;
   }
+};
+
+export const formatCountdown = (millis: number, intl: IntlShape): string => {
+  const days = Math.floor(millis / 86400000);
+  const hours = Math.floor((millis % 86400000) / 3600000);
+  const minutes = Math.floor((millis % 3600000) / 60000);
+  const seconds = Math.floor((millis % 60000) / 1000);
+
+  const d = days > 0 ? `${days}${intl.formatMessage({ id: 'daysShort' })} ` : '';
+  const h = `${padValue(hours)}${intl.formatMessage({ id: 'hoursShort' })} `;
+  const m = `${padValue(minutes)}${intl.formatMessage({ id: 'minutesShort' })} `;
+  const s = `${padValue(seconds)}${intl.formatMessage({ id: 'secondsShort' })}`;
+
+  return `${d}${h}${m}${s}`;
+};
+
+export const formatInterval = (millis: number, intl: IntlShape): string => {
+  if (millis === 0) {
+    return '0';
+  }
+
+  const days = Math.floor(millis / 86400000);
+  const hours = Math.floor((millis % 86400000) / 3600000);
+  const minutes = Math.floor((millis % 3600000) / 60000);
+  const seconds = Math.floor((millis % 60000) / 1000);
+  const milliseconds = Math.floor(millis % 1000);
+
+  const d = days > 0 ? `${days}${intl.formatMessage({ id: 'daysShort' })} ` : '';
+  const h = hours > 0 ? `${hours}${intl.formatMessage({ id: 'hoursShort' })} ` : '';
+  const m = minutes > 0 ? `${minutes}${intl.formatMessage({ id: 'minutesShort' })} ` : '';
+  const s = seconds > 0 ? `${seconds}${intl.formatMessage({ id: 'secondsShort' })}` : '';
+  const ms = milliseconds > 0 ? ` ${milliseconds}${intl.formatMessage({ id: 'millisecondsShort' })}` : '';
+
+  return `${d}${h}${m}${s}${ms}`;
 };
 
 export const formatBytes = (bytes: number): string => {

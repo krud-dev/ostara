@@ -12,8 +12,9 @@ export const instanceScheduledTasksCronEntity: Entity<ScheduledTasksActuatorResp
     },
     {
       id: 'expression',
-      type: 'Text',
+      type: 'Cron',
       labelId: 'expression',
+      getTooltip: (item) => item.expression,
     },
   ],
   actions: [],
@@ -28,9 +29,5 @@ export const instanceScheduledTasksCronEntity: Entity<ScheduledTasksActuatorResp
   paging: true,
   getId: (item) => item.runnable.target,
   filterData: (data, filter) =>
-    data.filter(
-      (item) =>
-        item.runnable?.target?.toLowerCase().includes(filter.toLowerCase()) ||
-        item.expression?.toLowerCase().includes(filter.toLowerCase())
-    ),
+    data.filter((item) => item.runnable?.target?.toLowerCase().includes(filter.toLowerCase())),
 };

@@ -90,6 +90,7 @@ export default {
   hoursShort: 'h',
   minutesShort: 'm',
   secondsShort: 's',
+  millisecondsShort: 'ms',
   dataCollectionModeOn: 'Data collection from actuator instances is enabled',
   dataCollectionModeOff: 'Data collection from actuator instances is disabled',
   dataCollectionModeInherited: 'Inherited from parent application',

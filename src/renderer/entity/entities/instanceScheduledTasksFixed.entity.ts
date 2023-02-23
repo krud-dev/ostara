@@ -12,12 +12,12 @@ export const instanceScheduledTasksFixedEntity: Entity<ScheduledTasksActuatorRes
     },
     {
       id: 'initialDelay',
-      type: 'Number',
+      type: 'Interval',
       labelId: 'initialDelay',
     },
     {
       id: 'interval',
-      type: 'Number',
+      type: 'Interval',
       labelId: 'interval',
     },
   ],

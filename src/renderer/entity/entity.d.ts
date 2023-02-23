@@ -58,6 +58,16 @@ export type EntityLabelColumn<EntityItem> = EntityBaseColumn<EntityItem> & {
   getText?: (item: EntityItem) => ReactNode;
 };
 
+export type EntityCountdownColumn<EntityItem> = EntityBaseColumn<EntityItem> & {
+  readonly type: 'Countdown';
+  isSeconds?: boolean;
+};
+
+export type EntityIntervalColumn<EntityItem> = EntityBaseColumn<EntityItem> & {
+  readonly type: 'Interval';
+  isSeconds?: boolean;
+};
+
 export type EntityCustomColumn<EntityItem> = EntityBaseColumn<EntityItem> & {
   readonly type: 'Custom';
   Component: ComponentType<{ column: EntityBaseColumn<EntityItem>; row: EntityItem }>;
@@ -70,6 +80,8 @@ export type EntityColumn<EntityItem> =
   | EntityDateColumn<EntityItem>
   | EntityBytesColumn<EntityItem>
   | EntityLabelColumn<EntityItem>
+  | EntityCountdownColumn<EntityItem>
+  | EntityIntervalColumn<EntityItem>
   | EntityCustomColumn<EntityItem>;
 
 export type EntityRowActionNavigate<EntityItem> = {

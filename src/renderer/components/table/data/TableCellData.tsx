@@ -7,6 +7,8 @@ import TableCellDataCustom from 'renderer/components/table/data/TableCellDataCus
 import TableCellDataLabel from 'renderer/components/table/data/TableCellDataLabel';
 import TableCellDataNumber from 'renderer/components/table/data/TableCellDataNumber';
 import TableCellDataBytes from './TableCellDataBytes';
+import TableCellDataCountdown from './TableCellDataCountdown';
+import TableCellDataInterval from './TableCellDataInterval';
 
 type TableCellDataProps<EntityItem> = {
   row: EntityItem;
@@ -28,6 +30,10 @@ export default function TableCellData<EntityItem>({ row, column }: TableCellData
         return <TableCellDataBytes row={row} column={column} />;
       case 'Label':
         return <TableCellDataLabel row={row} column={column} />;
+      case 'Countdown':
+        return <TableCellDataCountdown row={row} column={column} />;
+      case 'Interval':
+        return <TableCellDataInterval row={row} column={column} />;
       case 'Custom':
         return <TableCellDataCustom row={row} column={column} />;
       default:
