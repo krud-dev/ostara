@@ -5,7 +5,7 @@ import { instanceLiquibaseChangeSetEntity } from 'renderer/entity/entities/insta
 import {
   EnrichedLiquibaseChangeSet,
   useGetInstanceLiquibaseChangesetsQuery,
-} from 'renderer/apis/requests/instance/getInstanceLiquibaseChangesets';
+} from 'renderer/apis/requests/instance/liquibase/getInstanceLiquibaseChangesets';
 
 type LiquibaseChangesetsTableProps = {
   instanceId: string;

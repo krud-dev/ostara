@@ -5,10 +5,13 @@ import TableComponent from 'renderer/components/table/TableComponent';
 import { useSnackbar } from 'notistack';
 import { Entity } from 'renderer/entity/entity';
 import { FormattedMessage } from 'react-intl';
-import { EnrichedInstanceCacheRO, useGetInstanceCachesQuery } from 'renderer/apis/requests/instance/getInstanceCaches';
+import {
+  EnrichedInstanceCacheRO,
+  useGetInstanceCachesQuery,
+} from 'renderer/apis/requests/instance/caches/getInstanceCaches';
 import { instanceCacheEntity } from 'renderer/entity/entities/instanceCache.entity';
-import { useEvictInstanceCaches } from 'renderer/apis/requests/instance/evictInstanceCaches';
-import { useEvictAllInstanceCaches } from 'renderer/apis/requests/instance/evictAllInstanceCaches';
+import { useEvictInstanceCaches } from 'renderer/apis/requests/instance/caches/evictInstanceCaches';
+import { useEvictAllInstanceCaches } from 'renderer/apis/requests/instance/caches/evictAllInstanceCaches';
 import { EVICT_CACHE_ID } from 'renderer/entity/actions';
 import { Card } from '@mui/material';
 import { InstanceRO } from '../../../../../common/generated_definitions';

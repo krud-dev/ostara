@@ -5,8 +5,11 @@ import TableComponent from 'renderer/components/table/TableComponent';
 import { Entity } from 'renderer/entity/entity';
 import { Card } from '@mui/material';
 import { instanceLoggerEntity } from 'renderer/entity/entities/instanceLogger.entity';
-import { EnrichedInstanceLoggerRO, useGetInstanceLoggersQuery } from 'renderer/apis/requests/instance/getInstanceLoggers';
-import { useSetInstanceLoggerLevel } from 'renderer/apis/requests/instance/setInstanceLoggerLevel';
+import {
+  EnrichedInstanceLoggerRO,
+  useGetInstanceLoggersQuery,
+} from 'renderer/apis/requests/instance/loggers/getInstanceLoggers';
+import { useSetInstanceLoggerLevel } from 'renderer/apis/requests/instance/loggers/setInstanceLoggerLevel';
 import { RESET_ID } from 'renderer/entity/actions';
 import { LoggerCustomFilters } from 'renderer/components/item/logger/LoggerCustomFiltersComponent';
 import { InstanceRO } from '../../../../../common/generated_definitions';

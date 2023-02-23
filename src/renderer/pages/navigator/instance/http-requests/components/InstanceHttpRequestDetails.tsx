@@ -6,10 +6,10 @@ import { useNavigatorTree } from 'renderer/contexts/NavigatorTreeContext';
 import InstanceHttpRequestCharts, {
   InstanceHttpRequestChartsData,
 } from 'renderer/pages/navigator/instance/http-requests/components/InstanceHttpRequestCharts';
-import { useGetInstanceHttpRequestStatisticsForUriByMethodsQuery } from 'renderer/apis/requests/instance/getInstanceHttpRequestStatisticsForUriByMethods';
-import { useGetInstanceHttpRequestStatisticsForUriByOutcomesQuery } from 'renderer/apis/requests/instance/getInstanceHttpRequestStatisticsForUriByOutcomes';
-import { useGetInstanceHttpRequestStatisticsForUriByStatusesQuery } from 'renderer/apis/requests/instance/getInstanceHttpRequestStatisticsForUriByStatuses';
-import { useGetInstanceHttpRequestStatisticsForUriByExceptionsQuery } from 'renderer/apis/requests/instance/getInstanceHttpRequestStatisticsForUriByExceptions';
+import { useGetInstanceHttpRequestStatisticsForUriByMethodsQuery } from 'renderer/apis/requests/instance/http-requests/getInstanceHttpRequestStatisticsForUriByMethods';
+import { useGetInstanceHttpRequestStatisticsForUriByOutcomesQuery } from 'renderer/apis/requests/instance/http-requests/getInstanceHttpRequestStatisticsForUriByOutcomes';
+import { useGetInstanceHttpRequestStatisticsForUriByStatusesQuery } from 'renderer/apis/requests/instance/http-requests/getInstanceHttpRequestStatisticsForUriByStatuses';
+import { useGetInstanceHttpRequestStatisticsForUriByExceptionsQuery } from 'renderer/apis/requests/instance/http-requests/getInstanceHttpRequestStatisticsForUriByExceptions';
 import { InstanceHttpRequestStatisticsRO, InstanceRO } from '../../../../../../common/generated_definitions';
 import { map } from 'lodash';
 

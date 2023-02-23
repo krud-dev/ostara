@@ -1,5 +1,5 @@
 import React from 'react';
-import { EnrichedLiquibaseChangeSet } from 'renderer/apis/requests/instance/getInstanceLiquibaseChangesets';
+import { EnrichedLiquibaseChangeSet } from 'renderer/apis/requests/instance/liquibase/getInstanceLiquibaseChangesets';
 import TableDetailsLabelValue from 'renderer/components/table/details/TableDetailsLabelValue';
 import { FormattedMessage } from 'react-intl';
 import { Card, CardContent } from '@mui/material';

@@ -1,5 +1,5 @@
 import React, { useMemo } from 'react';
-import { useGetInstanceCacheStatisticsQuery } from 'renderer/apis/requests/instance/getInstanceCacheStatistics';
+import { useGetInstanceCacheStatisticsQuery } from 'renderer/apis/requests/instance/caches/getInstanceCacheStatistics';
 import { useNavigatorTree } from 'renderer/contexts/NavigatorTreeContext';
 import ItemCacheDetails, { ItemCacheStatistics } from 'renderer/components/item/cache/ItemCacheDetails';
 import { InstanceCacheRO, InstanceRO } from '../../../../../../common/generated_definitions';

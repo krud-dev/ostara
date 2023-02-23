@@ -6,13 +6,13 @@ import { Entity } from 'renderer/entity/entity';
 import { Card } from '@mui/material';
 import { InstanceHeapdumpReferenceRO, InstanceRO } from '../../../../../common/generated_definitions';
 import { instanceHeapdumpReferencesEntity } from '../../../../entity/entities/instanceHeapdumpReferences.entity';
-import { useGetInstanceHeapdumpReferencesQuery } from '../../../../apis/requests/instance/getInstanceHeapdumpReferences';
+import { useGetInstanceHeapdumpReferencesQuery } from '../../../../apis/requests/instance/heapdumps/getInstanceHeapdumpReferences';
 import { DELETE_ID, DOWNLOAD_ID, REQUEST_ID } from '../../../../entity/actions';
 import { FormattedMessage } from 'react-intl';
-import { useRequestInstanceHeapdump } from '../../../../apis/requests/instance/requestInstanceHeapdump';
+import { useRequestInstanceHeapdump } from '../../../../apis/requests/instance/heapdumps/requestInstanceHeapdump';
 import { useSnackbar } from 'notistack';
-import { useDeleteInstanceHeapdumpReference } from '../../../../apis/requests/instance/deleteInstanceHeapdumpReference';
-import { useDownloadInstanceHeapdumpReference } from '../../../../apis/requests/instance/downloadInstanceHeapdumpReference';
+import { useDeleteInstanceHeapdumpReference } from '../../../../apis/requests/instance/heapdumps/deleteInstanceHeapdumpReference';
+import { useDownloadInstanceHeapdumpReference } from '../../../../apis/requests/instance/heapdumps/downloadInstanceHeapdumpReference';
 
 const InstanceHeapdumpReferences: FunctionComponent = () => {
   const { selectedItem } = useNavigatorTree();

@@ -10,8 +10,8 @@ import { applicationLoggerEntity } from 'renderer/entity/entities/applicationLog
 import {
   EnrichedApplicationLoggerRO,
   useGetApplicationLoggersQuery,
-} from 'renderer/apis/requests/application/getApplicationLoggers';
-import { useSetApplicationLoggerLevel } from 'renderer/apis/requests/application/setApplicationLoggerLevel';
+} from 'renderer/apis/requests/application/loggers/getApplicationLoggers';
+import { useSetApplicationLoggerLevel } from 'renderer/apis/requests/application/loggers/setApplicationLoggerLevel';
 import { ApplicationRO } from '../../../../../common/generated_definitions';
 
 const ApplicationLoggers: FunctionComponent = () => {

@@ -1,8 +1,8 @@
 import { EntityBaseColumn } from 'renderer/entity/entity';
 import { useCallback, useMemo, useState } from 'react';
 import LogLevelToggleGroup from 'renderer/components/item/logger/LogLevelToggleGroup';
-import { useSetInstanceLoggerLevel } from 'renderer/apis/requests/instance/setInstanceLoggerLevel';
-import { EnrichedInstanceLoggerRO } from 'renderer/apis/requests/instance/getInstanceLoggers';
+import { useSetInstanceLoggerLevel } from 'renderer/apis/requests/instance/loggers/setInstanceLoggerLevel';
+import { EnrichedInstanceLoggerRO } from 'renderer/apis/requests/instance/loggers/getInstanceLoggers';
 import { LogLevel } from '../../../../common/generated_definitions';
 import { useUpdateEffect } from 'react-use';
 

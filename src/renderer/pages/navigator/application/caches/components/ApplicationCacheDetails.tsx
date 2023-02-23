@@ -1,6 +1,6 @@
 import React, { useMemo } from 'react';
 import { useNavigatorTree } from 'renderer/contexts/NavigatorTreeContext';
-import { useGetApplicationCacheStatisticsQuery } from 'renderer/apis/requests/application/getApplicationCacheStatistics';
+import { useGetApplicationCacheStatisticsQuery } from 'renderer/apis/requests/application/caches/getApplicationCacheStatistics';
 import ItemCacheDetails, { ItemCacheStatistics } from 'renderer/components/item/cache/ItemCacheDetails';
 import { ApplicationCacheRO, ApplicationRO } from '../../../../../../common/generated_definitions';
 

@@ -3,7 +3,7 @@ import Page from 'renderer/components/layout/Page';
 import { useNavigatorTree } from 'renderer/contexts/NavigatorTreeContext';
 import TableComponent from 'renderer/components/table/TableComponent';
 import { Entity } from 'renderer/entity/entity';
-import { useGetInstanceHttpRequestStatisticsQuery } from 'renderer/apis/requests/instance/getInstanceHttpRequestStatistics';
+import { useGetInstanceHttpRequestStatisticsQuery } from 'renderer/apis/requests/instance/http-requests/getInstanceHttpRequestStatistics';
 import { instanceHttpRequestEntity } from 'renderer/entity/entities/instanceHttpRequest.entity';
 import { Card } from '@mui/material';
 import { InstanceHttpRequestStatisticsRO, InstanceRO } from '../../../../../common/generated_definitions';

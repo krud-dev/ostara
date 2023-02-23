@@ -1,6 +1,6 @@
 import { Entity } from 'renderer/entity/entity';
 import { EVICT_CACHE_ID } from 'renderer/entity/actions';
-import { EnrichedApplicationCacheRO } from 'renderer/apis/requests/application/getApplicationCaches';
+import { EnrichedApplicationCacheRO } from 'renderer/apis/requests/application/caches/getApplicationCaches';
 import ApplicationCacheDetails from 'renderer/pages/navigator/application/caches/components/ApplicationCacheDetails';
 
 export const applicationCacheEntity: Entity<EnrichedApplicationCacheRO> = {

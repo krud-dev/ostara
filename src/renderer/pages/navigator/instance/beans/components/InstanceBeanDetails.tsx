@@ -1,5 +1,5 @@
 import { Box, Card, CardContent, Link, Stack, Typography } from '@mui/material';
-import { InstanceBean } from 'renderer/apis/requests/instance/getInstanceBeans';
+import { InstanceBean } from 'renderer/apis/requests/instance/beans/getInstanceBeans';
 import { FormattedMessage } from 'react-intl';
 import { COMPONENTS_SPACING } from 'renderer/constants/ui';
 import React, { useCallback } from 'react';

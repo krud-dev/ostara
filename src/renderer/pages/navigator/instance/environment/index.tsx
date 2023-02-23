@@ -3,7 +3,10 @@ import Page from 'renderer/components/layout/Page';
 import { useNavigatorTree } from 'renderer/contexts/NavigatorTreeContext';
 import { Entity } from 'renderer/entity/entity';
 import TableComponent from 'renderer/components/table/TableComponent';
-import { EnvProperty, useGetInstanceEnvPropertiesQuery } from 'renderer/apis/requests/instance/getInstanceEnvProperties';
+import {
+  EnvProperty,
+  useGetInstanceEnvPropertiesQuery,
+} from 'renderer/apis/requests/instance/env/getInstanceEnvProperties';
 import { instanceEnvEntity } from 'renderer/entity/entities/instanceEnv.entity';
 import useCopyToClipboard from 'renderer/hooks/useCopyToClipboard';
 import { COPY_ID } from 'renderer/entity/actions';

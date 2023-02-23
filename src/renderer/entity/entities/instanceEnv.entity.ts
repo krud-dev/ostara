@@ -1,5 +1,5 @@
 import { Entity } from 'renderer/entity/entity';
-import { EnvProperty } from 'renderer/apis/requests/instance/getInstanceEnvProperties';
+import { EnvProperty } from 'renderer/apis/requests/instance/env/getInstanceEnvProperties';
 import { COPY_ID } from 'renderer/entity/actions';
 
 export const instanceEnvEntity: Entity<EnvProperty> = {
