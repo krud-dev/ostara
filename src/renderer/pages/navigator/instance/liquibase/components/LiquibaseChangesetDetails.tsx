@@ -3,7 +3,7 @@ import { EnrichedLiquibaseChangeSet } from 'renderer/apis/requests/instance/liqu
 import TableDetailsLabelValue from 'renderer/components/table/details/TableDetailsLabelValue';
 import { FormattedMessage } from 'react-intl';
 import { Card, CardContent } from '@mui/material';
-import { DEFAULT_TABLE_COLUMN_WIDTH } from 'renderer/constants/ui';
+import { DEFAULT_TABLE_COLUMN_WIDTH, EMPTY_STRING } from 'renderer/constants/ui';
 
 type LiquibaseChangesetDetailsProps = {
   row: EnrichedLiquibaseChangeSet;
@@ -24,13 +24,16 @@ export default function LiquibaseChangesetDetails({ row }: LiquibaseChangesetDet
         <TableDetailsLabelValue label={<FormattedMessage id={'changelog'} />} value={row.changeLog} />
         <TableDetailsLabelValue label={<FormattedMessage id={'comments'} />} value={row.comments} />
         <TableDetailsLabelValue label={<FormattedMessage id={'deploymentId'} />} value={row.deploymentId} />
-        <TableDetailsLabelValue label={<FormattedMessage id={'checksum'} />} value={row.checksum || '\u00A0'} />
+        <TableDetailsLabelValue label={<FormattedMessage id={'checksum'} />} value={row.checksum || EMPTY_STRING} />
         <TableDetailsLabelValue
           label={<FormattedMessage id={'contexts'} />}
-          value={row.context?.join(', ') || '\u00A0'}
+          value={row.context?.join(', ') || EMPTY_STRING}
         />
-        <TableDetailsLabelValue label={<FormattedMessage id={'labels'} />} value={row.labels?.join(', ') || '\u00A0'} />
-        <TableDetailsLabelValue label={<FormattedMessage id={'tag'} />} value={row.tag || '\u00A0'} />
+        <TableDetailsLabelValue
+          label={<FormattedMessage id={'labels'} />}
+          value={row.labels?.join(', ') || EMPTY_STRING}
+        />
+        <TableDetailsLabelValue label={<FormattedMessage id={'tag'} />} value={row.tag || EMPTY_STRING} />
       </CardContent>
     </Card>
   );

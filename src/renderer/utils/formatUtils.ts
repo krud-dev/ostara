@@ -1,6 +1,7 @@
 import { isArray, isNil, isNumber, toString } from 'lodash';
 import { IntlShape } from 'react-intl';
 import { WidgetValueType } from '../components/widget/widget';
+import { EMPTY_STRING } from '../constants/ui';
 
 export const roundNumber = (number: number, decimals: number): number => {
   return parseFloat(number.toFixed(decimals));
@@ -10,7 +11,7 @@ export const padValue = (value: number): string => (value < 10 ? `0${value}` : `
 
 export const formatWidgetValue = (value: unknown, valueType: WidgetValueType, intl: IntlShape): string => {
   if (isNil(value)) {
-    return '\u00A0';
+    return EMPTY_STRING;
   }
   switch (valueType) {
     case 'number':
@@ -38,7 +39,7 @@ export const formatWidgetValue = (value: unknown, valueType: WidgetValueType, in
     case 'null':
       return toString(value);
     default:
-      return '\u00A0';
+      return EMPTY_STRING;
   }
 };
 

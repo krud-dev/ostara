@@ -1,5 +1,4 @@
 import React, { FunctionComponent, useCallback, useMemo } from 'react';
-import Page from 'renderer/components/layout/Page';
 import TableComponent from 'renderer/components/table/TableComponent';
 import { Entity } from 'renderer/entity/entity';
 import {

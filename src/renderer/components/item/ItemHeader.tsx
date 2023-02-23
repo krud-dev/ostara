@@ -6,7 +6,7 @@ import {
   getItemHealthStatusTextId,
   getItemNameTooltip,
 } from 'renderer/utils/itemUtils';
-import { COMPONENTS_SPACING, SIDEBAR_HEADER_HEIGHT } from 'renderer/constants/ui';
+import { COMPONENTS_SPACING, EMPTY_STRING, SIDEBAR_HEADER_HEIGHT } from 'renderer/constants/ui';
 import useItemColor from 'renderer/hooks/useItemColor';
 import { FormattedMessage } from 'react-intl';
 import { usePopupState } from 'material-ui-popup-state/hooks';
@@ -71,7 +71,7 @@ export default function ItemHeader({ item }: ItemHeaderProps) {
               sx={{ color: 'text.primary', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}
               noWrap
             >
-              {displayName || '\u00A0'}
+              {displayName || EMPTY_STRING}
             </Typography>
           </Tooltip>
 
@@ -85,7 +85,7 @@ export default function ItemHeader({ item }: ItemHeaderProps) {
             }}
             noWrap
           >
-            {healthTextId ? <FormattedMessage id={healthTextId} /> : '\u00A0'}
+            {healthTextId ? <FormattedMessage id={healthTextId} /> : EMPTY_STRING}
           </Typography>
         </Box>
       </Box>

@@ -5,7 +5,7 @@ import { getInstanceHealthStatusColor } from 'renderer/utils/itemUtils';
 import { IconViewer } from 'renderer/components/common/IconViewer';
 import { FormattedMessage } from 'react-intl';
 import { showUpdateItemDialog } from 'renderer/utils/dialogUtils';
-import FormattedDateAndRelativeTime from 'renderer/components/time/FormattedDateAndRelativeTime';
+import FormattedDateAndRelativeTime from 'renderer/components/format/FormattedDateAndRelativeTime';
 import { useUpdateEffect } from 'react-use';
 import { useFetchInstanceHealth } from 'renderer/apis/requests/instance/fetchInstanceHealth';
 import { LoadingButton } from '@mui/lab';

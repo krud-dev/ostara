@@ -24,6 +24,7 @@ import InstanceLoggers from 'renderer/pages/navigator/instance/loggers';
 import ApplicationLoggers from 'renderer/pages/navigator/application/loggers';
 import InstanceHeapdumpReferences from '../pages/navigator/instance/heapdumps';
 import InstanceScheduledTasks from '../pages/navigator/instance/scheduled-tasks';
+import InstanceQuartz from '../pages/navigator/instance/quartz';
 
 export default function Router() {
   return useRoutes([
@@ -96,7 +97,7 @@ export default function Router() {
             },
             {
               path: urls.instanceQuartz.path,
-              element: <InstanceDashboard />,
+              element: <InstanceQuartz />,
             },
             {
               path: urls.instanceScheduledTasks.path,

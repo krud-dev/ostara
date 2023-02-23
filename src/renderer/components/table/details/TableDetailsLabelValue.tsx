@@ -2,6 +2,7 @@ import React, { ReactNode } from 'react';
 import { Box, Tooltip, Typography } from '@mui/material';
 import { SxProps } from '@mui/system';
 import { Theme } from '@mui/material/styles';
+import { EMPTY_STRING } from '../../../constants/ui';
 
 type TableDetailsLabelValueProps = {
   label: ReactNode;
@@ -18,7 +19,7 @@ export default function TableDetailsLabelValue({ label, value, tooltip, sx }: Ta
       </Typography>
       <Typography variant={'body2'}>
         <Tooltip title={tooltip}>
-          <Box component={'span'}>{value}</Box>
+          <Box component={'span'}>{value || EMPTY_STRING}</Box>
         </Tooltip>
       </Typography>
     </Box>

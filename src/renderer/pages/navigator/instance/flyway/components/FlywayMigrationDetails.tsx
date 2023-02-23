@@ -2,8 +2,8 @@ import React from 'react';
 import TableDetailsLabelValue from 'renderer/components/table/details/TableDetailsLabelValue';
 import { FormattedMessage } from 'react-intl';
 import { Card, CardContent } from '@mui/material';
-import { EnrichedFlywayMigration } from 'renderer/apis/instance/getInstanceFlywayMigrations';
 import { DEFAULT_TABLE_COLUMN_WIDTH } from 'renderer/constants/ui';
+import { EnrichedFlywayMigration } from 'renderer/apis/requests/instance/flyway/getInstanceFlywayMigrations';
 
 type FlywayMigrationDetailsProps = {
   row: EnrichedFlywayMigration;

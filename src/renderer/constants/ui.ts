@@ -14,3 +14,5 @@ export const DEFAULT_ROWS_PER_PAGE = ROWS_PER_PAGE_OPTIONS[ROWS_PER_PAGE_OPTIONS
 export const MAIN_SCROLL_CONTAINER_ID = 'main-scroll-container';
 export const SECONDARY_SCROLL_CONTAINER_ID = 'secondary-scroll-container';
 export const TABLE_SCROLL_CONTAINER_ID = 'table-scroll-container';
+
+export const EMPTY_STRING = '\u00A0';

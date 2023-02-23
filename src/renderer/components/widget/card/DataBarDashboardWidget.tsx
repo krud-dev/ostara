@@ -7,6 +7,7 @@ import HelpIcon from 'renderer/components/help/HelpIcon';
 import MetricValue from 'renderer/components/widget/metric/MetricValue';
 import useWidgetSubscribeToMetrics from 'renderer/components/widget/hooks/useWidgetSubscribeToMetrics';
 import { InstanceMetricRO } from '../../../../common/generated_definitions';
+import { EMPTY_STRING } from '../../../constants/ui';
 
 const DataBarDashboardWidget: FunctionComponent<DashboardWidgetCardProps<DataBarWidget>> = ({ widget, item }) => {
   const [data, setData] = useState<{ [key: string]: InstanceMetricRO }>({});
@@ -39,7 +40,7 @@ const DataBarDashboardWidget: FunctionComponent<DashboardWidgetCardProps<DataBar
             return (
               <Box sx={{ width: `${100 / array.length}%`, textAlign: 'center' }} key={metric.name}>
                 <Typography variant={'h3'} sx={{ whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
-                  {!isNil(value) ? <MetricValue value={value} valueType={metric.valueType} /> : '\u00A0'}
+                  {!isNil(value) ? <MetricValue value={value} valueType={metric.valueType} /> : EMPTY_STRING}
                 </Typography>
                 <Typography
                   variant={'subtitle2'}
