@@ -1,0 +1,36 @@
+{
+    "cron": [
+        {
+            "runnable": {
+                "target": "dev.krud.springbootadmin.client.SchedulingExample.cronEveryDayAtNoon"
+            },
+            "expression": "0 0 12 * * ?"
+        }
+    ],
+    "fixedDelay": [
+        {
+            "runnable": {
+                "target": "dev.krud.springbootadmin.client.CacheExample.populateCaches"
+            },
+            "initialDelay": 0,
+            "interval": 60000
+        },
+        {
+            "runnable": {
+                "target": "dev.krud.springbootadmin.client.SchedulingExample.fixedDelayEvery10minutes"
+            },
+            "initialDelay": 0,
+            "interval": 600000
+        }
+    ],
+    "fixedRate": [
+        {
+            "runnable": {
+                "target": "dev.krud.springbootadmin.client.SchedulingExample.fixedRateEvery10minutes"
+            },
+            "initialDelay": 0,
+            "interval": 600000
+        }
+    ],
+    "custom": []
+}

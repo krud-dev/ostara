@@ -285,6 +285,14 @@ class ActuatorHttpClientTest {
     }
 
     @Test
+    internal fun `updateLogger should succeed on 204`() {
+        server.enqueue(okResponse(204))
+        val baseUrl = server.url("/actuator").toString()
+        val client = ActuatorHttpClient(baseUrl)
+        client.updateLogger("logger", LogLevel.OFF).getOrThrow()
+    }
+
+    @Test
     fun `integrationgraph should return correct response`() {
         server.enqueue(okJsonResponse("responses/integrationgraph_response_200.json"))
         val baseUrl = server.url("/actuator").toString()
@@ -304,11 +312,13 @@ class ActuatorHttpClientTest {
     }
 
     @Test
-    internal fun `updateLogger should succeed on 204`() {
-        server.enqueue(okResponse(204))
+    fun `scheduledtasks should return correct response`() {
+        server.enqueue(okJsonResponse("responses/scheduledtasks_response_200.json"))
         val baseUrl = server.url("/actuator").toString()
         val client = ActuatorHttpClient(baseUrl)
-        client.updateLogger("logger", LogLevel.OFF).getOrThrow()
+        val scheduledTasks = client.scheduledTasks().getOrThrow()
+        expectThat(scheduledTasks.cron.size)
+            .isEqualTo(1)
     }
 
     private fun okResponse(code: Int = 200) = MockResponse()

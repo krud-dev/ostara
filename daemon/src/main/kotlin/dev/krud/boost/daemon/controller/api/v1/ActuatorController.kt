@@ -292,4 +292,15 @@ class ActuatorController(
     @ApiResponse(responseCode = "404", description = "Endpoint not available", content = [Content()])
     @ApiResponse(responseCode = "503", description = "Service unavailable", content = [Content()])
     fun integrationGraph(@RequestParam instanceId: UUID) = actuatorClientProvider.provide(instanceId).integrationGraph()
+
+    @GetMapping("/scheduledtasks")
+    @ResponseStatus(HttpStatus.OK)
+    @Operation(
+        summary = "Get scheduled tasks",
+        description = "Equivalent call to actuator scheduledtasks /scheduledtasks"
+    )
+    @ApiResponse(responseCode = "200", description = "Scheduled tasks object")
+    @ApiResponse(responseCode = "404", description = "Endpoint not available", content = [Content()])
+    @ApiResponse(responseCode = "503", description = "Service unavailable", content = [Content()])
+    fun scheduledTasks(@RequestParam instanceId: UUID) = actuatorClientProvider.provide(instanceId).scheduledTasks()
 }

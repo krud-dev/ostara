@@ -191,7 +191,14 @@ class ActuatorHttpClient(
     /**
      * Integration Graph
      */
+
     fun integrationGraph(): Result<IntegrationGraphActuatorResponse> = doGet(asUrl("integrationgraph"))
+
+    /**
+     * Scheduled tasks
+     */
+
+    fun scheduledTasks(): Result<ScheduledTasksActuatorResponse> = doGet(asUrl("scheduledtasks"))
 
     private inline fun <reified Type> doGet(url: HttpUrl, build: Request.Builder.() -> Unit = {}): Result<Type> =
         doRequest(url, "GET", null, build)

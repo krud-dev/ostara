@@ -102,6 +102,13 @@ export interface MetricsActuatorResponse {
     names: string[];
 }
 
+export interface ScheduledTasksActuatorResponse {
+    cron: ScheduledTasksActuatorResponse$Cron[];
+    fixedDelay: ScheduledTasksActuatorResponse$FixedDelayOrRate[];
+    fixedRate: ScheduledTasksActuatorResponse$FixedDelayOrRate[];
+    custom: ScheduledTasksActuatorResponse$Custom[];
+}
+
 export interface TestConnectionResponse {
     statusCode: number;
     statusText?: string;
@@ -436,6 +443,22 @@ export interface MetricActuatorResponse$Measurement {
     value: number;
 }
 
+export interface ScheduledTasksActuatorResponse$Cron {
+    runnable: ScheduledTasksActuatorResponse$Runnable;
+    expression: string;
+}
+
+export interface ScheduledTasksActuatorResponse$FixedDelayOrRate {
+    runnable: ScheduledTasksActuatorResponse$Runnable;
+    initialDelay: number;
+    interval: number;
+}
+
+export interface ScheduledTasksActuatorResponse$Custom {
+    runnable: ScheduledTasksActuatorResponse$Runnable;
+    trigger: string;
+}
+
 export interface ThreadDumpActuatorResponse$Thread {
     threadName: string;
     threadId: number;
@@ -504,6 +527,10 @@ export interface IntegrationGraphActuatorResponse$Node$SendTimer {
 
 export interface LiquibaseActuatorResponse$Context$LiquibaseBean {
     changeSets: LiquibaseActuatorResponse$Context$LiquibaseBean$ChangeSet[];
+}
+
+export interface ScheduledTasksActuatorResponse$Runnable {
+    target: string;
 }
 
 export interface ThreadDumpActuatorResponse$Thread$StackTraceFrame {
