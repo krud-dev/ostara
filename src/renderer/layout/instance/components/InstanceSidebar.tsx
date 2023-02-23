@@ -7,6 +7,7 @@ import {
   DataUsageOutlined,
   DeviceHubOutlined,
   EggOutlined,
+  EventRepeatOutlined,
   HttpOutlined,
   LanOutlined,
   ListAltOutlined,
@@ -82,6 +83,14 @@ export default function InstanceSidebar({ item, disabled, width }: InstanceSideb
             to: generatePath(urls.instanceQuartz.url, { id: item.id }),
             disabled: disabled,
             hidden: isServiceInactive(item, 'QUARTZ'),
+          },
+          {
+            id: 'scheduled-tasks',
+            icon: <EventRepeatOutlined />,
+            label: <FormattedMessage id={'scheduledTasks'} />,
+            to: generatePath(urls.instanceScheduledTasks.url, { id: item.id }),
+            disabled: disabled,
+            hidden: isServiceInactive(item, 'SCHEDULEDTASKS'),
           },
           {
             id: 'flyway',

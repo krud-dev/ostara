@@ -23,6 +23,7 @@ import InstanceLiquibase from 'renderer/pages/navigator/instance/liquibase';
 import InstanceLoggers from 'renderer/pages/navigator/instance/loggers';
 import ApplicationLoggers from 'renderer/pages/navigator/application/loggers';
 import InstanceHeapdumpReferences from '../pages/navigator/instance/heapdumps';
+import InstanceScheduledTasks from '../pages/navigator/instance/scheduled-tasks';
 
 export default function Router() {
   return useRoutes([
@@ -96,6 +97,10 @@ export default function Router() {
             {
               path: urls.instanceQuartz.path,
               element: <InstanceDashboard />,
+            },
+            {
+              path: urls.instanceScheduledTasks.path,
+              element: <InstanceScheduledTasks />,
             },
             {
               path: urls.instanceFlyway.path,

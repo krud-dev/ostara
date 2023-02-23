@@ -68,6 +68,10 @@ export const urls = asUrlInfos({
     url: '/navigator/instance/:id/quartz',
     path: 'quartz',
   },
+  instanceScheduledTasks: {
+    url: '/navigator/instance/:id/scheduled-tasks',
+    path: 'scheduled-tasks',
+  },
   instanceFlyway: {
     url: '/navigator/instance/:id/flyway',
     path: 'flyway',
