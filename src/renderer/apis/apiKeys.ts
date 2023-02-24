@@ -63,6 +63,7 @@ export const apiKeys = {
     uri,
     'exceptions',
   ],
+  itemIntegrationGraph: (id: string) => [...apiKeys.item(id), 'integrationGraph'],
   itemInstances: (id: string) => [...apiKeys.item(id), 'instances'],
   itemHeapdumps: (id: string) => [...apiKeys.item(id), 'heapdumps'],
 

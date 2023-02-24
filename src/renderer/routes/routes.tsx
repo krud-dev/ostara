@@ -25,6 +25,7 @@ import ApplicationLoggers from 'renderer/pages/navigator/application/loggers';
 import InstanceHeapdumpReferences from '../pages/navigator/instance/heapdumps';
 import InstanceScheduledTasks from '../pages/navigator/instance/scheduled-tasks';
 import InstanceQuartz from '../pages/navigator/instance/quartz';
+import InstanceIntegrationGraph from '../pages/navigator/instance/integration-graph';
 
 export default function Router() {
   return useRoutes([
@@ -114,6 +115,10 @@ export default function Router() {
             {
               path: urls.instanceProperties.path,
               element: <InstanceProperties />,
+            },
+            {
+              path: urls.instanceIntegrationGraph.path,
+              element: <InstanceIntegrationGraph />,
             },
             {
               path: urls.instanceLoggers.path,

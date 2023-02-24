@@ -2,6 +2,7 @@ import Sidebar from 'renderer/components/menu/sidebar/Sidebar';
 import { SidebarConfig } from 'renderer/components/menu/sidebar/SidebarSection';
 import {
   AccessTimeOutlined,
+  AccountTreeOutlined,
   BarChartOutlined,
   ClassOutlined,
   DataUsageOutlined,
@@ -107,6 +108,14 @@ export default function InstanceSidebar({ item, disabled, width }: InstanceSideb
             to: generatePath(urls.instanceLiquibase.url, { id: item.id }),
             disabled: disabled,
             hidden: isServiceInactive(item, 'LIQUIBASE'),
+          },
+          {
+            id: 'integration-graph',
+            icon: <AccountTreeOutlined />,
+            label: <FormattedMessage id={'integrationGraph'} />,
+            to: generatePath(urls.instanceIntegrationGraph.url, { id: item.id }),
+            disabled: disabled,
+            hidden: isServiceInactive(item, 'INTEGRATIONGRAPH'),
           },
         ],
       },

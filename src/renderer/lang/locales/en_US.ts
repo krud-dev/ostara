@@ -212,4 +212,5 @@ export default {
   simple: 'Simple',
   yes: 'Yes',
   no: 'No',
+  integrationGraph: 'Integration Graph',
 };

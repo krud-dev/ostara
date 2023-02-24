@@ -92,6 +92,10 @@ export const urls = asUrlInfos({
     url: '/navigator/instance/:id/properties',
     path: 'properties',
   },
+  instanceIntegrationGraph: {
+    url: '/navigator/instance/:id/integration-graph',
+    path: 'integration-graph',
+  },
   instanceLoggers: {
     url: '/navigator/instance/:id/loggers',
     path: 'loggers',
