@@ -315,6 +315,17 @@ class ActuatorController(
     @ApiResponse(responseCode = "503", description = "Service unavailable", content = [Content()])
     fun quartz(@RequestParam instanceId: UUID) = actuatorClientProvider.provide(instanceId).quartz()
 
+    @GetMapping("/quartz/jobs")
+    @ResponseStatus(HttpStatus.OK)
+    @Operation(
+        summary = "Get quartz jobs",
+        description = "Equivalent call to actuator quartz /quartz/jobs"
+    )
+    @ApiResponse(responseCode = "200", description = "Quartz jobs object")
+    @ApiResponse(responseCode = "404", description = "Endpoint not available or group not found", content = [Content()])
+    @ApiResponse(responseCode = "503", description = "Service unavailable", content = [Content()])
+    fun quartzJobs(@RequestParam instanceId: UUID) = actuatorClientProvider.provide(instanceId).quartzJobs()
+
     @GetMapping("/quartz/jobs/{group}")
     @ResponseStatus(HttpStatus.OK)
     @Operation(
@@ -324,7 +335,7 @@ class ActuatorController(
     @ApiResponse(responseCode = "200", description = "Quartz jobs object")
     @ApiResponse(responseCode = "404", description = "Endpoint not available or group not found", content = [Content()])
     @ApiResponse(responseCode = "503", description = "Service unavailable", content = [Content()])
-    fun quartzJobs(@RequestParam instanceId: UUID, @PathVariable group: String) = actuatorClientProvider.provide(instanceId).quartzJobs(group)
+    fun quartzJobsByGroup(@RequestParam instanceId: UUID, @PathVariable group: String) = actuatorClientProvider.provide(instanceId).quartzJobsByGroup(group)
 
     @GetMapping("/quartz/jobs/{group}/{name}")
     @ResponseStatus(HttpStatus.OK)
@@ -337,6 +348,17 @@ class ActuatorController(
     @ApiResponse(responseCode = "503", description = "Service unavailable", content = [Content()])
     fun quartzJob(@RequestParam instanceId: UUID, @PathVariable group: String, @PathVariable name: String) = actuatorClientProvider.provide(instanceId).quartzJob(group, name)
 
+    @GetMapping("/quartz/triggers")
+    @ResponseStatus(HttpStatus.OK)
+    @Operation(
+        summary = "Get quartz triggers",
+        description = "Equivalent call to actuator quartz /quartz/triggers"
+    )
+    @ApiResponse(responseCode = "200", description = "Quartz triggers object")
+    @ApiResponse(responseCode = "404", description = "Endpoint not available or group not found", content = [Content()])
+    @ApiResponse(responseCode = "503", description = "Service unavailable", content = [Content()])
+    fun quartzTriggers(@RequestParam instanceId: UUID) = actuatorClientProvider.provide(instanceId).quartzTriggers()
+
     @GetMapping("/quartz/triggers/{group}")
     @ResponseStatus(HttpStatus.OK)
     @Operation(
@@ -346,7 +368,7 @@ class ActuatorController(
     @ApiResponse(responseCode = "200", description = "Quartz triggers object")
     @ApiResponse(responseCode = "404", description = "Endpoint not available or group not found", content = [Content()])
     @ApiResponse(responseCode = "503", description = "Service unavailable", content = [Content()])
-    fun quartzTriggers(@RequestParam instanceId: UUID, @PathVariable group: String) = actuatorClientProvider.provide(instanceId).quartzTriggers(group)
+    fun quartzTriggersByGroup(@RequestParam instanceId: UUID, @PathVariable group: String) = actuatorClientProvider.provide(instanceId).quartzTriggersByGroup(group)
 
     @GetMapping("/quartz/triggers/{group}/{name}")
     @ResponseStatus(HttpStatus.OK)

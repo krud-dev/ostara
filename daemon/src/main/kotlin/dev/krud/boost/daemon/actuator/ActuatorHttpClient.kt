@@ -206,11 +206,15 @@ class ActuatorHttpClient(
 
     fun quartz(): Result<QuartzActuatorResponse> = doGet(asUrl("quartz"))
 
-    fun quartzJobs(group: String): Result<QuartzJobsResponse> = doGet(asUrl("quartz", "jobs", group))
+    fun quartzJobs(): Result<QuartzJobsResponse> = doGet(asUrl("quartz", "jobs"))
+
+    fun quartzJobsByGroup(group: String): Result<QuartzJobsByGroupResponse> = doGet(asUrl("quartz", "jobs", group))
 
     fun quartzJob(group: String, name: String): Result<QuartzJobResponse> = doGet(asUrl("quartz", "jobs", group, name))
 
-    fun quartzTriggers(group: String): Result<QuartzTriggersResponse> = doGet(asUrl("quartz", "triggers", group))
+    fun quartzTriggers(): Result<QuartzTriggersResponse> = doGet(asUrl("quartz", "triggers"))
+
+    fun quartzTriggersByGroup(group: String): Result<QuartzTriggersByGroupResponse> = doGet(asUrl("quartz", "triggers", group))
 
     fun quartzTrigger(group: String, name: String): Result<QuartzTriggerResponse> = doGet(asUrl("quartz", "triggers", group, name))
 

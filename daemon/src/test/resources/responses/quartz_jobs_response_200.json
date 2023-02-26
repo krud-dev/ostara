@@ -1,8 +1,9 @@
 {
-    "group": "DEFAULT",
-    "jobs": {
-        "sampleSimpleJob": {
-            "className": "dev.krud.springbootadmin.client.SampleJob"
+    "groups": {
+        "DEFAULT": {
+            "jobs": [
+                "sampleSimpleJob"
+            ]
         }
     }
 }

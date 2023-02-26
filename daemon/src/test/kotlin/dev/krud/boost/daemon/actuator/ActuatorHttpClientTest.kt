@@ -338,7 +338,17 @@ class ActuatorHttpClientTest {
         server.enqueue(okJsonResponse("responses/quartz_jobs_response_200.json"))
         val baseUrl = server.url("/actuator").toString()
         val client = ActuatorHttpClient(baseUrl)
-        val quartzJobs = client.quartzJobs("DEFAULT").getOrThrow()
+        val quartzJobs = client.quartzJobs().getOrThrow()
+        expectThat(quartzJobs.groups["DEFAULT"]!!.jobs.size)
+            .isEqualTo(1)
+    }
+
+    @Test
+    fun `quartz jobs by group should return correct response`() {
+        server.enqueue(okJsonResponse("responses/quartz_jobs_by_group_response_200.json"))
+        val baseUrl = server.url("/actuator").toString()
+        val client = ActuatorHttpClient(baseUrl)
+        val quartzJobs = client.quartzJobsByGroup("DEFAULT").getOrThrow()
         expectThat(quartzJobs.jobs.size)
             .isEqualTo(1)
     }
@@ -367,7 +377,7 @@ class ActuatorHttpClientTest {
         server.enqueue(okJsonResponse("responses/quartz_triggers_response_200.json"))
         val baseUrl = server.url("/actuator").toString()
         val client = ActuatorHttpClient(baseUrl)
-        val quartzTriggers = client.quartzTriggers("DEFAULT").getOrThrow()
+        val quartzTriggers = client.quartzTriggers().getOrThrow()
         expectThat(quartzTriggers.groups.size)
             .isEqualTo(1)
         val firstGroup = quartzTriggers.groups["DEFAULT"]
@@ -375,6 +385,16 @@ class ActuatorHttpClientTest {
             .isNotNull()
         expectThat(firstGroup!!.triggers.size)
             .isEqualTo(4)
+    }
+
+    @Test
+    fun `quartz triggers by group should return correct response`() {
+        server.enqueue(okJsonResponse("responses/quartz_triggers_by_group_response_200.json"))
+        val baseUrl = server.url("/actuator").toString()
+        val client = ActuatorHttpClient(baseUrl)
+        val quartzTriggers = client.quartzTriggersByGroup("DEFAULT").getOrThrow()
+        expectThat(quartzTriggers.triggers.cron.size)
+            .isEqualTo(2)
     }
 
     @Test

@@ -118,9 +118,13 @@ export interface QuartzJobResponse {
     triggers: QuartzJobResponse$Trigger[];
 }
 
-export interface QuartzJobsResponse {
+export interface QuartzJobsByGroupResponse {
     group: string;
-    jobs: { [index: string]: QuartzJobsResponse$Job };
+    jobs: { [index: string]: QuartzJobsByGroupResponse$Job };
+}
+
+export interface QuartzJobsResponse {
+    groups: { [index: string]: QuartzJobsResponse$Group };
 }
 
 export interface QuartzTriggerResponse {
@@ -142,6 +146,12 @@ export interface QuartzTriggerResponse {
     cron?: QuartzTriggerResponse$Cron;
     dailyTimeInterval?: QuartzTriggerResponse$DailyTimeInterval;
     simple?: QuartzTriggerResponse$Simple;
+}
+
+export interface QuartzTriggersByGroupResponse {
+    group: string;
+    paused: boolean;
+    triggers: QuartzTriggersByGroupResponse$Triggers;
 }
 
 export interface QuartzTriggersResponse {
@@ -501,8 +511,12 @@ export interface QuartzJobResponse$Trigger {
     priority: number;
 }
 
-export interface QuartzJobsResponse$Job {
+export interface QuartzJobsByGroupResponse$Job {
     className: string;
+}
+
+export interface QuartzJobsResponse$Group {
+    jobs: string[];
 }
 
 export interface QuartzTriggerResponse$CalendarInterval {
@@ -535,6 +549,14 @@ export interface QuartzTriggerResponse$Simple {
     interval: number;
     repeatCount: number;
     timesTriggered: number;
+}
+
+export interface QuartzTriggersByGroupResponse$Triggers {
+    cron: { [index: string]: QuartzTriggersByGroupResponse$Cron };
+    simple: { [index: string]: QuartzTriggersByGroupResponse$Simple };
+    dailyTimeInterval: { [index: string]: QuartzTriggersByGroupResponse$DailyTimeInterval };
+    calendarInterval: { [index: string]: QuartzTriggersByGroupResponse$CalendarInterval };
+    custom: { [index: string]: QuartzTriggersByGroupResponse$Custom };
 }
 
 export interface QuartzTriggersResponse$Group {
@@ -626,6 +648,46 @@ export interface IntegrationGraphActuatorResponse$Node$SendTimer {
 
 export interface LiquibaseActuatorResponse$Context$LiquibaseBean {
     changeSets: LiquibaseActuatorResponse$Context$LiquibaseBean$ChangeSet[];
+}
+
+export interface QuartzTriggersByGroupResponse$Cron {
+    previousFireTime?: DateAsNumber;
+    nextFireTime?: DateAsNumber;
+    priority: number;
+    expression: string;
+    timeZone: string;
+}
+
+export interface QuartzTriggersByGroupResponse$Simple {
+    previousFireTime?: DateAsNumber;
+    nextFireTime?: DateAsNumber;
+    priority: number;
+    interval: number;
+}
+
+export interface QuartzTriggersByGroupResponse$DailyTimeInterval {
+    previousFireTime?: DateAsNumber;
+    nextFireTime?: DateAsNumber;
+    priority: number;
+    interval: number;
+    daysOfWeek: string[];
+    startTimeOfDay: string;
+    endTimeOfDay: string;
+}
+
+export interface QuartzTriggersByGroupResponse$CalendarInterval {
+    previousFireTime?: DateAsNumber;
+    nextFireTime?: DateAsNumber;
+    priority: number;
+    interval: number;
+    timeZone: string;
+}
+
+export interface QuartzTriggersByGroupResponse$Custom {
+    previousFireTime?: DateAsNumber;
+    nextFireTime?: DateAsNumber;
+    priority: number;
+    trigger: string;
 }
 
 export interface ScheduledTasksActuatorResponse$Runnable {

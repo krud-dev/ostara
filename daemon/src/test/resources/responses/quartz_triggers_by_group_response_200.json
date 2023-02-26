@@ -1,0 +1,33 @@
+{
+    "group": "DEFAULT",
+    "paused": false,
+    "triggers": {
+        "cron": {
+            "Quartz_CronTrigger": {
+                "previousFireTime": "2023-02-26T06:46:10.000+00:00",
+                "nextFireTime": "2023-02-26T06:46:15.000+00:00",
+                "priority": 5,
+                "expression": "0/5 * * * * ?",
+                "timeZone": "GMT"
+            },
+            "Quartz_DailyTrigger": {
+                "previousFireTime": "2023-02-25T12:00:00.000+00:00",
+                "nextFireTime": "2023-02-26T12:00:00.000+00:00",
+                "priority": 5,
+                "expression": "0 0 12 ? * *",
+                "timeZone": "GMT"
+            }
+        },
+        "simple": {
+            "Quartz_SimpleTrigger": {
+                "previousFireTime": "2023-02-26T06:25:25.717+00:00",
+                "nextFireTime": "2023-02-26T07:25:25.717+00:00",
+                "priority": 5,
+                "interval": 3600000
+            }
+        },
+        "dailyTimeInterval": {},
+        "calendarInterval": {},
+        "custom": {}
+    }
+}

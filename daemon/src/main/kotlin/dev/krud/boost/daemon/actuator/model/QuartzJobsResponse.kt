@@ -1,10 +1,9 @@
 package dev.krud.boost.daemon.actuator.model
 
 data class QuartzJobsResponse(
-    val group: String,
-    val jobs: Map<String, Job>
+    val groups: Map<String, Group>
 ) {
-    data class Job(
-        val className: String
+    data class Group(
+        val jobs: List<String>
     )
 }
