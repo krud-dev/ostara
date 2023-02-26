@@ -1,6 +1,5 @@
 package dev.krud.boost.daemon.controller.api.v1
 
-import dev.krud.boost.daemon.actuator.ActuatorHttpClient
 import dev.krud.boost.daemon.configuration.instance.InstanceActuatorClientProvider
 import dev.krud.crudframework.crud.handler.CrudHandler
 import io.swagger.v3.oas.annotations.Operation
@@ -27,7 +26,7 @@ class ActuatorController(
     )
     @ApiResponse(responseCode = "200", description = "Connection successful")
     @ApiResponse(responseCode = "500", description = "Test Connection failed", content = [Content()])
-    fun testConnection(@RequestParam url: String) = ActuatorHttpClient(url).testConnection()
+    fun testConnection(@RequestParam url: String) = actuatorClientProvider.provideForUrl(url).testConnection()
 
     @GetMapping
     @ResponseStatus(HttpStatus.OK)

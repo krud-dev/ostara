@@ -1,7 +1,7 @@
 package dev.krud.boost.daemon.configuration.application
 
 import dev.krud.boost.daemon.configuration.application.entity.Application
-import dev.krud.boost.daemon.configuration.instance.InstanceService
+import dev.krud.boost.daemon.configuration.instance.ability.InstanceAbilityService
 import dev.krud.boost.daemon.configuration.instance.enums.InstanceAbility
 import dev.krud.boost.daemon.exception.throwBadRequest
 import dev.krud.boost.daemon.exception.throwNotFound
@@ -12,7 +12,7 @@ import java.util.*
 @Service
 class ApplicationService(
     private val crudHandler: CrudHandler,
-    private val instanceService: InstanceService
+    private val instanceAbilityService: InstanceAbilityService
 ) {
     fun getApplication(applicationId: UUID): Application? {
         return crudHandler
@@ -27,7 +27,7 @@ class ApplicationService(
     fun hasAbility(application: Application, vararg abilities: InstanceAbility): Boolean {
         return abilities.all { ability ->
             application.instances.any { instance ->
-                instanceService.hasAbility(instance, ability)
+                instanceAbilityService.hasAbility(instance, ability)
             }
         }
     }

@@ -1,6 +1,6 @@
 package dev.krud.boost.daemon.configuration.instance.crud
 
-import dev.krud.boost.daemon.configuration.instance.InstanceService
+import dev.krud.boost.daemon.configuration.instance.ability.InstanceAbilityService
 import dev.krud.boost.daemon.configuration.instance.entity.Instance
 import dev.krud.boost.daemon.configuration.instance.entity.Instance.Companion.effectiveColor
 import dev.krud.boost.daemon.configuration.instance.health.InstanceHealthService
@@ -15,10 +15,9 @@ import org.springframework.stereotype.Component
 @Component
 class InstanceToRoMappingDecorator(
     @Lazy
-    private val instanceService: InstanceService,
-    @Lazy
     private val instanceHealthService: InstanceHealthService,
-    private val instanceHostnameResolver: InstanceHostnameResolver
+    private val instanceHostnameResolver: InstanceHostnameResolver,
+    private val instanceAbilityService: InstanceAbilityService
 ) : MappingDecorator<Instance, InstanceRO> {
     override fun decorate(context: MappingDecoratorContext<Instance, InstanceRO>) {
         context.to.effectiveColor = context.from.effectiveColor
@@ -29,7 +28,7 @@ class InstanceToRoMappingDecorator(
         val health = instanceHealthService.getHealth(context.from.id)
         context.to.health = health
         if (health.status.running) {
-            context.to.abilities = instanceService.resolveAbilities(context.from)
+            context.to.abilities = instanceAbilityService.resolveAbilities(context.from)
             context.to.hostname = instanceHostnameResolver.resolveHostname(context.from.id)
         }
 

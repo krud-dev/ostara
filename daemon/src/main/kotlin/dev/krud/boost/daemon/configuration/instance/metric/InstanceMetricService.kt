@@ -2,6 +2,7 @@ package dev.krud.boost.daemon.configuration.instance.metric
 
 import dev.krud.boost.daemon.configuration.instance.InstanceActuatorClientProvider
 import dev.krud.boost.daemon.configuration.instance.InstanceService
+import dev.krud.boost.daemon.configuration.instance.ability.InstanceAbilityService
 import dev.krud.boost.daemon.configuration.instance.enums.InstanceAbility
 import dev.krud.boost.daemon.configuration.instance.metric.ro.InstanceMetricRO
 import dev.krud.boost.daemon.configuration.instance.metric.ro.InstanceMetricValueRO
@@ -13,11 +14,12 @@ import java.util.*
 @Service
 class InstanceMetricService(
     private val actuatorClientProvider: InstanceActuatorClientProvider,
-    private val instanceService: InstanceService
+    private val instanceService: InstanceService,
+    private val instanceAbilityService: InstanceAbilityService
 ) {
     fun getLatestMetric(instanceId: UUID, metricName: String): InstanceMetricRO {
         val instance = instanceService.getInstanceOrThrow(instanceId)
-        instanceService.hasAbilityOrThrow(instance, InstanceAbility.METRICS)
+        instanceAbilityService.hasAbilityOrThrow(instance, InstanceAbility.METRICS)
         val response = actuatorClientProvider.doWith(instance) { client ->
             val parsedMetricName = parseMetricName(metricName)
             client.metric(parsedMetricName.name)

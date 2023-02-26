@@ -34,7 +34,7 @@ class ActuatorHttpClientTest {
                 .setResponseCode(404)
         )
         val baseUrl = server.url("/actuator").toString()
-        val client = ActuatorHttpClient(baseUrl)
+        val client = ActuatorHttpClientImpl(baseUrl)
         val response = client.testConnection()
         expectThat(response.success)
             .isEqualTo(false)
@@ -52,7 +52,7 @@ class ActuatorHttpClientTest {
                 .setBody("Test")
         )
         val baseUrl = server.url("/actuator").toString()
-        val client = ActuatorHttpClient(baseUrl)
+        val client = ActuatorHttpClientImpl(baseUrl)
         val response = client.testConnection()
         expectThat(response.success)
             .isEqualTo(true)
@@ -97,7 +97,7 @@ class ActuatorHttpClientTest {
             okJsonResponse("responses/endpoints_response_200.json")
         )
         val baseUrl = server.url("/actuator").toString()
-        val client = ActuatorHttpClient(baseUrl)
+        val client = ActuatorHttpClientImpl(baseUrl)
         val endpoints = client.endpoints().getOrThrow()
         expectThat(endpoints)
             .isEqualTo(expectedEndpoints)
@@ -109,7 +109,7 @@ class ActuatorHttpClientTest {
             okJsonResponse("responses/health_response_200.json")
         )
         val baseUrl = server.url("/actuator").toString()
-        val client = ActuatorHttpClient(baseUrl)
+        val client = ActuatorHttpClientImpl(baseUrl)
         val health = client.health().getOrThrow()
         expectThat(health.status)
             .isEqualTo(HealthActuatorResponse.Status.UP)
@@ -121,7 +121,7 @@ class ActuatorHttpClientTest {
             okJsonResponse("responses/health_component_response_200.json")
         )
         val baseUrl = server.url("/actuator").toString()
-        val client = ActuatorHttpClient(baseUrl)
+        val client = ActuatorHttpClientImpl(baseUrl)
         val health = client.healthComponent("db").getOrThrow()
         expectThat(health.status)
             .isEqualTo(HealthActuatorResponse.Status.UP)
@@ -131,7 +131,7 @@ class ActuatorHttpClientTest {
     internal fun `info should return correct response`() {
         server.enqueue(okJsonResponse("responses/info_response_200.json"))
         val baseUrl = server.url("/actuator").toString()
-        val client = ActuatorHttpClient(baseUrl)
+        val client = ActuatorHttpClientImpl(baseUrl)
         val info = client.info().getOrThrow()
         expectThat(info.build?.artifact)
             .isEqualTo("test")
@@ -143,7 +143,7 @@ class ActuatorHttpClientTest {
     internal fun `caches should return correct response`() {
         server.enqueue(okJsonResponse("responses/caches_response_200.json"))
         val baseUrl = server.url("/actuator").toString()
-        val client = ActuatorHttpClient(baseUrl)
+        val client = ActuatorHttpClientImpl(baseUrl)
         val caches = client.caches().getOrThrow()
         expectThat(caches.cacheManagers.size)
             .isEqualTo(2)
@@ -160,7 +160,7 @@ class ActuatorHttpClientTest {
         )
         server.enqueue(okJsonResponse("responses/cache_response_200.json"))
         val baseUrl = server.url("/actuator").toString()
-        val client = ActuatorHttpClient(baseUrl)
+        val client = ActuatorHttpClientImpl(baseUrl)
         val cache = client.cache("cache").getOrThrow()
         expectThat(cache)
             .isEqualTo(expectedResult)
@@ -170,7 +170,7 @@ class ActuatorHttpClientTest {
     internal fun `evictAllCaches should succeed on 204`() {
         server.enqueue(okResponse(204))
         val baseUrl = server.url("/actuator").toString()
-        val client = ActuatorHttpClient(baseUrl)
+        val client = ActuatorHttpClientImpl(baseUrl)
         client.evictAllCaches()
     }
 
@@ -178,7 +178,7 @@ class ActuatorHttpClientTest {
     internal fun `evictCache should succeed on 204`() {
         server.enqueue(okResponse(204))
         val baseUrl = server.url("/actuator").toString()
-        val client = ActuatorHttpClient(baseUrl)
+        val client = ActuatorHttpClientImpl(baseUrl)
         client.evictCache("cache")
     }
 
@@ -186,7 +186,7 @@ class ActuatorHttpClientTest {
     internal fun `beans should return correct response`() {
         server.enqueue(okJsonResponse("responses/beans_response_200.json"))
         val baseUrl = server.url("/actuator").toString()
-        val client = ActuatorHttpClient(baseUrl)
+        val client = ActuatorHttpClientImpl(baseUrl)
         val beans = client.beans().getOrThrow()
         expectThat(beans.contexts.size)
             .isEqualTo(1)
@@ -196,7 +196,7 @@ class ActuatorHttpClientTest {
     internal fun `metrics should return correct response`() {
         server.enqueue(okJsonResponse("responses/metrics_response_200.json"))
         val baseUrl = server.url("/actuator").toString()
-        val client = ActuatorHttpClient(baseUrl)
+        val client = ActuatorHttpClientImpl(baseUrl)
         val metrics = client.metrics().getOrThrow()
         expectThat(metrics.names.size)
             .isEqualTo(61)
@@ -206,7 +206,7 @@ class ActuatorHttpClientTest {
     internal fun `metric should return correct response`() {
         server.enqueue(okJsonResponse("responses/metric_response_200.json"))
         val baseUrl = server.url("/actuator").toString()
-        val client = ActuatorHttpClient(baseUrl)
+        val client = ActuatorHttpClientImpl(baseUrl)
         val metric = client.metric("jvm.memory.max").getOrThrow()
         expectThat(metric.name)
             .isEqualTo("jvm.memory.max")
@@ -216,7 +216,7 @@ class ActuatorHttpClientTest {
     internal fun `env should return correct response`() {
         server.enqueue(okJsonResponse("responses/env_response_200.json"))
         val baseUrl = server.url("/actuator").toString()
-        val client = ActuatorHttpClient(baseUrl)
+        val client = ActuatorHttpClientImpl(baseUrl)
         val env = client.env().getOrThrow()
         expectThat(env.activeProfiles.size)
             .isEqualTo(2)
@@ -226,7 +226,7 @@ class ActuatorHttpClientTest {
     internal fun `envProperty should return correct response`() {
         server.enqueue(okJsonResponse("responses/env_property_response_200.json"))
         val baseUrl = server.url("/actuator").toString()
-        val client = ActuatorHttpClient(baseUrl)
+        val client = ActuatorHttpClientImpl(baseUrl)
         val env = client.envProperty("spring.application.name").getOrThrow()
         expectThat(env.property.value)
             .isEqualTo("1")
@@ -236,7 +236,7 @@ class ActuatorHttpClientTest {
     internal fun `configProps should return correct response`() {
         server.enqueue(okJsonResponse("responses/config_props_response_200.json"))
         val baseUrl = server.url("/actuator").toString()
-        val client = ActuatorHttpClient(baseUrl)
+        val client = ActuatorHttpClientImpl(baseUrl)
         val configProps = client.configProps().getOrThrow()
         expectThat(configProps.contexts.size)
             .isEqualTo(1)
@@ -246,7 +246,7 @@ class ActuatorHttpClientTest {
     internal fun `flyway should return correct response`() {
         server.enqueue(okJsonResponse("responses/flyway_response_200.json"))
         val baseUrl = server.url("/actuator").toString()
-        val client = ActuatorHttpClient(baseUrl)
+        val client = ActuatorHttpClientImpl(baseUrl)
         val flyway = client.flyway().getOrThrow()
         expectThat(flyway.contexts.size)
             .isEqualTo(1)
@@ -258,7 +258,7 @@ class ActuatorHttpClientTest {
     internal fun `liquibase should return correct response`() {
         server.enqueue(okJsonResponse("responses/liquibase_response_200.json"))
         val baseUrl = server.url("/actuator").toString()
-        val client = ActuatorHttpClient(baseUrl)
+        val client = ActuatorHttpClientImpl(baseUrl)
         val liquibase = client.liquibase().getOrThrow()
         expectThat(liquibase.contexts.size)
             .isEqualTo(1)
@@ -270,7 +270,7 @@ class ActuatorHttpClientTest {
     internal fun `threadDump should return correct response`() {
         server.enqueue(okJsonResponse("responses/thread_dump_response_200.json"))
         val baseUrl = server.url("/actuator").toString()
-        val client = ActuatorHttpClient(baseUrl)
+        val client = ActuatorHttpClientImpl(baseUrl)
         val threadDump = client.threadDump().getOrThrow()
         expectThat(threadDump.threads.size)
             .isEqualTo(35)
@@ -280,7 +280,7 @@ class ActuatorHttpClientTest {
     internal fun `loggers should return correct response`() {
         server.enqueue(okJsonResponse("responses/loggers_response_200.json"))
         val baseUrl = server.url("/actuator").toString()
-        val client = ActuatorHttpClient(baseUrl)
+        val client = ActuatorHttpClientImpl(baseUrl)
         val loggers = client.loggers().getOrThrow()
         expectThat(loggers.loggers.size)
             .isEqualTo(910)
@@ -290,7 +290,7 @@ class ActuatorHttpClientTest {
     internal fun `updateLogger should succeed on 204`() {
         server.enqueue(okResponse(204))
         val baseUrl = server.url("/actuator").toString()
-        val client = ActuatorHttpClient(baseUrl)
+        val client = ActuatorHttpClientImpl(baseUrl)
         client.updateLogger("logger", LogLevel.OFF).getOrThrow()
     }
 
@@ -298,7 +298,7 @@ class ActuatorHttpClientTest {
     fun `integrationgraph should return correct response`() {
         server.enqueue(okJsonResponse("responses/integrationgraph_response_200.json"))
         val baseUrl = server.url("/actuator").toString()
-        val client = ActuatorHttpClient(baseUrl)
+        val client = ActuatorHttpClientImpl(baseUrl)
         val integrationGraph = client.integrationGraph().getOrThrow()
         expectThat(integrationGraph.nodes.size)
             .isEqualTo(36)
@@ -317,7 +317,7 @@ class ActuatorHttpClientTest {
     fun `scheduledtasks should return correct response`() {
         server.enqueue(okJsonResponse("responses/scheduledtasks_response_200.json"))
         val baseUrl = server.url("/actuator").toString()
-        val client = ActuatorHttpClient(baseUrl)
+        val client = ActuatorHttpClientImpl(baseUrl)
         val scheduledTasks = client.scheduledTasks().getOrThrow()
         expectThat(scheduledTasks.cron.size)
             .isEqualTo(1)
@@ -327,7 +327,7 @@ class ActuatorHttpClientTest {
     fun `quartz should return correct response`() {
         server.enqueue(okJsonResponse("responses/quartz_response_200.json"))
         val baseUrl = server.url("/actuator").toString()
-        val client = ActuatorHttpClient(baseUrl)
+        val client = ActuatorHttpClientImpl(baseUrl)
         val quartz = client.quartz().getOrThrow()
         expectThat(quartz.jobs.groups.size)
             .isEqualTo(1)
@@ -337,7 +337,7 @@ class ActuatorHttpClientTest {
     fun `quartz jobs should return correct response`() {
         server.enqueue(okJsonResponse("responses/quartz_jobs_response_200.json"))
         val baseUrl = server.url("/actuator").toString()
-        val client = ActuatorHttpClient(baseUrl)
+        val client = ActuatorHttpClientImpl(baseUrl)
         val quartzJobs = client.quartzJobs().getOrThrow()
         expectThat(quartzJobs.groups["DEFAULT"]!!.jobs.size)
             .isEqualTo(1)
@@ -347,7 +347,7 @@ class ActuatorHttpClientTest {
     fun `quartz jobs by group should return correct response`() {
         server.enqueue(okJsonResponse("responses/quartz_jobs_by_group_response_200.json"))
         val baseUrl = server.url("/actuator").toString()
-        val client = ActuatorHttpClient(baseUrl)
+        val client = ActuatorHttpClientImpl(baseUrl)
         val quartzJobs = client.quartzJobsByGroup("DEFAULT").getOrThrow()
         expectThat(quartzJobs.jobs.size)
             .isEqualTo(1)
@@ -357,7 +357,7 @@ class ActuatorHttpClientTest {
     fun `quartz job should return correct response`() {
         server.enqueue(okJsonResponse("responses/quartz_job_response_200.json"))
         val baseUrl = server.url("/actuator").toString()
-        val client = ActuatorHttpClient(baseUrl)
+        val client = ActuatorHttpClientImpl(baseUrl)
         val quartzJob = client.quartzJob("DEFAULT", "sampleSimpleJob").getOrThrow()
         expectThat(quartzJob.name)
             .isEqualTo("sampleSimpleJob")
@@ -376,7 +376,7 @@ class ActuatorHttpClientTest {
     fun `quartz triggers should return correct response`() {
         server.enqueue(okJsonResponse("responses/quartz_triggers_response_200.json"))
         val baseUrl = server.url("/actuator").toString()
-        val client = ActuatorHttpClient(baseUrl)
+        val client = ActuatorHttpClientImpl(baseUrl)
         val quartzTriggers = client.quartzTriggers().getOrThrow()
         expectThat(quartzTriggers.groups.size)
             .isEqualTo(1)
@@ -391,7 +391,7 @@ class ActuatorHttpClientTest {
     fun `quartz triggers by group should return correct response`() {
         server.enqueue(okJsonResponse("responses/quartz_triggers_by_group_response_200.json"))
         val baseUrl = server.url("/actuator").toString()
-        val client = ActuatorHttpClient(baseUrl)
+        val client = ActuatorHttpClientImpl(baseUrl)
         val quartzTriggers = client.quartzTriggersByGroup("DEFAULT").getOrThrow()
         expectThat(quartzTriggers.triggers.cron.size)
             .isEqualTo(2)
@@ -401,7 +401,7 @@ class ActuatorHttpClientTest {
     fun `quartz trigger should return correct response`() {
         server.enqueue(okJsonResponse("responses/quartz_trigger_response_200.json"))
         val baseUrl = server.url("/actuator").toString()
-        val client = ActuatorHttpClient(baseUrl)
+        val client = ActuatorHttpClientImpl(baseUrl)
         val quartzTrigger = client.quartzTrigger("DEFAULT", "Quartz_CronTrigger").getOrThrow()
         expectThat(quartzTrigger.name)
             .isEqualTo("Quartz_CronTrigger")

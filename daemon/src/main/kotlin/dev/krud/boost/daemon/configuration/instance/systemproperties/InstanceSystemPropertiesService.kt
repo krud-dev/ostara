@@ -2,6 +2,7 @@ package dev.krud.boost.daemon.configuration.instance.systemproperties
 
 import dev.krud.boost.daemon.configuration.instance.InstanceActuatorClientProvider
 import dev.krud.boost.daemon.configuration.instance.InstanceService
+import dev.krud.boost.daemon.configuration.instance.ability.InstanceAbilityService
 import dev.krud.boost.daemon.configuration.instance.enums.InstanceAbility
 import dev.krud.boost.daemon.configuration.instance.messaging.InstanceDeletedEventMessage
 import dev.krud.boost.daemon.configuration.instance.messaging.InstanceHealthChangedEventMessage
@@ -20,6 +21,7 @@ import java.util.*
 class InstanceSystemPropertiesService(
     private val instanceService: InstanceService,
     private val actuatorClientProvider: InstanceActuatorClientProvider,
+    private val instanceAbilityService: InstanceAbilityService,
     cacheManager: CacheManager
 ) {
     val applicationSystemPropertiesCache by cacheManager.resolve()
@@ -44,7 +46,7 @@ class InstanceSystemPropertiesService(
     @Cacheable("applicationSystemPropertiesCache")
     fun getSystemProperties(instanceId: UUID): InstanceSystemPropertiesRO {
         val instance = instanceService.getInstanceOrThrow(instanceId)
-        instanceService.hasAbilityOrThrow(instance, InstanceAbility.SYSTEM_PROPERTIES)
+        instanceAbilityService.hasAbilityOrThrow(instance, InstanceAbility.SYSTEM_PROPERTIES)
         val client = actuatorClientProvider.provide(instance)
         val (_, propertySources) = client.env()
             .getOrElse { throwInternalServerError("Unable to get system properties") }

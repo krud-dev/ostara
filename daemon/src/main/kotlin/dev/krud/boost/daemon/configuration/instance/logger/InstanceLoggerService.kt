@@ -2,6 +2,7 @@ package dev.krud.boost.daemon.configuration.instance.logger
 
 import dev.krud.boost.daemon.configuration.instance.InstanceActuatorClientProvider
 import dev.krud.boost.daemon.configuration.instance.InstanceService
+import dev.krud.boost.daemon.configuration.instance.ability.InstanceAbilityService
 import dev.krud.boost.daemon.configuration.instance.enums.InstanceAbility
 import dev.krud.boost.daemon.configuration.instance.logger.ro.InstanceLoggerRO
 import org.springframework.boot.logging.LogLevel
@@ -11,11 +12,12 @@ import java.util.*
 @Service
 class InstanceLoggerService(
     private val instanceService: InstanceService,
-    private val actuatorClientProvider: InstanceActuatorClientProvider
+    private val actuatorClientProvider: InstanceActuatorClientProvider,
+    private val instanceAbilityService: InstanceAbilityService
 ) {
     fun getLoggers(instanceId: UUID): List<InstanceLoggerRO> {
         val instance = instanceService.getInstanceOrThrow(instanceId)
-        instanceService.hasAbilityOrThrow(instance, InstanceAbility.LOGGERS)
+        instanceAbilityService.hasAbilityOrThrow(instance, InstanceAbility.LOGGERS)
         val response = actuatorClientProvider.doWith(instance) {
             it.loggers().getOrThrow()
         }
@@ -31,7 +33,7 @@ class InstanceLoggerService(
 
     fun getLogger(instanceId: UUID, loggerName: String): InstanceLoggerRO {
         val instance = instanceService.getInstanceOrThrow(instanceId)
-        instanceService.hasAbilityOrThrow(instance, InstanceAbility.LOGGERS)
+        instanceAbilityService.hasAbilityOrThrow(instance, InstanceAbility.LOGGERS)
         val response = actuatorClientProvider.doWith(instance) {
             it.logger(loggerName).getOrThrow()
         }
@@ -45,7 +47,7 @@ class InstanceLoggerService(
 
     fun setLoggerLevel(instanceId: UUID, loggerName: String, level: LogLevel?): InstanceLoggerRO {
         val instance = instanceService.getInstanceOrThrow(instanceId)
-        instanceService.hasAbilityOrThrow(instance, InstanceAbility.LOGGERS)
+        instanceAbilityService.hasAbilityOrThrow(instance, InstanceAbility.LOGGERS)
         actuatorClientProvider.doWith(instance) {
             it.updateLogger(loggerName, level)
         }

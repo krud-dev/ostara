@@ -22,5 +22,13 @@ enum class InstanceAbility {
     HEALTH,
     INFO,
     SYSTEM_PROPERTIES,
-    SYSTEM_ENVIRONMENT,
+    SYSTEM_ENVIRONMENT;
+
+    companion object {
+        val VALUES = values().toSet()
+
+        fun except(vararg abilities: InstanceAbility): Set<InstanceAbility> {
+            return VALUES - abilities.toSet()
+        }
+    }
 }

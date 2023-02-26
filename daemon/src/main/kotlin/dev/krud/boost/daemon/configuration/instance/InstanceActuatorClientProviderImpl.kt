@@ -1,6 +1,7 @@
 package dev.krud.boost.daemon.configuration.instance
 
 import dev.krud.boost.daemon.actuator.ActuatorHttpClient
+import dev.krud.boost.daemon.actuator.ActuatorHttpClientImpl
 import dev.krud.boost.daemon.configuration.instance.entity.Instance
 import dev.krud.boost.daemon.exception.ResourceNotFoundException
 import dev.krud.crudframework.crud.handler.CrudHandler
@@ -14,7 +15,7 @@ class InstanceActuatorClientProviderImpl(
     private val crudHandler: CrudHandler
 ) : InstanceActuatorClientProvider {
     override fun provide(instance: Instance): ActuatorHttpClient {
-        return ActuatorHttpClient(instance.actuatorUrl) // TODO: cache
+        return ActuatorHttpClientImpl(instance.actuatorUrl) // TODO: cache
     }
 
     override fun provide(instanceId: UUID): ActuatorHttpClient {
@@ -23,5 +24,9 @@ class InstanceActuatorClientProviderImpl(
             .applyPolicies()
             .execute() ?: throw ResourceNotFoundException(Instance.NAME, instanceId)
         return provide(instance)
+    }
+
+    override fun provideForUrl(url: String): ActuatorHttpClient {
+        return ActuatorHttpClientImpl(url)
     }
 }

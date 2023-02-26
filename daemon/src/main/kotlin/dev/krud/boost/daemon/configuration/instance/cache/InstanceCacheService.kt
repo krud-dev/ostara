@@ -2,6 +2,7 @@ package dev.krud.boost.daemon.configuration.instance.cache
 
 import dev.krud.boost.daemon.configuration.instance.InstanceActuatorClientProvider
 import dev.krud.boost.daemon.configuration.instance.InstanceService
+import dev.krud.boost.daemon.configuration.instance.ability.InstanceAbilityService
 import dev.krud.boost.daemon.configuration.instance.cache.ro.EvictCachesRequestRO
 import dev.krud.boost.daemon.configuration.instance.cache.ro.InstanceCacheRO
 import dev.krud.boost.daemon.configuration.instance.cache.ro.InstanceCacheRO.Companion.toRO
@@ -18,14 +19,15 @@ import java.util.concurrent.Executors
 @Service
 class InstanceCacheService(
     private val instanceService: InstanceService,
-    private val actuatorClientProvider: InstanceActuatorClientProvider
+    private val actuatorClientProvider: InstanceActuatorClientProvider,
+    private val instanceAbilityService: InstanceAbilityService
 ) : DisposableBean {
     // TODO: replace with a lighter solution
     private val executorService = Executors.newFixedThreadPool(8)
 
     fun getCaches(instanceId: UUID): List<InstanceCacheRO> {
         val instance = instanceService.getInstanceOrThrow(instanceId)
-        instanceService.hasAbilityOrThrow(instance, InstanceAbility.CACHES)
+        instanceAbilityService.hasAbilityOrThrow(instance, InstanceAbility.CACHES)
         return actuatorClientProvider.doWith(instance) { client ->
             client.caches()
                 .fold(
@@ -37,7 +39,7 @@ class InstanceCacheService(
 
     fun getCache(instanceId: UUID, cacheName: String): InstanceCacheRO {
         val instance = instanceService.getInstanceOrThrow(instanceId)
-        instanceService.hasAbilityOrThrow(instance, InstanceAbility.CACHES)
+        instanceAbilityService.hasAbilityOrThrow(instance, InstanceAbility.CACHES)
         return actuatorClientProvider.doWith(instance) {
             it.cache(cacheName).getOrThrow()
         }.toRO()
@@ -45,7 +47,7 @@ class InstanceCacheService(
 
     fun evictCache(instanceId: UUID, cacheName: String): Result<Unit> {
         val instance = instanceService.getInstanceOrThrow(instanceId)
-        instanceService.hasAbilityOrThrow(instance, InstanceAbility.CACHES)
+        instanceAbilityService.hasAbilityOrThrow(instance, InstanceAbility.CACHES)
         return actuatorClientProvider.doWith(instance) {
             it.evictCache(cacheName)
         }
@@ -53,7 +55,7 @@ class InstanceCacheService(
 
     fun evictAllCaches(instanceId: UUID): Result<Unit> {
         val instance = instanceService.getInstanceOrThrow(instanceId)
-        instanceService.hasAbilityOrThrow(instance, InstanceAbility.CACHES)
+        instanceAbilityService.hasAbilityOrThrow(instance, InstanceAbility.CACHES)
         return actuatorClientProvider.doWith(instance) {
             it.evictAllCaches()
         }
@@ -61,7 +63,7 @@ class InstanceCacheService(
 
     fun getCacheStatistics(instanceId: UUID, cacheName: String): InstanceCacheStatisticsRO {
         val instance = instanceService.getInstanceOrThrow(instanceId)
-        instanceService.hasAbilityOrThrow(instance, InstanceAbility.CACHES, InstanceAbility.CACHE_STATISTICS)
+        instanceAbilityService.hasAbilityOrThrow(instance, InstanceAbility.CACHES, InstanceAbility.CACHE_STATISTICS)
         return actuatorClientProvider.doWith(instance) {
             val metrics = STATS_METRIC_NAMES.associateWith { metricName ->
                 try {
@@ -80,7 +82,7 @@ class InstanceCacheService(
 
     fun evictCaches(instanceId: UUID, request: EvictCachesRequestRO): ResultAggregationSummary<Unit> {
         val instance = instanceService.getInstanceOrThrow(instanceId)
-        instanceService.hasAbilityOrThrow(instance, InstanceAbility.CACHES)
+        instanceAbilityService.hasAbilityOrThrow(instance, InstanceAbility.CACHES)
         val results = request.cacheNames.map { cacheName ->
             executorService.submit<Result<Unit>> {
                 evictCache(instanceId, cacheName)

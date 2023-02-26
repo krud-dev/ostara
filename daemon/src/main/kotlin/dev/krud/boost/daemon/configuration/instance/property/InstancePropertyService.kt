@@ -6,6 +6,7 @@ import com.google.gson.GsonBuilder
 import dev.krud.boost.daemon.actuator.model.ConfigPropsActuatorResponse
 import dev.krud.boost.daemon.configuration.instance.InstanceActuatorClientProvider
 import dev.krud.boost.daemon.configuration.instance.InstanceService
+import dev.krud.boost.daemon.configuration.instance.ability.InstanceAbilityService
 import dev.krud.boost.daemon.configuration.instance.enums.InstanceAbility
 import dev.krud.boost.daemon.configuration.instance.property.ro.InstancePropertyRO
 import net.pearx.kasechange.toKebabCase
@@ -16,12 +17,13 @@ import java.util.*
 @Service
 class InstancePropertyService(
     private val actuatorClientProvider: InstanceActuatorClientProvider,
-    private val instanceService: InstanceService
+    private val instanceService: InstanceService,
+    private val instanceAbilityService: InstanceAbilityService
 ) {
     @Cacheable(cacheNames = ["instancePropertyCache"], key = "#instanceId")
     fun getProperties(instanceId: UUID): InstancePropertyRO {
         val instance = instanceService.getInstanceOrThrow(instanceId)
-        instanceService.hasAbilityOrThrow(instance, InstanceAbility.PROPERTIES)
+        instanceAbilityService.hasAbilityOrThrow(instance, InstanceAbility.PROPERTIES)
         val actuatorClient = actuatorClientProvider.provide(instance)
         val configProps = actuatorClient.configProps().getOrThrow()
         val contexts = mutableMapOf<String, Map<String, Any>>()

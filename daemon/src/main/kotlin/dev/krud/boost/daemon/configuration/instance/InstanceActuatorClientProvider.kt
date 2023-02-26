@@ -9,6 +9,8 @@ interface InstanceActuatorClientProvider {
 
     fun provide(instanceId: UUID): ActuatorHttpClient
 
+    fun provideForUrl(url: String): ActuatorHttpClient
+
     fun <T> doWith(instanceId: UUID, block: (ActuatorHttpClient) -> T): T {
         val actuatorClient = provide(instanceId)
         return block(actuatorClient)
