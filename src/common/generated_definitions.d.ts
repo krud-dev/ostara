@@ -114,7 +114,7 @@ export interface QuartzJobResponse {
     className: string;
     durable: boolean;
     requestRecovery: boolean;
-    data: { [index: string]: string };
+    data: { [index: string]: any };
     triggers: QuartzJobResponse$Trigger[];
 }
 
@@ -136,7 +136,7 @@ export interface QuartzTriggerResponse {
     nextFireTime?: DateAsNumber;
     priority: number;
     finalFireTime?: DateAsNumber;
-    data?: { [index: string]: string };
+    data?: { [index: string]: any };
     calendarInterval?: QuartzTriggerResponse$CalendarInterval;
     custom?: QuartzTriggerResponse$Custom;
     cron?: QuartzTriggerResponse$Cron;
