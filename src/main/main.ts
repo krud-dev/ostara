@@ -21,6 +21,8 @@ import { initDaemon } from '../infra/daemon/daemon';
 import { systemEvents } from '../infra/events';
 import { isMac, isWindows } from '../infra/utils/platform';
 
+const gotInstanceLock = app.requestSingleInstanceLock();
+
 class AppUpdater {
   constructor() {
     log.transports.file.level = 'info';
@@ -173,13 +175,26 @@ app.on('window-all-closed', () => {
   app.quit();
 });
 
-app
-  .whenReady()
-  .then(async () => {
-    await createSplashWindow();
-    systemEvents.on('daemon-ready', () => {
-      createMainWindow();
-    });
-    await initDaemon();
-  })
-  .catch(console.log);
+if (!gotInstanceLock) {
+  app.quit();
+} else {
+  app.on('second-instance', () => {
+    if (mainWindow) {
+      if (mainWindow.isMinimized()) {
+        mainWindow.restore();
+      }
+      mainWindow.focus();
+    }
+  });
+
+  app
+    .whenReady()
+    .then(async () => {
+      await createSplashWindow();
+      systemEvents.on('daemon-ready', () => {
+        createMainWindow();
+      });
+      await initDaemon();
+    })
+    .catch(console.log);
+}
