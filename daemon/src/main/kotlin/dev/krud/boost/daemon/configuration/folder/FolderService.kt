@@ -28,7 +28,7 @@ class FolderService(
         folder.parentFolderId = newParentFolderId // TODO: check if folder exists, should fail on foreign key for now
         folder.sort = newSort
         return crudHandler
-            .update(folder, Folder::class.java)
+            .update(folder)
             .execute()
     }
 }

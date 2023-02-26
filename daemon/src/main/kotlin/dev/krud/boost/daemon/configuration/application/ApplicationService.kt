@@ -46,7 +46,7 @@ class ApplicationService(
         application.parentFolderId = newParentFolderId // TODO: check if folder exists, should fail on foreign key for now
         application.sort = newSort
         return crudHandler
-            .update(application, Application::class.java)
+            .update(application)
             .execute()
     }
 }
