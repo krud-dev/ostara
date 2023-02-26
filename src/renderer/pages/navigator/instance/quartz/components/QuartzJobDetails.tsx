@@ -8,6 +8,7 @@ import { useGetInstanceQuartzJobDetailsQuery } from '../../../../../apis/request
 import { isObject, map, toString } from 'lodash';
 import FormattedRelativeTimeNow from '../../../../../components/format/FormattedRelativeTimeNow';
 import FormattedBoolean from '../../../../../components/format/FormattedBoolean';
+import { InlineCodeLabel } from '../../../../../components/code/InlineCodeLabel';
 
 type QuartzJobDetailsProps = {
   row: EnrichedQuartzJob;
@@ -50,7 +51,7 @@ export default function QuartzJobDetails({ row }: QuartzJobDetailsProps) {
               />
               <TableDetailsLabelValue
                 label={<FormattedMessage id={'className'} />}
-                value={detailsState.data.className}
+                value={<InlineCodeLabel code={detailsState.data.className} />}
               />
               <TableDetailsLabelValue
                 label={<FormattedMessage id={'durable'} />}
