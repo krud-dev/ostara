@@ -210,4 +210,6 @@ export default {
   endTimeOfDay: 'End Time of Day',
   repeatCount: 'Repeat Count',
   simple: 'Simple',
+  yes: 'Yes',
+  no: 'No',
 };

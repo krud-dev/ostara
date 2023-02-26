@@ -16,3 +16,6 @@ export const SECONDARY_SCROLL_CONTAINER_ID = 'secondary-scroll-container';
 export const TABLE_SCROLL_CONTAINER_ID = 'table-scroll-container';
 
 export const EMPTY_STRING = '\u00A0';
+
+export const TRUE_LABEL_ID = 'yes';
+export const FALSE_LABEL_ID = 'yes';

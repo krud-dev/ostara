@@ -1,7 +1,7 @@
 import { isArray, isNil, isNumber, toString } from 'lodash';
 import { IntlShape } from 'react-intl';
 import { WidgetValueType } from '../components/widget/widget';
-import { EMPTY_STRING } from '../constants/ui';
+import { EMPTY_STRING, FALSE_LABEL_ID, TRUE_LABEL_ID } from '../constants/ui';
 
 export const roundNumber = (number: number, decimals: number): number => {
   return parseFloat(number.toFixed(decimals));
@@ -31,7 +31,7 @@ export const formatWidgetValue = (value: unknown, valueType: WidgetValueType, in
       return formatCountdown(value * 1000, intl);
     }
     case 'boolean':
-      return intl.formatMessage({ id: value ? 'true' : 'false' });
+      return intl.formatMessage({ id: value ? TRUE_LABEL_ID : FALSE_LABEL_ID });
     case 'object':
       return JSON.stringify(value);
     case 'string':
