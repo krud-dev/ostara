@@ -29,9 +29,6 @@ class Instance(
     @Column(name = "parent_application_id", nullable = false)
     var parentApplicationId: UUID,
     @MappedField
-    @Column(nullable = false, columnDefinition = "int default 5")
-    var dataCollectionIntervalSeconds: Int = 5,
-    @MappedField
     @Column(nullable = true)
     @MappedField
     var description: String? = null,

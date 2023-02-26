@@ -11,7 +11,6 @@ class InstanceRO(
     var hostname: String?,
     val alias: String?,
     var actuatorUrl: String,
-    val dataCollectionIntervalSeconds: Int,
     val parentApplicationId: UUID,
     val description: String? = null,
     val color: String = DEFAULT_COLOR,

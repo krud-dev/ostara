@@ -16,8 +16,6 @@ data class InstanceModifyRequestRO(
     @get:NotBlank
     var actuatorUrl: String,
     @MappedField
-    val dataCollectionIntervalSeconds: Int,
-    @MappedField
     @get:ValidApplicationId
     val parentApplicationId: UUID,
     @MappedField

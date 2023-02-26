@@ -37,7 +37,7 @@ data class QuartzTriggersByGroupResponse(
         val interval: Long,
         val daysOfWeek: List<String>,
         val startTimeOfDay: String,
-        val endTimeOfDay: String,
+        val endTimeOfDay: String
     )
 
     data class CalendarInterval(
