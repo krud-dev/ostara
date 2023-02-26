@@ -332,7 +332,6 @@ export interface InstancePropertyRO {
 export interface InstanceModifyRequestRO {
     alias?: string;
     actuatorUrl: string;
-    dataCollectionIntervalSeconds: number;
     parentApplicationId: string;
     color: string;
     description?: string;
@@ -346,7 +345,6 @@ export interface InstanceRO {
     hostname?: string;
     alias?: string;
     actuatorUrl: string;
-    dataCollectionIntervalSeconds: number;
     parentApplicationId: string;
     description?: string;
     color: string;
@@ -355,6 +353,14 @@ export interface InstanceRO {
     sort?: number;
     abilities: InstanceAbility[];
     health: InstanceHealthRO;
+}
+
+export interface InstanceSystemEnvironmentRO {
+    properties: { [index: string]: string };
+}
+
+export interface InstanceSystemPropertiesRO {
+    properties: { [index: string]: string };
 }
 
 export interface EventLogRO {
@@ -768,7 +774,7 @@ export type InstanceHealthStatus = "UP" | "DOWN" | "UNKNOWN" | "OUT_OF_SERVICE" 
 
 export type InstanceHeapdumpReference$Status = "PENDING_DOWNLOAD" | "DOWNLOADING" | "READY" | "FAILED";
 
-export type InstanceAbility = "METRICS" | "ENV" | "BEANS" | "QUARTZ" | "FLYWAY" | "LIQUIBASE" | "LOGGERS" | "CACHES" | "THREADDUMP" | "HEAPDUMP" | "CACHE_STATISTICS" | "SHUTDOWN" | "REFRESH" | "HTTP_REQUEST_STATISTICS" | "INTEGRATIONGRAPH" | "PROPERTIES" | "MAPPINGS" | "SCHEDULEDTASKS" | "HEALTH" | "INFO";
+export type InstanceAbility = "METRICS" | "ENV" | "BEANS" | "QUARTZ" | "FLYWAY" | "LIQUIBASE" | "LOGGERS" | "CACHES" | "THREADDUMP" | "HEAPDUMP" | "CACHE_STATISTICS" | "SHUTDOWN" | "REFRESH" | "HTTP_REQUEST_STATISTICS" | "INTEGRATIONGRAPH" | "PROPERTIES" | "MAPPINGS" | "SCHEDULEDTASKS" | "HEALTH" | "INFO" | "SYSTEM_PROPERTIES" | "SYSTEM_ENVIRONMENT";
 
 export type EventLogType = "INSTANCE_HEALTH_CHANGED";
 

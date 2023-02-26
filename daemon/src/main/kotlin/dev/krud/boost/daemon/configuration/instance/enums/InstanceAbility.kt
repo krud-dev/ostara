@@ -20,5 +20,7 @@ enum class InstanceAbility {
     MAPPINGS,
     SCHEDULEDTASKS,
     HEALTH,
-    INFO
+    INFO,
+    SYSTEM_PROPERTIES,
+    SYSTEM_ENVIRONMENT,
 }
