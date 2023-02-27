@@ -178,7 +178,15 @@ export default function SidebarItem({ item }: { item: SidebarItemProps }) {
       }}
     >
       <ListItemIconStyle>{icon && icon}</ListItemIconStyle>
-      <ListItemText disableTypography primary={label} />
+      <ListItemText
+        disableTypography
+        primary={label}
+        sx={{
+          whiteSpace: 'nowrap',
+          overflow: 'hidden',
+          textOverflow: 'ellipsis',
+        }}
+      />
       {info && info}
     </ListItemStyle>
   );
