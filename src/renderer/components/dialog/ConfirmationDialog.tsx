@@ -48,7 +48,7 @@ const ConfirmationDialog: FunctionComponent<ConfirmationDialogProps & NiceModalH
           <Button variant="outlined" color={'inherit'} onClick={cancelHandler}>
             {cancelText || <FormattedMessage id={'cancel'} />}
           </Button>
-          <Button variant="contained" color={continueColor || 'inherit'} onClick={confirmHandler}>
+          <Button variant="contained" color={continueColor || 'inherit'} onClick={confirmHandler} autoFocus>
             {continueText || <FormattedMessage id={'continue'} />}
           </Button>
         </DialogActions>
