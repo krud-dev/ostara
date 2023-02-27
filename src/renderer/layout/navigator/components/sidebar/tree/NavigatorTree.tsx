@@ -28,6 +28,7 @@ import { InstanceRO } from '../../../../../../common/generated_definitions';
 import { ItemRO, ItemType } from '../../../../../definitions/daemon';
 import { NodeApi } from 'react-arborist/dist/interfaces/node-api';
 import { useUpdateEffect } from 'react-use';
+import { isWindows } from '../../../../../utils/platformUtils';
 
 const TreeStyle = styled(Tree<TreeItem>)(({ theme }) => ({
   '& [role="treeitem"]': {
@@ -264,6 +265,13 @@ export default function NavigatorTree({ width, search }: NavigatorTreeProps) {
     []
   );
 
+  const keyDownHandler = useCallback((event: React.KeyboardEvent): void => {
+    if ((isWindows && event.key === 'F2') || (!isWindows && event.key === 'Enter')) {
+      const node = treeRef.current?.focusedNode || treeRef.current?.selectedNodes[0];
+      node?.edit();
+    }
+  }, []);
+
   return (
     <>
       {isLoading && (
@@ -300,29 +308,33 @@ export default function NavigatorTree({ width, search }: NavigatorTreeProps) {
       )}
 
       {hasData && (
-        <TreeStyle
-          ref={treeRef}
-          idAccessor={'id'}
-          data={data}
-          openByDefault={false}
-          initialOpenState={initialOpenState}
-          width={width}
-          height={height}
-          indent={12}
-          paddingBottom={NAVIGATOR_TREE_PADDING_BOTTOM}
-          rowHeight={NAVIGATOR_ITEM_HEIGHT}
-          searchTerm={search}
-          searchMatch={(node, term) => getItemDisplayName(node.data).toLowerCase().includes(term.toLowerCase())}
-          onCreate={onCreate}
-          onRename={onRename}
-          onMove={onMove}
-          onDelete={onDelete}
-          onToggle={onToggle}
-          disableDrag={disableDrag}
-          disableDrop={disableDrop}
-        >
-          {NavigatorTreeNode}
-        </TreeStyle>
+        <Box onKeyDown={keyDownHandler} tabIndex={0}>
+          <TreeStyle
+            ref={treeRef}
+            idAccessor={'id'}
+            data={data}
+            openByDefault={false}
+            initialOpenState={initialOpenState}
+            width={width}
+            height={height}
+            indent={12}
+            paddingBottom={NAVIGATOR_TREE_PADDING_BOTTOM}
+            rowHeight={NAVIGATOR_ITEM_HEIGHT}
+            searchTerm={search}
+            searchMatch={(node, term) => getItemDisplayName(node.data).toLowerCase().includes(term.toLowerCase())}
+            onCreate={onCreate}
+            onRename={onRename}
+            onMove={onMove}
+            onDelete={onDelete}
+            onToggle={onToggle}
+            onSelect={(e) => console.log(e)}
+            disableDrag={disableDrag}
+            disableDrop={disableDrop}
+            disableEdit
+          >
+            {NavigatorTreeNode}
+          </TreeStyle>
+        </Box>
       )}
     </>
   );
