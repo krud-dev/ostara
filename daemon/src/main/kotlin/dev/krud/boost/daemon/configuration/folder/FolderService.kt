@@ -22,9 +22,6 @@ class FolderService(
 
     fun moveFolder(folderId: UUID, newParentFolderId: UUID?, newSort: Double?): Folder {
         val folder = getFolderOrThrow(folderId)
-        if (folder.parentFolderId == newParentFolderId) {
-            return folder
-        }
         folder.parentFolderId = newParentFolderId // TODO: check if folder exists, should fail on foreign key for now
         folder.sort = newSort
         return crudHandler
