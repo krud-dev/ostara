@@ -204,7 +204,7 @@ export default function NavigatorTree({ width, search }: NavigatorTreeProps) {
 
   const onMove: MoveHandler<TreeItem> = useCallback(
     ({ parentId, index, parentNode, dragNodes, dragIds }) => {
-      const children = parentNode?.children?.filter((node) => !dragIds.includes(node.id))?.map((c) => c.data) ?? data;
+      const children = parentNode?.children?.map((c) => c.data) ?? data;
       const beforeSort = children?.[index - 1]?.sort;
       const afterSort = children?.[index]?.sort;
 
