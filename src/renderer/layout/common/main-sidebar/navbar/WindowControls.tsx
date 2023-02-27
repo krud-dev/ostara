@@ -5,6 +5,8 @@ import { IconViewer, MUIconType } from '../../../../components/common/IconViewer
 import { SxProps } from '@mui/system';
 import { useCallback } from 'react';
 import { useMinimizeWindow } from '../../../../apis/requests/ui/minimizeWindow';
+import { useMaximizeWindow } from '../../../../apis/requests/ui/maximizeWindow';
+import { useCloseWindow } from '../../../../apis/requests/ui/closeWindow';
 
 type WindowControlsProps = {
   sx?: SxProps<Theme>;
@@ -16,12 +18,12 @@ export default function WindowControls({ sx }: WindowControlsProps) {
     minimizeWindowState.mutate({});
   }, []);
 
-  const maximizeWindowState = useMinimizeWindow();
+  const maximizeWindowState = useMaximizeWindow();
   const maximizeHandler = useCallback((): void => {
     maximizeWindowState.mutate({});
   }, []);
 
-  const closeWindowState = useMinimizeWindow();
+  const closeWindowState = useCloseWindow();
   const closeHandler = useCallback((): void => {
     closeWindowState.mutate({});
   }, []);

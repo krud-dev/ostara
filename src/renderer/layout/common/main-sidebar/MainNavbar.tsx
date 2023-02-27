@@ -9,6 +9,7 @@ import { IconViewer } from 'renderer/components/common/IconViewer';
 import { useUi } from 'renderer/contexts/UiContext';
 import { isMac } from 'renderer/utils/platformUtils';
 import WindowControls from './navbar/WindowControls';
+import { useMaximizeWindow } from '../../../apis/requests/ui/maximizeWindow';
 
 type MainNavbarProps = {};
 
@@ -28,9 +29,16 @@ export default function MainNavbar({}: MainNavbarProps) {
     navigate(1);
   }, [navigate]);
 
+  const maximizeWindowState = useMaximizeWindow();
+
+  const toggleMaximizeHandler = useCallback(async (): Promise<void> => {
+    await maximizeWindowState.mutateAsync({});
+  }, []);
+
   return (
     <AppBar
       position={'static'}
+      onDoubleClick={toggleMaximizeHandler}
       sx={{
         minHeight: NAVBAR_HEIGHT,
         display: 'flex',
