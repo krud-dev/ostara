@@ -15,17 +15,13 @@ const InstanceDashboard: FunctionComponent = () => {
   const item = useMemo<InstanceRO>(() => selectedItem as InstanceRO, [selectedItem]);
 
   const widgets = useMemo<Widget[]>(() => values(springBootWidgets), []);
+  const intervalSeconds = useMemo<number>(() => 5, []);
 
   return (
-    <Page key={item.dataCollectionIntervalSeconds}>
+    <Page>
       <Stack direction={'column'} spacing={COMPONENTS_SPACING}>
         {widgets.map((widget) => (
-          <DashboardWidget
-            widget={widget}
-            item={item}
-            intervalSeconds={item.dataCollectionIntervalSeconds}
-            key={widget.id}
-          />
+          <DashboardWidget widget={widget} item={item} intervalSeconds={intervalSeconds} key={widget.id} />
         ))}
       </Stack>
     </Page>

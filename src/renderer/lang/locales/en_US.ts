@@ -1,5 +1,3 @@
-import { DateAsNumber } from '../../../common/generated_definitions';
-
 export default {
   theme: 'Theme',
   system: 'System',
@@ -97,7 +95,6 @@ export default {
   dataCollectionModeOff: 'Data collection from actuator instances is disabled',
   dataCollectionModeInherited: 'Inherited from parent application',
   noData: 'No data',
-  dataCollectionIntervalSeconds: 'Data Collection Interval (Seconds)',
   taskStartedSuccessfully: 'Task "{name}" started successfully',
   evictedCacheSuccessfully: 'Evicted Cache "{names}" successfully',
   evictedAllCachesSuccessfully: 'Evicted all caches successfully',

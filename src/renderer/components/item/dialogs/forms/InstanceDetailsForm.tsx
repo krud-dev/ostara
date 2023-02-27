@@ -9,7 +9,7 @@ import { useTestConnectionByUrl } from 'renderer/apis/requests/actuator/testConn
 import { getErrorMessage } from 'renderer/utils/errorUtils';
 import InputAdornment from '@mui/material/InputAdornment';
 import ItemIconFormField from 'renderer/components/item/dialogs/forms/fields/ItemIconFormField';
-import { DIGITS_REGEX, URL_REGEX } from 'renderer/constants/regex';
+import { URL_REGEX } from 'renderer/constants/regex';
 import { IconViewer } from '../../../common/IconViewer';
 import { getActuatorUrls } from '../../../../utils/itemUtils';
 
@@ -24,7 +24,6 @@ export type InstanceFormValues = {
   alias?: string;
   icon?: string;
   actuatorUrl: string;
-  dataCollectionIntervalSeconds: number;
   parentApplicationId?: string;
   parentApplicationName?: string;
 };
@@ -132,33 +131,6 @@ const InstanceDetailsForm: FunctionComponent<InstanceDetailsFormProps> = ({
               <FormattedMessage id={multipleInstances ? 'createSingleInstance' : 'createMultipleInstances'} />
             </Button>
           )}
-
-          <Controller
-            name="dataCollectionIntervalSeconds"
-            rules={{
-              required: intl.formatMessage({ id: 'requiredField' }),
-              pattern: { value: DIGITS_REGEX, message: intl.formatMessage({ id: 'invalidNumber' }) },
-            }}
-            control={control}
-            defaultValue={5}
-            render={({ field: { ref, ...field }, fieldState: { invalid, error } }) => {
-              return (
-                <TextField
-                  {...field}
-                  inputRef={ref}
-                  margin="normal"
-                  required
-                  fullWidth
-                  label={<FormattedMessage id="dataCollectionIntervalSeconds" />}
-                  type="number"
-                  autoComplete="off"
-                  error={invalid}
-                  helperText={error?.message}
-                  sx={{ mb: 0 }}
-                />
-              );
-            }}
-          />
 
           <Controller
             name="alias"

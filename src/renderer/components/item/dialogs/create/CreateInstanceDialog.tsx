@@ -59,18 +59,15 @@ const CreateInstanceDialog: FunctionComponent<CreateInstanceDialogProps & NiceMo
           }
 
           const actuatorUrls = data.multipleInstances ? getActuatorUrls(data.actuatorUrl) : [data.actuatorUrl];
-          const instancesToCreate = actuatorUrls.map((actuatorUrl, index) => {
-            return {
-              // dataCollectionMode: 'inherited',
-              alias: data.alias && actuatorUrls.length > 1 ? `${data.alias} (${index + 1})` : data.alias,
-              actuatorUrl,
-              dataCollectionIntervalSeconds: data.dataCollectionIntervalSeconds,
-              parentApplicationId: instanceParentApplicationId!,
-              sort: instanceSort + index,
-              color: INHERITED_COLOR_VALUE,
-              icon: data.icon,
-            };
-          });
+          const instancesToCreate = actuatorUrls.map<InstanceModifyRequestRO>((actuatorUrl, index) => ({
+            // dataCollectionMode: 'inherited',
+            alias: data.alias && actuatorUrls.length > 1 ? `${data.alias} (${index + 1})` : data.alias,
+            actuatorUrl,
+            parentApplicationId: instanceParentApplicationId!,
+            sort: instanceSort + index,
+            color: INHERITED_COLOR_VALUE,
+            icon: data.icon,
+          }));
 
           const promises = instancesToCreate.map((instanceToCreate) =>
             createInstanceState.mutateAsync({
