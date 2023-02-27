@@ -1,6 +1,6 @@
 import { Box, Typography } from '@mui/material';
 import React, { useMemo } from 'react';
-import { experimentalStyled as styled } from '@mui/material/styles';
+import { alpha, experimentalStyled as styled } from '@mui/material/styles';
 import { Handle, NodeProps, Position } from 'reactflow';
 import { NODE_HEIGHT, NODE_WIDTH } from '../utils/reactFlowUtils';
 import { InlineCodeLabel } from '../../../../../components/code/InlineCodeLabel';
@@ -39,6 +39,7 @@ export default function CustomNode({ selected, data }: CustomNodeProps) {
       sx={
         highlight
           ? {
+              background: (theme) => alpha(theme.palette.primary.main, 0.16),
               borderColor: (theme) => theme.palette.primary.main,
             }
           : undefined
