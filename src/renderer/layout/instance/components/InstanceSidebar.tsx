@@ -12,10 +12,10 @@ import {
   HttpOutlined,
   LanOutlined,
   ListAltOutlined,
-  ParkOutlined,
   StorageOutlined,
   TextSnippetOutlined,
   WysiwygOutlined,
+  YardOutlined,
 } from '@mui/icons-material';
 import { urls } from 'renderer/routes/urls';
 import { useMemo } from 'react';
@@ -50,11 +50,11 @@ export default function InstanceSidebar({ item, disabled, width }: InstanceSideb
             disabled: disabled || isServiceInactive(item, 'METRICS'),
           },
           {
-            id: 'environment',
-            icon: <ParkOutlined />,
-            label: <FormattedMessage id={'environment'} />,
-            to: generatePath(urls.instanceEnvironment.url, { id: item.id }),
-            disabled: disabled || isServiceInactive(item, 'ENV'),
+            id: 'system-environment',
+            icon: <YardOutlined />,
+            label: <FormattedMessage id={'systemEnvironment'} />,
+            to: generatePath(urls.instanceSystemEnvironment.url, { id: item.id }),
+            disabled: disabled || isServiceInactive(item, 'SYSTEM_ENVIRONMENT'),
           },
           {
             id: 'system-properties',

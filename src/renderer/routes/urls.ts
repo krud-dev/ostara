@@ -84,6 +84,10 @@ export const urls = asUrlInfos({
     url: '/navigator/instance/:id/environment',
     path: 'environment',
   },
+  instanceSystemEnvironment: {
+    url: '/navigator/instance/:id/system-environment',
+    path: 'system-environment',
+  },
   instanceBeans: {
     url: '/navigator/instance/:id/beans',
     path: 'beans',

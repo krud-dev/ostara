@@ -6,11 +6,11 @@ import {
 } from 'renderer/apis/requests/base/useBaseMutation';
 import { apiKeys } from 'renderer/apis/apiKeys';
 import { chain } from 'lodash';
-import { InstanceSystemPropertiesRO } from '../../../../../common/generated_definitions';
+import { InstanceSystemEnvironmentRO } from '../../../../../common/generated_definitions';
 import { axiosInstance } from '../../../axiosInstance';
 import { AxiosResponse } from 'axios';
 
-export type SystemProperty = {
+export type SystemEnvironmentProperty = {
   name: string;
   value: string;
 };
@@ -19,12 +19,12 @@ type Variables = {
   instanceId: string;
 };
 
-type Data = SystemProperty[];
+type Data = SystemEnvironmentProperty[];
 
-export const getInstanceSystemProperties = async (variables: Variables): Promise<Data> => {
+export const getInstanceSystemEnvironment = async (variables: Variables): Promise<Data> => {
   const result = (
-    await axiosInstance.get<InstanceSystemPropertiesRO, AxiosResponse<InstanceSystemPropertiesRO>>(
-      `instances/${variables.instanceId}/systemProperties`
+    await axiosInstance.get<InstanceSystemEnvironmentRO, AxiosResponse<InstanceSystemEnvironmentRO>>(
+      `instances/${variables.instanceId}/systemEnvironment`
     )
   ).data;
   return chain(result.properties)
@@ -32,17 +32,17 @@ export const getInstanceSystemProperties = async (variables: Variables): Promise
     .value();
 };
 
-export const useGetInstanceSystemProperties = (
+export const useGetInstanceSystemEnvironment = (
   options?: BaseMutationOptions<Data, Variables>
-): BaseUseMutationResult<Data, Variables> => useBaseMutation<Data, Variables>(getInstanceSystemProperties, options);
+): BaseUseMutationResult<Data, Variables> => useBaseMutation<Data, Variables>(getInstanceSystemEnvironment, options);
 
-export const useGetInstanceSystemPropertiesQuery = (
+export const useGetInstanceSystemEnvironmentQuery = (
   variables: Variables,
   options?: BaseQueryOptions<Data, Variables>
 ): BaseUseQueryResult<Data> =>
   useBaseQuery<Data, Variables>(
-    apiKeys.itemSystemProperties(variables.instanceId),
-    getInstanceSystemProperties,
+    apiKeys.itemSystemEnvironment(variables.instanceId),
+    getInstanceSystemEnvironment,
     variables,
     options
   );

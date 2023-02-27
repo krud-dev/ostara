@@ -9,6 +9,7 @@ export const apiKeys = {
   itemLoggers: (id: string) => [...apiKeys.item(id), 'loggers'],
   itemEnv: (id: string) => [...apiKeys.item(id), 'env'],
   itemEnvProperties: (id: string) => [...apiKeys.item(id), 'envProperties'],
+  itemSystemEnvironment: (id: string) => [...apiKeys.item(id), 'systemEnvironment'],
   itemSystemProperties: (id: string) => [...apiKeys.item(id), 'systemProperties'],
   itemBeans: (id: string) => [...apiKeys.item(id), 'beans'],
   itemProperties: (id: string) => [...apiKeys.item(id), 'properties'],

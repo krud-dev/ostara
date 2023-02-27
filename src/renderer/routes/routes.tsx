@@ -27,6 +27,7 @@ import InstanceScheduledTasks from '../pages/navigator/instance/scheduled-tasks'
 import InstanceQuartz from '../pages/navigator/instance/quartz';
 import InstanceIntegrationGraph from '../pages/navigator/instance/integration-graph';
 import InstanceSystemProperties from '../pages/navigator/instance/system-properties';
+import InstanceSystemEnvironment from '../pages/navigator/instance/system-environment';
 
 export default function Router() {
   return useRoutes([
@@ -88,6 +89,10 @@ export default function Router() {
             {
               path: urls.instanceEnvironment.path,
               element: <InstanceEnvironment />,
+            },
+            {
+              path: urls.instanceSystemEnvironment.path,
+              element: <InstanceSystemEnvironment />,
             },
             {
               path: urls.instanceBeans.path,

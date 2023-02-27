@@ -113,6 +113,7 @@ export default {
   properties: 'Properties',
   appProperties: 'App Properties',
   systemProperties: 'System Properties',
+  systemEnvironment: 'System Environment',
   uri: 'URI',
   httpRequests: 'HTTP Requests',
   count: 'Count',
