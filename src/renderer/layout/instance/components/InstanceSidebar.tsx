@@ -15,6 +15,7 @@ import {
   ParkOutlined,
   StorageOutlined,
   TextSnippetOutlined,
+  WysiwygOutlined,
 } from '@mui/icons-material';
 import { urls } from 'renderer/routes/urls';
 import { useMemo } from 'react';
@@ -54,6 +55,13 @@ export default function InstanceSidebar({ item, disabled, width }: InstanceSideb
             label: <FormattedMessage id={'environment'} />,
             to: generatePath(urls.instanceEnvironment.url, { id: item.id }),
             disabled: disabled || isServiceInactive(item, 'ENV'),
+          },
+          {
+            id: 'system-properties',
+            icon: <WysiwygOutlined />,
+            label: <FormattedMessage id={'systemProperties'} />,
+            to: generatePath(urls.instanceSystemProperties.url, { id: item.id }),
+            disabled: disabled || isServiceInactive(item, 'SYSTEM_PROPERTIES'),
           },
           {
             id: 'properties',

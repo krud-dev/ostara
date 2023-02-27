@@ -112,6 +112,7 @@ export default {
   package: 'Package',
   properties: 'Properties',
   appProperties: 'App Properties',
+  systemProperties: 'System Properties',
   uri: 'URI',
   httpRequests: 'HTTP Requests',
   count: 'Count',
