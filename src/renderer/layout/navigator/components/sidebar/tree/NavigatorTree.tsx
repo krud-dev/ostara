@@ -16,6 +16,7 @@ import CreateInstanceDialog from 'renderer/components/item/dialogs/create/Create
 import { matchPath, useLocation, useNavigate } from 'react-router-dom';
 import {
   getItemDisplayName,
+  getItemParentId,
   getItemType,
   getItemUrl,
   isApplication,
@@ -157,6 +158,14 @@ export default function NavigatorTree({ width, search }: NavigatorTreeProps) {
 
   const moveItem = useCallback(
     async (id: string, type: ItemType, parentId: string | undefined, sort: number): Promise<ItemRO | undefined> => {
+      const item = getItem(id);
+      if (!item) {
+        return undefined;
+      }
+      if (getItemParentId(item) === parentId && item.sort === sort) {
+        return undefined;
+      }
+
       setDisableDrag(true);
       try {
         return await moveItemState.mutateAsync({ id, type, parentId, sort });
@@ -195,7 +204,7 @@ export default function NavigatorTree({ width, search }: NavigatorTreeProps) {
 
   const onMove: MoveHandler<TreeItem> = useCallback(
     ({ parentId, index, parentNode, dragNodes, dragIds }) => {
-      const children = parentNode?.children?.map((c) => c.data) ?? data;
+      const children = parentNode?.children?.filter((node) => !dragIds.includes(node.id))?.map((c) => c.data) ?? data;
       const beforeSort = children?.[index - 1]?.sort;
       const afterSort = children?.[index]?.sort;
 

@@ -55,6 +55,19 @@ export const getItemDisplayName = (item: ItemRO): string => {
   throw new Error(`Unknown item type`);
 };
 
+export const getItemParentId = (item: ItemRO): string | undefined => {
+  if (isApplication(item)) {
+    return item.parentFolderId;
+  }
+  if (isFolder(item)) {
+    return item.parentFolderId;
+  }
+  if (isInstance(item)) {
+    return item.parentApplicationId;
+  }
+  throw new Error(`Unknown item type`);
+};
+
 export const getItemEntity = (item: ItemRO): CrudEntity => {
   return getItemTypeEntity(getItemType(item));
 };
