@@ -209,10 +209,6 @@ export default function NavigatorTreeNode({ style, node, tree, dragHandle, previ
         style={style}
         onClick={itemClickHandler}
         onDoubleClick={itemDoubleClickHandler}
-        onKeyDown={(e) => {
-          console.log(e);
-        }}
-        tabIndex={0}
       >
         <IconButton
           onClick={arrowIconClickHandler}

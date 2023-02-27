@@ -327,7 +327,6 @@ export default function NavigatorTree({ width, search }: NavigatorTreeProps) {
             onMove={onMove}
             onDelete={onDelete}
             onToggle={onToggle}
-            onSelect={(e) => console.log(e)}
             disableDrag={disableDrag}
             disableDrop={disableDrop}
             disableEdit
