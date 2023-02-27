@@ -10,6 +10,7 @@ module.exports = {
     'react/jsx-curly-brace-presence': 'off',
     'react/jsx-props-no-spreading': 'off',
     'react-hooks/exhaustive-deps': 'off',
+    'jsx-a11y/anchor-is-valid': 'off',
     'promise/catch-or-return': 'off',
     '@typescript-eslint/ban-types': 'off',
     '@typescript-eslint/no-empty-interface': 'off',

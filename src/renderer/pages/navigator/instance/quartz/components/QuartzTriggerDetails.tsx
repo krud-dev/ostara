@@ -12,12 +12,15 @@ import Label, { LabelColor } from '../../../../../components/common/Label';
 import FormattedBoolean from '../../../../../components/format/FormattedBoolean';
 import FormattedCron from '../../../../../components/format/FormattedCron';
 import FormattedInterval from '../../../../../components/format/FormattedInterval';
+import { SxProps } from '@mui/system';
+import { Theme } from '@mui/material/styles';
 
 type QuartzTriggerDetailsProps = {
   row: EnrichedQuartzTrigger;
+  sx?: SxProps<Theme>;
 };
 
-export default function QuartzTriggerDetails({ row }: QuartzTriggerDetailsProps) {
+export default function QuartzTriggerDetails({ row, sx }: QuartzTriggerDetailsProps) {
   const detailsState = useGetInstanceQuartzTriggerDetailsQuery({
     instanceId: row.instanceId,
     name: row.name,
@@ -52,7 +55,7 @@ export default function QuartzTriggerDetails({ row }: QuartzTriggerDetailsProps)
   }, [detailsState.data]);
 
   return (
-    <Box sx={{ my: 2 }}>
+    <Box sx={{ my: 2, ...sx }}>
       {!detailsState.data ? (
         <Box sx={{ textAlign: 'center' }}>
           <CircularProgress />

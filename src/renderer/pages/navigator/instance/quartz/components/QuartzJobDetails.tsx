@@ -1,7 +1,7 @@
-import React, { useMemo } from 'react';
+import React, { useCallback, useMemo } from 'react';
 import TableDetailsLabelValue from 'renderer/components/table/details/TableDetailsLabelValue';
 import { FormattedMessage } from 'react-intl';
-import { Box, Card, CardContent, CardHeader, CircularProgress, Stack } from '@mui/material';
+import { Box, Card, CardContent, CardHeader, CircularProgress, Link, Stack } from '@mui/material';
 import { COMPONENTS_SPACING, DEFAULT_TABLE_COLUMN_WIDTH } from 'renderer/constants/ui';
 import { EnrichedQuartzJob } from '../../../../../apis/requests/instance/quartz/getInstanceQuartzJobs';
 import { useGetInstanceQuartzJobDetailsQuery } from '../../../../../apis/requests/instance/quartz/getInstanceQuartzJobDetails';
@@ -9,6 +9,9 @@ import { isObject, map, toString } from 'lodash';
 import FormattedRelativeTimeNow from '../../../../../components/format/FormattedRelativeTimeNow';
 import FormattedBoolean from '../../../../../components/format/FormattedBoolean';
 import { InlineCodeLabel } from '../../../../../components/code/InlineCodeLabel';
+import NiceModal from '@ebay/nice-modal-react';
+import QuartzTriggerDetailsDialog from './QuartzTriggerDetailsDialog';
+import { EnrichedQuartzTrigger } from '../../../../../apis/requests/instance/quartz/getInstanceQuartzTriggers';
 
 type QuartzJobDetailsProps = {
   row: EnrichedQuartzJob;
@@ -27,6 +30,22 @@ export default function QuartzJobDetails({ row }: QuartzJobDetailsProps) {
   );
 
   const showTriggersCard = useMemo<boolean>(() => !!detailsState.data?.triggers.length, [detailsState.data]);
+
+  const triggerClickHandler = useCallback(
+    (event: React.MouseEvent, triggerName: string): void => {
+      event.preventDefault();
+
+      const trigger: EnrichedQuartzTrigger = {
+        name: triggerName,
+        group: row.group,
+        instanceId: row.instanceId,
+      };
+      NiceModal.show<undefined>(QuartzTriggerDetailsDialog, {
+        trigger: trigger,
+      });
+    },
+    [row]
+  );
 
   return (
     <Box sx={{ my: 2 }}>
@@ -99,7 +118,11 @@ export default function QuartzJobDetails({ row }: QuartzJobDetailsProps) {
                 >
                   <TableDetailsLabelValue
                     label={<FormattedMessage id={'name'} />}
-                    value={<FormattedMessage id={trigger.name} />}
+                    value={
+                      <Link href={'#'} onClick={(e) => triggerClickHandler(e, trigger.name)}>
+                        <FormattedMessage id={trigger.name} />
+                      </Link>
+                    }
                   />
                   <TableDetailsLabelValue label={<FormattedMessage id={'priority'} />} value={trigger.priority} />
                   <TableDetailsLabelValue
