@@ -1,9 +1,11 @@
-import React, { FunctionComponent, useMemo } from 'react';
+import React, { FunctionComponent, useEffect, useMemo, useRef } from 'react';
 import { alpha, experimentalStyled as styled } from '@mui/material/styles';
-import { Background, Controls, MiniMap, OnInit, ReactFlow } from 'reactflow';
+import { Background, Controls, MiniMap, OnInit, ReactFlow, ReactFlowInstance } from 'reactflow';
 import CustomNode from './CustomNode';
 import { NodeTypes } from '@reactflow/core/dist/esm/types/general';
 import { getLayoutElements, ReactFlowData } from '../utils/reactFlowUtils';
+import { useReactFlow } from '../contexts/ReactFlowContext';
+import { isEmpty } from 'lodash';
 
 const ReactFlowStyled = styled(ReactFlow)(({ theme }) => ({
   backgroundColor: theme.palette.background.paper,
@@ -58,10 +60,22 @@ type CustomReactFlowProps = {
 };
 
 const CustomReactFlow: FunctionComponent<CustomReactFlowProps> = ({ data }) => {
+  const { search, isHighlight } = useReactFlow();
+
+  const reactFlowRef = useRef<ReactFlowInstance>();
+
   const nodeTypes = useMemo<NodeTypes>(() => ({ custom: CustomNode }), []);
   const layoutData = useMemo<ReactFlowData>(() => getLayoutElements(data.nodes, data.edges), [data]);
 
+  useEffect(() => {
+    if (search) {
+      const highlightedNodes = layoutData.nodes.filter((node) => isHighlight(search, node.data));
+      reactFlowRef.current?.fitView({ nodes: highlightedNodes });
+    }
+  }, [search]);
+
   const onInit: OnInit = (_reactFlowInstance): void => {
+    reactFlowRef.current = _reactFlowInstance;
     _reactFlowInstance.fitView();
   };
 

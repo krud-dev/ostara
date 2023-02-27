@@ -26,13 +26,10 @@ const NodeStyled = styled(Box)(({ theme }) => ({
 
 type CustomNodeProps = NodeProps;
 
-export default function CustomNode({ selected, data }: CustomNodeProps) {
-  const { search } = useReactFlow();
+export default function CustomNode({ data }: CustomNodeProps) {
+  const { search, isHighlight } = useReactFlow();
 
-  const highlight = useMemo<boolean>(
-    () => !!search && data.label.toLowerCase().indexOf(search.toLowerCase()) !== -1,
-    [data.label, search]
-  );
+  const highlight = useMemo<boolean>(() => isHighlight(search, data), [search, data]);
 
   return (
     <NodeStyled
