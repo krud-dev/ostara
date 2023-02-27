@@ -56,18 +56,18 @@ export default function InstanceSidebar({ item, disabled, width }: InstanceSideb
             disabled: disabled || isServiceInactive(item, 'ENV'),
           },
           {
+            id: 'properties',
+            icon: <ListAltOutlined />,
+            label: <FormattedMessage id={'appProperties'} />,
+            to: generatePath(urls.instanceProperties.url, { id: item.id }),
+            disabled: disabled || isServiceInactive(item, 'PROPERTIES'),
+          },
+          {
             id: 'beans',
             icon: <EggOutlined />,
             label: <FormattedMessage id={'beans'} />,
             to: generatePath(urls.instanceBeans.url, { id: item.id }),
             disabled: disabled || isServiceInactive(item, 'BEANS'),
-          },
-          {
-            id: 'properties',
-            icon: <ListAltOutlined />,
-            label: <FormattedMessage id={'properties'} />,
-            to: generatePath(urls.instanceProperties.url, { id: item.id }),
-            disabled: disabled || isServiceInactive(item, 'PROPERTIES'),
           },
           {
             id: 'http-requests',

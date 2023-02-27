@@ -111,6 +111,7 @@ export default {
   dependencies: 'Dependencies',
   package: 'Package',
   properties: 'Properties',
+  appProperties: 'App Properties',
   uri: 'URI',
   httpRequests: 'HTTP Requests',
   count: 'Count',
