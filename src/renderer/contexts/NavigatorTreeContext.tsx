@@ -76,7 +76,7 @@ const NavigatorTreeProvider: FunctionComponent<NavigatorTreeProviderProps> = ({ 
   }, [items]);
 
   useEffect(() => {
-    const unsubscribe = subscribe('/topic/applicationHealth', () => {
+    const unsubscribe = subscribe('/topic/applicationHealth', {}, () => {
       queryClient.invalidateQueries(crudKeys.entity(applicationCrudEntity));
     });
     return () => {
@@ -85,7 +85,7 @@ const NavigatorTreeProvider: FunctionComponent<NavigatorTreeProviderProps> = ({ 
   }, []);
 
   useEffect(() => {
-    const unsubscribe = subscribe('/topic/instanceHealth', () => {
+    const unsubscribe = subscribe('/topic/instanceHealth', {}, () => {
       queryClient.invalidateQueries(crudKeys.entity(instanceCrudEntity));
     });
     return () => {

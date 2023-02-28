@@ -1,7 +1,9 @@
 import { useEffect } from 'react';
-import { useSubscribeToMetric } from 'renderer/apis/requests/metrics/subscribeToMetric';
 import { isEmpty } from 'lodash';
 import { InstanceMetricRO } from '../../../../common/generated_definitions';
+import { useStomp } from '../../../apis/websockets/StompContext';
+import { useGetLatestMetric } from '../../../apis/requests/metrics/getLatestMetric';
+import { notEmpty } from '../../../utils/objectUtils';
 
 const useWidgetSubscribeToMetrics = (
   itemId: string,
@@ -10,8 +12,28 @@ const useWidgetSubscribeToMetrics = (
   options: { active?: boolean } = {}
 ): void => {
   const { active = true } = options;
+  const { subscribe } = useStomp();
 
-  const subscribeToMetricState = useSubscribeToMetric();
+  const latestMetricState = useGetLatestMetric();
+
+  useEffect(() => {
+    if (active && itemId && !isEmpty(metricNames)) {
+      (async () => {
+        try {
+          const results = await Promise.all(
+            metricNames.map(async (metricName): Promise<InstanceMetricRO | undefined> => {
+              try {
+                return await latestMetricState.mutateAsync({ instanceId: itemId, metricName });
+              } catch (e) {
+                return undefined;
+              }
+            })
+          );
+          results.filter(notEmpty).forEach(callback);
+        } catch (e) {}
+      })();
+    }
+  }, [itemId, metricNames, active]);
 
   useEffect(() => {
     let unsubscribes: (() => void)[];
@@ -20,14 +42,8 @@ const useWidgetSubscribeToMetrics = (
         try {
           unsubscribes = await Promise.all(
             metricNames.map(
-              async (metric): Promise<() => void> =>
-                await subscribeToMetricState.mutateAsync({
-                  instanceId: itemId,
-                  metricName: metric,
-                  listener: (event, result) => {
-                    callback(result);
-                  },
-                })
+              async (metricName): Promise<() => void> =>
+                subscribe('/topic/metric/:instanceId/:metricName', { instanceId: itemId, metricName }, callback)
             )
           );
         } catch (e) {}

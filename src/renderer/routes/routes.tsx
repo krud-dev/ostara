@@ -5,7 +5,6 @@ import NavigatorLayout from 'renderer/layout/navigator/NavigatorLayout';
 import Home from 'renderer/pages/navigator/home';
 import Error from 'renderer/pages/general/error';
 import InstanceDashboard from 'renderer/pages/navigator/instance/dashboard';
-import FolderPage from 'renderer/pages/navigator/folder';
 import InstanceLayout from 'renderer/layout/instance/InstanceLayout';
 import SettingsLayout from 'renderer/layout/settings/SettingsLayout';
 import ApplicationLayout from 'renderer/layout/application/ApplicationLayout';
