@@ -6,6 +6,7 @@ import { useTable } from 'renderer/components/table/TableContext';
 import React, { useCallback, useMemo, useState } from 'react';
 import TableCellData from 'renderer/components/table/data/TableCellData';
 import TableRowAction from 'renderer/components/table/action/TableRowAction';
+import { alpha } from '@mui/material/styles';
 
 type TableRowCustomProps<EntityItem> = {
   row: EntityItem;
@@ -51,7 +52,15 @@ export default function TableRowCustom<EntityItem>({ row }: TableRowCustomProps<
         hover
         selected={selected}
         onClick={rowClickHandler}
-        sx={{ ...(hasRowAction ? { cursor: 'pointer' } : {}) }}
+        sx={{
+          ...(hasRowAction ? { cursor: 'pointer' } : {}),
+          ...(open
+            ? {
+                backgroundColor: (theme) => alpha(theme.palette.primary.main, 0.08),
+                '&:hover': { backgroundColor: (theme) => `${alpha(theme.palette.primary.main, 0.16)}!important` },
+              }
+            : {}),
+        }}
       >
         {hasMassActions && (
           <TableCell padding="checkbox">
