@@ -18,7 +18,7 @@ export default function ApplicationSidebar({ item, width }: ApplicationSidebarPr
   const navConfig = useMemo<SidebarConfig>(
     () => [
       {
-        id: 'insights',
+        id: 'overview',
         label: <FormattedMessage id={'overview'} />,
         items: [
           // {

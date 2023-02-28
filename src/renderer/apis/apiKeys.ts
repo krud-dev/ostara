@@ -1,3 +1,7 @@
+import { crudKeys } from './requests/crud/crudKeys';
+import { instanceCrudEntity } from './requests/crud/entity/entities/instance.crudEntity';
+import { applicationCrudEntity } from './requests/crud/entity/entities/application.crudEntity';
+
 export const apiKeys = {
   theme: () => ['theme'],
   themeSource: () => ['themeSource'],
@@ -66,8 +70,10 @@ export const apiKeys = {
     'exceptions',
   ],
   itemIntegrationGraph: (id: string) => [...apiKeys.item(id), 'integrationGraph'],
-  itemInstances: (id: string) => [...apiKeys.item(id), 'instances'],
   itemHeapdumps: (id: string) => [...apiKeys.item(id), 'heapdumps'],
+
+  itemApplications: (ids: string[]) => [...crudKeys.entity(applicationCrudEntity), 'item', ids],
+  itemInstances: (id: string) => [...crudKeys.entity(instanceCrudEntity), 'item', id],
 
   actuator: () => ['actuator'],
   actuatorConnection: (url: string) => [...apiKeys.actuator(), 'connection', url],

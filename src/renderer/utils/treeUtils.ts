@@ -51,3 +51,29 @@ export const buildTree = (items: ItemRO[]): TreeItem[] => {
   sortByOrder(dataTree);
   return dataTree;
 };
+
+const getSubTreeRoot = (tree: TreeItem[], id: string): TreeItem | undefined => {
+  return tree
+    .map((item) => {
+      if (item.id === id) {
+        return item;
+      }
+      if (item.children) {
+        return getSubTreeRoot(item.children, id);
+      }
+      return undefined;
+    })
+    .find((item) => item !== undefined);
+};
+
+const getSubTreeItems = (root: TreeItem): TreeItem[] => {
+  return [root, ...(root.children?.map((item) => getSubTreeItems(item)).flat() ?? [])];
+};
+
+export const getSubTreeItemsForItem = (tree: TreeItem[], itemId: string): TreeItem[] => {
+  const root = getSubTreeRoot(tree, itemId);
+  if (!root) {
+    return [];
+  }
+  return getSubTreeItems(root).map((item) => item);
+};

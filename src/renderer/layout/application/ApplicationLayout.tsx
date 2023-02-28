@@ -7,11 +7,7 @@ import { ApplicationRO } from '../../../common/generated_definitions';
 const ApplicationLayout: FunctionComponent = () => {
   const { selectedItem } = useNavigatorTree();
 
-  const item = useMemo<ApplicationRO | undefined>(() => selectedItem as ApplicationRO | undefined, [selectedItem]);
-
-  if (!item) {
-    return null;
-  }
+  const item = useMemo<ApplicationRO>(() => selectedItem as ApplicationRO, [selectedItem]);
 
   return <SecondarySidebarLayout Sidebar={ApplicationSidebar} sidebarProps={{ item }} />;
 };

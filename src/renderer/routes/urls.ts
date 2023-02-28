@@ -22,9 +22,14 @@ export const urls = asUrlInfos({
     url: '/navigator/home',
     path: 'home',
   },
+  // Folder Root
   folder: {
     url: '/navigator/folder/:id',
     path: 'folder/:id',
+  },
+  folderApplications: {
+    url: '/navigator/folder/:id/applications',
+    path: 'applications',
   },
   // Application Root
   application: {

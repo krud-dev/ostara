@@ -28,6 +28,8 @@ import InstanceQuartz from '../pages/navigator/instance/quartz';
 import InstanceIntegrationGraph from '../pages/navigator/instance/integration-graph';
 import InstanceSystemProperties from '../pages/navigator/instance/system-properties';
 import InstanceSystemEnvironment from '../pages/navigator/instance/system-environment';
+import FolderLayout from '../layout/folder/FolderLayout';
+import FolderApplications from '../pages/navigator/folder/applications';
 
 export default function Router() {
   return useRoutes([
@@ -48,7 +50,14 @@ export default function Router() {
         },
         {
           path: urls.folder.path,
-          element: <FolderPage />,
+          element: <FolderLayout />,
+          children: [
+            { path: '', element: <Navigate to={urls.folderApplications.path} replace /> },
+            {
+              path: urls.folderApplications.path,
+              element: <FolderApplications />,
+            },
+          ],
         },
         {
           path: urls.application.path,

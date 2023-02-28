@@ -100,6 +100,7 @@ export default {
   evictedAllCachesSuccessfully: 'Evicted all caches successfully',
   activeProfiles: 'Active Profiles',
   instances: 'Instances',
+  applications: 'Applications',
   healthStatus: 'Health Status',
   lastUpdateTime: 'Last Update Time',
   lastChangeTime: 'Last Change Time',
