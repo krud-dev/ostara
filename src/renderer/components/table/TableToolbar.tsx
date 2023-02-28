@@ -1,30 +1,68 @@
 import { Box, IconButton, Stack, Tooltip } from '@mui/material';
 import { useTable } from 'renderer/components/table/TableContext';
 import { FormattedMessage } from 'react-intl';
-import { IconViewer } from 'renderer/components/common/IconViewer';
+import { IconViewer, MUIconType } from 'renderer/components/common/IconViewer';
 import SearchToolbar from '../common/SearchToolbar';
+import { useMemo } from 'react';
 
 type TableToolbarProps = {};
 
 export default function TableToolbar({}: TableToolbarProps) {
-  const { entity, filter, changeFilterHandler, changeCustomFiltersHandler, hasGlobalActions, globalActionsHandler } =
-    useTable();
+  const {
+    entity,
+    filter,
+    changeFilterHandler,
+    changeCustomFiltersHandler,
+    hasGlobalActions,
+    globalActionsHandler,
+    closeAllRowsHandler,
+  } = useTable();
+
+  const hasRowDetails = useMemo<boolean>(() => entity.rowAction?.type === 'Details', [entity]);
+  const hasActions = useMemo<boolean>(() => hasGlobalActions || hasRowDetails, [hasGlobalActions, hasRowDetails]);
+
   return (
     <SearchToolbar filter={filter} onFilterChange={changeFilterHandler}>
       {entity.CustomFiltersComponent && <entity.CustomFiltersComponent onChange={changeCustomFiltersHandler} />}
-      {hasGlobalActions && (
+      {hasActions && (
         <Stack direction={'row'} alignItems={'center'}>
-          {entity.globalActions.map((action) => (
-            <Box key={action.id}>
-              <Tooltip title={<FormattedMessage id={action.labelId} />}>
-                <IconButton onClick={() => globalActionsHandler(action.id)}>
-                  <IconViewer icon={action.icon} fontSize={'small'} />
-                </IconButton>
-              </Tooltip>
-            </Box>
-          ))}
+          {hasRowDetails && (
+            <TableToolbarAction
+              tooltipLabelId={'collapseAll'}
+              icon={'UnfoldLessDoubleOutlined'}
+              onClick={closeAllRowsHandler}
+            />
+          )}
+
+          {hasGlobalActions &&
+            entity.globalActions.map((action) => (
+              <TableToolbarAction
+                tooltipLabelId={action.labelId}
+                icon={action.icon}
+                onClick={() => globalActionsHandler(action.id)}
+                key={action.id}
+              />
+            ))}
         </Stack>
       )}
     </SearchToolbar>
+  );
+}
+
+type TableToolbarActionProps = {
+  tooltipLabelId: string;
+  icon: MUIconType;
+  onClick: () => void;
+};
+
+function TableToolbarAction({ tooltipLabelId, icon, onClick }: TableToolbarActionProps) {
+  return (
+    <Box>
+      <Tooltip title={<FormattedMessage id={tooltipLabelId} />}>
+        <IconButton onClick={onClick}>
+          <IconViewer icon={icon} fontSize={'small'} />
+        </IconButton>
+      </Tooltip>
+    </Box>
   );
 }

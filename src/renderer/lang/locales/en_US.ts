@@ -214,4 +214,5 @@ export default {
   yes: 'Yes',
   no: 'No',
   integrationGraph: 'Integration Graph',
+  group: 'Group',
 };

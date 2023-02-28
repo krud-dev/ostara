@@ -26,6 +26,10 @@ export type TableContextProps<EntityItem, CustomFilters> = {
   selectAllChecked: boolean;
   selectAllRowsHandler: (selectAll: boolean) => void;
   toggleGroupHandler: (title: string) => void;
+  openRows: EntityItem[];
+  toggleRowOpenHandler: (row: EntityItem) => void;
+  closeAllRowsHandler: () => void;
+  isRowOpen: (row: EntityItem) => boolean;
   loading: boolean;
   empty: boolean;
   page: number;
@@ -73,6 +77,7 @@ function TableProvider<EntityItem, CustomFilters>({
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useLocalStorageState<number>('tableRowsPerPage', DEFAULT_ROWS_PER_PAGE);
   const [selected, setSelected] = useState<string[]>([]);
+  const [open, setOpen] = useState<string[]>([]);
   const [collapsedGroups, setCollapsedGroups] = useState<string[]>([]);
 
   useUpdateEffect(() => {
@@ -106,7 +111,7 @@ function TableProvider<EntityItem, CustomFilters>({
 
   const selectedRows = useMemo<EntityItem[]>(
     () => selected.map((id) => filteredTableData.find((row) => entity.getId(row) === id)).filter(notEmpty),
-    [selected, entity, tableData]
+    [selected, entity, filteredTableData]
   );
   const hasSelectedRows = useMemo<boolean>(() => !isEmpty(selectedRows), [selectedRows]);
   const selectAllIndeterminate = useMemo<boolean>(
@@ -116,6 +121,11 @@ function TableProvider<EntityItem, CustomFilters>({
   const selectAllChecked = useMemo<boolean>(
     () => !isEmpty(selectedRows) && selectedRows.length === filteredTableData.length,
     [selectedRows, filteredTableData]
+  );
+
+  const openRows = useMemo<EntityItem[]>(
+    () => open.map((id) => filteredTableData.find((row) => entity.getId(row) === id)).filter(notEmpty),
+    [open, entity, filteredTableData]
   );
 
   const hasActions = useMemo<boolean>(() => !isEmpty(entity.actions), [entity]);
@@ -188,6 +198,20 @@ function TableProvider<EntityItem, CustomFilters>({
     [setCollapsedGroups]
   );
 
+  const toggleRowOpenHandler = useCallback(
+    (row: EntityItem): void => {
+      const rowId = entity.getId(row);
+      setOpen((prev) => (prev.includes(rowId) ? prev.filter((id) => id !== rowId) : [...prev, rowId]));
+    },
+    [setOpen, entity]
+  );
+
+  const closeAllRowsHandler = useCallback((): void => {
+    setOpen([]);
+  }, [setOpen]);
+
+  const isRowOpen = useCallback((row: EntityItem): boolean => open.includes(entity.getId(row)), [open]);
+
   const changePageHandler = useCallback(
     (newPage: number): void => {
       setPage(newPage);
@@ -252,6 +276,10 @@ function TableProvider<EntityItem, CustomFilters>({
         selectAllChecked,
         selectAllRowsHandler,
         toggleGroupHandler,
+        openRows,
+        toggleRowOpenHandler,
+        closeAllRowsHandler,
+        isRowOpen,
         loading,
         empty,
         page,

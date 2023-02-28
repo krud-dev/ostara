@@ -3,7 +3,7 @@ import { EntityColumn } from 'renderer/entity/entity';
 import { IconViewer } from 'renderer/components/common/IconViewer';
 import { FormattedMessage } from 'react-intl';
 import { useTable } from 'renderer/components/table/TableContext';
-import React, { useCallback, useMemo, useState } from 'react';
+import React, { useCallback, useMemo } from 'react';
 import TableCellData from 'renderer/components/table/data/TableCellData';
 import TableRowAction from 'renderer/components/table/action/TableRowAction';
 import { alpha } from '@mui/material/styles';
@@ -13,21 +13,33 @@ type TableRowCustomProps<EntityItem> = {
 };
 
 export default function TableRowCustom<EntityItem>({ row }: TableRowCustomProps<EntityItem>) {
-  const { entity, selectedRows, selectRowHandler, isRowSelected, hasActions, hasMassActions, actionsHandler } =
-    useTable<EntityItem, unknown>();
-
-  const [open, setOpen] = useState<boolean>(false);
+  const {
+    entity,
+    selectedRows,
+    selectRowHandler,
+    isRowSelected,
+    openRows,
+    toggleRowOpenHandler,
+    isRowOpen,
+    hasActions,
+    hasMassActions,
+    actionsHandler,
+  } = useTable<EntityItem, unknown>();
 
   const selected = useMemo<boolean>(() => isRowSelected(row), [row, selectedRows, isRowSelected]);
+  const open = useMemo<boolean>(() => isRowOpen(row), [row, openRows, isRowOpen]);
   const hasRowAction = useMemo<boolean>(
     () => !!entity.rowAction && (!entity.isRowActionActive || entity.isRowActionActive(row)),
     [entity, row]
   );
   const anchor = useMemo<string | undefined>(() => entity.getAnchor?.(row), [row, entity]);
 
-  const rowClickHandler = useCallback((event: React.MouseEvent): void => {
-    setOpen((prev) => !prev);
-  }, []);
+  const rowClickHandler = useCallback(
+    (event: React.MouseEvent): void => {
+      toggleRowOpenHandler(row);
+    },
+    [toggleRowOpenHandler]
+  );
 
   const checkboxClickHandler = useCallback(
     (event: React.MouseEvent): void => {

@@ -120,7 +120,7 @@ export default function QuartzJobDetails({ row }: QuartzJobDetailsProps) {
                     label={<FormattedMessage id={'name'} />}
                     value={
                       <Link href={'#'} onClick={(e) => triggerClickHandler(e, trigger.name)}>
-                        <FormattedMessage id={trigger.name} />
+                        {trigger.name}
                       </Link>
                     }
                   />
