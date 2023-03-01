@@ -372,6 +372,22 @@ export interface EventLogRO {
     message?: string;
 }
 
+export interface ThreadProfilingRequestCreateRO {
+    instanceId: string;
+    className: string;
+    durationSec: number;
+}
+
+export interface ThreadProfilingRequestRO {
+    id: string;
+    creationTime: DateAsNumber;
+    instanceId: string;
+    className: string;
+    durationSec: number;
+    finishTime: DateAsNumber;
+    status: ThreadProfilingStatus;
+}
+
 export interface ApplicationHealthUpdatedEventMessage$Payload {
     applicationId: string;
     newStatus: ApplicationHealthStatus;
@@ -779,6 +795,8 @@ export type InstanceAbility = "METRICS" | "ENV" | "BEANS" | "QUARTZ" | "FLYWAY" 
 export type EventLogType = "INSTANCE_HEALTH_CHANGED";
 
 export type EventLogSeverity = "INFO" | "WARN" | "ERROR";
+
+export type ThreadProfilingStatus = "RUNNING" | "FINISHED" | "INTERRUPTED";
 
 export type FilterFieldOperation = "Equal" | "NotEqual" | "In" | "NotIn" | "GreaterThan" | "GreaterEqual" | "LowerThan" | "LowerEqual" | "Between" | "Contains" | "IsNull" | "IsNotNull" | "IsEmpty" | "IsNotEmpty" | "And" | "Or" | "Not" | "Noop";
 

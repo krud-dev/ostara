@@ -13,6 +13,9 @@ import dev.krud.boost.daemon.configuration.instance.ro.InstanceRO
 import dev.krud.boost.daemon.eventlog.enums.EventLogSeverity
 import dev.krud.boost.daemon.eventlog.enums.EventLogType
 import dev.krud.boost.daemon.eventlog.ro.EventLogRO
+import dev.krud.boost.daemon.threadprofiling.enums.ThreadProfilingStatus
+import dev.krud.boost.daemon.threadprofiling.model.ThreadProfilingRequest
+import dev.krud.boost.daemon.threadprofiling.ro.ThreadProfilingRequestRO
 import dev.krud.shapeshift.ShapeShiftBuilder
 import dev.krud.shapeshift.spring.ShapeShiftAutoConfiguration
 import dev.krud.shapeshift.spring.ShapeShiftBuilderCustomizer
@@ -33,5 +36,7 @@ class ShapeshiftConfiguration : ShapeShiftBuilderCustomizer, ShapeShiftAutoConfi
             .withObjectSupplier { InstanceHealthLogRO(Date(), UUID.randomUUID()) }
             .withObjectSupplier { InstanceHeapdumpReference(UUID.randomUUID()) }
             .withObjectSupplier { InstanceHeapdumpReferenceRO(UUID.randomUUID(), UUID.randomUUID(), Date()) }
+            .withObjectSupplier { ThreadProfilingRequest(UUID.randomUUID(), "", 0, ThreadProfilingStatus.RUNNING) }
+            .withObjectSupplier { ThreadProfilingRequestRO(UUID.randomUUID(), Date(), UUID.randomUUID(), "", 0, Date(), ThreadProfilingStatus.RUNNING) }
     }
 }
