@@ -1,8 +1,7 @@
 import { FormattedMessage, useIntl } from 'react-intl';
-import React, { FunctionComponent, useCallback, useState } from 'react';
+import React, { FunctionComponent, useCallback } from 'react';
 import { Controller, FormProvider, useForm } from 'react-hook-form';
 import { Box, Button, DialogActions, DialogContent, TextField } from '@mui/material';
-import { useModal } from '@ebay/nice-modal-react';
 import { LoadingButton } from '@mui/lab';
 import InputAdornment from '@mui/material/InputAdornment';
 import ItemIconFormField from 'renderer/components/item/dialogs/forms/fields/ItemIconFormField';
@@ -23,7 +22,6 @@ const FolderDetailsForm: FunctionComponent<FolderDetailsFormProps> = ({
   onSubmit,
   onCancel,
 }: FolderDetailsFormProps) => {
-  const modal = useModal();
   const intl = useIntl();
 
   const methods = useForm<FolderFormValues>({ defaultValues });
@@ -39,7 +37,7 @@ const FolderDetailsForm: FunctionComponent<FolderDetailsFormProps> = ({
 
   const cancelHandler = useCallback((): void => {
     onCancel();
-  }, [modal]);
+  }, [onCancel]);
 
   return (
     <FormProvider {...methods}>

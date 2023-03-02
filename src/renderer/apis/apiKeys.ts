@@ -71,6 +71,13 @@ export const apiKeys = {
   ],
   itemIntegrationGraph: (id: string) => [...apiKeys.item(id), 'integrationGraph'],
   itemHeapdumps: (id: string) => [...apiKeys.item(id), 'heapdumps'],
+  itemThreadProfilingRequests: (id: string) => [...apiKeys.item(id), 'threadProfilingRequests'],
+  itemThreadProfilingRequestLogs: (id: string, requestId: string) => [
+    ...apiKeys.item(id),
+    'threadProfilingRequests',
+    'logs',
+    requestId,
+  ],
 
   itemApplications: (ids: string[]) => [...crudKeys.entity(applicationCrudEntity), 'item', ids],
   itemInstances: (id: string) => [...crudKeys.entity(instanceCrudEntity), 'item', id],

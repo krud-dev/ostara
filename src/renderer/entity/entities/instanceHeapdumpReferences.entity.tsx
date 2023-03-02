@@ -81,5 +81,5 @@ export const instanceHeapdumpReferencesEntity: Entity<InstanceHeapdumpReferenceR
   ],
   paging: true,
   getId: (item) => item.id,
-  filterData: (data, filter) => data.filter((item) => item.id?.toLowerCase().includes(filter.toLowerCase())),
+  filterData: (data, filter) => data.filter((item) => item.status?.toLowerCase().includes(filter.toLowerCase())),
 };

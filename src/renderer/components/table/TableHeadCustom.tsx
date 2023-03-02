@@ -3,6 +3,7 @@ import { Box, Checkbox, SxProps, TableCell, TableHead, TableRow, TableSortLabel 
 import { FormattedMessage } from 'react-intl';
 import { useTable } from 'renderer/components/table/TableContext';
 import { DEFAULT_TABLE_COLUMN_WIDTH } from 'renderer/constants/ui';
+import { useMemo } from 'react';
 
 const visuallyHidden = {
   border: 0,
@@ -32,6 +33,8 @@ export default function TableHeadCustom({ sx }: TableHeadCustomProps) {
     hasActions,
     hasMassActions,
   } = useTable();
+
+  const actionsWidth = useMemo<number>(() => entity.actions.length * 36 + 40, [entity]);
 
   return (
     <TableHead sx={sx}>
@@ -75,7 +78,7 @@ export default function TableHeadCustom({ sx }: TableHeadCustomProps) {
           </TableCell>
         ))}
         {hasActions && (
-          <TableCell align={'right'} sx={{ width: '1%' }}>
+          <TableCell align={'right'} sx={{ minWidth: actionsWidth, width: '1%' }}>
             <FormattedMessage id={'actions'} />
           </TableCell>
         )}

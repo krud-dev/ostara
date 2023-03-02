@@ -2,7 +2,6 @@ import { FormattedMessage, useIntl } from 'react-intl';
 import React, { FunctionComponent, useCallback, useMemo, useState } from 'react';
 import { Controller, FormProvider, useForm } from 'react-hook-form';
 import { Box, Button, DialogActions, DialogContent, TextField } from '@mui/material';
-import { useModal } from '@ebay/nice-modal-react';
 import { LoadingButton } from '@mui/lab';
 import { useSnackbar } from 'notistack';
 import { useTestConnectionByUrl } from 'renderer/apis/requests/actuator/testConnectionByUrl';
@@ -33,7 +32,6 @@ const InstanceDetailsForm: FunctionComponent<InstanceDetailsFormProps> = ({
   onSubmit,
   onCancel,
 }: InstanceDetailsFormProps) => {
-  const modal = useModal();
   const intl = useIntl();
   const { enqueueSnackbar } = useSnackbar();
 
@@ -59,7 +57,7 @@ const InstanceDetailsForm: FunctionComponent<InstanceDetailsFormProps> = ({
 
   const cancelHandler = useCallback((): void => {
     onCancel();
-  }, [modal]);
+  }, [onCancel]);
 
   const testConnectionState = useTestConnectionByUrl();
   const actuatorUrl = watch('actuatorUrl');

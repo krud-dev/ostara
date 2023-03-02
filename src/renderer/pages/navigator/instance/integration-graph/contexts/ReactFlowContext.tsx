@@ -2,7 +2,7 @@ import React, { FunctionComponent, PropsWithChildren, useCallback, useContext, u
 
 export type ReactFlowContextProps = {
   search: string;
-  setSearch: (darkMode: string) => void;
+  setSearch: (search: string) => void;
   isHighlight: (searchString: string, data: any) => boolean;
 };
 

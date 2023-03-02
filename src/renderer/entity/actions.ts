@@ -4,3 +4,4 @@ export const RESET_ID = 'reset';
 export const REQUEST_ID = 'request';
 export const DOWNLOAD_ID = 'download';
 export const DELETE_ID = 'delete';
+export const VIEW_ID = 'view';

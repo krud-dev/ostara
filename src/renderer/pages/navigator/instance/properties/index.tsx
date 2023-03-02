@@ -6,7 +6,7 @@ import { useGetInstancePropertiesQuery } from 'renderer/apis/requests/instance/p
 import { isEmpty, map } from 'lodash';
 import EmptyContent from 'renderer/components/help/EmptyContent';
 import { FormattedMessage } from 'react-intl';
-import InstancePropertiesCode from 'renderer/pages/navigator/instance/properties/widgets/InstancePropertiesCode';
+import InstancePropertiesCode from 'renderer/pages/navigator/instance/properties/components/InstancePropertiesCode';
 import TabPanel, { TabInfo } from 'renderer/components/layout/TabPanel';
 import { InstanceRO } from '../../../../../common/generated_definitions';
 

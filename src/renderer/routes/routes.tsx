@@ -29,6 +29,7 @@ import InstanceSystemProperties from '../pages/navigator/instance/system-propert
 import InstanceSystemEnvironment from '../pages/navigator/instance/system-environment';
 import FolderLayout from '../layout/folder/FolderLayout';
 import FolderApplications from '../pages/navigator/folder/applications';
+import InstanceThreadProfiling from '../pages/navigator/instance/threaddumps';
 
 export default function Router() {
   return useRoutes([
@@ -148,7 +149,7 @@ export default function Router() {
             },
             {
               path: urls.instanceThreadDump.path,
-              element: <InstanceDashboard />,
+              element: <InstanceThreadProfiling />,
             },
             {
               path: urls.instanceHeapDump.path,

@@ -1,9 +1,8 @@
-import { Box, IconButton, Stack, Tooltip } from '@mui/material';
+import { Stack } from '@mui/material';
 import { useTable } from 'renderer/components/table/TableContext';
-import { FormattedMessage } from 'react-intl';
-import { IconViewer, MUIconType } from 'renderer/components/common/IconViewer';
 import SearchToolbar from '../common/SearchToolbar';
 import { useMemo } from 'react';
+import ToolbarButton from '../common/ToolbarButton';
 
 type TableToolbarProps = {};
 
@@ -27,7 +26,7 @@ export default function TableToolbar({}: TableToolbarProps) {
       {hasActions && (
         <Stack direction={'row'} alignItems={'center'}>
           {hasRowDetails && (
-            <TableToolbarAction
+            <ToolbarButton
               tooltipLabelId={'collapseAll'}
               icon={'UnfoldLessDoubleOutlined'}
               onClick={closeAllRowsHandler}
@@ -36,7 +35,7 @@ export default function TableToolbar({}: TableToolbarProps) {
 
           {hasGlobalActions &&
             entity.globalActions.map((action) => (
-              <TableToolbarAction
+              <ToolbarButton
                 tooltipLabelId={action.labelId}
                 icon={action.icon}
                 onClick={() => globalActionsHandler(action.id)}
@@ -46,23 +45,5 @@ export default function TableToolbar({}: TableToolbarProps) {
         </Stack>
       )}
     </SearchToolbar>
-  );
-}
-
-type TableToolbarActionProps = {
-  tooltipLabelId: string;
-  icon: MUIconType;
-  onClick: () => void;
-};
-
-function TableToolbarAction({ tooltipLabelId, icon, onClick }: TableToolbarActionProps) {
-  return (
-    <Box>
-      <Tooltip title={<FormattedMessage id={tooltipLabelId} />}>
-        <IconButton onClick={onClick}>
-          <IconViewer icon={icon} fontSize={'small'} />
-        </IconButton>
-      </Tooltip>
-    </Box>
   );
 }
