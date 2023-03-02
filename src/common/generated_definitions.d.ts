@@ -372,6 +372,13 @@ export interface EventLogRO {
     message?: string;
 }
 
+export interface ThreadProfilingLogRO {
+    id: string;
+    creationTime: DateAsNumber;
+    requestId: string;
+    thread: ThreadDumpActuatorResponse$Thread;
+}
+
 export interface ThreadProfilingRequestCreateRO {
     instanceId: string;
     className: string;
@@ -718,8 +725,8 @@ export interface ScheduledTasksActuatorResponse$Runnable {
 
 export interface ThreadDumpActuatorResponse$Thread$StackTraceFrame {
     classLoaderName?: string;
-    moduleName: string;
-    moduleVersion: string;
+    moduleName?: string;
+    moduleVersion?: string;
     fileName: string;
     className: string;
     methodName: string;
@@ -796,7 +803,7 @@ export type EventLogType = "INSTANCE_HEALTH_CHANGED";
 
 export type EventLogSeverity = "INFO" | "WARN" | "ERROR";
 
-export type ThreadProfilingStatus = "RUNNING" | "FINISHED" | "INTERRUPTED";
+export type ThreadProfilingStatus = "RUNNING" | "FINISHED";
 
 export type FilterFieldOperation = "Equal" | "NotEqual" | "In" | "NotIn" | "GreaterThan" | "GreaterEqual" | "LowerThan" | "LowerEqual" | "Between" | "Contains" | "IsNull" | "IsNotNull" | "IsEmpty" | "IsNotEmpty" | "And" | "Or" | "Not" | "Noop";
 

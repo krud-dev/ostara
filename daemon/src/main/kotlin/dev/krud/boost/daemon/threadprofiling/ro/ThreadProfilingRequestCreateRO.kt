@@ -12,5 +12,5 @@ class ThreadProfilingRequestCreateRO(
     @MappedField
     var className: String,
     @MappedField
-    var durationSec: Int,
+    var durationSec: Int
 )

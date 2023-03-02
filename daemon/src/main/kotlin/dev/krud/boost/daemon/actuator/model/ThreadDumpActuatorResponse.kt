@@ -1,8 +1,10 @@
 package dev.krud.boost.daemon.actuator.model
 
+import java.io.Serializable
+
 data class ThreadDumpActuatorResponse(
     val threads: List<Thread>
-) {
+) : Serializable {
     data class Thread(
         val threadName: String,
         val threadId: Long,
@@ -21,28 +23,28 @@ data class ThreadDumpActuatorResponse(
         val stackTrace: List<StackTraceFrame>,
         val lockedMonitors: List<LockedMonitor>,
         val lockedSynchronizers: List<LockedSynchronizer>
-    ) {
+    ) : Serializable {
         data class StackTraceFrame(
             val classLoaderName: String?,
-            val moduleName: String,
-            val moduleVersion: String,
+            val moduleName: String?,
+            val moduleVersion: String?,
             val fileName: String,
             val className: String,
             val methodName: String,
             val lineNumber: Int,
             val nativeMethod: Boolean
-        )
+        ) : Serializable
 
         data class LockedMonitor(
             val className: String,
             val identityHashCode: Int,
             val lockedStackDepth: Int,
             val lockedStackFrame: StackTraceFrame
-        )
+        ) : Serializable
 
         data class LockedSynchronizer(
             val className: String,
             val identityHashCode: Int
-        )
+        ) : Serializable
     }
 }

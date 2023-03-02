@@ -3,7 +3,6 @@ package dev.krud.boost.daemon.threadprofiling.model
 import dev.krud.boost.daemon.entity.AbstractEntity
 import dev.krud.boost.daemon.threadprofiling.enums.ThreadProfilingStatus
 import dev.krud.boost.daemon.threadprofiling.ro.ThreadProfilingRequestRO
-import dev.krud.crudframework.crud.annotation.Deleteable
 import dev.krud.shapeshift.resolver.annotation.DefaultMappingTarget
 import dev.krud.shapeshift.resolver.annotation.MappedField
 import jakarta.persistence.Column
@@ -33,12 +32,5 @@ class ThreadProfilingRequest(
 ) : AbstractEntity() {
     @MappedField
     @Column
-    var finishTime: Date
-
-    init {
-        val cal = Calendar.getInstance()
-        cal.time = creationTime
-        cal.add(Calendar.SECOND, durationSec)
-        finishTime = cal.time
-    }
+    lateinit var finishTime: Date
 }
