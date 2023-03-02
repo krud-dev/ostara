@@ -7,7 +7,11 @@ import FolderSidebar from './components/FolderSidebar';
 const FolderLayout: FunctionComponent = () => {
   const { selectedItem } = useNavigatorTree();
 
-  const item = useMemo<FolderRO>(() => selectedItem as FolderRO, [selectedItem]);
+  const item = useMemo<FolderRO | undefined>(() => selectedItem as FolderRO | undefined, [selectedItem]);
+
+  if (!item) {
+    return null;
+  }
 
   return <SecondarySidebarLayout Sidebar={FolderSidebar} sidebarProps={{ item }} />;
 };

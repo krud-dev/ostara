@@ -10,9 +10,12 @@ import { InstanceRO } from '../../../common/generated_definitions';
 const InstanceLayout: FunctionComponent = () => {
   const { selectedItem } = useNavigatorTree();
 
-  const item = useMemo<InstanceRO>(() => selectedItem as InstanceRO, [selectedItem]);
+  const item = useMemo<InstanceRO | undefined>(() => selectedItem as InstanceRO | undefined, [selectedItem]);
 
   const content = useMemo<ReactNode | undefined>(() => {
+    if (!item) {
+      return null;
+    }
     switch (item.health.status) {
       case 'PENDING':
         return <InstancePending item={item} />;
