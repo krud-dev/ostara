@@ -8,5 +8,5 @@ class ThreadProfilingLogRO(
     val creationTime: Date,
     val requestId: UUID
 ) {
-    lateinit var thread: ThreadDumpActuatorResponse.Thread
+    lateinit var threads: List<ThreadDumpActuatorResponse.Thread>
 }

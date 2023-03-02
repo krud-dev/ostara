@@ -376,7 +376,7 @@ export interface ThreadProfilingLogRO {
     id: string;
     creationTime: DateAsNumber;
     requestId: string;
-    thread: ThreadDumpActuatorResponse$Thread;
+    threads: ThreadDumpActuatorResponse$Thread[];
 }
 
 export interface ThreadProfilingRequestCreateRO {

@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.*
 import java.util.*
 import kotlin.reflect.KClass
 
+@ApiResponse(responseCode = "400", description = "Bad request", content = [Content()])
 abstract class AbstractCrudController<Entity : AbstractEntity, RO : Any, CreateDTO, UpdateDTO>(
     private val entityClazz: KClass<Entity>,
     private val roClazz: KClass<RO>,

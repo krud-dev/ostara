@@ -40,11 +40,8 @@ class ThreadProfilingService(
             val threadDumpRequest = actuatorClientProvider.provide(instanceId).threadDump()
             threadDumpRequest.onSuccess { threadDump ->
                 requests.forEach { request ->
-                    val threads = threadDump.threads.filter { thread -> thread.stackTrace.find { it.className == request.className } != null }
-                    threads.forEach { thread ->
-                        val threadLog = ThreadProfilingLog(request.id, thread)
-                        crudHandler.create(threadLog).execute()
-                    }
+                    val threadLog = ThreadProfilingLog(request.id, threadDump.threads)
+                    crudHandler.create(threadLog).execute()
                 }
             }
         }

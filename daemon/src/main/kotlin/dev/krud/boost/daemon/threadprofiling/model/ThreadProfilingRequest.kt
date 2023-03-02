@@ -3,6 +3,7 @@ package dev.krud.boost.daemon.threadprofiling.model
 import dev.krud.boost.daemon.entity.AbstractEntity
 import dev.krud.boost.daemon.threadprofiling.enums.ThreadProfilingStatus
 import dev.krud.boost.daemon.threadprofiling.ro.ThreadProfilingRequestRO
+import dev.krud.crudframework.crud.annotation.Deleteable
 import dev.krud.shapeshift.resolver.annotation.DefaultMappingTarget
 import dev.krud.shapeshift.resolver.annotation.MappedField
 import jakarta.persistence.Column
@@ -15,6 +16,7 @@ import java.util.*
 @DefaultMappingTarget(ThreadProfilingRequestRO::class)
 @MappedField(mapFrom = "id")
 @MappedField(mapFrom = "creationTime")
+@Deleteable(softDelete = false)
 class ThreadProfilingRequest(
     @MappedField
     @Column(name = "instance_id", nullable = false)
