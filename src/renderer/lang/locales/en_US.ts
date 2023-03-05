@@ -71,6 +71,7 @@ export default {
   copyToClipboardSuccess: 'Copied to clipboard',
   copyToClipboardFailed: 'Failed to copy to clipboard',
   copyId: 'Copy ID',
+  copyJson: 'Copy JSON',
   up: 'Up',
   down: 'Down',
   outOfService: 'Out of Service',

@@ -9,6 +9,7 @@ import CopyIdToClipboardMenuItem from 'renderer/layout/navigator/components/side
 import React from 'react';
 import AddFolderMenuItem from 'renderer/layout/navigator/components/sidebar/tree/menus/items/AddFolderMenuItem';
 import AddApplicationMenuItem from 'renderer/layout/navigator/components/sidebar/tree/menus/items/AddApplicationMenuItem';
+import CopyItemToClipboardMenuItem from './items/CopyItemToClipboardMenuItem';
 
 export default function FolderMenuItems({ item, node, onCreated, menuState }: TreeItemMenuProps) {
   const { close } = menuState;
@@ -25,6 +26,7 @@ export default function FolderMenuItems({ item, node, onCreated, menuState }: Tr
       <ChooseColorMenuItem item={item} onClose={close} />
       <Divider />
       <CopyIdToClipboardMenuItem item={item} onClose={close} />
+      <CopyItemToClipboardMenuItem item={item} onClose={close} />
       <UpdateMenuItem item={item} onClose={close} />
       <RenameMenuItem item={item} node={node} onClose={close} />
       <DeleteMenuItem item={item} onClose={close} />

@@ -36,9 +36,12 @@ export default function TableRowCustom<EntityItem>({ row }: TableRowCustomProps<
 
   const rowClickHandler = useCallback(
     (event: React.MouseEvent): void => {
+      if (!hasRowAction) {
+        return;
+      }
       toggleRowOpenHandler(row);
     },
-    [toggleRowOpenHandler]
+    [hasRowAction, toggleRowOpenHandler]
   );
 
   const checkboxClickHandler = useCallback(
