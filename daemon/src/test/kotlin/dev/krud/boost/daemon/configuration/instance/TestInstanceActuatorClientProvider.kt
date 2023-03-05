@@ -1,6 +1,7 @@
 package dev.krud.boost.daemon.configuration.instance
 
 import dev.krud.boost.daemon.actuator.ActuatorHttpClient
+import dev.krud.boost.daemon.configuration.authentication.Authentication
 import dev.krud.boost.daemon.configuration.instance.entity.Instance
 import org.mockito.Mockito.mock
 import org.springframework.boot.test.context.TestConfiguration
@@ -32,7 +33,7 @@ class TestInstanceActuatorClientProvider : InstanceActuatorClientProvider {
         return instanceMocks.getOrPut(instanceId) { mock(ActuatorHttpClient::class.java) }
     }
 
-    override fun provideForUrl(url: String): ActuatorHttpClient {
+    override fun provideForUrl(url: String, authentication: Authentication): ActuatorHttpClient {
         return urlMocks.getOrPut(url) { mock(ActuatorHttpClient::class.java) }
     }
 

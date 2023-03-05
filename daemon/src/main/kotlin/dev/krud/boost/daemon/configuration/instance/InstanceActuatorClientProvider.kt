@@ -1,6 +1,7 @@
 package dev.krud.boost.daemon.configuration.instance
 
 import dev.krud.boost.daemon.actuator.ActuatorHttpClient
+import dev.krud.boost.daemon.configuration.authentication.Authentication
 import dev.krud.boost.daemon.configuration.instance.entity.Instance
 import java.util.*
 
@@ -9,7 +10,7 @@ interface InstanceActuatorClientProvider {
 
     fun provide(instanceId: UUID): ActuatorHttpClient
 
-    fun provideForUrl(url: String): ActuatorHttpClient
+    fun provideForUrl(url: String, authentication: Authentication = Authentication.None.DEFAULT): ActuatorHttpClient
 
     fun <T> doWith(instanceId: UUID, block: (ActuatorHttpClient) -> T): T {
         val actuatorClient = provide(instanceId)

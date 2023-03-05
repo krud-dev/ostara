@@ -1,7 +1,7 @@
 package dev.krud.boost.daemon.controller.api.v1
 
+import dev.krud.boost.daemon.configuration.authentication.Authentication
 import dev.krud.boost.daemon.configuration.instance.InstanceActuatorClientProvider
-import dev.krud.crudframework.crud.handler.CrudHandler
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.media.Content
 import io.swagger.v3.oas.annotations.responses.ApiResponse
@@ -9,16 +9,15 @@ import io.swagger.v3.oas.annotations.tags.Tag
 import org.springframework.boot.logging.LogLevel
 import org.springframework.http.HttpStatus
 import org.springframework.web.bind.annotation.*
-import java.util.UUID
+import java.util.*
 
 @RestController
 @RequestMapping("$API_PREFIX/actuator")
 @Tag(name = "Actuator", description = "Actuator Passthrough API")
 class ActuatorController(
-    private val crudHandler: CrudHandler,
     private val actuatorClientProvider: InstanceActuatorClientProvider
 ) {
-    @PostMapping
+    @PostMapping("/testConnection")
     @ResponseStatus(HttpStatus.OK)
     @Operation(
         summary = "Test Connection",
@@ -26,7 +25,7 @@ class ActuatorController(
     )
     @ApiResponse(responseCode = "200", description = "Connection successful")
     @ApiResponse(responseCode = "500", description = "Test Connection failed", content = [Content()])
-    fun testConnection(@RequestParam url: String) = actuatorClientProvider.provideForUrl(url).testConnection()
+    fun testConnection(@RequestParam url: String, @RequestBody(required = false) authentication: Authentication?) = actuatorClientProvider.provideForUrl(url, authentication = authentication ?: Authentication.None.DEFAULT).testConnection()
 
     @GetMapping
     @ResponseStatus(HttpStatus.OK)

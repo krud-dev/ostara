@@ -2,9 +2,11 @@ package dev.krud.boost.daemon.configuration.instance
 
 import dev.krud.boost.daemon.actuator.ActuatorHttpClient
 import dev.krud.boost.daemon.actuator.ActuatorHttpClientImpl
+import dev.krud.boost.daemon.configuration.authentication.Authentication
 import dev.krud.boost.daemon.configuration.instance.entity.Instance
 import dev.krud.boost.daemon.configuration.instance.entity.Instance.Companion.effectiveAuthentication
 import dev.krud.boost.daemon.exception.ResourceNotFoundException
+import dev.krud.boost.daemon.exception.throwBadRequest
 import dev.krud.crudframework.crud.handler.CrudHandler
 import org.springframework.context.annotation.Lazy
 import org.springframework.stereotype.Component
@@ -27,7 +29,10 @@ class InstanceActuatorClientProviderImpl(
         return provide(instance)
     }
 
-    override fun provideForUrl(url: String): ActuatorHttpClient {
-        return ActuatorHttpClientImpl(url)
+    override fun provideForUrl(url: String, authentication: Authentication): ActuatorHttpClient {
+        if (authentication is Authentication.Inherit) {
+            throwBadRequest("Cannot use Inherit authentication for a url")
+        }
+        return ActuatorHttpClientImpl(url, authentication.authenticator)
     }
 }
