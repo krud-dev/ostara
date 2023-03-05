@@ -389,7 +389,6 @@ export interface ThreadProfilingRequestRO {
     id: string;
     creationTime: DateAsNumber;
     instanceId: string;
-    className: string;
     durationSec: number;
     finishTime: DateAsNumber;
     status: ThreadProfilingStatus;
