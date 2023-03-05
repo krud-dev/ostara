@@ -216,6 +216,7 @@ export interface ApplicationModifyRequestRO {
     alias: string;
     type: ApplicationType;
     color: string;
+    authentication: Authentication;
     description?: string;
     icon?: string;
     sort?: number;
@@ -234,11 +235,14 @@ export interface ApplicationRO {
     sort?: number;
     parentFolderId?: string;
     health: ApplicationHealthRO;
+    authentication: Authentication;
+    effectiveAuthentication: EffectiveAuthentication;
 }
 
 export interface FolderModifyRequestRO {
     alias: string;
     color: string;
+    authentication: Authentication;
     description?: string;
     icon?: string;
     sort?: number;
@@ -254,6 +258,8 @@ export interface FolderRO {
     icon?: string;
     sort?: number;
     parentFolderId?: string;
+    authentication: Authentication;
+    effectiveAuthentication: EffectiveAuthentication;
 }
 
 export interface EvictCachesRequestRO {
@@ -353,6 +359,7 @@ export interface InstanceRO {
     sort?: number;
     abilities: InstanceAbility[];
     health: InstanceHealthRO;
+    effectiveAuthentication: EffectiveAuthentication;
 }
 
 export interface InstanceSystemEnvironmentRO {
@@ -630,6 +637,15 @@ export interface ThreadDumpActuatorResponse$Thread {
 export interface Unit {
 }
 
+export interface Authentication {
+}
+
+export interface EffectiveAuthentication {
+    authentication: Authentication;
+    sourceType: EffectiveAuthentication$SourceType;
+    sourceId: string;
+}
+
 export interface BeansActuatorResponse$Context$Bean {
     aliases: string[];
     scope: string;
@@ -744,6 +760,37 @@ export interface ThreadDumpActuatorResponse$Thread$LockedSynchronizer {
     identityHashCode: number;
 }
 
+export interface Authentication$None extends Authentication {
+    type: string;
+}
+
+export interface Authentication$Inherit extends Authentication {
+    type: string;
+}
+
+export interface Authentication$Basic extends Authentication {
+    username: string;
+    password: string;
+    type: string;
+}
+
+export interface Authentication$Header extends Authentication {
+    headerName: string;
+    headerValue: string;
+    type: string;
+}
+
+export interface Authentication$QueryString extends Authentication {
+    key: string;
+    value: string;
+    type: string;
+}
+
+export interface Authentication$BearerToken extends Authentication {
+    token: string;
+    type: string;
+}
+
 export interface FlywayActuatorResponse$Context$FlywayBean$Migration {
     type: string;
     checksum: number;
@@ -808,3 +855,5 @@ export type FilterFieldOperation = "Equal" | "NotEqual" | "In" | "NotIn" | "Grea
 export type FilterFieldDataType = "String" | "Integer" | "Long" | "Double" | "Boolean" | "Date" | "Object" | "Enum" | "UUID" | "None";
 
 export type IntegrationGraphActuatorResponse$Link$Type = "INPUT" | "OUTPUT";
+
+export type EffectiveAuthentication$SourceType = "FOLDER" | "APPLICATION";

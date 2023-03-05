@@ -2,7 +2,10 @@ package dev.krud.boost.daemon.configuration.application.entity
 
 import dev.krud.boost.daemon.configuration.application.enums.ApplicationType
 import dev.krud.boost.daemon.configuration.application.ro.ApplicationRO
+import dev.krud.boost.daemon.configuration.authentication.Authentication
+import dev.krud.boost.daemon.configuration.authentication.EffectiveAuthentication
 import dev.krud.boost.daemon.configuration.folder.entity.Folder
+import dev.krud.boost.daemon.configuration.folder.entity.Folder.Companion.effectiveAuthentication
 import dev.krud.boost.daemon.configuration.folder.entity.Folder.Companion.effectiveColor
 import dev.krud.boost.daemon.configuration.instance.entity.Instance
 import dev.krud.boost.daemon.entity.AbstractEntity
@@ -10,8 +13,10 @@ import dev.krud.boost.daemon.utils.DEFAULT_COLOR
 import dev.krud.crudframework.crud.annotation.Deleteable
 import dev.krud.shapeshift.resolver.annotation.DefaultMappingTarget
 import dev.krud.shapeshift.resolver.annotation.MappedField
+import io.hypersistence.utils.hibernate.type.json.JsonType
 import jakarta.persistence.*
 import org.hibernate.annotations.Formula
+import org.hibernate.annotations.Type
 import java.util.*
 
 @Entity
@@ -39,7 +44,12 @@ class Application(
     var sort: Double? = null,
     @MappedField
     @Column(name = "parent_folder_id", nullable = true)
-    var parentFolderId: UUID? = null
+    var parentFolderId: UUID? = null,
+
+    @MappedField
+    @Type(JsonType::class)
+    @Column(columnDefinition = "json")
+    var authentication: Authentication = Authentication.Inherit.DEFAULT
 ) : AbstractEntity() {
     @MappedField
     @Formula("(select count(*) from instance i where i.parent_application_id = id)")
@@ -60,6 +70,14 @@ class Application(
                     return color
                 }
                 return parentFolder?.effectiveColor ?: DEFAULT_COLOR
+            }
+        val Application.effectiveAuthentication: EffectiveAuthentication
+            get() {
+                if (authentication !is Authentication.Inherit) {
+                    return EffectiveAuthentication(authentication, EffectiveAuthentication.SourceType.APPLICATION, id)
+                }
+                return parentFolder?.effectiveAuthentication
+                    ?: EffectiveAuthentication(Authentication.None.DEFAULT, EffectiveAuthentication.SourceType.APPLICATION, id)
             }
         val Application.healthyInstances get() = instances
     }

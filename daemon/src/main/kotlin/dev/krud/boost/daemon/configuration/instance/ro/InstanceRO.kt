@@ -1,5 +1,7 @@
 package dev.krud.boost.daemon.configuration.instance.ro
 
+import dev.krud.boost.daemon.configuration.authentication.Authentication
+import dev.krud.boost.daemon.configuration.authentication.EffectiveAuthentication
 import dev.krud.boost.daemon.configuration.instance.enums.InstanceAbility
 import dev.krud.boost.daemon.configuration.instance.health.ro.InstanceHealthRO
 import dev.krud.boost.daemon.utils.DEFAULT_COLOR
@@ -18,5 +20,7 @@ class InstanceRO(
     val icon: String? = null,
     val sort: Double? = null,
     var abilities: Set<InstanceAbility> = emptySet(),
-    var health: InstanceHealthRO = InstanceHealthRO.unknown()
+    var health: InstanceHealthRO = InstanceHealthRO.unknown(),
+    var effectiveAuthentication: EffectiveAuthentication =
+        EffectiveAuthentication(Authentication.Inherit.DEFAULT, EffectiveAuthentication.SourceType.APPLICATION, parentApplicationId)
 )

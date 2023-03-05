@@ -33,6 +33,7 @@ import dev.krud.boost.daemon.exception.throwInternalServerError
 import dev.krud.boost.daemon.exception.throwNotFound
 import dev.krud.boost.daemon.exception.throwServiceUnavailable
 import dev.krud.boost.daemon.exception.throwStatusCode
+import okhttp3.Authenticator
 import okhttp3.HttpUrl
 import okhttp3.HttpUrl.Companion.toHttpUrl
 import okhttp3.MediaType.Companion.toMediaType
@@ -47,8 +48,13 @@ import java.net.ConnectException
 
 class ActuatorHttpClientImpl(
     private val baseUrl: String,
-    private val httpClient: OkHttpClient = OkHttpClient.Builder().build()
+    private val authenticator: Authenticator = Authenticator.NONE
 ) : ActuatorHttpClient {
+    private val httpClient: OkHttpClient = OkHttpClient
+        .Builder()
+        .authenticator(authenticator)
+        .proxyAuthenticator(authenticator)
+        .build()
 
     private val baseHttpUrl: HttpUrl = baseUrl.toHttpUrl()
 

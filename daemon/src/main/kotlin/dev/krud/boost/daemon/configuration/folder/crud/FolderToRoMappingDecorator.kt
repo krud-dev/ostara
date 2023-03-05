@@ -1,6 +1,7 @@
 package dev.krud.boost.daemon.configuration.folder.crud
 
 import dev.krud.boost.daemon.configuration.folder.entity.Folder
+import dev.krud.boost.daemon.configuration.folder.entity.Folder.Companion.effectiveAuthentication
 import dev.krud.boost.daemon.configuration.folder.entity.Folder.Companion.effectiveColor
 import dev.krud.boost.daemon.configuration.folder.ro.FolderRO
 import dev.krud.shapeshift.decorator.MappingDecorator
@@ -11,5 +12,6 @@ import org.springframework.stereotype.Component
 class FolderToRoMappingDecorator : MappingDecorator<Folder, FolderRO> {
     override fun decorate(context: MappingDecoratorContext<Folder, FolderRO>) {
         context.to.effectiveColor = context.from.effectiveColor
+        context.to.effectiveAuthentication = context.from.effectiveAuthentication
     }
 }

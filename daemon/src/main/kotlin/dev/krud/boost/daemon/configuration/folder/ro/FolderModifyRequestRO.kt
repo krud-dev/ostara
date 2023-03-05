@@ -1,5 +1,6 @@
 package dev.krud.boost.daemon.configuration.folder.ro
 
+import dev.krud.boost.daemon.configuration.authentication.Authentication
 import dev.krud.boost.daemon.configuration.folder.entity.Folder
 import dev.krud.boost.daemon.configuration.folder.validation.ValidFolderIdOrNull
 import dev.krud.boost.daemon.utils.DEFAULT_COLOR
@@ -15,6 +16,8 @@ data class FolderModifyRequestRO(
     val alias: String,
     @MappedField
     val color: String = DEFAULT_COLOR,
+    @MappedField
+    val authentication: Authentication = Authentication.Inherit.DEFAULT,
     @MappedField
     val description: String? = null,
     @MappedField

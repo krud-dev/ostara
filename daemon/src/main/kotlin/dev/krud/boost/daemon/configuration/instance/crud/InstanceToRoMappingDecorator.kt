@@ -1,7 +1,9 @@
 package dev.krud.boost.daemon.configuration.instance.crud
 
+import dev.krud.boost.daemon.configuration.application.entity.Application.Companion.effectiveAuthentication
 import dev.krud.boost.daemon.configuration.instance.ability.InstanceAbilityService
 import dev.krud.boost.daemon.configuration.instance.entity.Instance
+import dev.krud.boost.daemon.configuration.instance.entity.Instance.Companion.effectiveAuthentication
 import dev.krud.boost.daemon.configuration.instance.entity.Instance.Companion.effectiveColor
 import dev.krud.boost.daemon.configuration.instance.health.InstanceHealthService
 import dev.krud.boost.daemon.configuration.instance.hostname.InstanceHostnameResolver
@@ -39,5 +41,7 @@ class InstanceToRoMappingDecorator(
         } else {
             context.to.displayName = context.from.alias!!
         }
+
+        context.to.effectiveAuthentication = context.from.effectiveAuthentication
     }
 }

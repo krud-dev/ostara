@@ -3,6 +3,7 @@ package dev.krud.boost.daemon.configuration.instance
 import dev.krud.boost.daemon.actuator.ActuatorHttpClient
 import dev.krud.boost.daemon.actuator.ActuatorHttpClientImpl
 import dev.krud.boost.daemon.configuration.instance.entity.Instance
+import dev.krud.boost.daemon.configuration.instance.entity.Instance.Companion.effectiveAuthentication
 import dev.krud.boost.daemon.exception.ResourceNotFoundException
 import dev.krud.crudframework.crud.handler.CrudHandler
 import org.springframework.context.annotation.Lazy
@@ -15,7 +16,7 @@ class InstanceActuatorClientProviderImpl(
     private val crudHandler: CrudHandler
 ) : InstanceActuatorClientProvider {
     override fun provide(instance: Instance): ActuatorHttpClient {
-        return ActuatorHttpClientImpl(instance.actuatorUrl) // TODO: cache
+        return ActuatorHttpClientImpl(instance.actuatorUrl, instance.effectiveAuthentication.authentication.authenticator) // TODO: cache
     }
 
     override fun provide(instanceId: UUID): ActuatorHttpClient {

@@ -1,7 +1,9 @@
 package dev.krud.boost.daemon.configuration.instance.entity
 
 import dev.krud.boost.daemon.configuration.application.entity.Application
+import dev.krud.boost.daemon.configuration.application.entity.Application.Companion.effectiveAuthentication
 import dev.krud.boost.daemon.configuration.application.entity.Application.Companion.effectiveColor
+import dev.krud.boost.daemon.configuration.authentication.EffectiveAuthentication
 import dev.krud.boost.daemon.configuration.instance.ro.InstanceRO
 import dev.krud.boost.daemon.entity.AbstractEntity
 import dev.krud.boost.daemon.utils.DEFAULT_COLOR
@@ -54,6 +56,10 @@ class Instance(
                     return color
                 }
                 return parentApplication?.effectiveColor ?: DEFAULT_COLOR
+            }
+        val Instance.effectiveAuthentication: EffectiveAuthentication
+            get() {
+                return parentApplication!!.effectiveAuthentication
             }
     }
 }
