@@ -8,15 +8,25 @@ const Home: FunctionComponent = () => {
       <Container disableGutters>
         <h1>Actuator Playground</h1>
         <h2>isElectron: {JSON.stringify(window.isElectron)}</h2>
-        <p>https://sbclient.krud.dev/first/1/actuator</p>
-        <p>https://sbclient.krud.dev/first/2/actuator</p>
-        <p>https://sbclient.krud.dev/first/3/actuator</p>
-        <p>https://sbclient.krud.dev/second/1/actuator</p>
-        <p>https://sbclient.krud.dev/second/2/actuator</p>
-        <p>https://sbclient.krud.dev/second/3/actuator</p>
-        <p>https://sbclient.krud.dev/third/1/actuator</p>
-        <p>https://sbclient.krud.dev/third/2/actuator</p>
-        <p>https://sbclient.krud.dev/third/3/actuator</p>
+
+        <div>
+          <h2>Flyway</h2>
+          <p>https://sbclient.krud.dev/first/1/actuator</p>
+          <p>https://sbclient.krud.dev/first/2/actuator</p>
+          <p>https://sbclient.krud.dev/first/3/actuator</p>
+        </div>
+        <div>
+          <h2>Liquibase</h2>
+          <p>https://sbclient.krud.dev/second/1/actuator</p>
+          <p>https://sbclient.krud.dev/second/2/actuator</p>
+          <p>https://sbclient.krud.dev/second/3/actuator</p>
+        </div>
+        <div>
+          <h2>Secure</h2>
+          <p>https://sbclient.krud.dev/third/1/actuator</p>
+          <p>https://sbclient.krud.dev/third/2/actuator</p>
+          <p>https://sbclient.krud.dev/third/3/actuator</p>
+        </div>
       </Container>
     </Page>
   );
