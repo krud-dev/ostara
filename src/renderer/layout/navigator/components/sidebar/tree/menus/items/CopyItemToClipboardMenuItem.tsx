@@ -16,7 +16,7 @@ export default function CopyItemToClipboardMenuItem({ item, onClose }: CopyItemT
 
   const copyHandler = useCallback((): void => {
     onClose?.();
-    copyToClipboard(JSON.stringify(item));
+    copyToClipboard(JSON.stringify(item, null, '\t'));
   }, [onClose, copyToClipboard, item]);
 
   if (!developerMode) {
