@@ -28,4 +28,32 @@ class BasicAuthenticatorTest {
         )
             .isEqualTo(expected)
     }
+
+    @Test
+    fun `authenticator should return null if prior response count crosses threshold`() {
+        val authenticator = BasicAuthenticator("username", "password", 1)
+        val request = Request.Builder()
+            .url("http://localhost:8080")
+            .get()
+            .build()
+        val response = Response.Builder()
+            .protocol(Protocol.HTTP_1_1)
+            .request(request)
+            .priorResponse(
+                Response.Builder()
+                    .protocol(Protocol.HTTP_1_1)
+                    .request(request)
+                    .code(401)
+                    .message("Unauthorized")
+                    .build()
+            )
+            .code(401)
+            .message("Unauthorized")
+            .build()
+        val newRequest = authenticator.authenticate(null, response)
+        expectThat(
+            newRequest
+        )
+            .isEqualTo(null)
+    }
 }

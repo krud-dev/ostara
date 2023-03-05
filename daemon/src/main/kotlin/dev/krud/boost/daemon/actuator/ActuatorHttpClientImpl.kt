@@ -30,7 +30,6 @@ import dev.krud.boost.daemon.actuator.model.TestConnectionResponse
 import dev.krud.boost.daemon.actuator.model.ThreadDumpActuatorResponse
 import dev.krud.boost.daemon.exception.throwBadRequest
 import dev.krud.boost.daemon.exception.throwInternalServerError
-import dev.krud.boost.daemon.exception.throwNotFound
 import dev.krud.boost.daemon.exception.throwServiceUnavailable
 import dev.krud.boost.daemon.exception.throwStatusCode
 import okhttp3.Authenticator
@@ -43,6 +42,7 @@ import okhttp3.RequestBody
 import okhttp3.RequestBody.Companion.toRequestBody
 import okhttp3.Response
 import org.springframework.boot.logging.LogLevel
+import org.springframework.web.server.ResponseStatusException
 import java.io.InputStream
 import java.net.ConnectException
 
@@ -66,7 +66,23 @@ class ActuatorHttpClientImpl(
         val response = runRequest(rootCall)
             .fold(
                 onSuccess = { it },
-                onFailure = { return TestConnectionResponse(0, "Failed to test connection: ${it.message}", false, false) }
+                onFailure = {
+                    if (it is ResponseStatusException) {
+                        return TestConnectionResponse(
+                            it.statusCode.value(),
+                            it.message,
+                            false,
+                            false
+                        )
+                    } else {
+                        return TestConnectionResponse(
+                            -1,
+                            it.message,
+                            false,
+                            false
+                        )
+                    }
+                }
             )
 
         if (!response.isSuccessful) {
@@ -287,10 +303,7 @@ class ActuatorHttpClientImpl(
     }
         .mapCatching { response ->
             if (!response.isSuccessful) {
-                when (response.code) {
-                    404 -> throwNotFound("Endpoint ${request.url} not found")
-                    else -> throwStatusCode(response.code, "Actuator request failed: $request")
-                }
+                throwStatusCode(response.code, request.url.toString())
             }
             response
         }
@@ -298,6 +311,7 @@ class ActuatorHttpClientImpl(
             when (it) {
                 is ConnectException -> throwServiceUnavailable("Actuator unreachable: $request")
                 is IllegalArgumentException -> throwBadRequest("Actuator request failed: $request")
+                is ResponseStatusException -> throw it
                 else -> throwInternalServerError("Actuator request failed: $request")
             }
         }
