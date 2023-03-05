@@ -12,7 +12,7 @@ data class ThreadDumpActuatorResponse(
         val blockedCount: Long,
         val waitedTime: Long,
         val waitedCount: Long,
-        val lockName: String,
+        val lockName: String?,
         val lockOwnerId: Long,
         val lockOwnerName: String?,
         val daemon: Boolean,
@@ -28,22 +28,22 @@ data class ThreadDumpActuatorResponse(
             val classLoaderName: String?,
             val moduleName: String?,
             val moduleVersion: String?,
-            val fileName: String,
-            val className: String,
-            val methodName: String,
+            val fileName: String?,
+            val className: String?,
+            val methodName: String?,
             val lineNumber: Int,
             val nativeMethod: Boolean
         ) : Serializable
 
         data class LockedMonitor(
-            val className: String,
+            val className: String?,
             val identityHashCode: Int,
             val lockedStackDepth: Int,
             val lockedStackFrame: StackTraceFrame
         ) : Serializable
 
         data class LockedSynchronizer(
-            val className: String,
+            val className: String?,
             val identityHashCode: Int
         ) : Serializable
     }

@@ -49,12 +49,11 @@ class ThreadProfilingService(
 
     fun getLogsForRequest(requestId: UUID): List<ThreadProfilingLog> {
         val request = getProfilingRequestByIdOrThrow(requestId)
-        return crudHandler.index(
-            where {
-                ThreadProfilingLog::requestId Equal requestId
-            },
-            ThreadProfilingLog::class.java
-        )
+        val filter = where {
+            ThreadProfilingLog::requestId Equal requestId
+        }
+
+        return crudHandler.index(filter, ThreadProfilingLog::class.java)
             .execute()
             .results
     }

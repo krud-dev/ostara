@@ -381,7 +381,6 @@ export interface ThreadProfilingLogRO {
 
 export interface ThreadProfilingRequestCreateRO {
     instanceId: string;
-    className: string;
     durationSec: number;
 }
 
@@ -615,7 +614,7 @@ export interface ThreadDumpActuatorResponse$Thread {
     blockedCount: number;
     waitedTime: number;
     waitedCount: number;
-    lockName: string;
+    lockName?: string;
     lockOwnerId: number;
     lockOwnerName?: string;
     daemon: boolean;
@@ -726,22 +725,22 @@ export interface ThreadDumpActuatorResponse$Thread$StackTraceFrame {
     classLoaderName?: string;
     moduleName?: string;
     moduleVersion?: string;
-    fileName: string;
-    className: string;
-    methodName: string;
+    fileName?: string;
+    className?: string;
+    methodName?: string;
     lineNumber: number;
     nativeMethod: boolean;
 }
 
 export interface ThreadDumpActuatorResponse$Thread$LockedMonitor {
-    className: string;
+    className?: string;
     identityHashCode: number;
     lockedStackDepth: number;
     lockedStackFrame: ThreadDumpActuatorResponse$Thread$StackTraceFrame;
 }
 
 export interface ThreadDumpActuatorResponse$Thread$LockedSynchronizer {
-    className: string;
+    className?: string;
     identityHashCode: number;
 }
 

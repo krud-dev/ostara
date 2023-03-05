@@ -10,7 +10,5 @@ class ThreadProfilingRequestCreateRO(
     @MappedField
     var instanceId: UUID,
     @MappedField
-    var className: String,
-    @MappedField
     var durationSec: Int
 )
