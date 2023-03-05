@@ -23,9 +23,6 @@ class ThreadProfilingRequest(
     var instanceId: UUID,
     @MappedField
     @Column
-    var className: String,
-    @MappedField
-    @Column
     var durationSec: Int,
     @MappedField
     @Enumerated(EnumType.STRING)

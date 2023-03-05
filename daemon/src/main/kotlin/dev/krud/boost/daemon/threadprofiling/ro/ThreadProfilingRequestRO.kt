@@ -7,7 +7,6 @@ class ThreadProfilingRequestRO(
     var id: UUID,
     var creationTime: Date,
     var instanceId: UUID,
-    var className: String,
     var durationSec: Int,
     var finishTime: Date,
     var status: ThreadProfilingStatus
