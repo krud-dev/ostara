@@ -37,8 +37,8 @@ class ShapeshiftConfiguration : ShapeShiftBuilderCustomizer, ShapeShiftAutoConfi
             .withObjectSupplier { InstanceHealthLogRO(Date(), UUID.randomUUID()) }
             .withObjectSupplier { InstanceHeapdumpReference(UUID.randomUUID()) }
             .withObjectSupplier { InstanceHeapdumpReferenceRO(UUID.randomUUID(), UUID.randomUUID(), Date()) }
-            .withObjectSupplier { ThreadProfilingRequest(UUID.randomUUID(), "", 0, ThreadProfilingStatus.RUNNING) }
-            .withObjectSupplier { ThreadProfilingRequestRO(UUID.randomUUID(), Date(), UUID.randomUUID(), "", 0, Date(), ThreadProfilingStatus.RUNNING) }
+            .withObjectSupplier { ThreadProfilingRequest(UUID.randomUUID(), 0, ThreadProfilingStatus.RUNNING) }
+            .withObjectSupplier { ThreadProfilingRequestRO(UUID.randomUUID(), Date(), UUID.randomUUID(), 0, Date(), ThreadProfilingStatus.RUNNING) }
             .withObjectSupplier { ThreadProfilingLogRO(UUID.randomUUID(), Date(), UUID.randomUUID()) }
     }
 }
