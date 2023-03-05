@@ -51,7 +51,7 @@ class InstanceHttpRequestStatisticsService(
         return futures.map { it.get() }
     }
 
-    @Cacheable(cacheNames = ["httpRequestStatisticsCache"], key = "'by_uri_and_method_' + #instanceId")
+    @Cacheable(cacheNames = ["httpRequestStatisticsCache"], key = "'by_uri_and_method_' + #instanceId + '_' + #uri")
     fun getStatisticsByUriAndMethod(instanceId: UUID, uri: String): Map<HttpMethod, InstanceHttpRequestStatisticsRO> {
         val instance = instanceService.getInstanceOrThrow(instanceId)
         instanceAbilityService.hasAbilityOrThrow(instance, InstanceAbility.HTTP_REQUEST_STATISTICS)
@@ -70,7 +70,7 @@ class InstanceHttpRequestStatisticsService(
         return futures.associate { it.get() }
     }
 
-    @Cacheable(cacheNames = ["httpRequestStatisticsCache"], key = "'by_uri_and_outcome_' + #instanceId")
+    @Cacheable(cacheNames = ["httpRequestStatisticsCache"], key = "'by_uri_and_outcome_' + #instanceId + '_' + #uri")
     fun getStatisticsByUriAndOutcome(instanceId: UUID, uri: String): Map<String, InstanceHttpRequestStatisticsRO> {
         val instance = instanceService.getInstanceOrThrow(instanceId)
         instanceAbilityService.hasAbilityOrThrow(instance, InstanceAbility.HTTP_REQUEST_STATISTICS)
@@ -89,7 +89,7 @@ class InstanceHttpRequestStatisticsService(
         return futures.associate { it.get() }
     }
 
-    @Cacheable(cacheNames = ["httpRequestStatisticsCache"], key = "'by_uri_and_status_' + #instanceId")
+    @Cacheable(cacheNames = ["httpRequestStatisticsCache"], key = "'by_uri_and_status_' + #instanceId + '_' + #uri")
     fun getStatisticsByUriAndStatus(instanceId: UUID, uri: String): Map<Int, InstanceHttpRequestStatisticsRO> {
         val instance = instanceService.getInstanceOrThrow(instanceId)
         instanceAbilityService.hasAbilityOrThrow(instance, InstanceAbility.HTTP_REQUEST_STATISTICS)
@@ -108,7 +108,7 @@ class InstanceHttpRequestStatisticsService(
         return futures.associate { it.get() }
     }
 
-    @Cacheable(cacheNames = ["httpRequestStatisticsCache"], key = "'by_uri_and_exception_' + #instanceId")
+    @Cacheable(cacheNames = ["httpRequestStatisticsCache"], key = "'by_uri_and_exception_' + #instanceId + '_' + #uri")
     fun getStatisticsByUriAndException(instanceId: UUID, uri: String): Map<String, InstanceHttpRequestStatisticsRO> {
         val instance = instanceService.getInstanceOrThrow(instanceId)
         instanceAbilityService.hasAbilityOrThrow(instance, InstanceAbility.HTTP_REQUEST_STATISTICS)
@@ -158,7 +158,7 @@ class InstanceHttpRequestStatisticsService(
     }
 
     private fun ActuatorHttpClient.getStatisticsForUri(uri: String, tags: Map<String, String> = emptyMap()): InstanceHttpRequestStatisticsRO {
-        val metricResponse = this.metric(METRIC_NAME, mapOf("uri" to uri))
+        val metricResponse = this.metric(METRIC_NAME, mapOf("uri" to uri) + tags)
             .getOrThrow()
         val count = metricResponse.measurements.find { it.statistic == "COUNT" }?.value ?: -1.0
         val max = metricResponse.measurements.find { it.statistic == "MAX" }?.value ?: -1.0
