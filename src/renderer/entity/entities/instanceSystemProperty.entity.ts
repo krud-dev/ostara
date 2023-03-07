@@ -23,13 +23,7 @@ export const instanceSystemPropertyEntity: Entity<SystemProperty> = {
       icon: 'ContentCopyOutlined',
     },
   ],
-  massActions: [
-    {
-      id: COPY_ID,
-      labelId: 'copy',
-      icon: 'ContentCopyOutlined',
-    },
-  ],
+  massActions: [],
   globalActions: [],
   defaultOrder: [
     {

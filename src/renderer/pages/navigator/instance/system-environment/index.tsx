@@ -37,15 +37,8 @@ const InstanceSystemEnvironment: FunctionComponent = () => {
     }
   }, []);
 
-  const massActionsHandler = useCallback(async (actionId: string, selectedRows: SystemProperty[]): Promise<void> => {
-    switch (actionId) {
-      case COPY_ID:
-        copyToClipboard(selectedRows.map(getPropertyString).join(', '));
-        break;
-      default:
-        break;
-    }
-  }, []);
+  const massActionsHandler = useCallback(async (actionId: string, selectedRows: SystemProperty[]): Promise<void> => {},
+  []);
 
   const globalActionsHandler = useCallback(async (actionId: string): Promise<void> => {}, []);
 

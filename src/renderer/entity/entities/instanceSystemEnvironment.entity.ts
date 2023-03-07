@@ -1,6 +1,5 @@
 import { Entity } from 'renderer/entity/entity';
 import { COPY_ID } from 'renderer/entity/actions';
-import { SystemProperty } from '../../apis/requests/instance/env/getInstanceSystemProperties';
 import { SystemEnvironmentProperty } from '../../apis/requests/instance/env/getInstanceSystemEnvironment';
 
 export const instanceSystemEnvironmentEntity: Entity<SystemEnvironmentProperty> = {
@@ -24,13 +23,7 @@ export const instanceSystemEnvironmentEntity: Entity<SystemEnvironmentProperty> 
       icon: 'ContentCopyOutlined',
     },
   ],
-  massActions: [
-    {
-      id: COPY_ID,
-      labelId: 'copy',
-      icon: 'ContentCopyOutlined',
-    },
-  ],
+  massActions: [],
   globalActions: [],
   defaultOrder: [
     {
