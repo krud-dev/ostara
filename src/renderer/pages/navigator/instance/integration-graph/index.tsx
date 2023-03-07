@@ -47,6 +47,7 @@ const InstanceIntegrationGraph: FunctionComponent = () => {
         id: `${link.from}_${link.to}`,
         source: link.from.toString(),
         target: link.to.toString(),
+        animated: true,
       })),
     [data]
   );
