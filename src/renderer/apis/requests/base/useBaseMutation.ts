@@ -9,6 +9,7 @@ import {
 export type BaseMutationOptions<Data, Variables> = Omit<UseMutationOptions<Data, unknown, Variables>, 'mutationFn'> & {
   refetchNone?: boolean;
   invalidateQueriesKeyFn?: (data: Data, variables: Variables) => unknown[];
+  invalidateQueriesKeysFn?: (data: Data, variables: Variables) => unknown[][];
 };
 
 export type BaseUseMutationResult<Data, Variables> = UseMutationResult<Data, unknown, Variables>;
@@ -21,12 +22,20 @@ export const useBaseMutation = <Data, Variables>(
 
   return useMutation<Data, unknown, Variables>(mutationFn, {
     ...options,
-    onSuccess: (data, variables) => {
+    onSuccess: (data, variables, context) => {
+      options?.onSuccess?.(data, variables, context);
+
       if (options?.invalidateQueriesKeyFn) {
         queryClient.invalidateQueries(
           options.invalidateQueriesKeyFn(data, variables),
           options?.refetchNone ? { refetchType: 'none' } : undefined
         );
+      }
+
+      if (options?.invalidateQueriesKeysFn) {
+        for (const key of options.invalidateQueriesKeysFn(data, variables)) {
+          queryClient.invalidateQueries(key, options?.refetchNone ? { refetchType: 'none' } : undefined);
+        }
       }
     },
   });

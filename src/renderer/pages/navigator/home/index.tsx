@@ -27,6 +27,10 @@ const Home: FunctionComponent = () => {
           <p>https://sbclient.krud.dev/third/2/actuator</p>
           <p>https://sbclient.krud.dev/third/3/actuator</p>
         </div>
+        <div>
+          <h2>Swagger API Documentation</h2>
+          <p>http://localhost:12222/swagger-ui/index.html</p>
+        </div>
       </Container>
     </Page>
   );

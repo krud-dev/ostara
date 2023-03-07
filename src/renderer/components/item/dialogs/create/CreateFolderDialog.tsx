@@ -29,6 +29,7 @@ const CreateFolderDialog: FunctionComponent<CreateFolderDialogProps & NiceModalH
           sort: sort ?? 1,
           color: INHERITED_COLOR_VALUE,
           icon: data.icon,
+          authentication: { type: 'none' },
         };
         try {
           const result = await createState.mutateAsync({ entity: folderCrudEntity, item: itemToCreate });
