@@ -1,4 +1,4 @@
-package dev.krud.boost.daemon.controller
+package dev.krud.boost.daemon.controller.api.v1
 
 import dev.krud.boost.daemon.actuator.model.EnvActuatorResponse
 import dev.krud.boost.daemon.configuration.instance.TestInstanceActuatorClientProvider
