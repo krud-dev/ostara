@@ -148,7 +148,7 @@ class ActuatorController(
     @ApiResponse(responseCode = "503", description = "Service unavailable", content = [Content()])
     fun metrics(@RequestParam instanceId: UUID) = actuatorClientProvider.provide(instanceId).metrics()
 
-    @GetMapping("/metrics/{metric}")
+    @PostMapping("/metrics/{metric}")
     @ResponseStatus(HttpStatus.OK)
     @Operation(
         summary = "Get specific metric",
