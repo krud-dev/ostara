@@ -1,4 +1,8 @@
-import { BaseMutationOptions, BaseUseMutationResult, useBaseMutation } from 'renderer/apis/requests/base/useBaseMutation';
+import {
+  BaseMutationOptions,
+  BaseUseMutationResult,
+  useBaseMutation,
+} from 'renderer/apis/requests/base/useBaseMutation';
 import { BaseQueryOptions, BaseUseQueryResult, useBaseQuery } from 'renderer/apis/requests/base/useBaseQuery';
 import { apiKeys } from 'renderer/apis/apiKeys';
 import { TestConnectionResponse } from '../../../../common/generated_definitions';
@@ -11,9 +15,9 @@ type Data = TestConnectionResponse;
 
 export const testConnectionByUrl = async (variables: Variables): Promise<Data> => {
   return (
-    await axiosInstance.post<Data, AxiosResponse<Data>, null>(`actuator`, null, {
-      params: { url: variables.actuatorUrl },
-    })
+    await axiosInstance.post<Data, AxiosResponse<Data>, null>(
+      `actuator/testConnection?url=${encodeURIComponent(variables.actuatorUrl)}`
+    )
   ).data;
 };
 
