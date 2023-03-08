@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import TableDetailsLabelValue from 'renderer/components/table/details/TableDetailsLabelValue';
 import { FormattedMessage } from 'react-intl';
 import { Box, Card, CardContent, CardHeader, Chip, CircularProgress, Stack } from '@mui/material';
@@ -46,6 +46,9 @@ export default function MetricDetails({ row }: MetricDetailsProps) {
     [setSelectedTags]
   );
 
+  const showMeasurements = useMemo<boolean>(() => !!metricDetails?.measurements?.length, [metricDetails]);
+  const showTags = useMemo<boolean>(() => !!metricDetails?.availableTags?.length, [metricDetails]);
+
   return (
     <Box sx={{ my: 2 }}>
       {!metricDetails ? (
@@ -56,19 +59,31 @@ export default function MetricDetails({ row }: MetricDetailsProps) {
         <Stack direction={'column'} spacing={COMPONENTS_SPACING}>
           <Card variant={'outlined'}>
             <CardHeader title={<FormattedMessage id={'details'} />} />
-            <CardContent>
-              <Box
+            <CardContent
+              sx={{
+                display: 'grid',
+                gridTemplateColumns: `repeat(auto-fit, minmax(${DEFAULT_TABLE_COLUMN_WIDTH}px, 1fr))`,
+                gridGap: (theme) => theme.spacing(1),
+              }}
+            >
+              <TableDetailsLabelValue
+                label={<FormattedMessage id={'description'} />}
+                value={metricDetails.description}
+              />
+              <TableDetailsLabelValue label={<FormattedMessage id={'baseUnit'} />} value={metricDetails.baseUnit} />
+            </CardContent>
+          </Card>
+
+          {showMeasurements && (
+            <Card variant={'outlined'}>
+              <CardHeader title={<FormattedMessage id={'measurements'} />} />
+              <CardContent
                 sx={{
                   display: 'grid',
                   gridTemplateColumns: `repeat(auto-fit, minmax(${DEFAULT_TABLE_COLUMN_WIDTH}px, 1fr))`,
                   gridGap: (theme) => theme.spacing(1),
                 }}
               >
-                <TableDetailsLabelValue
-                  label={<FormattedMessage id={'description'} />}
-                  value={metricDetails.description}
-                />
-                <TableDetailsLabelValue label={<FormattedMessage id={'baseUnit'} />} value={metricDetails.baseUnit} />
                 {metricDetails.measurements.map((measurement) => (
                   <TableDetailsLabelValue
                     label={measurement.statistic}
@@ -76,39 +91,47 @@ export default function MetricDetails({ row }: MetricDetailsProps) {
                     key={measurement.statistic}
                   />
                 ))}
-              </Box>
-              {metricDetails.availableTags.map((tagDetails) => (
-                <TableDetailsLabelValue
-                  label={tagDetails.tag}
-                  value={
-                    <Box sx={{ display: 'flex', flexDirection: 'row', flexWrap: 'wrap', gap: 1, mt: 0.5 }}>
-                      {tagDetails.values.map((value) => {
-                        const tagValue = selectedTags[tagDetails.tag];
-                        const selected = tagValue === value;
-                        const disabled =
-                          !selected &&
-                          ((!isNil(tagValue) && tagValue !== value) ||
-                            !detailsState.data?.availableTags
-                              ?.find((tag) => tag.tag === tagDetails.tag)
-                              ?.values.includes(value));
-                        return (
-                          <Chip
-                            label={value}
-                            size={'small'}
-                            color={selected ? 'primary' : 'default'}
-                            disabled={disabled}
-                            onClick={() => toggleTagHandler(tagDetails.tag, value)}
-                            key={value}
-                          />
-                        );
-                      })}
-                    </Box>
-                  }
-                  sx={{ mt: 1.5 }}
-                />
-              ))}
-            </CardContent>
-          </Card>
+              </CardContent>
+            </Card>
+          )}
+
+          {showTags && (
+            <Card variant={'outlined'}>
+              <CardHeader title={<FormattedMessage id={'tags'} />} />
+              <CardContent>
+                {metricDetails.availableTags.map((tagDetails) => (
+                  <TableDetailsLabelValue
+                    label={tagDetails.tag}
+                    value={
+                      <Box sx={{ display: 'flex', flexDirection: 'row', flexWrap: 'wrap', gap: 1, mt: 0.5 }}>
+                        {tagDetails.values.map((value) => {
+                          const tagValue = selectedTags[tagDetails.tag];
+                          const selected = tagValue === value;
+                          const disabled =
+                            !selected &&
+                            ((!isNil(tagValue) && tagValue !== value) ||
+                              !detailsState.data?.availableTags
+                                ?.find((tag) => tag.tag === tagDetails.tag)
+                                ?.values.includes(value));
+                          return (
+                            <Chip
+                              label={value}
+                              size={'small'}
+                              color={selected ? 'primary' : 'default'}
+                              disabled={disabled}
+                              onClick={() => toggleTagHandler(tagDetails.tag, value)}
+                              key={value}
+                            />
+                          );
+                        })}
+                      </Box>
+                    }
+                    sx={{ mt: 1.5 }}
+                  />
+                ))}
+              </CardContent>
+            </Card>
+          )}
         </Stack>
       )}
     </Box>

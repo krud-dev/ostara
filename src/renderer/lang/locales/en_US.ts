@@ -240,4 +240,6 @@ export default {
   time: 'Time',
   close: 'Close',
   baseUnit: 'Base Unit',
+  measurements: 'Measurements',
+  tags: 'Tags',
 };
