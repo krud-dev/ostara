@@ -1,4 +1,4 @@
-import React, { FunctionComponent, PropsWithChildren, useCallback, useContext, useMemo, useState } from 'react';
+import React, { FunctionComponent, PropsWithChildren, useCallback, useContext, useState } from 'react';
 
 export type ReactFlowContextProps = {
   search: string;

@@ -5,7 +5,6 @@ import CustomNode from './CustomNode';
 import { NodeTypes } from '@reactflow/core/dist/esm/types/general';
 import { getLayoutElements, ReactFlowData } from '../utils/reactFlowUtils';
 import { useReactFlow } from '../contexts/ReactFlowContext';
-import { isEmpty } from 'lodash';
 
 const ReactFlowStyled = styled(ReactFlow)(({ theme }) => ({
   backgroundColor: theme.palette.background.paper,

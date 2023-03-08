@@ -55,6 +55,7 @@ export default {
   environment: 'Environment',
   bean: 'Bean',
   beans: 'Beans',
+  beansGraph: 'Beans Graph',
   manage: 'Manage',
   loggers: 'Loggers',
   caches: 'Caches',

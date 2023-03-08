@@ -31,6 +31,7 @@ import FolderLayout from '../layout/folder/FolderLayout';
 import FolderApplications from '../pages/navigator/folder/applications';
 import InstanceThreadProfiling from '../pages/navigator/instance/threaddumps';
 import InstanceMetrics from '../pages/navigator/instance/metrics';
+import InstanceBeansGraph from '../pages/navigator/instance/beans-graph';
 
 export default function Router() {
   return useRoutes([
@@ -107,6 +108,10 @@ export default function Router() {
             {
               path: urls.instanceBeans.path,
               element: <InstanceBeans />,
+            },
+            {
+              path: urls.instanceBeansGraph.path,
+              element: <InstanceBeansGraph />,
             },
             {
               path: urls.instanceHttpRequests.path,

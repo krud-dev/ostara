@@ -3,7 +3,7 @@ import React, { useMemo } from 'react';
 import { alpha, experimentalStyled as styled } from '@mui/material/styles';
 import { Handle, NodeProps, Position } from 'reactflow';
 import { NODE_HEIGHT, NODE_WIDTH } from '../utils/reactFlowUtils';
-import { InlineCodeLabel } from '../../../../../components/code/InlineCodeLabel';
+import { InlineCodeLabel } from '../../../../components/code/InlineCodeLabel';
 import { useReactFlow } from '../contexts/ReactFlowContext';
 
 const NodeStyled = styled(Box)(({ theme }) => ({

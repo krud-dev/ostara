@@ -97,6 +97,10 @@ export const urls = asUrlInfos({
     url: '/navigator/instance/:id/beans',
     path: 'beans',
   },
+  instanceBeansGraph: {
+    url: '/navigator/instance/:id/beans-graph',
+    path: 'beans-graph',
+  },
   instanceProperties: {
     url: '/navigator/instance/:id/properties',
     path: 'properties',

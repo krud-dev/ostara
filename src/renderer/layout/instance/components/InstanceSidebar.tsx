@@ -12,6 +12,7 @@ import {
   HttpOutlined,
   LanOutlined,
   ListAltOutlined,
+  ScatterPlotOutlined,
   StorageOutlined,
   TextSnippetOutlined,
   WysiwygOutlined,
@@ -75,6 +76,13 @@ export default function InstanceSidebar({ item, disabled, width }: InstanceSideb
             icon: <EggOutlined />,
             label: <FormattedMessage id={'beans'} />,
             to: generatePath(urls.instanceBeans.url, { id: item.id }),
+            disabled: disabled || isServiceInactive(item, 'BEANS'),
+          },
+          {
+            id: 'beans-graph',
+            icon: <ScatterPlotOutlined />,
+            label: <FormattedMessage id={'beansGraph'} />,
+            to: generatePath(urls.instanceBeansGraph.url, { id: item.id }),
             disabled: disabled || isServiceInactive(item, 'BEANS'),
           },
           {
