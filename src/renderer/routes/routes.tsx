@@ -30,6 +30,7 @@ import InstanceSystemEnvironment from '../pages/navigator/instance/system-enviro
 import FolderLayout from '../layout/folder/FolderLayout';
 import FolderApplications from '../pages/navigator/folder/applications';
 import InstanceThreadProfiling from '../pages/navigator/instance/threaddumps';
+import InstanceMetrics from '../pages/navigator/instance/metrics';
 
 export default function Router() {
   return useRoutes([
@@ -93,7 +94,7 @@ export default function Router() {
             },
             {
               path: urls.instanceMetrics.path,
-              element: <InstanceDashboard />,
+              element: <InstanceMetrics />,
             },
             {
               path: urls.instanceEnvironment.path,

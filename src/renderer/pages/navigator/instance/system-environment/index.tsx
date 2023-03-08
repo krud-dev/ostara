@@ -7,7 +7,6 @@ import useCopyToClipboard from 'renderer/hooks/useCopyToClipboard';
 import { COPY_ID } from 'renderer/entity/actions';
 import { Card } from '@mui/material';
 import { InstanceRO } from '../../../../../common/generated_definitions';
-import { SystemProperty } from '../../../../apis/requests/instance/env/getInstanceSystemProperties';
 import {
   SystemEnvironmentProperty,
   useGetInstanceSystemEnvironmentQuery,
@@ -37,8 +36,10 @@ const InstanceSystemEnvironment: FunctionComponent = () => {
     }
   }, []);
 
-  const massActionsHandler = useCallback(async (actionId: string, selectedRows: SystemProperty[]): Promise<void> => {},
-  []);
+  const massActionsHandler = useCallback(
+    async (actionId: string, selectedRows: SystemEnvironmentProperty[]): Promise<void> => {},
+    []
+  );
 
   const globalActionsHandler = useCallback(async (actionId: string): Promise<void> => {}, []);
 

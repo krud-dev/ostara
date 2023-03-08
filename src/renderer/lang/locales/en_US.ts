@@ -239,4 +239,5 @@ export default {
   index: 'Index',
   time: 'Time',
   close: 'Close',
+  baseUnit: 'Base Unit',
 };

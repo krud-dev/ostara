@@ -8,6 +8,12 @@ export const apiKeys = {
 
   items: () => ['items'],
   item: (id: string) => [...apiKeys.items(), id],
+  itemMetrics: (id: string) => [...apiKeys.item(id), 'metrics'],
+  itemMetricDetails: (id: string, name: string, tags?: { [key: string]: string }) => [
+    ...apiKeys.itemMetrics(id),
+    name,
+    tags,
+  ],
   itemCaches: (id: string) => [...apiKeys.item(id), 'caches'],
   itemCacheStatistics: (id: string, cacheName: string) => [...apiKeys.itemCaches(id), 'statistics', cacheName],
   itemLoggers: (id: string) => [...apiKeys.item(id), 'loggers'],
