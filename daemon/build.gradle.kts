@@ -65,6 +65,9 @@ if (!project.hasProperty("prod")) {
 
 
 dependencies {
+    implementationDev("org.springframework.boot:spring-boot-starter-actuator")
+    implementationDev("org.springdoc:springdoc-openapi-starter-webmvc-ui:2.0.2")
+
     implementation("org.springframework.boot:spring-boot-starter-web")
     implementation("org.springframework.boot:spring-boot-starter-data-jpa")
     implementation("org.springframework.boot:spring-boot-starter-integration")
@@ -78,7 +81,6 @@ dependencies {
     implementation("com.squareup.okhttp3:okhttp:4.10.0")
     implementation("com.google.code.gson:gson:2.10.1")
     implementation("org.flywaydb:flyway-core:9.12.0")
-    implementationDev("org.springdoc:springdoc-openapi-starter-webmvc-ui:2.0.2")
     implementation("dev.krud:crud-framework-core:$crudFrameworkVersion")
     implementation("dev.krud:crud-framework-hibernate5-connector:$crudFrameworkVersion")
     implementation("dev.krud:shapeshift:$shapeShiftVersion")

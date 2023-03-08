@@ -3,6 +3,14 @@ server:
   error:
     include-binding-errors: always
     include-message: always
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+  endpoint:
+    health:
+      show-details: always
 spring:
   datasource:
     driver-class-name: org.sqlite.JDBC
