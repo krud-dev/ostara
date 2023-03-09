@@ -19,7 +19,7 @@ type Data = ApplicationCacheStatisticsRO;
 export const getApplicationCacheStatistics = async (variables: Variables): Promise<Data> => {
   return (
     await axiosInstance.get<Data, AxiosResponse<Data>>(
-      `application/${variables.applicationId}/${variables.cacheName}/statistics`
+      `cache/application/${variables.applicationId}/${variables.cacheName}/statistics`
     )
   ).data;
 };

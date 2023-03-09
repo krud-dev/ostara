@@ -19,7 +19,7 @@ type Data = InstanceCacheStatisticsRO;
 export const getInstanceCacheStatistics = async (variables: Variables): Promise<Data> => {
   return (
     await axiosInstance.get<Data, AxiosResponse<Data>>(
-      `instance/${variables.instanceId}/${variables.cacheName}/statistics`
+      `cache/instance/${variables.instanceId}/${variables.cacheName}/statistics`
     )
   ).data;
 };
