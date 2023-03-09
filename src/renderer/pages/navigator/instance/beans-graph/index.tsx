@@ -13,8 +13,32 @@ const InstanceBeansGraph: FunctionComponent = () => {
 
   const queryState = useGetInstanceBeansQuery({ instanceId: item.id });
 
-  const data = useMemo<InstanceBean[] | undefined>(() => queryState.data, [queryState.data]);
+  const data = useMemo<InstanceBean[] | undefined>(
+    () => queryState.data,
+    // () => queryState.data?.filter((bean) => bean.type.indexOf('springframework') === -1),
+    [queryState.data]
+  );
 
+  const edges = useMemo<Edge[] | undefined>(
+    () =>
+      data
+        ? chain(data)
+            .uniqBy((bean) => bean.name)
+            .map((bean) =>
+              bean.dependencies
+                .filter((dependency) => !!data?.find((b) => b.name === dependency))
+                .map((dependency) => ({
+                  id: `${dependency}_${bean.name}`,
+                  source: dependency,
+                  target: bean.name,
+                  animated: true,
+                }))
+            )
+            .flatten()
+            .value()
+        : undefined,
+    [data]
+  );
   const nodes = useMemo<Node[] | undefined>(
     () =>
       data
@@ -28,25 +52,7 @@ const InstanceBeansGraph: FunctionComponent = () => {
             }))
             .value()
         : undefined,
-    [data]
-  );
-  const edges = useMemo<Edge[] | undefined>(
-    () =>
-      data
-        ? chain(data)
-            .uniqBy((bean) => bean.name)
-            .map((bean) =>
-              bean.dependencies.map((dependency) => ({
-                id: `${dependency}_${bean.name}`,
-                source: dependency,
-                target: bean.name,
-                animated: true,
-              }))
-            )
-            .flatten()
-            .value()
-        : undefined,
-    [data]
+    [edges]
   );
 
   return <Graph nodes={nodes} edges={edges} />;

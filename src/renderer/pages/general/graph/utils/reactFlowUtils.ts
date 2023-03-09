@@ -1,5 +1,5 @@
-import dagre from 'dagre';
-import { Edge, Node, Position } from 'reactflow';
+import { Edge, Node } from 'reactflow';
+import ELK, { ElkNode } from 'elkjs/lib/elk.bundled';
 
 export const NODE_WIDTH = 350;
 export const NODE_HEIGHT = 40;
@@ -9,37 +9,24 @@ export type ReactFlowData = {
   edges: Edge[];
 };
 
-export const getLayoutElements = (nodes: Node[], edges: Edge[], direction: 'TB' | 'LR' = 'TB'): ReactFlowData => {
-  const dagreGraph = new dagre.graphlib.Graph();
-  dagreGraph.setDefaultEdgeLabel(() => ({}));
+export const getLayoutElements = async (nodes: Node[], edges: Edge[]): Promise<ReactFlowData> => {
+  const elk = new ELK();
 
-  const isHorizontal = direction === 'LR';
-  dagreGraph.setGraph({ rankdir: direction });
+  const graph: ElkNode = {
+    id: 'root',
+    layoutOptions: {
+      'elk.algorithm': 'layered',
+      'elk.layered.spacing.nodeNodeBetweenLayers': '100',
+    },
+    children: [...nodes.map((node) => ({ id: node.id, width: NODE_WIDTH, height: NODE_HEIGHT }))],
+    edges: [...edges.map((edge) => ({ id: edge.id, sources: [edge.source], targets: [edge.target] }))],
+  };
 
-  nodes.forEach((node) => {
-    dagreGraph.setNode(node.id, { width: NODE_WIDTH, height: NODE_HEIGHT });
+  const layout = await elk.layout(graph, { layoutOptions: {} });
+  const layoutNodes = nodes.map((node) => {
+    const nodePosition = layout.children?.find((child) => child.id === node.id);
+    return { ...node, position: { x: nodePosition?.x || 0, y: nodePosition?.y || 0 } };
   });
 
-  edges.forEach((edge) => {
-    dagreGraph.setEdge(edge.source, edge.target);
-  });
-
-  dagre.layout(dagreGraph);
-
-  nodes.forEach((node) => {
-    const nodeWithPosition = dagreGraph.node(node.id);
-    node.targetPosition = isHorizontal ? Position.Left : Position.Top;
-    node.sourcePosition = isHorizontal ? Position.Right : Position.Bottom;
-
-    // We are shifting the dagre node position (anchor=center center) to the top left
-    // so it matches the React Flow node anchor point (top left).
-    node.position = {
-      x: nodeWithPosition.x - NODE_WIDTH / 2,
-      y: nodeWithPosition.y - NODE_HEIGHT / 2,
-    };
-
-    return node;
-  });
-
-  return { nodes, edges };
+  return { nodes: layoutNodes, edges };
 };

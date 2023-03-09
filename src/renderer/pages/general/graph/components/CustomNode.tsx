@@ -42,19 +42,20 @@ export default function CustomNode({ data }: CustomNodeProps) {
           : undefined
       }
     >
-      <Handle type="target" position={Position.Top} />
+      <Handle type="target" position={Position.Left} />
       <Typography variant={'body2'} noWrap sx={{ direction: 'rtl', textAlign: 'center' }}>
         {data.label}
       </Typography>
-      <Handle type="source" position={Position.Bottom} />
+      <Handle type="source" position={Position.Right} />
 
       <InlineCodeLabel
         code={data.componentType}
         sx={{
           position: 'absolute',
           bottom: -11,
-          maxWidth: NODE_WIDTH / 2 - 28,
+          maxWidth: NODE_WIDTH - 20,
           whiteSpace: 'nowrap',
+          direction: 'rtl',
           background: (theme) => theme.palette.background.paper,
         }}
       />
