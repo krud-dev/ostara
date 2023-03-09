@@ -2,7 +2,7 @@ import React, { FunctionComponent, useCallback, useMemo, useRef, useState } from
 import { DashboardWidgetCardProps, StackedTimelineWidget } from 'renderer/components/widget/widget';
 import DashboardGenericCard from 'renderer/components/widget/card/DashboardGenericCard';
 import { chain, every, isEmpty, isNaN, isNil, takeRight } from 'lodash';
-import { useIntl } from 'react-intl';
+import { FormattedMessage, useIntl } from 'react-intl';
 import useWidgetSubscribeToMetrics from 'renderer/components/widget/hooks/useWidgetSubscribeToMetrics';
 import AreaMultiple from 'renderer/components/widget/pure/AreaMultiple';
 import { formatWidgetChartValue } from 'renderer/utils/formatUtils';
@@ -19,7 +19,7 @@ const StackedTimelineDashboardWidget: FunctionComponent<DashboardWidgetCardProps
   const intl = useIntl();
 
   const [data, setData] = useState<{ name: string; data: number[] }[]>(
-    widget.metrics.map((metric) => ({ name: metric.title, data: [] }))
+    widget.metrics.map((metric) => ({ name: intl.formatMessage({ id: metric.titleId }), data: [] }))
   );
   const [chartLabels, setChartLabels] = useState<string[]>([]);
   const loading = useMemo<boolean>(() => isEmpty(chartLabels), [chartLabels]);
@@ -64,7 +64,7 @@ const StackedTimelineDashboardWidget: FunctionComponent<DashboardWidgetCardProps
   const chartColors = useMemo<string[]>(() => metrics.map((m) => m.color), [metrics]);
 
   return (
-    <DashboardGenericCard title={widget.title} loading={loading} empty={empty}>
+    <DashboardGenericCard title={<FormattedMessage id={widget.titleId} />} loading={loading} empty={empty}>
       <AreaMultiple series={data} labels={chartLabels} colors={chartColors} tickAmount={MAX_DATA_POINTS / 2} />
     </DashboardGenericCard>
   );

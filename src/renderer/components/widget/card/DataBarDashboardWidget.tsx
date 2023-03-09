@@ -8,6 +8,7 @@ import MetricValue from 'renderer/components/widget/metric/MetricValue';
 import useWidgetSubscribeToMetrics from 'renderer/components/widget/hooks/useWidgetSubscribeToMetrics';
 import { InstanceMetricRO } from '../../../../common/generated_definitions';
 import { EMPTY_STRING } from '../../../constants/ui';
+import { FormattedMessage } from 'react-intl';
 
 const DataBarDashboardWidget: FunctionComponent<DashboardWidgetCardProps<DataBarWidget>> = ({ widget, item }) => {
   const [data, setData] = useState<{ [key: string]: InstanceMetricRO }>({});
@@ -30,7 +31,7 @@ const DataBarDashboardWidget: FunctionComponent<DashboardWidgetCardProps<DataBar
   useWidgetSubscribeToMetrics(item.id, metricNames, onMetricUpdate);
 
   return (
-    <DashboardGenericCard title={widget.title} loading={loading} empty={empty}>
+    <DashboardGenericCard title={<FormattedMessage id={widget.titleId} />} loading={loading} empty={empty}>
       <CardContent>
         <Stack direction={'row'}>
           {metrics.map((metric, index, array) => {
@@ -46,7 +47,7 @@ const DataBarDashboardWidget: FunctionComponent<DashboardWidgetCardProps<DataBar
                   variant={'subtitle2'}
                   sx={{ color: 'text.secondary', display: 'flex', alignItems: 'center', justifyContent: 'center' }}
                 >
-                  {metric.title}
+                  <FormattedMessage id={metric.titleId} />
                   <HelpIcon title={tooltip} sx={{ ml: 0.5 }} />
                 </Typography>
               </Box>

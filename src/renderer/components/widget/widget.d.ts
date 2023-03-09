@@ -9,15 +9,14 @@ export interface DashboardWidgetCardProps<W extends Widget> {
 export type BaseWidgetDefinition = {
   id: string;
   type: string;
-  title: string;
-  description: string;
+  titleId: string;
 };
 
 export type StackedTimelineWidget = BaseWidgetDefinition & {
   type: 'stacked-timeline';
   metrics: {
     name: string;
-    title: string;
+    titleId: string;
     order: number;
     color: string;
     valueType: WidgetValueType;
@@ -28,7 +27,7 @@ export type DataBarWidget = BaseWidgetDefinition & {
   type: 'data-bar';
   metrics: {
     name: string;
-    title: string;
+    titleId: string;
     order: number;
     valueType: WidgetValueType;
   }[];
@@ -39,7 +38,7 @@ export type ProgressCircleWidget = BaseWidgetDefinition & {
   valueType: WidgetValueType;
   maxMetricName: string;
   currentMetricName: string;
-  title: string;
+  titleId: string;
   color: string;
   colorThresholds: {
     value: number;
