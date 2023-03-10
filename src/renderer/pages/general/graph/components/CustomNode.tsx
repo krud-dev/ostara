@@ -36,8 +36,8 @@ export default function CustomNode({ data }: CustomNodeProps) {
       sx={
         highlight
           ? {
-              background: (theme) => alpha(theme.palette.primary.main, 0.16),
-              borderColor: (theme) => theme.palette.primary.main,
+              background: (theme) => alpha(theme.palette.info.main, 0.16),
+              borderColor: (theme) => theme.palette.info.main,
             }
           : undefined
       }
