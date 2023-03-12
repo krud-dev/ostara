@@ -5,7 +5,7 @@ import {
   useBaseMutation,
 } from 'renderer/apis/requests/base/useBaseMutation';
 import { apiKeys } from 'renderer/apis/apiKeys';
-import { EnvPropertyActuatorResponse } from '../../../../../common/generated_definitions';
+import { EnvActuatorResponse } from '../../../../../common/generated_definitions';
 import { axiosInstance } from '../../../axiosInstance';
 import { AxiosResponse } from 'axios';
 
@@ -13,7 +13,7 @@ type Variables = {
   instanceId: string;
 };
 
-type Data = EnvPropertyActuatorResponse;
+type Data = EnvActuatorResponse;
 
 export const getInstanceEnv = async (variables: Variables): Promise<Data> => {
   return (await axiosInstance.get<Data, AxiosResponse<Data>>(`actuator/env?instanceId=${variables.instanceId}`)).data;

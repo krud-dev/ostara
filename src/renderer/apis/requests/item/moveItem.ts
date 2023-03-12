@@ -1,4 +1,8 @@
-import { BaseMutationOptions, BaseUseMutationResult, useBaseMutation } from 'renderer/apis/requests/base/useBaseMutation';
+import {
+  BaseMutationOptions,
+  BaseUseMutationResult,
+  useBaseMutation,
+} from 'renderer/apis/requests/base/useBaseMutation';
 import { ItemRO, ItemType } from '../../../definitions/daemon';
 import { crudKeys } from '../crud/crudKeys';
 import { getItemTypeEntity } from '../../../utils/itemUtils';

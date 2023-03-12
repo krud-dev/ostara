@@ -6,7 +6,7 @@ import { CardContent, Typography } from '@mui/material';
 
 const NotSupportedDashboardWidget: FunctionComponent<DashboardWidgetCardProps<Widget>> = ({ widget, item }) => {
   return (
-    <DashboardGenericCard title={widget.title} loading={false}>
+    <DashboardGenericCard title={<FormattedMessage id={widget.titleId} />} loading={false}>
       <CardContent>
         <Typography variant="body2" sx={{ color: 'error.main' }}>
           <FormattedMessage id="notSupported" />

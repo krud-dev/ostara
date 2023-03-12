@@ -27,7 +27,7 @@ export default function LiquibaseChangesetDetails({ row }: LiquibaseChangesetDet
         <TableDetailsLabelValue label={<FormattedMessage id={'checksum'} />} value={row.checksum || EMPTY_STRING} />
         <TableDetailsLabelValue
           label={<FormattedMessage id={'contexts'} />}
-          value={row.context?.join(', ') || EMPTY_STRING}
+          value={row.contexts?.join(', ') || EMPTY_STRING}
         />
         <TableDetailsLabelValue
           label={<FormattedMessage id={'labels'} />}

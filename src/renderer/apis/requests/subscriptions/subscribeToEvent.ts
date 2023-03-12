@@ -1,4 +1,8 @@
-import { BaseMutationOptions, BaseUseMutationResult, useBaseMutation } from 'renderer/apis/requests/base/useBaseMutation';
+import {
+  BaseMutationOptions,
+  BaseUseMutationResult,
+  useBaseMutation,
+} from 'renderer/apis/requests/base/useBaseMutation';
 import { Subscriptions } from 'infra/subscriptions/subscriptions';
 
 type Variables<EventKey extends keyof Subscriptions> = {

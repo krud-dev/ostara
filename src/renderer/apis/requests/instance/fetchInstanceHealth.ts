@@ -1,4 +1,8 @@
-import { BaseMutationOptions, BaseUseMutationResult, useBaseMutation } from 'renderer/apis/requests/base/useBaseMutation';
+import {
+  BaseMutationOptions,
+  BaseUseMutationResult,
+  useBaseMutation,
+} from 'renderer/apis/requests/base/useBaseMutation';
 import { InstanceHealthRO } from '../../../../common/generated_definitions';
 import { axiosInstance } from '../../axiosInstance';
 import { AxiosResponse } from 'axios';

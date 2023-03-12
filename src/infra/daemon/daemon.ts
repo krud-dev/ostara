@@ -196,4 +196,4 @@ export async function initDaemon(): Promise<DaemonController> {
     app.exit(1);
   });
   return daemonController;
-};
+}
