@@ -126,6 +126,17 @@ class ActuatorController(
     @ApiResponse(responseCode = "503", description = "Service unavailable", content = [Content()])
     fun beans(@RequestParam instanceId: UUID) = actuatorClientProvider.provide(instanceId).beans()
 
+    @GetMapping("/mappings")
+    @ResponseStatus(HttpStatus.OK)
+    @Operation(
+        summary = "Get mappings",
+        description = "Equivalent call to actuator mappings /mappings"
+    )
+    @ApiResponse(responseCode = "200", description = "Mappings list")
+    @ApiResponse(responseCode = "404", description = "Endpoint not available", content = [Content()])
+    @ApiResponse(responseCode = "503", description = "Service unavailable", content = [Content()])
+    fun mappings(@RequestParam instanceId: UUID) = actuatorClientProvider.provide(instanceId).mappings()
+
     @GetMapping("/logfile")
     @ResponseStatus(HttpStatus.OK)
     @Operation(

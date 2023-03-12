@@ -90,6 +90,10 @@ export interface LoggersActuatorResponse {
     loggers: { [index: string]: LoggersActuatorResponse$Logger };
 }
 
+export interface MappingsActuatorResponse {
+    contexts: { [index: string]: MappingsActuatorResponse$Context };
+}
+
 export interface MetricActuatorResponse {
     name: string;
     description?: string;
@@ -527,6 +531,11 @@ export interface LoggersActuatorResponse$Logger {
     configuredLevel?: LogLevel;
 }
 
+export interface MappingsActuatorResponse$Context {
+    mappings: MappingsActuatorResponse$Context$Mappings;
+    parentId?: string;
+}
+
 export interface MetricActuatorResponse$Tag {
     tag: string;
     values: string[];
@@ -700,6 +709,13 @@ export interface LiquibaseActuatorResponse$Context$LiquibaseBean {
     changeSets: LiquibaseActuatorResponse$Context$LiquibaseBean$ChangeSet[];
 }
 
+export interface MappingsActuatorResponse$Context$Mappings {
+    dispatcherServlets: { [index: string]: MappingsActuatorResponse$Context$Mappings$DispatcherServletOrHandler[] };
+    servletFilters: MappingsActuatorResponse$Context$Mappings$ServletFilter[];
+    servlets: MappingsActuatorResponse$Context$Mappings$Servlet[];
+    dispatcherHandlers?: { [index: string]: MappingsActuatorResponse$Context$Mappings$DispatcherServletOrHandler[] };
+}
+
 export interface QuartzTriggersByGroupResponse$Cron {
     previousFireTime?: DateAsNumber;
     nextFireTime?: DateAsNumber;
@@ -825,6 +841,65 @@ export interface LiquibaseActuatorResponse$Context$LiquibaseBean$ChangeSet {
     execType: string;
     labels: string[];
     tag?: string;
+}
+
+export interface MappingsActuatorResponse$Context$Mappings$DispatcherServletOrHandler {
+    handler: string;
+    predicate: string;
+    details?: MappingsActuatorResponse$Context$Mappings$DispatcherServletOrHandler$Details;
+}
+
+export interface MappingsActuatorResponse$Context$Mappings$ServletFilter {
+    servletNameMappings: string[];
+    urlPatternMappings: string[];
+    name: string;
+    className: string;
+}
+
+export interface MappingsActuatorResponse$Context$Mappings$Servlet {
+    mappings: string[];
+    name: string;
+    className: string;
+}
+
+export interface MappingsActuatorResponse$Context$Mappings$DispatcherServletOrHandler$Details {
+    handlerMethod?: MappingsActuatorResponse$Context$Mappings$DispatcherServletOrHandler$Details$HandlerMethod;
+    handlerFunction?: MappingsActuatorResponse$Context$Mappings$DispatcherServletOrHandler$Details$HandlerFunction;
+    requestMappingConditions?: MappingsActuatorResponse$Context$Mappings$DispatcherServletOrHandler$Details$RequestMappingConditions;
+}
+
+export interface MappingsActuatorResponse$Context$Mappings$DispatcherServletOrHandler$Details$HandlerMethod {
+    className: string;
+    name: string;
+    descriptor: string;
+}
+
+export interface MappingsActuatorResponse$Context$Mappings$DispatcherServletOrHandler$Details$HandlerFunction {
+    className: string;
+}
+
+export interface MappingsActuatorResponse$Context$Mappings$DispatcherServletOrHandler$Details$RequestMappingConditions {
+    consumes: MappingsActuatorResponse$Context$Mappings$DispatcherServletOrHandler$Details$RequestMappingConditions$MediaType[];
+    headers: MappingsActuatorResponse$Context$Mappings$DispatcherServletOrHandler$Details$RequestMappingConditions$Header[];
+    methods: string[];
+    params: MappingsActuatorResponse$Context$Mappings$DispatcherServletOrHandler$Details$RequestMappingConditions$Param[];
+    patterns: string[];
+    produces: MappingsActuatorResponse$Context$Mappings$DispatcherServletOrHandler$Details$RequestMappingConditions$MediaType[];
+}
+
+export interface MappingsActuatorResponse$Context$Mappings$DispatcherServletOrHandler$Details$RequestMappingConditions$MediaType {
+    mediaType: string;
+    negated: boolean;
+}
+
+export interface MappingsActuatorResponse$Context$Mappings$DispatcherServletOrHandler$Details$RequestMappingConditions$Header {
+    name: string;
+    value: string;
+}
+
+export interface MappingsActuatorResponse$Context$Mappings$DispatcherServletOrHandler$Details$RequestMappingConditions$Param {
+    name: string;
+    value: string;
 }
 
 export type DateAsNumber = number;

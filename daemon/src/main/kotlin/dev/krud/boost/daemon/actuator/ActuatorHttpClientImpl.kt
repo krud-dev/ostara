@@ -16,6 +16,7 @@ import dev.krud.boost.daemon.actuator.model.LiquibaseActuatorResponse
 import dev.krud.boost.daemon.actuator.model.LoggerActuatorResponse
 import dev.krud.boost.daemon.actuator.model.LoggerUpdateRequest
 import dev.krud.boost.daemon.actuator.model.LoggersActuatorResponse
+import dev.krud.boost.daemon.actuator.model.MappingsActuatorResponse
 import dev.krud.boost.daemon.actuator.model.MetricActuatorResponse
 import dev.krud.boost.daemon.actuator.model.MetricsActuatorResponse
 import dev.krud.boost.daemon.actuator.model.QuartzActuatorResponse
@@ -144,6 +145,11 @@ class ActuatorHttpClientImpl(
      */
 
     override fun beans(): Result<BeansActuatorResponse> = doGet(asUrl("beans"))
+
+    /**
+     * Mappings
+     */
+    override fun mappings(): Result<MappingsActuatorResponse> = doGet(asUrl("mappings"))
 
     /**
      * Logfile

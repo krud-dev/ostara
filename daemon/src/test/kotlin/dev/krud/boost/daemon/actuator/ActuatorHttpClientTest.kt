@@ -193,6 +193,16 @@ class ActuatorHttpClientTest {
     }
 
     @Test
+    internal fun `mappings should return correct response`() {
+        server.enqueue(okJsonResponse("responses/mappings_response_200.json"))
+        val baseUrl = server.url("/actuator").toString()
+        val client = ActuatorHttpClientImpl(baseUrl)
+        val mappings = client.mappings().getOrThrow()
+        expectThat(mappings.contexts.size)
+            .isEqualTo(1)
+    }
+
+    @Test
     internal fun `metrics should return correct response`() {
         server.enqueue(okJsonResponse("responses/metrics_response_200.json"))
         val baseUrl = server.url("/actuator").toString()

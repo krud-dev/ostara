@@ -13,6 +13,7 @@ import dev.krud.boost.daemon.actuator.model.IntegrationGraphActuatorResponse
 import dev.krud.boost.daemon.actuator.model.LiquibaseActuatorResponse
 import dev.krud.boost.daemon.actuator.model.LoggerActuatorResponse
 import dev.krud.boost.daemon.actuator.model.LoggersActuatorResponse
+import dev.krud.boost.daemon.actuator.model.MappingsActuatorResponse
 import dev.krud.boost.daemon.actuator.model.MetricActuatorResponse
 import dev.krud.boost.daemon.actuator.model.MetricsActuatorResponse
 import dev.krud.boost.daemon.actuator.model.QuartzActuatorResponse
@@ -64,6 +65,12 @@ interface ActuatorHttpClient {
      */
 
     fun beans(): Result<BeansActuatorResponse>
+
+    /**
+     * Mappings
+     */
+
+    fun mappings(): Result<MappingsActuatorResponse>
 
     /**
      * Logfile
