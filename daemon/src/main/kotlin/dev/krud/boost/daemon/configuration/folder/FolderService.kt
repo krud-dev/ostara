@@ -2,16 +2,18 @@ package dev.krud.boost.daemon.configuration.folder
 
 import dev.krud.boost.daemon.configuration.folder.entity.Folder
 import dev.krud.boost.daemon.exception.throwNotFound
-import dev.krud.crudframework.crud.handler.krud.Krud
+import dev.krud.crudframework.crud.handler.CrudHandler
 import org.springframework.stereotype.Service
 import java.util.*
 
 @Service
 class FolderService(
-    private val folderKrud: Krud<Folder, UUID>
+    private val crudHandler: CrudHandler
 ) {
     fun getFolder(folderId: UUID): Folder? {
-        return folderKrud.showById(folderId)
+        return crudHandler
+            .show(folderId, Folder::class.java)
+            .execute()
     }
 
     fun getFolderOrThrow(folderId: UUID): Folder {
@@ -22,6 +24,8 @@ class FolderService(
         val folder = getFolderOrThrow(folderId)
         folder.parentFolderId = newParentFolderId // TODO: check if folder exists, should fail on foreign key for now
         folder.sort = newSort
-        return folderKrud.update(folder)
+        return crudHandler
+            .update(folder)
+            .execute()
     }
 }
