@@ -1,6 +1,6 @@
 package dev.krud.boost.daemon.actuator.model
 
-data class ConfigPropsActuatorResponse(
+data class  ConfigPropsActuatorResponse(
     val contexts: Map<String, Context>
 ) {
     data class Context(
@@ -8,9 +8,9 @@ data class ConfigPropsActuatorResponse(
         val parentId: String?
     ) {
         data class Bean(
-            val prefix: String,
-            val properties: Map<String, Any>,
-            val inputs: Map<String, Any>
+            val prefix: String?,
+            val properties: Map<String, Any>?,
+            val inputs: Map<String, Any>?
         )
     }
 }

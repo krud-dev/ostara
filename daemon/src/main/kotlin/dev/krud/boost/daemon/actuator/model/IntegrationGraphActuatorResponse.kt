@@ -1,6 +1,6 @@
 package dev.krud.boost.daemon.actuator.model
 
-import com.google.gson.annotations.SerializedName
+import com.fasterxml.jackson.annotation.JsonProperty
 
 data class IntegrationGraphActuatorResponse(
     val contentDescriptor: ContentDescriptor,
@@ -20,9 +20,14 @@ data class IntegrationGraphActuatorResponse(
         val integrationPatternType: String,
         val integrationPatternCategory: String,
         val properties: Map<String, String>,
-        val sendTimers: Map<String, SendTimer>,
-        val receiveCounters: Map<String, Int>,
-        val name: String
+        val sendTimers: Map<String, SendTimer>?,
+        val receiveCounters: Map<String, Int>?,
+        val name: String,
+        val input: String?,
+        val output: String?,
+        val errors: String?, // Not sure what type this is
+        val discards: String?, // Not sure what type this is
+        val routes: Set<String>? // Another ambiguous type, need to verify
     ) {
         data class SendTimer(
             val count: Int,
@@ -37,10 +42,10 @@ data class IntegrationGraphActuatorResponse(
         val type: Type
     ) {
         enum class Type {
-            @SerializedName("input")
+            @JsonProperty("input")
             INPUT,
 
-            @SerializedName("output")
+            @JsonProperty("output")
             OUTPUT
         }
     }

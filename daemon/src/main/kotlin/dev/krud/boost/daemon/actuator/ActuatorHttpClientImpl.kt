@@ -1,6 +1,9 @@
 package dev.krud.boost.daemon.actuator
 
-import com.google.gson.GsonBuilder
+import com.fasterxml.jackson.databind.DeserializationFeature
+import com.fasterxml.jackson.databind.ObjectMapper
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule
+import com.fasterxml.jackson.module.kotlin.KotlinModule
 import dev.krud.boost.daemon.actuator.model.BeansActuatorResponse
 import dev.krud.boost.daemon.actuator.model.CacheActuatorResponse
 import dev.krud.boost.daemon.actuator.model.CachesActuatorResponse
@@ -51,6 +54,12 @@ class ActuatorHttpClientImpl(
     private val baseUrl: String,
     private val authenticator: Authenticator = Authenticator.NONE
 ) : ActuatorHttpClient {
+    internal val objectMapper = ObjectMapper().apply {
+        registerModule(JavaTimeModule())
+        registerModule(KotlinModule.Builder().build())
+        configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false)
+    }
+
     private val httpClient: OkHttpClient = OkHttpClient
         .Builder()
         .authenticator(authenticator)
@@ -247,7 +256,9 @@ class ActuatorHttpClientImpl(
 
     override fun updateLogger(loggerOrGroupName: String, level: LogLevel?): Result<Unit> = doPost(
         asUrl("loggers", loggerOrGroupName),
-        GSON.toJson(LoggerUpdateRequest(level)).toRequestBody("application/json".toMediaType())
+        objectMapper.writeValueAsString(
+            LoggerUpdateRequest(level)
+        ).toRequestBody("application/json".toMediaType())
     )
 
     /**
@@ -296,11 +307,15 @@ class ActuatorHttpClientImpl(
     ): Result<Type> = runCatching {
         val request = buildRequest(url, method, requestBody, build)
         val response = runRequest(request).getOrThrow()
-        val responseBody = response.body?.string()
-        if (responseBody == null) {
-            throwInternalServerError("Actuator response body is null: $request")
+        if (Type::class == Unit::class) {
+            Unit as Type
         } else {
-            GSON.fromJson(responseBody, Type::class.java)
+            val responseBody = response.body?.string()
+            if (responseBody == null) {
+                throwInternalServerError("Actuator response body is null: $request")
+            } else {
+                objectMapper.readValue(responseBody, Type::class.java)
+            }
         }
     }
 
@@ -344,8 +359,4 @@ class ActuatorHttpClientImpl(
             }
             .apply(build)
             .build()
-
-    companion object {
-        private val GSON = GsonBuilder().create()
-    }
 }

@@ -1,9 +1,9 @@
 package dev.krud.boost.daemon.actuator.model
 
-import com.google.gson.annotations.SerializedName
+import com.fasterxml.jackson.annotation.JsonProperty
 
 data class EndpointsActuatorResponse(
-    @SerializedName("_links")
+    @JsonProperty("_links")
     val links: Map<String, Link>
 ) {
     data class Link(

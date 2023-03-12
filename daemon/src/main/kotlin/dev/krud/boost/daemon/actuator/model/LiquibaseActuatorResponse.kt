@@ -4,7 +4,8 @@ data class LiquibaseActuatorResponse(
     val contexts: Map<String, Context>
 ) {
     data class Context(
-        val liquibaseBeans: Map<String, LiquibaseBean>
+        val liquibaseBeans: Map<String, LiquibaseBean>,
+        val parentId: String?
     ) {
         data class LiquibaseBean(
             val changeSets: List<ChangeSet>
@@ -16,7 +17,7 @@ data class LiquibaseActuatorResponse(
                 val author: String,
                 val changeLog: String,
                 val comments: String,
-                val context: List<String>,
+                val contexts: List<String>,
                 val dateExecuted: String,
                 val deploymentId: String,
                 val description: String,

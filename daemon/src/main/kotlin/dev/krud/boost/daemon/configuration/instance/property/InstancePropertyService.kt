@@ -1,8 +1,8 @@
 package dev.krud.boost.daemon.configuration.instance.property
 
+import com.fasterxml.jackson.databind.ObjectMapper
 import com.github.wnameless.json.flattener.JsonFlattener
 import com.github.wnameless.json.unflattener.JsonUnflattener
-import com.google.gson.GsonBuilder
 import dev.krud.boost.daemon.actuator.model.ConfigPropsActuatorResponse
 import dev.krud.boost.daemon.configuration.instance.InstanceActuatorClientProvider
 import dev.krud.boost.daemon.configuration.instance.InstanceService
@@ -18,7 +18,8 @@ import java.util.*
 class InstancePropertyService(
     private val actuatorClientProvider: InstanceActuatorClientProvider,
     private val instanceService: InstanceService,
-    private val instanceAbilityService: InstanceAbilityService
+    private val instanceAbilityService: InstanceAbilityService,
+    private val objectMapper: ObjectMapper
 ) {
     @Cacheable(cacheNames = ["instancePropertyCache"], key = "#instanceId")
     fun getProperties(instanceId: UUID): InstancePropertyRO {
@@ -38,7 +39,7 @@ class InstancePropertyService(
     private fun Collection<ConfigPropsActuatorResponse.Context.Bean>.flattenProperties(): Map<String, Any> {
         val map = mutableMapOf<String, Any>()
         forEach { bean ->
-            val flattened = JsonFlattener(GSON.toJson(bean.properties))
+            val flattened = JsonFlattener(objectMapper.writeValueAsString(bean.properties))
                 .ignoreReservedCharacters()
                 .withKeyTransformer {
                     it.toKebabCase()
@@ -50,9 +51,5 @@ class InstancePropertyService(
             map.putAll(flattened)
         }
         return map
-    }
-
-    companion object {
-        private val GSON = GsonBuilder().create()
     }
 }

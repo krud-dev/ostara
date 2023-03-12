@@ -1,6 +1,6 @@
 package dev.krud.boost.daemon.actuator.model
 
-import com.google.gson.annotations.SerializedName
+import com.fasterxml.jackson.annotation.JsonProperty
 import java.util.*
 
 data class QuartzTriggerResponse(
@@ -34,19 +34,19 @@ data class QuartzTriggerResponse(
     }
 
     enum class Type {
-        @SerializedName("calendarInterval")
+        @JsonProperty("calendarInterval")
         CALENDAR_INTERVAL,
 
-        @SerializedName("cron")
+        @JsonProperty("cron")
         CRON,
 
-        @SerializedName("custom")
+        @JsonProperty("custom")
         CUSTOM,
 
-        @SerializedName("dailyTimeInterval")
+        @JsonProperty("dailyTimeInterval")
         DAILY_TIME_INTERVAL,
 
-        @SerializedName("simple")
+        @JsonProperty("simple")
         SIMPLE
     }
 

@@ -12,7 +12,7 @@ data class EnvPropertyActuatorResponse(
 
     data class PropertySource(
         val name: String,
-        val properties: Map<String, Property>?
+        val property: Property?
     ) {
         data class Property(
             val value: String,

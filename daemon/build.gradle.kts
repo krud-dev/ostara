@@ -1,7 +1,7 @@
+import cz.habarta.typescript.generator.gradle.GenerateTask
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 import org.springframework.boot.gradle.tasks.bundling.BootJar
 import java.nio.file.Paths
-import cz.habarta.typescript.generator.gradle.GenerateTask
 
 plugins {
     id("org.springframework.boot") version "3.0.2"
@@ -79,7 +79,6 @@ dependencies {
     implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8")
     implementation("org.xerial:sqlite-jdbc:3.40.0.0")
     implementation("com.squareup.okhttp3:okhttp:4.10.0")
-    implementation("com.google.code.gson:gson:2.10.1")
     implementation("org.flywaydb:flyway-core:9.12.0")
     implementation("dev.krud:crud-framework-core:$crudFrameworkVersion")
     implementation("dev.krud:crud-framework-hibernate5-connector:$crudFrameworkVersion")

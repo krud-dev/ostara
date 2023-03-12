@@ -37,6 +37,7 @@ export interface ConfigPropsActuatorResponse {
 
 export interface EndpointsActuatorResponse {
     links: { [index: string]: EndpointsActuatorResponse$Link };
+    _links: { [index: string]: EndpointsActuatorResponse$Link };
 }
 
 export interface EnvActuatorResponse {
@@ -56,8 +57,9 @@ export interface FlywayActuatorResponse {
 
 export interface HealthActuatorResponse {
     status: HealthActuatorResponse$Status;
-    components: { [index: string]: HealthActuatorResponse$Component };
+    components?: { [index: string]: HealthActuatorResponse$Component };
     groups?: string[];
+    details?: { [index: string]: any };
 }
 
 export interface InfoActuatorResponse {
@@ -88,6 +90,7 @@ export interface LoggerUpdateRequest {
 export interface LoggersActuatorResponse {
     levels: LogLevel[];
     loggers: { [index: string]: LoggersActuatorResponse$Logger };
+    groups: { [index: string]: LoggersActuatorResponse$Group };
 }
 
 export interface MappingsActuatorResponse {
@@ -444,6 +447,7 @@ export interface KMappedMarker {
 
 export interface BeansActuatorResponse$Context {
     beans: { [index: string]: BeansActuatorResponse$Context$Bean };
+    parentId?: string;
 }
 
 export interface CachesActuatorResponse$CacheManager {
@@ -472,18 +476,19 @@ export interface EnvPropertyActuatorResponse$Property {
 
 export interface EnvPropertyActuatorResponse$PropertySource {
     name: string;
-    properties?: { [index: string]: EnvPropertyActuatorResponse$PropertySource$Property };
+    property?: EnvPropertyActuatorResponse$PropertySource$Property;
 }
 
 export interface FlywayActuatorResponse$Context {
     flywayBeans: { [index: string]: FlywayActuatorResponse$Context$FlywayBean };
+    parentId?: string;
 }
 
 export interface HealthActuatorResponse$Component {
     status: HealthActuatorResponse$Status;
     description?: string;
     components?: { [index: string]: HealthActuatorResponse$Component };
-    details: { [index: string]: any };
+    details?: { [index: string]: any };
 }
 
 export interface InfoActuatorResponse$Build {
@@ -491,6 +496,7 @@ export interface InfoActuatorResponse$Build {
     group: string;
     name: string;
     version: string;
+    time?: string;
 }
 
 export interface InfoActuatorResponse$Git {
@@ -511,9 +517,14 @@ export interface IntegrationGraphActuatorResponse$Node {
     integrationPatternType: string;
     integrationPatternCategory: string;
     properties: { [index: string]: string };
-    sendTimers: { [index: string]: IntegrationGraphActuatorResponse$Node$SendTimer };
-    receiveCounters: { [index: string]: number };
+    sendTimers?: { [index: string]: IntegrationGraphActuatorResponse$Node$SendTimer };
+    receiveCounters?: { [index: string]: number };
     name: string;
+    input?: string;
+    output?: string;
+    errors?: string;
+    discards?: string;
+    routes?: string[];
 }
 
 export interface IntegrationGraphActuatorResponse$Link {
@@ -524,11 +535,17 @@ export interface IntegrationGraphActuatorResponse$Link {
 
 export interface LiquibaseActuatorResponse$Context {
     liquibaseBeans: { [index: string]: LiquibaseActuatorResponse$Context$LiquibaseBean };
+    parentId?: string;
 }
 
 export interface LoggersActuatorResponse$Logger {
     effectiveLevel: LogLevel;
     configuredLevel?: LogLevel;
+}
+
+export interface LoggersActuatorResponse$Group {
+    configuredLevel?: LogLevel;
+    members: string[];
 }
 
 export interface MappingsActuatorResponse$Context {
@@ -645,6 +662,7 @@ export interface ThreadDumpActuatorResponse$Thread {
     stackTrace: ThreadDumpActuatorResponse$Thread$StackTraceFrame[];
     lockedMonitors: ThreadDumpActuatorResponse$Thread$LockedMonitor[];
     lockedSynchronizers: ThreadDumpActuatorResponse$Thread$LockedSynchronizer[];
+    lockInfo?: ThreadDumpActuatorResponse$Thread$LockInfo;
 }
 
 export interface Unit {
@@ -666,7 +684,7 @@ export interface BeansActuatorResponse$Context$Bean {
     aliases: string[];
     scope: string;
     type: string;
-    resource: string;
+    resource?: string;
     dependencies: string[];
 }
 
@@ -675,9 +693,9 @@ export interface CachesActuatorResponse$CacheManager$Cache {
 }
 
 export interface ConfigPropsActuatorResponse$Context$Bean {
-    prefix: string;
-    properties: { [index: string]: any };
-    inputs: { [index: string]: any };
+    prefix?: string;
+    properties?: { [index: string]: any };
+    inputs?: { [index: string]: any };
 }
 
 export interface EnvActuatorResponse$PropertySource$Property {
@@ -696,7 +714,7 @@ export interface FlywayActuatorResponse$Context$FlywayBean {
 
 export interface InfoActuatorResponse$Git$Commit {
     id: string;
-    time: string;
+    time?: string;
 }
 
 export interface IntegrationGraphActuatorResponse$Node$SendTimer {
@@ -783,6 +801,11 @@ export interface ThreadDumpActuatorResponse$Thread$LockedSynchronizer {
     identityHashCode: number;
 }
 
+export interface ThreadDumpActuatorResponse$Thread$LockInfo {
+    className?: string;
+    identityHashCode: number;
+}
+
 export interface Authentication$None extends Authentication {
     type: string;
 }
@@ -817,7 +840,7 @@ export interface Authentication$BearerToken extends Authentication {
 export interface FlywayActuatorResponse$Context$FlywayBean$Migration {
     type: string;
     checksum: number;
-    version: string;
+    version?: string;
     description: string;
     script: string;
     state: string;
@@ -834,7 +857,7 @@ export interface LiquibaseActuatorResponse$Context$LiquibaseBean$ChangeSet {
     author: string;
     changeLog: string;
     comments: string;
-    context: string[];
+    contexts: string[];
     dateExecuted: string;
     deploymentId: string;
     description: string;
@@ -912,7 +935,7 @@ export type LogLevel = "TRACE" | "DEBUG" | "INFO" | "WARN" | "ERROR" | "FATAL" |
 
 export type QuartzTriggerResponse$State = "NONE" | "NORMAL" | "PAUSED" | "COMPLETE" | "ERROR" | "BLOCKED";
 
-export type QuartzTriggerResponse$Type = "CALENDAR_INTERVAL" | "CRON" | "CUSTOM" | "DAILY_TIME_INTERVAL" | "SIMPLE";
+export type QuartzTriggerResponse$Type = "calendarInterval" | "cron" | "custom" | "dailyTimeInterval" | "simple";
 
 export type ResultAggregationSummary$Status = "SUCCESS" | "PARTIAL_SUCCESS" | "FAILURE";
 
@@ -936,6 +959,6 @@ export type FilterFieldOperation = "Equal" | "NotEqual" | "In" | "NotIn" | "Grea
 
 export type FilterFieldDataType = "String" | "Integer" | "Long" | "Double" | "Boolean" | "Date" | "Object" | "Enum" | "UUID" | "None";
 
-export type IntegrationGraphActuatorResponse$Link$Type = "INPUT" | "OUTPUT";
+export type IntegrationGraphActuatorResponse$Link$Type = "input" | "output";
 
 export type EffectiveAuthentication$SourceType = "FOLDER" | "APPLICATION";
