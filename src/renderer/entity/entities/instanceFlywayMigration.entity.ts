@@ -33,7 +33,7 @@ export const instanceFlywayMigrationEntity: Entity<EnrichedFlywayMigration> = {
     },
     {
       id: 'installedOn',
-      type: 'Date',
+      type: 'ParsedDate',
       labelId: 'installedOn',
     },
     {

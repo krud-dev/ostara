@@ -6,12 +6,12 @@ import { COMPONENTS_SPACING, DEFAULT_TABLE_COLUMN_WIDTH } from 'renderer/constan
 import { EnrichedQuartzJob } from '../../../../../apis/requests/instance/quartz/getInstanceQuartzJobs';
 import { useGetInstanceQuartzJobDetailsQuery } from '../../../../../apis/requests/instance/quartz/getInstanceQuartzJobDetails';
 import { isObject, map, toString } from 'lodash';
-import FormattedRelativeTimeNow from '../../../../../components/format/FormattedRelativeTimeNow';
 import FormattedBoolean from '../../../../../components/format/FormattedBoolean';
 import { InlineCodeLabel } from '../../../../../components/code/InlineCodeLabel';
 import NiceModal from '@ebay/nice-modal-react';
 import QuartzTriggerDetailsDialog from './QuartzTriggerDetailsDialog';
 import { EnrichedQuartzTrigger } from '../../../../../apis/requests/instance/quartz/getInstanceQuartzTriggers';
+import FormattedParsedDate from '../../../../../components/format/FormattedParsedDate';
 
 type QuartzJobDetailsProps = {
   row: EnrichedQuartzJob;
@@ -129,7 +129,11 @@ export default function QuartzJobDetails({ row }: QuartzJobDetailsProps) {
                     label={<FormattedMessage id={'previousFireTime'} />}
                     value={
                       !!trigger.previousFireTime && (
-                        <FormattedRelativeTimeNow value={trigger.previousFireTime} updateIntervalInSeconds={0} />
+                        <FormattedParsedDate
+                          value={trigger.previousFireTime}
+                          showRelative
+                          updateIntervalInSeconds={0}
+                        />
                       )
                     }
                   />
@@ -137,7 +141,7 @@ export default function QuartzJobDetails({ row }: QuartzJobDetailsProps) {
                     label={<FormattedMessage id={'nextFireTime'} />}
                     value={
                       !!trigger.nextFireTime && (
-                        <FormattedRelativeTimeNow value={trigger.nextFireTime} updateIntervalInSeconds={0} />
+                        <FormattedParsedDate value={trigger.nextFireTime} showRelative updateIntervalInSeconds={0} />
                       )
                     }
                   />

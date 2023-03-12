@@ -4,16 +4,15 @@ import { FormattedMessage } from 'react-intl';
 import { Box, Card, CardContent, CardHeader, CircularProgress, Stack, Tooltip } from '@mui/material';
 import { COMPONENTS_SPACING, DEFAULT_TABLE_COLUMN_WIDTH } from 'renderer/constants/ui';
 import { isObject, map, toString } from 'lodash';
-import FormattedRelativeTimeNow from '../../../../../components/format/FormattedRelativeTimeNow';
 import { EnrichedQuartzTrigger } from '../../../../../apis/requests/instance/quartz/getInstanceQuartzTriggers';
 import { useGetInstanceQuartzTriggerDetailsQuery } from '../../../../../apis/requests/instance/quartz/getInstanceQuartzTriggerDetails';
-import FormattedDateAndRelativeTime from '../../../../../components/format/FormattedDateAndRelativeTime';
 import Label, { LabelColor } from '../../../../../components/common/Label';
 import FormattedBoolean from '../../../../../components/format/FormattedBoolean';
 import FormattedCron from '../../../../../components/format/FormattedCron';
 import FormattedInterval from '../../../../../components/format/FormattedInterval';
 import { SxProps } from '@mui/system';
 import { Theme } from '@mui/material/styles';
+import FormattedParsedDate from '../../../../../components/format/FormattedParsedDate';
 
 type QuartzTriggerDetailsProps = {
   row: EnrichedQuartzTrigger;
@@ -88,7 +87,11 @@ export default function QuartzTriggerDetails({ row, sx }: QuartzTriggerDetailsPr
                 label={<FormattedMessage id={'previousFireTime'} />}
                 value={
                   !!detailsState.data.previousFireTime && (
-                    <FormattedRelativeTimeNow value={detailsState.data.previousFireTime} updateIntervalInSeconds={0} />
+                    <FormattedParsedDate
+                      value={detailsState.data.previousFireTime}
+                      showRelative
+                      updateIntervalInSeconds={0}
+                    />
                   )
                 }
               />
@@ -96,7 +99,11 @@ export default function QuartzTriggerDetails({ row, sx }: QuartzTriggerDetailsPr
                 label={<FormattedMessage id={'nextFireTime'} />}
                 value={
                   !!detailsState.data.nextFireTime && (
-                    <FormattedRelativeTimeNow value={detailsState.data.nextFireTime} updateIntervalInSeconds={0} />
+                    <FormattedParsedDate
+                      value={detailsState.data.nextFireTime}
+                      showRelative
+                      updateIntervalInSeconds={0}
+                    />
                   )
                 }
               />
@@ -104,25 +111,21 @@ export default function QuartzTriggerDetails({ row, sx }: QuartzTriggerDetailsPr
                 label={<FormattedMessage id={'finalFireTime'} />}
                 value={
                   !!detailsState.data.finalFireTime && (
-                    <FormattedDateAndRelativeTime value={detailsState.data.finalFireTime} updateIntervalInSeconds={0} />
+                    <FormattedParsedDate
+                      value={detailsState.data.finalFireTime}
+                      showRelative
+                      updateIntervalInSeconds={0}
+                    />
                   )
                 }
               />
               <TableDetailsLabelValue
                 label={<FormattedMessage id={'startTime'} />}
-                value={
-                  !!detailsState.data.startTime && (
-                    <FormattedDateAndRelativeTime value={detailsState.data.startTime} showRelative={false} />
-                  )
-                }
+                value={!!detailsState.data.startTime && <FormattedParsedDate value={detailsState.data.startTime} />}
               />
               <TableDetailsLabelValue
                 label={<FormattedMessage id={'endTime'} />}
-                value={
-                  !!detailsState.data.endTime && (
-                    <FormattedDateAndRelativeTime value={detailsState.data.endTime} showRelative={false} />
-                  )
-                }
+                value={!!detailsState.data.endTime && <FormattedParsedDate value={detailsState.data.endTime} />}
               />
               <TableDetailsLabelValue
                 label={<FormattedMessage id={'calendarName'} />}

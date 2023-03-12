@@ -48,6 +48,10 @@ export type EntityDateColumn<EntityItem> = EntityBaseColumn<EntityItem> & {
   readonly type: 'Date';
 };
 
+export type EntityParsedDateColumn<EntityItem> = EntityBaseColumn<EntityItem> & {
+  readonly type: 'ParsedDate';
+};
+
 export type EntityBytesColumn<EntityItem> = EntityBaseColumn<EntityItem> & {
   readonly type: 'Bytes';
 };
@@ -78,6 +82,7 @@ export type EntityColumn<EntityItem> =
   | EntityNumberColumn<EntityItem>
   | EntityCronColumn<EntityItem>
   | EntityDateColumn<EntityItem>
+  | EntityParsedDateColumn<EntityItem>
   | EntityBytesColumn<EntityItem>
   | EntityLabelColumn<EntityItem>
   | EntityCountdownColumn<EntityItem>

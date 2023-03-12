@@ -37,7 +37,7 @@ export const instanceLiquibaseChangeSetEntity: Entity<EnrichedLiquibaseChangeSet
     },
     {
       id: 'dateExecuted',
-      type: 'Text',
+      type: 'ParsedDate',
       labelId: 'dateExecuted',
     },
     {

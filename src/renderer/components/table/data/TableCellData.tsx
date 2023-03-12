@@ -9,6 +9,7 @@ import TableCellDataNumber from 'renderer/components/table/data/TableCellDataNum
 import TableCellDataBytes from './TableCellDataBytes';
 import TableCellDataCountdown from './TableCellDataCountdown';
 import TableCellDataInterval from './TableCellDataInterval';
+import TableCellDataParsedDate from './TableCellDataParsedDate';
 
 type TableCellDataProps<EntityItem> = {
   row: EntityItem;
@@ -26,6 +27,8 @@ export default function TableCellData<EntityItem>({ row, column }: TableCellData
         return <TableCellDataCron row={row} column={column} />;
       case 'Date':
         return <TableCellDataDate row={row} column={column} />;
+      case 'ParsedDate':
+        return <TableCellDataParsedDate row={row} column={column} />;
       case 'Bytes':
         return <TableCellDataBytes row={row} column={column} />;
       case 'Label':
