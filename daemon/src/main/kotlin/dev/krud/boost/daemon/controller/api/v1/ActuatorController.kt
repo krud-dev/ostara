@@ -1,5 +1,6 @@
 package dev.krud.boost.daemon.controller.api.v1
 
+import dev.krud.boost.daemon.actuator.model.IntegrationGraphActuatorResponse
 import dev.krud.boost.daemon.configuration.authentication.Authentication
 import dev.krud.boost.daemon.configuration.instance.InstanceActuatorClientProvider
 import io.swagger.v3.oas.annotations.Operation
@@ -91,7 +92,7 @@ class ActuatorController(
     @ApiResponse(responseCode = "200", description = "Cache object")
     @ApiResponse(responseCode = "404", description = "Endpoint not available", content = [Content()])
     @ApiResponse(responseCode = "503", description = "Service unavailable", content = [Content()])
-    fun cache(@RequestParam instanceId: UUID, @PathVariable cache: String) = actuatorClientProvider.provide(instanceId).cache(cache)
+    fun cache(@RequestParam instanceId: UUID, @PathVariable cache: String) = actuatorClientProvider.provide(instanceId).cache(cache).getOrThrow()
 
     @DeleteMapping("/caches")
     @ResponseStatus(HttpStatus.NO_CONTENT)
@@ -102,7 +103,7 @@ class ActuatorController(
     @ApiResponse(responseCode = "204", description = "Caches cleared")
     @ApiResponse(responseCode = "404", description = "Endpoint not available", content = [Content()])
     @ApiResponse(responseCode = "503", description = "Service unavailable", content = [Content()])
-    fun evictAllCaches(@RequestParam instanceId: UUID) = actuatorClientProvider.provide(instanceId).evictAllCaches()
+    fun evictAllCaches(@RequestParam instanceId: UUID) = actuatorClientProvider.provide(instanceId).evictAllCaches().getOrThrow()
 
     @DeleteMapping("/caches/{cache}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
@@ -113,7 +114,7 @@ class ActuatorController(
     @ApiResponse(responseCode = "204", description = "Cache cleared")
     @ApiResponse(responseCode = "404", description = "Endpoint not available", content = [Content()])
     @ApiResponse(responseCode = "503", description = "Service unavailable", content = [Content()])
-    fun evictCache(@RequestParam instanceId: UUID, @PathVariable cache: String) = actuatorClientProvider.provide(instanceId).evictCache(cache)
+    fun evictCache(@RequestParam instanceId: UUID, @PathVariable cache: String) = actuatorClientProvider.provide(instanceId).evictCache(cache).getOrThrow()
 
     @GetMapping("/beans")
     @ResponseStatus(HttpStatus.OK)
@@ -124,7 +125,7 @@ class ActuatorController(
     @ApiResponse(responseCode = "200", description = "Beans list")
     @ApiResponse(responseCode = "404", description = "Endpoint not available", content = [Content()])
     @ApiResponse(responseCode = "503", description = "Service unavailable", content = [Content()])
-    fun beans(@RequestParam instanceId: UUID) = actuatorClientProvider.provide(instanceId).beans()
+    fun beans(@RequestParam instanceId: UUID) = actuatorClientProvider.provide(instanceId).beans().getOrThrow()
 
     @GetMapping("/mappings")
     @ResponseStatus(HttpStatus.OK)
@@ -135,7 +136,7 @@ class ActuatorController(
     @ApiResponse(responseCode = "200", description = "Mappings list")
     @ApiResponse(responseCode = "404", description = "Endpoint not available", content = [Content()])
     @ApiResponse(responseCode = "503", description = "Service unavailable", content = [Content()])
-    fun mappings(@RequestParam instanceId: UUID) = actuatorClientProvider.provide(instanceId).mappings()
+    fun mappings(@RequestParam instanceId: UUID) = actuatorClientProvider.provide(instanceId).mappings().getOrThrow()
 
     @GetMapping("/logfile")
     @ResponseStatus(HttpStatus.OK)
@@ -146,7 +147,7 @@ class ActuatorController(
     @ApiResponse(responseCode = "200", description = "Logfile content")
     @ApiResponse(responseCode = "404", description = "Endpoint not available", content = [Content()])
     @ApiResponse(responseCode = "503", description = "Service unavailable", content = [Content()])
-    fun logfile(@RequestParam instanceId: UUID, @RequestParam(required = false) start: Long?, @RequestParam(required = false) end: Long?) = actuatorClientProvider.provide(instanceId).logfile(start, end)
+    fun logfile(@RequestParam instanceId: UUID, @RequestParam(required = false) start: Long?, @RequestParam(required = false) end: Long?) = actuatorClientProvider.provide(instanceId).logfile(start, end).getOrThrow()
 
     @GetMapping("/metrics")
     @ResponseStatus(HttpStatus.OK)
@@ -157,7 +158,7 @@ class ActuatorController(
     @ApiResponse(responseCode = "200", description = "Metrics list")
     @ApiResponse(responseCode = "404", description = "Endpoint not available", content = [Content()])
     @ApiResponse(responseCode = "503", description = "Service unavailable", content = [Content()])
-    fun metrics(@RequestParam instanceId: UUID) = actuatorClientProvider.provide(instanceId).metrics()
+    fun metrics(@RequestParam instanceId: UUID) = actuatorClientProvider.provide(instanceId).metrics().getOrThrow()
 
     @PostMapping("/metrics/{metric}")
     @ResponseStatus(HttpStatus.OK)
@@ -168,7 +169,7 @@ class ActuatorController(
     @ApiResponse(responseCode = "200", description = "Metric object")
     @ApiResponse(responseCode = "404", description = "Endpoint not available", content = [Content()])
     @ApiResponse(responseCode = "503", description = "Service unavailable", content = [Content()])
-    fun metric(@RequestParam instanceId: UUID, @PathVariable metric: String, @RequestBody(required = false) tags: Map<String, String>?) = actuatorClientProvider.provide(instanceId).metric(metric, tags ?: emptyMap())
+    fun metric(@RequestParam instanceId: UUID, @PathVariable metric: String, @RequestBody(required = false) tags: Map<String, String>?) = actuatorClientProvider.provide(instanceId).metric(metric, tags ?: emptyMap()).getOrThrow()
 
     @GetMapping("/shutdown")
     @ResponseStatus(HttpStatus.OK)
@@ -179,7 +180,7 @@ class ActuatorController(
     @ApiResponse(responseCode = "200", description = "Shutdown successful")
     @ApiResponse(responseCode = "404", description = "Endpoint not available", content = [Content()])
     @ApiResponse(responseCode = "503", description = "Service unavailable", content = [Content()])
-    fun shutdown(@RequestParam instanceId: UUID) = actuatorClientProvider.provide(instanceId).shutdown()
+    fun shutdown(@RequestParam instanceId: UUID) = actuatorClientProvider.provide(instanceId).shutdown().getOrThrow()
 
     @GetMapping("/env")
     @ResponseStatus(HttpStatus.OK)
@@ -190,7 +191,7 @@ class ActuatorController(
     @ApiResponse(responseCode = "200", description = "Environment object")
     @ApiResponse(responseCode = "404", description = "Endpoint not available", content = [Content()])
     @ApiResponse(responseCode = "503", description = "Service unavailable", content = [Content()])
-    fun env(@RequestParam instanceId: UUID) = actuatorClientProvider.provide(instanceId).env()
+    fun env(@RequestParam instanceId: UUID) = actuatorClientProvider.provide(instanceId).env().getOrThrow()
 
     @GetMapping("/env/{property}")
     @ResponseStatus(HttpStatus.OK)
@@ -201,7 +202,7 @@ class ActuatorController(
     @ApiResponse(responseCode = "200", description = "Environment property object")
     @ApiResponse(responseCode = "404", description = "Endpoint not available", content = [Content()])
     @ApiResponse(responseCode = "503", description = "Service unavailable", content = [Content()])
-    fun envProperty(@RequestParam instanceId: UUID, @PathVariable property: String) = actuatorClientProvider.provide(instanceId).envProperty(property)
+    fun envProperty(@RequestParam instanceId: UUID, @PathVariable property: String) = actuatorClientProvider.provide(instanceId).envProperty(property).getOrThrow()
 
     @GetMapping("/configProps")
     @ResponseStatus(HttpStatus.OK)
@@ -212,7 +213,7 @@ class ActuatorController(
     @ApiResponse(responseCode = "200", description = "Config props object")
     @ApiResponse(responseCode = "404", description = "Endpoint not available", content = [Content()])
     @ApiResponse(responseCode = "503", description = "Service unavailable", content = [Content()])
-    fun configProps(@RequestParam instanceId: UUID) = actuatorClientProvider.provide(instanceId).configProps()
+    fun configProps(@RequestParam instanceId: UUID) = actuatorClientProvider.provide(instanceId).configProps().getOrThrow()
 
     @GetMapping("/flyway")
     @ResponseStatus(HttpStatus.OK)
@@ -223,7 +224,7 @@ class ActuatorController(
     @ApiResponse(responseCode = "200", description = "Flyway object")
     @ApiResponse(responseCode = "404", description = "Endpoint not available", content = [Content()])
     @ApiResponse(responseCode = "503", description = "Service unavailable", content = [Content()])
-    fun flyway(@RequestParam instanceId: UUID) = actuatorClientProvider.provide(instanceId).flyway()
+    fun flyway(@RequestParam instanceId: UUID) = actuatorClientProvider.provide(instanceId).flyway().getOrThrow()
 
     @GetMapping("/liquibase")
     @ResponseStatus(HttpStatus.OK)
@@ -234,7 +235,7 @@ class ActuatorController(
     @ApiResponse(responseCode = "200", description = "Liquibase object")
     @ApiResponse(responseCode = "404", description = "Endpoint not available", content = [Content()])
     @ApiResponse(responseCode = "503", description = "Service unavailable", content = [Content()])
-    fun liquibase(@RequestParam instanceId: UUID) = actuatorClientProvider.provide(instanceId).liquibase()
+    fun liquibase(@RequestParam instanceId: UUID) = actuatorClientProvider.provide(instanceId).liquibase().getOrThrow()
 
     @GetMapping("/threadDump")
     @ResponseStatus(HttpStatus.OK)
@@ -245,7 +246,7 @@ class ActuatorController(
     @ApiResponse(responseCode = "200", description = "Thread dump object")
     @ApiResponse(responseCode = "404", description = "Endpoint not available", content = [Content()])
     @ApiResponse(responseCode = "503", description = "Service unavailable", content = [Content()])
-    fun threadDump(@RequestParam instanceId: UUID) = actuatorClientProvider.provide(instanceId).threadDump()
+    fun threadDump(@RequestParam instanceId: UUID) = actuatorClientProvider.provide(instanceId).threadDump().getOrThrow()
 
     @GetMapping("/heapDump")
     @ResponseStatus(HttpStatus.OK)
@@ -256,7 +257,7 @@ class ActuatorController(
     @ApiResponse(responseCode = "200", description = "Heap dump object")
     @ApiResponse(responseCode = "404", description = "Endpoint not available", content = [Content()])
     @ApiResponse(responseCode = "503", description = "Service unavailable", content = [Content()])
-    fun heapDump(@RequestParam instanceId: UUID) = actuatorClientProvider.provide(instanceId).heapDump()
+    fun heapDump(@RequestParam instanceId: UUID) = actuatorClientProvider.provide(instanceId).heapDump().getOrThrow()
 
     @GetMapping("/loggers")
     @ResponseStatus(HttpStatus.OK)
@@ -267,7 +268,7 @@ class ActuatorController(
     @ApiResponse(responseCode = "200", description = "Loggers object")
     @ApiResponse(responseCode = "404", description = "Endpoint not available", content = [Content()])
     @ApiResponse(responseCode = "503", description = "Service unavailable", content = [Content()])
-    fun loggers(@RequestParam instanceId: UUID) = actuatorClientProvider.provide(instanceId).loggers()
+    fun loggers(@RequestParam instanceId: UUID) = actuatorClientProvider.provide(instanceId).loggers().getOrThrow()
 
     @GetMapping("/loggers/{loggerOrGroupName}")
     @ResponseStatus(HttpStatus.OK)
@@ -278,7 +279,7 @@ class ActuatorController(
     @ApiResponse(responseCode = "200", description = "Logger object")
     @ApiResponse(responseCode = "404", description = "Endpoint not available", content = [Content()])
     @ApiResponse(responseCode = "503", description = "Service unavailable", content = [Content()])
-    fun logger(@RequestParam instanceId: UUID, @PathVariable loggerOrGroupName: String) = actuatorClientProvider.provide(instanceId).logger(loggerOrGroupName)
+    fun logger(@RequestParam instanceId: UUID, @PathVariable loggerOrGroupName: String) = actuatorClientProvider.provide(instanceId).logger(loggerOrGroupName).getOrThrow()
 
     @PostMapping("/loggers/{loggerOrGroupName}")
     @ResponseStatus(HttpStatus.OK)
@@ -289,7 +290,7 @@ class ActuatorController(
     @ApiResponse(responseCode = "200", description = "Logger object")
     @ApiResponse(responseCode = "404", description = "Endpoint not available", content = [Content()])
     @ApiResponse(responseCode = "503", description = "Service unavailable", content = [Content()])
-    fun updateLogger(@RequestParam instanceId: UUID, @PathVariable loggerOrGroupName: String, @RequestParam logLevel: LogLevel) = actuatorClientProvider.provide(instanceId).updateLogger(loggerOrGroupName, logLevel)
+    fun updateLogger(@RequestParam instanceId: UUID, @PathVariable loggerOrGroupName: String, @RequestParam logLevel: LogLevel) = actuatorClientProvider.provide(instanceId).updateLogger(loggerOrGroupName, logLevel).getOrThrow()
 
     @GetMapping("/integrationgraph")
     @ResponseStatus(HttpStatus.OK)
@@ -300,7 +301,7 @@ class ActuatorController(
     @ApiResponse(responseCode = "200", description = "Integration graph object")
     @ApiResponse(responseCode = "404", description = "Endpoint not available", content = [Content()])
     @ApiResponse(responseCode = "503", description = "Service unavailable", content = [Content()])
-    fun integrationGraph(@RequestParam instanceId: UUID) = actuatorClientProvider.provide(instanceId).integrationGraph()
+    fun integrationGraph(@RequestParam instanceId: UUID) = actuatorClientProvider.provide(instanceId).integrationGraph().getOrThrow()
 
     @GetMapping("/scheduledtasks")
     @ResponseStatus(HttpStatus.OK)
@@ -311,7 +312,7 @@ class ActuatorController(
     @ApiResponse(responseCode = "200", description = "Scheduled tasks object")
     @ApiResponse(responseCode = "404", description = "Endpoint not available", content = [Content()])
     @ApiResponse(responseCode = "503", description = "Service unavailable", content = [Content()])
-    fun scheduledTasks(@RequestParam instanceId: UUID) = actuatorClientProvider.provide(instanceId).scheduledTasks()
+    fun scheduledTasks(@RequestParam instanceId: UUID) = actuatorClientProvider.provide(instanceId).scheduledTasks().getOrThrow()
 
     @GetMapping("/quartz")
     @ResponseStatus(HttpStatus.OK)
@@ -322,7 +323,7 @@ class ActuatorController(
     @ApiResponse(responseCode = "200", description = "Quartz object")
     @ApiResponse(responseCode = "404", description = "Endpoint not available", content = [Content()])
     @ApiResponse(responseCode = "503", description = "Service unavailable", content = [Content()])
-    fun quartz(@RequestParam instanceId: UUID) = actuatorClientProvider.provide(instanceId).quartz()
+    fun quartz(@RequestParam instanceId: UUID) = actuatorClientProvider.provide(instanceId).quartz().getOrThrow()
 
     @GetMapping("/quartz/jobs")
     @ResponseStatus(HttpStatus.OK)
@@ -333,7 +334,7 @@ class ActuatorController(
     @ApiResponse(responseCode = "200", description = "Quartz jobs object")
     @ApiResponse(responseCode = "404", description = "Endpoint not available or group not found", content = [Content()])
     @ApiResponse(responseCode = "503", description = "Service unavailable", content = [Content()])
-    fun quartzJobs(@RequestParam instanceId: UUID) = actuatorClientProvider.provide(instanceId).quartzJobs()
+    fun quartzJobs(@RequestParam instanceId: UUID) = actuatorClientProvider.provide(instanceId).quartzJobs().getOrThrow()
 
     @GetMapping("/quartz/jobs/{group}")
     @ResponseStatus(HttpStatus.OK)
@@ -344,7 +345,7 @@ class ActuatorController(
     @ApiResponse(responseCode = "200", description = "Quartz jobs object")
     @ApiResponse(responseCode = "404", description = "Endpoint not available or group not found", content = [Content()])
     @ApiResponse(responseCode = "503", description = "Service unavailable", content = [Content()])
-    fun quartzJobsByGroup(@RequestParam instanceId: UUID, @PathVariable group: String) = actuatorClientProvider.provide(instanceId).quartzJobsByGroup(group)
+    fun quartzJobsByGroup(@RequestParam instanceId: UUID, @PathVariable group: String) = actuatorClientProvider.provide(instanceId).quartzJobsByGroup(group).getOrThrow()
 
     @GetMapping("/quartz/jobs/{group}/{name}")
     @ResponseStatus(HttpStatus.OK)
@@ -355,7 +356,7 @@ class ActuatorController(
     @ApiResponse(responseCode = "200", description = "Quartz job object")
     @ApiResponse(responseCode = "404", description = "Endpoint not available or job not found", content = [Content()])
     @ApiResponse(responseCode = "503", description = "Service unavailable", content = [Content()])
-    fun quartzJob(@RequestParam instanceId: UUID, @PathVariable group: String, @PathVariable name: String) = actuatorClientProvider.provide(instanceId).quartzJob(group, name)
+    fun quartzJob(@RequestParam instanceId: UUID, @PathVariable group: String, @PathVariable name: String) = actuatorClientProvider.provide(instanceId).quartzJob(group, name).getOrThrow()
 
     @GetMapping("/quartz/triggers")
     @ResponseStatus(HttpStatus.OK)
@@ -366,7 +367,7 @@ class ActuatorController(
     @ApiResponse(responseCode = "200", description = "Quartz triggers object")
     @ApiResponse(responseCode = "404", description = "Endpoint not available or group not found", content = [Content()])
     @ApiResponse(responseCode = "503", description = "Service unavailable", content = [Content()])
-    fun quartzTriggers(@RequestParam instanceId: UUID) = actuatorClientProvider.provide(instanceId).quartzTriggers()
+    fun quartzTriggers(@RequestParam instanceId: UUID) = actuatorClientProvider.provide(instanceId).quartzTriggers().getOrThrow()
 
     @GetMapping("/quartz/triggers/{group}")
     @ResponseStatus(HttpStatus.OK)
@@ -377,7 +378,7 @@ class ActuatorController(
     @ApiResponse(responseCode = "200", description = "Quartz triggers object")
     @ApiResponse(responseCode = "404", description = "Endpoint not available or group not found", content = [Content()])
     @ApiResponse(responseCode = "503", description = "Service unavailable", content = [Content()])
-    fun quartzTriggersByGroup(@RequestParam instanceId: UUID, @PathVariable group: String) = actuatorClientProvider.provide(instanceId).quartzTriggersByGroup(group)
+    fun quartzTriggersByGroup(@RequestParam instanceId: UUID, @PathVariable group: String) = actuatorClientProvider.provide(instanceId).quartzTriggersByGroup(group).getOrThrow()
 
     @GetMapping("/quartz/triggers/{group}/{name}")
     @ResponseStatus(HttpStatus.OK)
@@ -388,5 +389,5 @@ class ActuatorController(
     @ApiResponse(responseCode = "200", description = "Quartz trigger object")
     @ApiResponse(responseCode = "404", description = "Endpoint not available or trigger not found", content = [Content()])
     @ApiResponse(responseCode = "503", description = "Service unavailable", content = [Content()])
-    fun quartzTrigger(@RequestParam instanceId: UUID, @PathVariable group: String, @PathVariable name: String) = actuatorClientProvider.provide(instanceId).quartzTrigger(group, name)
+    fun quartzTrigger(@RequestParam instanceId: UUID, @PathVariable group: String, @PathVariable name: String) = actuatorClientProvider.provide(instanceId).quartzTrigger(group, name).getOrThrow()
 }
