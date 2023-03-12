@@ -9,7 +9,7 @@ export interface DynamicModelFilter {
     cacheKey: string;
 }
 
-export interface PagedResult<T> {
+export interface PagedResult<T> extends Iterable<T>, KMappedMarker {
     start?: number;
     limit?: number;
     total: number;
@@ -434,6 +434,9 @@ export interface FilterField {
     children: FilterField[];
 }
 
+export interface KMappedMarker {
+}
+
 export interface BeansActuatorResponse$Context {
     beans: { [index: string]: BeansActuatorResponse$Context$Bean };
 }
@@ -644,6 +647,9 @@ export interface EffectiveAuthentication {
     authentication: Authentication;
     sourceType: EffectiveAuthentication$SourceType;
     sourceId: string;
+}
+
+export interface Iterable<T> {
 }
 
 export interface BeansActuatorResponse$Context$Bean {
