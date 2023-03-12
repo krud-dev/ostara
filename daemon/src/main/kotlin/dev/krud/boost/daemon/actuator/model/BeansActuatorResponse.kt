@@ -16,4 +16,3 @@ data class BeansActuatorResponse(
         )
     }
 }
-

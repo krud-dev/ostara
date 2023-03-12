@@ -1,5 +1,6 @@
 package dev.krud.boost.daemon.actuator.model
 
+import dev.krud.boost.daemon.jackson.ParsedDate
 import java.util.*
 
 data class QuartzTriggersByGroupResponse(
@@ -16,23 +17,23 @@ data class QuartzTriggersByGroupResponse(
     )
 
     data class Cron(
-        val previousFireTime: Date?,
-        val nextFireTime: Date?,
+        val previousFireTime: ParsedDate?,
+        val nextFireTime: ParsedDate?,
         val priority: Int,
         val expression: String,
         val timeZone: String
     )
 
     data class Simple(
-        val previousFireTime: Date?,
-        val nextFireTime: Date?,
+        val previousFireTime: ParsedDate?,
+        val nextFireTime: ParsedDate?,
         val priority: Int,
         val interval: Long
     )
 
     data class DailyTimeInterval(
-        val previousFireTime: Date?,
-        val nextFireTime: Date?,
+        val previousFireTime: ParsedDate?,
+        val nextFireTime: ParsedDate?,
         val priority: Int,
         val interval: Long,
         val daysOfWeek: List<String>,
@@ -41,16 +42,16 @@ data class QuartzTriggersByGroupResponse(
     )
 
     data class CalendarInterval(
-        val previousFireTime: Date?,
-        val nextFireTime: Date?,
+        val previousFireTime: ParsedDate?,
+        val nextFireTime: ParsedDate?,
         val priority: Int,
         val interval: Long,
         val timeZone: String
     )
 
     data class Custom(
-        val previousFireTime: Date?,
-        val nextFireTime: Date?,
+        val previousFireTime: ParsedDate?,
+        val nextFireTime: ParsedDate?,
         val priority: Int,
         val trigger: String
     )

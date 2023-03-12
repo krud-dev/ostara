@@ -39,7 +39,8 @@ class InstanceMetricControllerTest {
                     "bytes",
                     listOf(
                         InstanceMetricValueRO(
-                            1.0, Date(0L)
+                            1.0,
+                            Date(0L)
                         )
                     )
                 )

@@ -1,5 +1,6 @@
 package dev.krud.boost.daemon.actuator.model
 
+import dev.krud.boost.daemon.jackson.ParsedDate
 import java.util.*
 
 data class QuartzJobResponse(
@@ -15,8 +16,8 @@ data class QuartzJobResponse(
     data class Trigger(
         val group: String,
         val name: String,
-        val previousFireTime: Date?,
-        val nextFireTime: Date?,
+        val previousFireTime: ParsedDate?,
+        val nextFireTime: ParsedDate?,
         val priority: Int
     )
 }

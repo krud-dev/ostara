@@ -1,6 +1,7 @@
 package dev.krud.boost.daemon.actuator.model
 
 import com.fasterxml.jackson.annotation.JsonProperty
+import dev.krud.boost.daemon.jackson.ParsedDate
 import java.util.*
 
 data class QuartzTriggerResponse(
@@ -10,12 +11,12 @@ data class QuartzTriggerResponse(
     val state: State,
     val type: Type,
     val calendarName: String?,
-    val startTime: Date?,
-    val endTime: Date?,
-    val previousFireTime: Date?,
-    val nextFireTime: Date?,
+    val startTime: ParsedDate?,
+    val endTime: ParsedDate?,
+    val previousFireTime: ParsedDate?,
+    val nextFireTime: ParsedDate?,
     val priority: Int,
-    val finalFireTime: Date?,
+    val finalFireTime: ParsedDate?,
     val data: Map<String, Any>?,
     val calendarInterval: CalendarInterval?,
     val custom: Custom?,

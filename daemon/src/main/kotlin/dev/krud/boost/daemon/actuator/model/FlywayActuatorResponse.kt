@@ -1,5 +1,7 @@
 package dev.krud.boost.daemon.actuator.model
 
+import dev.krud.boost.daemon.jackson.ParsedDate
+
 data class FlywayActuatorResponse(
     val contexts: Map<String, Context>
 ) {
@@ -18,7 +20,7 @@ data class FlywayActuatorResponse(
                 val script: String,
                 val state: String,
                 val installedBy: String,
-                val installedOn: String,
+                val installedOn: ParsedDate,
                 val installedRank: Int,
                 val executionTime: Long
             )

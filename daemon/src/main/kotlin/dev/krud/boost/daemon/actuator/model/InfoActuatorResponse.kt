@@ -1,6 +1,6 @@
 package dev.krud.boost.daemon.actuator.model
 
-import java.util.Date
+import dev.krud.boost.daemon.jackson.ParsedDate
 
 data class InfoActuatorResponse(
     val build: Build?,
@@ -11,16 +11,16 @@ data class InfoActuatorResponse(
         val group: String,
         val name: String,
         val version: String,
-        val time: String? // TODO: change to date
+        val time: ParsedDate?
     )
 
     data class Git(
         val branch: String,
-        val commit: Commit,
+        val commit: Commit
     ) {
         data class Commit(
             val id: String,
-            val time: String? // TODO: change to date
+            val time: ParsedDate?
         )
     }
 }

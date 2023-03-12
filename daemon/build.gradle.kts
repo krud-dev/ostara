@@ -89,11 +89,13 @@ dependencies {
     implementation("com.github.wnameless.json:json-flattener:0.16.4")
     implementation("net.pearx.kasechange:kasechange-jvm:1.3.0")
     implementation("io.hypersistence:hypersistence-utils-hibernate-60:3.2.0")
+    implementation("com.cobber.fta:fta-core:12.10.2")
 
     testImplementation("com.squareup.okhttp3:mockwebserver:4.10.0")
     testImplementation("io.strikt:strikt-core:0.34.0")
     testImplementation("org.springframework.boot:spring-boot-starter-test")
     testImplementation("org.mockito.kotlin:mockito-kotlin:4.1.0")
+
 }
 
 tasks.withType<BootJar> {

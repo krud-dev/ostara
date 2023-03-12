@@ -141,12 +141,12 @@ export interface QuartzTriggerResponse {
     state: QuartzTriggerResponse$State;
     type: QuartzTriggerResponse$Type;
     calendarName?: string;
-    startTime?: DateAsNumber;
-    endTime?: DateAsNumber;
-    previousFireTime?: DateAsNumber;
-    nextFireTime?: DateAsNumber;
+    startTime?: ParsedDate;
+    endTime?: ParsedDate;
+    previousFireTime?: ParsedDate;
+    nextFireTime?: ParsedDate;
     priority: number;
-    finalFireTime?: DateAsNumber;
+    finalFireTime?: ParsedDate;
     data?: { [index: string]: any };
     calendarInterval?: QuartzTriggerResponse$CalendarInterval;
     custom?: QuartzTriggerResponse$Custom;
@@ -496,7 +496,7 @@ export interface InfoActuatorResponse$Build {
     group: string;
     name: string;
     version: string;
-    time?: string;
+    time?: ParsedDate;
 }
 
 export interface InfoActuatorResponse$Git {
@@ -570,8 +570,8 @@ export interface QuartzActuatorResponse$JobsOrTriggers {
 export interface QuartzJobResponse$Trigger {
     group: string;
     name: string;
-    previousFireTime?: DateAsNumber;
-    nextFireTime?: DateAsNumber;
+    previousFireTime?: ParsedDate;
+    nextFireTime?: ParsedDate;
     priority: number;
 }
 
@@ -581,6 +581,11 @@ export interface QuartzJobsByGroupResponse$Job {
 
 export interface QuartzJobsResponse$Group {
     jobs: string[];
+}
+
+export interface ParsedDate {
+    date?: DateAsNumber;
+    original?: string;
 }
 
 export interface QuartzTriggerResponse$CalendarInterval {
@@ -714,7 +719,7 @@ export interface FlywayActuatorResponse$Context$FlywayBean {
 
 export interface InfoActuatorResponse$Git$Commit {
     id: string;
-    time?: string;
+    time?: ParsedDate;
 }
 
 export interface IntegrationGraphActuatorResponse$Node$SendTimer {
@@ -735,23 +740,23 @@ export interface MappingsActuatorResponse$Context$Mappings {
 }
 
 export interface QuartzTriggersByGroupResponse$Cron {
-    previousFireTime?: DateAsNumber;
-    nextFireTime?: DateAsNumber;
+    previousFireTime?: ParsedDate;
+    nextFireTime?: ParsedDate;
     priority: number;
     expression: string;
     timeZone: string;
 }
 
 export interface QuartzTriggersByGroupResponse$Simple {
-    previousFireTime?: DateAsNumber;
-    nextFireTime?: DateAsNumber;
+    previousFireTime?: ParsedDate;
+    nextFireTime?: ParsedDate;
     priority: number;
     interval: number;
 }
 
 export interface QuartzTriggersByGroupResponse$DailyTimeInterval {
-    previousFireTime?: DateAsNumber;
-    nextFireTime?: DateAsNumber;
+    previousFireTime?: ParsedDate;
+    nextFireTime?: ParsedDate;
     priority: number;
     interval: number;
     daysOfWeek: string[];
@@ -760,16 +765,16 @@ export interface QuartzTriggersByGroupResponse$DailyTimeInterval {
 }
 
 export interface QuartzTriggersByGroupResponse$CalendarInterval {
-    previousFireTime?: DateAsNumber;
-    nextFireTime?: DateAsNumber;
+    previousFireTime?: ParsedDate;
+    nextFireTime?: ParsedDate;
     priority: number;
     interval: number;
     timeZone: string;
 }
 
 export interface QuartzTriggersByGroupResponse$Custom {
-    previousFireTime?: DateAsNumber;
-    nextFireTime?: DateAsNumber;
+    previousFireTime?: ParsedDate;
+    nextFireTime?: ParsedDate;
     priority: number;
     trigger: string;
 }
@@ -845,7 +850,7 @@ export interface FlywayActuatorResponse$Context$FlywayBean$Migration {
     script: string;
     state: string;
     installedBy: string;
-    installedOn: string;
+    installedOn: ParsedDate;
     installedRank: number;
     executionTime: number;
 }
@@ -858,7 +863,7 @@ export interface LiquibaseActuatorResponse$Context$LiquibaseBean$ChangeSet {
     changeLog: string;
     comments: string;
     contexts: string[];
-    dateExecuted: string;
+    dateExecuted: ParsedDate;
     deploymentId: string;
     description: string;
     execType: string;

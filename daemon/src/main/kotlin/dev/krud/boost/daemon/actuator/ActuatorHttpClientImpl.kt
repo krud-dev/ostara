@@ -36,6 +36,7 @@ import dev.krud.boost.daemon.exception.throwBadRequest
 import dev.krud.boost.daemon.exception.throwInternalServerError
 import dev.krud.boost.daemon.exception.throwServiceUnavailable
 import dev.krud.boost.daemon.exception.throwStatusCode
+import dev.krud.boost.daemon.jackson.MultiDateParsingModule
 import okhttp3.Authenticator
 import okhttp3.HttpUrl
 import okhttp3.HttpUrl.Companion.toHttpUrl
@@ -57,6 +58,9 @@ class ActuatorHttpClientImpl(
     internal val objectMapper = ObjectMapper().apply {
         registerModule(JavaTimeModule())
         registerModule(KotlinModule.Builder().build())
+        registerModule(
+            MultiDateParsingModule()
+        )
         configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false)
     }
 

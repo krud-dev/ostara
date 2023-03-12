@@ -1,5 +1,7 @@
 package dev.krud.boost.daemon.actuator.model
 
+import dev.krud.boost.daemon.jackson.ParsedDate
+
 data class LiquibaseActuatorResponse(
     val contexts: Map<String, Context>
 ) {
@@ -18,7 +20,7 @@ data class LiquibaseActuatorResponse(
                 val changeLog: String,
                 val comments: String,
                 val contexts: List<String>,
-                val dateExecuted: String,
+                val dateExecuted: ParsedDate,
                 val deploymentId: String,
                 val description: String,
                 val execType: String,
