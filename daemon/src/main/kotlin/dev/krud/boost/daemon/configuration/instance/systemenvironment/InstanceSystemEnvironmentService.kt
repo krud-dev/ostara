@@ -8,7 +8,9 @@ import dev.krud.boost.daemon.configuration.instance.messaging.InstanceDeletedEve
 import dev.krud.boost.daemon.configuration.instance.messaging.InstanceHealthChangedEventMessage
 import dev.krud.boost.daemon.configuration.instance.messaging.InstanceUpdatedEventMessage
 import dev.krud.boost.daemon.configuration.instance.systemenvironment.ro.InstanceSystemEnvironmentRO
+import dev.krud.boost.daemon.configuration.instance.systemproperties.ro.InstanceSystemPropertiesRO
 import dev.krud.boost.daemon.exception.throwInternalServerError
+import dev.krud.boost.daemon.utils.ACTUATOR_REDACTED_STRING
 import dev.krud.boost.daemon.utils.resolve
 import org.springframework.cache.CacheManager
 import org.springframework.cache.annotation.Cacheable
@@ -52,9 +54,21 @@ class InstanceSystemEnvironmentService(
             .getOrElse { throwInternalServerError("Unable to get system properties") }
         val systemProperties = propertySources.first { it.name == "systemEnvironment" }
         val properties = systemProperties.properties ?: throwInternalServerError("Unable to get system environment")
+        var redactedCount = 0
+        val propertiesMap = properties.entries.associate {
+            if (it.value.value == ACTUATOR_REDACTED_STRING) {
+                redactedCount++
+            }
+            it.key to it.value.value
+        }
+
+        val redactionPercentage = redactedCount.toDouble() / propertiesMap.size.toDouble() * 100.0
         return InstanceSystemEnvironmentRO(
-            properties.entries.associate {
-                it.key to it.value.value
+            propertiesMap,
+            when {
+                redactionPercentage == 100.0 -> InstanceSystemEnvironmentRO.RedactionLevel.FULL
+                redactionPercentage > 0.0 -> InstanceSystemEnvironmentRO.RedactionLevel.PARTIAL
+                else -> InstanceSystemEnvironmentRO.RedactionLevel.NONE
             }
         )
     }

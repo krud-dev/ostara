@@ -9,6 +9,7 @@ import dev.krud.boost.daemon.configuration.instance.messaging.InstanceHealthChan
 import dev.krud.boost.daemon.configuration.instance.messaging.InstanceUpdatedEventMessage
 import dev.krud.boost.daemon.configuration.instance.systemproperties.ro.InstanceSystemPropertiesRO
 import dev.krud.boost.daemon.exception.throwInternalServerError
+import dev.krud.boost.daemon.utils.ACTUATOR_REDACTED_STRING
 import dev.krud.boost.daemon.utils.resolve
 import org.springframework.cache.CacheManager
 import org.springframework.cache.annotation.Cacheable
@@ -54,7 +55,7 @@ class InstanceSystemPropertiesService(
         val properties = systemProperties.properties ?: throwInternalServerError("Unable to get system properties")
         var redactedCount = 0
         val propertiesMap = properties.entries.associate {
-            if (it.value.value == REDACTED_STRING) {
+            if (it.value.value == ACTUATOR_REDACTED_STRING) {
                 redactedCount++
             }
             it.key to it.value.value
@@ -68,9 +69,5 @@ class InstanceSystemPropertiesService(
                 else -> InstanceSystemPropertiesRO.RedactionLevel.NONE
             }
         )
-    }
-
-    companion object {
-        private const val REDACTED_STRING = "******"
     }
 }

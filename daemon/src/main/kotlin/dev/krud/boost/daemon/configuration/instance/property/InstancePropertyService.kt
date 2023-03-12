@@ -1,10 +1,6 @@
 package dev.krud.boost.daemon.configuration.instance.property
 
-import com.cobber.fta.dates.DateTimeParser
-import com.fasterxml.jackson.core.type.TypeReference
 import com.fasterxml.jackson.databind.ObjectMapper
-import com.fasterxml.jackson.databind.node.ArrayNode
-import com.fasterxml.jackson.module.kotlin.kotlinModule
 import com.github.wnameless.json.flattener.JsonFlattener
 import com.github.wnameless.json.unflattener.JsonUnflattener
 import dev.krud.boost.daemon.actuator.model.ConfigPropsActuatorResponse
@@ -13,15 +9,10 @@ import dev.krud.boost.daemon.configuration.instance.InstanceService
 import dev.krud.boost.daemon.configuration.instance.ability.InstanceAbilityService
 import dev.krud.boost.daemon.configuration.instance.enums.InstanceAbility
 import dev.krud.boost.daemon.configuration.instance.property.ro.InstancePropertyRO
-import dev.krud.boost.daemon.jackson.MultiDateParsingModule
-import dev.krud.boost.daemon.utils.toCalendar
-import dev.krud.boost.daemon.utils.toDate
+import dev.krud.boost.daemon.utils.ACTUATOR_REDACTED_STRING
 import net.pearx.kasechange.toKebabCase
 import org.springframework.cache.annotation.Cacheable
 import org.springframework.stereotype.Service
-import java.time.LocalDateTime
-import java.time.format.DateTimeFormatterBuilder
-import java.time.temporal.ChronoField
 import java.util.*
 
 @Service
@@ -33,6 +24,9 @@ class InstancePropertyService(
 ) {
     @Cacheable(cacheNames = ["instancePropertyCache"], key = "#instanceId")
     fun getProperties(instanceId: UUID): InstancePropertyRO {
+        var propertyCount = 0
+        var redactedCount = 0
+        var emptyArrayOrObjectCount = 0
         val instance = instanceService.getInstanceOrThrow(instanceId)
         instanceAbilityService.hasAbilityOrThrow(instance, InstanceAbility.PROPERTIES)
         val actuatorClient = actuatorClientProvider.provide(instance)
@@ -41,9 +35,27 @@ class InstancePropertyService(
 
         for ((contextName, context) in configProps.contexts) {
             val flattened = context.beans.values.flattenProperties()
+            flattened.forEach { (key, value) ->
+                propertyCount++
+                if (value == ACTUATOR_REDACTED_STRING) {
+                    redactedCount++
+                } else {
+                    if ((value is List<*> && value.isEmpty()) || (value is Map<*, *> && value.isEmpty())) {
+                        emptyArrayOrObjectCount++
+                    }
+                }
+            }
             contexts[contextName] = JsonUnflattener(flattened).unflattenAsMap()
         }
-        return InstancePropertyRO(contexts)
+        val redactionPercentage = redactedCount.toDouble() / (propertyCount.toDouble() - emptyArrayOrObjectCount.toDouble()) * 100.0
+        return InstancePropertyRO(
+            contexts,
+            when {
+                redactionPercentage == 100.0 -> InstancePropertyRO.RedactionLevel.FULL
+                redactionPercentage > 0.0 -> InstancePropertyRO.RedactionLevel.PARTIAL
+                else -> InstancePropertyRO.RedactionLevel.NONE
+            }
+        )
     }
 
     private fun Collection<ConfigPropsActuatorResponse.Context.Bean>.flattenProperties(): Map<String, Any> {
