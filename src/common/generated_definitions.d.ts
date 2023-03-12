@@ -360,6 +360,7 @@ export interface InstanceRO {
     abilities: InstanceAbility[];
     health: InstanceHealthRO;
     effectiveAuthentication: EffectiveAuthentication;
+    activeProfiles: string[];
 }
 
 export interface InstanceSystemEnvironmentRO {
