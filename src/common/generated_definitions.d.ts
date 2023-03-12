@@ -508,7 +508,7 @@ export interface IntegrationGraphActuatorResponse$ContentDescriptor {
     providerVersion: string;
     providerFormatVersion: number;
     provider: string;
-    name: string;
+    name?: string;
 }
 
 export interface IntegrationGraphActuatorResponse$Node {

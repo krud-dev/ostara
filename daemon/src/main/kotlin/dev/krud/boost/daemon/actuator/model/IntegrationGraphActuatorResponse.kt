@@ -11,7 +11,7 @@ data class IntegrationGraphActuatorResponse(
         val providerVersion: String,
         val providerFormatVersion: Double,
         val provider: String,
-        val name: String
+        val name: String?
     )
 
     data class Node(
