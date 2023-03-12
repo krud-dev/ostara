@@ -1,5 +1,5 @@
 import { Box, Typography } from '@mui/material';
-import React, { useMemo } from 'react';
+import React, { useEffect, useMemo } from 'react';
 import { alpha, experimentalStyled as styled } from '@mui/material/styles';
 import { Handle, NodeProps, Position } from 'reactflow';
 import { NODE_HEIGHT, NODE_WIDTH } from '../utils/reactFlowUtils';
@@ -26,21 +26,51 @@ const NodeStyled = styled(Box)(({ theme }) => ({
 
 type CustomNodeProps = NodeProps;
 
-export default function CustomNode({ data }: CustomNodeProps) {
-  const { search, isHighlight } = useReactFlow();
+export default function CustomNode({ id, data }: CustomNodeProps) {
+  const { search, selectedNode, incomingNodeIds, outgoingNodeIds, isHighlight } = useReactFlow();
 
-  const highlight = useMemo<boolean>(() => isHighlight(search, data), [search, data]);
+  const selected = useMemo(() => selectedNode?.id === id, [selectedNode, id]);
+  const incoming = useMemo<boolean>(
+    () => !selected && !!incomingNodeIds?.includes(id),
+    [incomingNodeIds, selected, data.id]
+  );
+  const outgoing = useMemo<boolean>(
+    () => !selected && !!outgoingNodeIds?.includes(id),
+    [outgoingNodeIds, selected, data.id]
+  );
+  const highlight = useMemo<boolean>(
+    () => !selected && !incoming && !outgoing && isHighlight(search, data),
+    [selected, incoming, search, data]
+  );
 
   return (
     <NodeStyled
-      sx={
-        highlight
+      sx={{
+        ...(selected
+          ? {
+              background: (theme) => alpha(theme.palette.primary.main, 0.16),
+              borderColor: (theme) => theme.palette.primary.main,
+            }
+          : undefined),
+        ...(incoming
+          ? {
+              background: (theme) => alpha(theme.palette.warning.main, 0.16),
+              borderColor: (theme) => theme.palette.warning.main,
+            }
+          : undefined),
+        ...(outgoing
+          ? {
+              background: (theme) => alpha(theme.palette.fatal.main, 0.16),
+              borderColor: (theme) => theme.palette.fatal.main,
+            }
+          : undefined),
+        ...(highlight
           ? {
               background: (theme) => alpha(theme.palette.info.main, 0.16),
               borderColor: (theme) => theme.palette.info.main,
             }
-          : undefined
-      }
+          : undefined),
+      }}
     >
       <Handle type="target" position={Position.Left} />
       <Typography variant={'body2'} noWrap sx={{ direction: 'rtl', textAlign: 'center' }}>

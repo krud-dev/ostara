@@ -1,10 +1,17 @@
-import React, { FunctionComponent, useEffect, useMemo, useRef, useState } from 'react';
+import React, {
+  FunctionComponent,
+  MouseEvent as ReactMouseEvent,
+  useCallback,
+  useEffect,
+  useMemo,
+  useRef,
+} from 'react';
 import { alpha, experimentalStyled as styled } from '@mui/material/styles';
 import { Background, Controls, MiniMap, OnInit, ReactFlow, ReactFlowInstance } from 'reactflow';
 import CustomNode from './CustomNode';
 import { NodeTypes } from '@reactflow/core/dist/esm/types/general';
-import { getLayoutElements, ReactFlowData } from '../utils/reactFlowUtils';
 import { useReactFlow } from '../contexts/ReactFlowContext';
+import { Node } from '@reactflow/core/dist/esm/types/nodes';
 
 const ReactFlowStyled = styled(ReactFlow)(({ theme }) => ({
   backgroundColor: theme.palette.background.paper,
@@ -54,51 +61,55 @@ const ControlsStyled = styled(Controls)(({ theme }) => ({
   },
 }));
 
-type CustomReactFlowProps = {
-  data: ReactFlowData;
-};
+type CustomReactFlowProps = {};
 
-const CustomReactFlow: FunctionComponent<CustomReactFlowProps> = ({ data }) => {
-  const { search, isHighlight } = useReactFlow();
+const CustomReactFlow: FunctionComponent<CustomReactFlowProps> = ({}) => {
+  const { graphData, search, isHighlight, selectNode } = useReactFlow();
 
   const reactFlowRef = useRef<ReactFlowInstance>();
-
-  const [layoutData, setLayoutData] = useState<ReactFlowData | undefined>(undefined);
 
   const nodeTypes = useMemo<NodeTypes>(() => ({ custom: CustomNode }), []);
 
   useEffect(() => {
-    (async () => {
-      setLayoutData(await getLayoutElements(data.nodes, data.edges));
-    })();
-  }, [data]);
-
-  useEffect(() => {
     if (search) {
-      const highlightedNodes = layoutData?.nodes?.filter((node) => isHighlight(search, node.data));
+      const highlightedNodes = graphData?.nodes.filter((node) => isHighlight(search, node.data));
       reactFlowRef.current?.fitView({ nodes: highlightedNodes });
     }
-  }, [search, layoutData]);
+  }, [search, graphData]);
 
   const onInit: OnInit = (_reactFlowInstance): void => {
     reactFlowRef.current = _reactFlowInstance;
     _reactFlowInstance.fitView();
   };
 
-  if (!layoutData) {
+  const nodeClickHandler = useCallback(
+    (event: ReactMouseEvent, node: Node): void => {
+      selectNode(node);
+    },
+    [selectNode]
+  );
+
+  const paneClickHandler = useCallback((): void => {
+    selectNode(undefined);
+  }, [selectNode]);
+
+  if (!graphData) {
     return null;
   }
 
   return (
     <ReactFlowStyled
-      nodes={layoutData.nodes}
-      edges={layoutData.edges}
+      nodes={graphData.nodes}
+      edges={graphData.edges}
       nodeTypes={nodeTypes}
       nodesConnectable={false}
       nodesDraggable={false}
-      elementsSelectable={false}
+      elementsSelectable
+      selectionOnDrag={false}
       proOptions={{ hideAttribution: true }}
       onInit={onInit}
+      onNodeClick={nodeClickHandler}
+      onPaneClick={paneClickHandler}
       fitView
       minZoom={0.25}
       maxZoom={2}
