@@ -52,10 +52,25 @@ class InstanceSystemPropertiesService(
             .getOrElse { throwInternalServerError("Unable to get system properties") }
         val systemProperties = propertySources.first { it.name == "systemProperties" }
         val properties = systemProperties.properties ?: throwInternalServerError("Unable to get system properties")
+        var redactedCount = 0
+        val propertiesMap = properties.entries.associate {
+            if (it.value.value == REDACTED_STRING) {
+                redactedCount++
+            }
+            it.key to it.value.value
+        }
+        val redactionPercentage = redactedCount.toDouble() / properties.size.toDouble() * 100.0
         return InstanceSystemPropertiesRO(
-            properties.entries.associate {
-                it.key to it.value.value
+            propertiesMap,
+            when {
+                redactionPercentage == 100.0 -> InstanceSystemPropertiesRO.RedactionLevel.FULL
+                redactionPercentage > 0.0 -> InstanceSystemPropertiesRO.RedactionLevel.PARTIAL
+                else -> InstanceSystemPropertiesRO.RedactionLevel.NONE
             }
         )
+    }
+
+    companion object {
+        private const val REDACTED_STRING = "******"
     }
 }
