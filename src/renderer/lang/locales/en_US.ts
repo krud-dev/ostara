@@ -254,4 +254,5 @@ export default {
   memoryUsedMb: 'Memory Used (MB)',
   memoryCommittedMb: 'Memory Committed (MB)',
   memoryUse: 'Memory Use',
+  showGraph: 'Show Graph',
 };

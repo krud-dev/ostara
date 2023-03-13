@@ -2,7 +2,7 @@ import React, { FunctionComponent, useMemo } from 'react';
 import { useNavigatorTree } from 'renderer/contexts/NavigatorTreeContext';
 import { InstanceRO } from '../../../../../common/generated_definitions';
 import { Edge, Node } from 'reactflow';
-import Graph from '../../../general/graph';
+import GraphPage from '../../../general/graph';
 import { InstanceBean, useGetInstanceBeansQuery } from '../../../../apis/requests/instance/beans/getInstanceBeans';
 import { chain } from 'lodash';
 
@@ -31,7 +31,6 @@ const InstanceBeansGraph: FunctionComponent = () => {
                   id: `${dependency}_${bean.name}`,
                   source: dependency,
                   target: bean.name,
-                  animated: true,
                 }))
             )
             .flatten()
@@ -55,7 +54,7 @@ const InstanceBeansGraph: FunctionComponent = () => {
     [edges]
   );
 
-  return <Graph nodes={nodes} edges={edges} />;
+  return <GraphPage nodes={nodes} edges={edges} />;
 };
 
 export default InstanceBeansGraph;

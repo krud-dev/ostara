@@ -7,7 +7,7 @@ import React, {
   useMemo,
   useState,
 } from 'react';
-import { Edge, getConnectedEdges, getIncomers, getOutgoers, Node } from 'reactflow';
+import { Edge, getIncomers, getOutgoers, Node } from 'reactflow';
 import { isEmpty } from 'lodash';
 import { getLayoutElements, ReactFlowData } from '../utils/reactFlowUtils';
 import { useTheme } from '@mui/material/styles';
@@ -30,13 +30,19 @@ const ReactFlowContext = React.createContext<ReactFlowContextProps>(undefined!);
 interface ReactFlowProviderProps extends PropsWithChildren<any> {
   nodes?: Node[];
   edges?: Edge[];
+  initialSelectedNode?: Node;
 }
 
-const ReactFlowProvider: FunctionComponent<ReactFlowProviderProps> = ({ nodes, edges, children }) => {
+const ReactFlowProvider: FunctionComponent<ReactFlowProviderProps> = ({
+  nodes,
+  edges,
+  initialSelectedNode,
+  children,
+}) => {
   const theme = useTheme();
 
   const [search, setSearch] = useState<string>('');
-  const [selectedNode, setSelectedNode] = useState<Node | undefined>(undefined);
+  const [selectedNode, setSelectedNode] = useState<Node | undefined>(initialSelectedNode);
   const [incomingNodeIds, setIncomingNodeIds] = useState<string[] | undefined>(undefined);
   const [outgoingNodeIds, setOutgoingNodeIds] = useState<string[] | undefined>(undefined);
 
@@ -85,22 +91,24 @@ const ReactFlowProvider: FunctionComponent<ReactFlowProviderProps> = ({ nodes, e
   const selectNode = useCallback(
     (newSelectedNode?: Node): void => {
       setSelectedNode(newSelectedNode);
-
-      if (!newSelectedNode) {
-        setIncomingNodeIds(undefined);
-        setOutgoingNodeIds(undefined);
-        return;
-      }
-
-      setIncomingNodeIds(
-        getIncomers(newSelectedNode, graphData?.nodes || [], graphData?.edges || []).map((node) => node.id)
-      );
-      setOutgoingNodeIds(
-        getOutgoers(newSelectedNode, graphData?.nodes || [], graphData?.edges || []).map((node) => node.id)
-      );
     },
-    [graphData, setSelectedNode, setIncomingNodeIds, setOutgoingNodeIds]
+    [setSelectedNode]
   );
+
+  useEffect(() => {
+    if (!selectedNode) {
+      setIncomingNodeIds(undefined);
+      setOutgoingNodeIds(undefined);
+      return;
+    }
+
+    setIncomingNodeIds(
+      getIncomers(selectedNode, graphData?.nodes || [], graphData?.edges || []).map((node) => node.id)
+    );
+    setOutgoingNodeIds(
+      getOutgoers(selectedNode, graphData?.nodes || [], graphData?.edges || []).map((node) => node.id)
+    );
+  }, [selectedNode, graphData]);
 
   return (
     <ReactFlowContext.Provider

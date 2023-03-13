@@ -1,6 +1,7 @@
 import { Entity } from 'renderer/entity/entity';
 import { InstanceBean } from 'renderer/apis/requests/instance/beans/getInstanceBeans';
 import InstanceBeanDetails from 'renderer/pages/navigator/instance/beans/components/InstanceBeanDetails';
+import { GRAPH_ID } from '../actions';
 
 export const instanceBeanEntity: Entity<InstanceBean> = {
   id: 'instanceBean',
@@ -25,7 +26,13 @@ export const instanceBeanEntity: Entity<InstanceBean> = {
       getColor: () => 'default',
     },
   ],
-  actions: [],
+  actions: [
+    {
+      id: GRAPH_ID,
+      icon: 'ScatterPlotOutlined',
+      labelId: 'showGraph',
+    },
+  ],
   massActions: [],
   globalActions: [],
   rowAction: {

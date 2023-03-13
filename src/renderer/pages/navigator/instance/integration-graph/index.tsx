@@ -3,7 +3,7 @@ import { useNavigatorTree } from 'renderer/contexts/NavigatorTreeContext';
 import { InstanceRO, IntegrationGraphActuatorResponse } from '../../../../../common/generated_definitions';
 import { useGetInstanceIntegrationGraphQuery } from '../../../../apis/requests/instance/integration-graph/getInstanceIntegrationGraph';
 import { Edge, Node } from 'reactflow';
-import Graph from '../../../general/graph';
+import GraphPage from '../../../general/graph';
 
 const InstanceIntegrationGraph: FunctionComponent = () => {
   const { selectedItem } = useNavigatorTree();
@@ -33,12 +33,11 @@ const InstanceIntegrationGraph: FunctionComponent = () => {
         id: `${link.from}_${link.to}`,
         source: link.from.toString(),
         target: link.to.toString(),
-        animated: true,
       })),
     [data]
   );
 
-  return <Graph nodes={nodes} edges={edges} />;
+  return <GraphPage nodes={nodes} edges={edges} />;
 };
 
 export default InstanceIntegrationGraph;

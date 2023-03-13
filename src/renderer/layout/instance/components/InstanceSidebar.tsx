@@ -78,13 +78,13 @@ export default function InstanceSidebar({ item, disabled, width }: InstanceSideb
             to: generatePath(urls.instanceBeans.url, { id: item.id }),
             disabled: disabled || isServiceInactive(item, 'BEANS'),
           },
-          {
-            id: 'beans-graph',
-            icon: <ScatterPlotOutlined />,
-            label: <FormattedMessage id={'beansGraph'} />,
-            to: generatePath(urls.instanceBeansGraph.url, { id: item.id }),
-            disabled: disabled || isServiceInactive(item, 'BEANS'),
-          },
+          // {
+          //   id: 'beans-graph',
+          //   icon: <ScatterPlotOutlined />,
+          //   label: <FormattedMessage id={'beansGraph'} />,
+          //   to: generatePath(urls.instanceBeansGraph.url, { id: item.id }),
+          //   disabled: disabled || isServiceInactive(item, 'BEANS'),
+          // },
           {
             id: 'http-requests',
             icon: <HttpOutlined />,

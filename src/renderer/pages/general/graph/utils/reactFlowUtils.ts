@@ -1,5 +1,6 @@
-import { Edge, Node } from 'reactflow';
+import { Edge, getIncomers, getOutgoers, Node } from 'reactflow';
 import ELK, { ElkNode } from 'elkjs/lib/elk.bundled';
+import { uniq } from 'lodash';
 
 export const NODE_WIDTH = 350;
 export const NODE_HEIGHT = 40;
@@ -29,4 +30,25 @@ export const getLayoutElements = async (nodes: Node[], edges: Edge[]): Promise<R
   });
 
   return { nodes: layoutNodes, edges };
+};
+
+export const getConnectedNodes = (nodeId: string, nodes: Node[], edges: Edge[]): Node[] => {
+  const visited = new Set<string>();
+  const result: Node[] = [];
+
+  function dfs(internalNodeId: string) {
+    visited.add(internalNodeId);
+    result.push(nodes.find((n) => n.id === internalNodeId)!);
+
+    const connectedEdges = edges.filter((edge) => edge.source === internalNodeId || edge.target === internalNodeId);
+    connectedEdges.forEach((edge) => {
+      const connectedNodeId = edge.source === internalNodeId ? edge.target : edge.source;
+      if (!visited.has(connectedNodeId)) {
+        dfs(connectedNodeId);
+      }
+    });
+  }
+
+  dfs(nodeId);
+  return result;
 };

@@ -7,6 +7,9 @@ import { instanceBeanEntity } from 'renderer/entity/entities/instanceBean.entity
 import { InstanceBean, useGetInstanceBeansQuery } from 'renderer/apis/requests/instance/beans/getInstanceBeans';
 import { Card } from '@mui/material';
 import { InstanceRO } from '../../../../../common/generated_definitions';
+import { GRAPH_ID } from '../../../../entity/actions';
+import NiceModal from '@ebay/nice-modal-react';
+import BeansGraphDialog from './components/BeansGraphDialog';
 
 const InstanceBeans: FunctionComponent = () => {
   const { selectedItem } = useNavigatorTree();
@@ -16,7 +19,18 @@ const InstanceBeans: FunctionComponent = () => {
   const entity = useMemo<Entity<InstanceBean>>(() => instanceBeanEntity, []);
   const queryState = useGetInstanceBeansQuery({ instanceId: item.id });
 
-  const actionsHandler = useCallback(async (actionId: string, row: InstanceBean): Promise<void> => {}, []);
+  const actionsHandler = useCallback(async (actionId: string, row: InstanceBean): Promise<void> => {
+    switch (actionId) {
+      case GRAPH_ID:
+        await NiceModal.show<undefined>(BeansGraphDialog, {
+          bean: row,
+          allBeans: queryState.data,
+        });
+        break;
+      default:
+        break;
+    }
+  }, []);
 
   const massActionsHandler = useCallback(async (actionId: string, selectedRows: InstanceBean[]): Promise<void> => {},
   []);

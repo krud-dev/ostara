@@ -5,6 +5,7 @@ import React, {
   useEffect,
   useMemo,
   useRef,
+  useState,
 } from 'react';
 import { alpha, experimentalStyled as styled } from '@mui/material/styles';
 import { Background, Controls, MiniMap, OnInit, ReactFlow, ReactFlowInstance } from 'reactflow';
@@ -64,9 +65,11 @@ const ControlsStyled = styled(Controls)(({ theme }) => ({
 type CustomReactFlowProps = {};
 
 const CustomReactFlow: FunctionComponent<CustomReactFlowProps> = ({}) => {
-  const { graphData, search, isHighlight, selectNode } = useReactFlow();
+  const { graphData, search, selectedNode, isHighlight, selectNode } = useReactFlow();
 
   const reactFlowRef = useRef<ReactFlowInstance>();
+
+  const [visible, setVisible] = useState<boolean>(false);
 
   const nodeTypes = useMemo<NodeTypes>(() => ({ custom: CustomNode }), []);
 
@@ -77,10 +80,17 @@ const CustomReactFlow: FunctionComponent<CustomReactFlowProps> = ({}) => {
     }
   }, [search, graphData]);
 
-  const onInit: OnInit = (_reactFlowInstance): void => {
-    reactFlowRef.current = _reactFlowInstance;
-    _reactFlowInstance.fitView();
-  };
+  const onInit: OnInit = useCallback(
+    (_reactFlowInstance): void => {
+      reactFlowRef.current = _reactFlowInstance;
+      _reactFlowInstance.fitView({
+        nodes: selectedNode ? [selectedNode] : undefined,
+        maxZoom: selectedNode ? 0.75 : undefined,
+      });
+      setVisible(true);
+    },
+    [selectedNode]
+  );
 
   const nodeClickHandler = useCallback(
     (event: ReactMouseEvent, node: Node): void => {
@@ -113,6 +123,7 @@ const CustomReactFlow: FunctionComponent<CustomReactFlowProps> = ({}) => {
       fitView
       minZoom={0.25}
       maxZoom={2}
+      sx={{ ...(visible ? {} : { opacity: 0 }) }}
     >
       <Background />
       <MiniMapStyled />
