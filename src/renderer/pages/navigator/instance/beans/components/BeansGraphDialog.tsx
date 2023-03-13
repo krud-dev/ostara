@@ -7,6 +7,7 @@ import GraphComponent from '../../../../general/graph/components/GraphComponent'
 import { Edge, getConnectedEdges, Node } from 'reactflow';
 import { chain } from 'lodash';
 import { getConnectedNodes } from '../../../../general/graph/utils/reactFlowUtils';
+import { notEmpty } from '../../../../../utils/objectUtils';
 
 export type BeansGraphDialogProps = {
   bean: InstanceBean;
@@ -56,7 +57,10 @@ const BeansGraphDialog: FunctionComponent<BeansGraphDialogProps & NiceModalHocPr
       () => nodes.find((n) => n.id === bean.name),
       [nodes, bean.name]
     );
-    const connectedNodes = useMemo<Node[]>(() => getConnectedNodes(bean.name, nodes, edges), [bean, nodes, edges]);
+    const connectedNodes = useMemo<Node[]>(
+      () => getConnectedNodes(bean.name, nodes, edges).filter(notEmpty),
+      [bean, nodes, edges]
+    );
     const connectedEdges = useMemo<Edge[]>(() => getConnectedEdges(connectedNodes, edges), [connectedNodes, edges]);
 
     return (
