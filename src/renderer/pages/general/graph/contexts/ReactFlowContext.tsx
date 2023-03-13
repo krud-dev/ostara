@@ -39,8 +39,6 @@ const ReactFlowProvider: FunctionComponent<ReactFlowProviderProps> = ({ nodes, e
   const [selectedNode, setSelectedNode] = useState<Node | undefined>(undefined);
   const [incomingNodeIds, setIncomingNodeIds] = useState<string[] | undefined>(undefined);
   const [outgoingNodeIds, setOutgoingNodeIds] = useState<string[] | undefined>(undefined);
-  const [incomingEdgeIds, setIncomingEdgeIds] = useState<string[] | undefined>(undefined);
-  const [outgoingEdgeIds, setOutgoingEdgeIds] = useState<string[] | undefined>(undefined);
 
   const [layoutData, setLayoutData] = useState<ReactFlowData | undefined>(undefined);
 
@@ -59,15 +57,20 @@ const ReactFlowProvider: FunctionComponent<ReactFlowProviderProps> = ({ nodes, e
             nodes: layoutData.nodes,
             edges: layoutData.edges.map((edge) => ({
               ...edge,
+              animated: !selectedNode || selectedNode.id === edge.source || selectedNode.id === edge.target,
               style: {
+                transition: 'all 0.4s ease',
                 ...edge.style,
-                ...(incomingEdgeIds?.includes(edge.id) ? { stroke: theme.palette.warning.main } : {}),
-                ...(outgoingEdgeIds?.includes(edge.id) ? { stroke: theme.palette.fatal.main } : {}),
+                ...(!!selectedNode && selectedNode.id !== edge.source && selectedNode.id !== edge.target
+                  ? { opacity: 0.3 }
+                  : {}),
+                ...(selectedNode?.id === edge.target ? { stroke: theme.palette.warning.main, strokeWidth: 3 } : {}),
+                ...(selectedNode?.id === edge.source ? { stroke: theme.palette.fatal.main, strokeWidth: 3 } : {}),
               },
             })),
           }
         : undefined,
-    [layoutData, incomingEdgeIds, outgoingEdgeIds]
+    [layoutData, selectedNode]
   );
 
   const loading = useMemo<boolean>(() => !graphData, [graphData]);
@@ -86,14 +89,9 @@ const ReactFlowProvider: FunctionComponent<ReactFlowProviderProps> = ({ nodes, e
       if (!newSelectedNode) {
         setIncomingNodeIds(undefined);
         setOutgoingNodeIds(undefined);
-        setIncomingEdgeIds(undefined);
-        setOutgoingEdgeIds(undefined);
         return;
       }
 
-      const connectedEdges = getConnectedEdges([newSelectedNode], graphData?.edges || []);
-      setIncomingEdgeIds(connectedEdges.filter((edge) => edge.target === newSelectedNode.id).map((edge) => edge.id));
-      setOutgoingEdgeIds(connectedEdges.filter((edge) => edge.source === newSelectedNode.id).map((edge) => edge.id));
       setIncomingNodeIds(
         getIncomers(newSelectedNode, graphData?.nodes || [], graphData?.edges || []).map((node) => node.id)
       );
@@ -101,7 +99,7 @@ const ReactFlowProvider: FunctionComponent<ReactFlowProviderProps> = ({ nodes, e
         getOutgoers(newSelectedNode, graphData?.nodes || [], graphData?.edges || []).map((node) => node.id)
       );
     },
-    [graphData, setSelectedNode, setIncomingEdgeIds, setOutgoingEdgeIds, setIncomingNodeIds, setOutgoingNodeIds]
+    [graphData, setSelectedNode, setIncomingNodeIds, setOutgoingNodeIds]
   );
 
   return (

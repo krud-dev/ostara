@@ -42,10 +42,15 @@ export default function CustomNode({ id, data }: CustomNodeProps) {
     () => !selected && !incoming && !outgoing && isHighlight(search, data),
     [selected, incoming, search, data]
   );
+  const translucent = useMemo<boolean>(
+    () => !!selectedNode?.id && !selected && !incoming && !outgoing && !highlight,
+    [selectedNode, selected, incoming, outgoing, highlight]
+  );
 
   return (
     <NodeStyled
       sx={{
+        transition: 'all 0.4s ease',
         ...(selected
           ? {
               background: (theme) => alpha(theme.palette.primary.main, 0.16),
@@ -68,6 +73,11 @@ export default function CustomNode({ id, data }: CustomNodeProps) {
           ? {
               background: (theme) => alpha(theme.palette.info.main, 0.16),
               borderColor: (theme) => theme.palette.info.main,
+            }
+          : undefined),
+        ...(translucent
+          ? {
+              opacity: 0.3,
             }
           : undefined),
       }}
