@@ -15,7 +15,10 @@ import { CrudEntity } from '../apis/requests/crud/entity/entity';
 import { applicationCrudEntity } from '../apis/requests/crud/entity/entities/application.crudEntity';
 import { instanceCrudEntity } from '../apis/requests/crud/entity/entities/instance.crudEntity';
 import { folderCrudEntity } from '../apis/requests/crud/entity/entities/folder.crudEntity';
-import { useCallback } from 'react';
+import { ReactNode, useCallback } from 'react';
+import { Box } from '@mui/material';
+import { isEmpty } from 'lodash';
+import { FormattedMessage } from 'react-intl';
 
 export function isApplication(item: ItemRO): item is ApplicationRO {
   return 'instanceCount' in item;
@@ -112,9 +115,26 @@ export const getItemUrl = (item: ItemRO): string => {
   }
 };
 
-export const getItemNameTooltip = (item: ItemRO): string | undefined => {
+export const getItemNameTooltip = (item: ItemRO): ReactNode | undefined => {
   if (isInstance(item)) {
-    return item.actuatorUrl;
+    return (
+      <Box>
+        <Box>
+          <Box component={'span'} sx={{ color: 'text.secondary', fontWeight: 'normal' }}>
+            <FormattedMessage id={'url'} />:
+          </Box>{' '}
+          {item.actuatorUrl}
+        </Box>
+        {!isEmpty(item.activeProfiles) && (
+          <Box>
+            <Box component={'span'} sx={{ color: 'text.secondary', fontWeight: 'normal' }}>
+              <FormattedMessage id={'activeProfiles'} />:
+            </Box>{' '}
+            {item.activeProfiles.join(', ')}
+          </Box>
+        )}
+      </Box>
+    );
   }
   return undefined;
 };

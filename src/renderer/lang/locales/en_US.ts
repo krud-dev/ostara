@@ -255,4 +255,5 @@ export default {
   memoryCommittedMb: 'Memory Committed (MB)',
   memoryUse: 'Memory Use',
   showGraph: 'Show Graph',
+  url: 'URL',
 };

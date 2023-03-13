@@ -1,4 +1,4 @@
-import React, { useCallback, useMemo } from 'react';
+import React, { ReactNode, useCallback, useMemo } from 'react';
 import { Avatar, Badge, Box, IconButton, Tooltip, Typography } from '@mui/material';
 import {
   getItemDisplayName,
@@ -22,7 +22,7 @@ export default function ItemHeader({ item }: ItemHeaderProps) {
 
   const color = useItemColor(item);
   const displayName = useMemo<string>(() => getItemDisplayName(item), [item]);
-  const displayNameTooltip = useMemo<string | undefined>(() => getItemNameTooltip(item), [item]);
+  const displayNameTooltip = useMemo<ReactNode | undefined>(() => getItemNameTooltip(item), [item]);
   const healthStatusColor = useMemo<string | undefined>(() => getItemHealthStatusColor(item), [item]);
   const healthTextId = useMemo<string | undefined>(() => getItemHealthStatusTextId(item), [item]);
   const itemIcon = useItemIcon(item);
