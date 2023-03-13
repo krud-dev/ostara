@@ -8,6 +8,7 @@ import { Edge, getConnectedEdges, Node } from 'reactflow';
 import { chain } from 'lodash';
 import { getConnectedNodes } from '../../../../general/graph/utils/reactFlowUtils';
 import { notEmpty } from '../../../../../utils/objectUtils';
+import { FormattedMessage } from 'react-intl';
 
 export type BeansGraphDialogProps = {
   bean: InstanceBean;
@@ -46,7 +47,7 @@ const BeansGraphDialog: FunctionComponent<BeansGraphDialogProps & NiceModalHocPr
           .uniqBy((b) => b.name)
           .map((b) => ({
             id: b.name.toString(),
-            data: { label: b.name, componentType: b.type },
+            data: { label: b.shortName, componentType: b.package },
             position: { x: 0, y: 0 },
             type: 'custom',
           }))
@@ -78,7 +79,11 @@ const BeansGraphDialog: FunctionComponent<BeansGraphDialogProps & NiceModalHocPr
           },
         }}
       >
-        <DialogTitleEnhanced onClose={closeHandler}>{bean.name}</DialogTitleEnhanced>
+        <DialogTitleEnhanced onClose={closeHandler}>
+          <FormattedMessage id={'beansGraph'} />
+          {' - '}
+          {bean.shortName}
+        </DialogTitleEnhanced>
         <Box sx={{ height: '100%', overflow: 'hidden' }}>
           <GraphComponent nodes={connectedNodes} edges={connectedEdges} initialSelectedNode={initialSelectedNode} />
         </Box>

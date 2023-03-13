@@ -12,6 +12,7 @@ import { BeansActuatorResponse, BeansActuatorResponse$Context$Bean } from '../..
 
 export type InstanceBean = BeansActuatorResponse$Context$Bean & {
   name: string;
+  shortName: string;
   package: string;
 };
 
@@ -33,8 +34,9 @@ export const getInstanceBeans = async (variables: Variables): Promise<Data> => {
     .map<InstanceBean[]>((beansMap) =>
       map(beansMap, (bean, name) => {
         const index = bean.type.lastIndexOf('.');
+        const shortName = index > 0 ? bean.type.substring(index + 1) : name;
         const typePackage = index > 0 ? bean.type.substring(0, index) : 'default';
-        return { ...bean, name, package: typePackage };
+        return { ...bean, name, shortName, package: typePackage };
       })
     )
     .flatten()

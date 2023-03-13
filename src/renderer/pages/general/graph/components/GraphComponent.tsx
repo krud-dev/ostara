@@ -30,7 +30,7 @@ const GraphComponent: FunctionComponent<GraphComponentProps> = ({ nodes, edges, 
 
             {empty && <EmptyContent text={<FormattedMessage id={'noData'} />} />}
 
-            {graphData && (
+            {graphData && !empty && (
               <Box sx={{ flexGrow: 1 }}>
                 <CustomReactFlow />
               </Box>

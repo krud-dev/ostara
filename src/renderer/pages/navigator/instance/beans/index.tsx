@@ -19,18 +19,24 @@ const InstanceBeans: FunctionComponent = () => {
   const entity = useMemo<Entity<InstanceBean>>(() => instanceBeanEntity, []);
   const queryState = useGetInstanceBeansQuery({ instanceId: item.id });
 
-  const actionsHandler = useCallback(async (actionId: string, row: InstanceBean): Promise<void> => {
-    switch (actionId) {
-      case GRAPH_ID:
-        await NiceModal.show<undefined>(BeansGraphDialog, {
-          bean: row,
-          allBeans: queryState.data,
-        });
-        break;
-      default:
-        break;
-    }
-  }, []);
+  const actionsHandler = useCallback(
+    async (actionId: string, row: InstanceBean): Promise<void> => {
+      switch (actionId) {
+        case GRAPH_ID:
+          if (!queryState.data) {
+            return;
+          }
+          await NiceModal.show<undefined>(BeansGraphDialog, {
+            bean: row,
+            allBeans: queryState.data,
+          });
+          break;
+        default:
+          break;
+      }
+    },
+    [queryState.data]
+  );
 
   const massActionsHandler = useCallback(async (actionId: string, selectedRows: InstanceBean[]): Promise<void> => {},
   []);

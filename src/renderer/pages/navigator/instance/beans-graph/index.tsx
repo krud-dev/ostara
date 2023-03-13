@@ -45,7 +45,7 @@ const InstanceBeansGraph: FunctionComponent = () => {
             .uniqBy((bean) => bean.name)
             .map((bean) => ({
               id: bean.name.toString(),
-              data: { label: bean.name, componentType: bean.type },
+              data: { label: bean.shortName, componentType: bean.package },
               position: { x: 0, y: 0 },
               type: 'custom',
             }))
