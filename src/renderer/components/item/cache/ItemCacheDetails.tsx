@@ -1,7 +1,11 @@
-import { Box, Card, CardContent, CircularProgress } from '@mui/material';
+import { Box, Card, CardContent, CircularProgress, Stack, Tooltip, Typography } from '@mui/material';
 import { FormattedMessage } from 'react-intl';
-import React, { ReactNode } from 'react';
+import React, { ReactNode, useMemo } from 'react';
 import TableDetailsLabelValue from 'renderer/components/table/details/TableDetailsLabelValue';
+import { SxProps } from '@mui/system';
+import { Theme } from '@mui/material/styles';
+import { isNil } from 'lodash';
+import { EMPTY_STRING } from '../../../constants/ui';
 
 export type CacheProperty = {
   value: number;
@@ -38,44 +42,35 @@ export default function ItemCacheDetails({ statistics }: ItemCacheDetailsProps) 
               gridGap: (theme) => theme.spacing(1),
             }}
           >
-            <TableDetailsLabelValue
-              label={<FormattedMessage id={'gets'} />}
-              value={statistics.gets.value}
-              tooltip={statistics.gets.tooltip}
-            />
-            <TableDetailsLabelValue
-              label={<FormattedMessage id={'puts'} />}
-              value={statistics.puts.value}
-              tooltip={statistics.puts.tooltip}
-            />
-            <TableDetailsLabelValue
-              label={<FormattedMessage id={'evictions'} />}
-              value={statistics.evictions.value}
-              tooltip={statistics.evictions.tooltip}
-            />
-            <TableDetailsLabelValue
-              label={<FormattedMessage id={'hits'} />}
-              value={statistics.hits.value}
-              tooltip={statistics.hits.tooltip}
-            />
-            <TableDetailsLabelValue
-              label={<FormattedMessage id={'misses'} />}
-              value={statistics.misses.value}
-              tooltip={statistics.misses.tooltip}
-            />
-            <TableDetailsLabelValue
-              label={<FormattedMessage id={'removals'} />}
-              value={statistics.removals.value}
-              tooltip={statistics.removals.tooltip}
-            />
-            <TableDetailsLabelValue
-              label={<FormattedMessage id={'size'} />}
-              value={statistics.size.value}
-              tooltip={statistics.size.tooltip}
-            />
+            <CacheDetailsLabelValue label={<FormattedMessage id={'gets'} />} property={statistics.gets} />
+            <CacheDetailsLabelValue label={<FormattedMessage id={'puts'} />} property={statistics.puts} />
+            <CacheDetailsLabelValue label={<FormattedMessage id={'evictions'} />} property={statistics.evictions} />
+            <CacheDetailsLabelValue label={<FormattedMessage id={'hits'} />} property={statistics.hits} />
+            <CacheDetailsLabelValue label={<FormattedMessage id={'misses'} />} property={statistics.misses} />
+            <CacheDetailsLabelValue label={<FormattedMessage id={'removals'} />} property={statistics.removals} />
+            <CacheDetailsLabelValue label={<FormattedMessage id={'size'} />} property={statistics.size} />
           </CardContent>
         </Card>
       )}
     </>
   );
+}
+
+type CacheDetailsLabelValueProps = {
+  label: ReactNode;
+  property: CacheProperty;
+};
+
+function CacheDetailsLabelValue({ label, property }: CacheDetailsLabelValueProps) {
+  const value = useMemo<ReactNode>(
+    () => (property.value < 0 ? <FormattedMessage id={'notAvailable'} /> : property.value),
+    [property.value]
+  );
+
+  const tooltip = useMemo<ReactNode>(
+    () => (property.value < 0 ? <FormattedMessage id={'metricNotFound'} /> : property.tooltip),
+    [property]
+  );
+
+  return <TableDetailsLabelValue label={label} value={value} tooltip={tooltip} />;
 }
