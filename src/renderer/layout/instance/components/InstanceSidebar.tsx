@@ -26,6 +26,7 @@ import ItemHeader from 'renderer/components/item/ItemHeader';
 import { Box } from '@mui/material';
 import { isServiceInactive } from 'renderer/utils/itemUtils';
 import { InstanceRO } from '../../../../common/generated_definitions';
+import InstanceActiveProfiles from './InstanceActiveProfiles';
 
 type InstanceSidebarProps = { item: InstanceRO; disabled: boolean; width: number };
 
@@ -189,7 +190,16 @@ export default function InstanceSidebar({ item, disabled, width }: InstanceSideb
 
   return (
     <Box sx={{ width: width, height: '100%', display: 'flex', flexDirection: 'column' }}>
-      <Sidebar sidebarConfig={navConfig} header={<ItemHeader item={item} />} sx={{ flexGrow: 1 }} />
+      <Sidebar
+        sidebarConfig={navConfig}
+        header={
+          <>
+            <ItemHeader item={item} />
+            <InstanceActiveProfiles item={item} />
+          </>
+        }
+        sx={{ flexGrow: 1 }}
+      />
       {/*<Divider />*/}
       {/*<InstanceDataCollectionToggle item={item} />*/}
     </Box>

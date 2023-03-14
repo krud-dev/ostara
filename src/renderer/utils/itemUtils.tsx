@@ -117,24 +117,7 @@ export const getItemUrl = (item: ItemRO): string => {
 
 export const getItemNameTooltip = (item: ItemRO): ReactNode | undefined => {
   if (isInstance(item)) {
-    return (
-      <Box>
-        <Box>
-          <Box component={'span'} sx={{ color: 'text.secondary', fontWeight: 'normal' }}>
-            <FormattedMessage id={'url'} />:
-          </Box>{' '}
-          {item.actuatorUrl}
-        </Box>
-        {!isEmpty(item.activeProfiles) && (
-          <Box>
-            <Box component={'span'} sx={{ color: 'text.secondary', fontWeight: 'normal' }}>
-              <FormattedMessage id={'activeProfiles'} />:
-            </Box>{' '}
-            {item.activeProfiles.join(', ')}
-          </Box>
-        )}
-      </Box>
-    );
+    return item.actuatorUrl;
   }
   return undefined;
 };
