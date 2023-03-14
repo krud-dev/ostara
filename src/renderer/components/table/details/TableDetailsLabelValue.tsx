@@ -20,7 +20,7 @@ export default function TableDetailsLabelValue({ label, value, tooltip, sx }: Ta
       <Typography variant={'caption'} sx={{ color: 'text.secondary', fontWeight: 'bold', textTransform: 'uppercase' }}>
         {label}
       </Typography>
-      <Typography variant={'body2'}>
+      <Typography component={'div'} variant={'body2'}>
         <Tooltip title={tooltip}>
           <Box component={'span'} sx={{ wordBreak: 'break-all' }}>
             {displayValue}
