@@ -29,7 +29,7 @@ export const instanceBeanEntity: Entity<InstanceBean> = {
   actions: [
     {
       id: GRAPH_ID,
-      icon: 'ScatterPlotOutlined',
+      icon: 'MediationOutlined',
       labelId: 'showGraph',
     },
   ],

@@ -12,8 +12,8 @@ import {
   HttpOutlined,
   LanOutlined,
   ListAltOutlined,
-  ScatterPlotOutlined,
   StorageOutlined,
+  SyncAltOutlined,
   TextSnippetOutlined,
   WysiwygOutlined,
   YardOutlined,
@@ -80,7 +80,7 @@ export default function InstanceSidebar({ item, disabled, width }: InstanceSideb
           },
           // {
           //   id: 'beans-graph',
-          //   icon: <ScatterPlotOutlined />,
+          //   icon: <MediationOutlined />,
           //   label: <FormattedMessage id={'beansGraph'} />,
           //   to: generatePath(urls.instanceBeansGraph.url, { id: item.id }),
           //   disabled: disabled || isServiceInactive(item, 'BEANS'),
@@ -108,6 +108,14 @@ export default function InstanceSidebar({ item, disabled, width }: InstanceSideb
             to: generatePath(urls.instanceScheduledTasks.url, { id: item.id }),
             disabled: disabled,
             hidden: isServiceInactive(item, 'SCHEDULEDTASKS'),
+          },
+          {
+            id: 'mappings',
+            icon: <SyncAltOutlined />,
+            label: <FormattedMessage id={'mappings'} />,
+            to: generatePath(urls.instanceMappings.url, { id: item.id }),
+            disabled: disabled,
+            hidden: isServiceInactive(item, 'MAPPINGS'),
           },
           {
             id: 'flyway',

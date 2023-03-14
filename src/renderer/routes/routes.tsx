@@ -32,6 +32,7 @@ import FolderApplications from '../pages/navigator/folder/applications';
 import InstanceThreadProfiling from '../pages/navigator/instance/threaddumps';
 import InstanceMetrics from '../pages/navigator/instance/metrics';
 import InstanceBeansGraph from '../pages/navigator/instance/beans-graph';
+import InstanceMappings from '../pages/navigator/instance/mappings';
 
 export default function Router() {
   return useRoutes([
@@ -124,6 +125,10 @@ export default function Router() {
             {
               path: urls.instanceScheduledTasks.path,
               element: <InstanceScheduledTasks />,
+            },
+            {
+              path: urls.instanceMappings.path,
+              element: <InstanceMappings />,
             },
             {
               path: urls.instanceFlyway.path,
