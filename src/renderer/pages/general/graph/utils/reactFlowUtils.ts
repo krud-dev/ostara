@@ -52,3 +52,45 @@ export const getConnectedNodes = (nodeId: string, nodes: Node[], edges: Edge[]):
   dfs(nodeId);
   return result;
 };
+
+export const getOutgoingNodes = (nodeId: string, nodes: Node[], edges: Edge[]): Node[] => {
+  const visited = new Set<string>();
+  const result: Node[] = [];
+
+  function dfs(internalNodeId: string) {
+    visited.add(internalNodeId);
+    result.push(nodes.find((n) => n.id === internalNodeId)!);
+
+    const connectedEdges = edges.filter((edge) => edge.source === internalNodeId);
+    connectedEdges.forEach((edge) => {
+      const connectedNodeId = edge.source === internalNodeId ? edge.target : edge.source;
+      if (!visited.has(connectedNodeId)) {
+        dfs(connectedNodeId);
+      }
+    });
+  }
+
+  dfs(nodeId);
+  return result;
+};
+
+export const getIncomingNodes = (nodeId: string, nodes: Node[], edges: Edge[]): Node[] => {
+  const visited = new Set<string>();
+  const result: Node[] = [];
+
+  function dfs(internalNodeId: string) {
+    visited.add(internalNodeId);
+    result.push(nodes.find((n) => n.id === internalNodeId)!);
+
+    const connectedEdges = edges.filter((edge) => edge.target === internalNodeId);
+    connectedEdges.forEach((edge) => {
+      const connectedNodeId = edge.source === internalNodeId ? edge.target : edge.source;
+      if (!visited.has(connectedNodeId)) {
+        dfs(connectedNodeId);
+      }
+    });
+  }
+
+  dfs(nodeId);
+  return result;
+};

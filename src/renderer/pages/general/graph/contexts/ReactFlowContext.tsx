@@ -64,8 +64,10 @@ const ReactFlowProvider: FunctionComponent<ReactFlowProviderProps> = ({
             edges: layoutData.edges.map((edge) => ({
               ...edge,
               animated: !selectedNode || selectedNode.id === edge.source || selectedNode.id === edge.target,
+              interactionWidth: 0,
               style: {
                 transition: 'all 0.4s ease',
+                pointerEvents: 'none',
                 ...edge.style,
                 ...(!!selectedNode && selectedNode.id !== edge.source && selectedNode.id !== edge.target
                   ? { opacity: 0.3 }

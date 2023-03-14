@@ -5,8 +5,8 @@ import DialogTitleEnhanced from 'renderer/components/dialog/DialogTitleEnhanced'
 import { InstanceBean } from '../../../../../apis/requests/instance/beans/getInstanceBeans';
 import GraphComponent from '../../../../general/graph/components/GraphComponent';
 import { Edge, getConnectedEdges, Node } from 'reactflow';
-import { chain } from 'lodash';
-import { getConnectedNodes } from '../../../../general/graph/utils/reactFlowUtils';
+import { chain, uniq, uniqBy } from 'lodash';
+import { getConnectedNodes, getIncomingNodes, getOutgoingNodes } from '../../../../general/graph/utils/reactFlowUtils';
 import { notEmpty } from '../../../../../utils/objectUtils';
 import { FormattedMessage } from 'react-intl';
 
@@ -59,10 +59,21 @@ const BeansGraphDialog: FunctionComponent<BeansGraphDialogProps & NiceModalHocPr
       [nodes, bean.name]
     );
     const connectedNodes = useMemo<Node[]>(
-      () => getConnectedNodes(bean.name, nodes, edges).filter(notEmpty),
+      () =>
+        uniqBy(
+          [...getIncomingNodes(bean.name, nodes, edges), ...getOutgoingNodes(bean.name, nodes, edges)],
+          (n) => n.id
+        ),
       [bean, nodes, edges]
     );
-    const connectedEdges = useMemo<Edge[]>(() => getConnectedEdges(connectedNodes, edges), [connectedNodes, edges]);
+    const connectedEdges = useMemo<Edge[]>(
+      () =>
+        edges.filter(
+          (edge) =>
+            !!connectedNodes.find((n) => n.id === edge.source) && !!connectedNodes.find((n) => n.id === edge.target)
+        ),
+      [connectedNodes, edges]
+    );
 
     return (
       <Dialog

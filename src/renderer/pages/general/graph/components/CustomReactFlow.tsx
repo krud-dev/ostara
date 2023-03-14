@@ -84,8 +84,8 @@ const CustomReactFlow: FunctionComponent<CustomReactFlowProps> = ({}) => {
     (_reactFlowInstance): void => {
       reactFlowRef.current = _reactFlowInstance;
       _reactFlowInstance.fitView({
-        nodes: selectedNode ? [selectedNode] : undefined,
-        maxZoom: selectedNode ? 0.75 : undefined,
+        // nodes: selectedNode ? [selectedNode] : undefined,
+        // maxZoom: selectedNode ? 0.75 : undefined,
       });
       setVisible(true);
     },
