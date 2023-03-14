@@ -9,7 +9,7 @@ type Variables = {};
 type Data = void;
 
 export const closeWindow = async (variables: Variables): Promise<Data> => {
-  return await window.ui.minimizeWindow();
+  return await window.ui.closeWindow();
 };
 
 export const useCloseWindow = (
