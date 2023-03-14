@@ -1,11 +1,8 @@
-import { Box, Card, CardContent, CircularProgress, Stack, Tooltip, Typography } from '@mui/material';
+import { Box, Card, CardContent } from '@mui/material';
 import { FormattedMessage } from 'react-intl';
 import React, { ReactNode, useMemo } from 'react';
 import TableDetailsLabelValue from 'renderer/components/table/details/TableDetailsLabelValue';
-import { SxProps } from '@mui/system';
-import { Theme } from '@mui/material/styles';
-import { isNil } from 'lodash';
-import { EMPTY_STRING } from '../../../constants/ui';
+import LogoLoader from '../../common/LogoLoader';
 
 export type CacheProperty = {
   value: number;
@@ -28,13 +25,13 @@ type ItemCacheDetailsProps = {
 
 export default function ItemCacheDetails({ statistics }: ItemCacheDetailsProps) {
   return (
-    <>
+    <Box sx={{ my: 2 }}>
       {!statistics ? (
         <Box sx={{ textAlign: 'center' }}>
-          <CircularProgress />
+          <LogoLoader />
         </Box>
       ) : (
-        <Card variant={'outlined'} sx={{ my: 2 }}>
+        <Card variant={'outlined'}>
           <CardContent
             sx={{
               display: 'grid',
@@ -52,7 +49,7 @@ export default function ItemCacheDetails({ statistics }: ItemCacheDetailsProps) 
           </CardContent>
         </Card>
       )}
-    </>
+    </Box>
   );
 }
 

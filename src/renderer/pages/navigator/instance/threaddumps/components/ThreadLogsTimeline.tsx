@@ -26,7 +26,7 @@ export default function ThreadLogsTimeline({ logsCount }: ThreadLogsTimelineProp
         }}
       />
 
-      <Box sx={{ flexGrow: 1 }}>
+      <Box sx={{ flexGrow: 1, whiteSpace: 'nowrap' }}>
         {frames.map((frame) => (
           <Typography
             variant={'subtitle2'}

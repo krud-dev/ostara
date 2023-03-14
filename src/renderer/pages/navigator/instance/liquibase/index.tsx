@@ -9,6 +9,7 @@ import TabPanel, { TabInfo } from 'renderer/components/layout/TabPanel';
 import { useGetInstanceLiquibaseQuery } from 'renderer/apis/requests/instance/liquibase/getInstanceLiquibase';
 import LiquibaseChangesetsTable from 'renderer/pages/navigator/instance/liquibase/components/LiquibaseChangesetsTable';
 import { InstanceRO } from '../../../../../common/generated_definitions';
+import LogoLoader from '../../../../components/common/LogoLoader';
 
 const InstanceLiquibase: FunctionComponent = () => {
   const { selectedItem } = useNavigatorTree();
@@ -29,10 +30,10 @@ const InstanceLiquibase: FunctionComponent = () => {
   );
 
   return (
-    <Page>
+    <Page sx={{ height: '100%' }}>
       {loading && (
-        <Box sx={{ textAlign: 'center' }}>
-          <CircularProgress />
+        <Box sx={{ height: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+          <LogoLoader />
         </Box>
       )}
 

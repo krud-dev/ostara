@@ -1,7 +1,7 @@
 import React, { useMemo } from 'react';
 import TableDetailsLabelValue from 'renderer/components/table/details/TableDetailsLabelValue';
 import { FormattedMessage } from 'react-intl';
-import { Box, Card, CardContent, CardHeader, CircularProgress, Stack, Tooltip } from '@mui/material';
+import { Box, Card, CardContent, CardHeader, Stack, Tooltip } from '@mui/material';
 import { COMPONENTS_SPACING, DEFAULT_TABLE_COLUMN_WIDTH } from 'renderer/constants/ui';
 import { isObject, map, toString } from 'lodash';
 import { EnrichedQuartzTrigger } from '../../../../../apis/requests/instance/quartz/getInstanceQuartzTriggers';
@@ -13,6 +13,7 @@ import FormattedInterval from '../../../../../components/format/FormattedInterva
 import { SxProps } from '@mui/system';
 import { Theme } from '@mui/material/styles';
 import FormattedParsedDate from '../../../../../components/format/FormattedParsedDate';
+import LogoLoader from '../../../../../components/common/LogoLoader';
 
 type QuartzTriggerDetailsProps = {
   row: EnrichedQuartzTrigger;
@@ -57,7 +58,7 @@ export default function QuartzTriggerDetails({ row, sx }: QuartzTriggerDetailsPr
     <Box sx={{ my: 2, ...sx }}>
       {!detailsState.data ? (
         <Box sx={{ textAlign: 'center' }}>
-          <CircularProgress />
+          <LogoLoader />
         </Box>
       ) : (
         <Stack direction={'column'} spacing={COMPONENTS_SPACING}>

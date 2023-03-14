@@ -15,6 +15,7 @@ import { ThreadLogContext, ThreadLogProvider } from '../contexts/ThreadLogContex
 import SearchToolbar from '../../../../../components/common/SearchToolbar';
 import ToolbarButton from '../../../../../components/common/ToolbarButton';
 import ThreadLogsTimeline from './ThreadLogsTimeline';
+import LogoLoader from '../../../../../components/common/LogoLoader';
 
 export const THREAD_LOG_BAR_HEIGHT = 36;
 export const THREAD_LOG_BAR_LABEL_WIDTH = 200;
@@ -100,19 +101,21 @@ const ThreadProfilingRequestDetailsDialog: FunctionComponent<
             </DialogContent>
             <Box sx={{ height: '100%', overflow: 'hidden' }}>
               <PerfectScrollbar>
-                <DialogContent sx={{ pt: 0 }}>
-                  {!threadLogsMap ? (
-                    <Box sx={{ textAlign: 'center' }}>
-                      <CircularProgress />
-                    </Box>
-                  ) : (
+                {!threadLogsMap ? (
+                  <DialogContent
+                    sx={{ height: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center', pt: 0 }}
+                  >
+                    <LogoLoader />
+                  </DialogContent>
+                ) : (
+                  <DialogContent sx={{ pt: 0 }}>
                     <Stack direction={'column'} spacing={1}>
                       {map(threadLogsMap, (threadLogs, threadId) => (
                         <ThreadLogsBar threadLogs={threadLogs} logsCount={logsCount} key={threadId} />
                       ))}
                     </Stack>
-                  )}
-                </DialogContent>
+                  </DialogContent>
+                )}
               </PerfectScrollbar>
             </Box>
           </Dialog>

@@ -1,7 +1,7 @@
 import React, { FunctionComponent, useMemo } from 'react';
 import Page from 'renderer/components/layout/Page';
 import { useNavigatorTree } from 'renderer/contexts/NavigatorTreeContext';
-import { Box, Card, CircularProgress } from '@mui/material';
+import { Box, Card } from '@mui/material';
 import { useGetInstancePropertiesQuery } from 'renderer/apis/requests/instance/properties/getInstanceProperties';
 import { isEmpty, map } from 'lodash';
 import EmptyContent from 'renderer/components/help/EmptyContent';
@@ -9,6 +9,7 @@ import { FormattedMessage } from 'react-intl';
 import InstancePropertiesCode from 'renderer/pages/navigator/instance/properties/components/InstancePropertiesCode';
 import TabPanel, { TabInfo } from 'renderer/components/layout/TabPanel';
 import { InstanceRO } from '../../../../../common/generated_definitions';
+import LogoLoader from '../../../../components/common/LogoLoader';
 
 const InstanceProperties: FunctionComponent = () => {
   const { selectedItem } = useNavigatorTree();
@@ -29,10 +30,10 @@ const InstanceProperties: FunctionComponent = () => {
   );
 
   return (
-    <Page>
+    <Page sx={{ height: '100%' }}>
       {loading && (
-        <Box sx={{ textAlign: 'center' }}>
-          <CircularProgress />
+        <Box sx={{ height: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+          <LogoLoader />
         </Box>
       )}
 

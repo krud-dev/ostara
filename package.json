@@ -149,6 +149,7 @@
     "electron-updater": "^5.2.3",
     "elkjs": "^0.8.2",
     "flat": "^5.0.2",
+    "framer-motion": "^10.3.1",
     "js-yaml": "^4.1.0",
     "lodash": "^4.17.21",
     "material-ui-popup-state": "^5.0.4",

@@ -1,7 +1,8 @@
 import React, { ReactNode } from 'react';
-import { Box, CircularProgress, Typography } from '@mui/material';
+import { Box, Typography } from '@mui/material';
 import { SxProps } from '@mui/system';
 import { Theme } from '@mui/material/styles';
+import LogoLoader from '../../common/LogoLoader';
 
 type TableDetailsChartProps = {
   title?: ReactNode;
@@ -17,7 +18,7 @@ export default function TableDetailsChart({ title, chart, sx }: TableDetailsChar
           {title}
         </Typography>
       )}
-      <Box>{chart || <CircularProgress sx={{ my: 5 }} />}</Box>
+      <Box>{chart || <LogoLoader sx={{ my: 5 }} />}</Box>
     </Box>
   );
 }

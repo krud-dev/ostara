@@ -1,12 +1,13 @@
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import TableDetailsLabelValue from 'renderer/components/table/details/TableDetailsLabelValue';
 import { FormattedMessage } from 'react-intl';
-import { Box, Card, CardContent, CardHeader, Chip, CircularProgress, Stack } from '@mui/material';
+import { Box, Card, CardContent, CardHeader, Chip, Stack } from '@mui/material';
 import { COMPONENTS_SPACING, DEFAULT_TABLE_COLUMN_WIDTH } from 'renderer/constants/ui';
 import { EnrichedInstanceMetric } from '../../../../../apis/requests/instance/metrics/getInstanceMetrics';
 import { useGetInstanceMetricDetailsQuery } from '../../../../../apis/requests/instance/metrics/getInstanceMetricDetails';
 import { isNil } from 'lodash';
 import { MetricActuatorResponse } from '../../../../../../common/generated_definitions';
+import LogoLoader from '../../../../../components/common/LogoLoader';
 
 type MetricDetailsProps = {
   row: EnrichedInstanceMetric;
@@ -53,7 +54,7 @@ export default function MetricDetails({ row }: MetricDetailsProps) {
     <Box sx={{ my: 2 }}>
       {!metricDetails ? (
         <Box sx={{ textAlign: 'center' }}>
-          <CircularProgress />
+          <LogoLoader />
         </Box>
       ) : (
         <Stack direction={'column'} spacing={COMPONENTS_SPACING}>
@@ -127,6 +128,7 @@ export default function MetricDetails({ row }: MetricDetailsProps) {
                       </Box>
                     }
                     sx={{ mt: 1.5 }}
+                    key={tagDetails.tag}
                   />
                 ))}
               </CardContent>

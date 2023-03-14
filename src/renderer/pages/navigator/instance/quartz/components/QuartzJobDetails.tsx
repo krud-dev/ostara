@@ -1,7 +1,7 @@
 import React, { useCallback, useMemo } from 'react';
 import TableDetailsLabelValue from 'renderer/components/table/details/TableDetailsLabelValue';
 import { FormattedMessage } from 'react-intl';
-import { Box, Card, CardContent, CardHeader, CircularProgress, Link, Stack } from '@mui/material';
+import { Box, Card, CardContent, CardHeader, Link, Stack } from '@mui/material';
 import { COMPONENTS_SPACING, DEFAULT_TABLE_COLUMN_WIDTH } from 'renderer/constants/ui';
 import { EnrichedQuartzJob } from '../../../../../apis/requests/instance/quartz/getInstanceQuartzJobs';
 import { useGetInstanceQuartzJobDetailsQuery } from '../../../../../apis/requests/instance/quartz/getInstanceQuartzJobDetails';
@@ -12,6 +12,7 @@ import NiceModal from '@ebay/nice-modal-react';
 import QuartzTriggerDetailsDialog from './QuartzTriggerDetailsDialog';
 import { EnrichedQuartzTrigger } from '../../../../../apis/requests/instance/quartz/getInstanceQuartzTriggers';
 import FormattedParsedDate from '../../../../../components/format/FormattedParsedDate';
+import LogoLoader from '../../../../../components/common/LogoLoader';
 
 type QuartzJobDetailsProps = {
   row: EnrichedQuartzJob;
@@ -51,7 +52,7 @@ export default function QuartzJobDetails({ row }: QuartzJobDetailsProps) {
     <Box sx={{ my: 2 }}>
       {!detailsState.data ? (
         <Box sx={{ textAlign: 'center' }}>
-          <CircularProgress />
+          <LogoLoader />
         </Box>
       ) : (
         <Stack direction={'column'} spacing={COMPONENTS_SPACING}>

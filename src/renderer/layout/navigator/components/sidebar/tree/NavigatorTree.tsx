@@ -1,6 +1,6 @@
 import { CreateHandler, DeleteHandler, MoveHandler, RenameHandler, Tree, TreeApi } from 'react-arborist';
 import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
-import { Box, Button, CircularProgress, Typography } from '@mui/material';
+import { Box, Button, Typography } from '@mui/material';
 import NavigatorTreeNode from 'renderer/layout/navigator/components/sidebar/tree/NavigatorTreeNode';
 import { TreeItem } from 'renderer/layout/navigator/components/sidebar/tree/tree';
 import { NAVIGATOR_ITEM_HEIGHT } from 'renderer/constants/ui';
@@ -29,6 +29,7 @@ import { ItemRO, ItemType } from '../../../../../definitions/daemon';
 import { NodeApi } from 'react-arborist/dist/interfaces/node-api';
 import { useUpdateEffect } from 'react-use';
 import { isWindows } from '../../../../../utils/platformUtils';
+import LogoLoader from '../../../../../components/common/LogoLoader';
 
 const TreeStyle = styled(Tree<TreeItem>)(({ theme }) => ({
   '& [role="treeitem"]': {
@@ -283,7 +284,7 @@ export default function NavigatorTree({ width, search }: NavigatorTreeProps) {
             justifyContent: 'center',
           }}
         >
-          <CircularProgress />
+          <LogoLoader />
         </Box>
       )}
 

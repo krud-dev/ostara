@@ -1,11 +1,12 @@
 import React, { FunctionComponent } from 'react';
-import { Box, CircularProgress, Divider } from '@mui/material';
+import { Box, Divider } from '@mui/material';
 import EmptyContent from 'renderer/components/help/EmptyContent';
 import { FormattedMessage } from 'react-intl';
 import { Edge, Node } from 'reactflow';
 import CustomReactFlow from './CustomReactFlow';
 import SearchToolbar from '../../../../components/common/SearchToolbar';
 import { ReactFlowContext, ReactFlowProvider } from '../contexts/ReactFlowContext';
+import LogoLoader from '../../../../components/common/LogoLoader';
 
 type GraphComponentProps = {
   nodes?: Node[];
@@ -24,7 +25,7 @@ const GraphComponent: FunctionComponent<GraphComponentProps> = ({ nodes, edges, 
 
             {loading && (
               <Box sx={{ height: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                <CircularProgress />
+                <LogoLoader />
               </Box>
             )}
 
