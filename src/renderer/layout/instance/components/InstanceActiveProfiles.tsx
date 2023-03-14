@@ -1,5 +1,5 @@
 import React, { useMemo } from 'react';
-import { Box, Chip, Stack, Tooltip, Typography } from '@mui/material';
+import { Box, Chip, CircularProgress, Stack, Tooltip, Typography } from '@mui/material';
 import { COMPONENTS_SPACING, NAVIGATOR_ITEM_HEIGHT } from 'renderer/constants/ui';
 import { InstanceRO } from '../../../../common/generated_definitions';
 import { FormattedMessage } from 'react-intl';
@@ -21,17 +21,16 @@ export default function InstanceActiveProfiles({ item }: InstanceActiveProfilesP
         height: NAVIGATOR_ITEM_HEIGHT,
         display: 'flex',
         flexDirection: 'column',
-        alignItems: 'center',
         justifyContent: 'center',
       }}
     >
       {loading && (
-        <Typography variant={'caption'} sx={{ color: 'text.secondary' }}>
+        <Typography variant={'caption'} sx={{ color: 'text.secondary', px: COMPONENTS_SPACING }}>
           <FormattedMessage id={'loadingActiveProfiles'} />
         </Typography>
       )}
       {empty && (
-        <Typography variant={'caption'} sx={{ color: 'text.secondary' }}>
+        <Typography variant={'caption'} sx={{ color: 'text.secondary', px: COMPONENTS_SPACING }}>
           <FormattedMessage id={'noActiveProfiles'} />
         </Typography>
       )}
