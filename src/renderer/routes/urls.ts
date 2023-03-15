@@ -133,13 +133,4 @@ export const urls = asUrlInfos({
     url: '/navigator/instance/:id/heap-dump',
     path: 'heap-dump',
   },
-  // Settings Root
-  settings: {
-    url: '/settings',
-    path: 'settings',
-  },
-  applicationSettings: {
-    url: '/settings/application',
-    path: 'application',
-  },
 });
