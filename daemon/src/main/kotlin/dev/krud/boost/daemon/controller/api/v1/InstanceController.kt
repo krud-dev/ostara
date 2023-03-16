@@ -8,6 +8,7 @@ import dev.krud.boost.daemon.configuration.instance.health.instancehealthlog.ro.
 import dev.krud.boost.daemon.configuration.instance.ro.InstanceModifyRequestRO
 import dev.krud.boost.daemon.configuration.instance.ro.InstanceRO
 import dev.krud.crudframework.crud.handler.CrudHandler
+import dev.krud.crudframework.crud.handler.krud.Krud
 import dev.krud.crudframework.modelfilter.dsl.filter
 import dev.krud.shapeshift.ShapeShift
 import io.swagger.v3.oas.annotations.Operation
@@ -29,8 +30,9 @@ import java.util.*
 class InstanceController(
     private val crudHandler: CrudHandler,
     private val shapeShift: ShapeShift,
-    private val instanceService: InstanceService
-) : AbstractCrudController<Instance, InstanceRO, InstanceModifyRequestRO, InstanceModifyRequestRO>(Instance::class, InstanceRO::class, crudHandler) {
+    private val instanceService: InstanceService,
+    private val instanceKrud: Krud<Instance, UUID>,
+) : AbstractCrudController<Instance, InstanceRO, InstanceModifyRequestRO, InstanceModifyRequestRO>(Instance::class, InstanceRO::class, crudHandler, shapeShift, instanceKrud) {
     @PostMapping("/{instanceId}/move")
     @ResponseStatus(HttpStatus.OK)
     @Operation(

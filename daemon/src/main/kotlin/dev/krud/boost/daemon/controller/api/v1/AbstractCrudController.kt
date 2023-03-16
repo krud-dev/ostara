@@ -2,6 +2,8 @@ package dev.krud.boost.daemon.controller.api.v1
 
 import dev.krud.boost.daemon.entity.AbstractEntity
 import dev.krud.crudframework.crud.handler.CrudHandler
+import dev.krud.crudframework.crud.handler.krud.Krud
+import dev.krud.shapeshift.ShapeShift
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.media.Content
 import io.swagger.v3.oas.annotations.responses.ApiResponse
@@ -12,10 +14,12 @@ import java.util.*
 import kotlin.reflect.KClass
 
 @ApiResponse(responseCode = "400", description = "Bad request", content = [Content()])
-abstract class AbstractCrudController<Entity : AbstractEntity, RO : Any, CreateDTO, UpdateDTO>(
+abstract class AbstractCrudController<Entity : AbstractEntity, RO : Any, CreateDTO : Any, UpdateDTO : Any>(
     private val entityClazz: KClass<Entity>,
     private val roClazz: KClass<RO>,
-    private val crudHandler: CrudHandler
+    private val crudHandler: CrudHandler,
+    private val shapeShift: ShapeShift? = null,
+    private val krud: Krud<Entity, UUID>? = null
 ) : AbstractReadOnlyCrudController<Entity, RO>(entityClazz, roClazz, crudHandler) {
     /**
      * Create a new resource
@@ -37,6 +41,32 @@ abstract class AbstractCrudController<Entity : AbstractEntity, RO : Any, CreateD
             .applyPolicies()
             .execute()
     }
+
+    /**
+     * Bulk create new resources
+     */
+    @PostMapping("/bulk", consumes = ["application/json"], produces = ["application/json"])
+    @ResponseStatus(HttpStatus.CREATED)
+    @Operation(
+        summary = "Create multiple resources",
+        description = "Create multiple resources"
+    )
+    @ApiResponse(responseCode = "201", description = "Resources created")
+    @ApiResponse(responseCode = "400", description = "Bad request", content = [Content()])
+    fun createMany(
+        @Valid @RequestBody
+        request: BulkRequestRO<CreateDTO>
+    ): List<RO> {
+        krud ?: return emptyList()
+        shapeShift ?: return emptyList()
+        val result = krud.bulkCreate(
+            shapeShift.mapCollection(request.items, entityClazz.java),
+            applyPolicies = true
+        )
+
+        return shapeShift.mapCollection(result, roClazz.java)
+    }
+
 
     /**
      * Update an existing resource
@@ -74,4 +104,8 @@ abstract class AbstractCrudController<Entity : AbstractEntity, RO : Any, CreateD
             .applyPolicies()
             .execute()
     }
+
+    data class BulkRequestRO<T>(
+        val items: List<T>
+    )
 }
