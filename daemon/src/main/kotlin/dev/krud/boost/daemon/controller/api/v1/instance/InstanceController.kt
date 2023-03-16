@@ -1,10 +1,12 @@
-package dev.krud.boost.daemon.controller.api.v1
+package dev.krud.boost.daemon.controller.api.v1.instance
 
 import dev.krud.boost.daemon.configuration.application.validation.ValidApplicationId
 import dev.krud.boost.daemon.configuration.instance.InstanceService
 import dev.krud.boost.daemon.configuration.instance.entity.Instance
 import dev.krud.boost.daemon.configuration.instance.ro.InstanceModifyRequestRO
 import dev.krud.boost.daemon.configuration.instance.ro.InstanceRO
+import dev.krud.boost.daemon.controller.api.v1.API_PREFIX
+import dev.krud.boost.daemon.controller.api.v1.AbstractCrudController
 import dev.krud.crudframework.crud.handler.CrudHandler
 import dev.krud.crudframework.crud.handler.krud.Krud
 import dev.krud.shapeshift.ShapeShift

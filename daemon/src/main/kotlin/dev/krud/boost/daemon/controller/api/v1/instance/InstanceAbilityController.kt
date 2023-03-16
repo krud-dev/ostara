@@ -1,7 +1,8 @@
-package dev.krud.boost.daemon.controller.api.v1
+package dev.krud.boost.daemon.controller.api.v1.instance
 
 import dev.krud.boost.daemon.configuration.instance.ability.InstanceAbilityService
 import dev.krud.boost.daemon.configuration.instance.enums.InstanceAbility
+import dev.krud.boost.daemon.controller.api.v1.API_PREFIX
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.media.Content
 import io.swagger.v3.oas.annotations.responses.ApiResponse

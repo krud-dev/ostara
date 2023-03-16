@@ -3,6 +3,7 @@ package dev.krud.boost.daemon.controller.api.v1
 import dev.krud.boost.daemon.configuration.instance.metric.InstanceMetricService
 import dev.krud.boost.daemon.configuration.instance.metric.ro.InstanceMetricRO
 import dev.krud.boost.daemon.configuration.instance.metric.ro.InstanceMetricValueRO
+import dev.krud.boost.daemon.controller.api.v1.instance.InstanceMetricController
 import dev.krud.boost.daemon.exception.throwBadRequest
 import dev.krud.boost.daemon.exception.throwNotFound
 import org.junit.jupiter.api.Assertions.*

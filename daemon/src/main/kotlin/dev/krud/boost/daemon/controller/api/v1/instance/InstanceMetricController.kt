@@ -1,7 +1,8 @@
-package dev.krud.boost.daemon.controller.api.v1
+package dev.krud.boost.daemon.controller.api.v1.instance
 
 import dev.krud.boost.daemon.configuration.instance.metric.InstanceMetricService
 import dev.krud.boost.daemon.configuration.instance.metric.ro.InstanceMetricRO
+import dev.krud.boost.daemon.controller.api.v1.API_PREFIX
 import io.swagger.v3.oas.annotations.media.Content
 import io.swagger.v3.oas.annotations.responses.ApiResponse
 import io.swagger.v3.oas.annotations.tags.Tag

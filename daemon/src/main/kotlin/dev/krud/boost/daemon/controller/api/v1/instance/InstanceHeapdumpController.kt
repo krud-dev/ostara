@@ -1,8 +1,10 @@
-package dev.krud.boost.daemon.controller.api.v1
+package dev.krud.boost.daemon.controller.api.v1.instance
 
 import dev.krud.boost.daemon.configuration.instance.heapdump.InstanceHeapdumpService
 import dev.krud.boost.daemon.configuration.instance.heapdump.model.InstanceHeapdumpReference
 import dev.krud.boost.daemon.configuration.instance.heapdump.ro.InstanceHeapdumpReferenceRO
+import dev.krud.boost.daemon.controller.api.v1.API_PREFIX
+import dev.krud.boost.daemon.controller.api.v1.AbstractReadOnlyCrudController
 import dev.krud.crudframework.crud.handler.CrudHandler
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.media.Content

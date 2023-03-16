@@ -1,8 +1,9 @@
-package dev.krud.boost.daemon.controller.api.v1
+package dev.krud.boost.daemon.controller.api.v1.instance
 
 import dev.krud.boost.daemon.configuration.instance.httprequeststatistics.InstanceHttpRequestStatisticsService
 import dev.krud.boost.daemon.configuration.instance.httprequeststatistics.enums.HttpMethod
 import dev.krud.boost.daemon.configuration.instance.httprequeststatistics.ro.InstanceHttpRequestStatisticsRO
+import dev.krud.boost.daemon.controller.api.v1.API_PREFIX
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.responses.ApiResponse
 import io.swagger.v3.oas.annotations.tags.Tag

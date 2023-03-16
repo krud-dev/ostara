@@ -289,6 +289,10 @@ export interface InstanceCacheStatisticsRO {
     size: number;
 }
 
+export interface InstanceDisplayNameRO {
+    displayName: string;
+}
+
 export interface InstanceHealthRO {
     status: InstanceHealthStatus;
     statusText?: string;

@@ -1,7 +1,8 @@
-package dev.krud.boost.daemon.controller.api.v1
+package dev.krud.boost.daemon.controller.api.v1.instance
 
-import dev.krud.boost.daemon.configuration.instance.systemproperties.InstanceSystemPropertiesService
-import dev.krud.boost.daemon.configuration.instance.systemproperties.ro.InstanceSystemPropertiesRO
+import dev.krud.boost.daemon.configuration.instance.systemenvironment.InstanceSystemEnvironmentService
+import dev.krud.boost.daemon.configuration.instance.systemenvironment.ro.InstanceSystemEnvironmentRO
+import dev.krud.boost.daemon.controller.api.v1.API_PREFIX
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.media.Content
 import io.swagger.v3.oas.annotations.responses.ApiResponse
@@ -15,21 +16,21 @@ import org.springframework.web.bind.annotation.RestController
 import java.util.*
 
 @RestController
-@RequestMapping("$API_PREFIX/instances/{instanceId}/systemProperties")
-@Tag(name = "Instance System Properties")
-class InstanceSystemPropertiesController(
-    private val instanceSystemPropertiesService: InstanceSystemPropertiesService
+@RequestMapping("$API_PREFIX/instances/{instanceId}/systemEnvironment")
+@Tag(name = "Instance System Environment")
+class InstanceSystemEnvironmentController(
+    private val instanceSystemEnvironmentService: InstanceSystemEnvironmentService
 ) {
 
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
     @Operation(
-        summary = "Get system (JVM) properties for an instance"
+        summary = "Get system environment for an instance"
     )
     @ApiResponse(responseCode = "200", description = "Properties for an instance")
     @ApiResponse(responseCode = "400", description = "Instance is missing ability", content = [Content()])
     @ApiResponse(responseCode = "404", description = "Instance not found", content = [Content()])
-    fun getSystemProperties(@PathVariable instanceId: UUID): InstanceSystemPropertiesRO {
-        return instanceSystemPropertiesService.getSystemProperties(instanceId)
+    fun getSystemProperties(@PathVariable instanceId: UUID): InstanceSystemEnvironmentRO {
+        return instanceSystemEnvironmentService.getSystemEnvironment(instanceId)
     }
 }
