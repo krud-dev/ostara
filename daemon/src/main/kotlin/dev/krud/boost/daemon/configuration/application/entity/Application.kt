@@ -6,7 +6,6 @@ import dev.krud.boost.daemon.configuration.authentication.Authentication
 import dev.krud.boost.daemon.configuration.authentication.EffectiveAuthentication
 import dev.krud.boost.daemon.configuration.folder.entity.Folder
 import dev.krud.boost.daemon.configuration.folder.entity.Folder.Companion.effectiveAuthentication
-import dev.krud.boost.daemon.configuration.folder.entity.Folder.Companion.effectiveColor
 import dev.krud.boost.daemon.configuration.instance.entity.Instance
 import dev.krud.boost.daemon.entity.AbstractEntity
 import dev.krud.boost.daemon.utils.DEFAULT_COLOR
@@ -64,13 +63,6 @@ class Application(
 
     companion object {
         const val NAME = "application"
-        val Application.effectiveColor: String
-            get() {
-                if (color != DEFAULT_COLOR) {
-                    return color
-                }
-                return parentFolder?.effectiveColor ?: DEFAULT_COLOR
-            }
         val Application.effectiveAuthentication: EffectiveAuthentication
             get() {
                 if (authentication !is Authentication.Inherit) {

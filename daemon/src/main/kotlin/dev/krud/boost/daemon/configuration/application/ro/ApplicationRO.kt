@@ -13,7 +13,6 @@ class ApplicationRO(
     var instanceCount: Int = 0,
     val description: String? = null,
     val color: String = DEFAULT_COLOR,
-    var effectiveColor: String = DEFAULT_COLOR,
     val icon: String? = null,
     val sort: Double? = null,
     val parentFolderId: UUID? = null,

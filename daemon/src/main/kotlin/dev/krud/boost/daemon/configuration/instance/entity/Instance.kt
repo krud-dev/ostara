@@ -2,7 +2,6 @@ package dev.krud.boost.daemon.configuration.instance.entity
 
 import dev.krud.boost.daemon.configuration.application.entity.Application
 import dev.krud.boost.daemon.configuration.application.entity.Application.Companion.effectiveAuthentication
-import dev.krud.boost.daemon.configuration.application.entity.Application.Companion.effectiveColor
 import dev.krud.boost.daemon.configuration.authentication.EffectiveAuthentication
 import dev.krud.boost.daemon.configuration.instance.ro.InstanceRO
 import dev.krud.boost.daemon.entity.AbstractEntity
@@ -50,13 +49,6 @@ class Instance(
 
     companion object {
         const val NAME = "application"
-        val Instance.effectiveColor: String
-            get() {
-                if (color != DEFAULT_COLOR) {
-                    return color
-                }
-                return parentApplication?.effectiveColor ?: DEFAULT_COLOR
-            }
         val Instance.effectiveAuthentication: EffectiveAuthentication
             get() {
                 return parentApplication!!.effectiveAuthentication

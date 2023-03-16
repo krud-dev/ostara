@@ -2,7 +2,6 @@ package dev.krud.boost.daemon.configuration.instance.crud
 
 import dev.krud.boost.daemon.configuration.instance.entity.Instance
 import dev.krud.boost.daemon.configuration.instance.entity.Instance.Companion.effectiveAuthentication
-import dev.krud.boost.daemon.configuration.instance.entity.Instance.Companion.effectiveColor
 import dev.krud.boost.daemon.configuration.instance.health.InstanceHealthService
 import dev.krud.boost.daemon.configuration.instance.ro.InstanceRO
 import dev.krud.shapeshift.decorator.MappingDecorator
@@ -16,7 +15,6 @@ class InstanceToRoMappingDecorator(
     private val instanceHealthService: InstanceHealthService
 ) : MappingDecorator<Instance, InstanceRO> {
     override fun decorate(context: MappingDecoratorContext<Instance, InstanceRO>) {
-        context.to.effectiveColor = context.from.effectiveColor
         context.from.alias?.let {
             context.to.displayName = it
         }

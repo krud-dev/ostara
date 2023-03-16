@@ -237,7 +237,6 @@ export interface ApplicationRO {
     instanceCount: number;
     description?: string;
     color: string;
-    effectiveColor: string;
     icon?: string;
     sort?: number;
     parentFolderId?: string;
@@ -261,7 +260,6 @@ export interface FolderRO {
     alias: string;
     description?: string;
     color: string;
-    effectiveColor: string;
     icon?: string;
     sort?: number;
     parentFolderId?: string;
@@ -359,7 +357,6 @@ export interface InstanceRO {
     parentApplicationId: string;
     description?: string;
     color: string;
-    effectiveColor: string;
     icon?: string;
     sort?: number;
     health: InstanceHealthRO;

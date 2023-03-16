@@ -61,13 +61,6 @@ class Folder(
 
     companion object {
         const val NAME = "folder"
-        val Folder.effectiveColor: String
-            get() {
-                if (color != DEFAULT_COLOR) {
-                    return color
-                }
-                return parentFolder?.effectiveColor ?: DEFAULT_COLOR
-            }
         val Folder.effectiveAuthentication: EffectiveAuthentication
             get() {
                 if (authentication !is Authentication.Inherit) {

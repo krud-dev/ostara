@@ -15,7 +15,6 @@ class InstanceRO(
     val parentApplicationId: UUID,
     val description: String? = null,
     val color: String = DEFAULT_COLOR,
-    var effectiveColor: String = DEFAULT_COLOR,
     val icon: String? = null,
     val sort: Double? = null,
     var health: InstanceHealthRO = InstanceHealthRO.unknown(),
