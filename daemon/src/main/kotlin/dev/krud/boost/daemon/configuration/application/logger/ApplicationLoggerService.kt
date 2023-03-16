@@ -1,7 +1,6 @@
 package dev.krud.boost.daemon.configuration.application.logger
 
 import dev.krud.boost.daemon.configuration.application.ApplicationService
-import dev.krud.boost.daemon.configuration.application.entity.Application.Companion.healthyInstances
 import dev.krud.boost.daemon.configuration.application.logger.ro.ApplicationLoggerRO
 import dev.krud.boost.daemon.configuration.instance.enums.InstanceAbility
 import dev.krud.boost.daemon.configuration.instance.logger.InstanceLoggerService
@@ -17,7 +16,7 @@ class ApplicationLoggerService(
     fun getLoggers(applicationId: UUID): List<ApplicationLoggerRO> {
         val application = applicationService.getApplicationOrThrow(applicationId)
         applicationService.hasAbilityOrThrow(application, InstanceAbility.LOGGERS)
-        val loggers = application.healthyInstances.associateWith { instanceLoggerService.getLoggers(it.id) }
+        val loggers = applicationService.getApplicationInstances(application.id).associateWith { instanceLoggerService.getLoggers(it.id) }
 
         val applicationLoggers = mutableListOf<ApplicationLoggerRO>()
         for ((instance, loggerList) in loggers) {
@@ -41,7 +40,7 @@ class ApplicationLoggerService(
     fun getLogger(applicationId: UUID, loggerName: String): ApplicationLoggerRO {
         val application = applicationService.getApplicationOrThrow(applicationId)
         applicationService.hasAbilityOrThrow(application, InstanceAbility.LOGGERS)
-        val loggers = application.healthyInstances.associateWith {
+        val loggers = applicationService.getApplicationInstances(application.id).associateWith {
             try {
                 instanceLoggerService.getLogger(it.id, loggerName)
             } catch (e: Exception) {
@@ -63,7 +62,7 @@ class ApplicationLoggerService(
     fun setLoggerLevel(applicationId: UUID, loggerName: String, level: LogLevel?): ApplicationLoggerRO {
         val application = applicationService.getApplicationOrThrow(applicationId)
         applicationService.hasAbilityOrThrow(application, InstanceAbility.LOGGERS)
-        for (instance in application.healthyInstances) {
+        for (instance in applicationService.getApplicationInstances(application.id)) {
             try {
                 instanceLoggerService.setLoggerLevel(instance.id, loggerName, level)
             } catch (e: Exception) {

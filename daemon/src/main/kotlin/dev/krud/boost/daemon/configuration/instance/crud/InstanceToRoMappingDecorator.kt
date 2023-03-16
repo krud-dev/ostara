@@ -1,7 +1,6 @@
 package dev.krud.boost.daemon.configuration.instance.crud
 
 import dev.krud.boost.daemon.configuration.instance.entity.Instance
-import dev.krud.boost.daemon.configuration.instance.entity.Instance.Companion.effectiveAuthentication
 import dev.krud.boost.daemon.configuration.instance.health.InstanceHealthService
 import dev.krud.boost.daemon.configuration.instance.ro.InstanceRO
 import dev.krud.boost.daemon.utils.stripEverythingAfterLastSlash
@@ -23,7 +22,6 @@ class InstanceToRoMappingDecorator(
 
         val health = instanceHealthService.getCachedHealth(context.from.id)
         context.to.health = health
-        context.to.effectiveAuthentication = context.from.effectiveAuthentication
         context.to.displayName = if (!context.from.alias.isNullOrBlank()) {
             context.from.alias!!
         } else {

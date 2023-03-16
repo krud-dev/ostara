@@ -242,7 +242,6 @@ export interface ApplicationRO {
     parentFolderId?: string;
     health: ApplicationHealthRO;
     authentication: Authentication;
-    effectiveAuthentication: EffectiveAuthentication;
 }
 
 export interface FolderModifyRequestRO {
@@ -264,7 +263,6 @@ export interface FolderRO {
     sort?: number;
     parentFolderId?: string;
     authentication: Authentication;
-    effectiveAuthentication: EffectiveAuthentication;
 }
 
 export interface EvictCachesRequestRO {
@@ -356,7 +354,6 @@ export interface InstanceRO {
     icon?: string;
     sort?: number;
     health: InstanceHealthRO;
-    effectiveAuthentication: EffectiveAuthentication;
 }
 
 export interface InstanceSystemEnvironmentRO {
@@ -402,6 +399,12 @@ export interface ThreadProfilingRequestRO {
 export interface ApplicationHealthUpdatedEventMessage$Payload {
     applicationId: string;
     newStatus: ApplicationHealthStatus;
+}
+
+export interface EffectiveAuthentication {
+    authentication: Authentication;
+    sourceType: EffectiveAuthentication$SourceType;
+    sourceId: string;
 }
 
 export interface InstanceHealthChangedEventMessage$Payload {
@@ -665,12 +668,6 @@ export interface Unit {
 }
 
 export interface Authentication {
-}
-
-export interface EffectiveAuthentication {
-    authentication: Authentication;
-    sourceType: EffectiveAuthentication$SourceType;
-    sourceId: string;
 }
 
 export interface Iterable<T> {
@@ -957,10 +954,10 @@ export type EventLogSeverity = "INFO" | "WARN" | "ERROR";
 
 export type ThreadProfilingStatus = "RUNNING" | "FINISHED";
 
+export type EffectiveAuthentication$SourceType = "FOLDER" | "APPLICATION";
+
 export type FilterFieldOperation = "Equal" | "NotEqual" | "In" | "NotIn" | "GreaterThan" | "GreaterEqual" | "LowerThan" | "LowerEqual" | "Between" | "Contains" | "IsNull" | "IsNotNull" | "IsEmpty" | "IsNotEmpty" | "And" | "Or" | "Not" | "Noop";
 
 export type FilterFieldDataType = "String" | "Integer" | "Long" | "Double" | "Boolean" | "Date" | "Object" | "Enum" | "UUID" | "None";
 
 export type IntegrationGraphActuatorResponse$Link$Type = "input" | "output";
-
-export type EffectiveAuthentication$SourceType = "FOLDER" | "APPLICATION";

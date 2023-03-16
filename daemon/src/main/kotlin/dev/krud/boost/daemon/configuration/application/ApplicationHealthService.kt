@@ -27,11 +27,12 @@ class ApplicationHealthService(
     private val applicationHealthCache by cacheManager.resolve()
 
     fun getHealth(application: Application): ApplicationHealthRO {
-        if (application.instances.isEmpty()) {
+        if (application.instanceCount == 0) {
             return ApplicationHealthRO.pending()
         }
+        val instances = applicationService.getApplicationInstances(application.id)
         val entries = applicationHealthCache.get(application.id) {
-            application.instances.associate { it.id to instanceHealthService.getHealth(it).status }
+            instances.associate { it.id to instanceHealthService.getHealth(it).status }
         }!!
 
         return ApplicationHealthRO(

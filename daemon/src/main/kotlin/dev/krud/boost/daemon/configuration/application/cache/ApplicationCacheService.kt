@@ -20,7 +20,7 @@ class ApplicationCacheService(
     fun getCaches(applicationId: UUID): List<ApplicationCacheRO> {
         val application = applicationService.getApplicationOrThrow(applicationId)
         applicationService.hasAbilityOrThrow(application, InstanceAbility.CACHES)
-        return application.instances.flatMap { instance ->
+        return applicationService.getApplicationInstances(application.id).flatMap { instance ->
             try {
                 instanceCacheService.getCaches(instance.id)
             } catch (e: Exception) {
@@ -40,14 +40,13 @@ class ApplicationCacheService(
     fun getCache(applicationId: UUID, cacheName: String): ApplicationCacheRO {
         val application = applicationService.getApplicationOrThrow(applicationId)
         applicationService.hasAbilityOrThrow(application, InstanceAbility.CACHES)
-        val instanceCacheSample = application.instances.mapNotNull { instance ->
+        val instanceCacheSample = applicationService.getApplicationInstances(application.id).firstNotNullOf { instance ->
             try {
                 instanceCacheService.getCache(instance.id, cacheName)
             } catch (e: Exception) {
                 null
             }
         }
-            .first()
         return ApplicationCacheRO(
             name = instanceCacheSample.name,
             cacheManager = instanceCacheSample.cacheManager,
@@ -58,7 +57,7 @@ class ApplicationCacheService(
     fun evictAllCaches(applicationId: UUID) {
         val application = applicationService.getApplicationOrThrow(applicationId)
         applicationService.hasAbilityOrThrow(application, InstanceAbility.CACHES)
-        application.instances.forEach { instance ->
+        applicationService.getApplicationInstances(application.id).forEach { instance ->
             try {
                 instanceCacheService.evictAllCaches(instance.id)
             } catch (e: Exception) {
@@ -71,8 +70,7 @@ class ApplicationCacheService(
         val application = applicationService.getApplicationOrThrow(applicationId)
         applicationService.hasAbilityOrThrow(application, InstanceAbility.CACHES)
 
-        val summaries = application
-            .instances.associate {
+        val summaries = applicationService.getApplicationInstances(application.id).associate {
                 it.id to instanceCacheService.evictCaches(it.id, request)
             }
         return EvictApplicationCachesResultRO(
@@ -83,7 +81,7 @@ class ApplicationCacheService(
     fun evictCache(applicationId: UUID, cacheName: String) {
         val application = applicationService.getApplicationOrThrow(applicationId)
         applicationService.hasAbilityOrThrow(application, InstanceAbility.CACHES)
-        application.instances.forEach { instance ->
+        applicationService.getApplicationInstances(application.id).forEach { instance ->
             try {
                 instanceCacheService.evictCache(instance.id, cacheName)
             } catch (e: Exception) {
@@ -95,7 +93,7 @@ class ApplicationCacheService(
     fun getCacheStatistics(applicationId: UUID, cacheName: String): ApplicationCacheStatisticsRO {
         val application = applicationService.getApplicationOrThrow(applicationId)
         applicationService.hasAbilityOrThrow(application, InstanceAbility.CACHE_STATISTICS)
-        return application.instances.mapNotNull { instance ->
+        return applicationService.getApplicationInstances(application.id).mapNotNull { instance ->
             try {
                 instanceCacheService.getCacheStatistics(instance.id, cacheName)
             } catch (e: Exception) {

@@ -1,8 +1,6 @@
 package dev.krud.boost.daemon.configuration.folder.entity
 
-import dev.krud.boost.daemon.configuration.application.entity.Application
 import dev.krud.boost.daemon.configuration.authentication.Authentication
-import dev.krud.boost.daemon.configuration.authentication.EffectiveAuthentication
 import dev.krud.boost.daemon.configuration.folder.ro.FolderRO
 import dev.krud.boost.daemon.entity.AbstractEntity
 import dev.krud.boost.daemon.utils.DEFAULT_COLOR
@@ -12,10 +10,6 @@ import dev.krud.shapeshift.resolver.annotation.MappedField
 import io.hypersistence.utils.hibernate.type.json.JsonType
 import jakarta.persistence.Column
 import jakarta.persistence.Entity
-import jakarta.persistence.FetchType
-import jakarta.persistence.JoinColumn
-import jakarta.persistence.ManyToOne
-import jakarta.persistence.OneToMany
 import org.hibernate.annotations.Type
 import java.util.*
 
@@ -49,25 +43,7 @@ class Folder(
     @Column(columnDefinition = "json")
     var authentication: Authentication = Authentication.Inherit.DEFAULT
 ) : AbstractEntity() {
-    @ManyToOne
-    @JoinColumn(name = "parent_folder_id", insertable = false, updatable = false, nullable = true)
-    val parentFolder: Folder? = null
-
-    @OneToMany(mappedBy = "parentFolder", fetch = FetchType.EAGER)
-    val applications: List<Application> = listOf()
-
-    @OneToMany(mappedBy = "parentFolder", fetch = FetchType.EAGER)
-    val folders: List<Folder> = listOf()
-
     companion object {
         const val NAME = "folder"
-        val Folder.effectiveAuthentication: EffectiveAuthentication
-            get() {
-                if (authentication !is Authentication.Inherit) {
-                    return EffectiveAuthentication(authentication, EffectiveAuthentication.SourceType.FOLDER, id)
-                }
-                return parentFolder?.effectiveAuthentication
-                    ?: EffectiveAuthentication(Authentication.None.DEFAULT, EffectiveAuthentication.SourceType.FOLDER, id)
-            }
     }
 }

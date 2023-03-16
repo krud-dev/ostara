@@ -3,10 +3,6 @@ package dev.krud.boost.daemon.configuration.application.entity
 import dev.krud.boost.daemon.configuration.application.enums.ApplicationType
 import dev.krud.boost.daemon.configuration.application.ro.ApplicationRO
 import dev.krud.boost.daemon.configuration.authentication.Authentication
-import dev.krud.boost.daemon.configuration.authentication.EffectiveAuthentication
-import dev.krud.boost.daemon.configuration.folder.entity.Folder
-import dev.krud.boost.daemon.configuration.folder.entity.Folder.Companion.effectiveAuthentication
-import dev.krud.boost.daemon.configuration.instance.entity.Instance
 import dev.krud.boost.daemon.entity.AbstractEntity
 import dev.krud.boost.daemon.utils.DEFAULT_COLOR
 import dev.krud.crudframework.crud.annotation.Deleteable
@@ -54,23 +50,7 @@ class Application(
     @Formula("(select count(*) from instance i where i.parent_application_id = id)")
     val instanceCount: Int = 0
 
-    @ManyToOne
-    @JoinColumn(name = "parent_folder_id", insertable = false, updatable = false, nullable = true)
-    val parentFolder: Folder? = null
-
-    @OneToMany(mappedBy = "parentApplication", fetch = FetchType.EAGER)
-    val instances: List<Instance> = listOf()
-
     companion object {
         const val NAME = "application"
-        val Application.effectiveAuthentication: EffectiveAuthentication
-            get() {
-                if (authentication !is Authentication.Inherit) {
-                    return EffectiveAuthentication(authentication, EffectiveAuthentication.SourceType.APPLICATION, id)
-                }
-                return parentFolder?.effectiveAuthentication
-                    ?: EffectiveAuthentication(Authentication.None.DEFAULT, EffectiveAuthentication.SourceType.APPLICATION, id)
-            }
-        val Application.healthyInstances get() = instances
     }
 }

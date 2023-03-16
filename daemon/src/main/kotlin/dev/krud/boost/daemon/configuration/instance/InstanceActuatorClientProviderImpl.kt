@@ -2,9 +2,9 @@ package dev.krud.boost.daemon.configuration.instance
 
 import dev.krud.boost.daemon.actuator.ActuatorHttpClient
 import dev.krud.boost.daemon.actuator.ActuatorHttpClientImpl
+import dev.krud.boost.daemon.configuration.application.authentication.ApplicationAuthenticationService
 import dev.krud.boost.daemon.configuration.authentication.Authentication
 import dev.krud.boost.daemon.configuration.instance.entity.Instance
-import dev.krud.boost.daemon.configuration.instance.entity.Instance.Companion.effectiveAuthentication
 import dev.krud.boost.daemon.exception.ResourceNotFoundException
 import dev.krud.boost.daemon.exception.throwBadRequest
 import dev.krud.crudframework.crud.handler.CrudHandler
@@ -15,10 +15,12 @@ import java.util.*
 @Component
 class InstanceActuatorClientProviderImpl(
     @Lazy
-    private val crudHandler: CrudHandler
+    private val crudHandler: CrudHandler,
+    @Lazy
+    private val applicationAuthenticationService: ApplicationAuthenticationService
 ) : InstanceActuatorClientProvider {
     override fun provide(instance: Instance): ActuatorHttpClient {
-        return ActuatorHttpClientImpl(instance.actuatorUrl, instance.effectiveAuthentication.authentication.authenticator) // TODO: cache
+        return ActuatorHttpClientImpl(instance.actuatorUrl, applicationAuthenticationService.getEffectiveAuthentication(instance.parentApplicationId).authentication.authenticator) // TODO: cache
     }
 
     override fun provide(instanceId: UUID): ActuatorHttpClient {
