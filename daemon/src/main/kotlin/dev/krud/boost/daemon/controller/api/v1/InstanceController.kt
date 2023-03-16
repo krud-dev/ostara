@@ -3,7 +3,6 @@ package dev.krud.boost.daemon.controller.api.v1
 import dev.krud.boost.daemon.configuration.application.validation.ValidApplicationId
 import dev.krud.boost.daemon.configuration.instance.InstanceService
 import dev.krud.boost.daemon.configuration.instance.entity.Instance
-import dev.krud.boost.daemon.configuration.instance.health.InstanceHealthService
 import dev.krud.boost.daemon.configuration.instance.health.instancehealthlog.model.InstanceHealthLog
 import dev.krud.boost.daemon.configuration.instance.health.instancehealthlog.ro.InstanceHealthLogRO
 import dev.krud.boost.daemon.configuration.instance.ro.InstanceModifyRequestRO
@@ -30,8 +29,7 @@ import java.util.*
 class InstanceController(
     private val crudHandler: CrudHandler,
     private val shapeShift: ShapeShift,
-    private val instanceService: InstanceService,
-    private val instanceHealthService: InstanceHealthService
+    private val instanceService: InstanceService
 ) : AbstractCrudController<Instance, InstanceRO, InstanceModifyRequestRO, InstanceModifyRequestRO>(Instance::class, InstanceRO::class, crudHandler) {
     @PostMapping("/{instanceId}/move")
     @ResponseStatus(HttpStatus.OK)

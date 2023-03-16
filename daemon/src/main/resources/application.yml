@@ -45,3 +45,5 @@ cache:
       expire-after-write: 30m
     - name: applicationSystemEnvironmentCache
       expire-after-write: 30m
+    - name: applicationActiveProfilesCache
+      expire-after-write: 30m

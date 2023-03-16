@@ -6,7 +6,6 @@ import dev.krud.boost.daemon.configuration.instance.entity.Instance.Companion.ef
 import dev.krud.boost.daemon.configuration.instance.entity.Instance.Companion.effectiveColor
 import dev.krud.boost.daemon.configuration.instance.health.InstanceHealthService
 import dev.krud.boost.daemon.configuration.instance.hostname.InstanceHostnameResolver
-import dev.krud.boost.daemon.configuration.instance.info.InstanceInformationService
 import dev.krud.boost.daemon.configuration.instance.ro.InstanceRO
 import dev.krud.boost.daemon.utils.stripHttpProtocolIfPresent
 import dev.krud.shapeshift.decorator.MappingDecorator
@@ -21,9 +20,7 @@ class InstanceToRoMappingDecorator(
     @Lazy
     private val instanceHostnameResolver: InstanceHostnameResolver,
     @Lazy
-    private val instanceAbilityService: InstanceAbilityService,
-    @Lazy
-    private val instanceInformationService: InstanceInformationService
+    private val instanceAbilityService: InstanceAbilityService
 ) : MappingDecorator<Instance, InstanceRO> {
     override fun decorate(context: MappingDecoratorContext<Instance, InstanceRO>) {
         context.to.effectiveColor = context.from.effectiveColor
@@ -47,6 +44,5 @@ class InstanceToRoMappingDecorator(
         }
 
         context.to.effectiveAuthentication = context.from.effectiveAuthentication
-        context.to.activeProfiles = instanceInformationService.getInstanceActiveProfiles(context.from.id)
     }
 }

@@ -23,5 +23,4 @@ class InstanceRO(
     var health: InstanceHealthRO = InstanceHealthRO.unknown(),
     var effectiveAuthentication: EffectiveAuthentication =
         EffectiveAuthentication(Authentication.Inherit.DEFAULT, EffectiveAuthentication.SourceType.APPLICATION, parentApplicationId),
-    var activeProfiles: Set<String> = emptySet()
 )
