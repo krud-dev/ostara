@@ -1,6 +1,5 @@
 package dev.krud.boost.daemon.configuration.instance.crud
 
-import dev.krud.boost.daemon.configuration.instance.ability.InstanceAbilityService
 import dev.krud.boost.daemon.configuration.instance.entity.Instance
 import dev.krud.boost.daemon.configuration.instance.entity.Instance.Companion.effectiveAuthentication
 import dev.krud.boost.daemon.configuration.instance.entity.Instance.Companion.effectiveColor
@@ -18,9 +17,7 @@ class InstanceToRoMappingDecorator(
     @Lazy
     private val instanceHealthService: InstanceHealthService,
     @Lazy
-    private val instanceHostnameResolver: InstanceHostnameResolver,
-    @Lazy
-    private val instanceAbilityService: InstanceAbilityService
+    private val instanceHostnameResolver: InstanceHostnameResolver
 ) : MappingDecorator<Instance, InstanceRO> {
     override fun decorate(context: MappingDecoratorContext<Instance, InstanceRO>) {
         context.to.effectiveColor = context.from.effectiveColor
@@ -28,7 +25,7 @@ class InstanceToRoMappingDecorator(
             context.to.displayName = it
         }
 
-        val health = instanceHealthService.getHealth(context.from.id)
+        val health = instanceHealthService.getCachedHealth(context.from.id)
         context.to.health = health
         if (health.status.running) {
             context.to.hostname = instanceHostnameResolver.resolveHostname(context.from.id)

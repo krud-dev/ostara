@@ -28,6 +28,11 @@ class InstanceHealthService(
 ) {
     private val instanceHealthCache by cacheManager.resolve()
 
+    fun getCachedHealth(instanceId: UUID): InstanceHealthRO {
+        return instanceHealthCache.get(instanceId, InstanceHealthRO::class.java)
+            ?: InstanceHealthRO.unknown()
+    }
+
     @Cacheable(cacheNames = ["instanceHealthCache"], key = "#instanceId")
     fun getHealth(instanceId: UUID): InstanceHealthRO {
         val instance = instanceService.getInstanceOrThrow(instanceId)
