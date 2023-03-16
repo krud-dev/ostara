@@ -1,13 +1,13 @@
 import React, { useRef, useState } from 'react';
 import { Box, Stack } from '@mui/material';
 import { SIDEBAR_HEADER_HEIGHT } from 'renderer/constants/ui';
-import PerfectScrollbar from 'react-perfect-scrollbar';
 import NavigatorTree from 'renderer/layout/navigator/components/sidebar/tree/NavigatorTree';
 import SearchTextField from 'renderer/components/input/SearchTextField';
 import { FilterListOutlined } from '@mui/icons-material';
 import CreateItemMenu from 'renderer/layout/navigator/components/sidebar/menus/CreateItemMenu';
 import SearchItemMenu from 'renderer/layout/navigator/components/sidebar/menus/SearchItemMenu';
 import CreateItemContextMenu from 'renderer/layout/navigator/components/sidebar/menus/CreateItemContextMenu';
+import AutoSizer from 'react-virtualized-auto-sizer';
 
 type NavigatorSidebarProps = {
   width: number;
@@ -47,10 +47,10 @@ export default function NavigatorSidebar({ width }: NavigatorSidebarProps) {
           </Stack>
         </Box>
 
-        <Box sx={{ flexGrow: 1, overflow: 'hidden' }} ref={contextMenuRef}>
-          <PerfectScrollbar options={{ wheelPropagation: false }}>
-            <NavigatorTree width={width} search={search} />
-          </PerfectScrollbar>
+        <Box sx={{ flexGrow: 1 }} ref={contextMenuRef}>
+          <AutoSizer disableWidth>
+            {({ height }) => <NavigatorTree width={width} height={height} search={search} />}
+          </AutoSizer>
         </Box>
       </Box>
     </>

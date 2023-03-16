@@ -41,46 +41,16 @@ const NAVIGATOR_TREE_PADDING_BOTTOM = 12;
 
 type NavigatorTreeProps = {
   width: number;
+  height: number;
   search?: string;
 };
 
-export default function NavigatorTree({ width, search }: NavigatorTreeProps) {
+export default function NavigatorTree({ width, height, search }: NavigatorTreeProps) {
   const { data, isLoading, isEmpty, hasData, action, getItem } = useNavigatorTree();
   const navigate = useNavigate();
   const { pathname } = useLocation();
 
   const treeRef = useRef<TreeApi<TreeItem> | null>(null);
-
-  useEffect(() => {
-    const listEl = treeRef.current?.listEl?.current;
-    if (listEl) {
-      // Solves the bug where the scrollbar is showing on search
-      listEl.style.overflow = 'hidden';
-    }
-  }, [hasData]);
-
-  const getOpenItemsCount = useCallback((): number => {
-    if (!data) {
-      return 0;
-    }
-
-    const treeApi = treeRef.current;
-    if (!treeApi) {
-      return data.length;
-    }
-
-    const sizeHelper = (treeItem: TreeItem): number =>
-      1 +
-      (treeApi.isOpen(treeItem.id) ? treeItem.children?.map((t) => sizeHelper(t)).reduce((a, b) => a + b, 0) ?? 0 : 0);
-
-    return data.map((treeItem) => sizeHelper(treeItem)).reduce((a, b) => a + b, 0);
-  }, [data]);
-
-  const [toggleFlag, setToggleFlag] = useState<number>(0);
-
-  useEffect(() => {
-    setToggleFlag((prevToggleFlag) => prevToggleFlag + 1);
-  }, [data, search]);
 
   useEffect(() => {
     if (!action) {
@@ -97,14 +67,8 @@ export default function NavigatorTree({ width, search }: NavigatorTreeProps) {
       default:
         break;
     }
-
-    setToggleFlag((prevToggleFlag) => prevToggleFlag + 1);
   }, [action]);
 
-  const height = useMemo<number>(
-    () => getOpenItemsCount() * NAVIGATOR_ITEM_HEIGHT + NAVIGATOR_TREE_PADDING_BOTTOM,
-    [toggleFlag, data]
-  );
   const initialOpenState = useMemo<OpenMap>(() => {
     const openMap: OpenMap = {};
     const checkItemOpen = (item: TreeItem): boolean => {
@@ -239,10 +203,6 @@ export default function NavigatorTree({ width, search }: NavigatorTreeProps) {
     items.forEach((item) => deleteItem(item));
   }, []);
 
-  const onToggle = useCallback((): void => {
-    setToggleFlag((prevToggleFlag) => prevToggleFlag + 1);
-  }, []);
-
   const disableDrop = useCallback(
     (args: { parentNode: NodeApi<TreeItem>; dragNodes: NodeApi<TreeItem>[]; index: number }): boolean => {
       const { parentNode, dragNodes } = args;
@@ -278,7 +238,7 @@ export default function NavigatorTree({ width, search }: NavigatorTreeProps) {
       {isLoading && (
         <Box
           sx={{
-            height: '100%',
+            height: height,
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
@@ -327,7 +287,6 @@ export default function NavigatorTree({ width, search }: NavigatorTreeProps) {
             onRename={onRename}
             onMove={onMove}
             onDelete={onDelete}
-            onToggle={onToggle}
             disableDrag={disableDrag}
             disableDrop={disableDrop}
             disableEdit

@@ -1,7 +1,7 @@
 import { NodeRendererProps } from 'react-arborist';
 import { Badge, IconButton, ListItem, ListItemIcon, ListItemText, TextField, Tooltip } from '@mui/material';
 import { alpha, experimentalStyled as styled, Theme, useTheme } from '@mui/material/styles';
-import React, { useCallback, useEffect, useMemo, useRef } from 'react';
+import React, { ReactNode, useCallback, useEffect, useMemo, useRef } from 'react';
 import { TreeItem } from 'renderer/layout/navigator/components/sidebar/tree/tree';
 import typography from 'renderer/theme/config/typography';
 import { KeyboardArrowDown, KeyboardArrowRight, MoreVert, SvgIconComponent } from '@mui/icons-material';
@@ -125,7 +125,7 @@ export default function NavigatorTreeNode({ style, node, tree, dragHandle, previ
 
   const color = useItemColor(node.data);
   const displayName = useMemo<string>(() => getItemDisplayName(node.data), [node.data]);
-  const displayNameTooltip = useMemo<string | undefined>(() => getItemNameTooltip(node.data), [node.data]);
+  const displayNameTooltip = useMemo<ReactNode | undefined>(() => getItemNameTooltip(node.data), [node.data]);
   const healthStatusColor = useMemo<string | undefined>(() => getItemHealthStatusColor(node.data), [node.data]);
   const itemIcon = useItemIcon(node.data);
   const ToggleIcon = useMemo<SvgIconComponent>(

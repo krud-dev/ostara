@@ -23,7 +23,6 @@ import { useMemo } from 'react';
 import { FormattedMessage } from 'react-intl';
 import { generatePath } from 'react-router-dom';
 import ItemHeader from 'renderer/components/item/ItemHeader';
-import { Box } from '@mui/material';
 import { isServiceInactive } from 'renderer/utils/itemUtils';
 import { InstanceRO } from '../../../../common/generated_definitions';
 import InstanceActiveProfiles from './InstanceActiveProfiles';
@@ -189,19 +188,14 @@ export default function InstanceSidebar({ item, disabled, width }: InstanceSideb
   );
 
   return (
-    <Box sx={{ width: width, height: '100%', display: 'flex', flexDirection: 'column' }}>
-      <Sidebar
-        sidebarConfig={navConfig}
-        header={
-          <>
-            <ItemHeader item={item} />
-            <InstanceActiveProfiles item={item} />
-          </>
-        }
-        sx={{ flexGrow: 1 }}
-      />
-      {/*<Divider />*/}
-      {/*<InstanceDataCollectionToggle item={item} />*/}
-    </Box>
+    <Sidebar
+      sidebarConfig={navConfig}
+      header={
+        <>
+          <ItemHeader item={item} />
+          <InstanceActiveProfiles item={item} />
+        </>
+      }
+    />
   );
 }

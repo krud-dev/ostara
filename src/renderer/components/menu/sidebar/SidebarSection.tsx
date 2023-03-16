@@ -26,9 +26,9 @@ interface SidebarSectionProps extends BoxProps {
   sidebarConfig: SidebarConfig;
 }
 
-export default function SidebarSection({ sidebarConfig, ...other }: SidebarSectionProps) {
+export default function SidebarSection({ sidebarConfig, sx, ...other }: SidebarSectionProps) {
   return (
-    <Box {...other}>
+    <Box sx={{ pb: 1.5, ...sx }} {...other}>
       {sidebarConfig.map((list) => {
         const { id, label, items } = list;
 

@@ -5,6 +5,6 @@ import { ItemRO } from '../definitions/daemon';
 
 const useItemIcon = (item: ItemRO): MUIconType => {
   const typeIcon = useMemo<MUIconType>(() => getItemTypeIcon(getItemType(item)), [item]);
-  return useMemo<MUIconType>(() => (item.icon as MUIconType) || typeIcon, [item, typeIcon]);
+  return useMemo<MUIconType>(() => (item.icon as MUIconType) || typeIcon, [item.icon, typeIcon]);
 };
 export default useItemIcon;

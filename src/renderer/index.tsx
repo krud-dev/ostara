@@ -3,7 +3,6 @@ import App from './App';
 
 // CSS
 import 'react-perfect-scrollbar/dist/css/styles.css';
-import 'allotment/dist/style.css';
 import 'reactflow/dist/style.css';
 
 const container = document.getElementById('root')!;

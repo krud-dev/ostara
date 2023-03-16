@@ -56,15 +56,6 @@ export default function GlobalStyles() {
 
         img: { display: 'block', maxWidth: '100%' },
 
-        // Allotment
-        ':root': {
-          '--focus-border': theme.palette.primary.main,
-          '--separator-border': theme.palette.divider,
-        },
-        '.sash-mac': {
-          zIndex: 1210,
-        },
-
         // Perfect Scrollbar
         '.ps__thumb-y, .ps__thumb-x': {
           backgroundColor: alpha(theme.palette.grey[600], 0.48),
@@ -77,6 +68,21 @@ export default function GlobalStyles() {
           {
             backgroundColor: alpha(theme.palette.grey[600], 0.6),
           },
+
+        '::-webkit-scrollbar': {
+          width: 6,
+          height: 8,
+          backgroundColor: alpha(theme.palette.grey[600], 0.2),
+        },
+
+        '::-webkit-scrollbar-thumb': {
+          background: alpha(theme.palette.grey[600], 0.48),
+          borderRadius: 6,
+        },
+
+        '::-webkit-scrollbar-corner': {
+          background: 'transparent',
+        },
       }}
     />
   );

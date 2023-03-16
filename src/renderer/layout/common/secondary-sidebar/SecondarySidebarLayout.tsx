@@ -1,15 +1,8 @@
-import React, { ComponentType, ReactNode, useEffect, useMemo, useRef } from 'react';
-import { Box } from '@mui/material';
+import React, { ComponentType, ReactNode, useEffect, useRef } from 'react';
+import { Box, Divider } from '@mui/material';
 import { Outlet, useLocation } from 'react-router-dom';
-import { Allotment, LayoutPriority } from 'allotment';
-import {
-  INTERNAL_SIDEBAR_MAX_WIDTH,
-  INTERNAL_SIDEBAR_MIN_WIDTH,
-  SECONDARY_SCROLL_CONTAINER_ID,
-  SIDEBAR_DEFAULT_WIDTH,
-} from 'renderer/constants/ui';
-import PerfectScrollbar from 'react-perfect-scrollbar';
-import { useLocalStorageState } from '../../../hooks/useLocalStorageState';
+import { MAIN_SCROLL_CONTAINER_ID, SECONDARY_SCROLL_CONTAINER_ID, SIDEBAR_DEFAULT_WIDTH } from 'renderer/constants/ui';
+import AutoSizer from 'react-virtualized-auto-sizer';
 
 type SecondarySidebarLayoutProps<T> = {
   Sidebar: ComponentType<{ width: number } & T>;
@@ -28,29 +21,23 @@ export default function SecondarySidebarLayout<T>({ Sidebar, sidebarProps, conte
     }
   }, [pathname]);
 
-  const [sidebarWidth, setSidebarWidth] = useLocalStorageState<number>('secondarySidebarWidth', SIDEBAR_DEFAULT_WIDTH);
-
-  const defaultSizes = useMemo<number[]>(() => [sidebarWidth, window.innerWidth - sidebarWidth], []);
-
   return (
-    <Box sx={{ width: '100%', height: '100%' }}>
-      <Allotment defaultSizes={defaultSizes} proportionalLayout={false} onChange={(sizes) => setSidebarWidth(sizes[0])}>
-        <Allotment.Pane minSize={INTERNAL_SIDEBAR_MIN_WIDTH} maxSize={INTERNAL_SIDEBAR_MAX_WIDTH} snap>
-          <Sidebar width={sidebarWidth} {...sidebarProps} />
-        </Allotment.Pane>
-        <Allotment.Pane priority={LayoutPriority.High}>
-          <Box sx={{ height: '100%', overflow: 'hidden' }}>
-            <PerfectScrollbar
-              id={SECONDARY_SCROLL_CONTAINER_ID}
-              containerRef={(el) => {
-                scrollContainerRef.current = el;
-              }}
-            >
+    <Box sx={{ width: '100%', height: '100%', display: 'flex', flexDirection: 'row' }}>
+      <Box sx={{ width: SIDEBAR_DEFAULT_WIDTH, height: '100%' }}>
+        <Sidebar width={SIDEBAR_DEFAULT_WIDTH} {...sidebarProps} />
+      </Box>
+
+      <Divider orientation={'vertical'} flexItem />
+
+      <Box sx={{ height: '100%', overflow: 'hidden', flexGrow: 1 }}>
+        <AutoSizer disableWidth>
+          {({ height }) => (
+            <Box id={SECONDARY_SCROLL_CONTAINER_ID} ref={scrollContainerRef} sx={{ height: height, overflow: 'auto' }}>
               {content || <Outlet />}
-            </PerfectScrollbar>
-          </Box>
-        </Allotment.Pane>
-      </Allotment>
+            </Box>
+          )}
+        </AutoSizer>
+      </Box>
     </Box>
   );
 }
