@@ -19,7 +19,7 @@ class TestInstanceAbilityService : InstanceAbilityService {
         this.abilities[instance] = abilities
     }
 
-    override fun resolveAbilities(instance: Instance): Set<InstanceAbility> {
+    override fun getAbilities(instance: Instance): Set<InstanceAbility> {
         return abilities[instance] ?: emptySet()
     }
 

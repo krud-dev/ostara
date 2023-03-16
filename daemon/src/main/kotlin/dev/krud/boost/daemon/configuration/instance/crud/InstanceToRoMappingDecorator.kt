@@ -31,7 +31,6 @@ class InstanceToRoMappingDecorator(
         val health = instanceHealthService.getHealth(context.from.id)
         context.to.health = health
         if (health.status.running) {
-            context.to.abilities = instanceAbilityService.resolveAbilities(context.from)
             context.to.hostname = instanceHostnameResolver.resolveHostname(context.from.id)
         }
 

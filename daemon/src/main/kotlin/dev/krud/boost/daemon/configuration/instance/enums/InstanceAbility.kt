@@ -1,5 +1,8 @@
 package dev.krud.boost.daemon.configuration.instance.enums
 
+import dev.krud.boost.daemon.base.annotations.GenerateTypescript
+
+@GenerateTypescript
 enum class InstanceAbility {
     METRICS,
     ENV,

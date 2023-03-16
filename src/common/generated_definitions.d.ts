@@ -358,7 +358,6 @@ export interface InstanceRO {
     effectiveColor: string;
     icon?: string;
     sort?: number;
-    abilities: InstanceAbility[];
     health: InstanceHealthRO;
     effectiveAuthentication: EffectiveAuthentication;
 }
@@ -927,6 +926,8 @@ export interface MappingsActuatorResponse$Context$Mappings$DispatcherServletOrHa
 
 export type DateAsNumber = number;
 
+export type InstanceAbility = "METRICS" | "ENV" | "BEANS" | "QUARTZ" | "FLYWAY" | "LIQUIBASE" | "LOGGERS" | "CACHES" | "THREADDUMP" | "HEAPDUMP" | "CACHE_STATISTICS" | "SHUTDOWN" | "REFRESH" | "HTTP_REQUEST_STATISTICS" | "INTEGRATIONGRAPH" | "PROPERTIES" | "MAPPINGS" | "SCHEDULEDTASKS" | "HEALTH" | "INFO" | "SYSTEM_PROPERTIES" | "SYSTEM_ENVIRONMENT";
+
 export type HttpMethod = "GET" | "POST" | "PUT" | "DELETE" | "PATCH" | "HEAD" | "OPTIONS" | "TRACE";
 
 export type HealthActuatorResponse$Status = "UP" | "DOWN" | "OUT_OF_SERVICE" | "UNKNOWN";
@@ -948,8 +949,6 @@ export type InstanceHealthStatus = "UP" | "DOWN" | "UNKNOWN" | "OUT_OF_SERVICE" 
 export type InstanceHeapdumpReference$Status = "PENDING_DOWNLOAD" | "DOWNLOADING" | "READY" | "FAILED";
 
 export type InstancePropertyRO$RedactionLevel = "NONE" | "PARTIAL" | "FULL";
-
-export type InstanceAbility = "METRICS" | "ENV" | "BEANS" | "QUARTZ" | "FLYWAY" | "LIQUIBASE" | "LOGGERS" | "CACHES" | "THREADDUMP" | "HEAPDUMP" | "CACHE_STATISTICS" | "SHUTDOWN" | "REFRESH" | "HTTP_REQUEST_STATISTICS" | "INTEGRATIONGRAPH" | "PROPERTIES" | "MAPPINGS" | "SCHEDULEDTASKS" | "HEALTH" | "INFO" | "SYSTEM_PROPERTIES" | "SYSTEM_ENVIRONMENT";
 
 export type InstanceSystemEnvironmentRO$RedactionLevel = "NONE" | "PARTIAL" | "FULL";
 
