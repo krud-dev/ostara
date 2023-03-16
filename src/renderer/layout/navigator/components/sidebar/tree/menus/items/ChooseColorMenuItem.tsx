@@ -22,7 +22,7 @@ type ChooseColorMenuItemProps = {
 export default function ChooseColorMenuItem({ item, onClose }: ChooseColorMenuItemProps) {
   const theme = useTheme();
 
-  const [selectedColor, setSelectedColor] = useState<string | undefined>(item.effectiveColor);
+  const [selectedColor, setSelectedColor] = useState<string | undefined>(item.color);
 
   const updateItemState = useUpdateItem();
 
