@@ -37,12 +37,13 @@ class InstanceHealthListener(
             EventLogSeverity.INFO
         }
 
-        eventLogService.logEvent(
-            EventLogType.INSTANCE_HEALTH_CHANGED,
-            instanceId,
-            "Instance $instanceId ] health status changed from $oldStatus to $newStatus",
-            severity
-        )
+        // TODO: Re-enable when needed
+//        eventLogService.logEvent(
+//            EventLogType.INSTANCE_HEALTH_CHANGED,
+//            instanceId,
+//            "Instance $instanceId ] health status changed from $oldStatus to $newStatus",
+//            severity
+//        )
     }
 
     companion object {
