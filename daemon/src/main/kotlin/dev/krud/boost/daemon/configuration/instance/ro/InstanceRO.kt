@@ -19,5 +19,5 @@ class InstanceRO(
     val sort: Double? = null,
     var health: InstanceHealthRO = InstanceHealthRO.unknown(),
     var effectiveAuthentication: EffectiveAuthentication =
-        EffectiveAuthentication(Authentication.Inherit.DEFAULT, EffectiveAuthentication.SourceType.APPLICATION, parentApplicationId),
+        EffectiveAuthentication(Authentication.Inherit.DEFAULT, EffectiveAuthentication.SourceType.APPLICATION, parentApplicationId)
 )

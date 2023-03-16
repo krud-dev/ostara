@@ -4,4 +4,5 @@ import java.util.*
 
 interface InstanceHostnameResolver {
     fun resolveHostname(instanceId: UUID): String?
+    fun resolveHostname(url: String): String?
 }

@@ -4,6 +4,8 @@ import dev.krud.boost.daemon.configuration.instance.entity.Instance
 import dev.krud.boost.daemon.configuration.instance.entity.Instance.Companion.effectiveAuthentication
 import dev.krud.boost.daemon.configuration.instance.health.InstanceHealthService
 import dev.krud.boost.daemon.configuration.instance.ro.InstanceRO
+import dev.krud.boost.daemon.utils.stripEverythingAfterLastSlash
+import dev.krud.boost.daemon.utils.stripHttpProtocolIfPresent
 import dev.krud.shapeshift.decorator.MappingDecorator
 import dev.krud.shapeshift.decorator.MappingDecoratorContext
 import org.springframework.context.annotation.Lazy
@@ -22,5 +24,13 @@ class InstanceToRoMappingDecorator(
         val health = instanceHealthService.getCachedHealth(context.from.id)
         context.to.health = health
         context.to.effectiveAuthentication = context.from.effectiveAuthentication
+        context.to.displayName = if (!context.from.alias.isNullOrBlank()) {
+            context.from.alias!!
+        } else {
+            context.from.hostname
+                ?: context.from.actuatorUrl
+                    .stripHttpProtocolIfPresent()
+                    .stripEverythingAfterLastSlash()
+        }
     }
 }

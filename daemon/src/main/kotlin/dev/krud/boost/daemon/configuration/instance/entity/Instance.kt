@@ -47,6 +47,9 @@ class Instance(
     @JoinColumn(name = "parent_application_id", insertable = false, updatable = false, nullable = false)
     val parentApplication: Application? = null
 
+    @Column(nullable = true)
+    var hostname: String? = null
+
     companion object {
         const val NAME = "application"
         val Instance.effectiveAuthentication: EffectiveAuthentication
