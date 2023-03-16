@@ -289,13 +289,6 @@ export interface InstanceCacheStatisticsRO {
     size: number;
 }
 
-export interface InstanceHealthLogRO {
-    creationTime: DateAsNumber;
-    instanceId: string;
-    status: InstanceHealthStatus;
-    statusText?: string;
-}
-
 export interface InstanceHealthRO {
     status: InstanceHealthStatus;
     statusText?: string;

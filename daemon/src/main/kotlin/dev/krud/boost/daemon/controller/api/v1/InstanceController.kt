@@ -3,13 +3,10 @@ package dev.krud.boost.daemon.controller.api.v1
 import dev.krud.boost.daemon.configuration.application.validation.ValidApplicationId
 import dev.krud.boost.daemon.configuration.instance.InstanceService
 import dev.krud.boost.daemon.configuration.instance.entity.Instance
-import dev.krud.boost.daemon.configuration.instance.health.instancehealthlog.model.InstanceHealthLog
-import dev.krud.boost.daemon.configuration.instance.health.instancehealthlog.ro.InstanceHealthLogRO
 import dev.krud.boost.daemon.configuration.instance.ro.InstanceModifyRequestRO
 import dev.krud.boost.daemon.configuration.instance.ro.InstanceRO
 import dev.krud.crudframework.crud.handler.CrudHandler
 import dev.krud.crudframework.crud.handler.krud.Krud
-import dev.krud.crudframework.modelfilter.dsl.filter
 import dev.krud.shapeshift.ShapeShift
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.responses.ApiResponse
@@ -44,34 +41,5 @@ class InstanceController(
     fun moveInstance(@PathVariable instanceId: UUID, @RequestParam @Valid @ValidApplicationId newParentApplicationId: UUID, @RequestParam(required = false) newSort: Double? = null): InstanceRO {
         val instance = instanceService.moveInstance(instanceId, newParentApplicationId, newSort)
         return shapeShift.map(instance)
-    }
-
-    @PostMapping("/{instanceId}/health/history")
-    @ResponseStatus(HttpStatus.OK)
-    @Operation(
-        summary = "Get the historical health of the instance",
-        description = "Get the historical health of the instance"
-    )
-    @ApiResponse(responseCode = "200", description = "Health history")
-    @ApiResponse(responseCode = "404", description = "Instance not found")
-    fun getHealthHistory(@PathVariable instanceId: UUID): List<InstanceHealthLogRO> {
-        // TODO: fix filter
-        return crudHandler
-            .index(
-                filter<InstanceHealthLog> {
-                    where {
-//                InstanceHealthLog::instanceId eq
-                    }
-                    order {
-                        by = InstanceHealthLog::creationTime
-                        descending
-                    }
-                },
-                InstanceHealthLog::class.java,
-                InstanceHealthLogRO::class.java
-            )
-            .execute()
-            .results
-            .filter { it.instanceId == instanceId }
     }
 }

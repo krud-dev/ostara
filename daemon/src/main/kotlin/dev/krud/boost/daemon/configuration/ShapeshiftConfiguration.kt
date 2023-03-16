@@ -5,7 +5,6 @@ import dev.krud.boost.daemon.configuration.application.ro.ApplicationModifyReque
 import dev.krud.boost.daemon.configuration.application.ro.ApplicationRO
 import dev.krud.boost.daemon.configuration.folder.ro.FolderModifyRequestRO
 import dev.krud.boost.daemon.configuration.folder.ro.FolderRO
-import dev.krud.boost.daemon.configuration.instance.health.instancehealthlog.ro.InstanceHealthLogRO
 import dev.krud.boost.daemon.configuration.instance.heapdump.model.InstanceHeapdumpReference
 import dev.krud.boost.daemon.configuration.instance.heapdump.ro.InstanceHeapdumpReferenceRO
 import dev.krud.boost.daemon.configuration.instance.ro.InstanceModifyRequestRO
@@ -34,7 +33,6 @@ class ShapeshiftConfiguration : ShapeShiftBuilderCustomizer, ShapeShiftAutoConfi
             .withObjectSupplier { InstanceModifyRequestRO(TypeDefaults.STRING, TypeDefaults.STRING, TypeDefaults.UUID) }
             .withObjectSupplier { InstanceRO(TypeDefaults.UUID, TypeDefaults.STRING, null, null, TypeDefaults.STRING, TypeDefaults.UUID) }
             .withObjectSupplier { EventLogRO(TypeDefaults.UUID, TypeDefaults.DATE, EventLogType.INSTANCE_HEALTH_CHANGED, EventLogSeverity.INFO, TypeDefaults.UUID) }
-            .withObjectSupplier { InstanceHealthLogRO(TypeDefaults.DATE, TypeDefaults.UUID) }
             .withObjectSupplier { InstanceHeapdumpReference(TypeDefaults.UUID) }
             .withObjectSupplier { InstanceHeapdumpReferenceRO(TypeDefaults.UUID, TypeDefaults.UUID, TypeDefaults.DATE) }
             .withObjectSupplier { ThreadProfilingRequest(TypeDefaults.UUID, TypeDefaults.INT, ThreadProfilingStatus.RUNNING) }
