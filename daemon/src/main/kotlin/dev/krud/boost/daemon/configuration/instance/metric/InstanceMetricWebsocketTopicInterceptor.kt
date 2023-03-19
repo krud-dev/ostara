@@ -82,14 +82,19 @@ class InstanceMetricWebsocketTopicInterceptor(
     }
 
     private fun handleUnsubscribe(headerAccessor: StompHeaderAccessor) {
-        val destination = headerAccessor.destination ?: return
+        val destination = headerAccessor.subscriptionId ?: return
         if (!InstanceMetricWebsocketUtil.isValidMetricTopic(destination)) {
             return
         }
 
         val sessionId = headerAccessor.sessionId ?: return
         val currentSubscriptions = subscriptions[sessionId] ?: emptySet()
-        subscriptions[sessionId] = currentSubscriptions - destination
+        val newSubscriptions = currentSubscriptions - destination
+        if (newSubscriptions.isEmpty()) {
+            subscriptions.remove(sessionId)
+        } else {
+            subscriptions[sessionId] = newSubscriptions
+        }
     }
 
     private fun handleDisconnect(headerAccessor: StompHeaderAccessor) {
