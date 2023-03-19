@@ -10,7 +10,7 @@ import { useUpdateEffect } from 'react-use';
 type InstanceActiveProfilesProps = { item: InstanceRO };
 
 export default function InstanceActiveProfiles({ item }: InstanceActiveProfilesProps) {
-  const envState = useGetInstanceEnvQuery({ instanceId: item.id });
+  const envState = useGetInstanceEnvQuery({ instanceId: item.id }, { disableGlobalError: true });
 
   useUpdateEffect(() => {
     envState.refetch();

@@ -6,12 +6,15 @@ import ThemeConfig from 'renderer/theme/ThemeConfig';
 import NiceModal from '@ebay/nice-modal-react';
 import NotistackProvider from 'renderer/components/snackbar/NotistackProvider';
 import { QueryClientProvider } from '@tanstack/react-query';
-import queryClient from 'renderer/apis/queryClient';
+import useQueryClient from 'renderer/apis/useQueryClient';
 import { UiContext, UiProvider } from 'renderer/contexts/UiContext';
 import Router from 'renderer/routes/routes';
 import { StompProvider } from './apis/websockets/StompContext';
+import ApiErrorManager from './apis/ApiErrorManager';
 
 export default function App() {
+  const queryClient = useQueryClient();
+
   return (
     <MemoryRouter>
       <QueryClientProvider client={queryClient}>
@@ -38,6 +41,7 @@ export default function App() {
                     >
                       <NotistackProvider>
                         <NiceModal.Provider>
+                          <ApiErrorManager />
                           <Router />
                         </NiceModal.Provider>
                       </NotistackProvider>

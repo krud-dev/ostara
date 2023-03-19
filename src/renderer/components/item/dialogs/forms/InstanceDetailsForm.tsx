@@ -11,6 +11,7 @@ import ItemIconFormField from 'renderer/components/item/dialogs/forms/fields/Ite
 import { URL_REGEX } from 'renderer/constants/regex';
 import { IconViewer } from '../../../common/IconViewer';
 import { getActuatorUrls } from '../../../../utils/itemUtils';
+import { disableGlobalErrorMeta } from '../../../../apis/useQueryClient';
 
 export type InstanceDetailsFormProps = {
   defaultValues?: Partial<InstanceFormValues>;
@@ -59,7 +60,7 @@ const InstanceDetailsForm: FunctionComponent<InstanceDetailsFormProps> = ({
     onCancel();
   }, [onCancel]);
 
-  const testConnectionState = useTestConnectionByUrl();
+  const testConnectionState = useTestConnectionByUrl({ disableGlobalError: true });
   const actuatorUrl = watch('actuatorUrl');
 
   const testConnectionHandler = useCallback(async (): Promise<void> => {

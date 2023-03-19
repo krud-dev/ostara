@@ -5,9 +5,11 @@ import {
   UseMutationResult,
   useQueryClient,
 } from '@tanstack/react-query';
+import { disableGlobalErrorMeta } from '../../useQueryClient';
 
 export type BaseMutationOptions<Data, Variables> = Omit<UseMutationOptions<Data, unknown, Variables>, 'mutationFn'> & {
   refetchNone?: boolean;
+  disableGlobalError?: boolean;
   invalidateQueriesKeyFn?: (data: Data, variables: Variables) => unknown[];
   invalidateQueriesKeysFn?: (data: Data, variables: Variables) => unknown[][];
 };
@@ -22,6 +24,10 @@ export const useBaseMutation = <Data, Variables>(
 
   return useMutation<Data, unknown, Variables>(mutationFn, {
     ...options,
+    meta: {
+      ...options?.meta,
+      ...(options?.disableGlobalError ? disableGlobalErrorMeta : undefined),
+    },
     onSuccess: (data, variables, context) => {
       options?.onSuccess?.(data, variables, context);
 
