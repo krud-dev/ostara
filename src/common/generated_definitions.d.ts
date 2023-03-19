@@ -398,7 +398,7 @@ export interface ThreadProfilingRequestRO {
 
 export interface ApplicationHealthUpdatedEventMessage$Payload {
     applicationId: string;
-    newStatus: ApplicationHealthStatus;
+    newHealth: ApplicationHealthRO;
 }
 
 export interface EffectiveAuthentication {
@@ -410,8 +410,8 @@ export interface EffectiveAuthentication {
 export interface InstanceHealthChangedEventMessage$Payload {
     parentApplicationId: string;
     instanceId: string;
-    oldStatus: InstanceHealthStatus;
-    newStatus: InstanceHealthStatus;
+    oldHealth: InstanceHealthRO;
+    newHealth: InstanceHealthRO;
 }
 
 export interface ResultAggregationSummary<T> {

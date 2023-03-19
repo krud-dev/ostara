@@ -3,6 +3,7 @@ package dev.krud.boost.daemon.configuration.instance.messaging
 import dev.krud.boost.daemon.base.annotations.GenerateTypescript
 import dev.krud.boost.daemon.base.messaging.AbstractMessage
 import dev.krud.boost.daemon.configuration.instance.enums.InstanceHealthStatus
+import dev.krud.boost.daemon.configuration.instance.health.ro.InstanceHealthRO
 import java.util.*
 
 class InstanceHealthChangedEventMessage(payload: Payload) : AbstractMessage<InstanceHealthChangedEventMessage.Payload>(payload) {
@@ -10,7 +11,7 @@ class InstanceHealthChangedEventMessage(payload: Payload) : AbstractMessage<Inst
     data class Payload(
         val parentApplicationId: UUID,
         val instanceId: UUID,
-        val oldStatus: InstanceHealthStatus,
-        val newStatus: InstanceHealthStatus
+        val oldHealth: InstanceHealthRO,
+        val newHealth: InstanceHealthRO
     )
 }

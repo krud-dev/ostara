@@ -30,8 +30,8 @@ class InstanceHealthListener(
     }
 
     private fun createEventLog(event: InstanceHealthChangedEventMessage) {
-        val (_, instanceId, oldStatus, newStatus) = event.payload
-        val severity = if (oldStatus == InstanceHealthStatus.UP) {
+        val (_, instanceId, oldHealth, newStatus) = event.payload
+        val severity = if (oldHealth.status == InstanceHealthStatus.UP) {
             EventLogSeverity.ERROR
         } else {
             EventLogSeverity.INFO

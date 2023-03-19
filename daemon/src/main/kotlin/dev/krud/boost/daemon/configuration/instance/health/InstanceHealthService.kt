@@ -4,7 +4,6 @@ import dev.krud.boost.daemon.actuator.model.HealthActuatorResponse
 import dev.krud.boost.daemon.configuration.instance.InstanceActuatorClientProvider
 import dev.krud.boost.daemon.configuration.instance.InstanceService
 import dev.krud.boost.daemon.configuration.instance.entity.Instance
-import dev.krud.boost.daemon.configuration.instance.enums.InstanceHealthStatus
 import dev.krud.boost.daemon.configuration.instance.health.ro.InstanceHealthRO
 import dev.krud.boost.daemon.configuration.instance.messaging.InstanceCreatedEventMessage
 import dev.krud.boost.daemon.configuration.instance.messaging.InstanceHealthChangedEventMessage
@@ -103,8 +102,8 @@ class InstanceHealthService(
                     InstanceHealthChangedEventMessage.Payload(
                         instance.parentApplicationId,
                         instance.id,
-                        prevHealth?.status ?: InstanceHealthStatus.UNKNOWN,
-                        currentHealth.status
+                        prevHealth ?: InstanceHealthRO.unknown(),
+                        currentHealth
                     )
                 )
             )

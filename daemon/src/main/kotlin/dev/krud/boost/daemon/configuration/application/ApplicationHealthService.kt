@@ -50,7 +50,7 @@ class ApplicationHealthService(
     protected fun onInstanceEvent(event: Message<*>) {
         when (event) {
             is InstanceHealthChangedEventMessage -> {
-                handleInstanceHealthChange(event.payload.parentApplicationId, event.payload.instanceId, event.payload.newStatus)
+                handleInstanceHealthChange(event.payload.parentApplicationId, event.payload.instanceId, event.payload.newHealth.status)
             }
             is InstanceDeletedEventMessage -> {
                 handleInstanceHealthChange(event.payload.parentApplicationId, event.payload.instanceId, null)
@@ -90,7 +90,9 @@ class ApplicationHealthService(
             ApplicationHealthUpdatedEventMessage(
                 ApplicationHealthUpdatedEventMessage.Payload(
                     applicationId,
-                    newValue.values.toApplicationHealthStatus()
+                    ApplicationHealthRO(
+                        newValue.values.toApplicationHealthStatus()
+                    )
                 )
             )
         )

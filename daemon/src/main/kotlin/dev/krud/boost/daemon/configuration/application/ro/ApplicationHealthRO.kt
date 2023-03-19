@@ -5,8 +5,8 @@ import java.util.*
 
 data class ApplicationHealthRO(
     val status: ApplicationHealthStatus,
-    val lastUpdateTime: Date,
-    val lastStatusChangeTime: Date
+    val lastUpdateTime: Date = Date(),
+    val lastStatusChangeTime: Date = Date()
 ) {
     companion object {
         fun allUp() = ApplicationHealthRO(
