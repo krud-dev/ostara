@@ -10,16 +10,20 @@ import React, {
 import { TreeItem } from 'renderer/layout/navigator/components/sidebar/tree/tree';
 import { useNavigate, useParams } from 'react-router-dom';
 import { urls } from 'renderer/routes/urls';
-import { useQueryClient } from '@tanstack/react-query';
 import { ItemRO } from '../definitions/daemon';
 import { useCrudSearchQuery } from '../apis/requests/crud/crudSearch';
-import { ApplicationRO, FolderRO, InstanceRO } from '../../common/generated_definitions';
+import {
+  ApplicationHealthUpdatedEventMessage$Payload,
+  ApplicationRO,
+  FolderRO,
+  InstanceHealthChangedEventMessage$Payload,
+  InstanceRO,
+} from '../../common/generated_definitions';
 import { instanceCrudEntity } from '../apis/requests/crud/entity/entities/instance.crudEntity';
 import { folderCrudEntity } from '../apis/requests/crud/entity/entities/folder.crudEntity';
 import { applicationCrudEntity } from '../apis/requests/crud/entity/entities/application.crudEntity';
 import { buildTree } from '../utils/treeUtils';
 import { useStomp } from '../apis/websockets/StompContext';
-import { crudKeys } from '../apis/requests/crud/crudKeys';
 
 type NavigatorTreeAction = 'expandAll' | 'collapseAll';
 
@@ -40,26 +44,33 @@ interface NavigatorTreeProviderProps extends PropsWithChildren<any> {}
 
 const NavigatorTreeProvider: FunctionComponent<NavigatorTreeProviderProps> = ({ children }) => {
   const navigate = useNavigate();
-  const queryClient = useQueryClient();
   const { subscribe } = useStomp();
   const params = useParams<{ id?: string }>();
 
+  const [folders, setFolders] = useState<FolderRO[] | undefined>(undefined);
+  const [applications, setApplications] = useState<ApplicationRO[] | undefined>(undefined);
+  const [instances, setInstances] = useState<InstanceRO[] | undefined>(undefined);
   const [action, setAction] = useState<NavigatorTreeAction | undefined>(undefined);
 
   const searchFolderState = useCrudSearchQuery<FolderRO>({ entity: folderCrudEntity });
   const searchApplicationState = useCrudSearchQuery<ApplicationRO>({ entity: applicationCrudEntity });
   const searchInstanceState = useCrudSearchQuery<InstanceRO>({ entity: instanceCrudEntity });
 
+  useEffect(() => {
+    setFolders(searchFolderState.data?.results);
+  }, [searchFolderState.data]);
+
+  useEffect(() => {
+    setApplications(searchApplicationState.data?.results);
+  }, [searchApplicationState.data]);
+
+  useEffect(() => {
+    setInstances(searchInstanceState.data?.results);
+  }, [searchInstanceState.data]);
+
   const items = useMemo<ItemRO[] | undefined>(
-    () =>
-      searchFolderState.data && searchApplicationState.data && searchInstanceState.data
-        ? [
-            ...searchFolderState.data.results,
-            ...searchApplicationState.data.results,
-            ...searchInstanceState.data.results,
-          ]
-        : undefined,
-    [searchFolderState.data, searchApplicationState.data, searchInstanceState.data]
+    () => (folders && applications && instances ? [...folders, ...applications, ...instances] : undefined),
+    [folders, applications, instances]
   );
   const data = useMemo<TreeItem[] | undefined>(() => items && buildTree(items), [items]);
   const isLoading = useMemo<boolean>(() => !data, [data]);
@@ -76,18 +87,30 @@ const NavigatorTreeProvider: FunctionComponent<NavigatorTreeProviderProps> = ({ 
   }, [items]);
 
   useEffect(() => {
-    const unsubscribe = subscribe('/topic/applicationHealth', {}, () => {
-      queryClient.invalidateQueries(crudKeys.entity(applicationCrudEntity));
-    });
+    const unsubscribe = subscribe(
+      '/topic/applicationHealth',
+      {},
+      (healthChanged: ApplicationHealthUpdatedEventMessage$Payload) => {
+        setApplications((prev) =>
+          prev?.map((a) => (a.id === healthChanged.applicationId ? { ...a, health: healthChanged.newHealth } : a))
+        );
+      }
+    );
     return () => {
       unsubscribe();
     };
   }, []);
 
   useEffect(() => {
-    const unsubscribe = subscribe('/topic/instanceHealth', {}, () => {
-      queryClient.invalidateQueries(crudKeys.entity(instanceCrudEntity));
-    });
+    const unsubscribe = subscribe(
+      '/topic/instanceHealth',
+      {},
+      (healthChanged: InstanceHealthChangedEventMessage$Payload): void => {
+        setInstances((prev) =>
+          prev?.map((i) => (i.id === healthChanged.instanceId ? { ...i, health: healthChanged.newHealth } : i))
+        );
+      }
+    );
     return () => {
       unsubscribe();
     };
