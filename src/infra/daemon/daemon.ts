@@ -64,7 +64,7 @@ export class DaemonController {
     return new Promise<void>((resolve) => {
       if (!this.options.external) {
         log.info(`Starting daemon on ${this.daemonAddress}...`);
-        this.initDaemonProcess();
+        this.startProcess();
       } else {
         log.info(`Using external daemon on ${this.daemonAddress}...`);
       }
@@ -74,17 +74,21 @@ export class DaemonController {
   }
 
   async stop() {
+    log.info('Stopping daemon...');
     this.stopHealthCheck();
-    if (this.daemonProcess) {
-      log.info('Stopping daemon...');
-      this.daemonProcess.kill();
-      this.daemonProcess = undefined;
-    }
+    this.stopProcess();
+    this.started = false;
+    this.running = false;
+  }
+
+  async restart() {
+    await this.stop();
+    await this.start();
   }
 
   private startHealthCheck() {
     if (this.healthCheckInterval) {
-      throw new Error('Health check is already running');
+      return;
     }
     log.info('Starting health check...');
     this.healthCheckInterval = setInterval(async () => {
@@ -115,17 +119,17 @@ export class DaemonController {
   }
 
   private stopHealthCheck() {
-    if (!this.healthCheckInterval) {
-      throw new Error('Health check is not running');
+    if (this.healthCheckInterval) {
+      log.info('Stopping health check...');
+      clearInterval(this.healthCheckInterval);
+      this.healthCheckInterval = undefined;
     }
-    log.info('Stopping health check...');
-    clearInterval(this.healthCheckInterval);
-    this.healthCheckInterval = undefined;
+
   }
 
-  private initDaemonProcess() {
+  private startProcess() {
     if (this.daemonProcess) {
-      throw new Error('Daemon is already running');
+      return;
     }
     if (this.options.external) {
       throw new Error('Cannot start internal daemon process with external flag');
@@ -150,10 +154,23 @@ export class DaemonController {
       });
     }
 
+    this.initProcessEvents();
+  }
+
+  private stopProcess() {
+    if (this.daemonProcess) {
+      log.info('Stopping daemon process...');
+      this.daemonProcess.kill();
+      this.daemonProcess = undefined;
+    }
+  }
+
+  private initProcessEvents() {
+    if (!this.daemonProcess) {
+      return;
+    }
     process.on('exit', () => {
-      if (this.daemonProcess) {
-        this.daemonProcess.kill();
-      }
+      this.stopProcess();
     });
 
     this.daemonProcess.on('error', (err) => {
