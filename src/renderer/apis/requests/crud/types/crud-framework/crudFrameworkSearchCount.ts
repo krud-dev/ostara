@@ -14,7 +14,7 @@ export const crudFrameworkSearchCount = async (
     CrudSearchCountData,
     AxiosResponse<CrudSearchCountData>,
     { filterFields?: FilterField[] }
-  >(`${entity.path}/index/count`, {
+  >(`${entity.path}/search/count`, {
     filterFields: filterFields,
   });
   return result.data;

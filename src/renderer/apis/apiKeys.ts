@@ -93,6 +93,7 @@ export const apiKeys = {
 
   itemApplications: (ids: string[]) => [...crudKeys.entity(applicationCrudEntity), 'item', ids],
   itemInstances: (id: string) => [...crudKeys.entity(instanceCrudEntity), 'item', id],
+  itemInstancesCount: (id: string) => [...crudKeys.entity(instanceCrudEntity), 'item', id, 'count'],
 
   actuator: () => ['actuator'],
   actuatorConnection: (url: string) => [...apiKeys.actuator(), 'connection', url],
