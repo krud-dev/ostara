@@ -6,9 +6,9 @@ import java.nio.file.Paths
 plugins {
     id("org.springframework.boot") version "3.0.2"
     id("io.spring.dependency-management") version "1.1.0"
-    kotlin("jvm") version "1.7.22"
-    kotlin("plugin.spring") version "1.7.22"
-    kotlin("plugin.jpa") version "1.7.22"
+    kotlin("jvm") version "1.8.10"
+    kotlin("plugin.spring") version "1.8.10"
+    kotlin("plugin.jpa") version "1.8.10"
     id("cz.habarta.typescript-generator") version "3.1.1185"
 }
 
@@ -76,7 +76,7 @@ dependencies {
     implementation("org.jetbrains.kotlin:kotlin-reflect")
     implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
     implementation("org.hibernate.orm:hibernate-community-dialects")
-    implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8")
+    implementation("org.jetbrains.kotlin:kotlin-stdlib")
     implementation("org.xerial:sqlite-jdbc:3.40.0.0")
     implementation("com.squareup.okhttp3:okhttp:4.10.0")
     implementation("org.flywaydb:flyway-core:9.12.0")
