@@ -1,6 +1,6 @@
 import { ChildProcessWithoutNullStreams, spawn } from 'child_process';
 import path from 'path';
-import { app } from 'electron';
+import { app, BrowserWindow } from 'electron';
 import axios from 'axios';
 import log from 'electron-log';
 import { systemEvents } from '../events';
@@ -48,6 +48,16 @@ export class DaemonController {
     this.daemonAddress = `${options.protocol}://${options.host}:${port}`;
     this.daemonWsAddress = `${options.protocol === 'http' ? 'ws' : 'wss'}://${options.host}:${port}/ws`;
     this.internalPort = port;
+  }
+
+  initializeSubscriptions(window: BrowserWindow) {
+    systemEvents.on('daemon-healthy', () => {
+      window.webContents.send('app:daemonHealthy');
+    });
+
+    systemEvents.on('daemon-unhealthy', () => {
+      window.webContents.send('app:daemonUnhealthy');
+    });
   }
 
   async start() {

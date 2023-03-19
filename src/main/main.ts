@@ -17,7 +17,7 @@ import MenuBuilder from './menu';
 import { resolveHtmlPath } from './util';
 import '../infra';
 import { uiService } from '../infra/ui/uiService';
-import { initDaemon } from '../infra/daemon/daemon';
+import { getDaemonController, initDaemon } from '../infra/daemon/daemon';
 import { systemEvents } from '../infra/events';
 import { isMac, isWindows } from '../infra/utils/platform';
 
@@ -161,6 +161,7 @@ const createMainWindow = async () => {
   });
 
   uiService.initialize(mainWindow);
+  getDaemonController()?.initializeSubscriptions(mainWindow);
 
   // Remove this if your app does not use auto updates
   // eslint-disable-next-line
