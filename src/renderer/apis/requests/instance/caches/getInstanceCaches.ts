@@ -5,26 +5,28 @@ import {
   useBaseMutation,
 } from 'renderer/apis/requests/base/useBaseMutation';
 import { apiKeys } from 'renderer/apis/apiKeys';
-import { isServiceInactive } from 'renderer/utils/itemUtils';
-import { InstanceCacheRO, InstanceRO } from '../../../../../common/generated_definitions';
+import { InstanceCacheRO } from '../../../../../common/generated_definitions';
 import { axiosInstance } from '../../../axiosInstance';
 import { AxiosResponse } from 'axios';
+import { getInstanceAbilities } from '../getInstanceAbilities';
 
 export type EnrichedInstanceCacheRO = InstanceCacheRO & {
   hasStatistics: boolean;
 };
 
 type Variables = {
-  instance: InstanceRO;
+  instanceId: string;
 };
 
 type Data = EnrichedInstanceCacheRO[];
 
 export const getInstanceCaches = async (variables: Variables): Promise<Data> => {
-  const hasStatistics = !isServiceInactive(variables.instance, 'CACHE_STATISTICS');
+  const abilities = await getInstanceAbilities(variables);
+  const hasStatistics = abilities.indexOf('CACHE_STATISTICS') > -1;
+
   const result = (
     await axiosInstance.get<InstanceCacheRO[], AxiosResponse<InstanceCacheRO[]>>(
-      `cache/instance/${variables.instance.id}`
+      `cache/instance/${variables.instanceId}`
     )
   ).data;
   return result.map((cache) => ({ ...cache, hasStatistics: hasStatistics }));
@@ -38,4 +40,4 @@ export const useGetInstanceCachesQuery = (
   variables: Variables,
   options?: BaseQueryOptions<Data, Variables>
 ): BaseUseQueryResult<Data> =>
-  useBaseQuery<Data, Variables>(apiKeys.itemCaches(variables.instance.id), getInstanceCaches, variables, options);
+  useBaseQuery<Data, Variables>(apiKeys.itemCaches(variables.instanceId), getInstanceCaches, variables, options);

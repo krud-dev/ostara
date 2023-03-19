@@ -4,21 +4,12 @@ import { green, orange, pink, red, yellow } from '@mui/material/colors';
 import blueGrey from '@mui/material/colors/blueGrey';
 import { MUIconType } from 'renderer/components/common/IconViewer';
 import { ItemRO, ItemType } from '../definitions/daemon';
-import {
-  ApplicationRO,
-  FolderRO,
-  InstanceAbility,
-  InstanceHealthRO,
-  InstanceRO,
-} from '../../common/generated_definitions';
+import { ApplicationRO, FolderRO, InstanceHealthRO, InstanceRO } from '../../common/generated_definitions';
 import { CrudEntity } from '../apis/requests/crud/entity/entity';
 import { applicationCrudEntity } from '../apis/requests/crud/entity/entities/application.crudEntity';
 import { instanceCrudEntity } from '../apis/requests/crud/entity/entities/instance.crudEntity';
 import { folderCrudEntity } from '../apis/requests/crud/entity/entities/folder.crudEntity';
-import { ReactNode, useCallback } from 'react';
-import { Box } from '@mui/material';
-import { isEmpty } from 'lodash';
-import { FormattedMessage } from 'react-intl';
+import { ReactNode } from 'react';
 
 export function isApplication(item: ItemRO): item is ApplicationRO {
   return 'instanceCount' in item;
@@ -235,10 +226,6 @@ export const getItemHealthStatusTextId = (item: ItemRO): string | undefined => {
 //       return 'notAvailable';
 //   }
 // };
-
-export const isServiceInactive = (item: InstanceRO, ability: InstanceAbility): boolean => {
-  return item.abilities.indexOf(ability) === -1;
-};
 
 export const getActuatorUrls = (value: string): string[] => {
   return value

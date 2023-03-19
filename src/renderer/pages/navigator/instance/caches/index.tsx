@@ -23,7 +23,7 @@ const InstanceCaches: FunctionComponent = () => {
   const item = useMemo<InstanceRO>(() => selectedItem as InstanceRO, [selectedItem]);
 
   const entity = useMemo<Entity<EnrichedInstanceCacheRO>>(() => instanceCacheEntity, []);
-  const queryState = useGetInstanceCachesQuery({ instance: item });
+  const queryState = useGetInstanceCachesQuery({ instanceId: item.id });
 
   const evictCachesState = useEvictInstanceCaches();
   const evictAllCachesState = useEvictAllInstanceCaches();

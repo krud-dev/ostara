@@ -4,8 +4,9 @@ import React, { ReactNode } from 'react';
 import { SxProps } from '@mui/system';
 import { Theme } from '@mui/material/styles';
 import AutoSizer from 'react-virtualized-auto-sizer';
+import LogoLoader from '../../common/LogoLoader';
 
-type SidebarProps = { sidebarConfig: SidebarConfig; width?: number; header?: ReactNode; sx?: SxProps<Theme> };
+type SidebarProps = { sidebarConfig?: SidebarConfig; width?: number; header?: ReactNode; sx?: SxProps<Theme> };
 
 export default function Sidebar({ sidebarConfig, width, header, sx }: SidebarProps) {
   return (
@@ -24,7 +25,20 @@ export default function Sidebar({ sidebarConfig, width, header, sx }: SidebarPro
         <AutoSizer disableWidth>
           {({ height }) => (
             <Box sx={{ height: height, overflow: 'auto' }}>
-              <SidebarSection sidebarConfig={sidebarConfig} />
+              {!sidebarConfig ? (
+                <Box
+                  sx={{
+                    height: '100%',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                  }}
+                >
+                  <LogoLoader />
+                </Box>
+              ) : (
+                <SidebarSection sidebarConfig={sidebarConfig} />
+              )}
             </Box>
           )}
         </AutoSizer>
