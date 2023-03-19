@@ -5,14 +5,22 @@ import { InstanceRO } from '../../../../common/generated_definitions';
 import { FormattedMessage } from 'react-intl';
 import PerfectScrollbar from 'react-perfect-scrollbar';
 import { useGetInstanceEnvQuery } from '../../../apis/requests/instance/env/getInstanceEnv';
+import { useUpdateEffect } from 'react-use';
 
 type InstanceActiveProfilesProps = { item: InstanceRO };
 
 export default function InstanceActiveProfiles({ item }: InstanceActiveProfilesProps) {
   const envState = useGetInstanceEnvQuery({ instanceId: item.id });
 
-  const activeProfiles = useMemo<string[] | undefined>(() => envState.data?.activeProfiles, [envState]);
+  useUpdateEffect(() => {
+    envState.refetch();
+  }, [item.health.status]);
+
   const error = useMemo(() => envState.error, [envState]);
+  const activeProfiles = useMemo<string[] | undefined>(
+    () => (error ? undefined : envState.data?.activeProfiles),
+    [envState, error]
+  );
   const loading = useMemo(() => !activeProfiles && !error, [activeProfiles, error]);
   const empty = useMemo(() => !!activeProfiles && activeProfiles.length === 0 && !error, [activeProfiles, error]);
 
