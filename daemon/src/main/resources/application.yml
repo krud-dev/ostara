@@ -3,6 +3,9 @@ server:
   error:
     include-binding-errors: always
     include-message: always
+  compression:
+    enabled: true
+    mime-types: text/html,text/xml,text/plain,text/css,text/javascript,application/javascript,application/json
 management:
   endpoints:
     web:

@@ -48,7 +48,7 @@ class Application(
 ) : AbstractEntity() {
     @MappedField
     @Formula("(select count(*) from instance i where i.parent_application_id = id)")
-    val instanceCount: Int = 0
+    var instanceCount: Int = 0
 
     companion object {
         const val NAME = "application"
