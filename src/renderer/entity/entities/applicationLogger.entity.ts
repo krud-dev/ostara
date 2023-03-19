@@ -6,7 +6,7 @@ import LoggerCustomFiltersComponent, {
 } from 'renderer/components/item/logger/LoggerCustomFiltersComponent';
 import { EnrichedApplicationLoggerRO } from 'renderer/apis/requests/application/loggers/getApplicationLoggers';
 import { every, some } from 'lodash';
-import TableCellDataApplicationLoggerLevel from 'renderer/components/table/data/TableCellDataApplicationLoggerLevel';
+import TableCellDataApplicationLoggerLevel from 'renderer/components/table/data/custom/TableCellDataApplicationLoggerLevel';
 
 export const applicationLoggerEntity: Entity<EnrichedApplicationLoggerRO, LoggerCustomFilters> = {
   id: 'instanceCache',

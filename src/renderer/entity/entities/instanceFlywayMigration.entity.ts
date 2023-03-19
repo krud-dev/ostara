@@ -1,19 +1,31 @@
 import { Entity } from 'renderer/entity/entity';
 import { EnrichedFlywayMigration } from 'renderer/apis/requests/instance/flyway/getInstanceFlywayMigrations';
 import FlywayMigrationDetails from 'renderer/pages/navigator/instance/flyway/components/FlywayMigrationDetails';
+import TableCellDataFlywayMigrationVersion from '../../components/table/data/custom/TableCellDataFlywayMigrationVersion';
 
 export const instanceFlywayMigrationEntity: Entity<EnrichedFlywayMigration> = {
   id: 'instanceFlywayMigration',
   columns: [
     {
-      id: 'installedBy',
-      type: 'Text',
-      labelId: 'installedBy',
+      id: 'installedRank',
+      type: 'Number',
+      labelId: 'installedRank',
+    },
+    {
+      id: 'version',
+      type: 'Custom',
+      labelId: 'version',
+      Component: TableCellDataFlywayMigrationVersion,
     },
     {
       id: 'description',
       type: 'Text',
       labelId: 'description',
+    },
+    {
+      id: 'installedOn',
+      type: 'ParsedDate',
+      labelId: 'installedOn',
     },
     {
       id: 'state',
@@ -30,16 +42,6 @@ export const instanceFlywayMigrationEntity: Entity<EnrichedFlywayMigration> = {
             return 'default';
         }
       },
-    },
-    {
-      id: 'installedOn',
-      type: 'ParsedDate',
-      labelId: 'installedOn',
-    },
-    {
-      id: 'installedRank',
-      type: 'Number',
-      labelId: 'installedRank',
     },
   ],
   actions: [],

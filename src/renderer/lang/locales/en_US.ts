@@ -270,4 +270,5 @@ export default {
   method: 'Method',
   produce: 'Produce',
   metricNotFound: 'Metric not found',
+  repeating: 'Repeating',
 };

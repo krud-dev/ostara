@@ -1,23 +1,25 @@
 import { EntityBaseColumn } from 'renderer/entity/entity';
 import { useCallback, useMemo, useState } from 'react';
 import LogLevelToggleGroup from 'renderer/components/item/logger/LogLevelToggleGroup';
-import { useSetInstanceLoggerLevel } from 'renderer/apis/requests/instance/loggers/setInstanceLoggerLevel';
-import { EnrichedInstanceLoggerRO } from 'renderer/apis/requests/instance/loggers/getInstanceLoggers';
-import { LogLevel } from '../../../../common/generated_definitions';
+import { EnrichedApplicationLoggerRO } from 'renderer/apis/requests/application/loggers/getApplicationLoggers';
+import { useSetApplicationLoggerLevel } from 'renderer/apis/requests/application/loggers/setApplicationLoggerLevel';
+import { map } from 'lodash';
+import { notEmpty } from 'renderer/utils/objectUtils';
+import { LogLevel } from '../../../../../common/generated_definitions';
 import { useUpdateEffect } from 'react-use';
 
-type TableCellDataLoggerLevelProps<EntityItem extends EnrichedInstanceLoggerRO> = {
+type TableCellDataApplicationLoggerLevelProps<EntityItem extends EnrichedApplicationLoggerRO> = {
   row: EntityItem;
   column: EntityBaseColumn<EntityItem>;
 };
 
-export default function TableCellDataInstanceLoggerLevel<EntityItem extends EnrichedInstanceLoggerRO>({
+export default function TableCellDataApplicationLoggerLevel<EntityItem extends EnrichedApplicationLoggerRO>({
   row,
   column,
-}: TableCellDataLoggerLevelProps<EntityItem>) {
+}: TableCellDataApplicationLoggerLevelProps<EntityItem>) {
   const [disabled, setDisabled] = useState<boolean>(false);
 
-  const setLevelState = useSetInstanceLoggerLevel();
+  const setLevelState = useSetApplicationLoggerLevel();
   const changeHandler = useCallback(
     async (newLevel: LogLevel | undefined): Promise<void> => {
       if (setLevelState.isLoading) {
@@ -26,7 +28,7 @@ export default function TableCellDataInstanceLoggerLevel<EntityItem extends Enri
 
       setDisabled(true);
       try {
-        await setLevelState.mutateAsync({ instanceId: row.instanceId, loggerName: row.name, level: newLevel });
+        setLevelState.mutate({ applicationId: row.applicationId, loggerName: row.name, level: newLevel });
       } catch (e) {
         setDisabled(false);
       }
@@ -36,15 +38,15 @@ export default function TableCellDataInstanceLoggerLevel<EntityItem extends Enri
 
   useUpdateEffect(() => {
     setDisabled(false);
-  }, [row.effectiveLevel, row.configuredLevel]);
+  }, [row.loggers]);
 
   const effectiveLevels = useMemo<LogLevel[]>(
-    () => (row.effectiveLevel ? [row.effectiveLevel] : []),
-    [row.effectiveLevel]
+    () => map(row.loggers, (logger) => logger.effectiveLevel).filter(notEmpty),
+    [row.loggers]
   );
   const configuredLevels = useMemo<LogLevel[] | undefined>(
-    () => (row.configuredLevel ? [row.configuredLevel] : undefined),
-    [row.configuredLevel]
+    () => map(row.loggers, (logger) => logger.configuredLevel).filter(notEmpty),
+    [row.loggers]
   );
 
   return (

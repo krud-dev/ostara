@@ -1,25 +1,23 @@
 import { EntityBaseColumn } from 'renderer/entity/entity';
 import { useCallback, useMemo, useState } from 'react';
 import LogLevelToggleGroup from 'renderer/components/item/logger/LogLevelToggleGroup';
-import { EnrichedApplicationLoggerRO } from 'renderer/apis/requests/application/loggers/getApplicationLoggers';
-import { useSetApplicationLoggerLevel } from 'renderer/apis/requests/application/loggers/setApplicationLoggerLevel';
-import { map } from 'lodash';
-import { notEmpty } from 'renderer/utils/objectUtils';
-import { LogLevel } from '../../../../common/generated_definitions';
+import { useSetInstanceLoggerLevel } from 'renderer/apis/requests/instance/loggers/setInstanceLoggerLevel';
+import { EnrichedInstanceLoggerRO } from 'renderer/apis/requests/instance/loggers/getInstanceLoggers';
+import { LogLevel } from '../../../../../common/generated_definitions';
 import { useUpdateEffect } from 'react-use';
 
-type TableCellDataApplicationLoggerLevelProps<EntityItem extends EnrichedApplicationLoggerRO> = {
+type TableCellDataLoggerLevelProps<EntityItem extends EnrichedInstanceLoggerRO> = {
   row: EntityItem;
   column: EntityBaseColumn<EntityItem>;
 };
 
-export default function TableCellDataApplicationLoggerLevel<EntityItem extends EnrichedApplicationLoggerRO>({
+export default function TableCellDataInstanceLoggerLevel<EntityItem extends EnrichedInstanceLoggerRO>({
   row,
   column,
-}: TableCellDataApplicationLoggerLevelProps<EntityItem>) {
+}: TableCellDataLoggerLevelProps<EntityItem>) {
   const [disabled, setDisabled] = useState<boolean>(false);
 
-  const setLevelState = useSetApplicationLoggerLevel();
+  const setLevelState = useSetInstanceLoggerLevel();
   const changeHandler = useCallback(
     async (newLevel: LogLevel | undefined): Promise<void> => {
       if (setLevelState.isLoading) {
@@ -28,7 +26,7 @@ export default function TableCellDataApplicationLoggerLevel<EntityItem extends E
 
       setDisabled(true);
       try {
-        setLevelState.mutate({ applicationId: row.applicationId, loggerName: row.name, level: newLevel });
+        await setLevelState.mutateAsync({ instanceId: row.instanceId, loggerName: row.name, level: newLevel });
       } catch (e) {
         setDisabled(false);
       }
@@ -38,15 +36,15 @@ export default function TableCellDataApplicationLoggerLevel<EntityItem extends E
 
   useUpdateEffect(() => {
     setDisabled(false);
-  }, [row.loggers]);
+  }, [row.effectiveLevel, row.configuredLevel]);
 
   const effectiveLevels = useMemo<LogLevel[]>(
-    () => map(row.loggers, (logger) => logger.effectiveLevel).filter(notEmpty),
-    [row.loggers]
+    () => (row.effectiveLevel ? [row.effectiveLevel] : []),
+    [row.effectiveLevel]
   );
   const configuredLevels = useMemo<LogLevel[] | undefined>(
-    () => map(row.loggers, (logger) => logger.configuredLevel).filter(notEmpty),
-    [row.loggers]
+    () => (row.configuredLevel ? [row.configuredLevel] : undefined),
+    [row.configuredLevel]
   );
 
   return (

@@ -1,5 +1,5 @@
 import { Entity } from 'renderer/entity/entity';
-import TableCellDataHealthStatus from 'renderer/components/table/data/TableCellDataHealthStatus';
+import TableCellDataHealthStatus from 'renderer/components/table/data/custom/TableCellDataHealthStatus';
 import { generatePath } from 'react-router-dom';
 import { urls } from 'renderer/routes/urls';
 import { InstanceRO } from '../../../common/generated_definitions';

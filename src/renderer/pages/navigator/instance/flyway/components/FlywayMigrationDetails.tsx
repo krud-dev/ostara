@@ -23,7 +23,7 @@ export default function FlywayMigrationDetails({ row }: FlywayMigrationDetailsPr
         <TableDetailsLabelValue label={<FormattedMessage id={'type'} />} value={row.type} />
         <TableDetailsLabelValue label={<FormattedMessage id={'script'} />} value={row.script} />
         <TableDetailsLabelValue label={<FormattedMessage id={'executionTime'} />} value={row.executionTime} />
-        <TableDetailsLabelValue label={<FormattedMessage id={'version'} />} value={row.version} />
+        <TableDetailsLabelValue label={<FormattedMessage id={'installedBy'} />} value={row.installedBy} />
         <TableDetailsLabelValue label={<FormattedMessage id={'checksum'} />} value={row.checksum} />
       </CardContent>
     </Card>

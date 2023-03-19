@@ -3,7 +3,7 @@ import { useMemo } from 'react';
 import { getItemHealthStatusColor, getItemHealthStatusTextId } from 'renderer/utils/itemUtils';
 import { FormattedMessage } from 'react-intl';
 import { Box } from '@mui/material';
-import { ItemRO } from '../../../definitions/daemon';
+import { ItemRO } from '../../../../definitions/daemon';
 
 type TableCellDataHealthStatusProps<EntityItem extends ItemRO> = {
   row: EntityItem;

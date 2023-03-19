@@ -1,5 +1,5 @@
 import { Entity } from 'renderer/entity/entity';
-import TableCellDataInstanceLoggerLevel from 'renderer/components/table/data/TableCellDataInstanceLoggerLevel';
+import TableCellDataInstanceLoggerLevel from 'renderer/components/table/data/custom/TableCellDataInstanceLoggerLevel';
 import { RESET_ID } from 'renderer/entity/actions';
 import { EnrichedInstanceLoggerRO } from 'renderer/apis/requests/instance/loggers/getInstanceLoggers';
 import { isClassName } from 'renderer/utils/classUtils';
