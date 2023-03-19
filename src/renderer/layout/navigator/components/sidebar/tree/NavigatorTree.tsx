@@ -251,7 +251,7 @@ export default function NavigatorTree({ width, height, search }: NavigatorTreePr
       {isEmpty && (
         <Box
           sx={{
-            height: '100%',
+            height: height,
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
