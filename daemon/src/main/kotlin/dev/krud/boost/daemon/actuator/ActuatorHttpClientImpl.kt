@@ -50,6 +50,9 @@ import org.springframework.boot.logging.LogLevel
 import org.springframework.web.server.ResponseStatusException
 import java.io.InputStream
 import java.net.ConnectException
+import java.util.logging.Level
+import java.util.logging.Logger
+
 
 class ActuatorHttpClientImpl(
     private val baseUrl: String,
@@ -102,10 +105,12 @@ class ActuatorHttpClientImpl(
         if (!response.isSuccessful) {
             return TestConnectionResponse(
                 response.code,
-                response.body?.string(),
+                response.bodyAsStringAndClose(),
                 false,
                 false
             )
+        } else {
+            response.body?.close()
         }
         val validActuator = endpoints().fold(
             onSuccess = { it.isNotEmpty() },
@@ -247,7 +252,7 @@ class ActuatorHttpClientImpl(
             .url(asUrl("heapdump"))
             .build()
         val response = httpClient.newCall(request).execute()
-        response.body?.byteStream() ?: throwInternalServerError("Response body of heapdump was null")
+        response.bodyAsByteArrayAndClose()?.inputStream() ?: throwInternalServerError("Response body of heapdump was null")
     }
 
     /**
@@ -312,9 +317,10 @@ class ActuatorHttpClientImpl(
         val request = buildRequest(url, method, requestBody, build)
         val response = runRequest(request).getOrThrow()
         if (Type::class == Unit::class) {
+            response.body?.close()
             Unit as Type
         } else {
-            val responseBody = response.body?.string()
+            val responseBody = response.bodyAsStringAndClose()
             if (responseBody == null) {
                 throwInternalServerError("Actuator response body is null: $request")
             } else {
@@ -328,6 +334,7 @@ class ActuatorHttpClientImpl(
     }
         .mapCatching { response ->
             if (!response.isSuccessful) {
+                response.body?.close()
                 throwStatusCode(response.code, request.url.toString())
             }
             response
@@ -363,4 +370,16 @@ class ActuatorHttpClientImpl(
             }
             .apply(build)
             .build()
+
+    private fun Response.bodyAsStringAndClose(): String? {
+        return body?.use {
+            it.string()
+        }
+    }
+
+    private fun Response.bodyAsByteArrayAndClose(): ByteArray? {
+        return body?.use {
+            it.bytes()
+        }
+    }
 }
