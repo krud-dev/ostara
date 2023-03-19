@@ -20,6 +20,7 @@ import { uiService } from '../infra/ui/uiService';
 import { getDaemonController, initDaemon } from '../infra/daemon/daemon';
 import { systemEvents } from '../infra/events';
 import { isMac, isWindows } from '../infra/utils/platform';
+import contextMenu from 'electron-context-menu';
 
 const gotInstanceLock = app.requestSingleInstanceLock();
 
@@ -99,6 +100,16 @@ const createMainWindow = async () => {
   if (isDebug) {
     await installExtensions();
   }
+
+  contextMenu({
+    showSaveImageAs: false,
+    showCopyImage: false,
+    showCopyLink: false,
+    showServices: false,
+    showSearchWithGoogle: false,
+    showLookUpSelection: false,
+    showLearnSpelling: false,
+  });
 
   const RESOURCES_PATH = app.isPackaged
     ? path.join(process.resourcesPath, 'assets')
