@@ -17,6 +17,7 @@ import { INHERITED_COLOR_VALUE } from '../../../../hooks/useItemColor';
 import { getActuatorUrls } from '../../../../utils/itemUtils';
 import { useQueryClient } from '@tanstack/react-query';
 import { crudKeys } from '../../../../apis/requests/crud/crudKeys';
+import { useCrudCreateBulk } from '../../../../apis/requests/crud/crudCreateBulk';
 
 export type CreateInstanceDialogProps = {
   parentApplicationId?: string;
@@ -31,7 +32,7 @@ const CreateInstanceDialog: FunctionComponent<CreateInstanceDialogProps & NiceMo
     const queryClient = useQueryClient();
 
     const createApplicationState = useCrudCreate<ApplicationRO, ApplicationModifyRequestRO>({ refetchNone: true });
-    const createInstanceState = useCrudCreate<InstanceRO, InstanceModifyRequestRO>({ refetchNone: true });
+    const createBulkInstanceState = useCrudCreateBulk<InstanceRO, InstanceModifyRequestRO>({ refetchNone: true });
 
     const submitHandler = useCallback(
       async (data: InstanceFormValues & { multipleInstances: boolean }): Promise<void> => {
@@ -70,13 +71,10 @@ const CreateInstanceDialog: FunctionComponent<CreateInstanceDialogProps & NiceMo
             icon: data.icon,
           }));
 
-          const promises = instancesToCreate.map((instanceToCreate) =>
-            createInstanceState.mutateAsync({
-              entity: instanceCrudEntity,
-              item: instanceToCreate,
-            })
-          );
-          const result = await Promise.all(promises);
+          const result = await createBulkInstanceState.mutateAsync({
+            entity: instanceCrudEntity,
+            items: instancesToCreate,
+          });
           if (result) {
             queryClient.invalidateQueries(crudKeys.entity(applicationCrudEntity));
             queryClient.invalidateQueries(crudKeys.entity(instanceCrudEntity));
@@ -88,7 +86,7 @@ const CreateInstanceDialog: FunctionComponent<CreateInstanceDialogProps & NiceMo
           }
         } catch (e) {}
       },
-      [parentApplicationId, parentFolderId, sort, onCreated, modal, createApplicationState, createInstanceState]
+      [parentApplicationId, parentFolderId, sort, onCreated, modal, createApplicationState, createBulkInstanceState]
     );
 
     const cancelHandler = useCallback((): void => {

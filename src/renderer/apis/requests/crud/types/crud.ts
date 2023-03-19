@@ -6,12 +6,17 @@ import { CrudSearchData, CrudSearchVariables } from '../crudSearch';
 import { CrudDeleteData, CrudDeleteVariables } from '../crudDelete';
 import { CrudCreateData, CrudCreateVariables } from '../crudCreate';
 import { BaseRO, CrudEntity, CrudEntityType } from '../entity/entity';
+import { CrudCreateBulkData, CrudCreateBulkVariables } from '../crudCreateBulk';
 
 export type CrudMethods<T extends CrudEntityType> = {
   create: <ResponseRO, RequestRO = ResponseRO>(
     entity: CrudEntity & { type: T },
     variables: Omit<CrudCreateVariables<RequestRO>, 'entity'>
   ) => Promise<CrudCreateData<ResponseRO>>;
+  createBulk: <ResponseRO, RequestRO = ResponseRO>(
+    entity: CrudEntity & { type: T },
+    variables: Omit<CrudCreateBulkVariables<RequestRO>, 'entity'>
+  ) => Promise<CrudCreateBulkData<ResponseRO>>;
   delete: (entity: CrudEntity & { type: T }, variables: Omit<CrudDeleteVariables, 'entity'>) => Promise<CrudDeleteData>;
   search: <ResponseRO extends BaseRO>(
     entity: CrudEntity & { type: T },
