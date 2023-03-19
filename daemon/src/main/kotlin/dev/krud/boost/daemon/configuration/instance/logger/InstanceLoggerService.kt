@@ -48,9 +48,12 @@ class InstanceLoggerService(
     fun setLoggerLevel(instanceId: UUID, loggerName: String, level: LogLevel?): InstanceLoggerRO {
         val instance = instanceService.getInstanceOrThrow(instanceId)
         instanceAbilityService.hasAbilityOrThrow(instance, InstanceAbility.LOGGERS)
-        actuatorClientProvider.doWith(instance) {
+        return actuatorClientProvider.doWith(instance) {
             it.updateLogger(loggerName, level)
         }
-        return getLogger(instanceId, loggerName)
+            .mapCatching {
+                getLogger(instanceId, loggerName)
+            }
+            .getOrThrow()
     }
 }
