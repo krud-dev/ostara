@@ -90,6 +90,7 @@ dependencies {
     implementation("net.pearx.kasechange:kasechange-jvm:1.3.0")
     implementation("io.hypersistence:hypersistence-utils-hibernate-60:3.2.0")
     implementation("com.cobber.fta:fta-core:12.10.2")
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.7.0-Beta")
 
     testImplementation("com.squareup.okhttp3:mockwebserver:4.10.0")
     testImplementation("io.strikt:strikt-core:0.34.0")
