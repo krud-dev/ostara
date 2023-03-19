@@ -73,6 +73,7 @@ dependencies {
     implementation("org.springframework.boot:spring-boot-starter-integration")
     implementation("org.springframework.boot:spring-boot-starter-cache")
     implementation("org.springframework.boot:spring-boot-starter-websocket")
+    implementation("org.springframework.boot:spring-boot-starter-validation")
     implementation("org.jetbrains.kotlin:kotlin-reflect")
     implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
     implementation("org.hibernate.orm:hibernate-community-dialects")
@@ -91,6 +92,10 @@ dependencies {
     implementation("io.hypersistence:hypersistence-utils-hibernate-60:3.2.0")
     implementation("com.cobber.fta:fta-core:12.10.2")
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.7.0-Beta")
+
+    // Added separately from springdoc for production builds
+    implementation("io.swagger.core.v3:swagger-annotations-jakarta:2.2.8")
+
 
     testImplementation("com.squareup.okhttp3:mockwebserver:4.10.0")
     testImplementation("io.strikt:strikt-core:0.34.0")
