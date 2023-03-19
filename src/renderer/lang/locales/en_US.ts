@@ -103,6 +103,7 @@ export default {
   activeProfile: 'Active Profile',
   noActiveProfiles: 'No active profiles',
   loadingActiveProfiles: 'Loading active profiles...',
+  errorLoadingActiveProfiles: 'Error loading active profiles',
   instances: 'Instances',
   applications: 'Applications',
   healthStatus: 'Health Status',
