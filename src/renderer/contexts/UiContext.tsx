@@ -18,6 +18,8 @@ export type UiContextProps = {
   localeInfo: LocaleInfo;
   setLocale: (locale: string) => void;
   isRtl: boolean;
+  analyticsEnabled: boolean;
+  setAnalyticsEnabled: (analyticsEnabled: boolean) => void;
 };
 
 const UiContext = React.createContext<UiContextProps>(undefined!);
@@ -32,6 +34,8 @@ const UiProvider: FunctionComponent<UiProviderProps> = ({ children }) => {
 
   const [locale, setLocaleInternal] = useLocalStorageState<string>('locale', 'en');
   const localeInfo = useMemo<LocaleInfo>(() => locales[locale], [locale]);
+
+  const [analyticsEnabled, setAnalyticsEnabled] = useLocalStorageState<boolean>('analyticsEnabled', true);
 
   const getThemeState = useGetTheme();
 
@@ -104,6 +108,8 @@ const UiProvider: FunctionComponent<UiProviderProps> = ({ children }) => {
         localeInfo,
         setLocale,
         isRtl,
+        analyticsEnabled,
+        setAnalyticsEnabled,
       }}
     >
       {children}

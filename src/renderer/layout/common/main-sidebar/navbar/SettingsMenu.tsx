@@ -11,7 +11,7 @@ import { map } from 'lodash';
 import locales from '../../../../lang';
 
 export default function SettingsMenu() {
-  const { themeSource, setThemeSource, localeInfo, setLocale } = useUi();
+  const { themeSource, setThemeSource, analyticsEnabled, setAnalyticsEnabled, localeInfo, setLocale } = useUi();
 
   const [open, setOpen] = useState<boolean>(false);
 
@@ -77,6 +77,23 @@ export default function SettingsMenu() {
                   </MenuItem>
                   <MenuItem value={'light'}>
                     <FormattedMessage id="light" />
+                  </MenuItem>
+                </TextField>
+
+                <TextField
+                  fullWidth
+                  label={<FormattedMessage id="allowTracking" />}
+                  margin="normal"
+                  select
+                  value={analyticsEnabled}
+                  onChange={(e) => setAnalyticsEnabled(e.target.value === 'true')}
+                  helperText={<FormattedMessage id="allowTrackingDescription" />}
+                >
+                  <MenuItem value={'true'}>
+                    <FormattedMessage id="yes" />
+                  </MenuItem>
+                  <MenuItem value={'false'}>
+                    <FormattedMessage id="no" />
                   </MenuItem>
                 </TextField>
 

@@ -11,6 +11,7 @@ import { UiContext, UiProvider } from 'renderer/contexts/UiContext';
 import Router from 'renderer/routes/routes';
 import { StompProvider } from './apis/websockets/StompContext';
 import ApiErrorManager from './apis/ApiErrorManager';
+import GoogleAnalyticsManager from './components/managers/GoogleAnalyticsManager';
 
 export default function App() {
   const queryClient = useQueryClient();
@@ -42,6 +43,8 @@ export default function App() {
                       <NotistackProvider>
                         <NiceModal.Provider>
                           <ApiErrorManager />
+                          <GoogleAnalyticsManager />
+
                           <Router />
                         </NiceModal.Provider>
                       </NotistackProvider>

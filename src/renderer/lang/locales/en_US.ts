@@ -273,4 +273,7 @@ export default {
   produce: 'Produce',
   metricNotFound: 'Metric not found',
   repeating: 'Repeating',
+  allowTracking: 'Allow Tracking',
+  allowTrackingDescription:
+    'Allow the app to anonymously track usage statistics. The data collected is used to improve the app and will not be shared with anyone.',
 };
