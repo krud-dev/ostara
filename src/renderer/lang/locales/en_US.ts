@@ -164,6 +164,7 @@ export default {
   id: 'ID',
   deploymentId: 'Deployment ID',
   tag: 'Tag',
+  context: 'Context',
   contexts: 'Contexts',
   labels: 'Labels',
   refreshStatus: 'Refresh Status',
