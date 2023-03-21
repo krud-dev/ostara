@@ -38,5 +38,11 @@ data class ApplicationHealthRO(
             Date(),
             Date()
         )
+
+        fun empty() = ApplicationHealthRO(
+            ApplicationHealthStatus.EMPTY,
+            Date(),
+            Date()
+        )
     }
 }

@@ -28,7 +28,7 @@ class ApplicationHealthService(
 
     fun getHealth(application: Application): ApplicationHealthRO {
         if (application.instanceCount == 0) {
-            return ApplicationHealthRO.pending()
+            return ApplicationHealthRO.empty()
         }
         val instances = applicationService.getApplicationInstances(application.id)
         val entries = applicationHealthCache.get(application.id) {
