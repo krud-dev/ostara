@@ -18,6 +18,7 @@ export type TableContextProps<EntityItem, CustomFilters> = {
   rows: EntityItem[];
   allDisplayRows: DisplayItem<EntityItem>[];
   displayRows: DisplayItem<EntityItem>[];
+  refreshHandler: () => void;
   selectedRows: EntityItem[];
   hasSelectedRows: boolean;
   selectRowHandler: (row: EntityItem) => void;
@@ -131,6 +132,10 @@ function TableProvider<EntityItem, CustomFilters>({
   const hasActions = useMemo<boolean>(() => !isEmpty(entity.actions), [entity]);
   const hasMassActions = useMemo<boolean>(() => !isEmpty(entity.massActions), [entity]);
   const hasGlobalActions = useMemo<boolean>(() => !isEmpty(entity.globalActions), [entity]);
+
+  const refreshHandler = useCallback((): void => {
+    queryState.refetch();
+  }, [queryState.refetch]);
 
   const changeFilterHandler = useCallback(
     (newFilter: string): void => {
@@ -268,6 +273,7 @@ function TableProvider<EntityItem, CustomFilters>({
         rows: filteredTableData,
         allDisplayRows: allDisplayTableData,
         displayRows: displayTableData,
+        refreshHandler,
         selectedRows,
         hasSelectedRows,
         selectRowHandler,

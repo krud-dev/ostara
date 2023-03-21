@@ -278,4 +278,5 @@ export default {
     'Allow the app to anonymously track usage statistics. The data collected is used to improve the app and will not be shared with anyone.',
   expandDetails: 'Expand Details',
   collapseDetails: 'Collapse Details',
+  refresh: 'Refresh',
 };

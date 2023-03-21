@@ -7,15 +7,22 @@ import ToolbarButton from '../common/ToolbarButton';
 type TableToolbarProps = {};
 
 export default function TableToolbar({}: TableToolbarProps) {
-  const { entity, filter, changeFilterHandler, changeCustomFiltersHandler, hasGlobalActions, globalActionsHandler } =
-    useTable();
+  const {
+    entity,
+    refreshHandler,
+    filter,
+    changeFilterHandler,
+    changeCustomFiltersHandler,
+    hasGlobalActions,
+    globalActionsHandler,
+  } = useTable();
 
   return (
     <SearchToolbar filter={filter} onFilterChange={changeFilterHandler}>
       {entity.CustomFiltersComponent && <entity.CustomFiltersComponent onChange={changeCustomFiltersHandler} />}
-      {hasGlobalActions && (
-        <Stack direction={'row'} alignItems={'center'}>
-          {entity.globalActions.map((action) => (
+      <Stack direction={'row'} alignItems={'center'}>
+        {hasGlobalActions &&
+          entity.globalActions.map((action) => (
             <ToolbarButton
               tooltipLabelId={action.labelId}
               icon={action.icon}
@@ -23,8 +30,9 @@ export default function TableToolbar({}: TableToolbarProps) {
               key={action.id}
             />
           ))}
-        </Stack>
-      )}
+
+        <ToolbarButton tooltipLabelId={'refresh'} icon={'RefreshOutlined'} onClick={refreshHandler} />
+      </Stack>
     </SearchToolbar>
   );
 }

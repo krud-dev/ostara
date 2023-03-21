@@ -15,7 +15,7 @@ type ToolbarButtonProps = {
 
 export default function ToolbarButton({ tooltipLabelId, icon, disabled, onClick, sx }: ToolbarButtonProps) {
   return (
-    <Box sx={sx}>
+    <Box sx={{ display: 'inline-block', ...sx }}>
       <Tooltip title={<FormattedMessage id={tooltipLabelId} />}>
         <Box component={'span'}>
           <IconButton disabled={disabled} onClick={onClick}>
