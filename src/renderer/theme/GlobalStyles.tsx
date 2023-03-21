@@ -56,6 +56,21 @@ export default function GlobalStyles() {
 
         img: { display: 'block', maxWidth: '100%' },
 
+        // Allotment
+        ':root': {
+          '--focus-border': theme.palette.primary.main,
+          '--separator-border': theme.palette.divider,
+        },
+        '.sash': {
+          zIndex: 1210,
+        },
+        '.sash-vertical': {
+          transform: 'translateX(3px)',
+          '&:before': {
+            transform: 'translateX(-3px)',
+          },
+        },
+
         // Perfect Scrollbar
         '.ps__thumb-y, .ps__thumb-x': {
           backgroundColor: alpha(theme.palette.grey[600], 0.48),
@@ -69,14 +84,15 @@ export default function GlobalStyles() {
             backgroundColor: alpha(theme.palette.grey[600], 0.6),
           },
 
+        // Native scrollbars
         '::-webkit-scrollbar': {
-          width: 6,
+          width: 10,
           height: 8,
-          backgroundColor: alpha(theme.palette.grey[600], 0.2),
+          backgroundColor: alpha(theme.palette.grey[600], 0.16),
         },
 
         '::-webkit-scrollbar-thumb': {
-          background: alpha(theme.palette.grey[600], 0.48),
+          background: alpha(theme.palette.grey[600], 0.24),
           borderRadius: 6,
         },
 

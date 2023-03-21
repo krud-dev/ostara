@@ -141,6 +141,7 @@
     "@tanstack/react-query": "^4.20.9",
     "@uiw/codemirror-extensions-langs": "^4.19.7",
     "@uiw/react-codemirror": "^4.19.7",
+    "allotment": "^1.18.1",
     "apexcharts": "^3.36.3",
     "axios": "^1.2.1",
     "change-case": "^4.1.2",

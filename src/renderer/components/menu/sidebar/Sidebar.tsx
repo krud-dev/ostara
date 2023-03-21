@@ -24,7 +24,7 @@ export default function Sidebar({ sidebarConfig, width, header, sx }: SidebarPro
       <Box sx={{ overflow: 'hidden', flexGrow: 1 }}>
         <AutoSizer disableWidth>
           {({ height }) => (
-            <Box sx={{ height: height, overflow: 'auto' }}>
+            <Box sx={{ height: height, overflowY: 'auto', overflowX: 'hidden' }}>
               {!sidebarConfig ? (
                 <Box
                   sx={{

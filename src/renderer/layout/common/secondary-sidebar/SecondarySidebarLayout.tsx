@@ -1,7 +1,7 @@
 import React, { ComponentType, ReactNode, useEffect, useRef } from 'react';
 import { Box, Divider } from '@mui/material';
 import { Outlet, useLocation } from 'react-router-dom';
-import { MAIN_SCROLL_CONTAINER_ID, SECONDARY_SCROLL_CONTAINER_ID, SIDEBAR_DEFAULT_WIDTH } from 'renderer/constants/ui';
+import { SECONDARY_SCROLL_CONTAINER_ID, SIDEBAR_DEFAULT_WIDTH } from 'renderer/constants/ui';
 import AutoSizer from 'react-virtualized-auto-sizer';
 
 type SecondarySidebarLayoutProps<T> = {
@@ -22,8 +22,8 @@ export default function SecondarySidebarLayout<T>({ Sidebar, sidebarProps, conte
   }, [pathname]);
 
   return (
-    <Box sx={{ width: '100%', height: '100%', display: 'flex', flexDirection: 'row' }}>
-      <Box sx={{ width: SIDEBAR_DEFAULT_WIDTH, minWidth: SIDEBAR_DEFAULT_WIDTH, height: '100%' }}>
+    <Box sx={{ width: '100%', height: '100%', display: 'flex', flexDirection: 'row', overflow: 'hidden' }}>
+      <Box sx={{ width: SIDEBAR_DEFAULT_WIDTH, minWidth: SIDEBAR_DEFAULT_WIDTH, height: '100%', overflow: 'hidden' }}>
         <Sidebar width={SIDEBAR_DEFAULT_WIDTH} {...sidebarProps} />
       </Box>
 
@@ -32,7 +32,11 @@ export default function SecondarySidebarLayout<T>({ Sidebar, sidebarProps, conte
       <Box sx={{ height: '100%', overflow: 'hidden', flexGrow: 1 }}>
         <AutoSizer disableWidth>
           {({ height }) => (
-            <Box id={SECONDARY_SCROLL_CONTAINER_ID} ref={scrollContainerRef} sx={{ height: height, overflow: 'auto' }}>
+            <Box
+              id={SECONDARY_SCROLL_CONTAINER_ID}
+              ref={scrollContainerRef}
+              sx={{ height: height, overflowY: 'auto', overflowX: 'hidden' }}
+            >
               {content || <Outlet />}
             </Box>
           )}
