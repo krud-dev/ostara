@@ -1,104 +1,83 @@
 package dev.krud.boost.daemon.controller.api.v1
 
-import dev.krud.boost.daemon.actuator.model.EnvActuatorResponse
-import dev.krud.boost.daemon.configuration.instance.TestInstanceActuatorClientProvider
-import dev.krud.boost.daemon.configuration.instance.ability.TestInstanceAbilityService
-import dev.krud.boost.daemon.configuration.instance.enums.InstanceAbility
 import dev.krud.boost.daemon.configuration.instance.systemproperties.InstanceSystemPropertiesService
-import dev.krud.boost.daemon.util.persistAndGetInstance
+import dev.krud.boost.daemon.configuration.instance.systemproperties.ro.InstanceSystemPropertiesRO
+import dev.krud.boost.daemon.controller.api.v1.instance.InstanceSystemPropertiesController
+import dev.krud.boost.daemon.exception.throwBadRequest
+import dev.krud.boost.daemon.exception.throwNotFound
+import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.Test
 import org.mockito.kotlin.whenever
 import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.boot.test.autoconfigure.orm.jpa.AutoConfigureTestEntityManager
-import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager
-import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc
-import org.springframework.boot.test.context.SpringBootTest
-import org.springframework.test.context.TestPropertySource
+import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest
+import org.springframework.boot.test.mock.mockito.MockBean
 import org.springframework.test.web.servlet.MockMvc
-import org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get
-import org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath
-import org.springframework.test.web.servlet.result.MockMvcResultMatchers.status
-import org.springframework.transaction.annotation.Transactional
+import org.springframework.test.web.servlet.request.MockMvcRequestBuilders
+import org.springframework.test.web.servlet.result.MockMvcResultMatchers.*
 import java.util.*
 
-@TestPropertySource(locations = ["classpath:test.yml"])
-@SpringBootTest
-@AutoConfigureTestEntityManager
-@AutoConfigureMockMvc
-@TestInstanceActuatorClientProvider.Configure
-@TestInstanceAbilityService.Configure
+@WebMvcTest(InstanceSystemPropertiesController::class)
 class InstanceSystemPropertiesControllerTest {
+    @MockBean
+    private lateinit var instanceSystemPropertiesService: InstanceSystemPropertiesService
+
     @Autowired
     private lateinit var mockMvc: MockMvc
-
-    @Autowired
-    private lateinit var service: InstanceSystemPropertiesService
-
-    @Autowired
-    private lateinit var instanceActuatorClientProvider: TestInstanceActuatorClientProvider
-
-    @Autowired
-    private lateinit var instanceAbilityService: TestInstanceAbilityService
-
-    @Autowired
-    private lateinit var em: TestEntityManager
 
     private val baseUrlProvider: (instanceId: UUID) -> String = {
         "/api/v1/instances/$it/systemProperties"
     }
 
     @Test
-    @Transactional
-    fun `getSystemProperties should return bad request if instance is missing ability`() {
-        val instance = em.persistAndGetInstance()
-        instanceAbilityService.setAbilities(instance, InstanceAbility.except(InstanceAbility.SYSTEM_PROPERTIES))
-        val baseUrl = baseUrlProvider(instance.id)
+    fun `get system environment happy flow`() {
+        val instanceId = UUID.randomUUID()
+        whenever(instanceSystemPropertiesService.getSystemProperties(instanceId))
+            .thenReturn(
+                InstanceSystemPropertiesRO(
+                    mapOf(
+                        "test" to "test",
+                        "test2" to "test2"
+                    ),
+                    InstanceSystemPropertiesRO.RedactionLevel.NONE
+                )
+            )
+        val baseUrl = baseUrlProvider(instanceId)
         mockMvc.perform(
-            get(baseUrl)
+            MockMvcRequestBuilders.get(baseUrl)
         )
-            .andExpect(status().isBadRequest)
+            .andExpect(status().isOk)
+            .andExpect(content().contentType("application/json"))
+            .andExpect(jsonPath("\$.properties").isMap)
+            .andExpect(jsonPath("\$.properties.test").value("test"))
+            .andExpect(jsonPath("\$.properties.test2").value("test2"))
+            .andExpect(jsonPath("\$.redactionLevel").value("NONE"))
     }
 
     @Test
-    @Transactional
-    fun `getSystemProperties should return not found if instance is not found`() {
-        val baseUrl = baseUrlProvider(UUID.randomUUID())
+    fun `get system environment instance not found should return 404`() {
+        val instanceId = UUID.randomUUID()
+        whenever(instanceSystemPropertiesService.getSystemProperties(instanceId))
+            .then {
+                throwNotFound()
+            }
+        val baseUrl = baseUrlProvider(instanceId)
         mockMvc.perform(
-            get(baseUrl)
+            MockMvcRequestBuilders.get(baseUrl)
         )
             .andExpect(status().isNotFound)
     }
 
     @Test
-    @Transactional
-    fun `getSystemProperties should return ok if instance is found`() {
-        val instance = em.persistAndGetInstance()
-        val client = instanceActuatorClientProvider.provide(instance.id)
-        whenever(client.env())
-            .thenReturn(
-                Result.success(
-                    EnvActuatorResponse(
-                        activeProfiles = emptySet(),
-                        propertySources = listOf(
-                            EnvActuatorResponse.PropertySource(
-                                name = "systemProperties",
-                                properties = mapOf(
-                                    "test.value" to EnvActuatorResponse.PropertySource.Property(
-                                        value = "test",
-                                        origin = "test"
-                                    )
-                                )
-                            )
-                        )
-                    )
-                )
-            )
-        instanceAbilityService.setAbilities(instance)
-        val baseUrl = baseUrlProvider(instance.id)
+    fun `get system environment instance missing ability should return 400`() {
+        val instanceId = UUID.randomUUID()
+        whenever(instanceSystemPropertiesService.getSystemProperties(instanceId))
+            .then {
+                throwBadRequest()
+            }
+        val baseUrl = baseUrlProvider(instanceId)
         mockMvc.perform(
-            get(baseUrl)
+            MockMvcRequestBuilders.get(baseUrl)
         )
-            .andExpect(status().isOk)
-            .andExpect(jsonPath("\$.properties['test.value']").value("test"))
+            .andExpect(status().isBadRequest)
     }
 }

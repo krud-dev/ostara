@@ -6,6 +6,7 @@ import org.springframework.boot.test.context.TestConfiguration
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Import
 import org.springframework.context.annotation.Primary
+import java.util.*
 
 /**
  * This class is used to mock the InstanceAbilityService in tests.
@@ -17,6 +18,10 @@ class TestInstanceAbilityService : InstanceAbilityService {
 
     fun setAbilities(instance: Instance, abilities: Set<InstanceAbility> = InstanceAbility.VALUES) {
         this.abilities[instance] = abilities
+    }
+
+    override fun getAbilities(id: UUID): Set<InstanceAbility> {
+        return abilities.keys.find { it.id == id }?.let { abilities[it] } ?: emptySet()
     }
 
     override fun getAbilities(instance: Instance): Set<InstanceAbility> {

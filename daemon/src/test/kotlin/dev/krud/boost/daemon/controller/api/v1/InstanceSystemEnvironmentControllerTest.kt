@@ -37,7 +37,8 @@ class InstanceSystemEnvironmentControllerTest {
                     mapOf(
                         "test" to "test",
                         "test2" to "test2"
-                    )
+                    ),
+                    InstanceSystemEnvironmentRO.RedactionLevel.NONE
                 )
             )
         val baseUrl = baseUrlProvider(instanceId)
@@ -49,6 +50,7 @@ class InstanceSystemEnvironmentControllerTest {
             .andExpect(jsonPath("\$.properties").isMap)
             .andExpect(jsonPath("\$.properties.test").value("test"))
             .andExpect(jsonPath("\$.properties.test2").value("test2"))
+            .andExpect(jsonPath("\$.redactionLevel").value("NONE"))
     }
 
     @Test
