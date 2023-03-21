@@ -15,6 +15,7 @@ import { useEvictAllInstanceCaches } from 'renderer/apis/requests/instance/cache
 import { EVICT_CACHE_ID } from 'renderer/entity/actions';
 import { Card } from '@mui/material';
 import { InstanceRO } from '../../../../../common/generated_definitions';
+import { useEvictInstanceCache } from '../../../../apis/requests/instance/caches/evictInstanceCache';
 
 const InstanceCaches: FunctionComponent = () => {
   const { selectedItem } = useNavigatorTree();
@@ -25,14 +26,13 @@ const InstanceCaches: FunctionComponent = () => {
   const entity = useMemo<Entity<EnrichedInstanceCacheRO>>(() => instanceCacheEntity, []);
   const queryState = useGetInstanceCachesQuery({ instanceId: item.id });
 
-  const evictCachesState = useEvictInstanceCaches();
-  const evictAllCachesState = useEvictAllInstanceCaches();
+  const evictCacheState = useEvictInstanceCache();
 
   const actionsHandler = useCallback(async (actionId: string, row: EnrichedInstanceCacheRO): Promise<void> => {
     switch (actionId) {
       case EVICT_CACHE_ID:
         try {
-          await evictCachesState.mutateAsync({ instanceId: item.id, cacheNames: [row.name] });
+          await evictCacheState.mutateAsync({ instanceId: item.id, cacheName: row.name });
           enqueueSnackbar(<FormattedMessage id={'evictedCacheSuccessfully'} values={{ names: row.name }} />, {
             variant: 'success',
           });
@@ -42,6 +42,8 @@ const InstanceCaches: FunctionComponent = () => {
         break;
     }
   }, []);
+
+  const evictCachesState = useEvictInstanceCaches();
 
   const massActionsHandler = useCallback(
     async (actionId: string, selectedRows: EnrichedInstanceCacheRO[]): Promise<void> => {
@@ -69,6 +71,8 @@ const InstanceCaches: FunctionComponent = () => {
     },
     []
   );
+
+  const evictAllCachesState = useEvictAllInstanceCaches();
 
   const globalActionsHandler = useCallback(async (actionId: string): Promise<void> => {
     switch (actionId) {

@@ -15,6 +15,7 @@ import { useEvictApplicationCaches } from 'renderer/apis/requests/application/ca
 import { useEvictAllApplicationCaches } from 'renderer/apis/requests/application/caches/evictAllApplicationCaches';
 import { Card } from '@mui/material';
 import { ApplicationRO } from '../../../../../common/generated_definitions';
+import { useEvictApplicationCache } from '../../../../apis/requests/application/caches/evictApplicationCache';
 
 const ApplicationCaches: FunctionComponent = () => {
   const { selectedItem } = useNavigatorTree();
@@ -26,14 +27,13 @@ const ApplicationCaches: FunctionComponent = () => {
   const entity = useMemo<Entity<EnrichedApplicationCacheRO>>(() => applicationCacheEntity, []);
   const queryState = useGetApplicationCachesQuery({ applicationId: itemId });
 
-  const evictCachesState = useEvictApplicationCaches();
-  const evictAllCachesState = useEvictAllApplicationCaches();
+  const evictCacheState = useEvictApplicationCache();
 
   const actionsHandler = useCallback(async (actionId: string, row: EnrichedApplicationCacheRO): Promise<void> => {
     switch (actionId) {
       case EVICT_CACHE_ID:
         try {
-          await evictCachesState.mutateAsync({ applicationId: itemId, cacheNames: [row.name] });
+          await evictCacheState.mutateAsync({ applicationId: itemId, cacheName: row.name });
           enqueueSnackbar(<FormattedMessage id={'evictedCacheSuccessfully'} values={{ names: row.name }} />, {
             variant: 'success',
           });
@@ -43,6 +43,8 @@ const ApplicationCaches: FunctionComponent = () => {
         break;
     }
   }, []);
+
+  const evictCachesState = useEvictApplicationCaches();
 
   const massActionsHandler = useCallback(
     async (actionId: string, selectedRows: EnrichedApplicationCacheRO[]): Promise<void> => {
@@ -70,6 +72,8 @@ const ApplicationCaches: FunctionComponent = () => {
     },
     []
   );
+
+  const evictAllCachesState = useEvictAllApplicationCaches();
 
   const globalActionsHandler = useCallback(async (actionId: string): Promise<void> => {
     switch (actionId) {
