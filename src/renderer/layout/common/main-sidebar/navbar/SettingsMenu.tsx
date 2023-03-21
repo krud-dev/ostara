@@ -1,4 +1,4 @@
-import React, { useCallback, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { Box, Divider, Drawer, IconButton, MenuItem, Stack, TextField, Typography } from '@mui/material';
 import { useUi } from 'renderer/contexts/UiContext';
 import { FormattedMessage } from 'react-intl';
@@ -7,16 +7,33 @@ import { alpha } from '@mui/material/styles';
 import PerfectScrollbar from 'react-perfect-scrollbar';
 import { COMPONENTS_SPACING, NAVBAR_HEIGHT } from '../../../../constants/ui';
 import { ThemeSource } from '../../../../../infra/ui/models/electronTheme';
-import { map } from 'lodash';
-import locales from '../../../../lang';
+import { useSubscribeToEvent } from '../../../../apis/requests/subscriptions/subscribeToEvent';
+import { IpcRendererEvent } from 'electron';
 
 export default function SettingsMenu() {
-  const { themeSource, setThemeSource, analyticsEnabled, setAnalyticsEnabled, localeInfo, setLocale } = useUi();
+  const { themeSource, setThemeSource, analyticsEnabled, setAnalyticsEnabled } = useUi();
 
   const [open, setOpen] = useState<boolean>(false);
 
   const toggleOpenHandler = useCallback((): void => {
     setOpen((prev) => !prev);
+  }, []);
+
+  const subscribeToTriggerEventsState = useSubscribeToEvent();
+
+  useEffect(() => {
+    let unsubscribe: (() => void) | undefined;
+    (async () => {
+      unsubscribe = await subscribeToTriggerEventsState.mutateAsync({
+        event: 'trigger:openSettings',
+        listener: (event: IpcRendererEvent) => {
+          setOpen(true);
+        },
+      });
+    })();
+    return () => {
+      unsubscribe?.();
+    };
   }, []);
 
   return (
@@ -96,21 +113,6 @@ export default function SettingsMenu() {
                     <FormattedMessage id="no" />
                   </MenuItem>
                 </TextField>
-
-                {/*<TextField*/}
-                {/*  fullWidth*/}
-                {/*  label={<FormattedMessage id="language" />}*/}
-                {/*  margin="normal"*/}
-                {/*  select*/}
-                {/*  value={localeInfo.id}*/}
-                {/*  onChange={(e) => setLocale(e.target.value)}*/}
-                {/*>*/}
-                {/*  {map(locales, (l) => (*/}
-                {/*    <MenuItem value={l.id} key={l.id}>*/}
-                {/*      {l.name}*/}
-                {/*    </MenuItem>*/}
-                {/*  ))}*/}
-                {/*</TextField>*/}
               </Stack>
             </PerfectScrollbar>
           </Box>
