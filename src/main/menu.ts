@@ -58,7 +58,7 @@ export default class MenuBuilder {
         {
           label: 'Settings',
           click: () => {
-            this.mainWindow.webContents.send('open-settings');
+            this.mainWindow.webContents.send('trigger:openSettings');
           },
         },
         { type: 'separator' },
