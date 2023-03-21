@@ -1,6 +1,6 @@
 {
   "name": "spring-boost",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "A visual tool to monitor and interact with Spring Boot applications via Actuator",
   "private": "true",
   "keywords": [
