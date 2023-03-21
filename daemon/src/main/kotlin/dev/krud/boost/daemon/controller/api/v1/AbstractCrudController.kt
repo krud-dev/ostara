@@ -6,8 +6,13 @@ import dev.krud.shapeshift.ShapeShift
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.media.Content
 import io.swagger.v3.oas.annotations.responses.ApiResponse
+import jakarta.validation.ConstraintViolationException
 import jakarta.validation.Valid
+import jakarta.validation.Validator
+import jakarta.validation.constraints.NotEmpty
+import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.HttpStatus
+import org.springframework.validation.annotation.Validated
 import org.springframework.web.bind.annotation.*
 import java.util.*
 import kotlin.reflect.KClass
@@ -17,8 +22,10 @@ abstract class AbstractCrudController<Entity : AbstractEntity, RO : Any, CreateD
     private val entityClazz: KClass<Entity>,
     private val roClazz: KClass<RO>,
     private val shapeShift: ShapeShift,
-    private val krud: Krud<Entity, UUID>
+    private val krud: Krud<Entity, UUID>,
 ) : AbstractReadOnlyCrudController<Entity, RO>(entityClazz, roClazz, shapeShift, krud) {
+    @Autowired
+    private lateinit var validator: Validator
     /**
      * Create a new resource
      */
@@ -55,9 +62,17 @@ abstract class AbstractCrudController<Entity : AbstractEntity, RO : Any, CreateD
     @ApiResponse(responseCode = "201", description = "Resources created")
     @ApiResponse(responseCode = "400", description = "Bad request", content = [Content()])
     fun createMany(
-        @Valid @RequestBody
+        @RequestBody
+        @Valid
+        @NotEmpty
         request: BulkRequestRO<CreateDTO>
     ): List<RO> {
+        request.items.forEach {
+            val violations = validator.validate(it)
+            if (violations.isNotEmpty()) {
+                throw ConstraintViolationException(violations)
+            }
+        } // TODO: temp since validation does not seem to apply otherwise, conform with Spring's validation response type
         val result = krud.bulkCreate(
             shapeShift.mapCollection(request.items, entityClazz.java),
             applyPolicies = true
