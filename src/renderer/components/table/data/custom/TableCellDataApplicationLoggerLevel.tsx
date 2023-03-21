@@ -38,7 +38,7 @@ export default function TableCellDataApplicationLoggerLevel<EntityItem extends E
 
   useUpdateEffect(() => {
     setDisabled(false);
-  }, [row.loggers]);
+  }, [row]);
 
   const effectiveLevels = useMemo<LogLevel[]>(
     () => map(row.loggers, (logger) => logger.effectiveLevel).filter(notEmpty),

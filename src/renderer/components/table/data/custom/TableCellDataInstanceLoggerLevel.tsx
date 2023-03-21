@@ -36,7 +36,7 @@ export default function TableCellDataInstanceLoggerLevel<EntityItem extends Enri
 
   useUpdateEffect(() => {
     setDisabled(false);
-  }, [row.effectiveLevel, row.configuredLevel]);
+  }, [row]);
 
   const effectiveLevels = useMemo<LogLevel[]>(
     () => (row.effectiveLevel ? [row.effectiveLevel] : []),

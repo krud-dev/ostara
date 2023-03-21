@@ -11,6 +11,7 @@ import { AxiosResponse } from 'axios';
 
 export type EnrichedApplicationLoggerRO = ApplicationLoggerRO & {
   applicationId: string;
+  timestamp: number;
 };
 
 type Variables = {
@@ -25,7 +26,8 @@ export const getApplicationLoggers = async (variables: Variables): Promise<Data>
       `logger/application/${variables.applicationId}`
     )
   ).data;
-  return result.map((logger) => ({ ...logger, applicationId: variables.applicationId }));
+  const now = new Date().getTime();
+  return result.map((logger) => ({ ...logger, applicationId: variables.applicationId, timestamp: now }));
 };
 
 export const useGetApplicationLoggers = (

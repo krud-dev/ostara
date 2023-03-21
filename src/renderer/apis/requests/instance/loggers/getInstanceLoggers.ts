@@ -11,6 +11,7 @@ import { AxiosResponse } from 'axios';
 
 export type EnrichedInstanceLoggerRO = InstanceLoggerRO & {
   instanceId: string;
+  timestamp: number;
 };
 
 type Variables = {
@@ -25,7 +26,8 @@ export const getInstanceLoggers = async (variables: Variables): Promise<Data> =>
       `logger/instance/${variables.instanceId}`
     )
   ).data;
-  return result.map((logger) => ({ ...logger, instanceId: variables.instanceId }));
+  const now = new Date().getTime();
+  return result.map((logger) => ({ ...logger, instanceId: variables.instanceId, timestamp: now }));
 };
 
 export const useGetInstanceLoggers = (
