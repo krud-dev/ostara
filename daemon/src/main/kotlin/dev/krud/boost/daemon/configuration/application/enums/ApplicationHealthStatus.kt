@@ -7,12 +7,13 @@ enum class ApplicationHealthStatus {
     ALL_DOWN,
     SOME_DOWN,
     UNKNOWN,
-    PENDING;
+    PENDING,
+    EMPTY;
 
     companion object {
         fun Collection<InstanceHealthStatus?>.toApplicationHealthStatus(): ApplicationHealthStatus {
             if (this.isEmpty()) {
-                return PENDING
+                return EMPTY
             }
 
             val withoutNulls = this.filterNotNull()

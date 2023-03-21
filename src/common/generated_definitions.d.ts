@@ -934,7 +934,7 @@ export type QuartzTriggerResponse$Type = "calendarInterval" | "cron" | "custom" 
 
 export type ResultAggregationSummary$Status = "SUCCESS" | "PARTIAL_SUCCESS" | "FAILURE";
 
-export type ApplicationHealthStatus = "ALL_UP" | "ALL_DOWN" | "SOME_DOWN" | "UNKNOWN" | "PENDING";
+export type ApplicationHealthStatus = "ALL_UP" | "ALL_DOWN" | "SOME_DOWN" | "UNKNOWN" | "PENDING" | "EMPTY";
 
 export type ApplicationType = "SPRING_BOOT";
 
