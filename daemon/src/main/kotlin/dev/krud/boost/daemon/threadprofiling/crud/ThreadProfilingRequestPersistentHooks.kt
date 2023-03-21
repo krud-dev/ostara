@@ -6,17 +6,16 @@ import dev.krud.boost.daemon.threadprofiling.enums.ThreadProfilingStatus
 import dev.krud.boost.daemon.threadprofiling.model.ThreadProfilingLog
 import dev.krud.boost.daemon.threadprofiling.model.ThreadProfilingRequest
 import dev.krud.boost.daemon.threadprofiling.ro.ThreadProfilingRequestCreateRO
-import dev.krud.crudframework.crud.handler.CrudHandler
+import dev.krud.crudframework.crud.handler.krud.Krud
 import dev.krud.crudframework.crud.hooks.interfaces.CreateFromHooks
 import dev.krud.crudframework.crud.hooks.interfaces.CreateHooks
 import dev.krud.crudframework.crud.hooks.interfaces.DeleteHooks
-import dev.krud.crudframework.modelfilter.dsl.where
 import org.springframework.stereotype.Component
 import java.util.*
 
 @Component
 class ThreadProfilingRequestPersistentHooks(
-    private val crudHandler: CrudHandler,
+    private val threadProfilingLogKrud: Krud<ThreadProfilingLog, UUID>,
     private val instanceService: InstanceService
 ) : CreateHooks<UUID, ThreadProfilingRequest>, CreateFromHooks<UUID, ThreadProfilingRequest>, DeleteHooks<UUID, ThreadProfilingRequest> {
     override fun preCreate(entity: ThreadProfilingRequest) {
@@ -40,17 +39,11 @@ class ThreadProfilingRequestPersistentHooks(
         if (entity.status != ThreadProfilingStatus.FINISHED) {
             throwBadRequest("Cannot delete profiling request that is not finished")
         }
-        crudHandler.index(
+        threadProfilingLogKrud.deleteByFilter {
             where {
                 ThreadProfilingLog::requestId Equal entity.id
-            },
-            ThreadProfilingLog::class.java
-        )
-            .execute()
-            .results
-            .forEach {
-                crudHandler.delete(it.id, ThreadProfilingLog::class.java).execute()
             }
+        }
     }
 
     private fun setFinishTime(entity: ThreadProfilingRequest) {

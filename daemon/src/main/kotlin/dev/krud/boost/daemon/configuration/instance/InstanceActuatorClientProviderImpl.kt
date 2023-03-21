@@ -7,7 +7,7 @@ import dev.krud.boost.daemon.configuration.authentication.Authentication
 import dev.krud.boost.daemon.configuration.instance.entity.Instance
 import dev.krud.boost.daemon.exception.ResourceNotFoundException
 import dev.krud.boost.daemon.exception.throwBadRequest
-import dev.krud.crudframework.crud.handler.CrudHandler
+import dev.krud.crudframework.crud.handler.krud.Krud
 import org.springframework.context.annotation.Lazy
 import org.springframework.stereotype.Component
 import java.util.*
@@ -15,7 +15,7 @@ import java.util.*
 @Component
 class InstanceActuatorClientProviderImpl(
     @Lazy
-    private val crudHandler: CrudHandler,
+    private val instanceKrud: Krud<Instance, UUID>,
     @Lazy
     private val applicationAuthenticationService: ApplicationAuthenticationService
 ) : InstanceActuatorClientProvider {
@@ -24,10 +24,9 @@ class InstanceActuatorClientProviderImpl(
     }
 
     override fun provide(instanceId: UUID): ActuatorHttpClient {
-        val instance = crudHandler
-            .show(instanceId, Instance::class.java)
-            .applyPolicies()
-            .execute() ?: throw ResourceNotFoundException(Instance.NAME, instanceId)
+        val instance = instanceKrud
+            .showById(instanceId, applyPolicies = true)
+            ?: throw ResourceNotFoundException(Instance.NAME, instanceId)
         return provide(instance)
     }
 

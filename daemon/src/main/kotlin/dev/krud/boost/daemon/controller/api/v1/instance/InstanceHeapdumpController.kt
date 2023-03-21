@@ -5,7 +5,6 @@ import dev.krud.boost.daemon.configuration.instance.heapdump.model.InstanceHeapd
 import dev.krud.boost.daemon.configuration.instance.heapdump.ro.InstanceHeapdumpReferenceRO
 import dev.krud.boost.daemon.controller.api.v1.API_PREFIX
 import dev.krud.boost.daemon.controller.api.v1.AbstractReadOnlyCrudController
-import dev.krud.crudframework.crud.handler.CrudHandler
 import dev.krud.crudframework.crud.handler.krud.Krud
 import dev.krud.shapeshift.ShapeShift
 import io.swagger.v3.oas.annotations.Operation
@@ -28,7 +27,6 @@ import java.util.*
 @RequestMapping("$API_PREFIX/instances/heapdumps")
 @Tag(name = "Instance Heapdump")
 class InstanceHeapdumpController(
-    private val crudHandler: CrudHandler,
     private val instanceHeapdumpService: InstanceHeapdumpService,
     private val shapeShift: ShapeShift,
     private val instanceHeapdumpReferenceKrud: Krud<InstanceHeapdumpReference, UUID>

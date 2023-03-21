@@ -1,7 +1,7 @@
 package dev.krud.boost.daemon.configuration.folder.validation
 
 import dev.krud.boost.daemon.configuration.folder.entity.Folder
-import dev.krud.crudframework.crud.handler.CrudHandler
+import dev.krud.crudframework.crud.handler.krud.Krud
 import jakarta.validation.Constraint
 import jakarta.validation.ConstraintValidator
 import jakarta.validation.ConstraintValidatorContext
@@ -16,10 +16,9 @@ annotation class ValidFolderIdOrNull(val message: String = "Invalid folder ID", 
 
 @Component
 class FolderIdOrNullValidator(
-    private val crudHandler: CrudHandler
+    private val folderKrud: Krud<Folder, UUID>
 ) : ConstraintValidator<ValidFolderIdOrNull, UUID> {
     override fun isValid(value: UUID?, context: ConstraintValidatorContext?): Boolean {
-        return value == null || crudHandler.show(value, Folder::class.java)
-            .execute() != null // TODO: we should do a count query instead of a full select
+        return value == null || folderKrud.showById(value) != null // TODO: we should do a count query instead of a full select
     }
 }

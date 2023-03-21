@@ -1,7 +1,7 @@
 package dev.krud.boost.daemon.configuration.application.validation
 
 import dev.krud.boost.daemon.configuration.application.entity.Application
-import dev.krud.crudframework.crud.handler.CrudHandler
+import dev.krud.crudframework.crud.handler.krud.Krud
 import jakarta.validation.Constraint
 import jakarta.validation.ConstraintValidator
 import jakarta.validation.ConstraintValidatorContext
@@ -16,11 +16,10 @@ annotation class ValidApplicationId(val message: String = "Invalid application I
 
 @Component
 class ApplicationIdValidator(
-    private val crudHandler: CrudHandler
+    private val applicationKrud: Krud<Application, UUID>
 ) : ConstraintValidator<ValidApplicationId, UUID> {
 
     override fun isValid(value: UUID?, context: ConstraintValidatorContext?): Boolean {
-        return value != null && crudHandler.show(value, Application::class.java)
-            .execute() != null // TODO: we should do a count query instead of a full select
+        return value != null && applicationKrud.showById(value) != null // TODO: we should do a count query instead of a full select
     }
 }

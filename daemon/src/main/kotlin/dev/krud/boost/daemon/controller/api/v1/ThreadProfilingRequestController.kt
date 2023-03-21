@@ -6,6 +6,8 @@ import dev.krud.boost.daemon.threadprofiling.ro.ThreadProfilingLogRO
 import dev.krud.boost.daemon.threadprofiling.ro.ThreadProfilingRequestCreateRO
 import dev.krud.boost.daemon.threadprofiling.ro.ThreadProfilingRequestRO
 import dev.krud.crudframework.crud.handler.krud.Krud
+import dev.krud.crudframework.ro.PagedResult
+import dev.krud.crudframework.ro.PagedResult.Companion.mapResults
 import dev.krud.shapeshift.ShapeShift
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.responses.ApiResponse
@@ -35,7 +37,8 @@ class ThreadProfilingRequestController(
     )
     @ApiResponse(responseCode = "200", description = "Returned Logs")
     @ApiResponse(responseCode = "404", description = "RequestId not found")
-    fun getLogsForRequest(@PathVariable requestId: UUID): List<ThreadProfilingLogRO> {
-        return shapeShift.mapCollection(threadProfilingService.getLogsForRequest(requestId))
+    fun getLogsForRequest(@PathVariable requestId: UUID): PagedResult<ThreadProfilingLogRO> {
+        return threadProfilingService.getLogsForRequest(requestId)
+            .mapResults { shapeShift.map(it) }
     }
 }

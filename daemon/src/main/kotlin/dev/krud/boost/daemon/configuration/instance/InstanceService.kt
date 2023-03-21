@@ -3,28 +3,24 @@ package dev.krud.boost.daemon.configuration.instance
 import dev.krud.boost.daemon.configuration.instance.entity.Instance
 import dev.krud.boost.daemon.configuration.instance.messaging.InstanceMovedEventMessage
 import dev.krud.boost.daemon.exception.throwNotFound
-import dev.krud.crudframework.crud.handler.CrudHandler
+import dev.krud.crudframework.crud.handler.krud.Krud
 import org.springframework.integration.channel.PublishSubscribeChannel
 import org.springframework.stereotype.Service
 import java.util.*
 
 @Service
 class InstanceService(
-    private val crudHandler: CrudHandler,
+    private val instanceKrud: Krud<Instance, UUID>,
     private val systemEventsChannel: PublishSubscribeChannel
 ) {
 
-    fun getAllInstances(): List<Instance> {
-        return crudHandler
-            .index(null, Instance::class.java)
-            .execute()
-            .results
+    fun getAllInstances(): Iterable<Instance> {
+        return instanceKrud.searchByFilter {  }
     }
 
     fun getInstance(instanceId: UUID): Instance? {
-        return crudHandler
-            .show(instanceId, Instance::class.java)
-            .execute()
+        return instanceKrud
+            .showById(instanceId)
     }
 
     fun getInstanceOrThrow(instanceId: UUID): Instance {
@@ -36,9 +32,7 @@ class InstanceService(
         val oldParentApplicationId = instance.parentApplicationId
         instance.parentApplicationId = newParentApplicationId
         instance.sort = newSort
-        val updatedInstance = crudHandler
-            .update(instance)
-            .execute()
+        val updatedInstance = instanceKrud.update(instance)
         systemEventsChannel.send(InstanceMovedEventMessage(InstanceMovedEventMessage.Payload(instanceId, oldParentApplicationId, newParentApplicationId)))
         return updatedInstance
     }

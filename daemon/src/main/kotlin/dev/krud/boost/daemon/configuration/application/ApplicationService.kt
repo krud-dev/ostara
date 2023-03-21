@@ -6,21 +6,18 @@ import dev.krud.boost.daemon.configuration.instance.entity.Instance
 import dev.krud.boost.daemon.configuration.instance.enums.InstanceAbility
 import dev.krud.boost.daemon.exception.throwBadRequest
 import dev.krud.boost.daemon.exception.throwNotFound
-import dev.krud.crudframework.crud.handler.CrudHandler
 import dev.krud.crudframework.crud.handler.krud.Krud
 import org.springframework.stereotype.Service
 import java.util.*
 
 @Service
 class ApplicationService(
-    private val crudHandler: CrudHandler,
+    private val applicationKrud: Krud<Application, UUID>,
     private val instanceKrud: Krud<Instance, UUID>,
     private val instanceAbilityService: InstanceAbilityService
 ) {
     fun getApplication(applicationId: UUID): Application? {
-        return crudHandler
-            .show(applicationId, Application::class.java)
-            .execute()
+        return applicationKrud.showById(applicationId)
     }
 
     fun getApplicationInstances(applicationId: UUID): List<Instance> {
@@ -55,8 +52,6 @@ class ApplicationService(
         val application = getApplicationOrThrow(applicationId)
         application.parentFolderId = newParentFolderId // TODO: check if folder exists, should fail on foreign key for now
         application.sort = newSort
-        return crudHandler
-            .update(application)
-            .execute()
+        return applicationKrud.update(application)
     }
 }

@@ -9,9 +9,8 @@ import dev.krud.boost.daemon.configuration.instance.heapdump.ro.InstanceHeapdump
 import dev.krud.boost.daemon.configuration.instance.heapdump.store.InstanceHeapdumpStore
 import dev.krud.boost.daemon.exception.throwBadRequest
 import dev.krud.boost.daemon.exception.throwNotFound
-import dev.krud.crudframework.crud.handler.CrudHandler
-import dev.krud.crudframework.crud.hooks.update.CRUDOnUpdateHook
-import dev.krud.crudframework.modelfilter.dsl.where
+import dev.krud.crudframework.crud.handler.krud.Krud
+import dev.krud.shapeshift.ShapeShift
 import org.springframework.beans.factory.InitializingBean
 import org.springframework.scheduling.annotation.Scheduled
 import org.springframework.stereotype.Service
@@ -20,7 +19,8 @@ import java.util.*
 
 @Service
 class InstanceHeapdumpService(
-    private val crudHandler: CrudHandler,
+    private val instanceHeapdumpReferenceKrud: Krud<InstanceHeapdumpReference, UUID>,
+    private val shapeShift: ShapeShift,
     private val instanceService: InstanceService,
     private val actuatorClientProvider: InstanceActuatorClientProvider,
     private val instanceHeapdumpStore: InstanceHeapdumpStore
@@ -29,24 +29,22 @@ class InstanceHeapdumpService(
 
     override fun afterPropertiesSet() {
         synchronized(mutex) {
-            crudHandler.updateByFilter(
-                where<InstanceHeapdumpReference> {
-                    InstanceHeapdumpReference::status Equal InstanceHeapdumpReference.Status.DOWNLOADING
-                },
-                InstanceHeapdumpReference::class.java
-            )
-                .withOnHook(
-                    CRUDOnUpdateHook {
-                        it.status = InstanceHeapdumpReference.Status.PENDING_DOWNLOAD
+            instanceHeapdumpReferenceKrud
+                .updateByFilter(
+                    false,
+                    {
+                        where {
+                            InstanceHeapdumpReference::status Equal InstanceHeapdumpReference.Status.DOWNLOADING
+                        }
                     }
-                )
-                .execute()
+                ) {
+                    status = InstanceHeapdumpReference.Status.PENDING_DOWNLOAD
+                }
         }
     }
 
     fun getHeapdumpReference(referenceId: UUID): InstanceHeapdumpReference? {
-        return crudHandler.show(referenceId, InstanceHeapdumpReference::class.java)
-            .execute()
+        return instanceHeapdumpReferenceKrud.showById(referenceId)
     }
 
     fun getHeapdumpReferenceOrThrow(referenceId: UUID): InstanceHeapdumpReference {
@@ -55,29 +53,28 @@ class InstanceHeapdumpService(
 
     fun requestHeapdump(instanceId: UUID): InstanceHeapdumpReferenceRO {
         instanceService.getInstanceOrThrow(instanceId)
-        return crudHandler.create(
-            InstanceHeapdumpReference(
-                instanceId
-            ),
-            InstanceHeapdumpReferenceRO::class.java
-        ).execute()
+        return shapeShift.map(
+            instanceHeapdumpReferenceKrud.create(
+                InstanceHeapdumpReference(
+                    instanceId
+                ),
+            )
+        )
     }
 
     @Scheduled(fixedDelay = 10000)
     fun downloadPendingHeapdumps() {
         val references = synchronized(mutex) {
-            crudHandler.updateByFilter(
-                where {
-                    InstanceHeapdumpReference::status Equal InstanceHeapdumpReference.Status.PENDING_DOWNLOAD
-                },
-                InstanceHeapdumpReference::class.java
-            )
-                .withOnHook(
-                    CRUDOnUpdateHook {
-                        it.status = InstanceHeapdumpReference.Status.DOWNLOADING
+            instanceHeapdumpReferenceKrud.updateByFilter(
+                false,
+                {
+                    where {
+                        InstanceHeapdumpReference::status Equal InstanceHeapdumpReference.Status.PENDING_DOWNLOAD
                     }
-                )
-                .execute()
+                }
+            ) {
+                status = InstanceHeapdumpReference.Status.DOWNLOADING
+            }
         }
 
         for (reference in references) {
@@ -94,7 +91,7 @@ class InstanceHeapdumpService(
             } catch (e: Exception) {
                 reference.failed(e)
             } finally {
-                crudHandler.update(reference, InstanceHeapdumpReferenceRO::class.java).execute()
+                instanceHeapdumpReferenceKrud.update(reference)
             }
         }
     }
@@ -115,6 +112,6 @@ class InstanceHeapdumpService(
         }
         instanceHeapdumpStore.deleteHeapdump(referenceId)
             .getOrThrow()
-        crudHandler.delete(referenceId, InstanceHeapdumpReference::class.java).execute()
+        instanceHeapdumpReferenceKrud.deleteById(referenceId)
     }
 }
