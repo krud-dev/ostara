@@ -50,7 +50,17 @@ export default class MenuBuilder {
           selector: 'orderFrontStandardAboutPanel:',
         },
         { type: 'separator' },
-        { label: 'Services', submenu: [] },
+        {
+          label: 'Services',
+          submenu: [],
+        },
+        { type: 'separator' },
+        {
+          label: 'Settings',
+          click: () => {
+            this.mainWindow.webContents.send('open-settings');
+          },
+        },
         { type: 'separator' },
         {
           label: 'Hide SpringBoost',
@@ -73,22 +83,6 @@ export default class MenuBuilder {
         },
       ],
     };
-    const subMenuEdit: DarwinMenuItemConstructorOptions = {
-      label: 'Edit',
-      submenu: [
-        { label: 'Undo', accelerator: 'Command+Z', selector: 'undo:' },
-        { label: 'Redo', accelerator: 'Shift+Command+Z', selector: 'redo:' },
-        { type: 'separator' },
-        { label: 'Cut', accelerator: 'Command+X', selector: 'cut:' },
-        { label: 'Copy', accelerator: 'Command+C', selector: 'copy:' },
-        { label: 'Paste', accelerator: 'Command+V', selector: 'paste:' },
-        {
-          label: 'Select All',
-          accelerator: 'Command+A',
-          selector: 'selectAll:',
-        },
-      ],
-    };
     const subMenuViewDev: MenuItemConstructorOptions = {
       label: 'View',
       submenu: [
@@ -100,12 +94,21 @@ export default class MenuBuilder {
           },
         },
         {
+          label: 'Force Reload',
+          accelerator: 'Shift+Command+R',
+          click: () => {
+            this.mainWindow.webContents.reloadIgnoringCache();
+          },
+        },
+        { type: 'separator' },
+        {
           label: 'Toggle Full Screen',
           accelerator: 'Ctrl+Command+F',
           click: () => {
             this.mainWindow.setFullScreen(!this.mainWindow.isFullScreen());
           },
         },
+        { type: 'separator' },
         {
           label: 'Toggle Developer Tools',
           accelerator: 'Alt+Command+I',
@@ -118,6 +121,21 @@ export default class MenuBuilder {
     const subMenuViewProd: MenuItemConstructorOptions = {
       label: 'View',
       submenu: [
+        {
+          label: 'Reload',
+          accelerator: 'Command+R',
+          click: () => {
+            this.mainWindow.webContents.reload();
+          },
+        },
+        {
+          label: 'Force Reload',
+          accelerator: 'Shift+Command+R',
+          click: () => {
+            this.mainWindow.webContents.reloadIgnoringCache();
+          },
+        },
+        { type: 'separator' },
         {
           label: 'Toggle Full Screen',
           accelerator: 'Ctrl+Command+F',
@@ -144,27 +162,30 @@ export default class MenuBuilder {
       label: 'Help',
       submenu: [
         {
-          label: 'Learn More',
+          label: 'Star us on GitHub',
           click() {
-            shell.openExternal('https://electronjs.org');
+            shell.openExternal('https://github.com/krud-dev/spring-boost');
           },
         },
         {
           label: 'Documentation',
           click() {
-            shell.openExternal('https://github.com/electron/electron/tree/main/docs#readme');
+            shell.openExternal('https://boost.krud.dev/');
           },
         },
-        {
-          label: 'Community Discussions',
-          click() {
-            shell.openExternal('https://www.electronjs.org/community');
-          },
-        },
+        { type: 'separator' },
         {
           label: 'Search Issues',
           click() {
-            shell.openExternal('https://github.com/electron/electron/issues');
+            shell.openExternal('https://github.com/krud-dev/spring-boost/issues');
+          },
+        },
+        {
+          label: 'Submit a Bug Report',
+          click() {
+            shell.openExternal(
+              'https://github.com/krud-dev/spring-boost/issues/new?assignees=&labels=bug&template=1-Bug_report.md'
+            );
           },
         },
       ],
@@ -173,7 +194,7 @@ export default class MenuBuilder {
     const subMenuView =
       process.env.NODE_ENV === 'development' || process.env.DEBUG_PROD === 'true' ? subMenuViewDev : subMenuViewProd;
 
-    return [subMenuAbout, subMenuEdit, subMenuView, subMenuWindow, subMenuHelp];
+    return [subMenuAbout, subMenuView, subMenuWindow, subMenuHelp];
   }
 
   buildDefaultTemplate() {
