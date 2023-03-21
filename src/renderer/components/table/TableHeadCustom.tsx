@@ -3,7 +3,8 @@ import { Box, Checkbox, SxProps, TableCell, TableHead, TableRow, TableSortLabel 
 import { FormattedMessage } from 'react-intl';
 import { useTable } from 'renderer/components/table/TableContext';
 import { DEFAULT_TABLE_COLUMN_WIDTH } from 'renderer/constants/ui';
-import { useMemo } from 'react';
+import React, { useMemo } from 'react';
+import ToolbarButton from '../common/ToolbarButton';
 
 const visuallyHidden = {
   border: 0,
@@ -27,6 +28,7 @@ export default function TableHeadCustom({ sx }: TableHeadCustomProps) {
     selectAllIndeterminate,
     selectAllChecked,
     selectAllRowsHandler,
+    closeAllRowsHandler,
     orderColumn,
     orderDirection,
     changeOrderHandler,
@@ -34,6 +36,7 @@ export default function TableHeadCustom({ sx }: TableHeadCustomProps) {
     hasMassActions,
   } = useTable();
 
+  const hasDetailsRowAction = useMemo<boolean>(() => entity.rowAction?.type === 'Details', [entity]);
   const actionsWidth = useMemo<number>(() => entity.actions.length * 36 + 40, [entity]);
 
   return (
@@ -45,6 +48,16 @@ export default function TableHeadCustom({ sx }: TableHeadCustomProps) {
               indeterminate={selectAllIndeterminate}
               checked={selectAllChecked}
               onChange={(event: React.ChangeEvent<HTMLInputElement>) => selectAllRowsHandler(event.target.checked)}
+            />
+          </TableCell>
+        )}
+
+        {hasDetailsRowAction && (
+          <TableCell sx={{ width: '1%!important', pr: 0 }}>
+            <ToolbarButton
+              tooltipLabelId={'collapseAll'}
+              icon={'UnfoldLessDoubleOutlined'}
+              onClick={closeAllRowsHandler}
             />
           </TableCell>
         )}

@@ -1,12 +1,12 @@
-import { Box, Checkbox, IconButton, TableCell, TableRow, Tooltip } from '@mui/material';
+import { Box, Checkbox, TableCell, TableRow, Tooltip } from '@mui/material';
 import { EntityColumn } from 'renderer/entity/entity';
-import { IconViewer } from 'renderer/components/common/IconViewer';
-import { FormattedMessage } from 'react-intl';
 import { useTable } from 'renderer/components/table/TableContext';
 import React, { useCallback, useMemo } from 'react';
 import TableCellData from 'renderer/components/table/data/TableCellData';
 import TableRowAction from 'renderer/components/table/action/TableRowAction';
 import { alpha } from '@mui/material/styles';
+import ToolbarButton from '../common/ToolbarButton';
+import { KeyboardArrowDown, KeyboardArrowRight } from '@mui/icons-material';
 
 type TableRowCustomProps<EntityItem> = {
   row: EntityItem;
@@ -28,7 +28,8 @@ export default function TableRowCustom<EntityItem>({ row }: TableRowCustomProps<
 
   const selected = useMemo<boolean>(() => isRowSelected(row), [row, selectedRows, isRowSelected]);
   const open = useMemo<boolean>(() => isRowOpen(row), [row, openRows, isRowOpen]);
-  const hasRowAction = useMemo<boolean>(
+  const hasDetailsRowAction = useMemo<boolean>(() => entity.rowAction?.type === 'Details', [entity]);
+  const hasActiveRowAction = useMemo<boolean>(
     () => !!entity.rowAction && (!entity.isRowActionActive || entity.isRowActionActive(row)),
     [entity, row]
   );
@@ -36,12 +37,12 @@ export default function TableRowCustom<EntityItem>({ row }: TableRowCustomProps<
 
   const rowClickHandler = useCallback(
     (event: React.MouseEvent): void => {
-      if (!hasRowAction) {
+      if (!hasActiveRowAction) {
         return;
       }
       toggleRowOpenHandler(row);
     },
-    [hasRowAction, toggleRowOpenHandler]
+    [hasActiveRowAction, toggleRowOpenHandler]
   );
 
   const checkboxClickHandler = useCallback(
@@ -68,7 +69,7 @@ export default function TableRowCustom<EntityItem>({ row }: TableRowCustomProps<
         selected={selected}
         onClick={rowClickHandler}
         sx={{
-          ...(hasRowAction ? { cursor: 'pointer' } : {}),
+          ...(hasActiveRowAction ? { cursor: 'pointer' } : {}),
           ...(open
             ? {
                 backgroundColor: (theme) => alpha(theme.palette.primary.main, 0.08),
@@ -80,6 +81,15 @@ export default function TableRowCustom<EntityItem>({ row }: TableRowCustomProps<
         {hasMassActions && (
           <TableCell padding="checkbox">
             <Checkbox checked={selected} onClick={checkboxClickHandler} />
+          </TableCell>
+        )}
+        {hasDetailsRowAction && (
+          <TableCell sx={{ pr: 0 }}>
+            <ToolbarButton
+              tooltipLabelId={open ? 'collapseDetails' : 'expandDetails'}
+              icon={open ? 'KeyboardArrowDown' : 'KeyboardArrowRight'}
+              disabled={!hasActiveRowAction}
+            />
           </TableCell>
         )}
 
@@ -101,20 +111,20 @@ export default function TableRowCustom<EntityItem>({ row }: TableRowCustomProps<
             {entity.actions.map((action) => {
               const disabled = action.isDisabled?.(row);
               return (
-                <Tooltip title={<FormattedMessage id={action.labelId} />} key={action.id}>
-                  <Box component={'span'}>
-                    <IconButton onClick={(event) => actionClickHandler(event, action.id)} disabled={disabled}>
-                      <IconViewer icon={action.icon} fontSize={'small'} />
-                    </IconButton>
-                  </Box>
-                </Tooltip>
+                <ToolbarButton
+                  tooltipLabelId={action.labelId}
+                  icon={action.icon}
+                  disabled={disabled}
+                  onClick={(event) => actionClickHandler(event, action.id)}
+                  key={action.id}
+                />
               );
             })}
           </TableCell>
         )}
       </TableRow>
 
-      {hasRowAction && <TableRowAction row={row} action={entity.rowAction!} open={open} />}
+      {hasActiveRowAction && <TableRowAction row={row} action={entity.rowAction!} open={open} />}
     </>
   );
 }

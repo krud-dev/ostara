@@ -7,41 +7,22 @@ import ToolbarButton from '../common/ToolbarButton';
 type TableToolbarProps = {};
 
 export default function TableToolbar({}: TableToolbarProps) {
-  const {
-    entity,
-    filter,
-    changeFilterHandler,
-    changeCustomFiltersHandler,
-    hasGlobalActions,
-    globalActionsHandler,
-    closeAllRowsHandler,
-  } = useTable();
-
-  const hasRowDetails = useMemo<boolean>(() => entity.rowAction?.type === 'Details', [entity]);
-  const hasActions = useMemo<boolean>(() => hasGlobalActions || hasRowDetails, [hasGlobalActions, hasRowDetails]);
+  const { entity, filter, changeFilterHandler, changeCustomFiltersHandler, hasGlobalActions, globalActionsHandler } =
+    useTable();
 
   return (
     <SearchToolbar filter={filter} onFilterChange={changeFilterHandler}>
       {entity.CustomFiltersComponent && <entity.CustomFiltersComponent onChange={changeCustomFiltersHandler} />}
-      {hasActions && (
+      {hasGlobalActions && (
         <Stack direction={'row'} alignItems={'center'}>
-          {hasRowDetails && (
+          {entity.globalActions.map((action) => (
             <ToolbarButton
-              tooltipLabelId={'collapseAll'}
-              icon={'UnfoldLessDoubleOutlined'}
-              onClick={closeAllRowsHandler}
+              tooltipLabelId={action.labelId}
+              icon={action.icon}
+              onClick={() => globalActionsHandler(action.id)}
+              key={action.id}
             />
-          )}
-
-          {hasGlobalActions &&
-            entity.globalActions.map((action) => (
-              <ToolbarButton
-                tooltipLabelId={action.labelId}
-                icon={action.icon}
-                onClick={() => globalActionsHandler(action.id)}
-                key={action.id}
-              />
-            ))}
+          ))}
         </Stack>
       )}
     </SearchToolbar>
