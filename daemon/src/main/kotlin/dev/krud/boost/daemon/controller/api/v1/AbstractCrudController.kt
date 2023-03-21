@@ -41,7 +41,6 @@ abstract class AbstractCrudController<Entity : AbstractEntity, RO : Any, CreateD
             ),
             roClazz.java
         )
-            .let { shapeShift.map(it, roClazz.java) }
     }
 
     /**
