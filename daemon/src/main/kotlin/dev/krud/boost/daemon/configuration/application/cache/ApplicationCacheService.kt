@@ -71,8 +71,8 @@ class ApplicationCacheService(
         applicationService.hasAbilityOrThrow(application, InstanceAbility.CACHES)
 
         val summaries = applicationService.getApplicationInstances(application.id).associate {
-                it.id to instanceCacheService.evictCaches(it.id, request)
-            }
+            it.id to instanceCacheService.evictCaches(it.id, request)
+        }
         return EvictApplicationCachesResultRO(
             summaries
         )

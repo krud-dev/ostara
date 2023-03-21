@@ -1,7 +1,6 @@
 package dev.krud.boost.daemon.controller.api.v1
 
 import dev.krud.boost.daemon.entity.AbstractEntity
-import dev.krud.crudframework.crud.handler.CrudHandler
 import dev.krud.crudframework.crud.handler.krud.Krud
 import dev.krud.shapeshift.ShapeShift
 import io.swagger.v3.oas.annotations.Operation
@@ -17,10 +16,9 @@ import kotlin.reflect.KClass
 abstract class AbstractCrudController<Entity : AbstractEntity, RO : Any, CreateDTO : Any, UpdateDTO : Any>(
     private val entityClazz: KClass<Entity>,
     private val roClazz: KClass<RO>,
-    private val crudHandler: CrudHandler,
-    private val shapeShift: ShapeShift? = null,
-    private val krud: Krud<Entity, UUID>? = null
-) : AbstractReadOnlyCrudController<Entity, RO>(entityClazz, roClazz, crudHandler) {
+    private val shapeShift: ShapeShift,
+    private val krud: Krud<Entity, UUID>
+) : AbstractReadOnlyCrudController<Entity, RO>(entityClazz, roClazz, shapeShift, krud) {
     /**
      * Create a new resource
      */
@@ -36,10 +34,14 @@ abstract class AbstractCrudController<Entity : AbstractEntity, RO : Any, CreateD
         @Valid @RequestBody
         dto: CreateDTO
     ): RO {
-        return crudHandler
-            .createFrom(dto, entityClazz.java, roClazz.java)
-            .applyPolicies()
-            .execute()
+        return shapeShift.map(
+            krud.create(
+                shapeShift.map(dto, entityClazz.java),
+                applyPolicies = true
+            ),
+            roClazz.java
+        )
+            .let { shapeShift.map(it, roClazz.java) }
     }
 
     /**
@@ -57,8 +59,6 @@ abstract class AbstractCrudController<Entity : AbstractEntity, RO : Any, CreateD
         @Valid @RequestBody
         request: BulkRequestRO<CreateDTO>
     ): List<RO> {
-        krud ?: return emptyList()
-        shapeShift ?: return emptyList()
         val result = krud.bulkCreate(
             shapeShift.mapCollection(request.items, entityClazz.java),
             applyPolicies = true
@@ -66,7 +66,6 @@ abstract class AbstractCrudController<Entity : AbstractEntity, RO : Any, CreateD
 
         return shapeShift.mapCollection(result, roClazz.java)
     }
-
 
     /**
      * Update an existing resource
@@ -81,10 +80,12 @@ abstract class AbstractCrudController<Entity : AbstractEntity, RO : Any, CreateD
     @ApiResponse(responseCode = "400", description = "Bad request", content = [Content()])
     @ApiResponse(responseCode = "404", description = "Resource not found", content = [Content()])
     fun update(@PathVariable id: UUID, @Valid @RequestBody dto: UpdateDTO): RO {
-        return crudHandler
-            .updateFrom(id, dto, entityClazz.java, roClazz.java)
-            .applyPolicies()
-            .execute()
+        return shapeShift.map(
+            krud.updateById(id = id, applyPolicies = true) {
+                shapeShift.map(dto, this)
+            },
+            roClazz.java
+        )
     }
 
     /**
@@ -99,10 +100,7 @@ abstract class AbstractCrudController<Entity : AbstractEntity, RO : Any, CreateD
     @ApiResponse(responseCode = "204", description = "Resource deleted", content = [Content()])
     @ApiResponse(responseCode = "404", description = "Resource not found", content = [Content()])
     fun delete(@PathVariable id: UUID) {
-        crudHandler
-            .delete(id, entityClazz.java)
-            .applyPolicies()
-            .execute()
+        krud.deleteById(id, applyPolicies = true)
     }
 
     data class BulkRequestRO<T>(

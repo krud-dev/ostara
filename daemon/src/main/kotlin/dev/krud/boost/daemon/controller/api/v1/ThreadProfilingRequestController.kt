@@ -5,7 +5,7 @@ import dev.krud.boost.daemon.threadprofiling.model.ThreadProfilingRequest
 import dev.krud.boost.daemon.threadprofiling.ro.ThreadProfilingLogRO
 import dev.krud.boost.daemon.threadprofiling.ro.ThreadProfilingRequestCreateRO
 import dev.krud.boost.daemon.threadprofiling.ro.ThreadProfilingRequestRO
-import dev.krud.crudframework.crud.handler.CrudHandler
+import dev.krud.crudframework.crud.handler.krud.Krud
 import dev.krud.shapeshift.ShapeShift
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.responses.ApiResponse
@@ -22,10 +22,10 @@ import java.util.*
 @RequestMapping("$API_PREFIX/threadprofiling")
 @Tag(name = "Thread Profiling", description = "Thread Profiling API")
 class ThreadProfilingRequestController(
-    private val crudHandler: CrudHandler,
     private val threadProfilingService: ThreadProfilingService,
-    private val shapeShift: ShapeShift
-) : AbstractCrudController<ThreadProfilingRequest, ThreadProfilingRequestRO, ThreadProfilingRequestCreateRO, ThreadProfilingRequestRO>(ThreadProfilingRequest::class, ThreadProfilingRequestRO::class, crudHandler) {
+    private val shapeShift: ShapeShift,
+    private val threadProfilingRequestKrud: Krud<ThreadProfilingRequest, UUID>
+) : AbstractCrudController<ThreadProfilingRequest, ThreadProfilingRequestRO, ThreadProfilingRequestCreateRO, ThreadProfilingRequestRO>(ThreadProfilingRequest::class, ThreadProfilingRequestRO::class, shapeShift, threadProfilingRequestKrud) {
 
     @GetMapping("/{requestId}/log")
     @ResponseStatus(HttpStatus.OK)

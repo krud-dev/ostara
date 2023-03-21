@@ -6,6 +6,8 @@ import dev.krud.boost.daemon.configuration.instance.heapdump.ro.InstanceHeapdump
 import dev.krud.boost.daemon.controller.api.v1.API_PREFIX
 import dev.krud.boost.daemon.controller.api.v1.AbstractReadOnlyCrudController
 import dev.krud.crudframework.crud.handler.CrudHandler
+import dev.krud.crudframework.crud.handler.krud.Krud
+import dev.krud.shapeshift.ShapeShift
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.media.Content
 import io.swagger.v3.oas.annotations.responses.ApiResponse
@@ -27,11 +29,14 @@ import java.util.*
 @Tag(name = "Instance Heapdump")
 class InstanceHeapdumpController(
     private val crudHandler: CrudHandler,
-    private val instanceHeapdumpService: InstanceHeapdumpService
+    private val instanceHeapdumpService: InstanceHeapdumpService,
+    private val shapeShift: ShapeShift,
+    private val instanceHeapdumpReferenceKrud: Krud<InstanceHeapdumpReference, UUID>
 ) : AbstractReadOnlyCrudController<InstanceHeapdumpReference, InstanceHeapdumpReferenceRO>(
     InstanceHeapdumpReference::class,
     InstanceHeapdumpReferenceRO::class,
-    crudHandler
+    shapeShift,
+    instanceHeapdumpReferenceKrud
 ) {
     @PostMapping("/{instanceId}", produces = ["application/json"])
     @ResponseStatus(HttpStatus.CREATED)

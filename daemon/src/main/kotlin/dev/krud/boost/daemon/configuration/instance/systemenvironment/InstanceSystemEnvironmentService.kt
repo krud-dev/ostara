@@ -8,7 +8,6 @@ import dev.krud.boost.daemon.configuration.instance.messaging.InstanceDeletedEve
 import dev.krud.boost.daemon.configuration.instance.messaging.InstanceHealthChangedEventMessage
 import dev.krud.boost.daemon.configuration.instance.messaging.InstanceUpdatedEventMessage
 import dev.krud.boost.daemon.configuration.instance.systemenvironment.ro.InstanceSystemEnvironmentRO
-import dev.krud.boost.daemon.configuration.instance.systemproperties.ro.InstanceSystemPropertiesRO
 import dev.krud.boost.daemon.exception.throwInternalServerError
 import dev.krud.boost.daemon.utils.ACTUATOR_REDACTED_STRING
 import dev.krud.boost.daemon.utils.resolve

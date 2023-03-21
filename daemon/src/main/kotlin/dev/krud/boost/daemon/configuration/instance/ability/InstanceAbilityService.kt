@@ -20,5 +20,4 @@ interface InstanceAbilityService {
             throwBadRequest("Instance ${instance.id} does not have one or more abilities '${abilities.joinToString(", ")}'")
         }
     }
-
 }

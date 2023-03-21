@@ -5,7 +5,7 @@ import dev.krud.boost.daemon.configuration.folder.entity.Folder
 import dev.krud.boost.daemon.configuration.folder.ro.FolderModifyRequestRO
 import dev.krud.boost.daemon.configuration.folder.ro.FolderRO
 import dev.krud.boost.daemon.configuration.folder.validation.ValidFolderIdOrNull
-import dev.krud.crudframework.crud.handler.CrudHandler
+import dev.krud.crudframework.crud.handler.krud.Krud
 import dev.krud.shapeshift.ShapeShift
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.responses.ApiResponse
@@ -24,10 +24,10 @@ import java.util.*
 @RequestMapping("$API_PREFIX/folders")
 @Tag(name = "Folder", description = "Folder API")
 class FolderController(
-    private val crudHandler: CrudHandler,
+    private val folderKrud: Krud<Folder, UUID>,
     private val folderService: FolderService,
     private val shapeShift: ShapeShift
-) : AbstractCrudController<Folder, FolderRO, FolderModifyRequestRO, FolderModifyRequestRO>(Folder::class, FolderRO::class, crudHandler) {
+) : AbstractCrudController<Folder, FolderRO, FolderModifyRequestRO, FolderModifyRequestRO>(Folder::class, FolderRO::class, shapeShift, folderKrud) {
     @PostMapping("/{folderId}/move")
     @ResponseStatus(HttpStatus.OK)
     @Operation(

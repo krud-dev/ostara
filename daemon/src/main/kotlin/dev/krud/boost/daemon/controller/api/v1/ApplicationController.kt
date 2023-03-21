@@ -7,7 +7,7 @@ import dev.krud.boost.daemon.configuration.application.ro.ApplicationHealthRO
 import dev.krud.boost.daemon.configuration.application.ro.ApplicationModifyRequestRO
 import dev.krud.boost.daemon.configuration.application.ro.ApplicationRO
 import dev.krud.boost.daemon.configuration.folder.validation.ValidFolderIdOrNull
-import dev.krud.crudframework.crud.handler.CrudHandler
+import dev.krud.crudframework.crud.handler.krud.Krud
 import dev.krud.shapeshift.ShapeShift
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.responses.ApiResponse
@@ -21,11 +21,11 @@ import java.util.*
 @RequestMapping("$API_PREFIX/applications")
 @Tag(name = "Application", description = "Application API")
 class ApplicationController(
-    private val crudHandler: CrudHandler,
     private val applicationService: ApplicationService,
     private val applicationHealthService: ApplicationHealthService,
+    private val applicationKrud: Krud<Application, UUID>,
     private val shapeShift: ShapeShift
-) : AbstractCrudController<Application, ApplicationRO, ApplicationModifyRequestRO, ApplicationModifyRequestRO>(Application::class, ApplicationRO::class, crudHandler) {
+) : AbstractCrudController<Application, ApplicationRO, ApplicationModifyRequestRO, ApplicationModifyRequestRO>(Application::class, ApplicationRO::class, shapeShift, applicationKrud) {
     @PostMapping("/{applicationId}/move")
     @ResponseStatus(HttpStatus.OK)
     @Operation(

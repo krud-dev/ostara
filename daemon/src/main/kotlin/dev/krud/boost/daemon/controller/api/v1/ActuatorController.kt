@@ -1,6 +1,5 @@
 package dev.krud.boost.daemon.controller.api.v1
 
-import dev.krud.boost.daemon.actuator.model.IntegrationGraphActuatorResponse
 import dev.krud.boost.daemon.configuration.authentication.Authentication
 import dev.krud.boost.daemon.configuration.instance.InstanceActuatorClientProvider
 import io.swagger.v3.oas.annotations.Operation

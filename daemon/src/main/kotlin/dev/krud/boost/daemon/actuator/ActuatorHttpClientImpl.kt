@@ -50,9 +50,6 @@ import org.springframework.boot.logging.LogLevel
 import org.springframework.web.server.ResponseStatusException
 import java.io.InputStream
 import java.net.ConnectException
-import java.util.logging.Level
-import java.util.logging.Logger
-
 
 class ActuatorHttpClientImpl(
     private val baseUrl: String,

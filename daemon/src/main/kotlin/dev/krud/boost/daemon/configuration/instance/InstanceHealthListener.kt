@@ -4,7 +4,6 @@ import dev.krud.boost.daemon.configuration.instance.enums.InstanceHealthStatus
 import dev.krud.boost.daemon.configuration.instance.messaging.InstanceHealthChangedEventMessage
 import dev.krud.boost.daemon.eventlog.EventLogService
 import dev.krud.boost.daemon.eventlog.enums.EventLogSeverity
-import dev.krud.boost.daemon.eventlog.enums.EventLogType
 import org.springframework.integration.annotation.ServiceActivator
 import org.springframework.messaging.Message
 import org.springframework.messaging.simp.SimpMessagingTemplate
