@@ -14,7 +14,7 @@ type ApplicationSidebarProps = { item: ApplicationRO; width: number };
 
 export default function ApplicationSidebar({ item, width }: ApplicationSidebarProps) {
   const isServiceInactive = useCallback((): boolean => {
-    return item.instanceCount === 0;
+    return item.health.status === 'EMPTY' || item.health.status === 'ALL_DOWN';
   }, [item]);
 
   const navConfig = useMemo<SidebarConfig | undefined>(

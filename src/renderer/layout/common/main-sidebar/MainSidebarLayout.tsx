@@ -1,10 +1,8 @@
-import { useTheme } from '@mui/material/styles';
 import MainNavbar from 'renderer/layout/common/main-sidebar/MainNavbar';
 import React, { ComponentType, useEffect, useRef } from 'react';
 import { MAIN_SCROLL_CONTAINER_ID, SIDEBAR_DEFAULT_WIDTH } from 'renderer/constants/ui';
 import { Outlet, useLocation } from 'react-router-dom';
 import { Box, Divider } from '@mui/material';
-import NavigatorTree from '../../navigator/components/sidebar/tree/NavigatorTree';
 import AutoSizer from 'react-virtualized-auto-sizer';
 
 type MainSidebarLayoutProps = {
@@ -12,7 +10,6 @@ type MainSidebarLayoutProps = {
 };
 
 export default function MainSidebarLayout({ Sidebar }: MainSidebarLayoutProps) {
-  const theme = useTheme();
   const { pathname } = useLocation();
 
   const scrollContainerRef = useRef<HTMLElement>();
@@ -27,7 +24,7 @@ export default function MainSidebarLayout({ Sidebar }: MainSidebarLayoutProps) {
     <Box sx={{ height: '100%', overflow: 'hidden', display: 'flex', flexDirection: 'column' }}>
       <MainNavbar />
       <Box sx={{ display: 'flex', flexDirection: 'row', flexGrow: 1 }}>
-        <Box sx={{ width: SIDEBAR_DEFAULT_WIDTH, height: '100%' }}>
+        <Box sx={{ width: SIDEBAR_DEFAULT_WIDTH, minWidth: SIDEBAR_DEFAULT_WIDTH, height: '100%' }}>
           <Sidebar width={SIDEBAR_DEFAULT_WIDTH} />
         </Box>
 

@@ -23,7 +23,7 @@ export default function SecondarySidebarLayout<T>({ Sidebar, sidebarProps, conte
 
   return (
     <Box sx={{ width: '100%', height: '100%', display: 'flex', flexDirection: 'row' }}>
-      <Box sx={{ width: SIDEBAR_DEFAULT_WIDTH, height: '100%' }}>
+      <Box sx={{ width: SIDEBAR_DEFAULT_WIDTH, minWidth: SIDEBAR_DEFAULT_WIDTH, height: '100%' }}>
         <Sidebar width={SIDEBAR_DEFAULT_WIDTH} {...sidebarProps} />
       </Box>
 

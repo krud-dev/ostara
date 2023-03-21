@@ -12,7 +12,7 @@ import { folderCrudEntity } from '../apis/requests/crud/entity/entities/folder.c
 import { ReactNode } from 'react';
 
 export function isApplication(item: ItemRO): item is ApplicationRO {
-  return 'instanceCount' in item;
+  return 'type' in item;
 }
 
 export function isFolder(item: ItemRO): item is FolderRO {
@@ -135,9 +135,6 @@ export const getInstanceHealthStatusColor = (instanceHealth: InstanceHealthRO): 
 };
 
 export const getApplicationHealthStatusColor = (application: ApplicationRO): string | undefined => {
-  if (application.instanceCount === 0) {
-    return undefined;
-  }
   switch (application.health.status) {
     case 'ALL_UP':
       return green[HEALTH_STATUS_COLORS_INDEX];
@@ -149,6 +146,8 @@ export const getApplicationHealthStatusColor = (application: ApplicationRO): str
       return blueGrey[HEALTH_STATUS_COLORS_INDEX];
     case 'PENDING':
       return 'text.secondary';
+    case 'EMPTY':
+      return undefined;
     default:
       return undefined;
   }
@@ -184,9 +183,6 @@ export const getItemHealthStatusTextId = (item: ItemRO): string | undefined => {
     }
   }
   if (isApplication(item)) {
-    if (item.instanceCount === 0) {
-      return undefined;
-    }
     switch (item.health.status) {
       case 'ALL_UP':
         return 'up';
@@ -198,6 +194,8 @@ export const getItemHealthStatusTextId = (item: ItemRO): string | undefined => {
         return 'unknown';
       case 'PENDING':
         return 'loading';
+      case 'EMPTY':
+        return undefined;
       default:
         return undefined;
     }
