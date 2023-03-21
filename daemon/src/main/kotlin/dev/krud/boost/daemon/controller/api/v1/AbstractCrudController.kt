@@ -12,7 +12,9 @@ import jakarta.validation.Validator
 import jakarta.validation.constraints.NotEmpty
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.HttpStatus
+import org.springframework.http.HttpStatusCode
 import org.springframework.web.bind.annotation.*
+import org.springframework.web.server.ResponseStatusException
 import java.util.*
 import kotlin.reflect.KClass
 
@@ -69,7 +71,10 @@ abstract class AbstractCrudController<Entity : AbstractEntity, RO : Any, CreateD
         request.items.forEach {
             val violations = validator.validate(it)
             if (violations.isNotEmpty()) {
-                throw ConstraintViolationException(violations)
+                val e = ConstraintViolationException(violations)
+                throw ResponseStatusException(
+                    HttpStatus.BAD_REQUEST, e.message, e
+                )
             }
         } // TODO: temp since validation does not seem to apply otherwise, conform with Spring's validation response type
         val result = krud.bulkCreate(
