@@ -137,6 +137,7 @@
     "@mui/system": "^5.11.0",
     "@mui/utils": "^5.11.0",
     "@mui/x-date-pickers": "^5.0.10",
+    "@sentry/electron": "^4.3.0",
     "@stomp/stompjs": "^7.0.0",
     "@tanstack/react-query": "^4.20.9",
     "@uiw/codemirror-extensions-langs": "^4.19.7",

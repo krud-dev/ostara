@@ -96,6 +96,8 @@ dependencies {
     // Added separately from springdoc for production builds
     implementation("io.swagger.core.v3:swagger-annotations-jakarta:2.2.8")
 
+    implementation("io.sentry:sentry-spring-boot-starter-jakarta:6.16.0")
+
 
     testImplementation("com.squareup.okhttp3:mockwebserver:4.10.0")
     testImplementation("io.strikt:strikt-core:0.34.0")
