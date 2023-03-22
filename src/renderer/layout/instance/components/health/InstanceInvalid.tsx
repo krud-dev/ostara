@@ -1,4 +1,4 @@
-import { Button, Card, CardContent, CardHeader, Divider, Stack, Typography } from '@mui/material';
+import { Button, Card, CardContent, CardHeader, Divider, Link, Stack, Typography } from '@mui/material';
 import Page from 'renderer/components/layout/Page';
 import React, { useCallback, useMemo, useState } from 'react';
 import { getInstanceHealthStatusColor } from 'renderer/utils/itemUtils';
@@ -37,6 +37,15 @@ export default function InstanceInvalid({ item }: InstanceInvalidProps) {
     } catch (e) {}
   }, [item, healthState]);
 
+  const updateInstanceHandler = useCallback(
+    (event: React.MouseEvent): void => {
+      event.preventDefault();
+
+      showUpdateItemDialog(item);
+    },
+    [item]
+  );
+
   return (
     <Page sx={{ height: '100%' }}>
       <Card sx={{ height: '100%' }}>
@@ -57,7 +66,7 @@ export default function InstanceInvalid({ item }: InstanceInvalidProps) {
           </Typography>
 
           <Typography sx={{ color: 'text.secondary' }}>
-            <FormattedMessage id={'checkActuatorUrl'} />
+            <FormattedMessage id={'checkActuatorUrlNotActiveInstance'} />
           </Typography>
 
           <Card variant={'outlined'} sx={{ mt: 3 }}>
@@ -66,7 +75,7 @@ export default function InstanceInvalid({ item }: InstanceInvalidProps) {
             <CardContent>
               <Stack spacing={2}>
                 <Stack direction="row" spacing={2} justifyContent="space-between">
-                  <Typography variant="body2" sx={{ color: 'text.secondary' }}>
+                  <Typography variant="body2" sx={{ textAlign: 'left', color: 'text.secondary' }}>
                     <FormattedMessage id={'actuatorUrl'} />
                   </Typography>
                   <Typography variant="subtitle2" sx={{ textAlign: 'right' }}>
@@ -74,10 +83,21 @@ export default function InstanceInvalid({ item }: InstanceInvalidProps) {
                   </Typography>
                 </Stack>
 
+                <Stack direction="row" spacing={2} justifyContent="space-between">
+                  <Typography variant="body2" sx={{ textAlign: 'left', color: 'text.secondary' }}>
+                    <FormattedMessage id={'troubleshooting'} />
+                  </Typography>
+                  <Typography variant="subtitle2" sx={{ textAlign: 'right' }}>
+                    <Link href={`#`} onClick={updateInstanceHandler}>
+                      <FormattedMessage id={'checkActuatorUrl'} />
+                    </Link>
+                  </Typography>
+                </Stack>
+
                 <Divider />
 
                 <Stack direction="row" spacing={2} justifyContent="space-between">
-                  <Typography variant="body2" sx={{ color: 'text.secondary' }}>
+                  <Typography variant="body2" sx={{ textAlign: 'left', color: 'text.secondary' }}>
                     <FormattedMessage id={'lastUpdateTime'} />
                   </Typography>
                   <Typography variant="subtitle2" sx={{ textAlign: 'right' }}>
@@ -86,7 +106,7 @@ export default function InstanceInvalid({ item }: InstanceInvalidProps) {
                 </Stack>
 
                 <Stack direction="row" spacing={2} justifyContent="space-between">
-                  <Typography variant="body2" sx={{ color: 'text.secondary' }}>
+                  <Typography variant="body2" sx={{ textAlign: 'left', color: 'text.secondary' }}>
                     <FormattedMessage id={'lastStatusChangeTime'} />
                   </Typography>
                   <Typography variant="subtitle2" sx={{ textAlign: 'right' }}>

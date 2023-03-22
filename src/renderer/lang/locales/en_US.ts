@@ -150,7 +150,7 @@ export default {
   instanceAliasInvalid: 'Instance "{alias}" URL is invalid',
   instanceAliasPending: 'Instance "{alias}" is loading',
   checkNetworkAndActuatorUrl: 'Please check the network connection and make sure the actuator URL is correct',
-  checkActuatorUrl: 'Check actuator URL, the url provided does not return an active actuator instance',
+  checkActuatorUrlNotActiveInstance: 'Check actuator URL, the url provided does not return an active actuator instance',
   dataAvailableWhenConnection: 'Data will be available when the connection is established',
   error: 'Error',
   lastStatusChangeTime: 'Last Status Change Time',
@@ -280,4 +280,7 @@ export default {
   expandDetails: 'Expand Details',
   collapseDetails: 'Collapse Details',
   refresh: 'Refresh',
+  troubleshooting: 'Troubleshooting',
+  checkActuatorUrl: 'Check actuator URL',
+  checkAuthenticationConfiguration: 'Check authentication configuration',
 };

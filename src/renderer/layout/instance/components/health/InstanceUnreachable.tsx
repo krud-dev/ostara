@@ -1,6 +1,6 @@
-import { Button, Card, CardContent, CardHeader, Divider, Stack, Typography } from '@mui/material';
+import { Button, Card, CardContent, CardHeader, Divider, Link, Stack, Typography } from '@mui/material';
 import Page from 'renderer/components/layout/Page';
-import React, { useCallback, useMemo, useState } from 'react';
+import React, { ReactNode, useCallback, useMemo, useState } from 'react';
 import { getInstanceHealthStatusColor } from 'renderer/utils/itemUtils';
 import { IconViewer } from 'renderer/components/common/IconViewer';
 import { FormattedMessage } from 'react-intl';
@@ -10,12 +10,15 @@ import { useFetchInstanceHealth } from 'renderer/apis/requests/instance/fetchIns
 import { LoadingButton } from '@mui/lab';
 import { useUpdateEffect } from 'react-use';
 import { InstanceHealthRO, InstanceRO } from '../../../../../common/generated_definitions';
+import { useNavigatorTree } from '../../../../contexts/NavigatorTreeContext';
 
 type InstanceUnreachableProps = {
   item: InstanceRO;
 };
 
 export default function InstanceUnreachable({ item }: InstanceUnreachableProps) {
+  const { getItem } = useNavigatorTree();
+
   const [health, setHealth] = useState<InstanceHealthRO>(item.health);
 
   useUpdateEffect(() => {
@@ -36,6 +39,49 @@ export default function InstanceUnreachable({ item }: InstanceUnreachableProps) 
       setHealth(result);
     } catch (e) {}
   }, [item, healthState]);
+
+  const updateInstanceHandler = useCallback(
+    (event: React.MouseEvent): void => {
+      event.preventDefault();
+
+      showUpdateItemDialog(item);
+    },
+    [item]
+  );
+
+  const updateApplicationHandler = useCallback(
+    (event: React.MouseEvent): void => {
+      event.preventDefault();
+
+      const application = getItem(item.parentApplicationId);
+      if (!application) {
+        return;
+      }
+
+      showUpdateItemDialog(application);
+    },
+    [item, getItem]
+  );
+
+  const troubleshooting = useMemo<ReactNode | undefined>(() => {
+    const status = health.statusCode;
+    switch (status) {
+      case 401:
+        return (
+          <Link href={`#`} onClick={updateApplicationHandler}>
+            <FormattedMessage id={'checkAuthenticationConfiguration'} />
+          </Link>
+        );
+      case 404:
+        return (
+          <Link href={`#`} onClick={updateInstanceHandler}>
+            <FormattedMessage id={'checkActuatorUrl'} />
+          </Link>
+        );
+      default:
+        return undefined;
+    }
+  }, [health]);
 
   return (
     <Page sx={{ height: '100%' }}>
@@ -66,7 +112,7 @@ export default function InstanceUnreachable({ item }: InstanceUnreachableProps) 
             <CardContent>
               <Stack spacing={2}>
                 <Stack direction="row" spacing={2} justifyContent="space-between">
-                  <Typography variant="body2" sx={{ color: 'text.secondary' }}>
+                  <Typography variant="body2" sx={{ textAlign: 'left', color: 'text.secondary' }}>
                     <FormattedMessage id={'actuatorUrl'} />
                   </Typography>
                   <Typography variant="subtitle2" sx={{ textAlign: 'right' }}>
@@ -75,7 +121,7 @@ export default function InstanceUnreachable({ item }: InstanceUnreachableProps) 
                 </Stack>
 
                 <Stack direction="row" spacing={2} justifyContent="space-between">
-                  <Typography variant="body2" sx={{ color: 'text.secondary' }}>
+                  <Typography variant="body2" sx={{ textAlign: 'left', color: 'text.secondary' }}>
                     <FormattedMessage id={'error'} />
                   </Typography>
                   <Typography variant="subtitle2" sx={{ textAlign: 'right', color: 'error.main' }}>
@@ -83,10 +129,21 @@ export default function InstanceUnreachable({ item }: InstanceUnreachableProps) 
                   </Typography>
                 </Stack>
 
+                {troubleshooting && (
+                  <Stack direction="row" spacing={2} justifyContent="space-between">
+                    <Typography variant="body2" sx={{ textAlign: 'left', color: 'text.secondary' }}>
+                      <FormattedMessage id={'troubleshooting'} />
+                    </Typography>
+                    <Typography variant="subtitle2" sx={{ textAlign: 'right' }}>
+                      {troubleshooting}
+                    </Typography>
+                  </Stack>
+                )}
+
                 <Divider />
 
                 <Stack direction="row" spacing={2} justifyContent="space-between">
-                  <Typography variant="body2" sx={{ color: 'text.secondary' }}>
+                  <Typography variant="body2" sx={{ textAlign: 'left', color: 'text.secondary' }}>
                     <FormattedMessage id={'lastUpdateTime'} />
                   </Typography>
                   <Typography variant="subtitle2" sx={{ textAlign: 'right' }}>
@@ -95,7 +152,7 @@ export default function InstanceUnreachable({ item }: InstanceUnreachableProps) 
                 </Stack>
 
                 <Stack direction="row" spacing={2} justifyContent="space-between">
-                  <Typography variant="body2" sx={{ color: 'text.secondary' }}>
+                  <Typography variant="body2" sx={{ textAlign: 'left', color: 'text.secondary' }}>
                     <FormattedMessage id={'lastStatusChangeTime'} />
                   </Typography>
                   <Typography variant="subtitle2" sx={{ textAlign: 'right' }}>
