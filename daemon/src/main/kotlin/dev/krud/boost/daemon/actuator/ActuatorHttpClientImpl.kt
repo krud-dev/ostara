@@ -33,9 +33,12 @@ import dev.krud.boost.daemon.actuator.model.ScheduledTasksActuatorResponse
 import dev.krud.boost.daemon.actuator.model.TestConnectionResponse
 import dev.krud.boost.daemon.actuator.model.ThreadDumpActuatorResponse
 import dev.krud.boost.daemon.exception.throwBadRequest
+import dev.krud.boost.daemon.exception.throwForbidden
 import dev.krud.boost.daemon.exception.throwInternalServerError
+import dev.krud.boost.daemon.exception.throwNotFound
 import dev.krud.boost.daemon.exception.throwServiceUnavailable
 import dev.krud.boost.daemon.exception.throwStatusCode
+import dev.krud.boost.daemon.exception.throwUnauthorized
 import dev.krud.boost.daemon.jackson.MultiDateParsingModule
 import okhttp3.Authenticator
 import okhttp3.HttpUrl
@@ -331,8 +334,7 @@ class ActuatorHttpClientImpl(
     }
         .mapCatching { response ->
             if (!response.isSuccessful) {
-                response.body?.close()
-                throwStatusCode(response.code, request.url.toString())
+                response.throwStatusException()
             }
             response
         }
@@ -377,6 +379,22 @@ class ActuatorHttpClientImpl(
     private fun Response.bodyAsByteArrayAndClose(): ByteArray? {
         return body?.use {
             it.bytes()
+        }
+    }
+
+    private fun Response.throwStatusException() {
+        if (isSuccessful) {
+            return
+        }
+
+        val bodyString = bodyAsStringAndClose()
+        when (code) {
+            400 -> throwBadRequest("Bad request: $bodyString")
+            401 -> throwUnauthorized("Unauthorized: $bodyString")
+            403 -> throwForbidden("Forbidden: $bodyString")
+            404 -> throwNotFound("Not found")
+            500 -> throwInternalServerError("Internal server error: $bodyString")
+            else -> throwInternalServerError("Actuator request failed: $bodyString")
         }
     }
 }
