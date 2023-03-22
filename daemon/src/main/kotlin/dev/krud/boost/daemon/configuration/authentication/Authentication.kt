@@ -41,7 +41,7 @@ sealed interface Authentication {
         }
     }
 
-    class Basic(
+    data class Basic(
         val username: String = "",
         val password: String = ""
     ) : Authentication {
@@ -49,7 +49,7 @@ sealed interface Authentication {
         override val authenticator: Authenticator get() = BasicAuthenticator(username, password)
     }
 
-    class Header(
+    data class Header(
         val headerName: String = "",
         val headerValue: String = ""
     ) : Authentication {
@@ -57,7 +57,7 @@ sealed interface Authentication {
         override val authenticator: Authenticator get() = HeaderAuthenticator(headerName, headerValue)
     }
 
-    class QueryString(
+    data class QueryString(
         val key: String = "",
         val value: String = ""
     ) : Authentication {
@@ -65,7 +65,7 @@ sealed interface Authentication {
         override val authenticator: Authenticator get() = QueryStringAuthenticator(key, value)
     }
 
-    class BearerToken(
+    data class BearerToken(
         val token: String = ""
     ) : Authentication {
         override val type: String = "bearer"
