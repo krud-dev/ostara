@@ -3,9 +3,9 @@ import { AuthenticationDetailsFormProps } from './AuthenticationDetailsForm';
 import { TextField } from '@mui/material';
 import { FormattedMessage, useIntl } from 'react-intl';
 import { Controller, useFormContext } from 'react-hook-form';
-import { Authentication$Typed } from '../../../../../../common/manual_definitions';
+import { Authentication$Typed } from '../../../../../common/manual_definitions';
 
-const AuthenticationDetailsFormHeader: FunctionComponent<
+const AuthenticationDetailsFormQuerystring: FunctionComponent<
   AuthenticationDetailsFormProps
 > = ({}: AuthenticationDetailsFormProps) => {
   const intl = useIntl();
@@ -15,7 +15,7 @@ const AuthenticationDetailsFormHeader: FunctionComponent<
   return (
     <>
       <Controller
-        name="authentication.headerName"
+        name="authentication.key"
         rules={{
           required: intl.formatMessage({ id: 'requiredField' }),
         }}
@@ -29,7 +29,7 @@ const AuthenticationDetailsFormHeader: FunctionComponent<
               margin="normal"
               required
               fullWidth
-              label={<FormattedMessage id="name" />}
+              label={<FormattedMessage id="key" />}
               type="text"
               autoComplete="off"
               error={invalid}
@@ -40,7 +40,7 @@ const AuthenticationDetailsFormHeader: FunctionComponent<
       />
 
       <Controller
-        name="authentication.headerValue"
+        name="authentication.value"
         rules={{
           required: intl.formatMessage({ id: 'requiredField' }),
         }}
@@ -67,4 +67,4 @@ const AuthenticationDetailsFormHeader: FunctionComponent<
   );
 };
 
-export default AuthenticationDetailsFormHeader;
+export default AuthenticationDetailsFormQuerystring;

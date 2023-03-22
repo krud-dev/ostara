@@ -26,12 +26,11 @@ const CreateApplicationDialog: FunctionComponent<CreateApplicationDialogProps & 
     const submitHandler = useCallback(
       async (data: ApplicationFormValues): Promise<void> => {
         const itemToCreate: ApplicationModifyRequestRO = {
-          // dataCollectionMode: 'on',
           alias: data.alias,
           type: 'SPRING_BOOT',
           parentFolderId: parentFolderId,
           sort: sort ?? 1,
-          color: INHERITED_COLOR_VALUE,
+          color: data.color ?? INHERITED_COLOR_VALUE,
           icon: data.icon,
           authentication: data.authentication,
         };
@@ -69,7 +68,7 @@ const CreateApplicationDialog: FunctionComponent<CreateApplicationDialogProps & 
         <DialogTitleEnhanced onClose={cancelHandler}>
           <FormattedMessage id={'createApplication'} />
         </DialogTitleEnhanced>
-        <ApplicationDetailsForm onSubmit={submitHandler} onCancel={cancelHandler} />
+        <ApplicationDetailsForm defaultValues={{ parentFolderId }} onSubmit={submitHandler} onCancel={cancelHandler} />
       </Dialog>
     );
   }

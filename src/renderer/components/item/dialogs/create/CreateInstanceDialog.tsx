@@ -42,12 +42,11 @@ const CreateInstanceDialog: FunctionComponent<CreateInstanceDialogProps & NiceMo
 
           if (!instanceParentApplicationId) {
             const applicationToCreate: ApplicationModifyRequestRO = {
-              // dataCollectionMode: 'on',
               alias: data.parentApplicationName || '',
               type: 'SPRING_BOOT',
               parentFolderId: parentFolderId,
               sort: sort ?? 1,
-              color: INHERITED_COLOR_VALUE,
+              color: data.color ?? INHERITED_COLOR_VALUE,
               authentication: data.authentication || { type: 'inherit' },
             };
 
@@ -62,7 +61,6 @@ const CreateInstanceDialog: FunctionComponent<CreateInstanceDialogProps & NiceMo
 
           const actuatorUrls = data.multipleInstances ? getActuatorUrls(data.actuatorUrl) : [data.actuatorUrl];
           const instancesToCreate = actuatorUrls.map<InstanceModifyRequestRO>((actuatorUrl, index) => ({
-            // dataCollectionMode: 'inherited',
             alias: data.alias && actuatorUrls.length > 1 ? `${data.alias} (${index + 1})` : data.alias,
             actuatorUrl,
             parentApplicationId: instanceParentApplicationId!,
@@ -108,7 +106,7 @@ const CreateInstanceDialog: FunctionComponent<CreateInstanceDialogProps & NiceMo
           <FormattedMessage id={'createInstance'} />
         </DialogTitleEnhanced>
         <InstanceDetailsForm
-          defaultValues={{ parentApplicationId: parentApplicationId }}
+          defaultValues={{ parentApplicationId, parentFolderId }}
           onSubmit={submitHandler}
           onCancel={cancelHandler}
         />

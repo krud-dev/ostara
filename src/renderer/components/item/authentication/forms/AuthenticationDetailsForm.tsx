@@ -2,7 +2,7 @@ import { FormattedMessage, useIntl } from 'react-intl';
 import React, { ComponentType, FunctionComponent, useMemo } from 'react';
 import { Controller, useFormContext } from 'react-hook-form';
 import { MenuItem, TextField } from '@mui/material';
-import { Authentication$Typed } from '../../../../../../common/manual_definitions';
+import { Authentication$Typed } from '../../../../../common/manual_definitions';
 import AuthenticationDetailsFormNone from './AuthenticationDetailsFormNone';
 import AuthenticationDetailsFormInherit from './AuthenticationDetailsFormInherit';
 import AuthenticationDetailsFormBasic from './AuthenticationDetailsFormBasic';
@@ -32,7 +32,7 @@ const AuthenticationDetailsForm: FunctionComponent<
         return AuthenticationDetailsFormBasic;
       case 'header':
         return AuthenticationDetailsFormHeader;
-      case 'bearer':
+      case 'bearer-token':
         return AuthenticationDetailsFormBearer;
       case 'query-string':
         return AuthenticationDetailsFormQuerystring;
@@ -70,10 +70,9 @@ const AuthenticationDetailsForm: FunctionComponent<
               <MenuItem value={'basic'}>
                 <FormattedMessage id="basic" />
               </MenuItem>
-              <MenuItem value={'bearer'}>
+              <MenuItem value={'bearer-token'}>
                 <FormattedMessage id="bearer" />
               </MenuItem>
-              constc
               <MenuItem value={'header'}>
                 <FormattedMessage id="header" />
               </MenuItem>

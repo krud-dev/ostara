@@ -5,20 +5,18 @@ import { Box, Button, DialogActions, DialogContent, TextField } from '@mui/mater
 import { LoadingButton } from '@mui/lab';
 import InputAdornment from '@mui/material/InputAdornment';
 import ItemIconFormField from 'renderer/components/item/dialogs/forms/fields/ItemIconFormField';
-import { Authentication$Typed } from '../../../../../common/manual_definitions';
-import AuthenticationDetailsForm from './authentication/AuthenticationDetailsForm';
+import AuthenticationDetailsForm from '../../authentication/forms/AuthenticationDetailsForm';
+import { FolderModifyRequestRO } from '../../../../../common/generated_definitions';
+import useEffectiveAuthentication from '../../authentication/hooks/useEffectiveAuthentication';
+import EffectiveAuthenticationDetails from '../../authentication/effective/EffectiveAuthenticationDetails';
 
 export type FolderDetailsFormProps = {
-  defaultValues?: FolderFormValues;
+  defaultValues?: Partial<FolderFormValues>;
   onSubmit: (data: FolderFormValues) => Promise<void>;
   onCancel: () => void;
 };
 
-export type FolderFormValues = {
-  alias: string;
-  icon?: string;
-  authentication: Authentication$Typed;
-};
+export type FolderFormValues = FolderModifyRequestRO;
 
 const FolderDetailsForm: FunctionComponent<FolderDetailsFormProps> = ({
   defaultValues,
@@ -32,6 +30,7 @@ const FolderDetailsForm: FunctionComponent<FolderDetailsFormProps> = ({
     control,
     handleSubmit,
     formState: { isSubmitting },
+    watch,
   } = methods;
 
   const submitHandler = handleSubmit(async (data): Promise<void> => {
@@ -41,6 +40,13 @@ const FolderDetailsForm: FunctionComponent<FolderDetailsFormProps> = ({
   const cancelHandler = useCallback((): void => {
     onCancel();
   }, [onCancel]);
+
+  const authentication = watch('authentication');
+
+  const effectiveAuthentication = useEffectiveAuthentication({
+    authentication: authentication,
+    folderId: defaultValues?.parentFolderId,
+  });
 
   return (
     <FormProvider {...methods}>
@@ -81,6 +87,8 @@ const FolderDetailsForm: FunctionComponent<FolderDetailsFormProps> = ({
           />
 
           <AuthenticationDetailsForm />
+
+          <EffectiveAuthenticationDetails effectiveAuthentication={effectiveAuthentication} />
         </DialogContent>
         <DialogActions>
           <Box sx={{ flexGrow: 1 }} />

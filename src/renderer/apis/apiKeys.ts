@@ -8,6 +8,7 @@ export const apiKeys = {
 
   items: () => ['items'],
   item: (id: string) => [...apiKeys.items(), id],
+  itemEffectiveAuthentication: (id: string) => [...apiKeys.item(id), 'effectiveAuthentication'],
   itemAbilities: (id: string) => [...apiKeys.item(id), 'abilities'],
   itemMetrics: (id: string) => [...apiKeys.item(id), 'metrics'],
   itemMetricDetails: (id: string, name: string, tags?: { [key: string]: string }) => [

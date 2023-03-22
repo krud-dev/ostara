@@ -1,5 +1,5 @@
 import React from 'react';
-import TableDetailsLabelValue from 'renderer/components/table/details/TableDetailsLabelValue';
+import DetailsLabelValueVertical from 'renderer/components/table/details/DetailsLabelValueVertical';
 import { FormattedMessage } from 'react-intl';
 import { Box, Card, CardContent, Stack } from '@mui/material';
 import { COMPONENTS_SPACING } from 'renderer/constants/ui';
@@ -16,11 +16,11 @@ export default function MappingsServletDetails({ row }: MappingsServletDetailsPr
       <Card variant={'outlined'}>
         <CardContent>
           <Stack direction={'column'} spacing={COMPONENTS_SPACING}>
-            <TableDetailsLabelValue
+            <DetailsLabelValueVertical
               label={<FormattedMessage id={'className'} />}
               value={<InlineCodeLabel code={row.className} />}
             />
-            <TableDetailsLabelValue
+            <DetailsLabelValueVertical
               label={<FormattedMessage id={'mappings'} />}
               value={
                 <Box>

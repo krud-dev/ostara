@@ -3,9 +3,9 @@ import { AuthenticationDetailsFormProps } from './AuthenticationDetailsForm';
 import { TextField } from '@mui/material';
 import { FormattedMessage, useIntl } from 'react-intl';
 import { Controller, useFormContext } from 'react-hook-form';
-import { Authentication$Typed } from '../../../../../../common/manual_definitions';
+import { Authentication$Typed } from '../../../../../common/manual_definitions';
 
-const AuthenticationDetailsFormBasic: FunctionComponent<
+const AuthenticationDetailsFormHeader: FunctionComponent<
   AuthenticationDetailsFormProps
 > = ({}: AuthenticationDetailsFormProps) => {
   const intl = useIntl();
@@ -15,7 +15,7 @@ const AuthenticationDetailsFormBasic: FunctionComponent<
   return (
     <>
       <Controller
-        name="authentication.username"
+        name="authentication.headerName"
         rules={{
           required: intl.formatMessage({ id: 'requiredField' }),
         }}
@@ -29,7 +29,7 @@ const AuthenticationDetailsFormBasic: FunctionComponent<
               margin="normal"
               required
               fullWidth
-              label={<FormattedMessage id="username" />}
+              label={<FormattedMessage id="name" />}
               type="text"
               autoComplete="off"
               error={invalid}
@@ -40,7 +40,7 @@ const AuthenticationDetailsFormBasic: FunctionComponent<
       />
 
       <Controller
-        name="authentication.password"
+        name="authentication.headerValue"
         rules={{
           required: intl.formatMessage({ id: 'requiredField' }),
         }}
@@ -54,7 +54,7 @@ const AuthenticationDetailsFormBasic: FunctionComponent<
               margin="normal"
               required
               fullWidth
-              label={<FormattedMessage id="password" />}
+              label={<FormattedMessage id="value" />}
               type="text"
               autoComplete="off"
               error={invalid}
@@ -67,4 +67,4 @@ const AuthenticationDetailsFormBasic: FunctionComponent<
   );
 };
 
-export default AuthenticationDetailsFormBasic;
+export default AuthenticationDetailsFormHeader;

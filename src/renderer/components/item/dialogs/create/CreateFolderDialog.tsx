@@ -27,7 +27,7 @@ const CreateFolderDialog: FunctionComponent<CreateFolderDialogProps & NiceModalH
           alias: data.alias,
           parentFolderId: parentFolderId,
           sort: sort ?? 1,
-          color: INHERITED_COLOR_VALUE,
+          color: data.color ?? INHERITED_COLOR_VALUE,
           icon: data.icon,
           authentication: data.authentication,
         };
@@ -62,7 +62,7 @@ const CreateFolderDialog: FunctionComponent<CreateFolderDialogProps & NiceModalH
         <DialogTitleEnhanced onClose={cancelHandler}>
           <FormattedMessage id={'createFolder'} />
         </DialogTitleEnhanced>
-        <FolderDetailsForm onSubmit={submitHandler} onCancel={cancelHandler} />
+        <FolderDetailsForm defaultValues={{ parentFolderId }} onSubmit={submitHandler} onCancel={cancelHandler} />
       </Dialog>
     );
   }

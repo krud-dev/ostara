@@ -1,6 +1,6 @@
 import { isNil } from 'lodash';
 import { CrudQueryOptions, CrudUseQueryResult, useCrudQuery } from './base/useCrudQuery';
-import { CrudMutationOptions, CrudUseMutationResult, CrudVariables, useCrudMutation } from './base/useCrudMutation';
+import { CrudMutationOptions, CrudUseMutationResult, CrudVariables, useCrudReadMutation } from './base/useCrudMutation';
 import { getCrudMethods } from './types/crud';
 import { BaseRO } from './entity/entity';
 import { crudKeys } from './crudKeys';
@@ -19,10 +19,9 @@ export const crudShow = async <ResponseRO extends BaseRO>(
 };
 
 export const useCrudShow = <ResponseRO extends BaseRO>(
-  variables: CrudShowVariables,
   options?: CrudMutationOptions<CrudShowData<ResponseRO>, CrudShowVariables>
 ): CrudUseMutationResult<CrudShowData<ResponseRO>, CrudShowVariables> => {
-  return useCrudMutation<CrudShowData<ResponseRO>, CrudShowVariables>(crudShow, options);
+  return useCrudReadMutation<CrudShowData<ResponseRO>, CrudShowVariables>(crudShow, options);
 };
 
 export const useCrudShowQuery = <ResponseRO extends BaseRO>(

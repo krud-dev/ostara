@@ -1,5 +1,5 @@
 import React, { useMemo } from 'react';
-import TableDetailsLabelValue from 'renderer/components/table/details/TableDetailsLabelValue';
+import DetailsLabelValueVertical from 'renderer/components/table/details/DetailsLabelValueVertical';
 import { FormattedMessage } from 'react-intl';
 import { Box, Card, CardContent, CardHeader, Stack, Tooltip } from '@mui/material';
 import { COMPONENTS_SPACING, DEFAULT_TABLE_COLUMN_WIDTH } from 'renderer/constants/ui';
@@ -71,20 +71,23 @@ export default function QuartzTriggerDetails({ row, sx }: QuartzTriggerDetailsPr
                 gridGap: (theme) => theme.spacing(1),
               }}
             >
-              <TableDetailsLabelValue
+              <DetailsLabelValueVertical
                 label={<FormattedMessage id={'description'} />}
                 value={detailsState.data.description}
               />
-              <TableDetailsLabelValue
+              <DetailsLabelValueVertical
                 label={<FormattedMessage id={'state'} />}
                 value={<Label color={stateColor}>{detailsState.data.state}</Label>}
               />
-              <TableDetailsLabelValue
+              <DetailsLabelValueVertical
                 label={<FormattedMessage id={'type'} />}
                 value={<Label color={'default'}>{detailsState.data.type}</Label>}
               />
-              <TableDetailsLabelValue label={<FormattedMessage id={'priority'} />} value={detailsState.data.priority} />
-              <TableDetailsLabelValue
+              <DetailsLabelValueVertical
+                label={<FormattedMessage id={'priority'} />}
+                value={detailsState.data.priority}
+              />
+              <DetailsLabelValueVertical
                 label={<FormattedMessage id={'previousFireTime'} />}
                 value={
                   !!detailsState.data.previousFireTime && (
@@ -96,7 +99,7 @@ export default function QuartzTriggerDetails({ row, sx }: QuartzTriggerDetailsPr
                   )
                 }
               />
-              <TableDetailsLabelValue
+              <DetailsLabelValueVertical
                 label={<FormattedMessage id={'nextFireTime'} />}
                 value={
                   !!detailsState.data.nextFireTime && (
@@ -108,7 +111,7 @@ export default function QuartzTriggerDetails({ row, sx }: QuartzTriggerDetailsPr
                   )
                 }
               />
-              <TableDetailsLabelValue
+              <DetailsLabelValueVertical
                 label={<FormattedMessage id={'finalFireTime'} />}
                 value={
                   !!detailsState.data.finalFireTime && (
@@ -120,15 +123,15 @@ export default function QuartzTriggerDetails({ row, sx }: QuartzTriggerDetailsPr
                   )
                 }
               />
-              <TableDetailsLabelValue
+              <DetailsLabelValueVertical
                 label={<FormattedMessage id={'startTime'} />}
                 value={!!detailsState.data.startTime && <FormattedParsedDate value={detailsState.data.startTime} />}
               />
-              <TableDetailsLabelValue
+              <DetailsLabelValueVertical
                 label={<FormattedMessage id={'endTime'} />}
                 value={!!detailsState.data.endTime && <FormattedParsedDate value={detailsState.data.endTime} />}
               />
-              <TableDetailsLabelValue
+              <DetailsLabelValueVertical
                 label={<FormattedMessage id={'calendarName'} />}
                 value={detailsState.data.calendarName}
               />
@@ -146,7 +149,7 @@ export default function QuartzTriggerDetails({ row, sx }: QuartzTriggerDetailsPr
                 }}
               >
                 {map(detailsState.data.data, (value, key) => (
-                  <TableDetailsLabelValue
+                  <DetailsLabelValueVertical
                     key={key}
                     label={key}
                     value={isObject(value) ? JSON.stringify(value) : toString(value)}
@@ -166,15 +169,15 @@ export default function QuartzTriggerDetails({ row, sx }: QuartzTriggerDetailsPr
                   gridGap: (theme) => theme.spacing(1),
                 }}
               >
-                <TableDetailsLabelValue
+                <DetailsLabelValueVertical
                   label={<FormattedMessage id={'interval'} />}
                   value={<FormattedInterval value={detailsState.data.calendarInterval.interval} />}
                 />
-                <TableDetailsLabelValue
+                <DetailsLabelValueVertical
                   label={<FormattedMessage id={'timeZone'} />}
                   value={detailsState.data.calendarInterval.timeZone}
                 />
-                <TableDetailsLabelValue
+                <DetailsLabelValueVertical
                   label={<FormattedMessage id={'preserveHourOfDayAcrossDaylightSavings'} />}
                   value={
                     <FormattedBoolean
@@ -182,11 +185,11 @@ export default function QuartzTriggerDetails({ row, sx }: QuartzTriggerDetailsPr
                     />
                   }
                 />
-                <TableDetailsLabelValue
+                <DetailsLabelValueVertical
                   label={<FormattedMessage id={'skipDayIfHourDoesNotExist'} />}
                   value={<FormattedBoolean value={detailsState.data.calendarInterval.skipDayIfHourDoesNotExist} />}
                 />
-                <TableDetailsLabelValue
+                <DetailsLabelValueVertical
                   label={<FormattedMessage id={'timesTriggered'} />}
                   value={detailsState.data.calendarInterval.timesTriggered}
                 />
@@ -204,7 +207,7 @@ export default function QuartzTriggerDetails({ row, sx }: QuartzTriggerDetailsPr
                   gridGap: (theme) => theme.spacing(1),
                 }}
               >
-                <TableDetailsLabelValue
+                <DetailsLabelValueVertical
                   label={<FormattedMessage id={'trigger'} />}
                   value={detailsState.data.custom.trigger}
                 />
@@ -222,7 +225,7 @@ export default function QuartzTriggerDetails({ row, sx }: QuartzTriggerDetailsPr
                   gridGap: (theme) => theme.spacing(1),
                 }}
               >
-                <TableDetailsLabelValue
+                <DetailsLabelValueVertical
                   label={<FormattedMessage id={'expression'} />}
                   value={
                     <Tooltip title={detailsState.data.cron.expression}>
@@ -232,7 +235,7 @@ export default function QuartzTriggerDetails({ row, sx }: QuartzTriggerDetailsPr
                     </Tooltip>
                   }
                 />
-                <TableDetailsLabelValue
+                <DetailsLabelValueVertical
                   label={<FormattedMessage id={'timeZone'} />}
                   value={detailsState.data.cron.timeZone}
                 />
@@ -250,27 +253,27 @@ export default function QuartzTriggerDetails({ row, sx }: QuartzTriggerDetailsPr
                   gridGap: (theme) => theme.spacing(1),
                 }}
               >
-                <TableDetailsLabelValue
+                <DetailsLabelValueVertical
                   label={<FormattedMessage id={'daysOfWeek'} />}
                   value={detailsState.data.dailyTimeInterval.daysOfWeek.join(', ')}
                 />
-                <TableDetailsLabelValue
+                <DetailsLabelValueVertical
                   label={<FormattedMessage id={'startTimeOfDay'} />}
                   value={detailsState.data.dailyTimeInterval.startTimeOfDay}
                 />
-                <TableDetailsLabelValue
+                <DetailsLabelValueVertical
                   label={<FormattedMessage id={'endTimeOfDay'} />}
                   value={detailsState.data.dailyTimeInterval.endTimeOfDay}
                 />
-                <TableDetailsLabelValue
+                <DetailsLabelValueVertical
                   label={<FormattedMessage id={'interval'} />}
                   value={<FormattedInterval value={detailsState.data.dailyTimeInterval.interval} />}
                 />
-                <TableDetailsLabelValue
+                <DetailsLabelValueVertical
                   label={<FormattedMessage id={'repeatCount'} />}
                   value={detailsState.data.dailyTimeInterval.repeatCount}
                 />
-                <TableDetailsLabelValue
+                <DetailsLabelValueVertical
                   label={<FormattedMessage id={'timesTriggered'} />}
                   value={detailsState.data.dailyTimeInterval.timesTriggered}
                 />
@@ -288,15 +291,15 @@ export default function QuartzTriggerDetails({ row, sx }: QuartzTriggerDetailsPr
                   gridGap: (theme) => theme.spacing(1),
                 }}
               >
-                <TableDetailsLabelValue
+                <DetailsLabelValueVertical
                   label={<FormattedMessage id={'interval'} />}
                   value={<FormattedInterval value={detailsState.data.simple.interval} />}
                 />
-                <TableDetailsLabelValue
+                <DetailsLabelValueVertical
                   label={<FormattedMessage id={'repeatCount'} />}
                   value={detailsState.data.simple.repeatCount}
                 />
-                <TableDetailsLabelValue
+                <DetailsLabelValueVertical
                   label={<FormattedMessage id={'timesTriggered'} />}
                   value={detailsState.data.simple.timesTriggered}
                 />

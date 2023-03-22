@@ -3,9 +3,9 @@ import { AuthenticationDetailsFormProps } from './AuthenticationDetailsForm';
 import { TextField } from '@mui/material';
 import { FormattedMessage, useIntl } from 'react-intl';
 import { Controller, useFormContext } from 'react-hook-form';
-import { Authentication$Typed } from '../../../../../../common/manual_definitions';
+import { Authentication$Typed } from '../../../../../common/manual_definitions';
 
-const AuthenticationDetailsFormBearer: FunctionComponent<
+const AuthenticationDetailsFormBasic: FunctionComponent<
   AuthenticationDetailsFormProps
 > = ({}: AuthenticationDetailsFormProps) => {
   const intl = useIntl();
@@ -15,7 +15,7 @@ const AuthenticationDetailsFormBearer: FunctionComponent<
   return (
     <>
       <Controller
-        name="authentication.token"
+        name="authentication.username"
         rules={{
           required: intl.formatMessage({ id: 'requiredField' }),
         }}
@@ -29,7 +29,32 @@ const AuthenticationDetailsFormBearer: FunctionComponent<
               margin="normal"
               required
               fullWidth
-              label={<FormattedMessage id="token" />}
+              label={<FormattedMessage id="username" />}
+              type="text"
+              autoComplete="off"
+              error={invalid}
+              helperText={error?.message}
+            />
+          );
+        }}
+      />
+
+      <Controller
+        name="authentication.password"
+        rules={{
+          required: intl.formatMessage({ id: 'requiredField' }),
+        }}
+        control={control}
+        defaultValue=""
+        render={({ field: { ref, ...field }, fieldState: { invalid, error } }) => {
+          return (
+            <TextField
+              {...field}
+              inputRef={ref}
+              margin="normal"
+              required
+              fullWidth
+              label={<FormattedMessage id="password" />}
               type="text"
               autoComplete="off"
               error={invalid}
@@ -42,4 +67,4 @@ const AuthenticationDetailsFormBearer: FunctionComponent<
   );
 };
 
-export default AuthenticationDetailsFormBearer;
+export default AuthenticationDetailsFormBasic;

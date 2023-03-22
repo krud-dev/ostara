@@ -1,5 +1,11 @@
 import { CrudQueryOptions, CrudUseQueryResult, useCrudQuery } from './base/useCrudQuery';
-import { CrudMutationOptions, CrudUseMutationResult, CrudVariables, useCrudMutation } from './base/useCrudMutation';
+import {
+  CrudMutationOptions,
+  CrudUseMutationResult,
+  CrudVariables,
+  useCrudMutation,
+  useCrudReadMutation,
+} from './base/useCrudMutation';
 import { getCrudMethods } from './types/crud';
 import { BaseRO } from './entity/entity';
 import { crudKeys } from './crudKeys';
@@ -22,10 +28,9 @@ export const crudSearch = async <ResponseRO extends BaseRO>(
 };
 
 export const useCrudSearch = <ResponseRO extends BaseRO>(
-  variables: CrudSearchVariables,
   options?: CrudMutationOptions<CrudSearchData<ResponseRO>, CrudSearchVariables>
 ): CrudUseMutationResult<CrudSearchData<ResponseRO>, CrudSearchVariables> => {
-  return useCrudMutation<CrudSearchData<ResponseRO>, CrudSearchVariables>(crudSearch, options);
+  return useCrudReadMutation<CrudSearchData<ResponseRO>, CrudSearchVariables>(crudSearch, options);
 };
 
 export const useCrudSearchQuery = <ResponseRO extends BaseRO>(

@@ -294,4 +294,5 @@ export default {
   password: 'Password',
   key: 'Key',
   token: 'Token',
+  effectiveAuthentication: 'Effective Authentication',
 };

@@ -5,19 +5,19 @@ import { Box, Button, DialogActions, DialogContent, TextField } from '@mui/mater
 import { LoadingButton } from '@mui/lab';
 import InputAdornment from '@mui/material/InputAdornment';
 import ItemIconFormField from 'renderer/components/item/dialogs/forms/fields/ItemIconFormField';
-import { Authentication$Typed } from '../../../../../common/manual_definitions';
-import AuthenticationDetailsForm from './authentication/AuthenticationDetailsForm';
+import AuthenticationDetailsForm from '../../authentication/forms/AuthenticationDetailsForm';
+import { ApplicationModifyRequestRO } from '../../../../../common/generated_definitions';
+import useEffectiveAuthentication from '../../authentication/hooks/useEffectiveAuthentication';
+import EffectiveAuthenticationDetails from '../../authentication/effective/EffectiveAuthenticationDetails';
 
 export type ApplicationDetailsFormProps = {
-  defaultValues?: ApplicationFormValues;
+  defaultValues?: Partial<ApplicationFormValues>;
   onSubmit: (data: ApplicationFormValues) => Promise<void>;
   onCancel: () => void;
 };
 
-export type ApplicationFormValues = {
-  alias: string;
-  icon?: string;
-  authentication: Authentication$Typed;
+export type ApplicationFormValues = ApplicationModifyRequestRO & {
+  id?: string;
 };
 
 const ApplicationDetailsForm: FunctionComponent<ApplicationDetailsFormProps> = ({
@@ -32,6 +32,7 @@ const ApplicationDetailsForm: FunctionComponent<ApplicationDetailsFormProps> = (
     control,
     handleSubmit,
     formState: { isSubmitting },
+    watch,
   } = methods;
 
   const submitHandler = handleSubmit(async (data): Promise<void> => {
@@ -41,6 +42,14 @@ const ApplicationDetailsForm: FunctionComponent<ApplicationDetailsFormProps> = (
   const cancelHandler = useCallback((): void => {
     onCancel();
   }, [onCancel]);
+
+  const authentication = watch('authentication');
+
+  const effectiveAuthentication = useEffectiveAuthentication({
+    authentication: authentication,
+    applicationId: defaultValues?.id,
+    folderId: defaultValues?.parentFolderId,
+  });
 
   return (
     <FormProvider {...methods}>
@@ -81,6 +90,8 @@ const ApplicationDetailsForm: FunctionComponent<ApplicationDetailsFormProps> = (
           />
 
           <AuthenticationDetailsForm />
+
+          <EffectiveAuthenticationDetails effectiveAuthentication={effectiveAuthentication} />
         </DialogContent>
         <DialogActions>
           <Box sx={{ flexGrow: 1 }} />

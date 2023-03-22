@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
-import TableDetailsLabelValue from 'renderer/components/table/details/TableDetailsLabelValue';
+import DetailsLabelValueVertical from 'renderer/components/table/details/DetailsLabelValueVertical';
 import { FormattedMessage } from 'react-intl';
 import { Box, Card, CardContent, CardHeader, Chip, Stack } from '@mui/material';
 import { COMPONENTS_SPACING, DEFAULT_TABLE_COLUMN_WIDTH } from 'renderer/constants/ui';
@@ -67,11 +67,11 @@ export default function MetricDetails({ row }: MetricDetailsProps) {
                 gridGap: (theme) => theme.spacing(1),
               }}
             >
-              <TableDetailsLabelValue
+              <DetailsLabelValueVertical
                 label={<FormattedMessage id={'description'} />}
                 value={metricDetails.description}
               />
-              <TableDetailsLabelValue label={<FormattedMessage id={'baseUnit'} />} value={metricDetails.baseUnit} />
+              <DetailsLabelValueVertical label={<FormattedMessage id={'baseUnit'} />} value={metricDetails.baseUnit} />
             </CardContent>
           </Card>
 
@@ -86,7 +86,7 @@ export default function MetricDetails({ row }: MetricDetailsProps) {
                 }}
               >
                 {metricDetails.measurements.map((measurement) => (
-                  <TableDetailsLabelValue
+                  <DetailsLabelValueVertical
                     label={measurement.statistic}
                     value={detailsState.data?.measurements.find((m) => m.statistic === measurement.statistic)?.value}
                     key={measurement.statistic}
@@ -101,7 +101,7 @@ export default function MetricDetails({ row }: MetricDetailsProps) {
               <CardHeader title={<FormattedMessage id={'tags'} />} />
               <CardContent>
                 {metricDetails.availableTags.map((tagDetails) => (
-                  <TableDetailsLabelValue
+                  <DetailsLabelValueVertical
                     label={tagDetails.tag}
                     value={
                       <Box sx={{ display: 'flex', flexDirection: 'row', flexWrap: 'wrap', gap: 1, mt: 0.5 }}>

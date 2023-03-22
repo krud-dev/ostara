@@ -1,7 +1,7 @@
 import { Box, Card, CardContent } from '@mui/material';
 import { FormattedMessage } from 'react-intl';
 import React, { ReactNode, useMemo } from 'react';
-import TableDetailsLabelValue from 'renderer/components/table/details/TableDetailsLabelValue';
+import DetailsLabelValueVertical from 'renderer/components/table/details/DetailsLabelValueVertical';
 import LogoLoader from '../../common/LogoLoader';
 
 export type CacheProperty = {
@@ -69,5 +69,5 @@ function CacheDetailsLabelValue({ label, property }: CacheDetailsLabelValueProps
     [property]
   );
 
-  return <TableDetailsLabelValue label={label} value={value} tooltip={tooltip} />;
+  return <DetailsLabelValueVertical label={label} value={value} tooltip={tooltip} />;
 }

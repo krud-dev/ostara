@@ -7,6 +7,12 @@ import {
   Authentication$QueryString,
 } from './generated_definitions';
 
+declare module './generated_definitions' {
+  interface Authentication {
+    type: string;
+  }
+}
+
 export type Authentication$Typed =
   | Authentication$None$Typed
   | Authentication$Inherit$Typed
@@ -36,5 +42,5 @@ export interface Authentication$QueryString$Typed extends Authentication$QuerySt
 }
 
 export interface Authentication$BearerToken$Typed extends Authentication$BearerToken {
-  type: 'bearer';
+  type: 'bearer-token';
 }

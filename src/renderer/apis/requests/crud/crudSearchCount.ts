@@ -1,5 +1,5 @@
 import { CrudQueryOptions, CrudUseQueryResult, useCrudQuery } from './base/useCrudQuery';
-import { CrudMutationOptions, CrudUseMutationResult, CrudVariables, useCrudMutation } from './base/useCrudMutation';
+import { CrudMutationOptions, CrudUseMutationResult, CrudVariables, useCrudReadMutation } from './base/useCrudMutation';
 import { getCrudMethods } from './types/crud';
 import { crudKeys } from './crudKeys';
 import { CountResultRO, FilterField } from '../../../../common/generated_definitions';
@@ -16,10 +16,9 @@ export const crudSearchCount = async (variables: CrudSearchCountVariables): Prom
 };
 
 export const useCrudSearchCount = (
-  variables: CrudSearchCountVariables,
   options?: CrudMutationOptions<CrudSearchCountData, CrudSearchCountVariables>
 ): CrudUseMutationResult<CrudSearchCountData, CrudSearchCountVariables> => {
-  return useCrudMutation<CrudSearchCountData, CrudSearchCountVariables>(crudSearchCount, options);
+  return useCrudReadMutation<CrudSearchCountData, CrudSearchCountVariables>(crudSearchCount, options);
 };
 
 export const useCrudSearchCountQuery = (

@@ -5,14 +5,14 @@ import { Theme } from '@mui/material/styles';
 import { EMPTY_STRING } from '../../../constants/ui';
 import { isNil } from 'lodash';
 
-type TableDetailsLabelValueProps = {
+type DetailsLabelValueVerticalProps = {
   label: ReactNode;
   value: ReactNode;
   tooltip?: ReactNode;
   sx?: SxProps<Theme>;
 };
 
-export default function TableDetailsLabelValue({ label, value, tooltip, sx }: TableDetailsLabelValueProps) {
+export default function DetailsLabelValueVertical({ label, value, tooltip, sx }: DetailsLabelValueVerticalProps) {
   const displayValue = useMemo<ReactNode>(() => (isNil(value) ? EMPTY_STRING : value), [value]);
 
   return (

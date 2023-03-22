@@ -4,7 +4,7 @@ import { FormattedMessage } from 'react-intl';
 import { COMPONENTS_SPACING } from 'renderer/constants/ui';
 import React, { useCallback } from 'react';
 import { InlineCodeLabel } from 'renderer/components/code/InlineCodeLabel';
-import TableDetailsLabelValue from 'renderer/components/table/details/TableDetailsLabelValue';
+import DetailsLabelValueVertical from 'renderer/components/table/details/DetailsLabelValueVertical';
 import { useTable } from '../../../../../components/table/TableContext';
 
 type InstanceBeanDetailsProps = {
@@ -27,7 +27,7 @@ export default function InstanceBeanDetails({ row }: InstanceBeanDetailsProps) {
     <Card variant={'outlined'} sx={{ my: 2 }}>
       <CardContent>
         <Stack direction={'column'} spacing={COMPONENTS_SPACING}>
-          <TableDetailsLabelValue
+          <DetailsLabelValueVertical
             label={<FormattedMessage id={'type'} />}
             value={<InlineCodeLabel code={row.type} />}
           />

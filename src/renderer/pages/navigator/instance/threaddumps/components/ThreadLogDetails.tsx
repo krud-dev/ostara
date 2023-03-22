@@ -8,7 +8,7 @@ import FormattedDateAndRelativeTime from '../../../../../components/format/Forma
 import ThreadLogStackTrace from './ThreadLogStackTrace';
 import ToolbarButton from '../../../../../components/common/ToolbarButton';
 import { useThreadLog } from '../contexts/ThreadLogContext';
-import TableDetailsLabelValue from '../../../../../components/table/details/TableDetailsLabelValue';
+import DetailsLabelValueVertical from '../../../../../components/table/details/DetailsLabelValueVertical';
 
 type ThreadLogDetailsProps = {
   threadLog: ThreadLog;
@@ -34,21 +34,21 @@ export default function ThreadLogDetails({ threadLog, sx }: ThreadLogDetailsProp
           sx={{ position: 'absolute', top: (theme) => theme.spacing(1), right: (theme) => theme.spacing(1) }}
         />
         <Stack direction={'column'} spacing={1.5}>
-          <TableDetailsLabelValue label={<FormattedMessage id={'index'} />} value={threadLog.index} />
-          <TableDetailsLabelValue
+          <DetailsLabelValueVertical label={<FormattedMessage id={'index'} />} value={threadLog.index} />
+          <DetailsLabelValueVertical
             label={<FormattedMessage id={'time'} />}
             value={<FormattedDateAndRelativeTime value={threadLog.creationTime} showRelative={false} />}
           />
-          <TableDetailsLabelValue label={<FormattedMessage id={'threadId'} />} value={threadLog.threadId} />
-          <TableDetailsLabelValue label={<FormattedMessage id={'threadName'} />} value={threadLog.threadName} />
-          <TableDetailsLabelValue label={<FormattedMessage id={'threadState'} />} value={threadLog.threadState} />
-          <TableDetailsLabelValue label={<FormattedMessage id={'blockedCount'} />} value={threadLog.blockedCount} />
-          <TableDetailsLabelValue label={<FormattedMessage id={'blockedTime'} />} value={threadLog.blockedTime} />
-          <TableDetailsLabelValue label={<FormattedMessage id={'waitedCount'} />} value={threadLog.waitedCount} />
-          <TableDetailsLabelValue label={<FormattedMessage id={'waitedTime'} />} value={threadLog.waitedTime} />
-          <TableDetailsLabelValue label={<FormattedMessage id={'lockName'} />} value={threadLog.lockName} />
-          <TableDetailsLabelValue label={<FormattedMessage id={'lockOwnerId'} />} value={threadLog.lockOwnerId} />
-          <TableDetailsLabelValue label={<FormattedMessage id={'lockOwnerName'} />} value={threadLog.lockOwnerName} />
+          <DetailsLabelValueVertical label={<FormattedMessage id={'threadId'} />} value={threadLog.threadId} />
+          <DetailsLabelValueVertical label={<FormattedMessage id={'threadName'} />} value={threadLog.threadName} />
+          <DetailsLabelValueVertical label={<FormattedMessage id={'threadState'} />} value={threadLog.threadState} />
+          <DetailsLabelValueVertical label={<FormattedMessage id={'blockedCount'} />} value={threadLog.blockedCount} />
+          <DetailsLabelValueVertical label={<FormattedMessage id={'blockedTime'} />} value={threadLog.blockedTime} />
+          <DetailsLabelValueVertical label={<FormattedMessage id={'waitedCount'} />} value={threadLog.waitedCount} />
+          <DetailsLabelValueVertical label={<FormattedMessage id={'waitedTime'} />} value={threadLog.waitedTime} />
+          <DetailsLabelValueVertical label={<FormattedMessage id={'lockName'} />} value={threadLog.lockName} />
+          <DetailsLabelValueVertical label={<FormattedMessage id={'lockOwnerId'} />} value={threadLog.lockOwnerId} />
+          <DetailsLabelValueVertical label={<FormattedMessage id={'lockOwnerName'} />} value={threadLog.lockOwnerName} />
         </Stack>
 
         {showStackTrace && (

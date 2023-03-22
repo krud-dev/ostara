@@ -1,5 +1,5 @@
 import React from 'react';
-import TableDetailsLabelValue from 'renderer/components/table/details/TableDetailsLabelValue';
+import DetailsLabelValueVertical from 'renderer/components/table/details/DetailsLabelValueVertical';
 import { FormattedMessage } from 'react-intl';
 import { Card, CardContent } from '@mui/material';
 import { DEFAULT_TABLE_COLUMN_WIDTH } from 'renderer/constants/ui';
@@ -19,12 +19,12 @@ export default function FlywayMigrationDetails({ row }: FlywayMigrationDetailsPr
           gridGap: (theme) => theme.spacing(1),
         }}
       >
-        <TableDetailsLabelValue label={<FormattedMessage id={'bean'} />} value={row.bean} />
-        <TableDetailsLabelValue label={<FormattedMessage id={'type'} />} value={row.type} />
-        <TableDetailsLabelValue label={<FormattedMessage id={'script'} />} value={row.script} />
-        <TableDetailsLabelValue label={<FormattedMessage id={'executionTime'} />} value={row.executionTime} />
-        <TableDetailsLabelValue label={<FormattedMessage id={'installedBy'} />} value={row.installedBy} />
-        <TableDetailsLabelValue label={<FormattedMessage id={'checksum'} />} value={row.checksum} />
+        <DetailsLabelValueVertical label={<FormattedMessage id={'bean'} />} value={row.bean} />
+        <DetailsLabelValueVertical label={<FormattedMessage id={'type'} />} value={row.type} />
+        <DetailsLabelValueVertical label={<FormattedMessage id={'script'} />} value={row.script} />
+        <DetailsLabelValueVertical label={<FormattedMessage id={'executionTime'} />} value={row.executionTime} />
+        <DetailsLabelValueVertical label={<FormattedMessage id={'installedBy'} />} value={row.installedBy} />
+        <DetailsLabelValueVertical label={<FormattedMessage id={'checksum'} />} value={row.checksum} />
       </CardContent>
     </Card>
   );

@@ -1,6 +1,6 @@
 import React from 'react';
 import { EnrichedLiquibaseChangeSet } from 'renderer/apis/requests/instance/liquibase/getInstanceLiquibaseChangesets';
-import TableDetailsLabelValue from 'renderer/components/table/details/TableDetailsLabelValue';
+import DetailsLabelValueVertical from 'renderer/components/table/details/DetailsLabelValueVertical';
 import { FormattedMessage } from 'react-intl';
 import { Card, CardContent } from '@mui/material';
 import { DEFAULT_TABLE_COLUMN_WIDTH, EMPTY_STRING } from 'renderer/constants/ui';
@@ -19,21 +19,21 @@ export default function LiquibaseChangesetDetails({ row }: LiquibaseChangesetDet
           gridGap: (theme) => theme.spacing(1),
         }}
       >
-        <TableDetailsLabelValue label={<FormattedMessage id={'id'} />} value={row.id} />
-        <TableDetailsLabelValue label={<FormattedMessage id={'bean'} />} value={row.bean} />
-        <TableDetailsLabelValue label={<FormattedMessage id={'changelog'} />} value={row.changeLog} />
-        <TableDetailsLabelValue label={<FormattedMessage id={'comments'} />} value={row.comments} />
-        <TableDetailsLabelValue label={<FormattedMessage id={'deploymentId'} />} value={row.deploymentId} />
-        <TableDetailsLabelValue label={<FormattedMessage id={'checksum'} />} value={row.checksum || EMPTY_STRING} />
-        <TableDetailsLabelValue
+        <DetailsLabelValueVertical label={<FormattedMessage id={'id'} />} value={row.id} />
+        <DetailsLabelValueVertical label={<FormattedMessage id={'bean'} />} value={row.bean} />
+        <DetailsLabelValueVertical label={<FormattedMessage id={'changelog'} />} value={row.changeLog} />
+        <DetailsLabelValueVertical label={<FormattedMessage id={'comments'} />} value={row.comments} />
+        <DetailsLabelValueVertical label={<FormattedMessage id={'deploymentId'} />} value={row.deploymentId} />
+        <DetailsLabelValueVertical label={<FormattedMessage id={'checksum'} />} value={row.checksum || EMPTY_STRING} />
+        <DetailsLabelValueVertical
           label={<FormattedMessage id={'contexts'} />}
           value={row.contexts?.join(', ') || EMPTY_STRING}
         />
-        <TableDetailsLabelValue
+        <DetailsLabelValueVertical
           label={<FormattedMessage id={'labels'} />}
           value={row.labels?.join(', ') || EMPTY_STRING}
         />
-        <TableDetailsLabelValue label={<FormattedMessage id={'tag'} />} value={row.tag || EMPTY_STRING} />
+        <DetailsLabelValueVertical label={<FormattedMessage id={'tag'} />} value={row.tag || EMPTY_STRING} />
       </CardContent>
     </Card>
   );

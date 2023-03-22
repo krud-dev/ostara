@@ -1,5 +1,5 @@
 import React, { useCallback, useMemo } from 'react';
-import TableDetailsLabelValue from 'renderer/components/table/details/TableDetailsLabelValue';
+import DetailsLabelValueVertical from 'renderer/components/table/details/DetailsLabelValueVertical';
 import { FormattedMessage } from 'react-intl';
 import { Box, Card, CardContent, CardHeader, Link, Stack } from '@mui/material';
 import { COMPONENTS_SPACING, DEFAULT_TABLE_COLUMN_WIDTH } from 'renderer/constants/ui';
@@ -65,19 +65,19 @@ export default function QuartzJobDetails({ row }: QuartzJobDetailsProps) {
                 gridGap: (theme) => theme.spacing(1),
               }}
             >
-              <TableDetailsLabelValue
+              <DetailsLabelValueVertical
                 label={<FormattedMessage id={'description'} />}
                 value={detailsState.data.description}
               />
-              <TableDetailsLabelValue
+              <DetailsLabelValueVertical
                 label={<FormattedMessage id={'className'} />}
                 value={<InlineCodeLabel code={detailsState.data.className} />}
               />
-              <TableDetailsLabelValue
+              <DetailsLabelValueVertical
                 label={<FormattedMessage id={'durable'} />}
                 value={<FormattedBoolean value={detailsState.data.durable} />}
               />
-              <TableDetailsLabelValue
+              <DetailsLabelValueVertical
                 label={<FormattedMessage id={'requestRecovery'} />}
                 value={<FormattedBoolean value={detailsState.data.requestRecovery} />}
               />
@@ -95,7 +95,7 @@ export default function QuartzJobDetails({ row }: QuartzJobDetailsProps) {
                 }}
               >
                 {map(detailsState.data.data, (value, key) => (
-                  <TableDetailsLabelValue
+                  <DetailsLabelValueVertical
                     key={key}
                     label={key}
                     value={isObject(value) ? JSON.stringify(value) : toString(value)}
@@ -117,7 +117,7 @@ export default function QuartzJobDetails({ row }: QuartzJobDetailsProps) {
                     gridGap: (theme) => theme.spacing(1),
                   }}
                 >
-                  <TableDetailsLabelValue
+                  <DetailsLabelValueVertical
                     label={<FormattedMessage id={'name'} />}
                     value={
                       <Link href={'#'} onClick={(e) => triggerClickHandler(e, trigger.name)}>
@@ -125,8 +125,8 @@ export default function QuartzJobDetails({ row }: QuartzJobDetailsProps) {
                       </Link>
                     }
                   />
-                  <TableDetailsLabelValue label={<FormattedMessage id={'priority'} />} value={trigger.priority} />
-                  <TableDetailsLabelValue
+                  <DetailsLabelValueVertical label={<FormattedMessage id={'priority'} />} value={trigger.priority} />
+                  <DetailsLabelValueVertical
                     label={<FormattedMessage id={'previousFireTime'} />}
                     value={
                       !!trigger.previousFireTime && (
@@ -138,7 +138,7 @@ export default function QuartzJobDetails({ row }: QuartzJobDetailsProps) {
                       )
                     }
                   />
-                  <TableDetailsLabelValue
+                  <DetailsLabelValueVertical
                     label={<FormattedMessage id={'nextFireTime'} />}
                     value={
                       !!trigger.nextFireTime && (

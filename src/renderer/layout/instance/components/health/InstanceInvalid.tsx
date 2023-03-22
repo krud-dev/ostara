@@ -10,6 +10,7 @@ import { useUpdateEffect } from 'react-use';
 import { useFetchInstanceHealth } from 'renderer/apis/requests/instance/fetchInstanceHealth';
 import { LoadingButton } from '@mui/lab';
 import { InstanceHealthRO, InstanceRO } from '../../../../../common/generated_definitions';
+import DetailsLabelValueHorizontal from '../../../../components/table/details/DetailsLabelValueHorizontal';
 
 type InstanceInvalidProps = {
   item: InstanceRO;
@@ -74,45 +75,26 @@ export default function InstanceInvalid({ item }: InstanceInvalidProps) {
 
             <CardContent>
               <Stack spacing={2}>
-                <Stack direction="row" spacing={2} justifyContent="space-between">
-                  <Typography variant="body2" sx={{ textAlign: 'left', color: 'text.secondary' }}>
-                    <FormattedMessage id={'actuatorUrl'} />
-                  </Typography>
-                  <Typography variant="subtitle2" sx={{ textAlign: 'right' }}>
-                    {item.actuatorUrl}
-                  </Typography>
-                </Stack>
-
-                <Stack direction="row" spacing={2} justifyContent="space-between">
-                  <Typography variant="body2" sx={{ textAlign: 'left', color: 'text.secondary' }}>
-                    <FormattedMessage id={'troubleshooting'} />
-                  </Typography>
-                  <Typography variant="subtitle2" sx={{ textAlign: 'right' }}>
+                <DetailsLabelValueHorizontal label={<FormattedMessage id={'actuatorUrl'} />} value={item.actuatorUrl} />
+                <DetailsLabelValueHorizontal
+                  label={<FormattedMessage id={'troubleshooting'} />}
+                  value={
                     <Link href={`#`} onClick={updateInstanceHandler}>
                       <FormattedMessage id={'checkActuatorUrl'} />
                     </Link>
-                  </Typography>
-                </Stack>
+                  }
+                />
 
                 <Divider />
 
-                <Stack direction="row" spacing={2} justifyContent="space-between">
-                  <Typography variant="body2" sx={{ textAlign: 'left', color: 'text.secondary' }}>
-                    <FormattedMessage id={'lastUpdateTime'} />
-                  </Typography>
-                  <Typography variant="subtitle2" sx={{ textAlign: 'right' }}>
-                    <FormattedDateAndRelativeTime value={health.lastUpdateTime} />
-                  </Typography>
-                </Stack>
-
-                <Stack direction="row" spacing={2} justifyContent="space-between">
-                  <Typography variant="body2" sx={{ textAlign: 'left', color: 'text.secondary' }}>
-                    <FormattedMessage id={'lastStatusChangeTime'} />
-                  </Typography>
-                  <Typography variant="subtitle2" sx={{ textAlign: 'right' }}>
-                    <FormattedDateAndRelativeTime value={health.lastStatusChangeTime} />
-                  </Typography>
-                </Stack>
+                <DetailsLabelValueHorizontal
+                  label={<FormattedMessage id={'lastUpdateTime'} />}
+                  value={<FormattedDateAndRelativeTime value={health.lastUpdateTime} />}
+                />
+                <DetailsLabelValueHorizontal
+                  label={<FormattedMessage id={'lastStatusChangeTime'} />}
+                  value={<FormattedDateAndRelativeTime value={health.lastStatusChangeTime} />}
+                />
               </Stack>
             </CardContent>
           </Card>

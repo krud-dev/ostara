@@ -20,3 +20,8 @@ export const useCrudMutation = <Data, Variables extends CrudVariables>(
     ...options,
     invalidateQueriesKeyFn: (data, variables) => crudKeys.entity(variables.entity),
   });
+
+export const useCrudReadMutation = <Data, Variables extends CrudVariables>(
+  mutationFn: MutationFunction<Data, Variables>,
+  options?: CrudMutationOptions<Data, Variables>
+): CrudUseMutationResult<Data, Variables> => useBaseMutation<Data, Variables>(mutationFn, options);

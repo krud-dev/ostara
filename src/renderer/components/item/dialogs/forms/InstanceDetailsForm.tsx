@@ -11,8 +11,10 @@ import ItemIconFormField from 'renderer/components/item/dialogs/forms/fields/Ite
 import { URL_REGEX } from 'renderer/constants/regex';
 import { IconViewer } from '../../../common/IconViewer';
 import { getActuatorUrls } from '../../../../utils/itemUtils';
-import { Authentication$Typed } from '../../../../../common/manual_definitions';
-import AuthenticationDetailsForm from './authentication/AuthenticationDetailsForm';
+import AuthenticationDetailsForm from '../../authentication/forms/AuthenticationDetailsForm';
+import { Authentication, InstanceModifyRequestRO } from '../../../../../common/generated_definitions';
+import useEffectiveAuthentication from '../../authentication/hooks/useEffectiveAuthentication';
+import EffectiveAuthenticationDetails from '../../authentication/effective/EffectiveAuthenticationDetails';
 
 export type InstanceDetailsFormProps = {
   defaultValues?: Partial<InstanceFormValues>;
@@ -20,14 +22,11 @@ export type InstanceDetailsFormProps = {
   onCancel: () => void;
 };
 
-export type InstanceFormValues = {
+export type InstanceFormValues = InstanceModifyRequestRO & {
   id?: string;
-  alias?: string;
-  icon?: string;
-  actuatorUrl: string;
-  parentApplicationId?: string;
   parentApplicationName?: string;
-  authentication?: Authentication$Typed;
+  parentFolderId?: string;
+  authentication?: Authentication;
 };
 
 const InstanceDetailsForm: FunctionComponent<InstanceDetailsFormProps> = ({
@@ -64,10 +63,20 @@ const InstanceDetailsForm: FunctionComponent<InstanceDetailsFormProps> = ({
 
   const testConnectionState = useTestConnectionByUrl({ disableGlobalError: true });
   const actuatorUrl = watch('actuatorUrl');
+  const authentication = watch('authentication');
+
+  const effectiveAuthentication = useEffectiveAuthentication({
+    authentication: authentication,
+    applicationId: defaultValues?.parentApplicationId,
+    folderId: defaultValues?.parentFolderId,
+  });
 
   const testConnectionHandler = useCallback(async (): Promise<void> => {
     try {
-      const result = await testConnectionState.mutateAsync({ actuatorUrl });
+      const result = await testConnectionState.mutateAsync({
+        actuatorUrl,
+        authentication: effectiveAuthentication?.authentication,
+      });
       if (result.success) {
         enqueueSnackbar(<FormattedMessage id="testConnectionToInstanceSuccess" />, { variant: 'success' });
       } else {
@@ -78,7 +87,7 @@ const InstanceDetailsForm: FunctionComponent<InstanceDetailsFormProps> = ({
     } catch (e) {
       enqueueSnackbar(<TestConnectionError message={getErrorMessage(e)} />, { variant: 'error' });
     }
-  }, [testConnectionState, actuatorUrl]);
+  }, [testConnectionState, actuatorUrl, effectiveAuthentication]);
 
   return (
     <FormProvider {...methods}>
@@ -192,6 +201,8 @@ const InstanceDetailsForm: FunctionComponent<InstanceDetailsFormProps> = ({
               <AuthenticationDetailsForm />
             </>
           )}
+
+          <EffectiveAuthenticationDetails effectiveAuthentication={effectiveAuthentication} />
         </DialogContent>
         <DialogActions>
           {!multipleInstances && (
