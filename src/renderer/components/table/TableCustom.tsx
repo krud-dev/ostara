@@ -1,4 +1,4 @@
-import React, { ReactNode, useCallback, useMemo, useRef } from 'react';
+import React, { useMemo, useRef } from 'react';
 import { Box, Table, TableBody, TableContainer, TablePagination, useMediaQuery } from '@mui/material';
 import PerfectScrollbar from 'react-perfect-scrollbar';
 import TableToolbar from 'renderer/components/table/TableToolbar';
@@ -13,9 +13,8 @@ import {
   TABLE_SCROLL_CONTAINER_ID,
 } from 'renderer/constants/ui';
 import TableSkeleton from 'renderer/components/table/TableSkeleton';
-import { DisplayItem, useTable } from 'renderer/components/table/TableContext';
+import { useTable } from 'renderer/components/table/TableContext';
 import { useTheme } from '@mui/material/styles';
-import TableRowGroup from 'renderer/components/table/TableRowGroup';
 import { useScrollSync } from 'renderer/hooks/useScrollSync';
 import useElementDocumentHeight from 'renderer/hooks/useElementDocumentHeight';
 import { useUpdateEffect } from 'react-use';
@@ -23,29 +22,10 @@ import { useUpdateEffect } from 'react-use';
 type TableCustomProps<EntityItem> = {};
 
 export default function TableCustom<EntityItem>({}: TableCustomProps<EntityItem>) {
-  const { entity, rows, displayRows, loading, empty, page, changePageHandler, rowsPerPage, changeRowsPerPageHandler } =
+  const { entity, displayRows, rows, loading, empty, page, changePageHandler, rowsPerPage, changeRowsPerPageHandler } =
     useTable<EntityItem, unknown>();
   const theme = useTheme();
   const showRowPerPage = useMediaQuery(theme.breakpoints.up('md'));
-
-  const renderRow = useCallback((item: DisplayItem<EntityItem>): ReactNode => {
-    switch (item.type) {
-      case 'Row':
-        return <TableRowCustom row={item.row} key={entity.getId(item.row)} />;
-      case 'Group':
-        return (
-          <TableRowGroup
-            group={item.group}
-            title={item.title}
-            collapsed={item.collapsed}
-            depth={item.depth}
-            key={item.group}
-          />
-        );
-      default:
-        return <></>;
-    }
-  }, []);
 
   const bottomOffset = useMemo<number>(
     () => parseInt(theme.spacing(COMPONENTS_SPACING), 10) + (entity.paging ? TABLE_PAGINATION_HEIGHT : 0),
@@ -103,7 +83,9 @@ export default function TableCustom<EntityItem>({}: TableCustomProps<EntityItem>
               <TableBody>
                 {loading && <TableSkeleton />}
                 {empty && <TableNoData />}
-                {displayRows.map((displayRow) => renderRow(displayRow))}
+                {displayRows.map((row) => (
+                  <TableRowCustom row={row} key={entity.getId(row)} />
+                ))}
               </TableBody>
             </Table>
           </TableContainer>

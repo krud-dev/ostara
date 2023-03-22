@@ -17,8 +17,6 @@ export type Entity<EntityItem, CustomFilters = never> = {
   paging: boolean;
   getId: (item: EntityItem) => string;
   getAnchor?: (item: EntityItem) => string;
-  getGrouping?: (item: EntityItem) => string;
-  groupingTreeSeparator?: string;
   filterData: (data: EntityItem[], filter: string, customFilters?: CustomFilters) => EntityItem[];
   CustomFiltersComponent?: ComponentType<{ onChange?: (customFilters?: CustomFilters) => void }>;
 };

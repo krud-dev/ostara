@@ -5,19 +5,13 @@ import { DEFAULT_ROWS_PER_PAGE, TABLE_SCROLL_CONTAINER_ID } from 'renderer/const
 import { notEmpty } from 'renderer/utils/objectUtils';
 import { BaseUseQueryResult } from 'renderer/apis/requests/base/useBaseQuery';
 import { useUpdateEffect } from 'react-use';
-import { getTableDisplayItems } from 'renderer/components/table/utils/tableUtils';
 import { useLocalStorageState } from '../../hooks/useLocalStorageState';
 import { useScrollAndHighlightElement } from '../../hooks/useScrollAndHighlightElement';
-
-export type DisplayItem<EntityItem> =
-  | { type: 'Row'; row: EntityItem }
-  | { type: 'Group'; group: string; title: string; collapsed: boolean; depth: number };
 
 export type TableContextProps<EntityItem, CustomFilters> = {
   entity: Entity<EntityItem, CustomFilters>;
   rows: EntityItem[];
-  allDisplayRows: DisplayItem<EntityItem>[];
-  displayRows: DisplayItem<EntityItem>[];
+  displayRows: EntityItem[];
   refreshHandler: () => void;
   selectedRows: EntityItem[];
   hasSelectedRows: boolean;
@@ -95,16 +89,10 @@ function TableProvider<EntityItem, CustomFilters>({
       ),
     [entity, tableData, filter, customFilters, orderDirection, orderColumn]
   );
-  const allDisplayTableData = useMemo<DisplayItem<EntityItem>[]>(
-    () => getTableDisplayItems(entity, filteredTableData, collapsedGroups),
-    [entity, filteredTableData, collapsedGroups]
-  );
-  const displayTableData = useMemo<DisplayItem<EntityItem>[]>(
+  const displayTableData = useMemo<EntityItem[]>(
     () =>
-      entity.paging
-        ? allDisplayTableData.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-        : allDisplayTableData,
-    [entity, allDisplayTableData, page, rowsPerPage]
+      entity.paging ? filteredTableData.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage) : filteredTableData,
+    [entity, filteredTableData, page, rowsPerPage]
   );
 
   const loading = useMemo<boolean>(() => queryState.isLoading, [queryState.isLoading]);
@@ -249,9 +237,7 @@ function TableProvider<EntityItem, CustomFilters>({
         return;
       }
 
-      const anchorIndex = allDisplayTableData.findIndex(
-        (item) => item.type === 'Row' && entity.getAnchor!(item.row) === anchor
-      );
+      const anchorIndex = filteredTableData.findIndex((row) => entity.getAnchor!(row) === anchor);
       if (anchorIndex < 0) {
         return;
       }
@@ -263,7 +249,7 @@ function TableProvider<EntityItem, CustomFilters>({
 
       setHighlightAnchor(anchor);
     },
-    [entity, allDisplayTableData, rowsPerPage, changePageHandler, setHighlightAnchor]
+    [entity, filteredTableData, rowsPerPage, changePageHandler, setHighlightAnchor]
   );
 
   return (
@@ -271,7 +257,6 @@ function TableProvider<EntityItem, CustomFilters>({
       value={{
         entity,
         rows: filteredTableData,
-        allDisplayRows: allDisplayTableData,
         displayRows: displayTableData,
         refreshHandler,
         selectedRows,

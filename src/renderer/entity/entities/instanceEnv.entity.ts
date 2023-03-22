@@ -42,12 +42,10 @@ export const instanceEnvEntity: Entity<EnvProperty> = {
   ],
   paging: false,
   getId: (item) => `${item.name}-${item.source}`,
-  getGrouping: (item) => item.source,
   filterData: (data, filter) =>
     data.filter(
       (item) =>
         item.name?.toLowerCase().includes(filter.toLowerCase()) ||
-        item.value?.toLowerCase().includes(filter.toLowerCase()) ||
-        item.origin?.toLowerCase().includes(filter.toLowerCase())
+        item.value?.toLowerCase().includes(filter.toLowerCase())
     ),
 };
