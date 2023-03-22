@@ -290,6 +290,7 @@ export interface InstanceHealthRO {
     statusText?: string;
     lastUpdateTime: DateAsNumber;
     lastStatusChangeTime: DateAsNumber;
+    statusCode?: number;
 }
 
 export interface InstanceHeapdumpReferenceRO {

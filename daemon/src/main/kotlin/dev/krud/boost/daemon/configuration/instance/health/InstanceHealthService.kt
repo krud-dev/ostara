@@ -16,6 +16,7 @@ import org.springframework.integration.channel.PublishSubscribeChannel
 import org.springframework.messaging.Message
 import org.springframework.scheduling.annotation.Scheduled
 import org.springframework.stereotype.Service
+import org.springframework.web.server.ResponseStatusException
 import java.util.*
 
 @Service
@@ -41,22 +42,25 @@ class InstanceHealthService(
     @Cacheable(cacheNames = ["instanceHealthCache"], key = "#instance.id")
     fun getHealth(instance: Instance): InstanceHealthRO {
         val actuatorClient = actuatorClientProvider.provide(instance)
-        val testConnection = try {
+        val response = try {
             actuatorClient.testConnection()
         } catch (e: Exception) {
             return InstanceHealthRO.unknown()
         }
 
-        if (!testConnection.success) {
-            return InstanceHealthRO.unreachable("Failed to connect to instance with status ${testConnection.statusCode} and message ${testConnection.statusText}")
+        if (!response.success) {
+            return InstanceHealthRO.unreachable("Failed to connect to instance with status ${response.statusCode} and message ${response.statusText}", response.statusCode)
         }
 
-        if (!testConnection.validActuator) {
-            return InstanceHealthRO.invalid("URL is reachable but it is not an actuator endpoint")
+        if (!response.validActuator) {
+            return InstanceHealthRO.invalid("URL is reachable but it is not an actuator endpoint", response.statusCode)
         }
 
         val health = actuatorClient.health().getOrElse {
-            return InstanceHealthRO.unknown(it.message)
+            return when (it) {
+                is ResponseStatusException -> InstanceHealthRO.unknown(it.message, it.statusCode.value())
+                else -> InstanceHealthRO.unknown(it.message)
+            }
         }
 
         return when (health.status) {
