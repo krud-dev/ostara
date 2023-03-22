@@ -11,7 +11,8 @@ import ItemIconFormField from 'renderer/components/item/dialogs/forms/fields/Ite
 import { URL_REGEX } from 'renderer/constants/regex';
 import { IconViewer } from '../../../common/IconViewer';
 import { getActuatorUrls } from '../../../../utils/itemUtils';
-import { disableGlobalErrorMeta } from '../../../../apis/useQueryClient';
+import { Authentication$Typed } from '../../../../../common/manual_definitions';
+import AuthenticationDetailsForm from './authentication/AuthenticationDetailsForm';
 
 export type InstanceDetailsFormProps = {
   defaultValues?: Partial<InstanceFormValues>;
@@ -26,6 +27,7 @@ export type InstanceFormValues = {
   actuatorUrl: string;
   parentApplicationId?: string;
   parentApplicationName?: string;
+  authentication?: Authentication$Typed;
 };
 
 const InstanceDetailsForm: FunctionComponent<InstanceDetailsFormProps> = ({
@@ -160,31 +162,35 @@ const InstanceDetailsForm: FunctionComponent<InstanceDetailsFormProps> = ({
           />
 
           {!defaultValues?.parentApplicationId && (
-            <Controller
-              name="parentApplicationName"
-              rules={{
-                required: intl.formatMessage({ id: 'requiredField' }),
-                validate: (value) => !!value?.trim() || intl.formatMessage({ id: 'requiredField' }),
-              }}
-              control={control}
-              defaultValue=""
-              render={({ field: { ref, ...field }, fieldState: { invalid, error } }) => {
-                return (
-                  <TextField
-                    {...field}
-                    inputRef={ref}
-                    margin="normal"
-                    required
-                    fullWidth
-                    label={<FormattedMessage id="applicationName" />}
-                    type="text"
-                    autoComplete="off"
-                    error={invalid}
-                    helperText={error?.message}
-                  />
-                );
-              }}
-            />
+            <>
+              <Controller
+                name="parentApplicationName"
+                rules={{
+                  required: intl.formatMessage({ id: 'requiredField' }),
+                  validate: (value) => !!value?.trim() || intl.formatMessage({ id: 'requiredField' }),
+                }}
+                control={control}
+                defaultValue=""
+                render={({ field: { ref, ...field }, fieldState: { invalid, error } }) => {
+                  return (
+                    <TextField
+                      {...field}
+                      inputRef={ref}
+                      margin="normal"
+                      required
+                      fullWidth
+                      label={<FormattedMessage id="applicationName" />}
+                      type="text"
+                      autoComplete="off"
+                      error={invalid}
+                      helperText={error?.message}
+                    />
+                  );
+                }}
+              />
+
+              <AuthenticationDetailsForm />
+            </>
           )}
         </DialogContent>
         <DialogActions>

@@ -5,6 +5,8 @@ import { Box, Button, DialogActions, DialogContent, TextField } from '@mui/mater
 import { LoadingButton } from '@mui/lab';
 import InputAdornment from '@mui/material/InputAdornment';
 import ItemIconFormField from 'renderer/components/item/dialogs/forms/fields/ItemIconFormField';
+import { Authentication$Typed } from '../../../../../common/manual_definitions';
+import AuthenticationDetailsForm from './authentication/AuthenticationDetailsForm';
 
 export type ApplicationDetailsFormProps = {
   defaultValues?: ApplicationFormValues;
@@ -15,6 +17,7 @@ export type ApplicationDetailsFormProps = {
 export type ApplicationFormValues = {
   alias: string;
   icon?: string;
+  authentication: Authentication$Typed;
 };
 
 const ApplicationDetailsForm: FunctionComponent<ApplicationDetailsFormProps> = ({
@@ -76,6 +79,8 @@ const ApplicationDetailsForm: FunctionComponent<ApplicationDetailsFormProps> = (
               );
             }}
           />
+
+          <AuthenticationDetailsForm />
         </DialogContent>
         <DialogActions>
           <Box sx={{ flexGrow: 1 }} />

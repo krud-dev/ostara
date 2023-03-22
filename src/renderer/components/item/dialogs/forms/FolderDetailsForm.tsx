@@ -5,6 +5,8 @@ import { Box, Button, DialogActions, DialogContent, TextField } from '@mui/mater
 import { LoadingButton } from '@mui/lab';
 import InputAdornment from '@mui/material/InputAdornment';
 import ItemIconFormField from 'renderer/components/item/dialogs/forms/fields/ItemIconFormField';
+import { Authentication$Typed } from '../../../../../common/manual_definitions';
+import AuthenticationDetailsForm from './authentication/AuthenticationDetailsForm';
 
 export type FolderDetailsFormProps = {
   defaultValues?: FolderFormValues;
@@ -15,6 +17,7 @@ export type FolderDetailsFormProps = {
 export type FolderFormValues = {
   alias: string;
   icon?: string;
+  authentication: Authentication$Typed;
 };
 
 const FolderDetailsForm: FunctionComponent<FolderDetailsFormProps> = ({
@@ -76,6 +79,8 @@ const FolderDetailsForm: FunctionComponent<FolderDetailsFormProps> = ({
               );
             }}
           />
+
+          <AuthenticationDetailsForm />
         </DialogContent>
         <DialogActions>
           <Box sx={{ flexGrow: 1 }} />

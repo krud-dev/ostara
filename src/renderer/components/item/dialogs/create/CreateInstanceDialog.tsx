@@ -48,7 +48,7 @@ const CreateInstanceDialog: FunctionComponent<CreateInstanceDialogProps & NiceMo
               parentFolderId: parentFolderId,
               sort: sort ?? 1,
               color: INHERITED_COLOR_VALUE,
-              authentication: { type: 'none' },
+              authentication: data.authentication || { type: 'inherit' },
             };
 
             const application = await createApplicationState.mutateAsync({
