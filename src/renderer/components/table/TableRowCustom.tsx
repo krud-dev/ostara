@@ -6,7 +6,6 @@ import TableCellData from 'renderer/components/table/data/TableCellData';
 import TableRowAction from 'renderer/components/table/action/TableRowAction';
 import { alpha } from '@mui/material/styles';
 import ToolbarButton from '../common/ToolbarButton';
-import { KeyboardArrowDown, KeyboardArrowRight } from '@mui/icons-material';
 
 type TableRowCustomProps<EntityItem> = {
   row: EntityItem;

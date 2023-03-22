@@ -12,12 +12,12 @@ import {
   TABLE_PAGINATION_HEIGHT,
   TABLE_SCROLL_CONTAINER_ID,
 } from 'renderer/constants/ui';
-import TableSkeleton from 'renderer/components/table/TableSkeleton';
 import { useTable } from 'renderer/components/table/TableContext';
 import { useTheme } from '@mui/material/styles';
 import { useScrollSync } from 'renderer/hooks/useScrollSync';
 import useElementDocumentHeight from 'renderer/hooks/useElementDocumentHeight';
 import { useUpdateEffect } from 'react-use';
+import LogoLoader from '../common/LogoLoader';
 
 type TableCustomProps<EntityItem> = {};
 
@@ -69,26 +69,38 @@ export default function TableCustom<EntityItem>({}: TableCustomProps<EntityItem>
           }}
           options={{ wheelPropagation: true }}
         >
-          <TableContainer
-            sx={{
-              width: 'auto',
-              minWidth: '100%',
-              position: 'relative',
-              overflow: 'hidden',
-              display: 'inline-block',
-            }}
-          >
-            <Table>
-              <TableHeadCustom sx={{ height: '0px', maxHeight: '0px', overflow: 'hidden', visibility: 'collapse' }} />
-              <TableBody>
-                {loading && <TableSkeleton />}
-                {empty && <TableNoData />}
-                {displayRows.map((row) => (
-                  <TableRowCustom row={row} key={entity.getId(row)} />
-                ))}
-              </TableBody>
-            </Table>
-          </TableContainer>
+          {loading ? (
+            <Box
+              sx={{
+                height: '100%',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+              }}
+            >
+              <LogoLoader />
+            </Box>
+          ) : (
+            <TableContainer
+              sx={{
+                width: 'auto',
+                minWidth: '100%',
+                position: 'relative',
+                overflow: 'hidden',
+                display: 'inline-block',
+              }}
+            >
+              <Table>
+                <TableHeadCustom sx={{ height: '0px', maxHeight: '0px', overflow: 'hidden', visibility: 'collapse' }} />
+                <TableBody>
+                  {empty && <TableNoData />}
+                  {displayRows.map((row) => (
+                    <TableRowCustom row={row} key={entity.getId(row)} />
+                  ))}
+                </TableBody>
+              </Table>
+            </TableContainer>
+          )}
         </PerfectScrollbar>
       </Box>
 
