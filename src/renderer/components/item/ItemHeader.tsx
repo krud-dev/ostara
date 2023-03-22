@@ -75,16 +75,7 @@ export default function ItemHeader({ item }: ItemHeaderProps) {
             </Typography>
           </Tooltip>
 
-          <Typography
-            variant="body2"
-            sx={{
-              color: healthStatusColor || 'text.secondary',
-              whiteSpace: 'nowrap',
-              overflow: 'hidden',
-              textOverflow: 'ellipsis',
-            }}
-            noWrap
-          >
+          <Typography variant="body2" sx={{ color: healthStatusColor || 'text.secondary' }} noWrap>
             {healthTextId ? <FormattedMessage id={healthTextId} /> : EMPTY_STRING}
           </Typography>
         </Box>

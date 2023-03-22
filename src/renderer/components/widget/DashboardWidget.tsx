@@ -5,6 +5,9 @@ import ProgressCircleDashboardWidget from 'renderer/components/widget/card/Progr
 import StackedTimelineDashboardWidget from 'renderer/components/widget/card/StackedTimelineDashboardWidget';
 import DataBarDashboardWidget from 'renderer/components/widget/card/DataBarDashboardWidget';
 import { ItemRO } from '../../definitions/daemon';
+import PercentCircleDashboardWidget from './card/PercentCircleDashboardWidget';
+import CountdownDashboardWidget from './card/CountdownDashboardWidget';
+import HealthStatusDashboardWidget from './card/HealthStatusDashboardWidget';
 
 interface DashboardWidgetProps {
   widget: Widget;
@@ -17,10 +20,16 @@ const DashboardWidget: FunctionComponent<DashboardWidgetProps> = ({ widget, item
     switch (widget.type) {
       case 'progress-circle':
         return ProgressCircleDashboardWidget;
+      case 'percent-circle':
+        return PercentCircleDashboardWidget;
       case 'stacked-timeline':
         return StackedTimelineDashboardWidget;
       case 'data-bar':
         return DataBarDashboardWidget;
+      case 'countdown':
+        return CountdownDashboardWidget;
+      case 'health-status':
+        return HealthStatusDashboardWidget;
       default:
         return NotSupportedDashboardWidget;
     }

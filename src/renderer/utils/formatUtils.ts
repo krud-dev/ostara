@@ -16,6 +16,8 @@ export const formatWidgetValue = (value: unknown, valueType: WidgetValueType, in
   switch (valueType) {
     case 'number':
       return isNumber(value) ? roundNumber(value, 2).toString() : toString(value);
+    case 'percent':
+      return isNumber(value) ? `${(value * 100).toFixed(2)}%` : toString(value);
     case 'array':
       return isArray(value) ? value.join(', ') : toString(value);
     case 'bytes': {

@@ -33,6 +33,15 @@ export type DataBarWidget = BaseWidgetDefinition & {
   }[];
 };
 
+export type CountdownWidget = BaseWidgetDefinition & {
+  type: 'countdown';
+  metricName: string;
+};
+
+export type HealthStatusWidget = BaseWidgetDefinition & {
+  type: 'health-status';
+};
+
 export type ProgressCircleWidget = BaseWidgetDefinition & {
   type: 'progress-circle';
   valueType: WidgetValueType;
@@ -46,10 +55,28 @@ export type ProgressCircleWidget = BaseWidgetDefinition & {
   }[];
 };
 
-export type Widget = StackedTimelineWidget | DataBarWidget | ProgressCircleWidget;
+export type PercentCircleWidget = BaseWidgetDefinition & {
+  type: 'percent-circle';
+  metricName: string;
+  titleId: string;
+  color: string;
+  colorThresholds: {
+    value: number;
+    color: string;
+  }[];
+};
+
+export type Widget =
+  | StackedTimelineWidget
+  | DataBarWidget
+  | CountdownWidget
+  | HealthStatusWidget
+  | ProgressCircleWidget
+  | PercentCircleWidget;
 
 export type WidgetValueType =
   | 'number'
+  | 'percent'
   | 'string'
   | 'boolean'
   | 'object'

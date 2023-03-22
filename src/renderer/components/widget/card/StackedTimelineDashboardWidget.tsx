@@ -65,7 +65,7 @@ const StackedTimelineDashboardWidget: FunctionComponent<DashboardWidgetCardProps
 
   return (
     <DashboardGenericCard title={<FormattedMessage id={widget.titleId} />} loading={loading} empty={empty}>
-      <AreaMultiple series={data} labels={chartLabels} colors={chartColors} tickAmount={MAX_DATA_POINTS / 2} />
+      <AreaMultiple series={data} labels={chartLabels} colors={chartColors} tickAmount={MAX_DATA_POINTS / 4} />
     </DashboardGenericCard>
   );
 };

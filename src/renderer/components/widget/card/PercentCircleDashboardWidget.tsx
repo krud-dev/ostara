@@ -1,5 +1,5 @@
 import React, { FunctionComponent, useCallback, useMemo, useState } from 'react';
-import { DashboardWidgetCardProps, ProgressCircleWidget } from 'renderer/components/widget/widget';
+import { DashboardWidgetCardProps, PercentCircleWidget } from 'renderer/components/widget/widget';
 import DashboardGenericCard from 'renderer/components/widget/card/DashboardGenericCard';
 import useWidgetSubscribeToMetrics from 'renderer/components/widget/hooks/useWidgetSubscribeToMetrics';
 import { chain, isEmpty } from 'lodash';
@@ -7,17 +7,17 @@ import RadialBarSingle from 'renderer/components/widget/pure/RadialBarSingle';
 import { InstanceMetricRO } from '../../../../common/generated_definitions';
 import { FormattedMessage, useIntl } from 'react-intl';
 
-const ProgressCircleDashboardWidget: FunctionComponent<DashboardWidgetCardProps<ProgressCircleWidget>> = ({
+const PercentCircleDashboardWidget: FunctionComponent<DashboardWidgetCardProps<PercentCircleWidget>> = ({
   widget,
   item,
 }) => {
   const intl = useIntl();
 
-  const [data, setData] = useState<{ current?: number; max?: number }>({ current: undefined, max: undefined });
+  const [data, setData] = useState<{ percent?: number }>({ percent: undefined });
 
   const title = useMemo<string>(() => intl.formatMessage({ id: widget.titleId }), [widget.titleId]);
-  const loading = useMemo<boolean>(() => data.current === undefined || data.max === undefined, [data]);
-  const percent = useMemo<number>(() => Math.round(((data.current ?? 0) / (data.max ?? 1)) * 10000) / 100, [data]);
+  const loading = useMemo<boolean>(() => data.percent === undefined, [data]);
+  const percent = useMemo<number>(() => Math.round((data.percent ?? 0) * 10000) / 100, [data]);
   const color = useMemo<string>(() => {
     if (isEmpty(widget.colorThresholds)) {
       return widget.color;
@@ -33,16 +33,12 @@ const ProgressCircleDashboardWidget: FunctionComponent<DashboardWidgetCardProps<
       if (!metricDto) {
         return;
       }
-      if (metricDto.name === widget.currentMetricName) {
-        setData((prev) => ({ ...prev, current: metricDto.values[0].value }));
-      } else {
-        setData((prev) => ({ ...prev, max: metricDto.values[0].value }));
-      }
+      setData((prev) => ({ ...prev, percent: metricDto.values[0].value }));
     },
     [widget, setData]
   );
 
-  const metricNames = useMemo<string[]>(() => [widget.maxMetricName, widget.currentMetricName], [widget]);
+  const metricNames = useMemo<string[]>(() => [widget.metricName], [widget]);
 
   useWidgetSubscribeToMetrics(item.id, metricNames, onMetricUpdate);
 
@@ -52,4 +48,4 @@ const ProgressCircleDashboardWidget: FunctionComponent<DashboardWidgetCardProps<
     </DashboardGenericCard>
   );
 };
-export default ProgressCircleDashboardWidget;
+export default PercentCircleDashboardWidget;
