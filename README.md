@@ -2,7 +2,7 @@
 
 <p align="center">
     <a href="https://boost.krud.dev/">
-    <img width="256" src="https://github.com/krud-dev/spring-boost/blob/master/assets/icons/256x256.png?raw=true">
+    <img width="192" src="https://github.com/krud-dev/spring-boost/blob/master/assets/icons/256x256.png?raw=true">
     </a>
 </p>
 
