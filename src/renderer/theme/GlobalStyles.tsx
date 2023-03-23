@@ -72,6 +72,9 @@ export default function GlobalStyles() {
         },
 
         // Perfect Scrollbar
+        '.ps__rail-y, .ps__rail-x': {
+          zIndex: 1,
+        },
         '.ps__thumb-y, .ps__thumb-x': {
           backgroundColor: alpha(theme.palette.grey[600], 0.48),
         },
@@ -88,12 +91,12 @@ export default function GlobalStyles() {
         '::-webkit-scrollbar': {
           width: 10,
           height: 8,
-          backgroundColor: alpha(theme.palette.grey[600], 0.16),
+          backgroundColor: alpha(theme.palette.grey[600], 0.12),
         },
 
         '::-webkit-scrollbar-thumb': {
           background: alpha(theme.palette.grey[600], 0.24),
-          borderRadius: 6,
+          borderRadius: 10,
         },
 
         '::-webkit-scrollbar-corner': {
