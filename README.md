@@ -29,4 +29,4 @@ Pull requests are welcome. For major changes, please open an issue first to disc
 
 
 ## License
-Spring Boost is released under the \<TBD\>. See the [LICENSE](LICENSE) file for more details.
+Spring Boost is released under the Apache-2.0 License. See the [LICENSE](LICENSE) file for more details.
