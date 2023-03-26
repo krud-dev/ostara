@@ -10,5 +10,5 @@ contextBridge.exposeInMainWorld('ui', uiServiceBridge);
 contextBridge.exposeInMainWorld('isElectron', true);
 contextBridge.exposeInMainWorld('daemonAddress', daemonAddressSupplier());
 contextBridge.exposeInMainWorld('daemonWsAddress', daemonWsAddressSupplier());
-contextBridge.exposeInMainWorld('daemonHealthy', daemonHealthySupplier());
+contextBridge.exposeInMainWorld('daemonHealthy', daemonHealthySupplier);
 contextBridge.exposeInMainWorld('NODE_ENV', process.env.NODE_ENV);

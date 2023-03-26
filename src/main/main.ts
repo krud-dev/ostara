@@ -207,6 +207,7 @@ if (!gotInstanceLock) {
     .then(async () => {
       await createSplashWindow();
       systemEvents.on('daemon-ready', () => {
+        log.info('Creating main window (daemon ready event)');
         createMainWindow();
       });
       await initDaemon();
