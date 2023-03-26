@@ -1,4 +1,12 @@
-import React, { FunctionComponent, PropsWithChildren, useCallback, useContext, useEffect, useMemo } from 'react';
+import React, {
+  FunctionComponent,
+  PropsWithChildren,
+  useCallback,
+  useContext,
+  useEffect,
+  useMemo,
+  useState,
+} from 'react';
 import { LocaleInfo } from 'renderer/lang/lang';
 import locales from 'renderer/lang';
 import { useSubscribeToEvent } from 'renderer/apis/requests/subscriptions/subscribeToEvent';
@@ -8,9 +16,12 @@ import { useGetThemeSource } from 'renderer/apis/requests/ui/getThemeSource';
 import { useSetThemeSource } from 'renderer/apis/requests/ui/setThemeSource';
 import { useGetTheme } from 'renderer/apis/requests/ui/getTheme';
 import { useLocalStorageState } from '../hooks/useLocalStorageState';
+import { useLocation, useNavigate } from 'react-router-dom';
+import { urls } from '../routes/urls';
 
 export type UiContextProps = {
   developerMode: boolean;
+  daemonHealthy: boolean;
   themeSource: ThemeSource;
   setThemeSource: (themeSource: ThemeSource) => void;
   darkMode: boolean;
@@ -27,7 +38,12 @@ const UiContext = React.createContext<UiContextProps>(undefined!);
 interface UiProviderProps extends PropsWithChildren<any> {}
 
 const UiProvider: FunctionComponent<UiProviderProps> = ({ children }) => {
+  const navigate = useNavigate();
+  const { pathname } = useLocation();
+
   const developerMode = useMemo<boolean>(() => window.NODE_ENV === 'development', []);
+
+  const [daemonHealthy, setDaemonHealthy] = useState<boolean>(true);
 
   const [themeSource, setThemeSourceInternal] = useLocalStorageState<ThemeSource>('themeSource', 'system');
   const [darkMode, setDarkMode] = useLocalStorageState<boolean>('darkMode', true);
@@ -35,7 +51,16 @@ const UiProvider: FunctionComponent<UiProviderProps> = ({ children }) => {
   const [locale, setLocaleInternal] = useLocalStorageState<string>('locale', 'en');
   const localeInfo = useMemo<LocaleInfo>(() => locales[locale], [locale]);
 
+  const isRtl = useMemo<boolean>(() => localeInfo.direction === 'rtl', [localeInfo]);
+
   const [analyticsEnabled, setAnalyticsEnabled] = useLocalStorageState<boolean>('analyticsEnabled', true);
+
+  useEffect(() => {
+    const newPathname = daemonHealthy ? urls.home.url : urls.daemonUnhealthy.url;
+    if (newPathname !== pathname) {
+      navigate(newPathname);
+    }
+  }, [daemonHealthy]);
 
   const getThemeState = useGetTheme();
 
@@ -78,7 +103,39 @@ const UiProvider: FunctionComponent<UiProviderProps> = ({ children }) => {
     [setLocaleInternal]
   );
 
-  const isRtl = useMemo<boolean>(() => localeInfo.direction === 'rtl', [localeInfo]);
+  const subscribeToDaemonUnhealthyState = useSubscribeToEvent();
+
+  useEffect(() => {
+    let unsubscribe: (() => void) | undefined;
+    (async () => {
+      unsubscribe = await subscribeToDaemonUnhealthyState.mutateAsync({
+        event: 'app:daemonUnhealthy',
+        listener: (event: IpcRendererEvent) => {
+          setDaemonHealthy(false);
+        },
+      });
+    })();
+    return () => {
+      unsubscribe?.();
+    };
+  }, []);
+
+  const subscribeToDaemonHealthyState = useSubscribeToEvent();
+
+  useEffect(() => {
+    let unsubscribe: (() => void) | undefined;
+    (async () => {
+      unsubscribe = await subscribeToDaemonHealthyState.mutateAsync({
+        event: 'app:daemonHealthy',
+        listener: (event: IpcRendererEvent) => {
+          setDaemonHealthy(true);
+        },
+      });
+    })();
+    return () => {
+      unsubscribe?.();
+    };
+  }, []);
 
   const subscribeToThemeEventsState = useSubscribeToEvent();
 
@@ -101,6 +158,7 @@ const UiProvider: FunctionComponent<UiProviderProps> = ({ children }) => {
     <UiContext.Provider
       value={{
         developerMode,
+        daemonHealthy,
         themeSource,
         setThemeSource,
         darkMode,

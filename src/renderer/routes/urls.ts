@@ -13,6 +13,15 @@ export const urls = asUrlInfos({
     url: '/error',
     path: 'error',
   },
+  // Daemon Root
+  daemon: {
+    url: '/daemon',
+    path: 'daemon',
+  },
+  daemonUnhealthy: {
+    url: '/daemon/unhealthy',
+    path: 'unhealthy',
+  },
   // Navigator Root
   navigator: {
     url: '/navigator',

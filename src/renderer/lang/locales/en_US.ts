@@ -295,4 +295,7 @@ export default {
   key: 'Key',
   token: 'Token',
   effectiveAuthentication: 'Effective Authentication',
+  daemonIsDown: 'Daemon is Down',
+  backgroundServiceCrashed: 'The background service has crashed. Please restart the app.',
+  restartApp: 'Restart App',
 };

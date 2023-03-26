@@ -1,4 +1,4 @@
-import { BrowserWindow, nativeTheme } from 'electron';
+import { app, BrowserWindow, nativeTheme } from 'electron';
 import { ElectronTheme, ThemeSource } from './models/electronTheme';
 import log from 'electron-log';
 import electronDl, { download } from 'electron-dl';
@@ -46,6 +46,11 @@ class UiService {
 
   closeWindow(): void {
     this.window?.close();
+  }
+
+  restartApp(): void {
+    app.relaunch();
+    app.quit();
   }
 
   downloadFile(url: string, options?: electronDl.Options): void {

@@ -9,6 +9,7 @@ declare global {
     minimizeWindow(): Promise<void>;
     maximizeWindow(): Promise<void>;
     closeWindow(): Promise<void>;
+    restartApp(): Promise<void>;
     downloadFile(url: string, options?: electronDl.Options): Promise<void>;
     isMac: boolean;
     isWindows: boolean;

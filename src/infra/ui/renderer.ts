@@ -25,6 +25,10 @@ export const uiServiceBridge: UiServiceBridge = {
     return ipcRenderer.invoke('uiService:closeWindow');
   },
 
+  restartApp(): Promise<void> {
+    return ipcRenderer.invoke('uiService:restartApp');
+  },
+
   downloadFile(url: string, options?: electronDl.Options): Promise<void> {
     return ipcRenderer.invoke('uiService:downloadFile', url, options);
   },

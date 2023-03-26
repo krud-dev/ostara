@@ -31,6 +31,8 @@ import InstanceThreadProfiling from '../pages/navigator/instance/threaddumps';
 import InstanceMetrics from '../pages/navigator/instance/metrics';
 import InstanceBeansGraph from '../pages/navigator/instance/beans-graph';
 import InstanceMappings from '../pages/navigator/instance/mappings';
+import DaemonUnhealthy from '../layout/daemon/components/DaemonUnhealthy';
+import DaemonLayout from '../layout/daemon/DaemonLayout';
 
 export default function Router() {
   return useRoutes([
@@ -167,6 +169,19 @@ export default function Router() {
           ],
         },
         { path: '*', element: <Navigate to={urls.error.url} replace /> },
+      ],
+    },
+
+    // Daemon Routes
+    {
+      path: urls.daemon.path,
+      element: <DaemonLayout />,
+      children: [
+        { path: '', element: <Navigate to={urls.applicationInstances.path} replace /> },
+        {
+          path: urls.daemonUnhealthy.path,
+          element: <DaemonUnhealthy />,
+        },
       ],
     },
 

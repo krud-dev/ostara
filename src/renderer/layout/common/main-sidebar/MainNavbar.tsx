@@ -14,7 +14,7 @@ import SettingsMenu from './navbar/SettingsMenu';
 type MainNavbarProps = {};
 
 export default function MainNavbar({}: MainNavbarProps) {
-  const { isRtl } = useUi();
+  const { isRtl, daemonHealthy } = useUi();
   const navigate = useNavigate();
 
   const homeHandler = useCallback(() => {
@@ -48,31 +48,33 @@ export default function MainNavbar({}: MainNavbarProps) {
       }}
     >
       <Toolbar disableGutters sx={{ flexGrow: 1, pl: COMPONENTS_SPACING, pr: !isMac ? '0' : COMPONENTS_SPACING }}>
-        <Stack direction="row" spacing={0.5} sx={{ pl: isMac ? 8 : 0 }}>
-          <Box sx={{ '-webkit-app-region': 'no-drag' }}>
-            <IconButton size={'small'} onClick={homeHandler} sx={{ color: 'text.primary' }}>
-              <Home fontSize={'medium'} />
-            </IconButton>
-          </Box>
-          <Box sx={{ '-webkit-app-region': 'no-drag' }}>
-            <IconButton size={'small'} onClick={backHandler} sx={{ color: 'text.primary' }}>
-              <IconViewer
-                icon={isRtl ? 'KeyboardArrowRightOutlined' : 'KeyboardArrowLeftOutlined'}
-                fontSize={'medium'}
-                sx={{ color: 'text.primary' }}
-              />
-            </IconButton>
-          </Box>
-          <Box sx={{ '-webkit-app-region': 'no-drag' }}>
-            <IconButton size={'small'} onClick={forwardHandler} sx={{ color: 'text.primary' }}>
-              <IconViewer
-                icon={isRtl ? 'KeyboardArrowLeftOutlined' : 'KeyboardArrowRightOutlined'}
-                fontSize={'medium'}
-                sx={{ color: 'text.primary' }}
-              />
-            </IconButton>
-          </Box>
-        </Stack>
+        {daemonHealthy && (
+          <Stack direction="row" spacing={0.5} sx={{ pl: isMac ? 8 : 0 }}>
+            <Box sx={{ '-webkit-app-region': 'no-drag' }}>
+              <IconButton size={'small'} onClick={homeHandler} sx={{ color: 'text.primary' }}>
+                <Home fontSize={'medium'} />
+              </IconButton>
+            </Box>
+            <Box sx={{ '-webkit-app-region': 'no-drag' }}>
+              <IconButton size={'small'} onClick={backHandler} sx={{ color: 'text.primary' }}>
+                <IconViewer
+                  icon={isRtl ? 'KeyboardArrowRightOutlined' : 'KeyboardArrowLeftOutlined'}
+                  fontSize={'medium'}
+                  sx={{ color: 'text.primary' }}
+                />
+              </IconButton>
+            </Box>
+            <Box sx={{ '-webkit-app-region': 'no-drag' }}>
+              <IconButton size={'small'} onClick={forwardHandler} sx={{ color: 'text.primary' }}>
+                <IconViewer
+                  icon={isRtl ? 'KeyboardArrowLeftOutlined' : 'KeyboardArrowRightOutlined'}
+                  fontSize={'medium'}
+                  sx={{ color: 'text.primary' }}
+                />
+              </IconButton>
+            </Box>
+          </Stack>
+        )}
 
         <Box sx={{ flexGrow: 1 }} />
 
