@@ -6,23 +6,39 @@ import { FormattedMessage } from 'react-intl';
 import PerfectScrollbar from 'react-perfect-scrollbar';
 import { useGetInstanceEnvQuery } from '../../../apis/requests/instance/env/getInstanceEnv';
 import { useUpdateEffect } from 'react-use';
+import { isInstanceInactive } from '../../../utils/itemUtils';
 
 type InstanceActiveProfilesProps = { item: InstanceRO };
 
 export default function InstanceActiveProfiles({ item }: InstanceActiveProfilesProps) {
-  const envState = useGetInstanceEnvQuery({ instanceId: item.id }, { disableGlobalError: true });
+  const instanceInactive = useMemo<boolean>(() => isInstanceInactive(item), [item]);
+
+  const envState = useGetInstanceEnvQuery(
+    { instanceId: item.id },
+    { enabled: !instanceInactive, disableGlobalError: true }
+  );
 
   useUpdateEffect(() => {
-    envState.refetch();
+    if (!instanceInactive) {
+      envState.refetch();
+    }
   }, [item.health.status]);
 
-  const error = useMemo(() => envState.error, [envState]);
-  const activeProfiles = useMemo<string[] | undefined>(
-    () => (error ? undefined : envState.data?.activeProfiles),
-    [envState, error]
-  );
-  const loading = useMemo(() => !activeProfiles && !error, [activeProfiles, error]);
-  const empty = useMemo(() => !!activeProfiles && activeProfiles.length === 0 && !error, [activeProfiles, error]);
+  const status = useMemo<'error' | 'success' | 'loading' | 'empty' | 'inactive'>(() => {
+    if (instanceInactive) {
+      return 'inactive';
+    }
+    if (envState.error) {
+      return 'error';
+    }
+    if (!envState.data) {
+      return 'loading';
+    }
+    if (!envState.data.activeProfiles?.length) {
+      return 'empty';
+    }
+    return 'success';
+  }, [instanceInactive, envState]);
 
   return (
     <Box
@@ -34,22 +50,27 @@ export default function InstanceActiveProfiles({ item }: InstanceActiveProfilesP
       }}
     >
       <>
-        {error && (
+        {status === 'inactive' && (
+          <Typography variant={'caption'} sx={{ color: 'text.secondary', px: COMPONENTS_SPACING }}>
+            <FormattedMessage id={'cannotConnectToInstance'} />
+          </Typography>
+        )}
+        {status === 'error' && (
           <Typography variant={'caption'} sx={{ color: 'error.main', px: COMPONENTS_SPACING }}>
             <FormattedMessage id={'errorLoadingActiveProfiles'} />
           </Typography>
         )}
-        {loading && (
+        {status === 'loading' && (
           <Typography variant={'caption'} sx={{ color: 'text.secondary', px: COMPONENTS_SPACING }}>
             <FormattedMessage id={'loadingActiveProfiles'} />
           </Typography>
         )}
-        {empty && (
+        {status === 'empty' && (
           <Typography variant={'caption'} sx={{ color: 'text.secondary', px: COMPONENTS_SPACING }}>
             <FormattedMessage id={'noActiveProfiles'} />
           </Typography>
         )}
-        {activeProfiles && !empty && (
+        {status === 'success' && (
           <Box sx={{ width: '100%' }}>
             <PerfectScrollbar options={{ wheelPropagation: true, suppressScrollY: true }}>
               <Stack
@@ -58,7 +79,7 @@ export default function InstanceActiveProfiles({ item }: InstanceActiveProfilesP
                 alignItems={'center'}
                 sx={{ height: '100%', display: 'inline-flex', px: COMPONENTS_SPACING }}
               >
-                {activeProfiles.map((profile) => (
+                {envState.data?.activeProfiles?.map((profile) => (
                   <Tooltip title={<FormattedMessage id={'activeProfile'} />} key={profile}>
                     <Chip label={profile} size={'small'} color={'default'} />
                   </Tooltip>

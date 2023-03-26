@@ -113,6 +113,10 @@ export const getItemNameTooltip = (item: ItemRO): ReactNode | undefined => {
   return undefined;
 };
 
+export const isInstanceInactive = (instance: InstanceRO): boolean => {
+  return instance.health.status === 'UNREACHABLE' || instance.health.status === 'INVALID';
+};
+
 const HEALTH_STATUS_COLORS_INDEX = 600;
 
 export const getInstanceHealthStatusColor = (instanceHealth: InstanceHealthRO): string | undefined => {

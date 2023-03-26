@@ -298,4 +298,5 @@ export default {
   daemonIsDown: 'Daemon is Down',
   backgroundServiceCrashed: 'The background service has crashed. Please restart the app.',
   restartApp: 'Restart App',
+  cannotConnectToInstance: 'Cannot connect to instance',
 };

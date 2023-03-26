@@ -26,11 +26,14 @@ import ItemHeader from 'renderer/components/item/ItemHeader';
 import { InstanceAbility, InstanceRO } from '../../../../common/generated_definitions';
 import InstanceActiveProfiles from './InstanceActiveProfiles';
 import { useGetInstanceAbilitiesQuery } from '../../../apis/requests/instance/getInstanceAbilities';
+import { isInstanceInactive } from '../../../utils/itemUtils';
 
 type InstanceSidebarProps = { item: InstanceRO; disabled: boolean; width: number };
 
 export default function InstanceSidebar({ item, disabled, width }: InstanceSidebarProps) {
-  const abilitiesState = useGetInstanceAbilitiesQuery({ instanceId: item.id });
+  const instanceInactive = useMemo<boolean>(() => isInstanceInactive(item), [item]);
+
+  const abilitiesState = useGetInstanceAbilitiesQuery({ instanceId: item.id }, { enabled: !instanceInactive });
 
   const isServiceInactive = useCallback(
     (ability: InstanceAbility): boolean => {
@@ -41,7 +44,7 @@ export default function InstanceSidebar({ item, disabled, width }: InstanceSideb
 
   const navConfig = useMemo<SidebarConfig | undefined>(
     () =>
-      abilitiesState.data
+      abilitiesState.data || instanceInactive
         ? [
             {
               id: 'insights',
@@ -196,7 +199,7 @@ export default function InstanceSidebar({ item, disabled, width }: InstanceSideb
             },
           ]
         : undefined,
-    [item, disabled, isServiceInactive]
+    [item, disabled, isServiceInactive, instanceInactive]
   );
 
   return (
