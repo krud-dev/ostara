@@ -1,25 +1,19 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useGetApplicationEffectiveAuthentication } from '../../../../apis/requests/application/authentication/getApplicationEffectiveAuthentication';
-import { Authentication, EffectiveAuthentication } from '../../../../../common/generated_definitions';
+import { EffectiveAuthentication } from '../../../../../common/generated_definitions';
 import { useGetFolderEffectiveAuthentication } from '../../../../apis/requests/folder/authentication/getFolderEffectiveAuthentication';
-import { useShallowCompareEffect } from 'react-use';
 
 const useEffectiveAuthentication = (options: {
   applicationId?: string;
   folderId?: string;
-  authentication?: Authentication;
 }): Partial<EffectiveAuthentication> => {
-  const [effectiveAuthentication, setEffectiveAuthentication] = useState<Partial<EffectiveAuthentication>>({
-    authentication: options.authentication,
-  });
+  const [effectiveAuthentication, setEffectiveAuthentication] = useState<Partial<EffectiveAuthentication>>({});
 
   const applicationAuthenticationState = useGetApplicationEffectiveAuthentication({ cacheTime: 0 });
   const folderAuthenticationState = useGetFolderEffectiveAuthentication({ cacheTime: 0 });
 
-  useShallowCompareEffect(() => {
-    if (options.authentication && options.authentication.type !== 'inherit') {
-      setEffectiveAuthentication({ authentication: options.authentication });
-    } else if (options.applicationId) {
+  useEffect(() => {
+    if (options.applicationId) {
       (async () => {
         try {
           const result = await applicationAuthenticationState.mutateAsync({ applicationId: options.applicationId! });
@@ -36,7 +30,7 @@ const useEffectiveAuthentication = (options: {
     } else {
       setEffectiveAuthentication({ authentication: { type: 'none' } });
     }
-  }, [options.authentication, options.applicationId, options.folderId]);
+  }, [options.applicationId, options.folderId]);
 
   return effectiveAuthentication;
 };

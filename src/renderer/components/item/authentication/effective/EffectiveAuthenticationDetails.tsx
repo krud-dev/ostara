@@ -1,5 +1,10 @@
 import React, { ComponentType, FunctionComponent, useCallback, useEffect, useMemo, useState } from 'react';
-import { ApplicationRO, EffectiveAuthentication, FolderRO } from '../../../../../common/generated_definitions';
+import {
+  ApplicationRO,
+  Authentication,
+  EffectiveAuthentication,
+  FolderRO,
+} from '../../../../../common/generated_definitions';
 import { Card, CardContent, Stack, Typography } from '@mui/material';
 import { FormattedMessage } from 'react-intl';
 import DetailsLabelValueHorizontal from '../../../table/details/DetailsLabelValueHorizontal';
@@ -16,10 +21,12 @@ import { applicationCrudEntity } from '../../../../apis/requests/crud/entity/ent
 import { folderCrudEntity } from '../../../../apis/requests/crud/entity/entities/folder.crudEntity';
 
 export type EffectiveAuthenticationDetailsProps = {
+  authentication?: Authentication;
   effectiveAuthentication: Partial<EffectiveAuthentication>;
 };
 
 const EffectiveAuthenticationDetails: FunctionComponent<EffectiveAuthenticationDetailsProps> = ({
+  authentication,
   effectiveAuthentication,
 }: EffectiveAuthenticationDetailsProps) => {
   const [internalEffectiveAuthentication, setInternalEffectiveAuthentication] =
@@ -30,8 +37,11 @@ const EffectiveAuthenticationDetails: FunctionComponent<EffectiveAuthenticationD
   }, [effectiveAuthentication]);
 
   const show = useMemo<boolean>(
-    () => !!internalEffectiveAuthentication.sourceId && !!internalEffectiveAuthentication.sourceType,
-    [internalEffectiveAuthentication]
+    () =>
+      (!authentication || authentication.type === 'inherit') &&
+      !!internalEffectiveAuthentication.sourceId &&
+      !!internalEffectiveAuthentication.sourceType,
+    [authentication, internalEffectiveAuthentication]
   );
   const loading = useMemo<boolean>(
     () => !internalEffectiveAuthentication.authentication,

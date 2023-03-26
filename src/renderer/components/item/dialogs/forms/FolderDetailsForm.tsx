@@ -1,12 +1,12 @@
 import { FormattedMessage, useIntl } from 'react-intl';
 import React, { FunctionComponent, useCallback } from 'react';
-import { Controller, FormProvider, useForm } from 'react-hook-form';
+import { Controller, FormProvider, useForm, useWatch } from 'react-hook-form';
 import { Box, Button, DialogActions, DialogContent, TextField } from '@mui/material';
 import { LoadingButton } from '@mui/lab';
 import InputAdornment from '@mui/material/InputAdornment';
 import ItemIconFormField from 'renderer/components/item/dialogs/forms/fields/ItemIconFormField';
 import AuthenticationDetailsForm from '../../authentication/forms/AuthenticationDetailsForm';
-import { FolderModifyRequestRO } from '../../../../../common/generated_definitions';
+import { Authentication, FolderModifyRequestRO } from '../../../../../common/generated_definitions';
 import useEffectiveAuthentication from '../../authentication/hooks/useEffectiveAuthentication';
 import EffectiveAuthenticationDetails from '../../authentication/effective/EffectiveAuthenticationDetails';
 
@@ -30,7 +30,6 @@ const FolderDetailsForm: FunctionComponent<FolderDetailsFormProps> = ({
     control,
     handleSubmit,
     formState: { isSubmitting },
-    watch,
   } = methods;
 
   const submitHandler = handleSubmit(async (data): Promise<void> => {
@@ -41,10 +40,13 @@ const FolderDetailsForm: FunctionComponent<FolderDetailsFormProps> = ({
     onCancel();
   }, [onCancel]);
 
-  const authentication = watch('authentication');
+  const authentication = useWatch<FolderFormValues>({
+    control: control,
+    name: 'authentication',
+    defaultValue: defaultValues?.authentication,
+  }) as Authentication | undefined;
 
   const effectiveAuthentication = useEffectiveAuthentication({
-    authentication: authentication,
     folderId: defaultValues?.parentFolderId,
   });
 
@@ -88,7 +90,10 @@ const FolderDetailsForm: FunctionComponent<FolderDetailsFormProps> = ({
 
           <AuthenticationDetailsForm />
 
-          <EffectiveAuthenticationDetails effectiveAuthentication={effectiveAuthentication} />
+          <EffectiveAuthenticationDetails
+            authentication={authentication}
+            effectiveAuthentication={effectiveAuthentication}
+          />
         </DialogContent>
         <DialogActions>
           <Box sx={{ flexGrow: 1 }} />
