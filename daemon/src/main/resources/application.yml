@@ -48,6 +48,8 @@ cache:
       expire-after-write: 10m
     - name: applicationHealthCache
       expire-after-write: 10m
+    - name: applicationInstancesHealthCache
+      expire-after-write: 10m
     - name: applicationSystemPropertiesCache
       expire-after-write: 30m
     - name: applicationSystemEnvironmentCache

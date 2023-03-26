@@ -10,7 +10,11 @@ import dev.krud.boost.daemon.configuration.instance.messaging.InstanceDeletedEve
 import dev.krud.boost.daemon.configuration.instance.messaging.InstanceHealthChangedEventMessage
 import dev.krud.boost.daemon.configuration.instance.messaging.InstanceMovedEventMessage
 import dev.krud.boost.daemon.utils.resolve
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import org.springframework.cache.CacheManager
+import org.springframework.cache.annotation.CachePut
 import org.springframework.integration.annotation.ServiceActivator
 import org.springframework.integration.channel.PublishSubscribeChannel
 import org.springframework.messaging.Message
@@ -25,13 +29,38 @@ class ApplicationHealthService(
     cacheManager: CacheManager
 ) {
     private val applicationHealthCache by cacheManager.resolve()
+    private val applicationInstancesHealthCache by cacheManager.resolve()
+    private val scope = CoroutineScope(Dispatchers.Default)
 
+    fun getCachedHealth(applicationId: UUID): ApplicationHealthRO {
+        val cached = applicationHealthCache.get(applicationId, ApplicationHealthRO::class.java)
+        if (cached != null) {
+            return cached
+        }
+
+        scope.launch {
+            val health = getHealth(applicationId)
+            systemEventsChannel.send(
+                ApplicationHealthUpdatedEventMessage(
+                    ApplicationHealthUpdatedEventMessage.Payload(
+                        applicationId,
+                        health
+                    )
+                )
+            )
+            applicationHealthCache.put(applicationId, getHealth(applicationId))
+        }
+
+        return  ApplicationHealthRO.pending()
+    }
+
+    @CachePut(cacheNames = ["applicationHealthCache"], key = "#application.id")
     fun getHealth(application: Application): ApplicationHealthRO {
         if (application.instanceCount == 0) {
             return ApplicationHealthRO.empty()
         }
         val instances = applicationService.getApplicationInstances(application.id)
-        val entries = applicationHealthCache.get(application.id) {
+        val entries = applicationInstancesHealthCache.get(application.id) {
             instances.associate { it.id to instanceHealthService.getHealth(it).status }
         }!!
 
@@ -42,6 +71,7 @@ class ApplicationHealthService(
         )
     }
 
+    @CachePut(cacheNames = ["applicationHealthCache"], key = "#applicationId")
     fun getHealth(applicationId: UUID): ApplicationHealthRO = getHealth(
         applicationService.getApplicationOrThrow(applicationId)
     )
@@ -64,7 +94,7 @@ class ApplicationHealthService(
     }
 
     protected fun handleInstanceHealthChange(applicationId: UUID, instanceId: UUID, newStatus: InstanceHealthStatus?) {
-        val value = applicationHealthCache.get(applicationId) {
+        val value = applicationInstancesHealthCache.get(applicationId) {
             if (newStatus == null) {
                 emptyMap()
             } else {
@@ -81,7 +111,7 @@ class ApplicationHealthService(
             instanceId to newStatus
         )
 
-        applicationHealthCache.put(
+        applicationInstancesHealthCache.put(
             applicationId,
             newValue
         )
