@@ -68,7 +68,7 @@ sealed interface Authentication {
     data class BearerToken(
         val token: String = ""
     ) : Authentication {
-        override val type: String = "bearer"
+        override val type: String = "bearer-token"
         override val authenticator: Authenticator get() = BearerTokenAuthenticator(token)
     }
 }
