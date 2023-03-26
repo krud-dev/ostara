@@ -15,7 +15,7 @@ class InstanceService(
 ) {
 
     fun getAllInstances(): Iterable<Instance> {
-        return instanceKrud.searchByFilter {  }
+        return instanceKrud.searchByFilter { }
     }
 
     fun getInstance(instanceId: UUID): Instance? {
@@ -30,10 +30,14 @@ class InstanceService(
     fun moveInstance(instanceId: UUID, newParentApplicationId: UUID, newSort: Double?): Instance {
         val instance = getInstanceOrThrow(instanceId)
         val oldParentApplicationId = instance.parentApplicationId
+        if (oldParentApplicationId == newParentApplicationId && instance.sort == newSort) {
+            return instance
+        }
+
         instance.parentApplicationId = newParentApplicationId
         instance.sort = newSort
         val updatedInstance = instanceKrud.update(instance)
-        systemEventsChannel.send(InstanceMovedEventMessage(InstanceMovedEventMessage.Payload(instanceId, oldParentApplicationId, newParentApplicationId)))
+        systemEventsChannel.send(InstanceMovedEventMessage(InstanceMovedEventMessage.Payload(instanceId, oldParentApplicationId, newParentApplicationId, newSort)))
         return updatedInstance
     }
 }

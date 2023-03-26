@@ -8,7 +8,7 @@ data class InstanceHealthRO(
     val statusText: String?,
     val lastUpdateTime: Date,
     val lastStatusChangeTime: Date,
-    val statusCode: Int? = null,
+    val statusCode: Int? = null
 ) {
     companion object {
         val UNKNOWN = InstanceHealthRO(

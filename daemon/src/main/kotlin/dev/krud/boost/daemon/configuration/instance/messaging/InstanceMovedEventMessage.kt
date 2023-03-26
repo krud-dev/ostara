@@ -7,6 +7,7 @@ class InstanceMovedEventMessage(payload: Payload) : AbstractMessage<InstanceMove
     data class Payload(
         val instanceId: UUID,
         val oldParentApplicationId: UUID,
-        val newParentApplicationId: UUID
+        val newParentApplicationId: UUID,
+        val newSort: Double?
     )
 }

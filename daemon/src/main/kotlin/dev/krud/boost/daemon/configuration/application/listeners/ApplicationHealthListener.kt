@@ -1,4 +1,4 @@
-package dev.krud.boost.daemon.configuration.application
+package dev.krud.boost.daemon.configuration.application.listeners
 
 import dev.krud.boost.daemon.configuration.application.messaging.ApplicationHealthUpdatedEventMessage
 import org.springframework.integration.annotation.ServiceActivator

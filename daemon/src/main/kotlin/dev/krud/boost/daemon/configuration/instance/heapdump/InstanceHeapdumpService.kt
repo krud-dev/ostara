@@ -57,7 +57,7 @@ class InstanceHeapdumpService(
             instanceHeapdumpReferenceKrud.create(
                 InstanceHeapdumpReference(
                     instanceId
-                ),
+                )
             )
         )
     }

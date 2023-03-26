@@ -12,7 +12,6 @@ import jakarta.validation.Validator
 import jakarta.validation.constraints.NotEmpty
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.HttpStatus
-import org.springframework.http.HttpStatusCode
 import org.springframework.web.bind.annotation.*
 import org.springframework.web.server.ResponseStatusException
 import java.util.*
@@ -23,10 +22,11 @@ abstract class AbstractCrudController<Entity : AbstractEntity, RO : Any, CreateD
     private val entityClazz: KClass<Entity>,
     private val roClazz: KClass<RO>,
     private val shapeShift: ShapeShift,
-    private val krud: Krud<Entity, UUID>,
+    private val krud: Krud<Entity, UUID>
 ) : AbstractReadOnlyCrudController<Entity, RO>(entityClazz, roClazz, shapeShift, krud) {
     @Autowired
     private lateinit var validator: Validator
+
     /**
      * Create a new resource
      */
@@ -73,7 +73,9 @@ abstract class AbstractCrudController<Entity : AbstractEntity, RO : Any, CreateD
             if (violations.isNotEmpty()) {
                 val e = ConstraintViolationException(violations)
                 throw ResponseStatusException(
-                    HttpStatus.BAD_REQUEST, e.message, e
+                    HttpStatus.BAD_REQUEST,
+                    e.message,
+                    e
                 )
             }
         } // TODO: temp since validation does not seem to apply otherwise, conform with Spring's validation response type

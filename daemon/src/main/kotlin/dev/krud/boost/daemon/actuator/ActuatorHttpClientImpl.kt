@@ -37,7 +37,6 @@ import dev.krud.boost.daemon.exception.throwForbidden
 import dev.krud.boost.daemon.exception.throwInternalServerError
 import dev.krud.boost.daemon.exception.throwNotFound
 import dev.krud.boost.daemon.exception.throwServiceUnavailable
-import dev.krud.boost.daemon.exception.throwStatusCode
 import dev.krud.boost.daemon.exception.throwUnauthorized
 import dev.krud.boost.daemon.jackson.MultiDateParsingModule
 import okhttp3.Authenticator

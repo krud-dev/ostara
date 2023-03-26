@@ -33,6 +33,33 @@ class InstanceHealthService(
             ?: InstanceHealthRO.unknown()
     }
 
+    @ServiceActivator(inputChannel = "instanceHealthCheckRequestChannel")
+    fun updateInstanceHealth(instanceId: UUID) {
+        val instance = instanceService.getInstanceOrThrow(instanceId)
+        updateInstanceHealthAndReturn(instance)
+    }
+
+    fun updateInstanceHealthAndReturn(instance: Instance): InstanceHealthRO {
+        val currentHealth = getHealth(instance)
+        val prevHealth = instanceHealthCache.get(instance.id, InstanceHealthRO::class.java)
+
+        if (prevHealth?.status != currentHealth.status) {
+            systemEventsChannel.send(
+                InstanceHealthChangedEventMessage(
+                    InstanceHealthChangedEventMessage.Payload(
+                        instance.parentApplicationId,
+                        instance.id,
+                        prevHealth ?: InstanceHealthRO.unknown(),
+                        currentHealth
+                    )
+                )
+            )
+        }
+
+        instanceHealthCache.put(instance.id, currentHealth)
+        return currentHealth
+    }
+
     @Cacheable(cacheNames = ["instanceHealthCache"], key = "#instanceId")
     fun getHealth(instanceId: UUID): InstanceHealthRO {
         val instance = instanceService.getInstanceOrThrow(instanceId)
@@ -75,7 +102,7 @@ class InstanceHealthService(
     fun getAllInstanceHealth() {
         val instances = instanceService.getAllInstances()
         instances.forEach { instance ->
-            updateInstanceHealth(instance)
+            updateInstanceHealthAndReturn(instance)
         }
     }
 
@@ -83,37 +110,16 @@ class InstanceHealthService(
     protected fun onInstanceEvent(event: Message<*>) {
         when (event) {
             is InstanceCreatedEventMessage -> {
-                updateInstanceHealth(
+                updateInstanceHealthAndReturn(
                     instanceService.getInstanceOrThrow(event.payload.instanceId)
                 )
             }
 
             is InstanceUpdatedEventMessage -> {
-                updateInstanceHealth(
+                updateInstanceHealthAndReturn(
                     instanceService.getInstanceOrThrow(event.payload.instanceId)
                 )
             }
         }
-    }
-
-    private fun updateInstanceHealth(instance: Instance): InstanceHealthRO {
-        val currentHealth = getHealth(instance)
-        val prevHealth = instanceHealthCache.get(instance.id, InstanceHealthRO::class.java)
-
-        if (prevHealth?.status != currentHealth.status) {
-            systemEventsChannel.send(
-                InstanceHealthChangedEventMessage(
-                    InstanceHealthChangedEventMessage.Payload(
-                        instance.parentApplicationId,
-                        instance.id,
-                        prevHealth ?: InstanceHealthRO.unknown(),
-                        currentHealth
-                    )
-                )
-            )
-        }
-
-        instanceHealthCache.put(instance.id, currentHealth)
-        return currentHealth
     }
 }

@@ -1,12 +1,14 @@
 package dev.krud.boost.daemon.configuration.application
 
 import dev.krud.boost.daemon.configuration.application.entity.Application
+import dev.krud.boost.daemon.configuration.application.messaging.ApplicationMovedEventMessage
 import dev.krud.boost.daemon.configuration.instance.ability.InstanceAbilityService
 import dev.krud.boost.daemon.configuration.instance.entity.Instance
 import dev.krud.boost.daemon.configuration.instance.enums.InstanceAbility
 import dev.krud.boost.daemon.exception.throwBadRequest
 import dev.krud.boost.daemon.exception.throwNotFound
 import dev.krud.crudframework.crud.handler.krud.Krud
+import org.springframework.integration.channel.PublishSubscribeChannel
 import org.springframework.stereotype.Service
 import java.util.*
 
@@ -14,7 +16,8 @@ import java.util.*
 class ApplicationService(
     private val applicationKrud: Krud<Application, UUID>,
     private val instanceKrud: Krud<Instance, UUID>,
-    private val instanceAbilityService: InstanceAbilityService
+    private val instanceAbilityService: InstanceAbilityService,
+    private val systemEventsChannel: PublishSubscribeChannel
 ) {
     fun getApplication(applicationId: UUID): Application? {
         return applicationKrud.showById(applicationId)
@@ -50,8 +53,13 @@ class ApplicationService(
 
     fun moveApplication(applicationId: UUID, newParentFolderId: UUID?, newSort: Double?): Application {
         val application = getApplicationOrThrow(applicationId)
+        if (application.parentFolderId == newParentFolderId && application.sort == newSort) {
+            return application
+        }
         application.parentFolderId = newParentFolderId // TODO: check if folder exists, should fail on foreign key for now
         application.sort = newSort
-        return applicationKrud.update(application)
+        val updatedApplication = applicationKrud.update(application)
+        systemEventsChannel.send(ApplicationMovedEventMessage(ApplicationMovedEventMessage.Payload(applicationId, application.parentFolderId, newParentFolderId, newSort)))
+        return updatedApplication
     }
 }

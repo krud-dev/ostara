@@ -1,7 +1,7 @@
 package dev.krud.boost.daemon.controller.api.v1.folder
 
-import dev.krud.boost.daemon.configuration.folder.authentication.FolderAuthenticationService
 import dev.krud.boost.daemon.configuration.authentication.EffectiveAuthentication
+import dev.krud.boost.daemon.configuration.folder.authentication.FolderAuthenticationService
 import dev.krud.boost.daemon.controller.api.v1.API_PREFIX
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.media.Content

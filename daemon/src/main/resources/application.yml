@@ -15,8 +15,6 @@ management:
     health:
       show-details: always
 spring:
-  main:
-    lazy-initialization: true
   datasource:
     driver-class-name: org.sqlite.JDBC
     url: jdbc:sqlite:mydb.db

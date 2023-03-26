@@ -1,14 +1,17 @@
 package dev.krud.boost.daemon.configuration.folder
 
 import dev.krud.boost.daemon.configuration.folder.entity.Folder
+import dev.krud.boost.daemon.configuration.folder.messaging.FolderMovedEventMessage
 import dev.krud.boost.daemon.exception.throwNotFound
 import dev.krud.crudframework.crud.handler.krud.Krud
+import org.springframework.integration.channel.PublishSubscribeChannel
 import org.springframework.stereotype.Service
 import java.util.*
 
 @Service
 class FolderService(
-    private val folderKrud: Krud<Folder, UUID>
+    private val folderKrud: Krud<Folder, UUID>,
+    private val systemEventsChannel: PublishSubscribeChannel
 ) {
     fun getFolder(folderId: UUID): Folder? {
         return folderKrud.showById(folderId)
@@ -20,8 +23,13 @@ class FolderService(
 
     fun moveFolder(folderId: UUID, newParentFolderId: UUID?, newSort: Double?): Folder {
         val folder = getFolderOrThrow(folderId)
+        if (folder.parentFolderId == newParentFolderId && folder.sort == newSort) {
+            return folder
+        }
         folder.parentFolderId = newParentFolderId // TODO: check if folder exists, should fail on foreign key for now
         folder.sort = newSort
-        return folderKrud.update(folder)
+        val updatedFolder = folderKrud.update(folder)
+        systemEventsChannel.send(FolderMovedEventMessage(FolderMovedEventMessage.Payload(folderId, folder.parentFolderId, newParentFolderId, newSort)))
+        return updatedFolder
     }
 }

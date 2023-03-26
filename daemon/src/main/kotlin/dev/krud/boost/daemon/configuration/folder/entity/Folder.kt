@@ -5,11 +5,13 @@ import dev.krud.boost.daemon.configuration.folder.ro.FolderRO
 import dev.krud.boost.daemon.entity.AbstractEntity
 import dev.krud.boost.daemon.utils.DEFAULT_COLOR
 import dev.krud.crudframework.crud.annotation.Deleteable
+import dev.krud.crudframework.crud.annotation.PersistCopyOnFetch
 import dev.krud.shapeshift.resolver.annotation.DefaultMappingTarget
 import dev.krud.shapeshift.resolver.annotation.MappedField
 import io.hypersistence.utils.hibernate.type.json.JsonType
 import jakarta.persistence.Column
 import jakarta.persistence.Entity
+import org.hibernate.annotations.Formula
 import org.hibernate.annotations.Type
 import java.util.*
 
@@ -17,6 +19,7 @@ import java.util.*
 @DefaultMappingTarget(FolderRO::class)
 @MappedField(mapFrom = "id")
 @Deleteable(softDelete = false)
+@PersistCopyOnFetch
 class Folder(
     @MappedField
     @Column(nullable = false)
@@ -43,6 +46,10 @@ class Folder(
     @Column(columnDefinition = "json")
     var authentication: Authentication = Authentication.Inherit.DEFAULT
 ) : AbstractEntity() {
+    // TODO: change type to enum
+    @Formula("(json_extract(authentication, '$.type'))")
+    var authenticationType: String = authentication?.type ?: Authentication.Inherit.DEFAULT.type // Elvis is needed due to Hibernate
+
     companion object {
         const val NAME = "folder"
     }
