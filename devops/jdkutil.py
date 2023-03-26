@@ -63,6 +63,11 @@ class Jdk:
                 shutil.move(path.join(self.unzip_path, item.name), path.join(self.unzip_path, "jdk"))
         print("Unzipped {} to {}".format(self.zip_filename, self.unzip_path))
 
+    def fix_permissions(self):
+        print("Fixing permissions for {}".format(self.unzip_path))
+        check_output(['chmod', '-R', 'a+rw', self.unzip_path], stderr=STDOUT)
+        print("Fixed permissions for {}".format(self.unzip_path))
+
 
 jdks = []
 
@@ -100,5 +105,6 @@ if __name__ == "__main__":
         for jdk in jdks:
             if jdk.variant == args.variant:
               jdk.unzip()
+              jdk.fix_permissions()
 
 
