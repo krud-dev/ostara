@@ -86,6 +86,10 @@ export class DaemonController {
     await this.start();
   }
 
+  isHealthy(): boolean {
+    return this.started && this.running;
+  }
+
   private startHealthCheck() {
     if (this.healthCheckInterval) {
       return;
@@ -124,7 +128,6 @@ export class DaemonController {
       clearInterval(this.healthCheckInterval);
       this.healthCheckInterval = undefined;
     }
-
   }
 
   private startProcess() {

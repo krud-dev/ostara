@@ -8,3 +8,5 @@ ipcMain.on('daemon:address', (event) => {
 ipcMain.on('daemon:wsAddress', (event) => {
   event.returnValue = getDaemonController()?.daemonWsAddress;
 });
+
+ipcMain.on('daemon:healthy', (event) => getDaemonController()?.isHealthy() ?? false);
