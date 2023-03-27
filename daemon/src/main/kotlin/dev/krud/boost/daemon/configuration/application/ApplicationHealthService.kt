@@ -10,9 +10,6 @@ import dev.krud.boost.daemon.configuration.instance.messaging.InstanceDeletedEve
 import dev.krud.boost.daemon.configuration.instance.messaging.InstanceHealthChangedEventMessage
 import dev.krud.boost.daemon.configuration.instance.messaging.InstanceMovedEventMessage
 import dev.krud.boost.daemon.utils.resolve
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
 import org.springframework.cache.CacheManager
 import org.springframework.cache.annotation.CachePut
 import org.springframework.integration.annotation.ServiceActivator
@@ -29,29 +26,10 @@ class ApplicationHealthService(
     cacheManager: CacheManager
 ) {
     private val applicationHealthCache by cacheManager.resolve()
-    private val applicationInstancesHealthCache by cacheManager.resolve()
-    private val scope = CoroutineScope(Dispatchers.Default)
 
     fun getCachedHealth(applicationId: UUID): ApplicationHealthRO {
         val cached = applicationHealthCache.get(applicationId, ApplicationHealthRO::class.java)
-        if (cached != null) {
-            return cached
-        }
-
-        scope.launch {
-            val health = getHealth(applicationId)
-            systemEventsChannel.send(
-                ApplicationHealthUpdatedEventMessage(
-                    ApplicationHealthUpdatedEventMessage.Payload(
-                        applicationId,
-                        health
-                    )
-                )
-            )
-            applicationHealthCache.put(applicationId, getHealth(applicationId))
-        }
-
-        return  ApplicationHealthRO.pending()
+        return cached ?: ApplicationHealthRO.pending()
     }
 
     @CachePut(cacheNames = ["applicationHealthCache"], key = "#application.id")
@@ -60,12 +38,13 @@ class ApplicationHealthService(
             return ApplicationHealthRO.empty()
         }
         val instances = applicationService.getApplicationInstances(application.id)
-        val entries = applicationInstancesHealthCache.get(application.id) {
-            instances.associate { it.id to instanceHealthService.getHealth(it).status }
-        }!!
+        val healthStatus = instances
+            .map { instanceHealthService.getHealth(it).status }
+            .toSet()
+            .toApplicationHealthStatus()
 
         return ApplicationHealthRO(
-            entries.values.toApplicationHealthStatus(),
+            healthStatus,
             Date(),
             Date()
         )
@@ -94,37 +73,18 @@ class ApplicationHealthService(
     }
 
     protected fun handleInstanceHealthChange(applicationId: UUID, instanceId: UUID, newStatus: InstanceHealthStatus?) {
-        val value = applicationInstancesHealthCache.get(applicationId) {
-            if (newStatus == null) {
-                emptyMap()
-            } else {
-                mapOf(
-                    instanceId to newStatus
-                )
-            }
-        }!!
-        if (value[instanceId] == newStatus) {
-            return
-        }
-
-        val newValue = value + mapOf(
-            instanceId to newStatus
-        )
-
-        applicationInstancesHealthCache.put(
-            applicationId,
-            newValue
-        )
-
-        systemEventsChannel.send(
-            ApplicationHealthUpdatedEventMessage(
-                ApplicationHealthUpdatedEventMessage.Payload(
-                    applicationId,
-                    ApplicationHealthRO(
-                        newValue.values.toApplicationHealthStatus()
+        val cached = applicationHealthCache.get(applicationId, ApplicationHealthRO::class.java)
+        val health = getHealth(applicationId)
+        applicationHealthCache.put(applicationId, health)
+        if (cached?.status != health.status) {
+            systemEventsChannel.send(
+                ApplicationHealthUpdatedEventMessage(
+                    ApplicationHealthUpdatedEventMessage.Payload(
+                        applicationId,
+                        health
                     )
                 )
             )
-        )
+        }
     }
 }
