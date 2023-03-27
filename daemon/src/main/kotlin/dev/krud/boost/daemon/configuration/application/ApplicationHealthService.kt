@@ -27,8 +27,12 @@ class ApplicationHealthService(
 ) {
     private val applicationHealthCache by cacheManager.resolve()
 
-    fun getCachedHealth(applicationId: UUID): ApplicationHealthRO {
-        val cached = applicationHealthCache.get(applicationId, ApplicationHealthRO::class.java)
+    fun getCachedHealth(application: Application): ApplicationHealthRO {
+        if (application.instanceCount == 0) {
+            return ApplicationHealthRO.empty()
+        }
+
+        val cached = applicationHealthCache.get(application.id, ApplicationHealthRO::class.java)
         return cached ?: ApplicationHealthRO.pending()
     }
 
