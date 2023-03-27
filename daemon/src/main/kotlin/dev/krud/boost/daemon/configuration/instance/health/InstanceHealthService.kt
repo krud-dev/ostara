@@ -13,6 +13,7 @@ import dev.krud.boost.daemon.utils.sendGeneric
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.newFixedThreadPoolContext
 import kotlinx.coroutines.runBlocking
+import org.springframework.beans.factory.DisposableBean
 import org.springframework.cache.CacheManager
 import org.springframework.cache.annotation.Cacheable
 import org.springframework.integration.annotation.ServiceActivator
@@ -31,9 +32,13 @@ class InstanceHealthService(
     private val systemEventsChannel: PublishSubscribeChannel,
     private val instanceHealthCheckRequestChannel: QueueChannel,
     cacheManager: CacheManager
-) {
+) : DisposableBean {
     private val instanceHealthCache by cacheManager.resolve()
     private val dispatcher = newFixedThreadPoolContext(4, "instance-health-checker")
+
+    override fun destroy() {
+        dispatcher.close()
+    }
 
     fun getCachedHealth(instanceId: UUID): InstanceHealthRO {
         return instanceHealthCache.get(instanceId, InstanceHealthRO::class.java)
@@ -118,7 +123,6 @@ class InstanceHealthService(
                 }
             }
         }
-        println("Finished updating all instance health in ${System.currentTimeMillis() - startTime}ms")
     }
 
     @ServiceActivator(inputChannel = "systemEventsChannel")
