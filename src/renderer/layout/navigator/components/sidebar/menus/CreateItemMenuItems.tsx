@@ -17,16 +17,7 @@ type CreateItemMenuItemsProps = {
 };
 
 export default function CreateItemMenuItems({ menuState }: CreateItemMenuItemsProps) {
-  const { data } = useNavigatorTree();
-
-  const getNewItemOrder = useCallback((): number => {
-    return data?.length
-      ? chain(data)
-          .map<number>((item) => item.sort ?? 0)
-          .max()
-          .value() + 1
-      : 1;
-  }, [data]);
+  const { getNewItemOrder } = useNavigatorTree();
 
   const createFolderHandler = useCallback((): void => {
     menuState.close();

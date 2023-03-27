@@ -1,40 +1,41 @@
 import React, { FunctionComponent } from 'react';
-import { Container } from '@mui/material';
+import { Container, Stack } from '@mui/material';
 import Page from 'renderer/components/layout/Page';
+import { COMPONENTS_SPACING } from '../../../constants/ui';
+import Grid2 from '@mui/material/Unstable_Grid2';
+import HomeWelcome from './components/HomeWelcome';
+import HomeRepository from './components/HomeRepository';
+import HomeGettingStarted from './components/HomeGettingStarted';
+import HomeDocumentation from './components/HomeDocumentation';
+import HomeWhatsNew from './components/HomeWhatsNew';
+import { useUi } from '../../../contexts/UiContext';
+import HomeDeveloperMode from './components/HomeDeveloperMode';
 
 const Home: FunctionComponent = () => {
+  const { developerMode } = useUi();
   return (
     <Page>
-      <Container disableGutters>
-        <h1>Actuator Playground</h1>
-        <h2>isElectron: {JSON.stringify(window.isElectron)}</h2>
-
-        <div>
-          <h2>Flyway</h2>
-          <p>https://sbclient.krud.dev/first/1/actuator</p>
-          <p>https://sbclient.krud.dev/first/2/actuator</p>
-          <p>https://sbclient.krud.dev/first/3/actuator</p>
-        </div>
-        <div>
-          <h2>Liquibase</h2>
-          <p>https://sbclient.krud.dev/second/1/actuator</p>
-          <p>https://sbclient.krud.dev/second/2/actuator</p>
-          <p>https://sbclient.krud.dev/second/3/actuator</p>
-        </div>
-        <div>
-          <h2>Secure</h2>
-          <p>https://sbclient.krud.dev/third/1/actuator</p>
-          <p>https://sbclient.krud.dev/third/2/actuator</p>
-          <p>https://sbclient.krud.dev/third/3/actuator</p>
-        </div>
-        <div>
-          <h2>Daemon</h2>
-          <p>{window.daemonAddress}/actuator</p>
-        </div>
-        <div>
-          <h2>Swagger API Documentation</h2>
-          <p>http://localhost:12222/swagger-ui/index.html</p>
-        </div>
+      <Container disableGutters maxWidth={'md'}>
+        <Grid2 container spacing={COMPONENTS_SPACING}>
+          <Grid2 xs={12} lg={6}>
+            <Stack direction={'column'} spacing={COMPONENTS_SPACING}>
+              <HomeWelcome />
+              <HomeGettingStarted />
+              <HomeDocumentation />
+            </Stack>
+          </Grid2>
+          <Grid2 xs={12} lg={6}>
+            <Stack direction={'column'} spacing={COMPONENTS_SPACING} sx={{ height: '100%' }}>
+              <HomeRepository />
+              <HomeWhatsNew />
+            </Stack>
+          </Grid2>
+          {developerMode && (
+            <Grid2 xs={12}>
+              <HomeDeveloperMode />
+            </Grid2>
+          )}
+        </Grid2>
       </Container>
     </Page>
   );

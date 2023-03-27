@@ -24,6 +24,7 @@ import { folderCrudEntity } from '../apis/requests/crud/entity/entities/folder.c
 import { applicationCrudEntity } from '../apis/requests/crud/entity/entities/application.crudEntity';
 import { buildTree } from '../utils/treeUtils';
 import { useStomp } from '../apis/websockets/StompContext';
+import { chain } from 'lodash';
 
 type NavigatorTreeAction = 'expandAll' | 'collapseAll';
 
@@ -36,6 +37,7 @@ export type NavigatorTreeContextProps = {
   action: NavigatorTreeAction | undefined;
   performAction: (action: NavigatorTreeAction) => void;
   getItem: (id: string) => ItemRO | undefined;
+  getNewItemOrder: () => number;
 };
 
 const NavigatorTreeContext = React.createContext<NavigatorTreeContextProps>(undefined!);
@@ -144,6 +146,15 @@ const NavigatorTreeProvider: FunctionComponent<NavigatorTreeProviderProps> = ({ 
     return item;
   }, [getItem, params.id]);
 
+  const getNewItemOrder = useCallback((): number => {
+    return data?.length
+      ? chain(data)
+          .map<number>((item) => item.sort ?? 0)
+          .max()
+          .value() + 1
+      : 1;
+  }, [data]);
+
   return (
     <NavigatorTreeContext.Provider
       value={{
@@ -155,6 +166,7 @@ const NavigatorTreeProvider: FunctionComponent<NavigatorTreeProviderProps> = ({ 
         action,
         performAction,
         getItem,
+        getNewItemOrder,
       }}
     >
       {children}

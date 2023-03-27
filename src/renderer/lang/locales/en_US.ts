@@ -299,4 +299,6 @@ export default {
   backgroundServiceCrashed: 'The background service has crashed. Please restart the app.',
   restartApp: 'Restart App',
   cannotConnectToInstance: 'Cannot connect to instance',
+  openRepository: 'Open Repository',
+  openDocumentation: 'Open Documentation',
 };
