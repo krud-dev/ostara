@@ -9,10 +9,15 @@ import dev.krud.boost.daemon.configuration.instance.messaging.InstanceCreatedEve
 import dev.krud.boost.daemon.configuration.instance.messaging.InstanceHealthChangedEventMessage
 import dev.krud.boost.daemon.configuration.instance.messaging.InstanceUpdatedEventMessage
 import dev.krud.boost.daemon.utils.resolve
+import dev.krud.boost.daemon.utils.sendGeneric
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.newFixedThreadPoolContext
+import kotlinx.coroutines.runBlocking
 import org.springframework.cache.CacheManager
 import org.springframework.cache.annotation.Cacheable
 import org.springframework.integration.annotation.ServiceActivator
 import org.springframework.integration.channel.PublishSubscribeChannel
+import org.springframework.integration.channel.QueueChannel
 import org.springframework.messaging.Message
 import org.springframework.scheduling.annotation.Scheduled
 import org.springframework.stereotype.Service
@@ -24,13 +29,17 @@ class InstanceHealthService(
     private val instanceService: InstanceService,
     private val actuatorClientProvider: InstanceActuatorClientProvider,
     private val systemEventsChannel: PublishSubscribeChannel,
+    private val instanceHealthCheckRequestChannel: QueueChannel,
     cacheManager: CacheManager
 ) {
     private val instanceHealthCache by cacheManager.resolve()
+    private val dispatcher = newFixedThreadPoolContext(4, "instance-health-checker")
 
     fun getCachedHealth(instanceId: UUID): InstanceHealthRO {
         return instanceHealthCache.get(instanceId, InstanceHealthRO::class.java)
-            ?: InstanceHealthRO.unknown()
+            ?: InstanceHealthRO.pending().apply {
+                instanceHealthCheckRequestChannel.sendGeneric(instanceId)
+            }
     }
 
     @ServiceActivator(inputChannel = "instanceHealthCheckRequestChannel")
@@ -101,9 +110,15 @@ class InstanceHealthService(
     @Scheduled(fixedRate = 60000)
     fun getAllInstanceHealth() {
         val instances = instanceService.getAllInstances()
-        instances.forEach { instance ->
-            updateInstanceHealthAndReturn(instance)
+        val startTime = System.currentTimeMillis()
+        runBlocking {
+            instances.forEach { instance ->
+                launch(dispatcher) {
+                    updateInstanceHealthAndReturn(instance)
+                }
+            }
         }
+        println("Finished updating all instance health in ${System.currentTimeMillis() - startTime}ms")
     }
 
     @ServiceActivator(inputChannel = "systemEventsChannel")
