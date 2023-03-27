@@ -43,7 +43,7 @@ const UiProvider: FunctionComponent<UiProviderProps> = ({ children }) => {
 
   const developerMode = useMemo<boolean>(() => window.NODE_ENV === 'development', []);
 
-  const [daemonHealthy, setDaemonHealthy] = useState<boolean>(true);
+  const [daemonHealthy, setDaemonHealthy] = useState<boolean>(window.daemonHealthy());
 
   const [themeSource, setThemeSourceInternal] = useLocalStorageState<ThemeSource>('themeSource', 'system');
   const [darkMode, setDarkMode] = useLocalStorageState<boolean>('darkMode', true);
