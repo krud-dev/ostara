@@ -54,6 +54,10 @@ export default function HomeDeveloperMode({}: HomeDeveloperModeProps) {
           'https://sbclient.krud.dev/third/3/actuator',
         ],
       },
+      {
+        applicationName: 'Daemon',
+        instances: [`${window.daemonAddress}/actuator`],
+      },
     ],
     []
   );
@@ -132,13 +136,6 @@ export default function HomeDeveloperMode({}: HomeDeveloperModeProps) {
             ))}
           </Fragment>
         ))}
-
-        <Typography variant={'subtitle2'} sx={{ mt: 1 }}>
-          Daemon
-        </Typography>
-        <Typography variant={'body2'} sx={{ color: 'text.secondary' }}>
-          {window.daemonAddress}/actuator
-        </Typography>
 
         <Typography variant={'subtitle2'} sx={{ mt: 1 }}>
           Swagger API Documentation
