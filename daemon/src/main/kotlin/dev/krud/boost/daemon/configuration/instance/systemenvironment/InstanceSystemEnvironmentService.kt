@@ -25,26 +25,26 @@ class InstanceSystemEnvironmentService(
     private val instanceAbilityService: InstanceAbilityService,
     cacheManager: CacheManager
 ) {
-    val applicationSystemPropertiesCache by cacheManager.resolve()
+    val instanceSystemEnvironmentCache by cacheManager.resolve()
 
     @ServiceActivator(inputChannel = "systemEventsChannel")
     protected fun onInstanceEvent(event: Message<*>) {
         when (event) {
             is InstanceHealthChangedEventMessage -> {
-                applicationSystemPropertiesCache.evict(event.payload.instanceId)
+                instanceSystemEnvironmentCache.evict(event.payload.instanceId)
             }
 
             is InstanceUpdatedEventMessage -> {
-                applicationSystemPropertiesCache.evict(event.payload.instanceId)
+                instanceSystemEnvironmentCache.evict(event.payload.instanceId)
             }
 
             is InstanceDeletedEventMessage -> {
-                applicationSystemPropertiesCache.evict(event.payload.instanceId)
+                instanceSystemEnvironmentCache.evict(event.payload.instanceId)
             }
         }
     }
 
-    @Cacheable("applicationSystemEnvironmentCache")
+    @Cacheable("instanceSystemEnvironmentCache")
     fun getSystemEnvironment(instanceId: UUID): InstanceSystemEnvironmentRO {
         val instance = instanceService.getInstanceOrThrow(instanceId)
         instanceAbilityService.hasAbilityOrThrow(instance, InstanceAbility.SYSTEM_ENVIRONMENT)

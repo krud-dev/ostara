@@ -25,9 +25,9 @@ class InstanceDataService(
     private val instanceHostnameResolver: InstanceHostnameResolver,
     cacheManager: CacheManager
 ) {
-    private val applicationActiveProfilesCache by cacheManager.resolve()
+    private val instanceActiveProfilesCache by cacheManager.resolve()
 
-    @Cacheable(cacheNames = ["applicationActiveProfilesCache"], key = "#instanceId")
+    @Cacheable(cacheNames = ["instanceActiveProfilesCache"], key = "#instanceId")
     fun getActiveProfiles(instanceId: UUID): Set<String> {
         val instance = instanceService.getInstanceOrThrow(instanceId)
         instanceAbilityService.hasAbilityOrThrow(instance, InstanceAbility.ENV)
@@ -44,15 +44,15 @@ class InstanceDataService(
     protected fun onInstanceEvent(event: Message<*>) {
         when (event) {
             is InstanceHealthChangedEventMessage -> {
-                applicationActiveProfilesCache.evict(event.payload.instanceId)
+                instanceActiveProfilesCache.evict(event.payload.instanceId)
             }
 
             is InstanceUpdatedEventMessage -> {
-                applicationActiveProfilesCache.evict(event.payload.instanceId)
+                instanceActiveProfilesCache.evict(event.payload.instanceId)
             }
 
             is InstanceDeletedEventMessage -> {
-                applicationActiveProfilesCache.evict(event.payload.instanceId)
+                instanceActiveProfilesCache.evict(event.payload.instanceId)
             }
         }
     }

@@ -25,26 +25,26 @@ class InstanceSystemPropertiesService(
     private val instanceAbilityService: InstanceAbilityService,
     cacheManager: CacheManager
 ) {
-    val applicationSystemPropertiesCache by cacheManager.resolve()
+    val instanceSystemPropertiesCache by cacheManager.resolve()
 
     @ServiceActivator(inputChannel = "systemEventsChannel")
     protected fun onInstanceEvent(event: Message<*>) {
         when (event) {
             is InstanceHealthChangedEventMessage -> {
-                applicationSystemPropertiesCache.evict(event.payload.instanceId)
+                instanceSystemPropertiesCache.evict(event.payload.instanceId)
             }
 
             is InstanceUpdatedEventMessage -> {
-                applicationSystemPropertiesCache.evict(event.payload.instanceId)
+                instanceSystemPropertiesCache.evict(event.payload.instanceId)
             }
 
             is InstanceDeletedEventMessage -> {
-                applicationSystemPropertiesCache.evict(event.payload.instanceId)
+                instanceSystemPropertiesCache.evict(event.payload.instanceId)
             }
         }
     }
 
-    @Cacheable("applicationSystemPropertiesCache")
+    @Cacheable("instanceSystemPropertiesCache")
     fun getSystemProperties(instanceId: UUID): InstanceSystemPropertiesRO {
         val instance = instanceService.getInstanceOrThrow(instanceId)
         instanceAbilityService.hasAbilityOrThrow(instance, InstanceAbility.SYSTEM_PROPERTIES)

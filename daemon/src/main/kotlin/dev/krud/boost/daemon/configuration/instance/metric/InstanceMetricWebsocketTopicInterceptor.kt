@@ -29,6 +29,7 @@ class InstanceMetricWebsocketTopicInterceptor(
 
     override fun preSend(message: Message<*>, channel: MessageChannel): Message<*>? {
         val headerAccessor = StompHeaderAccessor.wrap(message)
+        headerAccessor.command
         when (headerAccessor.command) {
             StompCommand.SUBSCRIBE -> handleSubscribe(headerAccessor)
             StompCommand.UNSUBSCRIBE -> handleUnsubscribe(headerAccessor)
