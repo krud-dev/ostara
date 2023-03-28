@@ -3,7 +3,6 @@ package dev.krud.boost.daemon.controller.api.v1.application
 import dev.krud.boost.daemon.configuration.application.ApplicationHealthService
 import dev.krud.boost.daemon.configuration.application.ApplicationService
 import dev.krud.boost.daemon.configuration.application.entity.Application
-import dev.krud.boost.daemon.configuration.application.ro.ApplicationHealthRO
 import dev.krud.boost.daemon.configuration.application.ro.ApplicationModifyRequestRO
 import dev.krud.boost.daemon.configuration.application.ro.ApplicationRO
 import dev.krud.boost.daemon.configuration.folder.validation.ValidFolderIdOrNull
@@ -40,17 +39,5 @@ class ApplicationController(
     fun moveApplication(@PathVariable applicationId: UUID, @RequestParam(required = false) @Valid @ValidFolderIdOrNull newParentFolderId: UUID? = null, @RequestParam(required = false) newSort: Double? = null): ApplicationRO {
         val application = applicationService.moveApplication(applicationId, newParentFolderId, newSort)
         return shapeShift.map(application)
-    }
-
-    @PostMapping("/{applicationId}/health/live")
-    @ResponseStatus(HttpStatus.OK)
-    @Operation(
-        summary = "Get the live health of the application",
-        description = "Get the live health of the application"
-    )
-    @ApiResponse(responseCode = "200", description = "Live health")
-    @ApiResponse(responseCode = "404", description = "Application not found")
-    fun getLiveHealth(@PathVariable applicationId: UUID): ApplicationHealthRO {
-        return applicationHealthService.getHealth(applicationId)
     }
 }

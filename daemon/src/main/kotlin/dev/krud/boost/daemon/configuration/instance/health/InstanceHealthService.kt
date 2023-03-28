@@ -1,5 +1,6 @@
 package dev.krud.boost.daemon.configuration.instance.health
 
+import com.github.benmanes.caffeine.cache.Cache
 import dev.krud.boost.daemon.actuator.model.HealthActuatorResponse
 import dev.krud.boost.daemon.configuration.instance.InstanceActuatorClientProvider
 import dev.krud.boost.daemon.configuration.instance.InstanceService
@@ -105,9 +106,8 @@ class InstanceHealthService(
     }
 
     @Scheduled(fixedRate = 60000)
-    protected fun getAllInstanceHealth() {
+    protected fun updateAllInstanceHealth() {
         val instances = instanceService.getAllInstances()
-        val startTime = System.currentTimeMillis()
         runBlocking {
             instances.forEach { instance ->
                 launch(dispatcher) {
@@ -132,5 +132,10 @@ class InstanceHealthService(
                 )
             }
         }
+    }
+
+    fun getAllInstanceHealthsFromCache(): Map<UUID, InstanceHealthRO> {
+        val nativeCache = instanceHealthCache.nativeCache as Cache<UUID, InstanceHealthRO>
+        return nativeCache.asMap()
     }
 }

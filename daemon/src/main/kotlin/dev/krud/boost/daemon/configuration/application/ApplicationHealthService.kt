@@ -1,5 +1,6 @@
 package dev.krud.boost.daemon.configuration.application
 
+import com.github.benmanes.caffeine.cache.Cache
 import dev.krud.boost.daemon.configuration.application.entity.Application
 import dev.krud.boost.daemon.configuration.application.enums.ApplicationHealthStatus.Companion.toApplicationHealthStatus
 import dev.krud.boost.daemon.configuration.application.messaging.ApplicationHealthUpdatedEventMessage
@@ -90,5 +91,10 @@ class ApplicationHealthService(
                 )
             )
         }
+    }
+
+    fun getAllApplicationHealthsFromCache(): Map<UUID, ApplicationHealthRO> {
+        val nativeCache = applicationHealthCache.nativeCache as Cache<UUID, ApplicationHealthRO>
+        return nativeCache.asMap()
     }
 }
