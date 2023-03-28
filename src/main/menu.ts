@@ -1,5 +1,6 @@
-import { app, Menu, shell, BrowserWindow, MenuItemConstructorOptions } from 'electron';
+import { app, BrowserWindow, Menu, MenuItemConstructorOptions, shell } from 'electron';
 import { isMac } from '../infra/utils/platform';
+import { MAX_ZOOM_FACTOR, MIN_ZOOM_FACTOR } from './consts';
 
 interface DarwinMenuItemConstructorOptions extends MenuItemConstructorOptions {
   selector?: string;
@@ -100,31 +101,69 @@ export default class MenuBuilder {
       ],
     };
 
+    const reloadOptions: MenuItemConstructorOptions[] = [
+      {
+        label: 'Reload',
+        accelerator: 'Command+R',
+        click: () => {
+          this.mainWindow.webContents.getZoomLevel();
+        },
+      },
+      {
+        label: 'Force Reload',
+        accelerator: 'Shift+Command+R',
+        click: () => {
+          this.mainWindow.webContents.reloadIgnoringCache();
+        },
+      },
+    ];
+
+    const fullScreenOption: MenuItemConstructorOptions = {
+      label: 'Toggle Full Screen',
+      accelerator: 'Ctrl+Command+F',
+      click: () => {
+        this.mainWindow.setFullScreen(!this.mainWindow.isFullScreen());
+      },
+    };
+
+    const zoomOptions: MenuItemConstructorOptions[] = [
+      {
+        label: 'Zoom In',
+        accelerator: 'Command+Plus',
+        click: () => {
+          this.mainWindow.webContents.setZoomFactor(
+            Math.min(MAX_ZOOM_FACTOR, this.mainWindow.webContents.getZoomFactor() + 0.1)
+          );
+          console.log(this.mainWindow.webContents.getZoomFactor());
+        },
+      },
+      {
+        label: 'Zoom Out',
+        accelerator: 'Command+-',
+        click: () => {
+          this.mainWindow.webContents.setZoomFactor(
+            Math.max(MIN_ZOOM_FACTOR, this.mainWindow.webContents.getZoomFactor() - 0.1)
+          );
+          console.log(this.mainWindow.webContents.getZoomFactor());
+        },
+      },
+      {
+        label: 'Reset Zoom',
+        accelerator: 'Command+0',
+        click: () => {
+          this.mainWindow.webContents.setZoomFactor(1);
+        },
+      },
+    ];
+
     const subMenuViewDev: MenuItemConstructorOptions = {
       label: 'View',
       submenu: [
-        {
-          label: 'Reload',
-          accelerator: 'Command+R',
-          click: () => {
-            this.mainWindow.webContents.reload();
-          },
-        },
-        {
-          label: 'Force Reload',
-          accelerator: 'Shift+Command+R',
-          click: () => {
-            this.mainWindow.webContents.reloadIgnoringCache();
-          },
-        },
+        ...reloadOptions,
         { type: 'separator' },
-        {
-          label: 'Toggle Full Screen',
-          accelerator: 'Ctrl+Command+F',
-          click: () => {
-            this.mainWindow.setFullScreen(!this.mainWindow.isFullScreen());
-          },
-        },
+        fullScreenOption,
+        { type: 'separator' },
+        ...zoomOptions,
         { type: 'separator' },
         {
           label: 'Toggle Developer Tools',
@@ -137,30 +176,7 @@ export default class MenuBuilder {
     };
     const subMenuViewProd: MenuItemConstructorOptions = {
       label: 'View',
-      submenu: [
-        {
-          label: 'Reload',
-          accelerator: 'Command+R',
-          click: () => {
-            this.mainWindow.webContents.reload();
-          },
-        },
-        {
-          label: 'Force Reload',
-          accelerator: 'Shift+Command+R',
-          click: () => {
-            this.mainWindow.webContents.reloadIgnoringCache();
-          },
-        },
-        { type: 'separator' },
-        {
-          label: 'Toggle Full Screen',
-          accelerator: 'Ctrl+Command+F',
-          click: () => {
-            this.mainWindow.setFullScreen(!this.mainWindow.isFullScreen());
-          },
-        },
-      ],
+      submenu: [...reloadOptions, { type: 'separator' }, fullScreenOption, { type: 'separator' }, ...zoomOptions],
     };
     const subMenuWindow: DarwinMenuItemConstructorOptions = {
       label: 'Window',
