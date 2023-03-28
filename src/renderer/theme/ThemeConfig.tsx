@@ -9,7 +9,6 @@ import breakpoints from 'renderer/theme/config/breakpoints';
 import componentsOverride from './overrides';
 import shadows, { customShadows } from 'renderer/theme/config/shadows';
 import { enUS, Localization } from '@mui/material/locale';
-import RtlLayout from 'renderer/theme/RtlLayout';
 import GlobalStyles from 'renderer/theme/GlobalStyles';
 import ChartStyle from 'renderer/components/chart/ChartStyle';
 import CodeStyle from 'renderer/components/code/CodeStyle';
@@ -45,7 +44,7 @@ export default function ThemeConfig({ isDarkMode, isRtl, localization, children 
         <GlobalStyles />
         <ChartStyle />
         <CodeStyle />
-        <RtlLayout>{children}</RtlLayout>
+        {children}
       </ThemeProvider>
     </StyledEngineProvider>
   );
