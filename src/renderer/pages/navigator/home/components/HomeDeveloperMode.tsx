@@ -1,26 +1,28 @@
-import { Box, Button, Card, CardContent, Stack, Typography } from '@mui/material';
+import { Card, CardContent, Stack, Typography } from '@mui/material';
 import React, { Fragment, useCallback, useMemo, useState } from 'react';
-import PerfectScrollbar from 'react-perfect-scrollbar';
-import { FormattedMessage } from 'react-intl';
-import { DOCUMENTATION_URL } from '../../../../constants/ui';
-import NiceModal from '@ebay/nice-modal-react';
 import {
   ApplicationModifyRequestRO,
   ApplicationRO,
+  Authentication,
   InstanceModifyRequestRO,
   InstanceRO,
 } from '../../../../../common/generated_definitions';
-import CreateInstanceDialog from '../../../../components/item/dialogs/create/CreateInstanceDialog';
 import { useNavigatorTree } from '../../../../contexts/NavigatorTreeContext';
 import { INHERITED_COLOR_VALUE } from '../../../../hooks/useItemColor';
 import { applicationCrudEntity } from '../../../../apis/requests/crud/entity/entities/application.crudEntity';
-import { getActuatorUrls } from '../../../../utils/itemUtils';
 import { instanceCrudEntity } from '../../../../apis/requests/crud/entity/entities/instance.crudEntity';
 import { crudKeys } from '../../../../apis/requests/crud/crudKeys';
 import { useCrudCreate } from '../../../../apis/requests/crud/crudCreate';
 import { useCrudCreateBulk } from '../../../../apis/requests/crud/crudCreateBulk';
 import { useQueryClient } from '@tanstack/react-query';
 import { LoadingButton } from '@mui/lab';
+import { Authentication$Typed } from '../../../../../common/manual_definitions';
+
+type ApplicationToCreate = {
+  applicationName: string;
+  instances: string[];
+  authentication?: Authentication$Typed;
+};
 
 type HomeDeveloperModeProps = {};
 
@@ -28,7 +30,7 @@ export default function HomeDeveloperMode({}: HomeDeveloperModeProps) {
   const { getNewItemOrder } = useNavigatorTree();
   const queryClient = useQueryClient();
 
-  const itemsToCreate = useMemo<{ applicationName: string; instances: string[] }[]>(
+  const testApplications = useMemo<ApplicationToCreate[]>(
     () => [
       {
         applicationName: 'Flyway',
@@ -53,6 +55,11 @@ export default function HomeDeveloperMode({}: HomeDeveloperModeProps) {
           'https://sbclient.krud.dev/third/2/actuator',
           'https://sbclient.krud.dev/third/3/actuator',
         ],
+        authentication: {
+          type: 'basic',
+          username: 'user',
+          password: 'user',
+        },
       },
       {
         applicationName: 'Daemon',
@@ -67,51 +74,71 @@ export default function HomeDeveloperMode({}: HomeDeveloperModeProps) {
   const createApplicationState = useCrudCreate<ApplicationRO, ApplicationModifyRequestRO>({ refetchNone: true });
   const createBulkInstanceState = useCrudCreateBulk<InstanceRO, InstanceModifyRequestRO>({ refetchNone: true });
 
-  const createInstanceHandler = useCallback(async (): Promise<void> => {
-    setLoading(true);
+  const createApplicationsHandler = useCallback(
+    async (itemsToCreate: ApplicationToCreate[]): Promise<void> => {
+      setLoading(true);
 
-    try {
-      let applicationSort = getNewItemOrder();
-      for (const itemToCreate of itemsToCreate) {
-        const applicationToCreate: ApplicationModifyRequestRO = {
-          alias: itemToCreate.applicationName,
-          type: 'SPRING_BOOT',
-          parentFolderId: undefined,
-          sort: applicationSort,
-          color: INHERITED_COLOR_VALUE,
-          authentication: { type: 'inherit' },
-        };
-        applicationSort += 1;
+      try {
+        let applicationSort = getNewItemOrder();
+        for (const itemToCreate of itemsToCreate) {
+          const applicationToCreate: ApplicationModifyRequestRO = {
+            alias: itemToCreate.applicationName,
+            type: 'SPRING_BOOT',
+            parentFolderId: undefined,
+            sort: applicationSort,
+            color: INHERITED_COLOR_VALUE,
+            authentication: itemToCreate.authentication ?? { type: 'inherit' },
+          };
+          applicationSort += 1;
 
-        const application = await createApplicationState.mutateAsync({
-          entity: applicationCrudEntity,
-          item: applicationToCreate,
-        });
+          const application = await createApplicationState.mutateAsync({
+            entity: applicationCrudEntity,
+            item: applicationToCreate,
+          });
 
-        const instanceSort = 1;
-        const actuatorUrls = itemToCreate.instances;
-        const instancesToCreate = actuatorUrls.map<InstanceModifyRequestRO>((actuatorUrl, index) => ({
-          alias: undefined,
-          actuatorUrl,
-          parentApplicationId: application.id,
-          sort: instanceSort + index,
-          color: INHERITED_COLOR_VALUE,
-          icon: undefined,
-        }));
+          const instanceSort = 1;
+          const actuatorUrls = itemToCreate.instances;
+          const instancesToCreate = actuatorUrls.map<InstanceModifyRequestRO>((actuatorUrl, index) => ({
+            alias: undefined,
+            actuatorUrl,
+            parentApplicationId: application.id,
+            sort: instanceSort + index,
+            color: INHERITED_COLOR_VALUE,
+            icon: undefined,
+          }));
 
-        await createBulkInstanceState.mutateAsync({
-          entity: instanceCrudEntity,
-          items: instancesToCreate,
-        });
+          await createBulkInstanceState.mutateAsync({
+            entity: instanceCrudEntity,
+            items: instancesToCreate,
+          });
+        }
+
+        queryClient.invalidateQueries(crudKeys.entity(applicationCrudEntity));
+        queryClient.invalidateQueries(crudKeys.entity(instanceCrudEntity));
+      } catch (e) {
+      } finally {
+        setLoading(false);
       }
+    },
+    [getNewItemOrder]
+  );
 
-      queryClient.invalidateQueries(crudKeys.entity(applicationCrudEntity));
-      queryClient.invalidateQueries(crudKeys.entity(instanceCrudEntity));
-    } catch (e) {
-    } finally {
-      setLoading(false);
-    }
-  }, [getNewItemOrder]);
+  const createTestInstancesHandler = useCallback(async (): Promise<void> => {
+    await createApplicationsHandler(testApplications);
+  }, [createApplicationsHandler, testApplications]);
+
+  const createManyInstancesHandler = useCallback(async (): Promise<void> => {
+    await createApplicationsHandler([
+      {
+        applicationName: 'Many',
+        instances: [
+          'https://sbclient.krud.dev/first/1/actuator',
+          'https://sbclient.krud.dev/first/2/actuator',
+          'https://sbclient.krud.dev/first/3/actuator',
+        ].flatMap((el) => new Array(66).fill(el)),
+      },
+    ]);
+  }, [createApplicationsHandler, testApplications]);
 
   return (
     <Card sx={{ flexGrow: 1, minHeight: 300 }}>
@@ -124,7 +151,7 @@ export default function HomeDeveloperMode({}: HomeDeveloperModeProps) {
           Electron: {JSON.stringify(window.isElectron)}
         </Typography>
 
-        {itemsToCreate.map((itemToCreate) => (
+        {testApplications.map((itemToCreate) => (
           <Fragment key={itemToCreate.applicationName}>
             <Typography variant={'subtitle2'} sx={{ mt: 1 }}>
               {itemToCreate.applicationName}
@@ -145,8 +172,11 @@ export default function HomeDeveloperMode({}: HomeDeveloperModeProps) {
         </Typography>
 
         <Stack direction={{ xs: 'column', sm: 'row' }} spacing={2} sx={{ mt: 3 }}>
-          <LoadingButton variant="outlined" color="primary" loading={loading} onClick={createInstanceHandler}>
+          <LoadingButton variant="outlined" color="primary" loading={loading} onClick={createTestInstancesHandler}>
             Create Test Instances
+          </LoadingButton>
+          <LoadingButton variant="outlined" color="primary" loading={loading} onClick={createManyInstancesHandler}>
+            Create Many Instances
           </LoadingButton>
         </Stack>
       </CardContent>

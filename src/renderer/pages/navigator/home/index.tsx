@@ -14,8 +14,8 @@ import HomeDeveloperMode from './components/HomeDeveloperMode';
 const Home: FunctionComponent = () => {
   const { developerMode } = useUi();
   return (
-    <Page>
-      <Container disableGutters maxWidth={'md'}>
+    <Page sx={{ height: '100%', display: 'flex', p: 0 }}>
+      <Container disableGutters maxWidth={'md'} sx={{ m: 'auto', p: COMPONENTS_SPACING }}>
         <Grid2 container spacing={COMPONENTS_SPACING}>
           <Grid2 xs={12} lg={6}>
             <Stack direction={'column'} spacing={COMPONENTS_SPACING}>
