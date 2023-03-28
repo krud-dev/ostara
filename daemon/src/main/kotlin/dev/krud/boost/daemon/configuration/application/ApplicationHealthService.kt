@@ -69,7 +69,7 @@ class ApplicationHealthService(
                 handleInstanceHealthChange(event.payload.parentApplicationId, event.payload.instanceId, null)
             }
             is InstanceMovedEventMessage -> {
-                val health = instanceHealthService.getHealth(event.payload.instanceId)
+                val health = instanceHealthService.getCachedHealth(event.payload.instanceId)
                 handleInstanceHealthChange(event.payload.newParentApplicationId, event.payload.instanceId, health.status)
                 handleInstanceHealthChange(event.payload.oldParentApplicationId, event.payload.instanceId, null)
             }
