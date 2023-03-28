@@ -17,6 +17,7 @@ import { useCrudCreateBulk } from '../../../../apis/requests/crud/crudCreateBulk
 import { useQueryClient } from '@tanstack/react-query';
 import { LoadingButton } from '@mui/lab';
 import { Authentication$Typed } from '../../../../../common/manual_definitions';
+import { useGetApplicationsHealth } from '../../../../apis/requests/application/health/getApplicationsHealth';
 
 type ApplicationToCreate = {
   applicationName: string;
@@ -140,6 +141,20 @@ export default function HomeDeveloperMode({}: HomeDeveloperModeProps) {
     ]);
   }, [createApplicationsHandler, testApplications]);
 
+  const applicationsHealthState = useGetApplicationsHealth();
+
+  const logApplicationsHealthHandler = useCallback(async (): Promise<void> => {
+    setLoading(true);
+
+    try {
+      const result = await applicationsHealthState.mutateAsync({});
+      console.log('Applications Health', result);
+    } catch (e) {
+    } finally {
+      setLoading(false);
+    }
+  }, [applicationsHealthState]);
+
   return (
     <Card sx={{ flexGrow: 1, minHeight: 300 }}>
       <CardContent>
@@ -177,6 +192,9 @@ export default function HomeDeveloperMode({}: HomeDeveloperModeProps) {
           </LoadingButton>
           <LoadingButton variant="outlined" color="primary" loading={loading} onClick={createManyInstancesHandler}>
             Create Many Instances
+          </LoadingButton>
+          <LoadingButton variant="outlined" color="primary" loading={loading} onClick={logApplicationsHealthHandler}>
+            Log Applications Health
           </LoadingButton>
         </Stack>
       </CardContent>
