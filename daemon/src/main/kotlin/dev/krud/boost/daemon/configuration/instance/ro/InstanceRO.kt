@@ -15,5 +15,5 @@ class InstanceRO(
     val color: String = DEFAULT_COLOR,
     val icon: String? = null,
     val sort: Double? = null,
-    var health: InstanceHealthRO = InstanceHealthRO.unknown()
+    var health: InstanceHealthRO = InstanceHealthRO.unknown(id)
 )

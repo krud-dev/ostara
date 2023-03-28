@@ -4,6 +4,7 @@ import dev.krud.boost.daemon.configuration.instance.enums.InstanceHealthStatus
 import java.util.*
 
 data class InstanceHealthRO(
+    val instanceId: UUID,
     val status: InstanceHealthStatus,
     val statusText: String?,
     val lastUpdateTime: Date,
@@ -11,14 +12,9 @@ data class InstanceHealthRO(
     val statusCode: Int? = null
 ) {
     companion object {
-        val UNKNOWN = InstanceHealthRO(
-            InstanceHealthStatus.UNKNOWN,
-            null,
-            Date(),
-            Date()
-        )
 
-        fun up(statusCode: Int? = null) = InstanceHealthRO(
+        fun up(instanceId: UUID, statusCode: Int? = null) = InstanceHealthRO(
+            instanceId,
             InstanceHealthStatus.UP,
             null,
             Date(),
@@ -26,7 +22,8 @@ data class InstanceHealthRO(
             statusCode
         )
 
-        fun down(statusText: String? = null, statusCode: Int? = null) = InstanceHealthRO(
+        fun down(instanceId: UUID, statusText: String? = null, statusCode: Int? = null) = InstanceHealthRO(
+            instanceId,
             InstanceHealthStatus.DOWN,
             statusText,
             Date(),
@@ -34,7 +31,8 @@ data class InstanceHealthRO(
             statusCode
         )
 
-        fun outOfService(statusText: String? = null, statusCode: Int? = null) = InstanceHealthRO(
+        fun outOfService(instanceId: UUID, statusText: String? = null, statusCode: Int? = null) = InstanceHealthRO(
+            instanceId,
             InstanceHealthStatus.OUT_OF_SERVICE,
             statusText,
             Date(),
@@ -42,7 +40,8 @@ data class InstanceHealthRO(
             statusCode
         )
 
-        fun unreachable(statusText: String? = null, statusCode: Int? = null) = InstanceHealthRO(
+        fun unreachable(instanceId: UUID, statusText: String? = null, statusCode: Int? = null) = InstanceHealthRO(
+            instanceId,
             InstanceHealthStatus.UNREACHABLE,
             statusText,
             Date(),
@@ -50,7 +49,8 @@ data class InstanceHealthRO(
             statusCode
         )
 
-        fun pending(statusText: String? = null, statusCode: Int? = null) = InstanceHealthRO(
+        fun pending(instanceId: UUID, statusText: String? = null, statusCode: Int? = null) = InstanceHealthRO(
+            instanceId,
             InstanceHealthStatus.PENDING,
             statusText,
             Date(),
@@ -58,7 +58,8 @@ data class InstanceHealthRO(
             statusCode
         )
 
-        fun invalid(statusText: String? = null, statusCode: Int? = null) = InstanceHealthRO(
+        fun invalid(instanceId: UUID, statusText: String? = null, statusCode: Int? = null) = InstanceHealthRO(
+            instanceId,
             InstanceHealthStatus.INVALID,
             statusText,
             Date(),
@@ -66,7 +67,8 @@ data class InstanceHealthRO(
             statusCode
         )
 
-        fun unknown(statusText: String? = null, statusCode: Int? = null) = InstanceHealthRO(
+        fun unknown(instanceId: UUID, statusText: String? = null, statusCode: Int? = null) = InstanceHealthRO(
+            instanceId,
             InstanceHealthStatus.UNKNOWN,
             statusText,
             Date(),

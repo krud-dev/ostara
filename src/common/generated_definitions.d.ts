@@ -214,6 +214,7 @@ export interface ApplicationLoggerRO {
 }
 
 export interface ApplicationHealthRO {
+    applicationId: string;
     status: ApplicationHealthStatus;
     lastUpdateTime: DateAsNumber;
     lastStatusChangeTime: DateAsNumber;
@@ -286,6 +287,7 @@ export interface InstanceCacheStatisticsRO {
 }
 
 export interface InstanceHealthRO {
+    instanceId: string;
     status: InstanceHealthStatus;
     statusText?: string;
     lastUpdateTime: DateAsNumber;

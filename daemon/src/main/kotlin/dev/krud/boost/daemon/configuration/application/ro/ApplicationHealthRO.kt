@@ -4,42 +4,49 @@ import dev.krud.boost.daemon.configuration.application.enums.ApplicationHealthSt
 import java.util.*
 
 data class ApplicationHealthRO(
+    val applicationId: UUID,
     val status: ApplicationHealthStatus,
     val lastUpdateTime: Date = Date(),
     val lastStatusChangeTime: Date = Date()
 ) {
     companion object {
-        fun allUp() = ApplicationHealthRO(
+        fun allUp(applicationId: UUID) = ApplicationHealthRO(
+            applicationId,
             ApplicationHealthStatus.ALL_UP,
             Date(),
             Date()
         )
 
-        fun allDown() = ApplicationHealthRO(
+        fun allDown(applicationId: UUID) = ApplicationHealthRO(
+            applicationId,
             ApplicationHealthStatus.ALL_DOWN,
             Date(),
             Date()
         )
 
-        fun someDown() = ApplicationHealthRO(
+        fun someDown(applicationId: UUID) = ApplicationHealthRO(
+            applicationId,
             ApplicationHealthStatus.SOME_DOWN,
             Date(),
             Date()
         )
 
-        fun unknown() = ApplicationHealthRO(
+        fun unknown(applicationId: UUID) = ApplicationHealthRO(
+            applicationId,
             ApplicationHealthStatus.UNKNOWN,
             Date(),
             Date()
         )
 
-        fun pending() = ApplicationHealthRO(
+        fun pending(applicationId: UUID) = ApplicationHealthRO(
+            applicationId,
             ApplicationHealthStatus.PENDING,
             Date(),
             Date()
         )
 
-        fun empty() = ApplicationHealthRO(
+        fun empty(applicationId: UUID) = ApplicationHealthRO(
+            applicationId,
             ApplicationHealthStatus.EMPTY,
             Date(),
             Date()

@@ -42,7 +42,7 @@ class InstanceHealthService(
 
     fun getCachedHealth(instanceId: UUID): InstanceHealthRO {
         return instanceHealthCache.get(instanceId, InstanceHealthRO::class.java)
-            ?: InstanceHealthRO.pending().apply {
+            ?: InstanceHealthRO.pending(instanceId).apply {
                 instanceHealthCheckRequestChannel.sendGeneric(instanceId)
             }
     }
@@ -63,7 +63,7 @@ class InstanceHealthService(
                     InstanceHealthChangedEventMessage.Payload(
                         instance.parentApplicationId,
                         instance.id,
-                        prevHealth ?: InstanceHealthRO.unknown(),
+                        prevHealth ?: InstanceHealthRO.unknown(instance.id),
                         currentHealth
                     )
                 )
@@ -79,29 +79,29 @@ class InstanceHealthService(
         val response = try {
             actuatorClient.testConnection()
         } catch (e: Exception) {
-            return InstanceHealthRO.unknown()
+            return InstanceHealthRO.unknown(instance.id)
         }
 
         if (!response.success) {
-            return InstanceHealthRO.unreachable("Failed to connect to instance with status ${response.statusCode} and message ${response.statusText}", response.statusCode)
+            return InstanceHealthRO.unreachable(instance.id, "Failed to connect to instance with status ${response.statusCode} and message ${response.statusText}", response.statusCode)
         }
 
         if (!response.validActuator) {
-            return InstanceHealthRO.invalid("URL is reachable but it is not an actuator endpoint", response.statusCode)
+            return InstanceHealthRO.invalid(instance.id, "URL is reachable but it is not an actuator endpoint", response.statusCode)
         }
 
         val health = actuatorClient.health().getOrElse {
             return when (it) {
-                is ResponseStatusException -> InstanceHealthRO.unknown(it.message, it.statusCode.value())
-                else -> InstanceHealthRO.unknown(it.message)
+                is ResponseStatusException -> InstanceHealthRO.unknown(instance.id, it.message, it.statusCode.value())
+                else -> InstanceHealthRO.unknown(instance.id, it.message)
             }
         }
 
         return when (health.status) {
-            HealthActuatorResponse.Status.UP -> InstanceHealthRO.up()
-            HealthActuatorResponse.Status.DOWN -> InstanceHealthRO.down()
-            HealthActuatorResponse.Status.OUT_OF_SERVICE -> InstanceHealthRO.outOfService()
-            HealthActuatorResponse.Status.UNKNOWN -> InstanceHealthRO.unknown()
+            HealthActuatorResponse.Status.UP -> InstanceHealthRO.up(instance.id)
+            HealthActuatorResponse.Status.DOWN -> InstanceHealthRO.down(instance.id)
+            HealthActuatorResponse.Status.OUT_OF_SERVICE -> InstanceHealthRO.outOfService(instance.id)
+            HealthActuatorResponse.Status.UNKNOWN -> InstanceHealthRO.unknown(instance.id)
         }
     }
 

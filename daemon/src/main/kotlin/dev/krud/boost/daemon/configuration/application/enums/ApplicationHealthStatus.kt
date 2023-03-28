@@ -1,6 +1,7 @@
 package dev.krud.boost.daemon.configuration.application.enums
 
 import dev.krud.boost.daemon.configuration.instance.enums.InstanceHealthStatus
+import dev.krud.boost.daemon.configuration.instance.health.ro.InstanceHealthRO
 
 enum class ApplicationHealthStatus {
     ALL_UP,
@@ -11,6 +12,13 @@ enum class ApplicationHealthStatus {
     EMPTY;
 
     companion object {
+        @JvmName("toApplicationHealthStatusFromRO")
+        fun Collection<InstanceHealthRO>.toApplicationHealthStatus(): ApplicationHealthStatus {
+            return map {
+                it.status
+            }
+                .toApplicationHealthStatus()
+        }
         fun Collection<InstanceHealthStatus?>.toApplicationHealthStatus(): ApplicationHealthStatus {
             if (this.isEmpty()) {
                 return EMPTY
