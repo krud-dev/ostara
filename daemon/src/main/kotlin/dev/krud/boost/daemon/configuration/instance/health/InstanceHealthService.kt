@@ -15,6 +15,7 @@ import kotlinx.coroutines.newFixedThreadPoolContext
 import kotlinx.coroutines.runBlocking
 import org.springframework.beans.factory.DisposableBean
 import org.springframework.cache.CacheManager
+import org.springframework.cache.annotation.CachePut
 import org.springframework.cache.annotation.Cacheable
 import org.springframework.integration.annotation.ServiceActivator
 import org.springframework.integration.channel.PublishSubscribeChannel
@@ -74,13 +75,13 @@ class InstanceHealthService(
         return currentHealth
     }
 
-    @Cacheable(cacheNames = ["instanceHealthCache"], key = "#instanceId")
+    @CachePut(cacheNames = ["instanceHealthCache"], key = "#instanceId")
     fun getHealth(instanceId: UUID): InstanceHealthRO {
         val instance = instanceService.getInstanceOrThrow(instanceId)
         return getHealth(instance)
     }
 
-    @Cacheable(cacheNames = ["instanceHealthCache"], key = "#instance.id")
+    @CachePut(cacheNames = ["instanceHealthCache"], key = "#instance.id")
     fun getHealth(instance: Instance): InstanceHealthRO {
         val actuatorClient = actuatorClientProvider.provide(instance)
         val response = try {
@@ -113,7 +114,7 @@ class InstanceHealthService(
     }
 
     @Scheduled(fixedRate = 60000)
-    fun getAllInstanceHealth() {
+    protected fun getAllInstanceHealth() {
         val instances = instanceService.getAllInstances()
         val startTime = System.currentTimeMillis()
         runBlocking {

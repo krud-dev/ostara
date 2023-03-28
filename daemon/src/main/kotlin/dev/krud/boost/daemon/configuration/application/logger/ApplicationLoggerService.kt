@@ -25,9 +25,7 @@ class ApplicationLoggerService(
         applicationService.hasAbilityOrThrow(application, InstanceAbility.LOGGERS)
         val loggers = if (application.instanceCount > MAX_INSTANCE_COUNT) {
             val instance = applicationService.getApplicationInstances(application.id)
-                .firstOrNull {
-                    instanceHealthService.getHealth(it).status.running
-                } ?: throwBadRequest("No running instances found")
+                .firstOrNull() ?: throwBadRequest("No instances found for application")
             val loggers = instanceLoggerService.getLoggers(instance.id)
             mapOf(instance to loggers)
         } else {
@@ -69,9 +67,7 @@ class ApplicationLoggerService(
         applicationService.hasAbilityOrThrow(application, InstanceAbility.LOGGERS)
         val loggers = if (application.instanceCount > MAX_INSTANCE_COUNT) {
             val instance = applicationService.getApplicationInstances(application.id)
-                .firstOrNull {
-                    instanceHealthService.getHealth(it).status.running
-                } ?: throwBadRequest("No running instances found")
+                .firstOrNull() ?: throwBadRequest("No instances found for application")
             val loggers = instanceLoggerService.getLogger(instance.id, loggerName)
             mapOf(instance to loggers)
         } else {

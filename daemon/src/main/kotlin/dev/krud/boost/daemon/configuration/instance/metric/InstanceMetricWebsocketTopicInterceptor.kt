@@ -1,7 +1,6 @@
 package dev.krud.boost.daemon.configuration.instance.metric
 
 import dev.krud.boost.daemon.configuration.instance.InstanceService
-import dev.krud.boost.daemon.configuration.instance.enums.InstanceHealthStatus
 import dev.krud.boost.daemon.configuration.instance.health.InstanceHealthService
 import dev.krud.boost.daemon.configuration.instance.metric.ro.InstanceMetricValueRO
 import org.springframework.context.annotation.Lazy
@@ -13,7 +12,6 @@ import org.springframework.messaging.simp.stomp.StompHeaderAccessor
 import org.springframework.messaging.support.ChannelInterceptor
 import org.springframework.scheduling.annotation.Scheduled
 import org.springframework.stereotype.Component
-import java.util.*
 import java.util.concurrent.ConcurrentHashMap
 
 @Component
@@ -45,15 +43,8 @@ class InstanceMetricWebsocketTopicInterceptor(
             return
         }
 
-        val memoizedHealth = mutableMapOf<UUID, Boolean>()
         for (topic in subscriptions.values.flatten().toSet()) {
             val (instanceId, metricName) = InstanceMetricWebsocketUtil.parseMetricAndInstanceIdFromTopic(topic)
-            val up = memoizedHealth.computeIfAbsent(instanceId) {
-                instanceHealthService.getHealth(instanceId).status == InstanceHealthStatus.UP
-            }
-            if (!up) {
-                continue
-            }
             val metric = runCatching {
                 instanceMetricService.getLatestMetric(instanceId, metricName)
             }
