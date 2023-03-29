@@ -7,10 +7,10 @@ import UpdateApplicationDialog from 'renderer/components/item/dialogs/update/Upd
 import UpdateInstanceDialog from 'renderer/components/item/dialogs/update/UpdateInstanceDialog';
 import { ApplicationRO, FolderRO, InstanceRO } from '../../common/generated_definitions';
 import { ItemRO } from '../definitions/daemon';
-import { getItemType } from './itemUtils';
+import { getItemDisplayName, getItemType } from './itemUtils';
 
 export const showDeleteConfirmationDialog = async (items: ItemRO | ItemRO[]): Promise<boolean> => {
-  const itemsName = isArray(items) ? items.map((i) => i.alias).join(', ') : items.alias;
+  const itemsName = isArray(items) ? items.map((i) => getItemDisplayName(i)).join(', ') : getItemDisplayName(items);
   return await NiceModal.show<boolean>(ConfirmationDialog, {
     title: <FormattedMessage id={'delete'} />,
     text: <FormattedMessage id={'areYouSureYouWantToDelete'} values={{ name: itemsName }} />,

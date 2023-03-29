@@ -18,6 +18,9 @@ import { useQueryClient } from '@tanstack/react-query';
 import { LoadingButton } from '@mui/lab';
 import { Authentication$Typed } from '../../../../../common/manual_definitions';
 import { useGetApplicationsHealth } from '../../../../apis/requests/application/health/getApplicationsHealth';
+import { useDeleteItem } from '../../../../apis/requests/item/deleteItem';
+import { folderCrudEntity } from '../../../../apis/requests/crud/entity/entities/folder.crudEntity';
+import { showDeleteConfirmationDialog } from '../../../../utils/dialogUtils';
 
 type ApplicationToCreate = {
   applicationName: string;
@@ -28,7 +31,7 @@ type ApplicationToCreate = {
 type HomeDeveloperModeProps = {};
 
 export default function HomeDeveloperMode({}: HomeDeveloperModeProps) {
-  const { getNewItemOrder } = useNavigatorTree();
+  const { data, getNewItemOrder } = useNavigatorTree();
   const queryClient = useQueryClient();
 
   const testApplications = useMemo<ApplicationToCreate[]>(
@@ -141,6 +144,38 @@ export default function HomeDeveloperMode({}: HomeDeveloperModeProps) {
     ]);
   }, [createApplicationsHandler, testApplications]);
 
+  const deleteItemState = useDeleteItem({ refetchNone: true });
+
+  const deleteAllHandler = useCallback(async (): Promise<void> => {
+    if (!data) {
+      return;
+    }
+
+    const confirm = await showDeleteConfirmationDialog(data);
+    if (!confirm) {
+      return;
+    }
+
+    setLoading(true);
+
+    try {
+      const promises = data.map((itemToDelete) =>
+        deleteItemState.mutateAsync({
+          item: itemToDelete,
+        })
+      );
+      const result = await Promise.all(promises);
+      if (result) {
+        queryClient.invalidateQueries(crudKeys.entity(folderCrudEntity));
+        queryClient.invalidateQueries(crudKeys.entity(applicationCrudEntity));
+        queryClient.invalidateQueries(crudKeys.entity(instanceCrudEntity));
+      }
+    } catch (e) {
+    } finally {
+      setLoading(false);
+    }
+  }, [data, deleteItemState]);
+
   const applicationsHealthState = useGetApplicationsHealth();
 
   const logApplicationsHealthHandler = useCallback(async (): Promise<void> => {
@@ -193,9 +228,12 @@ export default function HomeDeveloperMode({}: HomeDeveloperModeProps) {
           <LoadingButton variant="outlined" color="primary" loading={loading} onClick={createManyInstancesHandler}>
             Create Many Instances
           </LoadingButton>
-          <LoadingButton variant="outlined" color="primary" loading={loading} onClick={logApplicationsHealthHandler}>
-            Log Applications Health
+          <LoadingButton variant="outlined" color="primary" loading={loading} onClick={deleteAllHandler}>
+            Delete All
           </LoadingButton>
+          {/*<LoadingButton variant="outlined" color="primary" loading={loading} onClick={logApplicationsHealthHandler}>*/}
+          {/*  Log Applications Health*/}
+          {/*</LoadingButton>*/}
         </Stack>
       </CardContent>
     </Card>
