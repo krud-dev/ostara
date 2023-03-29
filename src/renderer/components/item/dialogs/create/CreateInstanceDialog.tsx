@@ -1,5 +1,5 @@
 import { FormattedMessage } from 'react-intl';
-import React, { FunctionComponent, useCallback } from 'react';
+import React, { FunctionComponent, useCallback, useState } from 'react';
 import { Dialog } from '@mui/material';
 import NiceModal, { NiceModalHocProps, useModal } from '@ebay/nice-modal-react';
 import DialogTitleEnhanced from 'renderer/components/dialog/DialogTitleEnhanced';
@@ -31,11 +31,15 @@ const CreateInstanceDialog: FunctionComponent<CreateInstanceDialogProps & NiceMo
     const modal = useModal();
     const queryClient = useQueryClient();
 
+    const [submitting, setSubmitting] = useState<boolean>(false);
+
     const createApplicationState = useCrudCreate<ApplicationRO, ApplicationModifyRequestRO>({ refetchNone: true });
     const createBulkInstanceState = useCrudCreateBulk<InstanceRO, InstanceModifyRequestRO>({ refetchNone: true });
 
     const submitHandler = useCallback(
       async (data: InstanceFormValues & { multipleInstances: boolean }): Promise<void> => {
+        setSubmitting(true);
+
         try {
           let instanceParentApplicationId = parentApplicationId;
           let instanceSort = sort ?? 1;
@@ -82,15 +86,21 @@ const CreateInstanceDialog: FunctionComponent<CreateInstanceDialogProps & NiceMo
             modal.resolve(result);
             await modal.hide();
           }
-        } catch (e) {}
+        } catch (e) {
+        } finally {
+          setSubmitting(false);
+        }
       },
       [parentApplicationId, parentFolderId, sort, onCreated, modal, createApplicationState, createBulkInstanceState]
     );
 
     const cancelHandler = useCallback((): void => {
+      if (submitting) {
+        return;
+      }
       modal.resolve(undefined);
       modal.hide();
-    }, [modal]);
+    }, [submitting, modal]);
 
     return (
       <Dialog
@@ -102,7 +112,7 @@ const CreateInstanceDialog: FunctionComponent<CreateInstanceDialogProps & NiceMo
         fullWidth
         maxWidth={'xs'}
       >
-        <DialogTitleEnhanced onClose={cancelHandler}>
+        <DialogTitleEnhanced disabled={submitting} onClose={cancelHandler}>
           <FormattedMessage id={'createInstance'} />
         </DialogTitleEnhanced>
         <InstanceDetailsForm

@@ -1,5 +1,5 @@
 import { FormattedMessage } from 'react-intl';
-import React, { FunctionComponent, useCallback } from 'react';
+import React, { FunctionComponent, useCallback, useState } from 'react';
 import { Dialog } from '@mui/material';
 import NiceModal, { NiceModalHocProps, useModal } from '@ebay/nice-modal-react';
 import DialogTitleEnhanced from 'renderer/components/dialog/DialogTitleEnhanced';
@@ -19,10 +19,14 @@ const CreateFolderDialog: FunctionComponent<CreateFolderDialogProps & NiceModalH
   ({ parentFolderId, sort, onCreated }) => {
     const modal = useModal();
 
+    const [submitting, setSubmitting] = useState<boolean>(false);
+
     const createState = useCrudCreate<FolderRO, FolderModifyRequestRO>();
 
     const submitHandler = useCallback(
       async (data: FolderFormValues): Promise<void> => {
+        setSubmitting(true);
+
         const itemToCreate: FolderModifyRequestRO = {
           alias: data.alias,
           parentFolderId: parentFolderId,
@@ -39,15 +43,21 @@ const CreateFolderDialog: FunctionComponent<CreateFolderDialogProps & NiceModalH
             modal.resolve(result);
             await modal.hide();
           }
-        } catch (e) {}
+        } catch (e) {
+        } finally {
+          setSubmitting(false);
+        }
       },
       [parentFolderId, sort, onCreated, createState, modal]
     );
 
     const cancelHandler = useCallback((): void => {
+      if (submitting) {
+        return;
+      }
       modal.resolve(undefined);
       modal.hide();
-    }, [modal]);
+    }, [submitting, modal]);
 
     return (
       <Dialog
@@ -59,7 +69,7 @@ const CreateFolderDialog: FunctionComponent<CreateFolderDialogProps & NiceModalH
         fullWidth
         maxWidth={'xs'}
       >
-        <DialogTitleEnhanced onClose={cancelHandler}>
+        <DialogTitleEnhanced disabled={submitting} onClose={cancelHandler}>
           <FormattedMessage id={'createFolder'} />
         </DialogTitleEnhanced>
         <FolderDetailsForm defaultValues={{ parentFolderId }} onSubmit={submitHandler} onCancel={cancelHandler} />

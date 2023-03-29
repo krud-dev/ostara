@@ -1,5 +1,5 @@
 import { FormattedMessage } from 'react-intl';
-import React, { FunctionComponent, useCallback } from 'react';
+import React, { FunctionComponent, useCallback, useState } from 'react';
 import { Dialog } from '@mui/material';
 import NiceModal, { NiceModalHocProps, useModal } from '@ebay/nice-modal-react';
 import DialogTitleEnhanced from 'renderer/components/dialog/DialogTitleEnhanced';
@@ -19,9 +19,13 @@ const UpdateApplicationDialog: FunctionComponent<UpdateApplicationDialogProps & 
   ({ item, onUpdated }) => {
     const modal = useModal();
 
+    const [submitting, setSubmitting] = useState<boolean>(false);
+
     const updateState = useCrudUpdate<ApplicationRO, ApplicationModifyRequestRO>();
 
     const submitHandler = useCallback(async (data: ApplicationFormValues): Promise<void> => {
+      setSubmitting(true);
+
       try {
         const result = await updateState.mutateAsync({
           entity: applicationCrudEntity,
@@ -34,13 +38,19 @@ const UpdateApplicationDialog: FunctionComponent<UpdateApplicationDialogProps & 
           modal.resolve(result);
           await modal.hide();
         }
-      } catch (e) {}
+      } catch (e) {
+      } finally {
+        setSubmitting(false);
+      }
     }, []);
 
     const cancelHandler = useCallback((): void => {
+      if (submitting) {
+        return;
+      }
       modal.resolve(undefined);
       modal.hide();
-    }, [modal]);
+    }, [submitting, modal]);
 
     return (
       <Dialog
@@ -52,7 +62,7 @@ const UpdateApplicationDialog: FunctionComponent<UpdateApplicationDialogProps & 
         fullWidth
         maxWidth={'xs'}
       >
-        <DialogTitleEnhanced onClose={cancelHandler}>
+        <DialogTitleEnhanced disabled={submitting} onClose={cancelHandler}>
           <FormattedMessage id={'updateApplication'} />
         </DialogTitleEnhanced>
         <ApplicationDetailsForm defaultValues={item} onSubmit={submitHandler} onCancel={cancelHandler} />
