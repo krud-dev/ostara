@@ -73,7 +73,7 @@ class InstanceHealthService(
         instanceHealthCache.put(instance.id, currentHealth)
         return currentHealth
     }
-    
+
     fun getHealth(instance: Instance): InstanceHealthRO {
         val actuatorClient = actuatorClientProvider.provide(instance)
         val response = try {
