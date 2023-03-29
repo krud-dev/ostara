@@ -3,14 +3,16 @@ import TableCellDataHealthStatus from 'renderer/components/table/data/custom/Tab
 import { generatePath } from 'react-router-dom';
 import { urls } from 'renderer/routes/urls';
 import { ApplicationRO } from '../../../common/generated_definitions';
+import { getItemDisplayName } from '../../utils/itemUtils';
 
 export const folderApplicationEntity: Entity<ApplicationRO> = {
   id: 'folderApplication',
   columns: [
     {
       id: 'alias',
-      type: 'Text',
+      type: 'CustomText',
       labelId: 'name',
+      getText: (item) => getItemDisplayName(item),
     },
     {
       id: 'health.status',

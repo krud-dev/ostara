@@ -3,14 +3,16 @@ import TableCellDataHealthStatus from 'renderer/components/table/data/custom/Tab
 import { generatePath } from 'react-router-dom';
 import { urls } from 'renderer/routes/urls';
 import { InstanceRO } from '../../../common/generated_definitions';
+import { getItemDisplayName } from '../../utils/itemUtils';
 
 export const applicationInstanceEntity: Entity<InstanceRO> = {
   id: 'applicationInstance',
   columns: [
     {
-      id: 'displayName',
-      type: 'Text',
+      id: 'alias',
+      type: 'CustomText',
       labelId: 'name',
+      getText: (item) => getItemDisplayName(item),
       getTooltip: (item) => item.actuatorUrl,
     },
     {

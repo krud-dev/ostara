@@ -10,6 +10,7 @@ import TableCellDataBytes from './TableCellDataBytes';
 import TableCellDataCountdown from './TableCellDataCountdown';
 import TableCellDataInterval from './TableCellDataInterval';
 import TableCellDataParsedDate from './TableCellDataParsedDate';
+import TableCellDataCustomText from './TableCellDataCustomText';
 
 type TableCellDataProps<EntityItem> = {
   row: EntityItem;
@@ -37,6 +38,8 @@ export default function TableCellData<EntityItem>({ row, column }: TableCellData
         return <TableCellDataCountdown row={row} column={column} />;
       case 'Interval':
         return <TableCellDataInterval row={row} column={column} />;
+      case 'CustomText':
+        return <TableCellDataCustomText row={row} column={column} />;
       case 'Custom':
         return <TableCellDataCustom row={row} column={column} />;
       default:

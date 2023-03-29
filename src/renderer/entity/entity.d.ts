@@ -70,6 +70,11 @@ export type EntityIntervalColumn<EntityItem> = EntityBaseColumn<EntityItem> & {
   isSeconds?: boolean;
 };
 
+export type EntityCustomTextColumn<EntityItem> = EntityBaseColumn<EntityItem> & {
+  readonly type: 'CustomText';
+  getText: (item: EntityItem) => ReactNode;
+};
+
 export type EntityCustomColumn<EntityItem> = EntityBaseColumn<EntityItem> & {
   readonly type: 'Custom';
   Component: ComponentType<{ column: EntityBaseColumn<EntityItem>; row: EntityItem }>;
@@ -85,6 +90,7 @@ export type EntityColumn<EntityItem> =
   | EntityLabelColumn<EntityItem>
   | EntityCountdownColumn<EntityItem>
   | EntityIntervalColumn<EntityItem>
+  | EntityCustomTextColumn<EntityItem>
   | EntityCustomColumn<EntityItem>;
 
 export type EntityRowActionNavigate<EntityItem> = {
