@@ -45,7 +45,13 @@ export const getItemDisplayName = (item: ItemRO): string => {
     return item.alias;
   }
   if (isInstance(item)) {
-    return item.displayName;
+    return (
+      item.alias ||
+      item.hostname ||
+      item.actuatorUrl
+        .replace(/^https?:\/\//i, '') // Remove protocol
+        .replace(/\/.*$/, '') // Remove path
+    );
   }
   throw new Error(`Unknown item type`);
 };

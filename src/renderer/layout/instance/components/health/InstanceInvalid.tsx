@@ -11,6 +11,7 @@ import { LoadingButton } from '@mui/lab';
 import { InstanceHealthRO, InstanceRO } from '../../../../../common/generated_definitions';
 import DetailsLabelValueHorizontal from '../../../../components/table/details/DetailsLabelValueHorizontal';
 import { useUpdateInstanceHealth } from '../../../../apis/requests/instance/health/updateInstanceHealth';
+import useItemDisplayName from '../../../../hooks/useItemDisplayName';
 
 type InstanceInvalidProps = {
   item: InstanceRO;
@@ -18,6 +19,8 @@ type InstanceInvalidProps = {
 
 export default function InstanceInvalid({ item }: InstanceInvalidProps) {
   const [health, setHealth] = useState<InstanceHealthRO>(item.health);
+
+  const displayName = useItemDisplayName(item);
 
   useUpdateEffect(() => {
     setHealth(item.health);
@@ -63,7 +66,7 @@ export default function InstanceInvalid({ item }: InstanceInvalidProps) {
           <IconViewer icon={'LinkOffOutlined'} sx={{ color: healthStatusColor, fontSize: 48 }} />
 
           <Typography variant="h5" gutterBottom sx={{ mt: 2 }}>
-            <FormattedMessage id={'instanceAliasInvalid'} values={{ alias: item.displayName }} />
+            <FormattedMessage id={'instanceAliasInvalid'} values={{ alias: displayName }} />
           </Typography>
 
           <Typography sx={{ color: 'text.secondary' }}>

@@ -17,6 +17,7 @@ import {
   ApplicationRO,
   FolderRO,
   InstanceHealthChangedEventMessage$Payload,
+  InstanceHostnameUpdatedEventMessage$Payload,
   InstanceRO,
 } from '../../common/generated_definitions';
 import { instanceCrudEntity } from '../apis/requests/crud/entity/entities/instance.crudEntity';
@@ -110,6 +111,21 @@ const NavigatorTreeProvider: FunctionComponent<NavigatorTreeProviderProps> = ({ 
       (healthChanged: InstanceHealthChangedEventMessage$Payload): void => {
         setInstances((prev) =>
           prev?.map((i) => (i.id === healthChanged.instanceId ? { ...i, health: healthChanged.newHealth } : i))
+        );
+      }
+    );
+    return () => {
+      unsubscribe();
+    };
+  }, []);
+
+  useEffect(() => {
+    const unsubscribe = subscribe(
+      '/topic/instanceHostname',
+      {},
+      (hostnameUpdated: InstanceHostnameUpdatedEventMessage$Payload): void => {
+        setInstances((prev) =>
+          prev?.map((i) => (i.id === hostnameUpdated.instanceId ? { ...i, hostname: hostnameUpdated.hostname } : i))
         );
       }
     );

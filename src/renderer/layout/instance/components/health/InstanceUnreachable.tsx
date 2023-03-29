@@ -12,6 +12,7 @@ import { InstanceHealthRO, InstanceRO } from '../../../../../common/generated_de
 import { useNavigatorTree } from '../../../../contexts/NavigatorTreeContext';
 import DetailsLabelValueHorizontal from '../../../../components/table/details/DetailsLabelValueHorizontal';
 import { useUpdateInstanceHealth } from '../../../../apis/requests/instance/health/updateInstanceHealth';
+import useItemDisplayName from '../../../../hooks/useItemDisplayName';
 
 type InstanceUnreachableProps = {
   item: InstanceRO;
@@ -21,6 +22,8 @@ export default function InstanceUnreachable({ item }: InstanceUnreachableProps) 
   const { getItem } = useNavigatorTree();
 
   const [health, setHealth] = useState<InstanceHealthRO>(item.health);
+
+  const displayName = useItemDisplayName(item);
 
   useUpdateEffect(() => {
     setHealth(item.health);
@@ -100,7 +103,7 @@ export default function InstanceUnreachable({ item }: InstanceUnreachableProps) 
           <IconViewer icon={'CrisisAlertOutlined'} sx={{ color: healthStatusColor, fontSize: 48 }} />
 
           <Typography variant="h5" gutterBottom sx={{ mt: 2 }}>
-            <FormattedMessage id={'instanceAliasUnreachable'} values={{ alias: item.displayName }} />
+            <FormattedMessage id={'instanceAliasUnreachable'} values={{ alias: displayName }} />
           </Typography>
 
           <Typography sx={{ color: 'text.secondary' }}>
