@@ -8,7 +8,7 @@ export const crudFrameworkSearch = async <ResponseRO extends BaseRO>(
   entity: CrudEntityCrudFramework,
   variables: Omit<CrudSearchVariables, 'entity'>
 ): Promise<CrudSearchData<ResponseRO>> => {
-  const { currentPage = 1, pageSize = 1000, filterFields = [], orders = [] } = variables;
+  const { currentPage = 1, pageSize = 10000, filterFields = [], orders = [] } = variables;
 
   const result = await axiosInstance.post<
     CrudSearchData<ResponseRO>,
