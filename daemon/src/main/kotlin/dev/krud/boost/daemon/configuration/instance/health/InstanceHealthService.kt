@@ -49,8 +49,12 @@ class InstanceHealthService(
 
     @ServiceActivator(inputChannel = "instanceHealthCheckRequestChannel")
     fun updateInstanceHealth(instanceId: UUID) {
+        updateInstanceHealthAndReturn(instanceId)
+    }
+
+    fun updateInstanceHealthAndReturn(instanceId: UUID): InstanceHealthRO {
         val instance = instanceService.getInstanceOrThrow(instanceId)
-        updateInstanceHealthAndReturn(instance)
+        return updateInstanceHealthAndReturn(instance)
     }
 
     fun updateInstanceHealthAndReturn(instance: Instance): InstanceHealthRO {
