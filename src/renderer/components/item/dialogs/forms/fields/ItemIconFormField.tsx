@@ -6,6 +6,7 @@ import { IconViewer, MUIconType } from 'renderer/components/common/IconViewer';
 import { useFormContext } from 'react-hook-form';
 import ItemIconMenu from 'renderer/components/item/dialogs/forms/fields/ItemIconMenu';
 import { ItemType } from '../../../../../definitions/daemon';
+import { DEFAULT_ICON_VALUE } from '../../../../../hooks/useItemIcon';
 
 type ItemIconFormFieldProps = { type: ItemType };
 
@@ -16,7 +17,12 @@ export default function ItemIconFormField({ type }: ItemIconFormFieldProps) {
 
   const formIcon = watch('icon');
   const typeIcon = useMemo<MUIconType>(() => getItemTypeIcon(type), [type]);
-  const icon = useMemo<MUIconType>(() => (formIcon as MUIconType) || typeIcon, [formIcon, typeIcon]);
+  const icon = useMemo<MUIconType>(() => {
+    if (formIcon === DEFAULT_ICON_VALUE) {
+      return typeIcon;
+    }
+    return (formIcon as MUIconType) || typeIcon;
+  }, [formIcon, typeIcon]);
 
   const openMenuHandler = useCallback(
     (event: React.MouseEvent): void => {
@@ -30,7 +36,7 @@ export default function ItemIconFormField({ type }: ItemIconFormFieldProps) {
 
   const iconSelectedHandler = useCallback(
     (selectedIcon: MUIconType): void => {
-      setValue('icon', selectedIcon === typeIcon ? undefined : selectedIcon);
+      setValue('icon', selectedIcon === typeIcon ? DEFAULT_ICON_VALUE : selectedIcon);
     },
     [typeIcon]
   );
