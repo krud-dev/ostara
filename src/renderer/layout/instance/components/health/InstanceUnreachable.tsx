@@ -6,12 +6,12 @@ import { IconViewer } from 'renderer/components/common/IconViewer';
 import { FormattedMessage } from 'react-intl';
 import { showUpdateItemDialog } from 'renderer/utils/dialogUtils';
 import FormattedDateAndRelativeTime from 'renderer/components/format/FormattedDateAndRelativeTime';
-import { useFetchInstanceHealth } from 'renderer/apis/requests/instance/fetchInstanceHealth';
 import { LoadingButton } from '@mui/lab';
 import { useUpdateEffect } from 'react-use';
 import { InstanceHealthRO, InstanceRO } from '../../../../../common/generated_definitions';
 import { useNavigatorTree } from '../../../../contexts/NavigatorTreeContext';
 import DetailsLabelValueHorizontal from '../../../../components/table/details/DetailsLabelValueHorizontal';
+import { useUpdateInstanceHealth } from '../../../../apis/requests/instance/health/updateInstanceHealth';
 
 type InstanceUnreachableProps = {
   item: InstanceRO;
@@ -32,7 +32,7 @@ export default function InstanceUnreachable({ item }: InstanceUnreachableProps) 
     showUpdateItemDialog(item);
   }, [item]);
 
-  const healthState = useFetchInstanceHealth();
+  const healthState = useUpdateInstanceHealth();
 
   const refreshHandler = useCallback(async (): Promise<void> => {
     try {

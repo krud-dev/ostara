@@ -7,10 +7,10 @@ import { FormattedMessage } from 'react-intl';
 import { showUpdateItemDialog } from 'renderer/utils/dialogUtils';
 import FormattedDateAndRelativeTime from 'renderer/components/format/FormattedDateAndRelativeTime';
 import { useUpdateEffect } from 'react-use';
-import { useFetchInstanceHealth } from 'renderer/apis/requests/instance/fetchInstanceHealth';
 import { LoadingButton } from '@mui/lab';
 import { InstanceHealthRO, InstanceRO } from '../../../../../common/generated_definitions';
 import DetailsLabelValueHorizontal from '../../../../components/table/details/DetailsLabelValueHorizontal';
+import { useUpdateInstanceHealth } from '../../../../apis/requests/instance/health/updateInstanceHealth';
 
 type InstanceInvalidProps = {
   item: InstanceRO;
@@ -29,7 +29,7 @@ export default function InstanceInvalid({ item }: InstanceInvalidProps) {
     showUpdateItemDialog(item);
   }, [item]);
 
-  const healthState = useFetchInstanceHealth();
+  const healthState = useUpdateInstanceHealth();
 
   const refreshHandler = useCallback(async (): Promise<void> => {
     try {
