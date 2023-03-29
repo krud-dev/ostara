@@ -133,7 +133,7 @@ export const getInstanceHealthStatusColor = (instanceHealth: InstanceHealthRO): 
     case 'UNKNOWN':
       return blueGrey[HEALTH_STATUS_COLORS_INDEX];
     case 'PENDING':
-      return 'text.secondary';
+      return 'text.primary';
     default:
       return undefined;
   }
