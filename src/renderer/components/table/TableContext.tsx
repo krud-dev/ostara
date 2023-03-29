@@ -20,7 +20,6 @@ export type TableContextProps<EntityItem, CustomFilters> = {
   selectAllIndeterminate: boolean;
   selectAllChecked: boolean;
   selectAllRowsHandler: (selectAll: boolean) => void;
-  toggleGroupHandler: (title: string) => void;
   openRows: EntityItem[];
   toggleRowOpenHandler: (row: EntityItem) => void;
   closeAllRowsHandler: () => void;
@@ -73,10 +72,9 @@ function TableProvider<EntityItem, CustomFilters>({
   const [rowsPerPage, setRowsPerPage] = useLocalStorageState<number>('tableRowsPerPage', DEFAULT_ROWS_PER_PAGE);
   const [selected, setSelected] = useState<string[]>([]);
   const [open, setOpen] = useState<string[]>([]);
-  const [collapsedGroups, setCollapsedGroups] = useState<string[]>([]);
 
   useUpdateEffect(() => {
-    setSelected([]);
+    setSelected((prev) => prev.filter((id) => queryState.data?.some((row) => entity.getId(row) === id) ?? false));
   }, [queryState.data]);
 
   const tableData = useMemo<EntityItem[]>(() => queryState.data ?? [], [queryState.data]);
@@ -179,18 +177,6 @@ function TableProvider<EntityItem, CustomFilters>({
 
   const isRowSelected = useCallback((row: EntityItem): boolean => selected.includes(entity.getId(row)), [selected]);
 
-  const toggleGroupHandler = useCallback(
-    (groupTitle: string): void => {
-      setCollapsedGroups((currentCollapsedGroups) => {
-        if (currentCollapsedGroups.includes(groupTitle)) {
-          return currentCollapsedGroups.filter((title) => title !== groupTitle);
-        }
-        return [...currentCollapsedGroups, groupTitle];
-      });
-    },
-    [setCollapsedGroups]
-  );
-
   const toggleRowOpenHandler = useCallback(
     (row: EntityItem): void => {
       const rowId = entity.getId(row);
@@ -266,7 +252,6 @@ function TableProvider<EntityItem, CustomFilters>({
         selectAllIndeterminate,
         selectAllChecked,
         selectAllRowsHandler,
-        toggleGroupHandler,
         openRows,
         toggleRowOpenHandler,
         closeAllRowsHandler,
