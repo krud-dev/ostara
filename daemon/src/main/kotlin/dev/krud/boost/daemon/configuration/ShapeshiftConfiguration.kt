@@ -31,7 +31,7 @@ class ShapeshiftConfiguration : ShapeShiftBuilderCustomizer, ShapeShiftAutoConfi
             .withObjectSupplier { ApplicationModifyRequestRO(TypeDefaults.STRING, ApplicationType.SPRING_BOOT) }
             .withObjectSupplier { ApplicationRO(TypeDefaults.UUID, TypeDefaults.STRING, ApplicationType.SPRING_BOOT) }
             .withObjectSupplier { InstanceModifyRequestRO(TypeDefaults.STRING, TypeDefaults.STRING, TypeDefaults.UUID) }
-            .withObjectSupplier { InstanceRO(TypeDefaults.UUID, TypeDefaults.STRING, null, null, TypeDefaults.STRING, TypeDefaults.UUID) }
+            .withObjectSupplier { InstanceRO(TypeDefaults.UUID, TypeDefaults.STRING, null, TypeDefaults.STRING, TypeDefaults.UUID) }
             .withObjectSupplier { EventLogRO(TypeDefaults.UUID, TypeDefaults.DATE, EventLogType.INSTANCE_HEALTH_CHANGED, EventLogSeverity.INFO, TypeDefaults.UUID) }
             .withObjectSupplier { InstanceHeapdumpReference(TypeDefaults.UUID) }
             .withObjectSupplier { InstanceHeapdumpReferenceRO(TypeDefaults.UUID, TypeDefaults.UUID, TypeDefaults.DATE) }

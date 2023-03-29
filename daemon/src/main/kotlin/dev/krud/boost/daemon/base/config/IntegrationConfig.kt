@@ -15,6 +15,11 @@ class IntegrationConfig {
     }
 
     @Bean
+    fun instanceHostnameUpdatedChannel(): PublishSubscribeChannel {
+        return MessageChannels.publishSubscribe().get()
+    }
+
+    @Bean
     fun instanceHealthCheckRequestChannel(): QueueChannel {
         return MessageChannels.queue().get()
     }

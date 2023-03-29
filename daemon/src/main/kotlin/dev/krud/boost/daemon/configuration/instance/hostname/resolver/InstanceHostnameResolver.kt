@@ -1,4 +1,4 @@
-package dev.krud.boost.daemon.configuration.instance.hostname
+package dev.krud.boost.daemon.configuration.instance.hostname.resolver
 
 import java.util.*
 

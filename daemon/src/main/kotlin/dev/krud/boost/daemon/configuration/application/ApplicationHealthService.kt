@@ -45,7 +45,7 @@ class ApplicationHealthService(
         }
         val instances = applicationService.getApplicationInstances(application.id)
         val healthStatus = instances
-            .map { instanceHealthService.getHealth(it).status }
+            .map { instanceHealthService.getCachedHealth(it.id).status }
             .toSet()
             .toApplicationHealthStatus()
 

@@ -1,4 +1,4 @@
-package dev.krud.boost.daemon.configuration.application.listeners
+package dev.krud.boost.daemon.configuration.application.websocket
 
 import dev.krud.boost.daemon.configuration.application.messaging.ApplicationHealthUpdatedEventMessage
 import dev.krud.boost.daemon.utils.addOrReplaceIf
@@ -10,7 +10,7 @@ import org.springframework.stereotype.Component
 import java.util.concurrent.CopyOnWriteArrayList
 
 @Component
-class ApplicationHealthListener(
+class ApplicationHealthWebsocketDispatcher(
     @Lazy
     private val messagingTemplate: SimpMessagingTemplate
 ) {

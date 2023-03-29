@@ -1,4 +1,4 @@
-package dev.krud.boost.daemon.configuration.instance
+package dev.krud.boost.daemon.configuration.instance.websocket
 
 import dev.krud.boost.daemon.configuration.instance.enums.InstanceHealthStatus
 import dev.krud.boost.daemon.configuration.instance.messaging.InstanceHealthChangedEventMessage
@@ -13,7 +13,7 @@ import org.springframework.stereotype.Component
 import java.util.concurrent.CopyOnWriteArrayList
 
 @Component
-class InstanceHealthListener(
+class InstanceHealthWebsocketDispatcher(
     @Lazy
     private val messagingTemplate: SimpMessagingTemplate,
     private val eventLogService: EventLogService

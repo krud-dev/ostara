@@ -347,7 +347,6 @@ export interface InstanceModifyRequestRO {
 
 export interface InstanceRO {
     id: string;
-    displayName: string;
     hostname?: string;
     alias?: string;
     actuatorUrl: string;

@@ -1,8 +1,9 @@
 package dev.krud.boost.daemon.base.config
 
-import dev.krud.boost.daemon.configuration.application.listeners.ApplicationHealthListener
-import dev.krud.boost.daemon.configuration.instance.InstanceHealthListener
+import dev.krud.boost.daemon.configuration.application.websocket.ApplicationHealthWebsocketDispatcher
 import dev.krud.boost.daemon.configuration.instance.metric.InstanceMetricWebsocketTopicInterceptor
+import dev.krud.boost.daemon.configuration.instance.websocket.InstanceHealthWebsocketDispatcher
+import dev.krud.boost.daemon.configuration.instance.websocket.InstanceHostnameWebsocketDispatcher
 import dev.krud.boost.daemon.websocket.SubscriptionInterceptor
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.context.annotation.Bean
@@ -25,6 +26,9 @@ class WebSocketConfig : WebSocketMessageBrokerConfigurer {
     @Autowired
     private lateinit var instanceHealthReplayingInterceptor: SubscriptionInterceptor
 
+    @Autowired
+    private lateinit var instanceHostnameReplayingInterceptor: SubscriptionInterceptor
+
     override fun registerStompEndpoints(registry: StompEndpointRegistry) {
         registry.addEndpoint("/ws")
             .setAllowedOriginPatterns("*")
@@ -36,24 +40,32 @@ class WebSocketConfig : WebSocketMessageBrokerConfigurer {
     }
 
     override fun configureClientInboundChannel(registration: ChannelRegistration) {
-        registration.interceptors(instanceMetricWebsocketTopicInterceptor, applicationHealthReplayingInterceptor, instanceHealthReplayingInterceptor)
+        registration.interceptors(instanceMetricWebsocketTopicInterceptor, applicationHealthReplayingInterceptor, instanceHealthReplayingInterceptor, instanceHostnameReplayingInterceptor)
     }
 
     @Configuration
     class HealthReplayingInterceptors {
         @Bean
-        fun applicationHealthReplayingInterceptor(applicationHealthListener: ApplicationHealthListener) = SubscriptionInterceptor(
-            destination = ApplicationHealthListener.APPLICATION_HEALTH_TOPIC,
+        fun applicationHealthReplayingInterceptor(applicationHealthWebsocketDispatcher: ApplicationHealthWebsocketDispatcher) = SubscriptionInterceptor(
+            destination = ApplicationHealthWebsocketDispatcher.APPLICATION_HEALTH_TOPIC,
             callback = { message, headerAccessor ->
-                applicationHealthListener.replay(headerAccessor.sessionId!!)
+                applicationHealthWebsocketDispatcher.replay(headerAccessor.sessionId!!)
             }
         )
 
         @Bean
-        fun instanceHealthReplayingInterceptor(instanceHealthListener: InstanceHealthListener) = SubscriptionInterceptor(
-            destination = InstanceHealthListener.INSTANCE_HEALTH_TOPIC,
+        fun instanceHealthReplayingInterceptor(instanceHealthWebsocketDispatcher: InstanceHealthWebsocketDispatcher) = SubscriptionInterceptor(
+            destination = InstanceHealthWebsocketDispatcher.INSTANCE_HEALTH_TOPIC,
             callback = { message, headerAccessor ->
-                instanceHealthListener.replay(headerAccessor.sessionId!!)
+                instanceHealthWebsocketDispatcher.replay(headerAccessor.sessionId!!)
+            }
+        )
+
+        @Bean
+        fun instanceHostnameReplayingInterceptor(instanceHostnameWebsocketDispatcher: InstanceHostnameWebsocketDispatcher) = SubscriptionInterceptor(
+            destination = InstanceHostnameWebsocketDispatcher.INSTANCE_HOSTNAME_TOPIC,
+            callback = { message, headerAccessor ->
+                instanceHostnameWebsocketDispatcher.replay(headerAccessor.sessionId!!)
             }
         )
     }

@@ -1,4 +1,4 @@
-package dev.krud.boost.daemon.configuration.instance.hostname
+package dev.krud.boost.daemon.configuration.instance.hostname.resolver
 
 import dev.krud.boost.daemon.actuator.ActuatorHttpClient
 import dev.krud.boost.daemon.configuration.instance.InstanceActuatorClientProvider

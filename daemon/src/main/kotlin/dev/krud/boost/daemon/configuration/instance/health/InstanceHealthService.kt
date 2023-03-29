@@ -10,7 +10,6 @@ import dev.krud.boost.daemon.configuration.instance.messaging.InstanceCreatedEve
 import dev.krud.boost.daemon.configuration.instance.messaging.InstanceHealthChangedEventMessage
 import dev.krud.boost.daemon.configuration.instance.messaging.InstanceUpdatedEventMessage
 import dev.krud.boost.daemon.utils.resolve
-import dev.krud.boost.daemon.utils.sendGeneric
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.newFixedThreadPoolContext
 import kotlinx.coroutines.runBlocking
@@ -42,9 +41,7 @@ class InstanceHealthService(
 
     fun getCachedHealth(instanceId: UUID): InstanceHealthRO {
         return instanceHealthCache.get(instanceId, InstanceHealthRO::class.java)
-            ?: InstanceHealthRO.pending(instanceId).apply {
-                instanceHealthCheckRequestChannel.sendGeneric(instanceId)
-            }
+            ?: InstanceHealthRO.pending(instanceId)
     }
 
     @ServiceActivator(inputChannel = "instanceHealthCheckRequestChannel")

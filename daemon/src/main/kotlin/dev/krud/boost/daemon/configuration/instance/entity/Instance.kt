@@ -1,13 +1,16 @@
 package dev.krud.boost.daemon.configuration.instance.entity
 
+import dev.krud.boost.daemon.configuration.instance.hostname.model.InstanceHostname
 import dev.krud.boost.daemon.configuration.instance.ro.InstanceRO
 import dev.krud.boost.daemon.entity.AbstractEntity
 import dev.krud.boost.daemon.utils.DEFAULT_COLOR
 import dev.krud.crudframework.crud.annotation.Deleteable
 import dev.krud.shapeshift.resolver.annotation.DefaultMappingTarget
 import dev.krud.shapeshift.resolver.annotation.MappedField
+import jakarta.persistence.CascadeType
 import jakarta.persistence.Column
 import jakarta.persistence.Entity
+import jakarta.persistence.OneToOne
 import java.util.*
 
 @Entity
@@ -38,8 +41,9 @@ class Instance(
     @Column(nullable = true)
     var sort: Double? = null
 ) : AbstractEntity() {
-    @Column(nullable = true)
-    var hostname: String? = null
+    @MappedField(mapFrom = "hostname")
+    @OneToOne(cascade = [CascadeType.ALL], mappedBy = "instance")
+    var hostname: InstanceHostname = InstanceHostname(this, null)
 
     companion object {
         const val NAME = "instance"

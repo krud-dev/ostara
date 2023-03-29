@@ -6,7 +6,6 @@ import java.util.*
 
 class InstanceRO(
     val id: UUID,
-    var displayName: String,
     var hostname: String?,
     val alias: String?,
     var actuatorUrl: String,
