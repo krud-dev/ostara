@@ -416,6 +416,11 @@ export interface InstanceHealthChangedEventMessage$Payload {
     newHealth: InstanceHealthRO;
 }
 
+export interface InstanceHostnameUpdatedEventMessage$Payload {
+    instanceId: string;
+    hostname?: string;
+}
+
 export interface ResultAggregationSummary<T> {
     totalCount: number;
     successCount: number;
