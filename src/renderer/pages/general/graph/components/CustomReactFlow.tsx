@@ -16,18 +16,18 @@ import { Node } from '@reactflow/core/dist/esm/types/nodes';
 
 const ReactFlowStyled = styled(ReactFlow)(({ theme }) => ({
   backgroundColor: theme.palette.background.paper,
-}));
 
-const MiniMapStyled = styled(MiniMap)(({ theme }) => ({
-  backgroundColor: theme.palette.background.paper,
+  '.react-flow__minimap': {
+    backgroundColor: theme.palette.background.paper,
 
-  '.react-flow__minimap-mask': {
-    fill: alpha(theme.palette.background.default, 0.5),
-  },
+    '.react-flow__minimap-mask': {
+      fill: alpha(theme.palette.background.default, 0.5),
+    },
 
-  '.react-flow__minimap-node': {
-    fill: theme.palette.background.neutral,
-    stroke: 'none',
+    '.react-flow__minimap-node': {
+      fill: theme.palette.background.neutral,
+      stroke: 'none',
+    },
   },
 }));
 
@@ -126,7 +126,7 @@ const CustomReactFlow: FunctionComponent<CustomReactFlowProps> = ({}) => {
       sx={{ ...(visible ? {} : { opacity: 0 }) }}
     >
       <Background />
-      <MiniMapStyled />
+      <MiniMap />
       <ControlsStyled showInteractive={false} />
     </ReactFlowStyled>
   );
