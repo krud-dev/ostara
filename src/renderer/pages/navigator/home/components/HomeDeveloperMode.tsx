@@ -228,7 +228,7 @@ export default function HomeDeveloperMode({}: HomeDeveloperModeProps) {
           <LoadingButton variant="outlined" color="primary" loading={loading} onClick={createManyInstancesHandler}>
             Create Many Instances
           </LoadingButton>
-          <LoadingButton variant="outlined" color="primary" loading={loading} onClick={deleteAllHandler}>
+          <LoadingButton variant="outlined" color="error" loading={loading} onClick={deleteAllHandler}>
             Delete All
           </LoadingButton>
           {/*<LoadingButton variant="outlined" color="primary" loading={loading} onClick={logApplicationsHealthHandler}>*/}

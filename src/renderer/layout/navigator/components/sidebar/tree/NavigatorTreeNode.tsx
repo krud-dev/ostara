@@ -1,5 +1,14 @@
 import { NodeRendererProps } from 'react-arborist';
-import { Badge, IconButton, ListItem, ListItemIcon, ListItemText, TextField, Tooltip } from '@mui/material';
+import {
+  Badge,
+  CircularProgress,
+  IconButton,
+  ListItem,
+  ListItemIcon,
+  ListItemText,
+  TextField,
+  Tooltip,
+} from '@mui/material';
 import { alpha, experimentalStyled as styled, Theme, useTheme } from '@mui/material/styles';
 import React, { ReactNode, useCallback, useEffect, useMemo, useRef } from 'react';
 import { TreeItem } from 'renderer/layout/navigator/components/sidebar/tree/tree';
@@ -9,6 +18,7 @@ import { NAVIGATOR_ITEM_HEIGHT } from 'renderer/constants/ui';
 import {
   getItemDisplayName,
   getItemHealthStatusColor,
+  getItemHealthStatusComponent,
   getItemNameTooltip,
   getItemUrl,
   isApplication,
@@ -127,6 +137,10 @@ export default function NavigatorTreeNode({ style, node, tree, dragHandle, previ
   const displayName = useMemo<string>(() => getItemDisplayName(node.data), [node.data]);
   const displayNameTooltip = useMemo<ReactNode | undefined>(() => getItemNameTooltip(node.data), [node.data]);
   const healthStatusColor = useMemo<string | undefined>(() => getItemHealthStatusColor(node.data), [node.data]);
+  const healthStatusComponent = useMemo<ReactNode | undefined>(
+    () => getItemHealthStatusComponent(node.data),
+    [node.data]
+  );
   const itemIcon = useItemIcon(node.data);
   const ToggleIcon = useMemo<SvgIconComponent>(
     () => (node.isOpen ? KeyboardArrowDown : KeyboardArrowRight),
@@ -224,17 +238,20 @@ export default function NavigatorTreeNode({ style, node, tree, dragHandle, previ
         </IconButton>
         <ListItemIconStyle sx={{ color: color, mr: 1.5, ml: 0 }}>
           <Badge
-            variant={'dot'}
+            variant={healthStatusComponent ? 'standard' : 'dot'}
             overlap={'circular'}
             anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
             sx={{
               '& .MuiBadge-badge': {
                 width: 8,
+                minWidth: 0,
                 height: 8,
+                p: 0,
                 backgroundColor: healthStatusColor,
               },
             }}
             invisible={!healthStatusColor}
+            badgeContent={healthStatusComponent}
           >
             <IconViewer icon={itemIcon} fontSize="small" />
           </Badge>

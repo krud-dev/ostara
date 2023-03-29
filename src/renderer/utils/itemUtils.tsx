@@ -9,7 +9,8 @@ import { CrudEntity } from '../apis/requests/crud/entity/entity';
 import { applicationCrudEntity } from '../apis/requests/crud/entity/entities/application.crudEntity';
 import { instanceCrudEntity } from '../apis/requests/crud/entity/entities/instance.crudEntity';
 import { folderCrudEntity } from '../apis/requests/crud/entity/entities/folder.crudEntity';
-import { ReactNode } from 'react';
+import React, { ReactNode } from 'react';
+import { CircularProgress } from '@mui/material';
 
 export function isApplication(item: ItemRO): item is ApplicationRO {
   return 'type' in item;
@@ -149,7 +150,7 @@ export const getApplicationHealthStatusColor = (application: ApplicationRO): str
     case 'UNKNOWN':
       return blueGrey[HEALTH_STATUS_COLORS_INDEX];
     case 'PENDING':
-      return 'text.secondary';
+      return 'text.primary';
     case 'EMPTY':
       return undefined;
     default:
@@ -163,6 +164,16 @@ export const getItemHealthStatusColor = (item: ItemRO): string | undefined => {
   }
   if (isApplication(item)) {
     return getApplicationHealthStatusColor(item);
+  }
+  return undefined;
+};
+
+export const getItemHealthStatusComponent = (item: ItemRO): ReactNode | undefined => {
+  if (
+    (isInstance(item) && item.health.status === 'PENDING') ||
+    (isApplication(item) && item.health.status === 'PENDING')
+  ) {
+    return <CircularProgress size={6} thickness={12} />;
   }
   return undefined;
 };

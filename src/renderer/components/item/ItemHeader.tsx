@@ -3,6 +3,7 @@ import { Avatar, Badge, Box, IconButton, Tooltip, Typography } from '@mui/materi
 import {
   getItemDisplayName,
   getItemHealthStatusColor,
+  getItemHealthStatusComponent,
   getItemHealthStatusTextId,
   getItemNameTooltip,
 } from 'renderer/utils/itemUtils';
@@ -24,6 +25,7 @@ export default function ItemHeader({ item }: ItemHeaderProps) {
   const displayName = useMemo<string>(() => getItemDisplayName(item), [item]);
   const displayNameTooltip = useMemo<ReactNode | undefined>(() => getItemNameTooltip(item), [item]);
   const healthStatusColor = useMemo<string | undefined>(() => getItemHealthStatusColor(item), [item]);
+  const healthStatusComponent = useMemo<ReactNode | undefined>(() => getItemHealthStatusComponent(item), [item]);
   const healthTextId = useMemo<string | undefined>(() => getItemHealthStatusTextId(item), [item]);
   const itemIcon = useItemIcon(item);
 
@@ -48,15 +50,20 @@ export default function ItemHeader({ item }: ItemHeaderProps) {
           onContextMenu={openMenuHandler}
         >
           <Badge
-            variant={'dot'}
+            variant={healthStatusComponent ? 'standard' : 'dot'}
             overlap={'circular'}
             anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
             sx={{
               '& .MuiBadge-badge': {
+                width: 10,
+                minWidth: 0,
+                height: 10,
+                p: 0,
                 backgroundColor: healthStatusColor,
               },
             }}
             invisible={!healthStatusColor}
+            badgeContent={healthStatusComponent}
           >
             <Avatar variant={'circular'} sx={{ backgroundColor: color, color: 'white' }}>
               <IconViewer icon={itemIcon} fontSize={'medium'} />
