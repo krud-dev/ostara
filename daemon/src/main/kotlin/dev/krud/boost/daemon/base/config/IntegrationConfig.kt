@@ -8,7 +8,6 @@ import org.springframework.integration.channel.QueueChannel
 import org.springframework.integration.dsl.MessageChannels
 import org.springframework.integration.dsl.integrationFlow
 import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor
-import java.util.*
 
 @Configuration
 class IntegrationConfig {
@@ -42,24 +41,29 @@ class IntegrationConfig {
         return MessageChannels.publishSubscribe().get()
     }
 
+
     @Bean
     fun instanceHeapdumpDownloadProgressFlow() = integrationFlow(instanceHeapdumpDownloadProgressInputChannel()) {
         aggregate {
             correlationStrategy {
                 it as InstanceHeapdumpDownloadProgressMessage
-                (it.payload.referenceId to it.payload.status)
+                it.payload.referenceId to it.payload.status
             }
             releaseStrategy {
-                it.size() == 1
+                false
             }
-            groupTimeout(100)
+
+            outputProcessor {
+                it.messages.last()
+            }
+
+            groupTimeoutExpression("timestamp + 50 - T(System).currentTimeMillis()")
+
             expireGroupsUponTimeout(true)
-            expireGroupsUponCompletion(false)
+            expireGroupsUponCompletion(true)
             sendPartialResultOnExpiry(true)
         }
-        transform<List<InstanceHeapdumpDownloadProgressMessage>> {
-            it.first()
-        }
+
         channel(instanceHeapdumpDownloadProgressChannel())
     }
 
