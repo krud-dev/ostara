@@ -1,6 +1,7 @@
 package dev.krud.boost.daemon.base.config
 
 import dev.krud.boost.daemon.configuration.application.websocket.ApplicationHealthWebsocketDispatcher
+import dev.krud.boost.daemon.configuration.instance.heapdump.websocket.InstanceHeapdumpWebsocketDispatcher
 import dev.krud.boost.daemon.configuration.instance.metric.InstanceMetricWebsocketTopicInterceptor
 import dev.krud.boost.daemon.configuration.instance.websocket.InstanceHealthWebsocketDispatcher
 import dev.krud.boost.daemon.configuration.instance.websocket.InstanceHostnameWebsocketDispatcher
@@ -21,13 +22,7 @@ class WebSocketConfig : WebSocketMessageBrokerConfigurer {
     private lateinit var instanceMetricWebsocketTopicInterceptor: InstanceMetricWebsocketTopicInterceptor
 
     @Autowired
-    private lateinit var applicationHealthReplayingInterceptor: SubscriptionInterceptor
-
-    @Autowired
-    private lateinit var instanceHealthReplayingInterceptor: SubscriptionInterceptor
-
-    @Autowired
-    private lateinit var instanceHostnameReplayingInterceptor: SubscriptionInterceptor
+    private lateinit var subscriptionInterceptors: List<SubscriptionInterceptor>
 
     override fun registerStompEndpoints(registry: StompEndpointRegistry) {
         registry.addEndpoint("/ws")
@@ -40,7 +35,7 @@ class WebSocketConfig : WebSocketMessageBrokerConfigurer {
     }
 
     override fun configureClientInboundChannel(registration: ChannelRegistration) {
-        registration.interceptors(instanceMetricWebsocketTopicInterceptor, applicationHealthReplayingInterceptor, instanceHealthReplayingInterceptor, instanceHostnameReplayingInterceptor)
+        registration.interceptors(instanceMetricWebsocketTopicInterceptor, *subscriptionInterceptors.toTypedArray())
     }
 
     @Configuration
@@ -66,6 +61,14 @@ class WebSocketConfig : WebSocketMessageBrokerConfigurer {
             destination = InstanceHostnameWebsocketDispatcher.INSTANCE_HOSTNAME_TOPIC,
             callback = { message, headerAccessor ->
                 instanceHostnameWebsocketDispatcher.replay(headerAccessor.sessionId!!)
+            }
+        )
+
+        @Bean
+        fun instanceHeapdumpReplayingInterceptor(instanceHeapdumpWebsocketDispatcher: InstanceHeapdumpWebsocketDispatcher) = SubscriptionInterceptor(
+            destination = InstanceHeapdumpWebsocketDispatcher.HEAPDUMP_DOWNLOAD_PROGRESS_TOPIC,
+            callback = { message, headerAccessor ->
+                instanceHeapdumpWebsocketDispatcher.replay(headerAccessor.sessionId!!)
             }
         )
     }

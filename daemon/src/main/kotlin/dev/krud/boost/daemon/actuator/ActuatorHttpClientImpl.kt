@@ -39,6 +39,8 @@ import dev.krud.boost.daemon.exception.throwNotFound
 import dev.krud.boost.daemon.exception.throwServiceUnavailable
 import dev.krud.boost.daemon.exception.throwUnauthorized
 import dev.krud.boost.daemon.jackson.MultiDateParsingModule
+import dev.krud.boost.daemon.okhttp.ProgressListener
+import dev.krud.boost.daemon.okhttp.ProgressResponseBody
 import okhttp3.Authenticator
 import okhttp3.HttpUrl
 import okhttp3.HttpUrl.Companion.toHttpUrl
@@ -65,12 +67,6 @@ class ActuatorHttpClientImpl(
         )
         configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false)
     }
-
-    private val httpClient: OkHttpClient = OkHttpClient
-        .Builder()
-        .authenticator(authenticator)
-        .proxyAuthenticator(authenticator)
-        .build()
 
     private val baseHttpUrl: HttpUrl = baseUrl.toHttpUrl()
 
@@ -246,11 +242,20 @@ class ActuatorHttpClientImpl(
      */
 
     // TODO: Write tests
-    override fun heapDump(): Result<InputStream> = runCatching {
+    override fun heapDump(progressListener: ProgressListener): Result<InputStream> = runCatching {
+        val client = getClient() {
+            addNetworkInterceptor { chain ->
+                val originalResponse: Response = chain.proceed(chain.request())
+                originalResponse
+                    .newBuilder()
+                    .body(ProgressResponseBody(originalResponse.body!!, progressListener))
+                    .build()
+            }
+        }
         val request = Request.Builder()
             .url(asUrl("heapdump"))
             .build()
-        val response = httpClient.newCall(request).execute()
+        val response = client.newCall(request).execute()
         response.bodyAsByteArrayAndClose()?.inputStream() ?: throwInternalServerError("Response body of heapdump was null")
     }
 
@@ -329,7 +334,7 @@ class ActuatorHttpClientImpl(
     }
 
     private fun runRequest(request: Request): Result<Response> = runCatching {
-        httpClient.newCall(request).execute()
+        getClient().newCall(request).execute()
     }
         .mapCatching { response ->
             if (!response.isSuccessful) {
@@ -396,4 +401,11 @@ class ActuatorHttpClientImpl(
             else -> throwInternalServerError("Actuator request failed: $bodyString")
         }
     }
+
+    private fun getClient(block: OkHttpClient.Builder.() -> Unit = {}): OkHttpClient = OkHttpClient
+        .Builder()
+        .authenticator(authenticator)
+        .proxyAuthenticator(authenticator)
+        .apply(block)
+        .build()
 }

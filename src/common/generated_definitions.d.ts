@@ -409,6 +409,15 @@ export interface EffectiveAuthentication {
     sourceId: string;
 }
 
+export interface InstanceHeapdumpDownloadProgressMessage$Payload {
+    referenceId: string;
+    instanceId: string;
+    bytesRead: number;
+    contentLength: number;
+    status: InstanceHeapdumpReference$Status;
+    error?: string;
+}
+
 export interface InstanceHealthChangedEventMessage$Payload {
     parentApplicationId: string;
     instanceId: string;

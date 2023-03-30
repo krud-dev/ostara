@@ -26,6 +26,7 @@ import dev.krud.boost.daemon.actuator.model.QuartzTriggersResponse
 import dev.krud.boost.daemon.actuator.model.ScheduledTasksActuatorResponse
 import dev.krud.boost.daemon.actuator.model.TestConnectionResponse
 import dev.krud.boost.daemon.actuator.model.ThreadDumpActuatorResponse
+import dev.krud.boost.daemon.okhttp.ProgressListener
 import org.springframework.boot.logging.LogLevel
 import java.io.InputStream
 
@@ -130,7 +131,7 @@ interface ActuatorHttpClient {
      */
 
     // TODO: Write tests
-    fun heapDump(): Result<InputStream>
+    fun heapDump(progressListener: ProgressListener = { _, _, _ -> }): Result<InputStream>
 
     /**
      * Loggers
