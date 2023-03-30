@@ -5,7 +5,7 @@ import {
   EffectiveAuthentication,
   FolderRO,
 } from '../../../../../common/generated_definitions';
-import { Card, CardContent, Stack, Typography } from '@mui/material';
+import { Card, CardContent, Link, Stack, Typography } from '@mui/material';
 import { FormattedMessage } from 'react-intl';
 import DetailsLabelValueHorizontal from '../../../table/details/DetailsLabelValueHorizontal';
 import EffectiveAuthenticationDetailsBasic from './EffectiveAuthenticationDetailsBasic';
@@ -16,9 +16,10 @@ import EffectiveAuthenticationDetailsBearer from './EffectiveAuthenticationDetai
 import EffectiveAuthenticationDetailsQuerystring from './EffectiveAuthenticationDetailsQuerystring';
 import { showUpdateItemDialog } from '../../../../utils/dialogUtils';
 import { LoadingButton } from '@mui/lab';
-import { useCrudShow } from '../../../../apis/requests/crud/crudShow';
+import { useCrudShow, useCrudShowQuery } from '../../../../apis/requests/crud/crudShow';
 import { applicationCrudEntity } from '../../../../apis/requests/crud/entity/entities/application.crudEntity';
 import { folderCrudEntity } from '../../../../apis/requests/crud/entity/entities/folder.crudEntity';
+import { getItemDisplayName, getItemType, getItemTypeTextId } from '../../../../utils/itemUtils';
 
 export type EffectiveAuthenticationDetailsProps = {
   authentication?: Authentication;
@@ -43,9 +44,26 @@ const EffectiveAuthenticationDetails: FunctionComponent<EffectiveAuthenticationD
       !!internalEffectiveAuthentication.sourceType,
     [authentication, internalEffectiveAuthentication]
   );
+
+  const showItemState = useCrudShowQuery<ApplicationRO | FolderRO>(
+    {
+      entity: internalEffectiveAuthentication.sourceType === 'APPLICATION' ? applicationCrudEntity : folderCrudEntity,
+      id: internalEffectiveAuthentication.sourceId!,
+    },
+    { enabled: show }
+  );
+
   const loading = useMemo<boolean>(
-    () => !internalEffectiveAuthentication.authentication,
-    [internalEffectiveAuthentication]
+    () => !internalEffectiveAuthentication.authentication || !showItemState.data,
+    [internalEffectiveAuthentication, showItemState.data]
+  );
+  const displayName = useMemo<string>(
+    () => (showItemState.data ? getItemDisplayName(showItemState.data) : ''),
+    [showItemState.data]
+  );
+  const typeTextId = useMemo<string>(
+    () => (showItemState.data ? getItemTypeTextId(getItemType(showItemState.data)) : ''),
+    [showItemState.data]
   );
 
   const EffectiveAuthenticationDetailsType = useMemo<ComponentType<EffectiveAuthenticationDetailsProps>>(() => {
@@ -84,24 +102,11 @@ const EffectiveAuthenticationDetails: FunctionComponent<EffectiveAuthenticationD
     }
   }, [internalEffectiveAuthentication.authentication]);
 
-  const showItemState = useCrudShow<ApplicationRO | FolderRO>();
-
   const updateHandler = useCallback(
     async (event: React.MouseEvent): Promise<void> => {
       event.preventDefault();
 
-      if (!internalEffectiveAuthentication.sourceId) {
-        return;
-      }
-
-      let item: ApplicationRO | FolderRO | undefined;
-      try {
-        item = await showItemState.mutateAsync({
-          entity:
-            internalEffectiveAuthentication.sourceType === 'APPLICATION' ? applicationCrudEntity : folderCrudEntity,
-          id: internalEffectiveAuthentication.sourceId,
-        });
-      } catch (e) {}
+      const item = showItemState.data;
       if (!item) {
         return;
       }
@@ -114,7 +119,7 @@ const EffectiveAuthenticationDetails: FunctionComponent<EffectiveAuthenticationD
         }));
       }
     },
-    [internalEffectiveAuthentication, showItemState, setInternalEffectiveAuthentication]
+    [showItemState.data, setInternalEffectiveAuthentication]
   );
 
   if (!show) {
@@ -125,32 +130,41 @@ const EffectiveAuthenticationDetails: FunctionComponent<EffectiveAuthenticationD
     <Card variant={'outlined'} sx={{ mt: 2 }}>
       <CardContent>
         <Stack direction={'column'} spacing={1}>
-          <Stack direction="row" spacing={2} justifyContent="space-between">
-            <Typography variant={'subtitle1'}>
-              <FormattedMessage id={'effectiveAuthentication'} />
-            </Typography>
-            <LoadingButton
-              variant={'outlined'}
-              size={'small'}
-              loading={showItemState.isLoading}
-              onClick={updateHandler}
-            >
-              <FormattedMessage id={'update'} />
-            </LoadingButton>
-          </Stack>
+          <Typography variant={'subtitle1'}>
+            <FormattedMessage id={'effectiveAuthentication'} />
+          </Typography>
 
-          {loading && (
+          {loading ? (
             <Typography variant={'body2'} sx={{ color: 'text.secondary' }}>
               <FormattedMessage id={'loading'} />
             </Typography>
+          ) : (
+            <>
+              <DetailsLabelValueHorizontal
+                label={
+                  <FormattedMessage
+                    id={'authenticationUsedFrom'}
+                    values={{
+                      type: <FormattedMessage id={typeTextId} />,
+                      name: (
+                        <Link href={`#`} onClick={updateHandler}>
+                          {displayName}
+                        </Link>
+                      ),
+                    }}
+                  />
+                }
+                value={''}
+              />
+
+              <DetailsLabelValueHorizontal
+                label={<FormattedMessage id={'type'} />}
+                value={<FormattedMessage id={typeMessageId} />}
+              />
+
+              <EffectiveAuthenticationDetailsType effectiveAuthentication={internalEffectiveAuthentication} />
+            </>
           )}
-
-          <DetailsLabelValueHorizontal
-            label={<FormattedMessage id={'type'} />}
-            value={<FormattedMessage id={typeMessageId} />}
-          />
-
-          <EffectiveAuthenticationDetailsType effectiveAuthentication={internalEffectiveAuthentication} />
         </Stack>
       </CardContent>
     </Card>

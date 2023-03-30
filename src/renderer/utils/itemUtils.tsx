@@ -99,6 +99,19 @@ export const getItemTypeIcon = (itemType: ItemType): MUIconType => {
   }
 };
 
+export const getItemTypeTextId = (itemType: ItemType): string => {
+  switch (itemType) {
+    case 'folder':
+      return 'folder';
+    case 'application':
+      return 'application';
+    case 'instance':
+      return 'instance';
+    default:
+      throw new Error(`Unknown item type`);
+  }
+};
+
 export const getItemUrl = (item: ItemRO): string => {
   const itemType = getItemType(item);
   switch (itemType) {

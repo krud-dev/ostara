@@ -6,6 +6,7 @@ export default {
   developerMode: 'Developer Mode',
   on: 'On',
   off: 'Off',
+  folder: 'Folder',
   createFolder: 'Create Folder',
   createApplication: 'Create Application',
   createInstance: 'Create Instance',
@@ -146,6 +147,7 @@ export default {
   version: 'Version',
   checksum: 'Checksum',
   application: 'Application',
+  instance: 'Instance',
   instanceAliasUnreachable: 'Instance "{alias}" is unreachable',
   instanceAliasInvalid: 'Instance "{alias}" URL is invalid',
   instanceAliasPending: 'Instance "{alias}" is loading',
@@ -301,4 +303,5 @@ export default {
   cannotConnectToInstance: 'Cannot connect to instance',
   openRepository: 'Open Repository',
   openDocumentation: 'Open Documentation',
+  authenticationUsedFrom: 'Authentication used from {type} {name}.',
 };

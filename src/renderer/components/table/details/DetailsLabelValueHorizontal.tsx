@@ -1,10 +1,9 @@
 import React, { ReactNode, useMemo } from 'react';
-import { Box, Stack, Tooltip, Typography } from '@mui/material';
+import { Stack, Typography } from '@mui/material';
 import { SxProps } from '@mui/system';
 import { Theme } from '@mui/material/styles';
 import { EMPTY_STRING } from '../../../constants/ui';
 import { isNil } from 'lodash';
-import { FormattedMessage } from 'react-intl';
 
 type DetailsLabelValueHorizontalProps = {
   label: ReactNode;
