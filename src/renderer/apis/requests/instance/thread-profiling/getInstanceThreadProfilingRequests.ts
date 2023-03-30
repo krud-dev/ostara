@@ -21,7 +21,7 @@ export const getInstanceThreadProfilingRequests = async (variables: Variables): 
     filterFields: [{ fieldName: 'instanceId', operation: 'Equal', values: [variables.instanceId] }],
     orders: [{ by: 'creationTime', descending: true }],
     currentPage: 1,
-    pageSize: 500,
+    pageSize: 1000,
   });
   return result.results;
 };

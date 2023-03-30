@@ -5,13 +5,14 @@ import TableComponent from 'renderer/components/table/TableComponent';
 import { Entity } from 'renderer/entity/entity';
 import { Card } from '@mui/material';
 import {
-  InstanceHealthChangedEventMessage$Payload,
   InstanceHeapdumpDownloadProgressMessage$Payload,
-  InstanceHeapdumpReferenceRO,
   InstanceRO,
 } from '../../../../../common/generated_definitions';
 import { instanceHeapdumpReferencesEntity } from '../../../../entity/entities/instanceHeapdumpReferences.entity';
-import { useGetInstanceHeapdumpReferencesQuery } from '../../../../apis/requests/instance/heapdumps/getInstanceHeapdumpReferences';
+import {
+  EnrichedInstanceHeapdumpReferenceRO,
+  useGetInstanceHeapdumpReferencesQuery,
+} from '../../../../apis/requests/instance/heapdumps/getInstanceHeapdumpReferences';
 import { DELETE_ID, DOWNLOAD_ID, REQUEST_ID } from '../../../../entity/actions';
 import { FormattedMessage } from 'react-intl';
 import { useRequestInstanceHeapdump } from '../../../../apis/requests/instance/heapdumps/requestInstanceHeapdump';
@@ -27,10 +28,10 @@ const InstanceHeapdumpReferences: FunctionComponent = () => {
 
   const item = useMemo<InstanceRO>(() => selectedItem as InstanceRO, [selectedItem]);
 
-  const entity = useMemo<Entity<InstanceHeapdumpReferenceRO>>(() => instanceHeapdumpReferencesEntity, []);
+  const entity = useMemo<Entity<EnrichedInstanceHeapdumpReferenceRO>>(() => instanceHeapdumpReferencesEntity, []);
   const queryState = useGetInstanceHeapdumpReferencesQuery({ instanceId: item.id });
 
-  const [data, setData] = useState<InstanceHeapdumpReferenceRO[] | undefined>(undefined);
+  const [data, setData] = useState<EnrichedInstanceHeapdumpReferenceRO[] | undefined>(undefined);
   const loading = useMemo<boolean>(() => !data, [data]);
 
   useEffect(() => {
@@ -45,7 +46,13 @@ const InstanceHeapdumpReferences: FunctionComponent = () => {
         setData((prev) =>
           prev?.map((h) =>
             h.id === downloadChanged.referenceId
-              ? { ...h, status: downloadChanged.status, error: downloadChanged.error, size: downloadChanged.bytesRead }
+              ? {
+                  ...h,
+                  status: downloadChanged.status,
+                  error: downloadChanged.error,
+                  size: downloadChanged.contentLength,
+                  bytesRead: downloadChanged.bytesRead,
+                }
               : h
           )
         );
@@ -59,29 +66,32 @@ const InstanceHeapdumpReferences: FunctionComponent = () => {
   const downloadHeapdumpState = useDownloadInstanceHeapdumpReference();
   const deleteHeapdumpState = useDeleteInstanceHeapdumpReference();
 
-  const actionsHandler = useCallback(async (actionId: string, row: InstanceHeapdumpReferenceRO): Promise<void> => {
-    switch (actionId) {
-      case DOWNLOAD_ID:
-        try {
-          await downloadHeapdumpState.mutateAsync({ reference: row });
-        } catch (e) {
-          enqueueSnackbar(<FormattedMessage id={'heapdumpDownloadFailed'} />, {
-            variant: 'error',
-          });
-        }
-        break;
-      case DELETE_ID:
-        try {
-          await deleteHeapdumpState.mutateAsync({ instanceId: row.instanceId, referenceId: row.id });
-        } catch (e) {}
-        break;
-      default:
-        break;
-    }
-  }, []);
+  const actionsHandler = useCallback(
+    async (actionId: string, row: EnrichedInstanceHeapdumpReferenceRO): Promise<void> => {
+      switch (actionId) {
+        case DOWNLOAD_ID:
+          try {
+            await downloadHeapdumpState.mutateAsync({ reference: row });
+          } catch (e) {
+            enqueueSnackbar(<FormattedMessage id={'heapdumpDownloadFailed'} />, {
+              variant: 'error',
+            });
+          }
+          break;
+        case DELETE_ID:
+          try {
+            await deleteHeapdumpState.mutateAsync({ instanceId: row.instanceId, referenceId: row.id });
+          } catch (e) {}
+          break;
+        default:
+          break;
+      }
+    },
+    []
+  );
 
   const massActionsHandler = useCallback(
-    async (actionId: string, selectedRows: InstanceHeapdumpReferenceRO[]): Promise<void> => {},
+    async (actionId: string, selectedRows: EnrichedInstanceHeapdumpReferenceRO[]): Promise<void> => {},
     []
   );
 

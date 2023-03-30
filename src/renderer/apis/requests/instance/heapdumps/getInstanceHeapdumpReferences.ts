@@ -9,11 +9,15 @@ import { InstanceHeapdumpReferenceRO } from '../../../../../common/generated_def
 import { crudSearch } from '../../crud/crudSearch';
 import { heapdumpReferenceCrudEntity } from '../../crud/entity/entities/heapdumpReference.crudEntity';
 
+export type EnrichedInstanceHeapdumpReferenceRO = InstanceHeapdumpReferenceRO & {
+  bytesRead?: number;
+};
+
 type Variables = {
   instanceId: string;
 };
 
-type Data = InstanceHeapdumpReferenceRO[];
+type Data = EnrichedInstanceHeapdumpReferenceRO[];
 
 export const getInstanceHeapdumpReferences = async (variables: Variables): Promise<Data> => {
   const result = await crudSearch<InstanceHeapdumpReferenceRO>({
@@ -21,7 +25,7 @@ export const getInstanceHeapdumpReferences = async (variables: Variables): Promi
     filterFields: [{ fieldName: 'instanceId', operation: 'Equal', values: [variables.instanceId] }],
     orders: [{ by: 'creationTime', descending: true }],
     currentPage: 1,
-    pageSize: 500,
+    pageSize: 1000,
   });
   return result.results;
 };

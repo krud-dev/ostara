@@ -1,9 +1,11 @@
 import { Entity } from 'renderer/entity/entity';
-import { InstanceHeapdumpReferenceRO } from '../../../common/generated_definitions';
 import { DELETE_ID, DOWNLOAD_ID, REQUEST_ID } from '../actions';
 import { FormattedMessage } from 'react-intl';
+import { EnrichedInstanceHeapdumpReferenceRO } from '../../apis/requests/instance/heapdumps/getInstanceHeapdumpReferences';
+import { formatBytes } from '../../utils/formatUtils';
+import { isNumber } from 'lodash';
 
-export const instanceHeapdumpReferencesEntity: Entity<InstanceHeapdumpReferenceRO> = {
+export const instanceHeapdumpReferencesEntity: Entity<EnrichedInstanceHeapdumpReferenceRO> = {
   id: 'instanceHeapdumpReference',
   columns: [
     {
@@ -47,8 +49,22 @@ export const instanceHeapdumpReferencesEntity: Entity<InstanceHeapdumpReferenceR
     },
     {
       id: 'size',
-      type: 'Bytes',
+      type: 'CustomText',
       labelId: 'size',
+      getText: (item) => {
+        switch (item.status) {
+          case 'DOWNLOADING':
+            return isNumber(item.size) && isNumber(item.bytesRead)
+              ? `${formatBytes(item.bytesRead)} / ${formatBytes(item.size)} (${Math.round(
+                  (item.bytesRead / item.size) * 100
+                )}%)`
+              : '';
+          case 'READY':
+            return isNumber(item.size) ? formatBytes(item.size) : '';
+          default:
+            return '';
+        }
+      },
     },
   ],
   actions: [
