@@ -18,6 +18,8 @@ spring:
   datasource:
     driver-class-name: org.sqlite.JDBC
     url: jdbc:sqlite:mydb.db
+    hikari:
+      maximum-pool-size: 1
   jpa:
     hibernate:
       ddl-auto: update
