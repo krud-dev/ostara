@@ -50,7 +50,7 @@ class InstanceHealthService(
     }
 
     fun updateInstanceHealthAndReturn(instanceId: UUID): InstanceHealthRO {
-        val instance = instanceService.getInstanceOrThrow(instanceId)
+        val instance = instanceService.getInstanceFromCacheOrThrow(instanceId)
         return updateInstanceHealthAndReturn(instance)
     }
 
@@ -123,13 +123,13 @@ class InstanceHealthService(
         when (event) {
             is InstanceCreatedEventMessage -> {
                 updateInstanceHealthAndReturn(
-                    instanceService.getInstanceOrThrow(event.payload.instanceId)
+                    instanceService.getInstanceFromCacheOrThrow(event.payload.instanceId)
                 )
             }
 
             is InstanceUpdatedEventMessage -> {
                 updateInstanceHealthAndReturn(
-                    instanceService.getInstanceOrThrow(event.payload.instanceId)
+                    instanceService.getInstanceFromCacheOrThrow(event.payload.instanceId)
                 )
             }
         }

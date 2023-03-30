@@ -89,13 +89,14 @@ class InstanceHeapdumpService(
     }
 
     @ServiceActivator(inputChannel = "instanceHeapdumpDownloadRequestChannel")
-    fun downloadPendingHeapdumps(payload: InstanceHeapdumpDownloadRequestMessage.Payload) {
+    fun downloadPendingHeapdump(payload: InstanceHeapdumpDownloadRequestMessage.Payload) {
         val (referenceId, instanceId) = payload
         val reference = instanceHeapdumpReferenceKrud.updateById(referenceId) {
             status = InstanceHeapdumpReference.Status.DOWNLOADING
         }
         try {
-            val client = actuatorClientProvider.provide(instanceId)
+            val instance = instanceService.getInstanceOrThrow(instanceId)
+            val client = actuatorClientProvider.provide(instance)
             val heapdumpInputStream = client.heapDump { bytesRead, contentLength, done ->
                 instanceHeapdumpDownloadProgressInputChannel.send(
                     InstanceHeapdumpDownloadProgressMessage(

@@ -46,7 +46,7 @@ class InstanceSystemPropertiesService(
 
     @Cacheable("instanceSystemPropertiesCache")
     fun getSystemProperties(instanceId: UUID): InstanceSystemPropertiesRO {
-        val instance = instanceService.getInstanceOrThrow(instanceId)
+        val instance = instanceService.getInstanceFromCacheOrThrow(instanceId)
         instanceAbilityService.hasAbilityOrThrow(instance, InstanceAbility.SYSTEM_PROPERTIES)
         val client = actuatorClientProvider.provide(instance)
         val (_, propertySources) = client.env()

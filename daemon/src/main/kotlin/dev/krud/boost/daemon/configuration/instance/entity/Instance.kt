@@ -5,6 +5,7 @@ import dev.krud.boost.daemon.configuration.instance.ro.InstanceRO
 import dev.krud.boost.daemon.entity.AbstractEntity
 import dev.krud.boost.daemon.utils.DEFAULT_COLOR
 import dev.krud.crudframework.crud.annotation.Deleteable
+import dev.krud.crudframework.crud.annotation.PersistCopyOnFetch
 import dev.krud.shapeshift.resolver.annotation.DefaultMappingTarget
 import dev.krud.shapeshift.resolver.annotation.MappedField
 import jakarta.persistence.CascadeType
@@ -17,6 +18,7 @@ import java.util.*
 @DefaultMappingTarget(InstanceRO::class)
 @MappedField(mapFrom = "id")
 @Deleteable(softDelete = false)
+@PersistCopyOnFetch
 class Instance(
     @MappedField
     @Column(nullable = true)

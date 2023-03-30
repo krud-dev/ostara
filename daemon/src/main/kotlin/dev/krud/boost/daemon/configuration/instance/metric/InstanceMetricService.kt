@@ -18,7 +18,7 @@ class InstanceMetricService(
     private val instanceAbilityService: InstanceAbilityService
 ) {
     fun getLatestMetric(instanceId: UUID, metricName: String): InstanceMetricRO {
-        val instance = instanceService.getInstanceOrThrow(instanceId)
+        val instance = instanceService.getInstanceFromCacheOrThrow(instanceId)
         instanceAbilityService.hasAbilityOrThrow(instance, InstanceAbility.METRICS)
         val response = actuatorClientProvider.doWith(instance) { client ->
             val parsedMetricName = parseMetricName(metricName)

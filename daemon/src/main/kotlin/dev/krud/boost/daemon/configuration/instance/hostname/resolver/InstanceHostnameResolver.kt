@@ -1,8 +1,7 @@
 package dev.krud.boost.daemon.configuration.instance.hostname.resolver
 
-import java.util.*
+import dev.krud.boost.daemon.configuration.instance.entity.Instance
 
 interface InstanceHostnameResolver {
-    fun resolveHostname(instanceId: UUID): String?
-    fun resolveHostname(url: String): String?
+    fun resolveHostname(instance: Instance): String?
 }

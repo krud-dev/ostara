@@ -16,6 +16,8 @@ management:
       show-details: always
 spring:
   datasource:
+    hikari:
+      maximum-pool-size: 1
     driver-class-name: org.sqlite.JDBC
     url: jdbc:sqlite:mydb.db
   jpa:
@@ -30,6 +32,7 @@ spring:
       write-dates-as-timestamps: true
 cache:
   caches:
+    - name: instanceCache
     - name: httpRequestStatisticsCache
       expire-after-write: 10m
     - name: instanceHealthCache
@@ -37,7 +40,6 @@ cache:
       expire-after-write: 10m
     - name: instancePropertyCache
       expire-after-write: 1m
-    - name: instanceHostnameCache
     - name: applicationEffectiveAuthenticationCache
     - name: folderEffectiveAuthenticationCache
     - name: applicationHealthCache

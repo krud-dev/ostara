@@ -1,6 +1,7 @@
 package dev.krud.boost.daemon.threadprofiling
 
 import dev.krud.boost.daemon.configuration.instance.InstanceActuatorClientProvider
+import dev.krud.boost.daemon.configuration.instance.InstanceService
 import dev.krud.boost.daemon.exception.throwNotFound
 import dev.krud.boost.daemon.threadprofiling.enums.ThreadProfilingStatus
 import dev.krud.boost.daemon.threadprofiling.model.ThreadProfilingLog
@@ -14,6 +15,7 @@ import java.util.*
 
 @Service
 class ThreadProfilingService(
+    private val instanceService: InstanceService,
     private val threadProfilingRequestKrud: Krud<ThreadProfilingRequest, UUID>,
     private val threadProfilinLogKrud: Krud<ThreadProfilingLog, UUID>,
     private val actuatorClientProvider: InstanceActuatorClientProvider
@@ -35,7 +37,8 @@ class ThreadProfilingService(
         val groupedByInstance = runningThreadProfilings.filter { !expired.any { request -> request == it } }.groupBy { it.instanceId }
 
         groupedByInstance.forEach { (instanceId, requests) ->
-            val threadDumpRequest = actuatorClientProvider.provide(instanceId).threadDump()
+            val instance = instanceService.getInstanceOrThrow(instanceId)
+            val threadDumpRequest = actuatorClientProvider.provide(instance).threadDump()
             threadDumpRequest.onSuccess { threadDump ->
                 requests.forEach { request ->
                     val threadLog = ThreadProfilingLog(request.id, threadDump.threads)

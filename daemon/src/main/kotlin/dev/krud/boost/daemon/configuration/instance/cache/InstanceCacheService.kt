@@ -26,7 +26,7 @@ class InstanceCacheService(
     private val executorService = Executors.newFixedThreadPool(8)
 
     fun getCaches(instanceId: UUID): List<InstanceCacheRO> {
-        val instance = instanceService.getInstanceOrThrow(instanceId)
+        val instance = instanceService.getInstanceFromCacheOrThrow(instanceId)
         instanceAbilityService.hasAbilityOrThrow(instance, InstanceAbility.CACHES)
         return actuatorClientProvider.doWith(instance) { client ->
             client.caches()
@@ -46,7 +46,7 @@ class InstanceCacheService(
     }
 
     fun evictCache(instanceId: UUID, cacheName: String): Result<Unit> {
-        val instance = instanceService.getInstanceOrThrow(instanceId)
+        val instance = instanceService.getInstanceFromCacheOrThrow(instanceId)
         instanceAbilityService.hasAbilityOrThrow(instance, InstanceAbility.CACHES)
         return actuatorClientProvider.doWith(instance) {
             it.evictCache(cacheName)
@@ -54,7 +54,7 @@ class InstanceCacheService(
     }
 
     fun evictAllCaches(instanceId: UUID): Result<Unit> {
-        val instance = instanceService.getInstanceOrThrow(instanceId)
+        val instance = instanceService.getInstanceFromCacheOrThrow(instanceId)
         instanceAbilityService.hasAbilityOrThrow(instance, InstanceAbility.CACHES)
         return actuatorClientProvider.doWith(instance) {
             it.evictAllCaches()
@@ -62,7 +62,7 @@ class InstanceCacheService(
     }
 
     fun getCacheStatistics(instanceId: UUID, cacheName: String): InstanceCacheStatisticsRO {
-        val instance = instanceService.getInstanceOrThrow(instanceId)
+        val instance = instanceService.getInstanceFromCacheOrThrow(instanceId)
         instanceAbilityService.hasAbilityOrThrow(instance, InstanceAbility.CACHES, InstanceAbility.CACHE_STATISTICS)
         return actuatorClientProvider.doWith(instance) {
             val metrics = STATS_METRIC_NAMES.associateWith { metricName ->
@@ -81,7 +81,7 @@ class InstanceCacheService(
     }
 
     fun evictCaches(instanceId: UUID, request: EvictCachesRequestRO): ResultAggregationSummary<Unit> {
-        val instance = instanceService.getInstanceOrThrow(instanceId)
+        val instance = instanceService.getInstanceFromCacheOrThrow(instanceId)
         instanceAbilityService.hasAbilityOrThrow(instance, InstanceAbility.CACHES)
         val results = request.cacheNames.map { cacheName ->
             executorService.submit<Result<Unit>> {

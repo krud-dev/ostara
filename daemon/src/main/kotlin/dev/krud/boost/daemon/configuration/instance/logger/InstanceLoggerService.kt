@@ -16,7 +16,7 @@ class InstanceLoggerService(
     private val instanceAbilityService: InstanceAbilityService
 ) {
     fun getLoggers(instanceId: UUID): List<InstanceLoggerRO> {
-        val instance = instanceService.getInstanceOrThrow(instanceId)
+        val instance = instanceService.getInstanceFromCacheOrThrow(instanceId)
         instanceAbilityService.hasAbilityOrThrow(instance, InstanceAbility.LOGGERS)
         val response = actuatorClientProvider.doWith(instance) {
             it.loggers().getOrThrow()
@@ -32,7 +32,7 @@ class InstanceLoggerService(
     }
 
     fun getLogger(instanceId: UUID, loggerName: String): InstanceLoggerRO {
-        val instance = instanceService.getInstanceOrThrow(instanceId)
+        val instance = instanceService.getInstanceFromCacheOrThrow(instanceId)
         instanceAbilityService.hasAbilityOrThrow(instance, InstanceAbility.LOGGERS)
         val response = actuatorClientProvider.doWith(instance) {
             it.logger(loggerName).getOrThrow()

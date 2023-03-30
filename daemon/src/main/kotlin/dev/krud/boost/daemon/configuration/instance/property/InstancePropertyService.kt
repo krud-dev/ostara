@@ -27,7 +27,7 @@ class InstancePropertyService(
         var propertyCount = 0
         var redactedCount = 0
         var emptyArrayOrObjectCount = 0
-        val instance = instanceService.getInstanceOrThrow(instanceId)
+        val instance = instanceService.getInstanceFromCacheOrThrow(instanceId)
         instanceAbilityService.hasAbilityOrThrow(instance, InstanceAbility.PROPERTIES)
         val actuatorClient = actuatorClientProvider.provide(instance)
         val configProps = actuatorClient.configProps().getOrThrow()

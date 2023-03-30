@@ -2,22 +2,15 @@ package dev.krud.boost.daemon.configuration.instance.hostname.resolver
 
 import dev.krud.boost.daemon.actuator.ActuatorHttpClient
 import dev.krud.boost.daemon.configuration.instance.InstanceActuatorClientProvider
-import org.springframework.cache.annotation.Cacheable
+import dev.krud.boost.daemon.configuration.instance.entity.Instance
 import org.springframework.stereotype.Component
-import java.util.*
 
 @Component
 class EnvInstanceHostnameResolverImpl(
     private val instanceActuatorClientProvider: InstanceActuatorClientProvider
 ) : InstanceHostnameResolver {
-    @Cacheable(cacheNames = ["instanceHostnameCache"], key = "#instanceId")
-    override fun resolveHostname(instanceId: UUID): String? {
-        val client = instanceActuatorClientProvider.provide(instanceId)
-        return client.resolveAndReturnHostname()
-    }
-
-    override fun resolveHostname(url: String): String? {
-        val client = instanceActuatorClientProvider.provideForUrl(url)
+    override fun resolveHostname(instance: Instance): String? {
+        val client = instanceActuatorClientProvider.provide(instance)
         return client.resolveAndReturnHostname()
     }
 

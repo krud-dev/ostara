@@ -46,7 +46,7 @@ class InstanceSystemEnvironmentService(
 
     @Cacheable("instanceSystemEnvironmentCache")
     fun getSystemEnvironment(instanceId: UUID): InstanceSystemEnvironmentRO {
-        val instance = instanceService.getInstanceOrThrow(instanceId)
+        val instance = instanceService.getInstanceFromCacheOrThrow(instanceId)
         instanceAbilityService.hasAbilityOrThrow(instance, InstanceAbility.SYSTEM_ENVIRONMENT)
         val client = actuatorClientProvider.provide(instance)
         val (_, propertySources) = client.env()

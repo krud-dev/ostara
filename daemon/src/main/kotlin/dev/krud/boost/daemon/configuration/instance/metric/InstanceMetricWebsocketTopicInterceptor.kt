@@ -67,7 +67,7 @@ class InstanceMetricWebsocketTopicInterceptor(
 
         val (instanceId) = InstanceMetricWebsocketUtil.parseMetricAndInstanceIdFromTopic(destination)
         // todo: perform lighter ifexists check
-        instanceService.getInstanceOrThrow(instanceId)
+        instanceService.getInstanceFromCacheOrThrow(instanceId)
         val sessionId = headerAccessor.sessionId ?: return
         val currentSubscriptions = subscriptions[sessionId] ?: emptySet()
         subscriptions[sessionId] = currentSubscriptions + destination
