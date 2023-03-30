@@ -9,6 +9,7 @@ plugins {
     kotlin("jvm") version "1.8.10"
     kotlin("plugin.spring") version "1.8.10"
     kotlin("plugin.jpa") version "1.8.10"
+    kotlin("kapt") version "1.8.10"
     id("cz.habarta.typescript-generator") version "3.1.1185"
 }
 
@@ -65,6 +66,8 @@ if (!project.hasProperty("prod")) {
 
 
 dependencies {
+    kapt("org.springframework.boot:spring-boot-configuration-processor")
+
     implementationDev("org.springframework.boot:spring-boot-starter-actuator")
     implementationDev("org.springdoc:springdoc-openapi-starter-webmvc-ui:2.0.2")
 

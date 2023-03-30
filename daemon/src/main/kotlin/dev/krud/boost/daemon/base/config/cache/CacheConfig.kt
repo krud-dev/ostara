@@ -7,6 +7,9 @@ import org.springframework.cache.caffeine.CaffeineCache
 import org.springframework.cache.support.SimpleCacheManager
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
+import org.springframework.context.annotation.Import
+import org.springframework.context.annotation.ImportResource
+import org.springframework.context.annotation.PropertySource
 
 @Configuration
 @EnableCaching
@@ -14,11 +17,15 @@ class CacheConfig {
     @Bean
     fun cacheManager(cacheProperties: CacheProperties): CacheManager {
         val cacheManager = SimpleCacheManager()
-        val caches = cacheProperties.caches.map {
+        val caches = cacheProperties.caches.map { dto ->
             CaffeineCache(
-                it.name,
+                dto.name,
                 Caffeine.newBuilder()
-                    .expireAfterWrite(it.expireAfterWrite)
+                    .apply {
+                        dto.expireAfterWrite?.let { expireAfterWrite(it) }
+                        dto.expireAfterAccess?.let { expireAfterAccess(it) }
+                        dto.maximumSize?.let { maximumSize(it) }
+                    }
                     .build()
             )
         }

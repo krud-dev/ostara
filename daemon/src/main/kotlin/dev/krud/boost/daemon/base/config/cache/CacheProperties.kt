@@ -12,7 +12,9 @@ class CacheProperties {
     companion object {
         data class CacheDTO(
             val name: String,
-            val expireAfterWrite: Duration
+            val expireAfterWrite: Duration?,
+            val expireAfterAccess: Duration?,
+            val maximumSize: Long?
         )
     }
 }
