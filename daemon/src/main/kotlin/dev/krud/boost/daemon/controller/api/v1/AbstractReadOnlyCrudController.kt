@@ -74,6 +74,5 @@ abstract class AbstractReadOnlyCrudController<Entity : AbstractEntity, RO : Any>
             krud.showById(id, applyPolicies = true) ?: throwNotFound("${entityClazz.simpleName} with id $id not found"),
             roClazz.java
         )
-            .let { shapeShift.map(it, roClazz.java) }
     }
 }
