@@ -53,7 +53,9 @@ const InstanceEnvironment: FunctionComponent = () => {
       <Card>
         <TableComponent
           entity={entity}
-          queryState={queryState}
+          data={queryState.data}
+          loading={queryState.isLoading}
+          refetchHandler={queryState.refetch}
           actionsHandler={actionsHandler}
           massActionsHandler={massActionsHandler}
           globalActionsHandler={globalActionsHandler}

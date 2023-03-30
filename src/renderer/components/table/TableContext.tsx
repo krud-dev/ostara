@@ -3,7 +3,6 @@ import { Entity } from 'renderer/entity/entity';
 import { isEmpty, orderBy } from 'lodash';
 import { DEFAULT_ROWS_PER_PAGE, TABLE_SCROLL_CONTAINER_ID } from 'renderer/constants/ui';
 import { notEmpty } from 'renderer/utils/objectUtils';
-import { BaseUseQueryResult } from 'renderer/apis/requests/base/useBaseQuery';
 import { useUpdateEffect } from 'react-use';
 import { useLocalStorageState } from '../../hooks/useLocalStorageState';
 import { useScrollAndHighlightElement } from '../../hooks/useScrollAndHighlightElement';
@@ -50,7 +49,9 @@ const TableContext = React.createContext<TableContextProps<any, any>>(undefined!
 
 interface TableProviderProps<EntityItem, CustomFilters> extends PropsWithChildren<any> {
   entity: Entity<EntityItem, CustomFilters>;
-  queryState: BaseUseQueryResult<EntityItem[]>;
+  data?: EntityItem[];
+  loading: boolean;
+  refetchHandler: () => void;
   actionsHandler: (actionId: string, row: EntityItem) => Promise<void>;
   massActionsHandler: (actionId: string, selectedRows: EntityItem[]) => Promise<void>;
   globalActionsHandler: (actionId: string) => Promise<void>;
@@ -58,7 +59,9 @@ interface TableProviderProps<EntityItem, CustomFilters> extends PropsWithChildre
 
 function TableProvider<EntityItem, CustomFilters>({
   entity,
-  queryState,
+  data,
+  loading,
+  refetchHandler,
   actionsHandler,
   massActionsHandler,
   globalActionsHandler,
@@ -74,10 +77,10 @@ function TableProvider<EntityItem, CustomFilters>({
   const [open, setOpen] = useState<string[]>([]);
 
   useUpdateEffect(() => {
-    setSelected((prev) => prev.filter((id) => queryState.data?.some((row) => entity.getId(row) === id) ?? false));
-  }, [queryState.data]);
+    setSelected((prev) => prev.filter((id) => data?.some((row) => entity.getId(row) === id) ?? false));
+  }, [data]);
 
-  const tableData = useMemo<EntityItem[]>(() => queryState.data ?? [], [queryState.data]);
+  const tableData = useMemo<EntityItem[]>(() => data ?? [], [data]);
   const filteredTableData = useMemo<EntityItem[]>(
     () =>
       orderBy(
@@ -93,7 +96,6 @@ function TableProvider<EntityItem, CustomFilters>({
     [entity, filteredTableData, page, rowsPerPage]
   );
 
-  const loading = useMemo<boolean>(() => queryState.isLoading, [queryState.isLoading]);
   const empty = useMemo<boolean>(() => !loading && !filteredTableData.length, [loading, filteredTableData]);
 
   const selectedRows = useMemo<EntityItem[]>(
@@ -120,8 +122,8 @@ function TableProvider<EntityItem, CustomFilters>({
   const hasGlobalActions = useMemo<boolean>(() => !isEmpty(entity.globalActions), [entity]);
 
   const refreshHandler = useCallback((): void => {
-    queryState.refetch();
-  }, [queryState.refetch]);
+    refetchHandler();
+  }, [refetchHandler]);
 
   const changeFilterHandler = useCallback(
     (newFilter: string): void => {
