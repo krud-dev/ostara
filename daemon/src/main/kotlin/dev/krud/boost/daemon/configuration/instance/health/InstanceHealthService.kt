@@ -10,6 +10,7 @@ import dev.krud.boost.daemon.configuration.instance.messaging.InstanceCreatedEve
 import dev.krud.boost.daemon.configuration.instance.messaging.InstanceHealthChangedEventMessage
 import dev.krud.boost.daemon.configuration.instance.messaging.InstanceUpdatedEventMessage
 import dev.krud.boost.daemon.utils.resolve
+import io.github.oshai.KotlinLogging
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.newFixedThreadPoolContext
 import kotlinx.coroutines.runBlocking
@@ -36,10 +37,12 @@ class InstanceHealthService(
     private val dispatcher = newFixedThreadPoolContext(4, "instance-health-checker")
 
     override fun destroy() {
+        log.debug { "Shutting down dispatcher"}
         dispatcher.close()
     }
 
     fun getCachedHealth(instanceId: UUID): InstanceHealthRO {
+        log.debug { "Getting cached health for instance $instanceId" }
         return instanceHealthCache.get(instanceId, InstanceHealthRO::class.java)
             ?: InstanceHealthRO.pending(instanceId)
     }
@@ -55,10 +58,18 @@ class InstanceHealthService(
     }
 
     fun updateInstanceHealthAndReturn(instance: Instance): InstanceHealthRO {
-        val currentHealth = getHealth(instance)
+        log.debug {
+            "Updating health for instance ${instance.id}"
+        }
         val prevHealth = instanceHealthCache.get(instance.id, InstanceHealthRO::class.java)
-
+        log.debug {
+            "Instance ${instance.id} previous health is $prevHealth"
+        }
+        val currentHealth = getHealth(instance)
         if (prevHealth?.status != currentHealth.status) {
+            log.debug {
+                "Instance ${instance.id} health changed from $prevHealth to $currentHealth"
+            }
             systemEventsChannel.send(
                 InstanceHealthChangedEventMessage(
                     InstanceHealthChangedEventMessage.Payload(
@@ -76,22 +87,27 @@ class InstanceHealthService(
     }
 
     fun getHealth(instance: Instance): InstanceHealthRO {
+        log.debug { "Getting health for instance ${instance.id}" }
         val actuatorClient = actuatorClientProvider.provide(instance)
         val response = try {
             actuatorClient.testConnection()
         } catch (e: Exception) {
+            log.error(e) { "Failed to test connection to instance ${instance.id}" }
             return InstanceHealthRO.unknown(instance.id)
         }
 
         if (!response.success) {
+            log.debug { "Test connection to instance ${instance.id} failed with status ${response.statusCode} and message ${response.statusText}" }
             return InstanceHealthRO.unreachable(instance.id, "Failed to connect to instance with status ${response.statusCode} and message ${response.statusText}", response.statusCode)
         }
 
         if (!response.validActuator) {
+            log.debug { "Instance ${instance.id} with status ${response.statusCode} and message ${response.statusText} not a valid actuator" }
             return InstanceHealthRO.invalid(instance.id, "URL is reachable but it is not an actuator endpoint", response.statusCode)
         }
 
         val health = actuatorClient.health().getOrElse {
+            log.error(it) { "Failed to get health for instance ${instance.id}" }
             return when (it) {
                 is ResponseStatusException -> InstanceHealthRO.unknown(instance.id, it.message, it.statusCode.value())
                 else -> InstanceHealthRO.unknown(instance.id, it.message)
@@ -103,11 +119,16 @@ class InstanceHealthService(
             HealthActuatorResponse.Status.DOWN -> InstanceHealthRO.down(instance.id)
             HealthActuatorResponse.Status.OUT_OF_SERVICE -> InstanceHealthRO.outOfService(instance.id)
             HealthActuatorResponse.Status.UNKNOWN -> InstanceHealthRO.unknown(instance.id)
+        }.apply {
+            log.debug { "Instance ${instance.id} is ${this.status}" }
         }
     }
 
     @Scheduled(fixedRate = 60000)
     protected fun updateAllInstanceHealth() {
+        log.debug {
+            "Updating health for all instances"
+        }
         val instances = instanceService.getAllInstances()
         runBlocking {
             instances.forEach { instance ->
@@ -122,12 +143,14 @@ class InstanceHealthService(
     protected fun onInstanceEvent(event: Message<*>) {
         when (event) {
             is InstanceCreatedEventMessage -> {
+                log.debug { "Instance created: Updating health for instance ${event.payload.instanceId}" }
                 updateInstanceHealthAndReturn(
                     instanceService.getInstanceFromCacheOrThrow(event.payload.instanceId)
                 )
             }
 
             is InstanceUpdatedEventMessage -> {
+                log.debug { "Instance updated: Updating health for instance ${event.payload.instanceId}" }
                 updateInstanceHealthAndReturn(
                     instanceService.getInstanceFromCacheOrThrow(event.payload.instanceId)
                 )
@@ -136,7 +159,12 @@ class InstanceHealthService(
     }
 
     fun getAllInstanceHealthsFromCache(): Map<UUID, InstanceHealthRO> {
+        log.debug { "Getting all instance healths from cache" }
         val nativeCache = instanceHealthCache.nativeCache as Cache<UUID, InstanceHealthRO>
         return nativeCache.asMap()
+    }
+
+    companion object {
+        private val log = KotlinLogging.logger { }
     }
 }

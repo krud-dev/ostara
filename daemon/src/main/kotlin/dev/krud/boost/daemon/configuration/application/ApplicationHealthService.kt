@@ -88,7 +88,7 @@ class ApplicationHealthService(
     }
 
     protected fun handleInstanceHealthChange(applicationId: UUID, instanceId: UUID, newInstanceHealth: InstanceHealthRO?) {
-        log.info {
+        log.debug {
             "Handling instance health change for application $applicationId, instance $instanceId, new health $newInstanceHealth"
         }
         val instances = applicationInstancesHealth.getOrPut(applicationId) { emptySet() }

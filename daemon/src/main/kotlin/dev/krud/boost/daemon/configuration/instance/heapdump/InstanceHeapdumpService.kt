@@ -13,6 +13,7 @@ import dev.krud.boost.daemon.exception.throwBadRequest
 import dev.krud.boost.daemon.exception.throwNotFound
 import dev.krud.crudframework.crud.handler.krud.Krud
 import dev.krud.shapeshift.ShapeShift
+import io.github.oshai.KotlinLogging
 import org.springframework.beans.factory.InitializingBean
 import org.springframework.integration.annotation.ServiceActivator
 import org.springframework.integration.channel.PublishSubscribeChannel
@@ -60,6 +61,9 @@ class InstanceHeapdumpService(
     }
 
     fun getHeapdumpReference(referenceId: UUID): InstanceHeapdumpReference? {
+        log.debug {
+            "Getting heapdump reference $referenceId"
+        }
         return instanceHeapdumpReferenceKrud.showById(referenceId)
     }
 
@@ -68,12 +72,18 @@ class InstanceHeapdumpService(
     }
 
     fun requestHeapdump(instanceId: UUID): InstanceHeapdumpReferenceRO {
+        log.debug {
+            "Requesting heapdump for instance $instanceId"
+        }
         instanceService.getInstanceOrThrow(instanceId)
         val reference = instanceHeapdumpReferenceKrud.create(
             InstanceHeapdumpReference(
                 instanceId
             )
         )
+        log.debug {
+            "Created heapdump reference $reference"
+        }
         instanceHeapdumpDownloadRequestChannel.send(
             InstanceHeapdumpDownloadRequestMessage(
                 InstanceHeapdumpDownloadRequestMessage.Payload(
@@ -90,6 +100,7 @@ class InstanceHeapdumpService(
 
     @ServiceActivator(inputChannel = "instanceHeapdumpDownloadRequestChannel")
     fun downloadPendingHeapdump(payload: InstanceHeapdumpDownloadRequestMessage.Payload) {
+        log.debug { "Downloading heapdump for instance ${payload.instanceId}" }
         val (referenceId, instanceId) = payload
         val reference = instanceHeapdumpReferenceKrud.updateById(referenceId) {
             status = InstanceHeapdumpReference.Status.DOWNLOADING
@@ -118,6 +129,7 @@ class InstanceHeapdumpService(
                 size = size
             )
         } catch (e: Exception) {
+            log.error(e) { "Failed to download heapdump for instance $instanceId" }
             reference.failed(e)
             instanceHeapdumpDownloadProgressInputChannel.send(
                 InstanceHeapdumpDownloadProgressMessage(
@@ -151,6 +163,7 @@ class InstanceHeapdumpService(
     }
 
     fun deleteHeapdump(referenceId: UUID) {
+        log.debug { "Deleting heapdump $referenceId" }
         val reference = getHeapdumpReferenceOrThrow(referenceId)
         if (reference.status == InstanceHeapdumpReference.Status.DOWNLOADING) {
             throwBadRequest("Heapdump $referenceId is downloading, please wait.")
@@ -158,5 +171,9 @@ class InstanceHeapdumpService(
         instanceHeapdumpStore.deleteHeapdump(referenceId)
             .getOrThrow()
         instanceHeapdumpReferenceKrud.deleteById(referenceId)
+    }
+
+    companion object {
+        private val log = KotlinLogging.logger { }
     }
 }

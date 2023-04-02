@@ -8,6 +8,7 @@ import dev.krud.boost.daemon.configuration.instance.messaging.InstanceCreatedEve
 import dev.krud.boost.daemon.configuration.instance.messaging.InstanceDeletedEventMessage
 import dev.krud.boost.daemon.configuration.instance.messaging.InstanceUpdatedEventMessage
 import dev.krud.boost.daemon.utils.resolve
+import io.github.oshai.KotlinLogging
 import org.springframework.cache.CacheManager
 import org.springframework.cache.annotation.Cacheable
 import org.springframework.integration.annotation.ServiceActivator
@@ -32,6 +33,7 @@ class InstanceAbilityServiceImpl(
 
     @Cacheable(cacheNames = ["instanceAbilityCache"], key = "#instance.id", unless = "#result.isEmpty()")
     override fun getAbilities(instance: Instance): Set<InstanceAbility> {
+        log.debug { "Getting abilities for instance ${instance.id}" }
         val actuatorClient = actuatorClientProvider.provide(instance)
         val endpoints = actuatorClient.endpoints().getOrElse { return emptySet() }
         val options = InstanceAbilityResolver.Options(instance, endpoints, actuatorClient)
@@ -43,22 +45,32 @@ class InstanceAbilityServiceImpl(
             }
             .map { it.ability }
             .toSet()
+            .apply {
+                log.debug { "Instance ${instance.id} has abilities '${this.joinToString()}'" }
+            }
     }
 
     @ServiceActivator(inputChannel = "systemEventsChannel")
     protected fun onInstanceEvent(event: Message<*>) {
         when (event) {
             is InstanceCreatedEventMessage -> {
+                log.debug { "Instance created: Evicting instance abilities cache for instance ${event.payload.instanceId}" }
                 instanceAbilityCache.evict(event.payload.instanceId)
             }
 
             is InstanceUpdatedEventMessage -> {
+                log.debug { "Instance updated: Evicting instance abilities cache for instance ${event.payload.instanceId}" }
                 instanceAbilityCache.evict(event.payload.instanceId)
             }
 
             is InstanceDeletedEventMessage -> {
+                log.debug { "Instance deleted: Evicting instance abilities cache for instance ${event.payload.instanceId}" }
                 instanceAbilityCache.evict(event.payload.instanceId)
             }
         }
+    }
+
+    companion object {
+        private val log = KotlinLogging.logger { }
     }
 }

@@ -11,6 +11,7 @@ import dev.krud.boost.daemon.configuration.instance.cache.ro.InstanceCacheStatis
 import dev.krud.boost.daemon.configuration.instance.enums.InstanceAbility
 import dev.krud.boost.daemon.utils.ResultAggregationSummary
 import dev.krud.boost.daemon.utils.ResultAggregationSummary.Companion.aggregate
+import io.github.oshai.KotlinLogging
 import org.springframework.beans.factory.DisposableBean
 import org.springframework.stereotype.Service
 import java.util.*
@@ -26,6 +27,7 @@ class InstanceCacheService(
     private val executorService = Executors.newFixedThreadPool(8)
 
     fun getCaches(instanceId: UUID): List<InstanceCacheRO> {
+        log.debug { "Getting caches for instance $instanceId" }
         val instance = instanceService.getInstanceFromCacheOrThrow(instanceId)
         instanceAbilityService.hasAbilityOrThrow(instance, InstanceAbility.CACHES)
         return actuatorClientProvider.doWith(instance) { client ->
@@ -35,9 +37,13 @@ class InstanceCacheService(
                     { emptyList() }
                 )
         }
+            .apply {
+                log.trace { "Instance $instanceId has caches '${this.joinToString { it.name }}'" }
+            }
     }
 
     fun getCache(instanceId: UUID, cacheName: String): InstanceCacheRO {
+        log.debug { "Getting cache $cacheName for instance $instanceId" }
         val instance = instanceService.getInstanceOrThrow(instanceId)
         instanceAbilityService.hasAbilityOrThrow(instance, InstanceAbility.CACHES)
         return actuatorClientProvider.doWith(instance) {
@@ -46,6 +52,7 @@ class InstanceCacheService(
     }
 
     fun evictCache(instanceId: UUID, cacheName: String): Result<Unit> {
+        log.debug { "Evicting cache $cacheName for instance $instanceId" }
         val instance = instanceService.getInstanceFromCacheOrThrow(instanceId)
         instanceAbilityService.hasAbilityOrThrow(instance, InstanceAbility.CACHES)
         return actuatorClientProvider.doWith(instance) {
@@ -54,6 +61,7 @@ class InstanceCacheService(
     }
 
     fun evictAllCaches(instanceId: UUID): Result<Unit> {
+        log.debug { "Evicting all caches for instance $instanceId" }
         val instance = instanceService.getInstanceFromCacheOrThrow(instanceId)
         instanceAbilityService.hasAbilityOrThrow(instance, InstanceAbility.CACHES)
         return actuatorClientProvider.doWith(instance) {
@@ -62,6 +70,7 @@ class InstanceCacheService(
     }
 
     fun getCacheStatistics(instanceId: UUID, cacheName: String): InstanceCacheStatisticsRO {
+        log.debug { "Getting cache statistics for cache $cacheName of instance $instanceId" }
         val instance = instanceService.getInstanceFromCacheOrThrow(instanceId)
         instanceAbilityService.hasAbilityOrThrow(instance, InstanceAbility.CACHES, InstanceAbility.CACHE_STATISTICS)
         return actuatorClientProvider.doWith(instance) {
@@ -81,6 +90,7 @@ class InstanceCacheService(
     }
 
     fun evictCaches(instanceId: UUID, request: EvictCachesRequestRO): ResultAggregationSummary<Unit> {
+        log.debug { "Evicting caches ${request.cacheNames.joinToString()} for instance $instanceId" }
         val instance = instanceService.getInstanceFromCacheOrThrow(instanceId)
         instanceAbilityService.hasAbilityOrThrow(instance, InstanceAbility.CACHES)
         val results = request.cacheNames.map { cacheName ->
@@ -97,6 +107,7 @@ class InstanceCacheService(
     }
 
     companion object {
+        private val log = KotlinLogging.logger { }
         private val STATS_METRIC_NAMES = setOf(
             "cache.gets",
             "cache.puts",
