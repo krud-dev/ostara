@@ -4,6 +4,7 @@ import dev.krud.boost.daemon.configuration.instance.entity.Instance
 import dev.krud.boost.daemon.configuration.instance.messaging.InstanceMovedEventMessage
 import dev.krud.boost.daemon.exception.throwNotFound
 import dev.krud.crudframework.crud.handler.krud.Krud
+import io.github.oshai.KotlinLogging
 import org.springframework.cache.annotation.CachePut
 import org.springframework.cache.annotation.Cacheable
 import org.springframework.integration.channel.PublishSubscribeChannel
@@ -16,11 +17,13 @@ class InstanceService(
     private val systemEventsChannel: PublishSubscribeChannel
 ) {
     fun getAllInstances(): Iterable<Instance> {
+        log.debug { "Getting all instances from database" }
         return instanceKrud.searchByFilter { }
     }
 
     @CachePut("instanceCache")
     fun getInstance(instanceId: UUID): Instance? {
+        log.debug { "Getting instance $instanceId from database" }
         return instanceKrud
             .showById(instanceId)
     }
@@ -41,9 +44,11 @@ class InstanceService(
 
     @CachePut("instanceCache")
     fun moveInstance(instanceId: UUID, newParentApplicationId: UUID, newSort: Double?): Instance {
+        log.debug { "Moving instance $instanceId to application $newParentApplicationId with sort $newSort" }
         val instance = getInstanceOrThrow(instanceId)
         val oldParentApplicationId = instance.parentApplicationId
         if (oldParentApplicationId == newParentApplicationId && instance.sort == newSort) {
+            log.debug { "Instance $instanceId is already in application $newParentApplicationId with sort $newSort, skipping update" }
             return instance
         }
 
@@ -52,5 +57,9 @@ class InstanceService(
         val updatedInstance = instanceKrud.update(instance)
         systemEventsChannel.send(InstanceMovedEventMessage(InstanceMovedEventMessage.Payload(instanceId, oldParentApplicationId, newParentApplicationId, newSort)))
         return updatedInstance
+    }
+
+    companion object {
+        private val log = KotlinLogging.logger { }
     }
 }

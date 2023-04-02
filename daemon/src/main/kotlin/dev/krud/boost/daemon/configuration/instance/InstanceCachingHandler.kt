@@ -1,4 +1,4 @@
-package dev.krud.boost.daemon.configuration
+package dev.krud.boost.daemon.configuration.instance
 
 import dev.krud.boost.daemon.configuration.instance.messaging.InstanceCreatedEventMessage
 import dev.krud.boost.daemon.configuration.instance.messaging.InstanceHealthChangedEventMessage
