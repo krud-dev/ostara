@@ -6,6 +6,7 @@ import dev.krud.boost.daemon.configuration.instance.hostname.model.InstanceHostn
 import dev.krud.boost.daemon.configuration.instance.hostname.resolver.InstanceHostnameResolver
 import dev.krud.boost.daemon.configuration.instance.messaging.InstanceHostnameUpdatedEventMessage
 import dev.krud.crudframework.crud.handler.krud.Krud
+import io.github.oshai.KotlinLogging
 import org.springframework.integration.channel.PublishSubscribeChannel
 import org.springframework.stereotype.Service
 import java.util.*
@@ -18,8 +19,12 @@ class InstanceHostnameService(
     private val instanceHostnameUpdatedChannel: PublishSubscribeChannel
 ) {
     fun resolveAndUpdateHostname(instanceId: UUID) {
+        log.debug { "Resolve hostname for instance $instanceId" }
+
         val instance = instanceService.getInstanceFromCacheOrThrow(instanceId)
         val hostname = instanceHostnameResolver.resolveHostname(instance)
+        log.debug { "Hostname for instance $instanceId resolved to $hostname" }
+
         var fireEvent = false
         instanceHostnameKrud.updateByFilter(
             false,
@@ -41,5 +46,9 @@ class InstanceHostnameService(
         if (fireEvent) {
             instanceHostnameUpdatedChannel.send(InstanceHostnameUpdatedEventMessage(InstanceHostnameUpdatedEventMessage.Payload(instanceId, hostname)))
         }
+    }
+
+    companion object {
+        private val log = KotlinLogging.logger { }
     }
 }
