@@ -1,4 +1,4 @@
-package dev.krud.boost.daemon.configuration
+package dev.krud.boost.daemon.base.config
 
 import dev.krud.boost.daemon.configuration.application.enums.ApplicationType
 import dev.krud.boost.daemon.configuration.application.ro.ApplicationModifyRequestRO
@@ -23,7 +23,7 @@ import dev.krud.shapeshift.spring.ShapeShiftBuilderCustomizer
 import org.springframework.context.annotation.Configuration
 
 @Configuration
-class ShapeshiftConfiguration : ShapeShiftBuilderCustomizer, ShapeShiftAutoConfiguration() {
+class ShapeshiftConfig : ShapeShiftBuilderCustomizer, ShapeShiftAutoConfiguration() {
     override fun customize(builder: ShapeShiftBuilder) {
         builder
             .withObjectSupplier { FolderModifyRequestRO(TypeDefaults.STRING) }
