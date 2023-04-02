@@ -6,6 +6,7 @@ import dev.krud.boost.daemon.configuration.instance.enums.InstanceAbility
 import dev.krud.boost.daemon.configuration.instance.health.InstanceHealthService
 import dev.krud.boost.daemon.configuration.instance.logger.InstanceLoggerService
 import dev.krud.boost.daemon.exception.throwBadRequest
+import io.github.oshai.KotlinLogging
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll
@@ -21,6 +22,7 @@ class ApplicationLoggerService(
     private val instanceHealthService: InstanceHealthService
 ) {
     fun getLoggers(applicationId: UUID): List<ApplicationLoggerRO> {
+        log.debug { "Getting loggers for application $applicationId" }
         val application = applicationService.getApplicationOrThrow(applicationId)
         applicationService.hasAbilityOrThrow(application, InstanceAbility.LOGGERS)
         val loggers = if (application.instanceCount > MAX_INSTANCE_COUNT) {
@@ -63,6 +65,7 @@ class ApplicationLoggerService(
     }
 
     fun getLogger(applicationId: UUID, loggerName: String): ApplicationLoggerRO {
+        log.debug { "Getting logger $loggerName for application $applicationId" }
         val application = applicationService.getApplicationOrThrow(applicationId)
         applicationService.hasAbilityOrThrow(application, InstanceAbility.LOGGERS)
         val loggers = if (application.instanceCount > MAX_INSTANCE_COUNT) {
@@ -97,6 +100,7 @@ class ApplicationLoggerService(
     }
 
     fun setLoggerLevel(applicationId: UUID, loggerName: String, level: LogLevel?): ApplicationLoggerRO {
+        log.debug { "Setting logger $loggerName level to $level for application $applicationId" }
         val application = applicationService.getApplicationOrThrow(applicationId)
         applicationService.hasAbilityOrThrow(application, InstanceAbility.LOGGERS)
         var failureCount = 0
@@ -122,5 +126,6 @@ class ApplicationLoggerService(
 
     companion object {
         private const val MAX_INSTANCE_COUNT = 10
+        private val log = KotlinLogging.logger { }
     }
 }

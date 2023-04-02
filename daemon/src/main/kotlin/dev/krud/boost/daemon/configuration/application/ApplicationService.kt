@@ -8,6 +8,7 @@ import dev.krud.boost.daemon.configuration.instance.enums.InstanceAbility
 import dev.krud.boost.daemon.exception.throwBadRequest
 import dev.krud.boost.daemon.exception.throwNotFound
 import dev.krud.crudframework.crud.handler.krud.Krud
+import io.github.oshai.KotlinLogging
 import org.springframework.integration.channel.PublishSubscribeChannel
 import org.springframework.stereotype.Service
 import java.util.*
@@ -20,17 +21,29 @@ class ApplicationService(
     private val systemEventsChannel: PublishSubscribeChannel
 ) {
     fun getApplication(applicationId: UUID): Application? {
-        return applicationKrud.showById(applicationId)
+        log.debug { "Getting application $applicationId from database" }
+        val application = applicationKrud.showById(applicationId)
+        if (application == null) {
+            log.debug { "Application $applicationId not found" }
+        } else {
+            log.debug { "Application $applicationId found" }
+        }
+        return application
     }
 
     fun getApplicationInstances(applicationId: UUID): List<Instance> {
+        log.debug {
+            "Getting instances for application $applicationId from database"
+        }
         return instanceKrud
             .searchByFilter {
                 where {
                     Instance::parentApplicationId Equal applicationId
                 }
             }
-            .results
+            .results.apply {
+                log.debug { "Found $size instances for application $applicationId" }
+            }
     }
 
     fun getApplicationOrThrow(applicationId: UUID): Application {
@@ -38,10 +51,13 @@ class ApplicationService(
     }
 
     fun hasAbility(application: Application, vararg abilities: InstanceAbility): Boolean {
+        log.debug { "Checking if application ${application.id} has abilities '${abilities.joinToString()}'" }
         return abilities.all { ability ->
             getApplicationInstances(application.id).any { instance ->
                 instanceAbilityService.hasAbility(instance, ability)
             }
+        }.apply {
+            log.debug { "Application ${application.id} has abilities '${abilities.joinToString()}': $this" }
         }
     }
 
@@ -52,8 +68,10 @@ class ApplicationService(
     }
 
     fun moveApplication(applicationId: UUID, newParentFolderId: UUID?, newSort: Double?): Application {
+        log.debug { "Moving application $applicationId to folder $newParentFolderId with sort $newSort" }
         val application = getApplicationOrThrow(applicationId)
         if (application.parentFolderId == newParentFolderId && application.sort == newSort) {
+            log.debug { "Application $applicationId is already in folder $newParentFolderId with sort $newSort, skipping update" }
             return application
         }
         application.parentFolderId = newParentFolderId // TODO: check if folder exists, should fail on foreign key for now
@@ -61,5 +79,9 @@ class ApplicationService(
         val updatedApplication = applicationKrud.update(application)
         systemEventsChannel.send(ApplicationMovedEventMessage(ApplicationMovedEventMessage.Payload(applicationId, application.parentFolderId, newParentFolderId, newSort)))
         return updatedApplication
+    }
+
+    companion object {
+        private val log = KotlinLogging.logger { }
     }
 }
