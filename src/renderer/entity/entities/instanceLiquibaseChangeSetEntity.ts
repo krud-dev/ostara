@@ -6,15 +6,20 @@ export const instanceLiquibaseChangeSetEntity: Entity<EnrichedLiquibaseChangeSet
   id: 'instanceLiquibaseChangeSet',
   columns: [
     {
-      id: 'author',
-      type: 'Text',
-      labelId: 'author',
+      id: 'orderExecuted',
+      type: 'Number',
+      labelId: 'orderExecuted',
     },
     {
       id: 'description',
       type: 'Text',
       labelId: 'description',
       width: 250,
+    },
+    {
+      id: 'dateExecuted',
+      type: 'ParsedDate',
+      labelId: 'dateExecuted',
     },
     {
       id: 'execType',
@@ -34,16 +39,6 @@ export const instanceLiquibaseChangeSetEntity: Entity<EnrichedLiquibaseChangeSet
             return 'default';
         }
       },
-    },
-    {
-      id: 'dateExecuted',
-      type: 'ParsedDate',
-      labelId: 'dateExecuted',
-    },
-    {
-      id: 'orderExecuted',
-      type: 'Number',
-      labelId: 'orderExecuted',
     },
   ],
   actions: [],

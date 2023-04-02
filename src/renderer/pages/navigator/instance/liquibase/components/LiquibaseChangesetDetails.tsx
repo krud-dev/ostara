@@ -22,8 +22,9 @@ export default function LiquibaseChangesetDetails({ row }: LiquibaseChangesetDet
         <DetailsLabelValueVertical label={<FormattedMessage id={'id'} />} value={row.id} />
         <DetailsLabelValueVertical label={<FormattedMessage id={'bean'} />} value={row.bean} />
         <DetailsLabelValueVertical label={<FormattedMessage id={'changelog'} />} value={row.changeLog} />
-        <DetailsLabelValueVertical label={<FormattedMessage id={'comments'} />} value={row.comments} />
         <DetailsLabelValueVertical label={<FormattedMessage id={'deploymentId'} />} value={row.deploymentId} />
+        <DetailsLabelValueVertical label={<FormattedMessage id={'comments'} />} value={row.comments} />
+        <DetailsLabelValueVertical label={<FormattedMessage id={'author'} />} value={row.author} />
         <DetailsLabelValueVertical label={<FormattedMessage id={'checksum'} />} value={row.checksum || EMPTY_STRING} />
         <DetailsLabelValueVertical
           label={<FormattedMessage id={'contexts'} />}
