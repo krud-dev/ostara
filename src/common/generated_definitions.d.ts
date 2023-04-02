@@ -976,4 +976,4 @@ export type FilterFieldOperation = "Equal" | "NotEqual" | "In" | "NotIn" | "Grea
 
 export type FilterFieldDataType = "String" | "Integer" | "Long" | "Double" | "Boolean" | "Date" | "Object" | "Enum" | "UUID" | "None";
 
-export type IntegrationGraphActuatorResponse$Link$Type = "input" | "output";
+export type IntegrationGraphActuatorResponse$Link$Type = "input" | "output" | "discard" | "route";

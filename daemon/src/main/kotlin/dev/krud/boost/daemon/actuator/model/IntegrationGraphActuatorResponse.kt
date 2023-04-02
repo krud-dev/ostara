@@ -46,7 +46,13 @@ data class IntegrationGraphActuatorResponse(
             INPUT,
 
             @JsonProperty("output")
-            OUTPUT
+            OUTPUT,
+
+            @JsonProperty("discard")
+            DISCARD,
+
+            @JsonProperty("route")
+            ROUTE
         }
     }
 }
