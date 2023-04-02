@@ -10,6 +10,7 @@ import dev.krud.boost.daemon.configuration.instance.ability.InstanceAbilityServi
 import dev.krud.boost.daemon.configuration.instance.enums.InstanceAbility
 import dev.krud.boost.daemon.configuration.instance.property.ro.InstancePropertyRO
 import dev.krud.boost.daemon.utils.ACTUATOR_REDACTED_STRING
+import io.github.oshai.KotlinLogging
 import net.pearx.kasechange.toKebabCase
 import org.springframework.cache.annotation.Cacheable
 import org.springframework.stereotype.Service
@@ -24,6 +25,7 @@ class InstancePropertyService(
 ) {
     @Cacheable(cacheNames = ["instancePropertyCache"], key = "#instanceId")
     fun getProperties(instanceId: UUID): InstancePropertyRO {
+        log.debug { "Get properties for instance $instanceId" }
         var propertyCount = 0
         var redactedCount = 0
         var emptyArrayOrObjectCount = 0
@@ -48,6 +50,7 @@ class InstancePropertyService(
             contexts[contextName] = JsonUnflattener(flattened).unflattenAsMap()
         }
         val redactionPercentage = redactedCount.toDouble() / (propertyCount.toDouble() - emptyArrayOrObjectCount.toDouble()) * 100.0
+        log.debug { "Properties for instance $instanceId are redacted at rate of $redactionPercentage" }
         return InstancePropertyRO(
             contexts,
             when {
@@ -73,5 +76,9 @@ class InstancePropertyService(
             map.putAll(flattened)
         }
         return map
+    }
+
+    companion object {
+        private val log = KotlinLogging.logger { }
     }
 }

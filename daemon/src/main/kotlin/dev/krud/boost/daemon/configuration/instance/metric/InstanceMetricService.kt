@@ -8,6 +8,7 @@ import dev.krud.boost.daemon.configuration.instance.metric.ro.InstanceMetricRO
 import dev.krud.boost.daemon.configuration.instance.metric.ro.InstanceMetricValueRO
 import dev.krud.boost.daemon.exception.throwBadRequest
 import dev.krud.boost.daemon.exception.throwNotFound
+import io.github.oshai.KotlinLogging
 import org.springframework.stereotype.Service
 import java.util.*
 
@@ -18,6 +19,7 @@ class InstanceMetricService(
     private val instanceAbilityService: InstanceAbilityService
 ) {
     fun getLatestMetric(instanceId: UUID, metricName: String): InstanceMetricRO {
+        log.debug { "Get latest metric for instance $instanceId and metric name $metricName" }
         val instance = instanceService.getInstanceFromCacheOrThrow(instanceId)
         instanceAbilityService.hasAbilityOrThrow(instance, InstanceAbility.METRICS)
         val response = actuatorClientProvider.doWith(instance) { client ->
@@ -57,5 +59,6 @@ class InstanceMetricService(
 
     companion object {
         private val METRIC_NAME_REGEX = Regex("(.*)\\[(.*)\\]")
+        private val log = KotlinLogging.logger { }
     }
 }

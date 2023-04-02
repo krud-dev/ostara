@@ -11,6 +11,7 @@ import dev.krud.boost.daemon.configuration.instance.messaging.InstanceCreatedEve
 import dev.krud.boost.daemon.configuration.instance.messaging.InstanceDeletedEventMessage
 import dev.krud.boost.daemon.configuration.instance.messaging.InstanceUpdatedEventMessage
 import dev.krud.boost.daemon.utils.resolve
+import io.github.oshai.KotlinLogging
 import org.springframework.beans.factory.DisposableBean
 import org.springframework.cache.CacheManager
 import org.springframework.cache.annotation.Cacheable
@@ -36,6 +37,7 @@ class InstanceHttpRequestStatisticsService(
 
     @Cacheable(cacheNames = ["httpRequestStatisticsCache"], key = "'all_uris_' + #instanceId")
     fun getStatistics(instanceId: UUID): List<InstanceHttpRequestStatisticsRO> {
+        log.debug { "Get Http Request Statistics for instance $instanceId" }
         val instance = instanceService.getInstanceFromCacheOrThrow(instanceId)
         instanceAbilityService.hasAbilityOrThrow(instance, InstanceAbility.HTTP_REQUEST_STATISTICS)
         val client = actuatorClientProvider.provide(instance)
@@ -53,6 +55,7 @@ class InstanceHttpRequestStatisticsService(
 
     @Cacheable(cacheNames = ["httpRequestStatisticsCache"], key = "'by_uri_and_method_' + #instanceId + '_' + #uri")
     fun getStatisticsByUriAndMethod(instanceId: UUID, uri: String): Map<HttpMethod, InstanceHttpRequestStatisticsRO> {
+        log.debug { "Get Http Request Statistics grouped by uri and method for instance $instanceId and uri $uri" }
         val instance = instanceService.getInstanceFromCacheOrThrow(instanceId)
         instanceAbilityService.hasAbilityOrThrow(instance, InstanceAbility.HTTP_REQUEST_STATISTICS)
         val client = actuatorClientProvider.provide(instance)
@@ -72,6 +75,7 @@ class InstanceHttpRequestStatisticsService(
 
     @Cacheable(cacheNames = ["httpRequestStatisticsCache"], key = "'by_uri_and_outcome_' + #instanceId + '_' + #uri")
     fun getStatisticsByUriAndOutcome(instanceId: UUID, uri: String): Map<String, InstanceHttpRequestStatisticsRO> {
+        log.debug { "Get Http Request Statistics grouped by uri and outcome for instance $instanceId and uri $uri" }
         val instance = instanceService.getInstanceFromCacheOrThrow(instanceId)
         instanceAbilityService.hasAbilityOrThrow(instance, InstanceAbility.HTTP_REQUEST_STATISTICS)
         val client = actuatorClientProvider.provide(instance)
@@ -91,6 +95,7 @@ class InstanceHttpRequestStatisticsService(
 
     @Cacheable(cacheNames = ["httpRequestStatisticsCache"], key = "'by_uri_and_status_' + #instanceId + '_' + #uri")
     fun getStatisticsByUriAndStatus(instanceId: UUID, uri: String): Map<Int, InstanceHttpRequestStatisticsRO> {
+        log.debug { "Get Http Request Statistics grouped by uri and status for instance $instanceId and uri $uri" }
         val instance = instanceService.getInstanceFromCacheOrThrow(instanceId)
         instanceAbilityService.hasAbilityOrThrow(instance, InstanceAbility.HTTP_REQUEST_STATISTICS)
         val client = actuatorClientProvider.provide(instance)
@@ -110,6 +115,7 @@ class InstanceHttpRequestStatisticsService(
 
     @Cacheable(cacheNames = ["httpRequestStatisticsCache"], key = "'by_uri_and_exception_' + #instanceId + '_' + #uri")
     fun getStatisticsByUriAndException(instanceId: UUID, uri: String): Map<String, InstanceHttpRequestStatisticsRO> {
+        log.debug { "Get Http Request Statistics grouped by uri and exception for instance $instanceId and uri $uri" }
         val instance = instanceService.getInstanceFromCacheOrThrow(instanceId)
         instanceAbilityService.hasAbilityOrThrow(instance, InstanceAbility.HTTP_REQUEST_STATISTICS)
         val client = actuatorClientProvider.provide(instance)
@@ -158,6 +164,7 @@ class InstanceHttpRequestStatisticsService(
     }
 
     private fun ActuatorHttpClient.getStatisticsForUri(uri: String, tags: Map<String, String> = emptyMap()): InstanceHttpRequestStatisticsRO {
+        log.debug { "Get http statistics for uri $uri" }
         val metricResponse = this.metric(METRIC_NAME, mapOf("uri" to uri) + tags)
             .getOrThrow()
         val count = metricResponse.measurements.find { it.statistic == "COUNT" }?.value ?: -1.0
@@ -182,5 +189,6 @@ class InstanceHttpRequestStatisticsService(
                 "by_uri_and_exception_$instanceId"
             )
         }
+        private val log = KotlinLogging.logger { }
     }
 }

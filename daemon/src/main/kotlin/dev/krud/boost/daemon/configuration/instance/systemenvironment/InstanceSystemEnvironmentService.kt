@@ -11,6 +11,7 @@ import dev.krud.boost.daemon.configuration.instance.systemenvironment.ro.Instanc
 import dev.krud.boost.daemon.exception.throwInternalServerError
 import dev.krud.boost.daemon.utils.ACTUATOR_REDACTED_STRING
 import dev.krud.boost.daemon.utils.resolve
+import io.github.oshai.KotlinLogging
 import org.springframework.cache.CacheManager
 import org.springframework.cache.annotation.Cacheable
 import org.springframework.integration.annotation.ServiceActivator
@@ -46,6 +47,7 @@ class InstanceSystemEnvironmentService(
 
     @Cacheable("instanceSystemEnvironmentCache")
     fun getSystemEnvironment(instanceId: UUID): InstanceSystemEnvironmentRO {
+        log.debug { "Get system envoronment for instance $instanceId" }
         val instance = instanceService.getInstanceFromCacheOrThrow(instanceId)
         instanceAbilityService.hasAbilityOrThrow(instance, InstanceAbility.SYSTEM_ENVIRONMENT)
         val client = actuatorClientProvider.provide(instance)
@@ -62,6 +64,7 @@ class InstanceSystemEnvironmentService(
         }
 
         val redactionPercentage = redactedCount.toDouble() / propertiesMap.size.toDouble() * 100.0
+        log.debug { "System environment for instance $instanceId are redacted at rate of $redactionPercentage" }
         return InstanceSystemEnvironmentRO(
             propertiesMap,
             when {
@@ -70,5 +73,9 @@ class InstanceSystemEnvironmentService(
                 else -> InstanceSystemEnvironmentRO.RedactionLevel.NONE
             }
         )
+    }
+
+    companion object {
+        private val log = KotlinLogging.logger { }
     }
 }
