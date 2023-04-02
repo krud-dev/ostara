@@ -6,6 +6,7 @@ import dev.krud.boost.daemon.configuration.folder.messaging.FolderAuthentication
 import dev.krud.boost.daemon.configuration.folder.messaging.FolderMovedEventMessage
 import dev.krud.boost.daemon.utils.resolve
 import dev.krud.crudframework.crud.handler.krud.Krud
+import io.github.oshai.KotlinLogging
 import org.springframework.cache.CacheManager
 import org.springframework.integration.annotation.ServiceActivator
 import org.springframework.integration.channel.PublishSubscribeChannel
@@ -30,6 +31,7 @@ class FolderParentAuthenticationChangedListener(
     }
 
     fun handleParentFolderAuthenticationChanged(folderId: UUID) {
+        log.debug { "Folder $folderId authentication changed, update children " }
         folderKrud.searchByFilter {
             where {
                 Folder::parentFolderId Equal folderId
@@ -37,6 +39,7 @@ class FolderParentAuthenticationChangedListener(
             }
         }
             .forEach { childFolder ->
+                log.debug { "Updating effective folder authentication for ${childFolder.id}" }
                 folderEffectiveAuthenticationCache.evict(childFolder.id)
                 systemEventsChannel.send(
                     FolderAuthenticationChangedMessage(
@@ -47,6 +50,7 @@ class FolderParentAuthenticationChangedListener(
     }
 
     fun handleFolderMoved(folderId: UUID) {
+        log.debug { "Folder $folderId moved, update children" }
         folderKrud.searchByFilter {
             where {
                 Folder::parentFolderId Equal folderId
@@ -54,6 +58,7 @@ class FolderParentAuthenticationChangedListener(
             }
         }
             .forEach { childFolder ->
+                log.debug { "Updating effective folder authentication for ${childFolder.id}" }
                 folderEffectiveAuthenticationCache.evict(childFolder.id)
                 systemEventsChannel.send(
                     FolderAuthenticationChangedMessage(
@@ -61,5 +66,9 @@ class FolderParentAuthenticationChangedListener(
                     )
                 )
             }
+    }
+
+    companion object {
+        private val log = KotlinLogging.logger { }
     }
 }
