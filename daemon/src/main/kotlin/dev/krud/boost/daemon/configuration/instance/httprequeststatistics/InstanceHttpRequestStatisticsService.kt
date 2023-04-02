@@ -55,79 +55,38 @@ class InstanceHttpRequestStatisticsService(
 
     @Cacheable(cacheNames = ["httpRequestStatisticsCache"], key = "'by_uri_and_method_' + #instanceId + '_' + #uri")
     fun getStatisticsByUriAndMethod(instanceId: UUID, uri: String): Map<HttpMethod, InstanceHttpRequestStatisticsRO> {
-        log.debug { "Get Http Request Statistics grouped by uri and method for instance $instanceId and uri $uri" }
-        val instance = instanceService.getInstanceFromCacheOrThrow(instanceId)
-        instanceAbilityService.hasAbilityOrThrow(instance, InstanceAbility.HTTP_REQUEST_STATISTICS)
-        val client = actuatorClientProvider.provide(instance)
-        val metric = client.metric(METRIC_NAME, mapOf("uri" to uri))
-        val availableMethods = metric
-            .getOrThrow()
-            .availableTags
-            .find { it.tag == "method" }
-            ?.values ?: emptyList()
-        val futures = availableMethods.map { method ->
-            executor.submit<Pair<HttpMethod, InstanceHttpRequestStatisticsRO>> {
-                HttpMethod.valueOf(method) to client.getStatisticsForUri(uri, mapOf("method" to method))
-            }
-        }
-        return futures.associate { it.get() }
+        return getStatisticsByTag(instanceId, uri, "method") { availableTagValue -> HttpMethod.valueOf(availableTagValue) }
     }
 
     @Cacheable(cacheNames = ["httpRequestStatisticsCache"], key = "'by_uri_and_outcome_' + #instanceId + '_' + #uri")
     fun getStatisticsByUriAndOutcome(instanceId: UUID, uri: String): Map<String, InstanceHttpRequestStatisticsRO> {
-        log.debug { "Get Http Request Statistics grouped by uri and outcome for instance $instanceId and uri $uri" }
-        val instance = instanceService.getInstanceFromCacheOrThrow(instanceId)
-        instanceAbilityService.hasAbilityOrThrow(instance, InstanceAbility.HTTP_REQUEST_STATISTICS)
-        val client = actuatorClientProvider.provide(instance)
-        val metric = client.metric(METRIC_NAME, mapOf("uri" to uri))
-        val availableOutcomes = metric
-            .getOrThrow()
-            .availableTags
-            .find { it.tag == "outcome" }
-            ?.values ?: emptyList()
-        val futures = availableOutcomes.map { outcome ->
-            executor.submit<Pair<String, InstanceHttpRequestStatisticsRO>> {
-                outcome to client.getStatisticsForUri(uri, mapOf("outcome" to outcome))
-            }
-        }
-        return futures.associate { it.get() }
+        return getStatisticsByTag(instanceId, uri, "outcome") { availableTagValue -> availableTagValue }
     }
 
     @Cacheable(cacheNames = ["httpRequestStatisticsCache"], key = "'by_uri_and_status_' + #instanceId + '_' + #uri")
     fun getStatisticsByUriAndStatus(instanceId: UUID, uri: String): Map<Int, InstanceHttpRequestStatisticsRO> {
-        log.debug { "Get Http Request Statistics grouped by uri and status for instance $instanceId and uri $uri" }
-        val instance = instanceService.getInstanceFromCacheOrThrow(instanceId)
-        instanceAbilityService.hasAbilityOrThrow(instance, InstanceAbility.HTTP_REQUEST_STATISTICS)
-        val client = actuatorClientProvider.provide(instance)
-        val metric = client.metric(METRIC_NAME, mapOf("uri" to uri))
-        val availableStatuses = metric
-            .getOrThrow()
-            .availableTags
-            .find { it.tag == "status" }
-            ?.values ?: emptyList()
-        val futures = availableStatuses.map { status ->
-            executor.submit<Pair<Int, InstanceHttpRequestStatisticsRO>> {
-                status.toInt() to client.getStatisticsForUri(uri, mapOf("status" to status))
-            }
-        }
-        return futures.associate { it.get() }
+        return getStatisticsByTag(instanceId, uri, "status") { availableTagValue -> availableTagValue.toInt() }
     }
 
     @Cacheable(cacheNames = ["httpRequestStatisticsCache"], key = "'by_uri_and_exception_' + #instanceId + '_' + #uri")
     fun getStatisticsByUriAndException(instanceId: UUID, uri: String): Map<String, InstanceHttpRequestStatisticsRO> {
-        log.debug { "Get Http Request Statistics grouped by uri and exception for instance $instanceId and uri $uri" }
+        return getStatisticsByTag(instanceId, uri, "exception") { availableTagValue -> availableTagValue }
+    }
+
+    private fun <KeyType : Any> getStatisticsByTag(instanceId: UUID, uri: String, tag: String, keySupplier: (String) -> KeyType): Map<KeyType, InstanceHttpRequestStatisticsRO> {
+        log.debug { "Get Http Request Statistics grouped by uri and tag $tag for instance $instanceId and uri $uri" }
         val instance = instanceService.getInstanceFromCacheOrThrow(instanceId)
         instanceAbilityService.hasAbilityOrThrow(instance, InstanceAbility.HTTP_REQUEST_STATISTICS)
         val client = actuatorClientProvider.provide(instance)
         val metric = client.metric(METRIC_NAME, mapOf("uri" to uri))
-        val availableExceptions = metric
+        val availableTagValues = metric
             .getOrThrow()
             .availableTags
-            .find { it.tag == "exception" }
+            .find { it.tag == tag }
             ?.values ?: emptyList()
-        val futures = availableExceptions.map { exception ->
-            executor.submit<Pair<String, InstanceHttpRequestStatisticsRO>> {
-                exception to client.getStatisticsForUri(uri, mapOf("exception" to exception))
+        val futures = availableTagValues.map { availableTagValue ->
+            executor.submit<Pair<KeyType, InstanceHttpRequestStatisticsRO>> {
+                keySupplier(availableTagValue) to client.getStatisticsForUri(uri, mapOf(tag to availableTagValue))
             }
         }
         return futures.associate { it.get() }
