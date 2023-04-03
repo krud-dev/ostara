@@ -15,7 +15,7 @@ type Data = void;
 
 export const downloadInstanceHeapdumpReference = async (variables: Variables): Promise<Data> => {
   await window.ui.downloadFile(`${baseUrl}/${heapdumpReferenceCrudEntity.path}/download/${variables.reference.id}`, {
-    filename: `heapdump_${variables.reference.creationTime}.${variables.reference.path?.split('.').pop()}`,
+    filename: `heapdump_${variables.reference.creationTime}.hprof`,
     saveAs: true,
     openFolderWhenDone: true,
   });
