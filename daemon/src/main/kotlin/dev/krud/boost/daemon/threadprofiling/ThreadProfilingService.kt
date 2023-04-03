@@ -30,6 +30,10 @@ class ThreadProfilingService(
             }
         }
 
+        if (runningThreadProfilings.results.isEmpty()) {
+            return
+        }
+
         log.debug { "Running thread profiling request ids - ${runningThreadProfilings.results.map { it.id }.joinToString(",")}" }
 
         val expired = runningThreadProfilings.filter { it.finishTime.time < System.currentTimeMillis() }
