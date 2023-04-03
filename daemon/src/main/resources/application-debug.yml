@@ -1,0 +1,4 @@
+logging:
+  level:
+    dev:
+      krud: DEBUG
