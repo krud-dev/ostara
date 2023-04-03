@@ -5,7 +5,7 @@ import {
   useBaseMutation,
 } from 'renderer/apis/requests/base/useBaseMutation';
 import { apiKeys } from 'renderer/apis/apiKeys';
-import { ThreadProfilingLogRO } from '../../../../../common/generated_definitions';
+import { PagedResult, ThreadProfilingLogRO } from '../../../../../common/generated_definitions';
 import { axiosInstance } from '../../../axiosInstance';
 import { AxiosResponse } from 'axios';
 
@@ -14,7 +14,7 @@ type Variables = {
   requestId: string;
 };
 
-type Data = ThreadProfilingLogRO[];
+type Data = PagedResult<ThreadProfilingLogRO>;
 
 export const getInstanceThreadProfilingRequestLogs = async (variables: Variables): Promise<Data> => {
   return (await axiosInstance.get<Data, AxiosResponse<Data>>(`threadprofiling/${variables.requestId}/log`)).data;

@@ -64,6 +64,7 @@ export default {
   jvm: 'JVM',
   origin: 'Origin',
   threadDump: 'Thread Dump',
+  threadProfiling: 'Thread Profiling',
   heapDump: 'Heap Dump',
   testConnection: 'Test Connection',
   testConnectionToInstanceSuccess: 'Connection to instance was successful',

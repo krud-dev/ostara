@@ -1,6 +1,6 @@
 import { FormattedMessage } from 'react-intl';
 import React, { FunctionComponent, useCallback, useMemo } from 'react';
-import { Box, CircularProgress, Dialog, DialogContent, Stack } from '@mui/material';
+import { Box, Dialog, DialogContent, Stack } from '@mui/material';
 import NiceModal, { NiceModalHocProps, useModal } from '@ebay/nice-modal-react';
 import DialogTitleEnhanced from 'renderer/components/dialog/DialogTitleEnhanced';
 import {
@@ -42,16 +42,16 @@ const ThreadProfilingRequestDetailsDialog: FunctionComponent<
   });
 
   const creationTimeIndex = useMemo<{ [key: number]: number }>(
-    () => logsState.data?.reduce((acc, log, index) => ({ ...acc, [log.creationTime]: index }), {}) ?? {},
+    () => logsState.data?.results.reduce((acc, log, index) => ({ ...acc, [log.creationTime]: index }), {}) ?? {},
     [logsState.data]
   );
 
-  const logsCount = useMemo<number>(() => logsState.data?.length ?? 0, [logsState.data]);
+  const logsCount = useMemo<number>(() => logsState.data?.results.length ?? 0, [logsState.data]);
 
   const threadLogsMap = useMemo<{ [key: number]: ThreadLog[] } | undefined>(
     () =>
       logsState.data
-        ? chain(logsState.data)
+        ? chain(logsState.data.results)
             .map((log) =>
               log.threads.map((thread) => ({
                 ...thread,

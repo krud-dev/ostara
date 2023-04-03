@@ -184,7 +184,7 @@ export default function InstanceSidebar({ item, disabled, width }: InstanceSideb
                 {
                   id: 'threadDump',
                   icon: <DeviceHubOutlined />,
-                  label: <FormattedMessage id={'threadDump'} />,
+                  label: <FormattedMessage id={'threadProfiling'} />,
                   to: generatePath(urls.instanceThreadDump.url, { id: item.id }),
                   disabled: disabled || isServiceInactive('THREADDUMP'),
                 },
