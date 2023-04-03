@@ -12,6 +12,10 @@ data class InstanceHealthRO(
     val statusCode: Int? = null
 ) {
     companion object {
+        private const val STALE_THRESHOLD_MS = 300_000 // 5 minutes
+        fun InstanceHealthRO.isStale(): Boolean {
+            return lastUpdateTime.time + STALE_THRESHOLD_MS < System.currentTimeMillis()
+        }
 
         fun up(instanceId: UUID, statusCode: Int? = null) = InstanceHealthRO(
             instanceId,

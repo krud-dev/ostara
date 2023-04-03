@@ -6,6 +6,7 @@ import dev.krud.boost.daemon.configuration.instance.InstanceActuatorClientProvid
 import dev.krud.boost.daemon.configuration.instance.InstanceService
 import dev.krud.boost.daemon.configuration.instance.entity.Instance
 import dev.krud.boost.daemon.configuration.instance.health.ro.InstanceHealthRO
+import dev.krud.boost.daemon.configuration.instance.health.ro.InstanceHealthRO.Companion.isStale
 import dev.krud.boost.daemon.configuration.instance.messaging.InstanceCreatedEventMessage
 import dev.krud.boost.daemon.configuration.instance.messaging.InstanceHealthChangedEventMessage
 import dev.krud.boost.daemon.configuration.instance.messaging.InstanceUpdatedEventMessage
@@ -66,9 +67,14 @@ class InstanceHealthService(
             "Instance ${instance.id} previous health is $prevHealth"
         }
         val currentHealth = getHealth(instance)
-        if (prevHealth?.status != currentHealth.status) {
+        if (prevHealth?.status != currentHealth.status || prevHealth.isStale()) {
             log.debug {
-                "Instance ${instance.id} health changed from $prevHealth to $currentHealth"
+                val message = if (prevHealth?.isStale() == true) {
+                    "Instance ${instance.id} health is stale"
+                } else {
+                    "Instance ${instance.id} health changed from $prevHealth to $currentHealth"
+                }
+                message
             }
             systemEventsChannel.send(
                 InstanceHealthChangedEventMessage(
