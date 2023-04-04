@@ -12,7 +12,7 @@ import jakarta.persistence.Table
 @Table(name = "instance_hostname")
 class InstanceHostname(
     @OneToOne
-    @JoinColumn(name = "instance_id")
+    @JoinColumn(name = "instance_id", nullable = false)
     var instance: Instance,
     @Column(nullable = true)
     var hostname: String?

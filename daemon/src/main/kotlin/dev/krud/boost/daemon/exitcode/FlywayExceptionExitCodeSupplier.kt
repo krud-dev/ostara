@@ -17,6 +17,9 @@ object FlywayExceptionExitCodeSupplier : ExitCodeSupplier {
             ErrorCode.DB_CONNECTION -> {
                 ExitCodes.FLYWAY_DB_CONNECTION
             }
+            ErrorCode.VALIDATE_ERROR -> ExitCodes.FLYWAY_FAILED_VALIDATION
+            ErrorCode.FAILED_VERSIONED_MIGRATION,
+            ErrorCode.FAILED_REPEATABLE_MIGRATION -> ExitCodes.FLYWAY_DB_MIGRATION_FAILED
             else -> {
                 ExitCodes.FLYWAY_UNKNOWN
             }

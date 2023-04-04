@@ -22,7 +22,7 @@ spring:
     url: jdbc:sqlite:mydb.db
   jpa:
     hibernate:
-      ddl-auto: update
+      ddl-auto: none
     show-sql: false
     open-in-view: false
   cache:

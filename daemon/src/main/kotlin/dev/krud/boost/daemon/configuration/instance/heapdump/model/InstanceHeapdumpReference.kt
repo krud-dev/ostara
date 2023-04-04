@@ -50,8 +50,7 @@ class InstanceHeapdumpReference(
     @Temporal(TemporalType.TIMESTAMP)
     var downloadTime: Date? = null
 
-    @Column(nullable = true)
-    @Lob
+    @Column(nullable = true, columnDefinition = "TEXT")
     @MappedField
     var error: String? = null
 

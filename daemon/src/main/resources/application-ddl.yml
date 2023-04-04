@@ -1,0 +1,12 @@
+spring:
+  jpa:
+    generate-ddl: true
+    hibernate:
+      ddl-auto: update
+    properties:
+      javax:
+        persistence:
+          schema-generation:
+            scripts:
+              action: update
+              create-target: build/hibernate/schema.sql
