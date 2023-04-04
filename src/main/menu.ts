@@ -44,10 +44,10 @@ export default class MenuBuilder {
 
   buildMacTemplate(): MenuItemConstructorOptions[] {
     const subMenuAbout: DarwinMenuItemConstructorOptions = {
-      label: 'SpringBoost',
+      label: 'Boost',
       submenu: [
         {
-          label: 'About SpringBoost',
+          label: 'About Boost',
           selector: 'orderFrontStandardAboutPanel:',
         },
         { type: 'separator' },
@@ -64,7 +64,7 @@ export default class MenuBuilder {
         },
         { type: 'separator' },
         {
-          label: 'Hide SpringBoost',
+          label: 'Hide Boost',
           accelerator: 'Command+H',
           selector: 'hide:',
         },
@@ -197,7 +197,7 @@ export default class MenuBuilder {
         {
           label: 'Star us on GitHub',
           click() {
-            shell.openExternal('https://github.com/krud-dev/spring-boost');
+            shell.openExternal('https://github.com/krud-dev/boost');
           },
         },
         {
@@ -210,14 +210,14 @@ export default class MenuBuilder {
         {
           label: 'Search Issues',
           click() {
-            shell.openExternal('https://github.com/krud-dev/spring-boost/issues');
+            shell.openExternal('https://github.com/krud-dev/boost/issues');
           },
         },
         {
           label: 'Submit a Bug Report',
           click() {
             shell.openExternal(
-              'https://github.com/krud-dev/spring-boost/issues/new?assignees=&labels=bug&template=1-Bug_report.md'
+              'https://github.com/krud-dev/boost/issues/new?assignees=&labels=bug&template=1-Bug_report.md'
             );
           },
         },

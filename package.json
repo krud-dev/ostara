@@ -1,5 +1,5 @@
 {
-  "name": "spring-boost",
+  "name": "boost",
   "version": "0.1.0",
   "description": "A visual tool to monitor and interact with Spring Boot applications via Actuator",
   "private": "true",
@@ -9,15 +9,15 @@
     "monitoring",
     "performance",
     "metrics",
-    "spring boost"
+    "boost"
   ],
-  "homepage": "https://github.com/krud-dev/spring-boost#readme",
+  "homepage": "https://github.com/krud-dev/boost#readme",
   "bugs": {
-    "url": "https://github.com/krud-dev/spring-boost/issues"
+    "url": "https://github.com/krud-dev/boost/issues"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/krud-dev/spring-boost.git"
+    "url": "git+https://github.com/krud-dev/boost.git"
   },
   "license": "All rights reserved",
   "author": {
@@ -260,8 +260,8 @@
     "webpack-merge": "^5.8.0"
   },
   "build": {
-    "productName": "Spring Boost",
-    "appId": "dev.krud.springboost",
+    "productName": "Boost",
+    "appId": "dev.krud.boost",
     "asar": true,
     "asarUnpack": "**\\*.{node,dll}",
     "files": [
@@ -330,7 +330,7 @@
     "publish": {
       "provider": "github",
       "owner": "krud-dev",
-      "repo": "spring-boost"
+      "repo": "boost"
     }
   },
   "devEngines": {

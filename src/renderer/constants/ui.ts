@@ -18,5 +18,5 @@ export const EMPTY_STRING = '\u00A0';
 export const TRUE_LABEL_ID = 'yes';
 export const FALSE_LABEL_ID = 'no';
 
-export const REPOSITORY_URL = 'https://github.com/krud-dev/spring-boost';
+export const REPOSITORY_URL = 'https://github.com/krud-dev/boost';
 export const DOCUMENTATION_URL = 'https://boost.krud.dev/';
