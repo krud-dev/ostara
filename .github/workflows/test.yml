@@ -1,6 +1,9 @@
 name: Test
 
-on: []
+on:
+  push:
+    branches:
+      - never
 
 jobs:
   test:
