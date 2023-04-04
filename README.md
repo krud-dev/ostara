@@ -11,6 +11,8 @@
     Boost is a desktop application that provides various features to monitor and interact with Spring Boot Applications via Actuator.
 </p>
 
+**BOOST IS IN PRE RELEASE!** Please bear with us while we get the repo ready.
+
 ## Getting Started
 
 In order to use Boost, you must have a Spring Boot service with actuator endpoints, see how to set it up [here](https://www.baeldung.com/spring-boot-actuators).
