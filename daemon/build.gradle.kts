@@ -28,6 +28,7 @@ repositories {
 }
 
 val implementationDev by configurations.creating
+val implementationProd by configurations.creating
 
 if (!project.hasProperty("prod")) {
     configurations {
@@ -62,6 +63,12 @@ if (!project.hasProperty("prod")) {
         nullabilityDefinition = cz.habarta.typescript.generator.NullabilityDefinition.undefinedInlineUnion
         mapDate = cz.habarta.typescript.generator.DateMapping.asNumber
     }
+} else {
+    configurations {
+        implementation {
+            extendsFrom(implementationProd)
+        }
+    }
 }
 
 
@@ -70,6 +77,9 @@ dependencies {
 
     implementationDev("org.springframework.boot:spring-boot-starter-actuator")
     implementationDev("org.springdoc:springdoc-openapi-starter-webmvc-ui:2.0.2")
+    implementationDev("org.xerial:sqlite-jdbc:3.40.0.0")
+
+    implementationProd(files("lib/sqlite-jdbc-3.40.0.0.jar"))
 
     implementation("org.springframework.boot:spring-boot-starter-web")
     implementation("org.springframework.boot:spring-boot-starter-data-jpa")
@@ -82,7 +92,6 @@ dependencies {
     implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
     implementation("org.hibernate.orm:hibernate-community-dialects")
     implementation("org.jetbrains.kotlin:kotlin-stdlib")
-    implementation("org.xerial:sqlite-jdbc:3.40.0.0")
     implementation("com.squareup.okhttp3:okhttp:4.10.0")
     implementation("org.flywaydb:flyway-core:9.12.0")
     implementation("dev.krud:crud-framework-core:$crudFrameworkVersion")
