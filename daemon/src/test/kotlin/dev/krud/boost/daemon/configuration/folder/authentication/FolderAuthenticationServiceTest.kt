@@ -17,7 +17,7 @@ class FolderAuthenticationServiceTest {
     private val cacheManager = ConcurrentMapCacheManager(
         "folderEffectiveAuthenticationCache"
     )
-    private val folderAuthenticationService = FolderAuthenticationService(folderService, cacheManager)
+    private val folderAuthenticationService = FolderAuthenticationService(folderService)
 
     @Test
     fun `get effective authentication should return own if not inherit`() {

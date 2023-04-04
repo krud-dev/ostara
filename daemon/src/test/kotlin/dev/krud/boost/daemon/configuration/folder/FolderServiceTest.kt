@@ -14,7 +14,7 @@ import java.util.*
 
 class FolderServiceTest {
     val folderKrud = mock<Krud<Folder, UUID>>()
-    val folderService = FolderService(folderKrud)
+    val folderService = FolderService(folderKrud, mock())
 
     @Test
     fun `getFolder should return null if folder not found`() {
