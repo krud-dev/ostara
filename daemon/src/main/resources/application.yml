@@ -6,6 +6,7 @@ server:
   compression:
     enabled: true
     mime-types: text/html,text/xml,text/plain,text/css,text/javascript,application/javascript,application/json
+  address: 127.0.0.1
 management:
   endpoints:
     web:
