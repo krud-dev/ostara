@@ -5,6 +5,7 @@ import axios from 'axios';
 import log from 'electron-log';
 import { systemEvents } from '../events';
 import { isWindows } from '../utils/platform';
+import { configurationStore } from '../store/store';
 
 type DaemonOptions = {
   protocol: 'http' | 'https';
@@ -33,6 +34,8 @@ export class DaemonController {
   private readonly daemonDatabaseLocation = path.join(app.getPath('userData'), 'daemon.sqlite');
 
   private readonly defaultJdkLocation = path.join(process.resourcesPath, 'jdk', 'bin', isWindows ? 'java.exe' : 'java');
+
+  private readonly sentryEnabled = configurationStore.get('errorReportingEnabled');
 
   private daemonProcess?: ChildProcessWithoutNullStreams = undefined;
 
@@ -142,6 +145,7 @@ export class DaemonController {
       IP: this.options.host,
       SERVER_PORT: String(this.internalPort),
       SPRING_DATASOURCE_URL: `jdbc:sqlite:${this.daemonDatabaseLocation}`,
+      SPRING_PROFILES_ACTIVE: this.sentryEnabled ? 'sentry' : '',
     };
 
     if (!app.isPackaged) {

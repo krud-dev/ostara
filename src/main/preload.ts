@@ -3,6 +3,8 @@ import { utilsBridge } from '../infra/rendererUtils/renderer';
 import { subscriptionsBridge } from '../infra/subscriptions/renderer';
 import { uiServiceBridge } from '../infra/ui/renderer';
 import { daemonAddressSupplier, daemonHealthySupplier, daemonWsAddressSupplier } from '../infra/daemon/renderer';
+import { configurationStore } from '../infra/store/store';
+import { configurationStoreBridge } from '../infra/store/renderer';
 
 contextBridge.exposeInMainWorld('utils', utilsBridge);
 contextBridge.exposeInMainWorld('subscriptions', subscriptionsBridge);
@@ -12,3 +14,4 @@ contextBridge.exposeInMainWorld('daemonAddress', daemonAddressSupplier());
 contextBridge.exposeInMainWorld('daemonWsAddress', daemonWsAddressSupplier());
 contextBridge.exposeInMainWorld('daemonHealthy', daemonHealthySupplier);
 contextBridge.exposeInMainWorld('NODE_ENV', process.env.NODE_ENV);
+contextBridge.exposeInMainWorld('configurationStore', configurationStoreBridge);

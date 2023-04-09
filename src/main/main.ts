@@ -22,9 +22,13 @@ import { systemEvents } from '../infra/events';
 import { isMac, isWindows } from '../infra/utils/platform';
 import contextMenu from 'electron-context-menu';
 import * as Sentry from '@sentry/electron';
+import { configurationStore } from '../infra/store/store';
 
-Sentry.init({ dsn: 'https://d28c9ac8891348d0926af5d2b8454988@o4504882077302784.ingest.sentry.io/4504882079531008' });
-Sentry.setTag('boost.type', 'electron.main');
+if (configurationStore.get('errorReportingEnabled')) {
+  Sentry.init({ dsn: 'https://d28c9ac8891348d0926af5d2b8454988@o4504882077302784.ingest.sentry.io/4504882079531008' });
+  Sentry.setTag('boost.type', 'electron.main');
+}
+
 const gotInstanceLock = app.requestSingleInstanceLock();
 
 class AppUpdater {
