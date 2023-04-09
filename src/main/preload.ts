@@ -5,6 +5,7 @@ import { uiServiceBridge } from '../infra/ui/renderer';
 import { daemonAddressSupplier, daemonHealthySupplier, daemonWsAddressSupplier } from '../infra/daemon/renderer';
 import { configurationStore } from '../infra/store/store';
 import { configurationStoreBridge } from '../infra/store/renderer';
+import { appUpdaterBridge } from '../infra/autoupdate/renderer';
 
 contextBridge.exposeInMainWorld('utils', utilsBridge);
 contextBridge.exposeInMainWorld('subscriptions', subscriptionsBridge);
@@ -14,4 +15,6 @@ contextBridge.exposeInMainWorld('daemonAddress', daemonAddressSupplier());
 contextBridge.exposeInMainWorld('daemonWsAddress', daemonWsAddressSupplier());
 contextBridge.exposeInMainWorld('daemonHealthy', daemonHealthySupplier);
 contextBridge.exposeInMainWorld('NODE_ENV', process.env.NODE_ENV);
+contextBridge.exposeInMainWorld('appVersion', process.env.npm_package_version);
 contextBridge.exposeInMainWorld('configurationStore', configurationStoreBridge);
+contextBridge.exposeInMainWorld('appUpdater', appUpdaterBridge);

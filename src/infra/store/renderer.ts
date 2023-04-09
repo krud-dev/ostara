@@ -26,4 +26,10 @@ export const configurationStoreBridge: ConfigurationBridge<keyof Configuration> 
   setElectronErrorReportingEnabled(enabled: boolean): void {
     ipcRenderer.send('configurationStore:set', 'errorReportingEnabled', enabled);
   },
+  isAutoUpdateEnabled(): boolean {
+    return ipcRenderer.sendSync('configurationStore:get', 'autoUpdateEnabled');
+  },
+  setAutoUpdateEnabled(enabled: boolean): void {
+    ipcRenderer.send('configurationStore:set', 'autoUpdateEnabled', enabled);
+  },
 };

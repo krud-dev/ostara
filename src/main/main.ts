@@ -10,8 +10,7 @@
  */
 import 'reflect-metadata';
 import path from 'path';
-import { app, BrowserWindow, nativeTheme, shell, crashReporter } from 'electron';
-import { autoUpdater } from 'electron-updater';
+import { app, BrowserWindow, nativeTheme, shell } from 'electron';
 import log from 'electron-log';
 import MenuBuilder from './menu';
 import { resolveHtmlPath } from './util';
@@ -23,6 +22,8 @@ import { isMac, isWindows } from '../infra/utils/platform';
 import contextMenu from 'electron-context-menu';
 import * as Sentry from '@sentry/electron';
 import { configurationStore } from '../infra/store/store';
+import { scheduleJob } from 'node-schedule';
+import { appUpdater, initializeAppUpdaterSubscriptions } from '../infra/autoupdate/appUpdater';
 
 if (configurationStore.get('errorReportingEnabled')) {
   Sentry.init({ dsn: 'https://d28c9ac8891348d0926af5d2b8454988@o4504882077302784.ingest.sentry.io/4504882079531008' });
@@ -30,14 +31,6 @@ if (configurationStore.get('errorReportingEnabled')) {
 }
 
 const gotInstanceLock = app.requestSingleInstanceLock();
-
-class AppUpdater {
-  constructor() {
-    log.transports.file.level = 'info';
-    autoUpdater.logger = log;
-    autoUpdater.checkForUpdatesAndNotify();
-  }
-}
 
 let splashWindow: BrowserWindow | null = null;
 let mainWindow: BrowserWindow | null = null;
@@ -183,8 +176,11 @@ const createMainWindow = async () => {
 
   // Remove this if your app does not use auto updates
   // eslint-disable-next-line
-  new AppUpdater();
   log.transports.console.level = 'info';
+  initializeAppUpdaterSubscriptions(mainWindow);
+  scheduleJob('0 0 */1 * * *', () => {
+    appUpdater.checkForUpdates();
+  });
 };
 
 /**
