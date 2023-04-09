@@ -17,7 +17,7 @@ import MenuBuilder from './menu';
 import { resolveHtmlPath } from './util';
 import '../infra';
 import { uiService } from '../infra/ui/uiService';
-import { getDaemonController, initDaemon } from '../infra/daemon/daemon';
+import { getDaemonController, initDaemonController } from '../infra/daemon/daemonController';
 import { systemEvents } from '../infra/events';
 import { isMac, isWindows } from '../infra/utils/platform';
 import contextMenu from 'electron-context-menu';
@@ -184,6 +184,7 @@ const createMainWindow = async () => {
   // Remove this if your app does not use auto updates
   // eslint-disable-next-line
   new AppUpdater();
+  log.transports.console.level = 'info';
 };
 
 /**
@@ -214,7 +215,7 @@ if (!gotInstanceLock) {
         log.info('Creating main window (daemon ready event)');
         createMainWindow();
       });
-      await initDaemon();
+      await initDaemonController();
     })
     .catch(console.log);
 }
