@@ -13,6 +13,7 @@ const GoogleAnalyticsManager: FunctionComponent<GoogleAnalyticsManagerProps> = (
   useEffect(() => {
     if (analyticsEnabled) {
       ReactGA.initialize(GOOGLE_ANALYTICS_MEASUREMENT_ID);
+      ReactGA.set({ anonymizeIp: true });
     } else {
       ReactGA.reset();
     }
