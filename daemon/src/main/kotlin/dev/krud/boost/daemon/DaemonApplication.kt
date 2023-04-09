@@ -1,8 +1,8 @@
 package dev.krud.boost.daemon
 
 import dev.krud.boost.daemon.exitcode.ExitCodeSupplier
-import dev.krud.boost.daemon.exitcode.ExitCodes
 import io.github.oshai.KotlinLogging
+import io.sentry.Sentry
 import org.springframework.boot.autoconfigure.SpringBootApplication
 import org.springframework.boot.runApplication
 import kotlin.system.exitProcess
@@ -18,6 +18,9 @@ fun main(args: Array<String>) {
     } catch (e: Exception) {
         val exitCode = ExitCodeSupplier.supply(e)
         log.error(e) { "Exiting with exit code $exitCode" }
+        if (Sentry.isEnabled()) {
+            Sentry.captureException(e)
+        }
         exitProcess(exitCode)
     }
 }
