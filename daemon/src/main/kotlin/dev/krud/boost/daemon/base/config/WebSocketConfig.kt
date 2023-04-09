@@ -5,6 +5,7 @@ import dev.krud.boost.daemon.configuration.instance.heapdump.websocket.InstanceH
 import dev.krud.boost.daemon.configuration.instance.metric.InstanceMetricWebsocketTopicInterceptor
 import dev.krud.boost.daemon.configuration.instance.websocket.InstanceHealthWebsocketDispatcher
 import dev.krud.boost.daemon.configuration.instance.websocket.InstanceHostnameWebsocketDispatcher
+import dev.krud.boost.daemon.threadprofiling.websocket.ThreadProfilingWebsocketDispatcher
 import dev.krud.boost.daemon.websocket.SubscriptionInterceptor
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.context.annotation.Bean
@@ -69,6 +70,14 @@ class WebSocketConfig : WebSocketMessageBrokerConfigurer {
             destination = InstanceHeapdumpWebsocketDispatcher.HEAPDUMP_DOWNLOAD_PROGRESS_TOPIC,
             callback = { message, headerAccessor ->
                 instanceHeapdumpWebsocketDispatcher.replay(headerAccessor.sessionId!!)
+            }
+        )
+
+        @Bean
+        fun threadProfilingReplayingInterceptor(threadProfilingWebsocketDispatcher: ThreadProfilingWebsocketDispatcher) = SubscriptionInterceptor(
+            destination = ThreadProfilingWebsocketDispatcher.THREAD_PROFILING_PROGRESS_TOPIC,
+            callback = { message, headerAccessor ->
+                threadProfilingWebsocketDispatcher.replay(headerAccessor.sessionId!!)
             }
         )
     }
