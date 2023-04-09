@@ -4,12 +4,14 @@ import dev.krud.boost.daemon.configuration.instance.InstanceActuatorClientProvid
 import dev.krud.boost.daemon.configuration.instance.InstanceService
 import dev.krud.boost.daemon.exception.throwNotFound
 import dev.krud.boost.daemon.threadprofiling.enums.ThreadProfilingStatus
+import dev.krud.boost.daemon.threadprofiling.messaging.ThreadProfilingProgressMessage
 import dev.krud.boost.daemon.threadprofiling.model.ThreadProfilingLog
 import dev.krud.boost.daemon.threadprofiling.model.ThreadProfilingRequest
 import dev.krud.crudframework.crud.handler.krud.Krud
 import dev.krud.crudframework.modelfilter.dsl.where
 import dev.krud.crudframework.ro.PagedResult
 import io.github.oshai.KotlinLogging
+import org.springframework.integration.channel.PublishSubscribeChannel
 import org.springframework.scheduling.annotation.Scheduled
 import org.springframework.stereotype.Service
 import java.util.*
@@ -19,7 +21,8 @@ class ThreadProfilingService(
     private val instanceService: InstanceService,
     private val threadProfilingRequestKrud: Krud<ThreadProfilingRequest, UUID>,
     private val threadProfilinLogKrud: Krud<ThreadProfilingLog, UUID>,
-    private val actuatorClientProvider: InstanceActuatorClientProvider
+    private val actuatorClientProvider: InstanceActuatorClientProvider,
+    private val instanceThreadProfilingProgressChannel: PublishSubscribeChannel
 ) {
 
     @Scheduled(fixedRate = 1000)
@@ -39,6 +42,16 @@ class ThreadProfilingService(
         val expired = runningThreadProfilings.filter { it.finishTime.time < System.currentTimeMillis() }
         expired.forEach {
             updateProfilingRequestToFinished(it.id)
+            instanceThreadProfilingProgressChannel.send(
+                ThreadProfilingProgressMessage(
+                    ThreadProfilingProgressMessage.Payload(
+                        it.id,
+                        it.instanceId,
+                        0,
+                        ThreadProfilingStatus.FINISHED
+                    )
+                )
+            )
         }
 
         val groupedByInstance = runningThreadProfilings.filter { !expired.any { request -> request == it } }.groupBy { it.instanceId }
@@ -53,6 +66,16 @@ class ThreadProfilingService(
                     threadProfilinLogKrud.create(threadLog)
                 }
             }
+                instanceThreadProfilingProgressChannel.send(
+                    ThreadProfilingProgressMessage(
+                        ThreadProfilingProgressMessage.Payload(
+                            requests.first().id,
+                            instanceId,
+                            (requests.first().finishTime.time - System.currentTimeMillis()) / 1000,
+                            ThreadProfilingStatus.RUNNING
+                        )
+                    )
+                )
         }
     }
 

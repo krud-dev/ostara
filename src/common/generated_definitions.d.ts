@@ -430,6 +430,13 @@ export interface InstanceHostnameUpdatedEventMessage$Payload {
     hostname?: string;
 }
 
+export interface ThreadProfilingProgressMessage$Payload {
+    requestId: string;
+    instanceId: string;
+    secondsRemaining: number;
+    status: ThreadProfilingStatus;
+}
+
 export interface ResultAggregationSummary<T> {
     totalCount: number;
     successCount: number;

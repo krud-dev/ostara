@@ -41,7 +41,6 @@ class IntegrationConfig {
         return MessageChannels.publishSubscribe().get()
     }
 
-
     @Bean
     fun instanceHeapdumpDownloadProgressFlow() = integrationFlow(instanceHeapdumpDownloadProgressInputChannel()) {
         aggregate {
@@ -65,6 +64,11 @@ class IntegrationConfig {
         }
 
         channel(instanceHeapdumpDownloadProgressChannel())
+    }
+
+    @Bean
+    fun instanceThreadProfilingProgressChannel(): PublishSubscribeChannel {
+        return MessageChannels.publishSubscribe().get()
     }
 
     @Bean
