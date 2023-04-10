@@ -9,7 +9,7 @@ declare global {
     reset(key: Key): void;
     clear(): void;
     isErrorReportingEnabled(): boolean;
-    setElectronErrorReportingEnabled(enabled: boolean): void;
+    setErrorReportingEnabled(enabled: boolean): void;
 
     isAutoUpdateEnabled(): boolean;
 
