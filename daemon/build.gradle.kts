@@ -1,6 +1,4 @@
 import cz.habarta.typescript.generator.gradle.GenerateTask
-import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
-import org.springframework.boot.gradle.tasks.bundling.BootJar
 import java.nio.file.Paths
 
 plugins {
@@ -11,6 +9,7 @@ plugins {
     kotlin("plugin.jpa") version "1.8.10"
     kotlin("kapt") version "1.8.10"
     id("cz.habarta.typescript-generator") version "3.1.1185"
+    jacoco
 }
 
 group = "dev.krud.boost"
@@ -120,11 +119,15 @@ dependencies {
 
 }
 
-tasks.withType<BootJar> {
+noArg {
+    invokeInitializers = true
+}
+
+tasks.bootJar {
     archiveFileName.set("daemon.jar")
 }
 
-tasks.withType<KotlinCompile> {
+tasks.compileKotlin {
     if (!project.hasProperty("prod")) {
         finalizedBy("generateTypeScript")
     }
@@ -134,10 +137,15 @@ tasks.withType<KotlinCompile> {
     }
 }
 
-noArg {
-    invokeInitializers = true
+tasks.test {
+    useJUnitPlatform()
+    finalizedBy(tasks.jacocoTestReport)
 }
 
-tasks.withType<Test> {
-    useJUnitPlatform()
+tasks.jacocoTestReport {
+    dependsOn(tasks.test)
+    reports {
+        xml.required.set(true)
+        html.required.set(false)
+    }
 }
