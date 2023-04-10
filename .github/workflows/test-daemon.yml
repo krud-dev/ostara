@@ -2,10 +2,14 @@ name: Test
 
 on:
   push:
+    branches:
+      - main
     paths:
       - daemon/**
       - .github/workflows/test-daemon.yml
   pull_request:
+    branches:
+      - main
     paths:
       - daemon/**
       - .github/workflows/test-daemon.yml
@@ -28,3 +32,9 @@ jobs:
       - name: Test Daemon
         run: |
           cd daemon && ./gradlew test
+      - name: Upload coverage reports to Codecov
+        uses: codecov/codecov-action@v3
+        with:
+          files: daemon/build/reports/jacoco/test/jacocoTestReport.xml
+          flags: daemon
+          fail_ci_if_error: true
