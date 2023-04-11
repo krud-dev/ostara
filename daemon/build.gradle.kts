@@ -10,6 +10,7 @@ plugins {
     kotlin("kapt") version "1.8.10"
     id("cz.habarta.typescript-generator") version "3.1.1185"
     jacoco
+    id("org.sonarqube") version "3.5.0.2730"
 }
 
 group = "dev.krud.boost"
@@ -147,5 +148,14 @@ tasks.jacocoTestReport {
     reports {
         xml.required.set(true)
         html.required.set(false)
+    }
+}
+
+
+sonar {
+    properties {
+        property("sonar.projectKey", "boost_daemon")
+        property("sonar.organization", "krud-dev")
+        property("sonar.host.url", "https://sonarcloud.io")
     }
 }
