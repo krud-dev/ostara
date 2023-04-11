@@ -98,8 +98,8 @@ const WARNING = {
   lighter: '#FFF7CD',
   light: '#FFE16A',
   main: '#FFC107',
-  dark: '#B78103',
-  darker: '#7A4F01',
+  dark: '#e5ad06',
+  darker: '#cc9a05',
 };
 const ERROR = {
   lighter: '#FFE7D9',
