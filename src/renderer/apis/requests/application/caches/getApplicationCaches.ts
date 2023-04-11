@@ -9,24 +9,14 @@ import { ApplicationCacheRO } from '../../../../../common/generated_definitions'
 import { axiosInstance } from '../../../axiosInstance';
 import { AxiosResponse } from 'axios';
 
-export type EnrichedApplicationCacheRO = ApplicationCacheRO & {
-  hasStatistics: boolean;
-};
-
 type Variables = {
   applicationId: string;
 };
 
-type Data = EnrichedApplicationCacheRO[];
+type Data = ApplicationCacheRO[];
 
 export const getApplicationCaches = async (variables: Variables): Promise<Data> => {
-  const hasStatistics = false; // TODO update once application has abilities
-  const result = (
-    await axiosInstance.get<ApplicationCacheRO[], AxiosResponse<ApplicationCacheRO[]>>(
-      `cache/application/${variables.applicationId}`
-    )
-  ).data;
-  return result.map((cache) => ({ ...cache, hasStatistics: hasStatistics }));
+  return (await axiosInstance.get<Data, AxiosResponse<Data>>(`cache/application/${variables.applicationId}`)).data;
 };
 
 export const useGetApplicationCaches = (

@@ -11,6 +11,7 @@ import { AxiosResponse } from 'axios';
 import { getInstanceAbilities } from '../getInstanceAbilities';
 
 export type EnrichedInstanceCacheRO = InstanceCacheRO & {
+  instanceId: string;
   hasStatistics: boolean;
 };
 
@@ -29,7 +30,7 @@ export const getInstanceCaches = async (variables: Variables): Promise<Data> => 
       `cache/instance/${variables.instanceId}`
     )
   ).data;
-  return result.map((cache) => ({ ...cache, hasStatistics: hasStatistics }));
+  return result.map((cache) => ({ ...cache, instanceId: variables.instanceId, hasStatistics: hasStatistics }));
 };
 
 export const useGetInstanceCaches = (

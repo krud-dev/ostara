@@ -305,4 +305,6 @@ export default {
   openRepository: 'Open Repository',
   openDocumentation: 'Open Documentation',
   authenticationUsedFrom: 'Authentication used from {type} {name}.',
+  showStatistics: 'Show Statistics',
+  statistics: 'Statistics',
 };

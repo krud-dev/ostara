@@ -1,6 +1,5 @@
 import { Entity } from 'renderer/entity/entity';
-import { EVICT_CACHE_ID } from 'renderer/entity/actions';
-import InstanceCacheDetails from 'renderer/pages/navigator/instance/caches/components/InstanceCacheDetails';
+import { EVICT_CACHE_ID, STATISTICS_ID } from 'renderer/entity/actions';
 import { EnrichedInstanceCacheRO } from 'renderer/apis/requests/instance/caches/getInstanceCaches';
 
 export const instanceCacheEntity: Entity<EnrichedInstanceCacheRO> = {
@@ -19,6 +18,12 @@ export const instanceCacheEntity: Entity<EnrichedInstanceCacheRO> = {
     },
   ],
   actions: [
+    {
+      id: STATISTICS_ID,
+      labelId: 'showStatistics',
+      icon: 'DonutLargeOutlined',
+      isDisabled: (item) => !item.hasStatistics,
+    },
     {
       id: EVICT_CACHE_ID,
       labelId: 'evict',
@@ -39,11 +44,6 @@ export const instanceCacheEntity: Entity<EnrichedInstanceCacheRO> = {
       icon: 'CleaningServicesOutlined',
     },
   ],
-  rowAction: {
-    type: 'Details',
-    Component: InstanceCacheDetails,
-  },
-  isRowActionActive: (item) => item.hasStatistics,
   defaultOrder: [
     {
       id: 'name',
