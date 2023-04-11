@@ -1,26 +1,32 @@
 import React, { FunctionComponent, PropsWithChildren } from 'react';
-import { DialogTitle, IconButton } from '@mui/material';
+import { Box, DialogTitle, Stack } from '@mui/material';
 import { SxProps } from '@mui/system';
 import { Theme } from '@mui/material/styles';
-import { CloseOutlined } from '@mui/icons-material';
+import ToolbarButton, { ToolbarButtonProps } from '../common/ToolbarButton';
 
 interface IProps extends PropsWithChildren<any> {
   disabled?: boolean;
   onClose?: () => void;
+  buttons?: ToolbarButtonProps[];
   sx?: SxProps<Theme>;
 }
 
-const DialogTitleEnhanced: FunctionComponent<IProps> = ({ disabled, onClose, sx, children }) => {
+const DialogTitleEnhanced: FunctionComponent<IProps> = ({ disabled, buttons, onClose, sx, children }) => {
   return (
     <>
       <DialogTitle noWrap sx={sx}>
-        {onClose ? (
-          <IconButton aria-label="close" size="small" disabled={disabled} onClick={onClose} sx={{ float: 'right' }}>
-            <CloseOutlined />
-          </IconButton>
-        ) : null}
+        <Stack direction={'row'} spacing={0.5} sx={{ float: 'right' }}>
+          {buttons?.map(({ disabled: actionDisabled, ...action }, index) => {
+            const key = `${action.icon}-${index}`;
+            const actionDisabledAggregated = actionDisabled || disabled;
+            return <ToolbarButton {...action} disabled={actionDisabledAggregated} key={key} />;
+          })}
+          {onClose ? (
+            <ToolbarButton tooltipLabelId={'close'} icon={'CloseOutlined'} disabled={disabled} onClick={onClose} />
+          ) : null}
+        </Stack>
 
-        {children}
+        <Box sx={{ display: 'inline', lineHeight: 2.1 }}>{children}</Box>
       </DialogTitle>
       <div />
     </>

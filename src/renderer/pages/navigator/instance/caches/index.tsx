@@ -12,10 +12,13 @@ import {
 import { instanceCacheEntity } from 'renderer/entity/entities/instanceCache.entity';
 import { useEvictInstanceCaches } from 'renderer/apis/requests/instance/caches/evictInstanceCaches';
 import { useEvictAllInstanceCaches } from 'renderer/apis/requests/instance/caches/evictAllInstanceCaches';
-import { EVICT_CACHE_ID } from 'renderer/entity/actions';
+import { EVICT_CACHE_ID, STATISTICS_ID } from 'renderer/entity/actions';
 import { Card } from '@mui/material';
 import { InstanceRO } from '../../../../../common/generated_definitions';
 import { useEvictInstanceCache } from '../../../../apis/requests/instance/caches/evictInstanceCache';
+import NiceModal from '@ebay/nice-modal-react';
+import QuartzTriggerDetailsDialog from '../quartz/components/QuartzTriggerDetailsDialog';
+import CacheStatisticsDialog from './components/CacheStatisticsDialog';
 
 const InstanceCaches: FunctionComponent = () => {
   const { selectedItem } = useNavigatorTree();
@@ -30,6 +33,11 @@ const InstanceCaches: FunctionComponent = () => {
 
   const actionsHandler = useCallback(async (actionId: string, row: EnrichedInstanceCacheRO): Promise<void> => {
     switch (actionId) {
+      case STATISTICS_ID:
+        NiceModal.show<undefined>(CacheStatisticsDialog, {
+          row: row,
+        });
+        break;
       case EVICT_CACHE_ID:
         try {
           await evictCacheState.mutateAsync({ instanceId: item.id, cacheName: row.name });

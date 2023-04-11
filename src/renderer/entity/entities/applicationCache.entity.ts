@@ -1,9 +1,8 @@
 import { Entity } from 'renderer/entity/entity';
 import { EVICT_CACHE_ID } from 'renderer/entity/actions';
-import { EnrichedApplicationCacheRO } from 'renderer/apis/requests/application/caches/getApplicationCaches';
-import ApplicationCacheDetails from 'renderer/pages/navigator/application/caches/components/ApplicationCacheDetails';
+import { ApplicationCacheRO } from '../../../common/generated_definitions';
 
-export const applicationCacheEntity: Entity<EnrichedApplicationCacheRO> = {
+export const applicationCacheEntity: Entity<ApplicationCacheRO> = {
   id: 'applicationCache',
   columns: [
     {
@@ -38,11 +37,6 @@ export const applicationCacheEntity: Entity<EnrichedApplicationCacheRO> = {
       icon: 'CleaningServicesOutlined',
     },
   ],
-  rowAction: {
-    type: 'Details',
-    Component: ApplicationCacheDetails,
-  },
-  isRowActionActive: (item) => item.hasStatistics,
   defaultOrder: [
     {
       id: 'name',

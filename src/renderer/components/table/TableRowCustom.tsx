@@ -28,10 +28,7 @@ export default function TableRowCustom<EntityItem>({ row }: TableRowCustomProps<
   const selected = useMemo<boolean>(() => isRowSelected(row), [row, selectedRows, isRowSelected]);
   const open = useMemo<boolean>(() => isRowOpen(row), [row, openRows, isRowOpen]);
   const hasDetailsRowAction = useMemo<boolean>(() => entity.rowAction?.type === 'Details', [entity]);
-  const hasActiveRowAction = useMemo<boolean>(
-    () => !!entity.rowAction && (!entity.isRowActionActive || entity.isRowActionActive(row)),
-    [entity, row]
-  );
+  const hasActiveRowAction = useMemo<boolean>(() => !!entity.rowAction, [entity]);
   const anchor = useMemo<string | undefined>(() => entity.getAnchor?.(row), [row, entity]);
 
   const rowClickHandler = useCallback(

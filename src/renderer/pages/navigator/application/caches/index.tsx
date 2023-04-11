@@ -7,14 +7,11 @@ import { Entity } from 'renderer/entity/entity';
 import { FormattedMessage } from 'react-intl';
 import { EVICT_CACHE_ID } from 'renderer/entity/actions';
 import { applicationCacheEntity } from 'renderer/entity/entities/applicationCache.entity';
-import {
-  EnrichedApplicationCacheRO,
-  useGetApplicationCachesQuery,
-} from 'renderer/apis/requests/application/caches/getApplicationCaches';
+import { useGetApplicationCachesQuery } from 'renderer/apis/requests/application/caches/getApplicationCaches';
 import { useEvictApplicationCaches } from 'renderer/apis/requests/application/caches/evictApplicationCaches';
 import { useEvictAllApplicationCaches } from 'renderer/apis/requests/application/caches/evictAllApplicationCaches';
 import { Card } from '@mui/material';
-import { ApplicationRO } from '../../../../../common/generated_definitions';
+import { ApplicationCacheRO, ApplicationRO } from '../../../../../common/generated_definitions';
 import { useEvictApplicationCache } from '../../../../apis/requests/application/caches/evictApplicationCache';
 
 const ApplicationCaches: FunctionComponent = () => {
@@ -24,12 +21,12 @@ const ApplicationCaches: FunctionComponent = () => {
   const item = useMemo<ApplicationRO | undefined>(() => selectedItem as ApplicationRO | undefined, [selectedItem]);
   const itemId = useMemo<string>(() => item?.id || '', [item]);
 
-  const entity = useMemo<Entity<EnrichedApplicationCacheRO>>(() => applicationCacheEntity, []);
+  const entity = useMemo<Entity<ApplicationCacheRO>>(() => applicationCacheEntity, []);
   const queryState = useGetApplicationCachesQuery({ applicationId: itemId });
 
   const evictCacheState = useEvictApplicationCache();
 
-  const actionsHandler = useCallback(async (actionId: string, row: EnrichedApplicationCacheRO): Promise<void> => {
+  const actionsHandler = useCallback(async (actionId: string, row: ApplicationCacheRO): Promise<void> => {
     switch (actionId) {
       case EVICT_CACHE_ID:
         try {
@@ -47,7 +44,7 @@ const ApplicationCaches: FunctionComponent = () => {
   const evictCachesState = useEvictApplicationCaches();
 
   const massActionsHandler = useCallback(
-    async (actionId: string, selectedRows: EnrichedApplicationCacheRO[]): Promise<void> => {
+    async (actionId: string, selectedRows: ApplicationCacheRO[]): Promise<void> => {
       switch (actionId) {
         case EVICT_CACHE_ID:
           try {

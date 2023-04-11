@@ -5,7 +5,7 @@ import { SxProps } from '@mui/system';
 import { Theme } from '@mui/material/styles';
 import React from 'react';
 
-type ToolbarButtonProps = {
+export type ToolbarButtonProps = {
   tooltipLabelId: string;
   icon: MUIconType;
   disabled?: boolean;
