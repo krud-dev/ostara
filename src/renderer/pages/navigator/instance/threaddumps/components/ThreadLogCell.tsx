@@ -28,7 +28,7 @@ export default function ThreadLogCell({ threadLog }: ThreadLogCellProps) {
       case 'WAITING':
         return theme.palette.warning.light;
       case 'TIMED_WAITING':
-        return theme.palette.warning.main;
+        return theme.palette.warning.darker;
       case 'TERMINATED':
         return theme.palette.common.black;
       default:
@@ -38,12 +38,12 @@ export default function ThreadLogCell({ threadLog }: ThreadLogCellProps) {
 
   const highlight = useMemo<boolean>(() => !!threadLog && isHighlight(search, threadLog), [search, threadLog]);
 
-  const openBackgroundColor = useMemo<string>(() => lighten(backgroundColor, 0.5), [backgroundColor]);
+  const openBackgroundColor = useMemo<string>(() => lighten(backgroundColor, 0.4), [backgroundColor]);
 
   const open = useMemo<boolean>(() => isOpen(threadLog), [threadLog, openIds]);
 
   const hoverBackgroundColor = useMemo<string>(
-    () => lighten(backgroundColor, open ? 0.7 : 0.3),
+    () => lighten(backgroundColor, open ? 0.5 : 0.25),
     [backgroundColor, open]
   );
 
