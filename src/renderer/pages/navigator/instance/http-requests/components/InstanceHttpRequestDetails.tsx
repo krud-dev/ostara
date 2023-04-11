@@ -24,19 +24,28 @@ export default function InstanceHttpRequestDetails({ row }: InstanceBeanDetailsP
 
   const methodsState = useGetInstanceHttpRequestStatisticsForUriByMethodsQuery({ instanceId: item.id, uri: row.uri });
   const methodsData = useMemo<InstanceHttpRequestChartsData | undefined>(
-    () => map(methodsState.data, (statistics, method) => ({ label: method, statistics: statistics })),
+    () =>
+      methodsState.data
+        ? map(methodsState.data, (statistics, method) => ({ label: method, statistics: statistics }))
+        : undefined,
     [methodsState.data]
   );
 
   const statusesState = useGetInstanceHttpRequestStatisticsForUriByStatusesQuery({ instanceId: item.id, uri: row.uri });
   const statusesData = useMemo<InstanceHttpRequestChartsData | undefined>(
-    () => map(statusesState.data, (statistics, method) => ({ label: method, statistics: statistics })),
+    () =>
+      statusesState.data
+        ? map(statusesState.data, (statistics, method) => ({ label: method, statistics: statistics }))
+        : undefined,
     [statusesState.data]
   );
 
   const outcomesState = useGetInstanceHttpRequestStatisticsForUriByOutcomesQuery({ instanceId: item.id, uri: row.uri });
   const outcomesData = useMemo<InstanceHttpRequestChartsData | undefined>(
-    () => map(outcomesState.data, (statistics, method) => ({ label: method, statistics: statistics })),
+    () =>
+      outcomesState.data
+        ? map(outcomesState.data, (statistics, method) => ({ label: method, statistics: statistics }))
+        : undefined,
     [outcomesState.data]
   );
 
@@ -45,7 +54,10 @@ export default function InstanceHttpRequestDetails({ row }: InstanceBeanDetailsP
     uri: row.uri,
   });
   const exceptionsData = useMemo<InstanceHttpRequestChartsData | undefined>(
-    () => map(exceptionsState.data, (statistics, method) => ({ label: method, statistics: statistics })),
+    () =>
+      exceptionsState.data
+        ? map(exceptionsState.data, (statistics, method) => ({ label: method, statistics: statistics }))
+        : undefined,
     [exceptionsState.data]
   );
 
