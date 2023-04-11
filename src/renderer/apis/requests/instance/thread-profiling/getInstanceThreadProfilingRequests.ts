@@ -9,11 +9,15 @@ import { ThreadProfilingRequestRO } from '../../../../../common/generated_defini
 import { crudSearch } from '../../crud/crudSearch';
 import { threadProfilingRequestCrudEntity } from '../../crud/entity/entities/threadProfilingRequest.crudEntity';
 
+export type EnrichedThreadProfilingRequestRO = ThreadProfilingRequestRO & {
+  secondsRemaining?: number;
+};
+
 type Variables = {
   instanceId: string;
 };
 
-type Data = ThreadProfilingRequestRO[];
+type Data = EnrichedThreadProfilingRequestRO[];
 
 export const getInstanceThreadProfilingRequests = async (variables: Variables): Promise<Data> => {
   const result = await crudSearch<ThreadProfilingRequestRO>({

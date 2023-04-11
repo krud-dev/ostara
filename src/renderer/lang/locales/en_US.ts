@@ -307,4 +307,5 @@ export default {
   authenticationUsedFrom: 'Authentication used from {type} {name}.',
   showStatistics: 'Show Statistics',
   statistics: 'Statistics',
+  remaining: 'Remaining',
 };
