@@ -1,9 +1,10 @@
 import { Entity } from 'renderer/entity/entity';
-import { ThreadProfilingRequestRO } from '../../../common/generated_definitions';
 import { DELETE_ID, REQUEST_ID, VIEW_ID } from '../actions';
 import { FormattedMessage } from 'react-intl';
+import { EnrichedThreadProfilingRequestRO } from '../../apis/requests/instance/thread-profiling/getInstanceThreadProfilingRequests';
+import { isNil } from 'lodash';
 
-export const instanceThreadProfilingRequestEntity: Entity<ThreadProfilingRequestRO> = {
+export const instanceThreadProfilingRequestEntity: Entity<EnrichedThreadProfilingRequestRO> = {
   id: 'instanceThreadProfilingRequest',
   columns: [
     {
@@ -13,8 +14,14 @@ export const instanceThreadProfilingRequestEntity: Entity<ThreadProfilingRequest
     },
     {
       id: 'durationSec',
-      type: 'Number',
+      type: 'CustomText',
       labelId: 'durationSeconds',
+      getText: (item, intl) => {
+        if (item.status !== 'RUNNING' || isNil(item.secondsRemaining)) {
+          return `${item.durationSec}`;
+        }
+        return `${item.durationSec} (${item.secondsRemaining} ${intl.formatMessage({ id: 'remaining' })})`;
+      },
     },
     {
       id: 'status',

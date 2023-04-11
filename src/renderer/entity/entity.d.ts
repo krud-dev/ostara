@@ -1,6 +1,7 @@
 import { MUIconType } from 'renderer/components/common/IconViewer';
 import { ComponentType, ReactNode } from 'react';
 import { LabelColor } from 'renderer/components/common/Label';
+import { IntlShape } from 'react-intl';
 
 export type Entity<EntityItem, CustomFilters = never> = {
   id: string;
@@ -56,7 +57,7 @@ export type EntityBytesColumn<EntityItem> = EntityBaseColumn<EntityItem> & {
 export type EntityLabelColumn<EntityItem> = EntityBaseColumn<EntityItem> & {
   readonly type: 'Label';
   getColor: (item: EntityItem) => LabelColor;
-  getText?: (item: EntityItem) => ReactNode;
+  getText?: (item: EntityItem, intl: IntlShape) => ReactNode;
 };
 
 export type EntityCountdownColumn<EntityItem> = EntityBaseColumn<EntityItem> & {
@@ -71,7 +72,7 @@ export type EntityIntervalColumn<EntityItem> = EntityBaseColumn<EntityItem> & {
 
 export type EntityCustomTextColumn<EntityItem> = EntityBaseColumn<EntityItem> & {
   readonly type: 'CustomText';
-  getText: (item: EntityItem) => ReactNode;
+  getText: (item: EntityItem, intl: IntlShape) => ReactNode;
 };
 
 export type EntityCustomColumn<EntityItem> = EntityBaseColumn<EntityItem> & {

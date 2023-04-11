@@ -4,6 +4,7 @@ import {
   InstanceHeapdumpDownloadProgressMessage$Payload,
   InstanceHostnameUpdatedEventMessage$Payload,
   InstanceMetricRO,
+  ThreadProfilingProgressMessage$Payload,
 } from '../../../common/generated_definitions';
 
 export type StompTopics = {
@@ -12,6 +13,7 @@ export type StompTopics = {
   '/topic/metric/:instanceId/:metricName': InstanceMetricRO;
   '/topic/instanceHostname': InstanceHostnameUpdatedEventMessage$Payload;
   '/topic/instanceHeapdumpDownloadProgress': InstanceHeapdumpDownloadProgressMessage$Payload;
+  '/topic/instanceThreadProfilingProgress': ThreadProfilingProgressMessage$Payload;
 };
 
 export type StompTopicKey = keyof StompTopics;
