@@ -64,18 +64,19 @@ class ThreadProfilingService(
                 requests.forEach { request ->
                     val threadLog = ThreadProfilingLog(request.id, threadDump.threads)
                     threadProfilinLogKrud.create(threadLog)
-                }
-            }
-                instanceThreadProfilingProgressChannel.send(
-                    ThreadProfilingProgressMessage(
-                        ThreadProfilingProgressMessage.Payload(
-                            requests.first().id,
-                            instanceId,
-                            (requests.first().finishTime.time - System.currentTimeMillis()) / 1000,
-                            ThreadProfilingStatus.RUNNING
+                    instanceThreadProfilingProgressChannel.send(
+                        ThreadProfilingProgressMessage(
+                            ThreadProfilingProgressMessage.Payload(
+                                request.id,
+                                instanceId,
+                                (request.finishTime.time - System.currentTimeMillis()) / 1000,
+                                ThreadProfilingStatus.RUNNING
+                            )
                         )
                     )
-                )
+                }
+            }
+
         }
     }
 
