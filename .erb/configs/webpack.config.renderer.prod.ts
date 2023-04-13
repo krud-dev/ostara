@@ -88,6 +88,11 @@ const configuration: webpack.Configuration = {
           'file-loader',
         ],
       },
+      // Markdown
+      {
+        test: /\.md$/,
+        use: 'raw-loader',
+      },
     ],
   },
 
