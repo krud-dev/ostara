@@ -1,5 +1,15 @@
 # @krud-dev/boost
 
+## 0.2.0
+
+### Minor Changes
+
+- aa109dc: Added help button to open relevant documentation for each page
+
+### Patch Changes
+
+- bfef682: Fix incorrect sentry tag on renderer
+
 ## 0.1.0
 
 ### Minor Changes
