@@ -10,6 +10,7 @@ import { isMac } from 'renderer/utils/platformUtils';
 import WindowControls from './navbar/WindowControls';
 import { useMaximizeWindow } from '../../../apis/requests/ui/maximizeWindow';
 import SettingsMenu from './navbar/SettingsMenu';
+import HelpMenu from './navbar/HelpMenu';
 
 type MainNavbarProps = {};
 
@@ -78,7 +79,8 @@ export default function MainNavbar({}: MainNavbarProps) {
 
         <Box sx={{ flexGrow: 1 }} />
 
-        <Stack direction="row" spacing={{ xs: 0.5, sm: 1 }}>
+        <Stack direction="row" spacing={0.5}>
+          <HelpMenu />
           <SettingsMenu />
         </Stack>
 
