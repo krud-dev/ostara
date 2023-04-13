@@ -25,32 +25,13 @@ class FolderParentAuthenticationChangedListener(
     @ServiceActivator(inputChannel = "systemEventsChannel")
     fun onMessage(message: Message<*>) {
         when (message) {
-            is FolderAuthenticationChangedMessage -> handleParentFolderAuthenticationChanged(message.payload.folderId)
-            is FolderMovedEventMessage -> handleFolderMoved(message.payload.folderId)
+            is FolderAuthenticationChangedMessage -> updateEffectiveAuthenticationForFolder(message.payload.folderId)
+            is FolderMovedEventMessage -> updateEffectiveAuthenticationForFolder(message.payload.folderId)
         }
     }
 
-    fun handleParentFolderAuthenticationChanged(folderId: UUID) {
-        log.debug { "Folder $folderId authentication changed, update children " }
-        folderKrud.searchByFilter {
-            where {
-                Folder::parentFolderId Equal folderId
-                Folder::authenticationType Equal Authentication.Inherit.DEFAULT.type
-            }
-        }
-            .forEach { childFolder ->
-                log.debug { "Updating effective folder authentication for ${childFolder.id}" }
-                folderEffectiveAuthenticationCache.evict(childFolder.id)
-                systemEventsChannel.send(
-                    FolderAuthenticationChangedMessage(
-                        FolderAuthenticationChangedMessage.Payload(childFolder.id)
-                    )
-                )
-            }
-    }
-
-    fun handleFolderMoved(folderId: UUID) {
-        log.debug { "Folder $folderId moved, update children" }
+    fun updateEffectiveAuthenticationForFolder(folderId: UUID) {
+        log.debug { "Folder $folderId authentication changed, updating children " }
         folderKrud.searchByFilter {
             where {
                 Folder::parentFolderId Equal folderId
