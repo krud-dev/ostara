@@ -34,7 +34,7 @@ const InstanceCaches: FunctionComponent = () => {
   const actionsHandler = useCallback(async (actionId: string, row: EnrichedInstanceCacheRO): Promise<void> => {
     switch (actionId) {
       case STATISTICS_ID:
-        NiceModal.show<undefined>(CacheStatisticsDialog, {
+        await NiceModal.show<undefined>(CacheStatisticsDialog, {
           row: row,
         });
         break;

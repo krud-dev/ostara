@@ -3,7 +3,8 @@ import { COMPONENTS_SPACING } from 'renderer/constants/ui';
 import { FormattedMessage } from 'react-intl';
 import { useTable } from 'renderer/components/table/TableContext';
 import { IconViewer } from 'renderer/components/common/IconViewer';
-import React from 'react';
+import React, { useCallback } from 'react';
+import ToolbarButton from '../common/ToolbarButton';
 
 interface TableSelectedActionsProps extends StackProps {}
 
@@ -17,6 +18,21 @@ export default function TableSelectedActions({ sx, ...other }: TableSelectedActi
     selectAllRowsHandler,
     massActionsHandler,
   } = useTable();
+
+  const [loadingActionIds, setLoadingActionIds] = React.useState<string[]>([]);
+
+  const massActionClickHandler = useCallback(
+    async (event: React.MouseEvent, actionId: string): Promise<void> => {
+      event.stopPropagation();
+
+      setLoadingActionIds((prev) => [...prev, actionId]);
+
+      await massActionsHandler(actionId, selectedRows);
+
+      setLoadingActionIds((prev) => prev.filter((id) => id !== actionId));
+    },
+    [massActionsHandler, selectedRows, setLoadingActionIds]
+  );
 
   if (!hasSelectedRows) {
     return null;
@@ -58,13 +74,19 @@ export default function TableSelectedActions({ sx, ...other }: TableSelectedActi
         {selectedRows.length} <FormattedMessage id={'selected'} />
       </Typography>
 
-      {entity.massActions.map((action) => (
-        <Tooltip title={<FormattedMessage id={action.labelId} />} key={action.id}>
-          <IconButton color={'primary'} onClick={() => massActionsHandler(action.id, selectedRows)}>
-            <IconViewer icon={action.icon} fontSize={'small'} />
-          </IconButton>
-        </Tooltip>
-      ))}
+      {entity.massActions.map((action) => {
+        const disabled = loadingActionIds.includes(action.id);
+        return (
+          <ToolbarButton
+            tooltipLabelId={action.labelId}
+            icon={action.icon}
+            color={'primary'}
+            disabled={disabled}
+            onClick={(event) => massActionClickHandler(event, action.id)}
+            key={action.id}
+          />
+        );
+      })}
     </Stack>
   );
 }

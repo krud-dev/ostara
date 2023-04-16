@@ -27,7 +27,7 @@ const InstanceLoggers: FunctionComponent = () => {
   const actionsHandler = useCallback(async (actionId: string, row: EnrichedInstanceLoggerRO): Promise<void> => {
     switch (actionId) {
       case RESET_ID:
-        setLevelState.mutate({ instanceId: row.instanceId, loggerName: row.name, level: undefined });
+        await setLevelState.mutateAsync({ instanceId: row.instanceId, loggerName: row.name, level: undefined });
         break;
       default:
         break;

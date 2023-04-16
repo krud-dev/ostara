@@ -29,7 +29,7 @@ const InstanceEnvironment: FunctionComponent = () => {
   const actionsHandler = useCallback(async (actionId: string, row: EnvProperty): Promise<void> => {
     switch (actionId) {
       case COPY_ID:
-        copyToClipboard(getPropertyString(row));
+        await copyToClipboard(getPropertyString(row));
         break;
       default:
         break;
@@ -39,7 +39,7 @@ const InstanceEnvironment: FunctionComponent = () => {
   const massActionsHandler = useCallback(async (actionId: string, selectedRows: EnvProperty[]): Promise<void> => {
     switch (actionId) {
       case COPY_ID:
-        copyToClipboard(selectedRows.map(getPropertyString).join(', '));
+        await copyToClipboard(selectedRows.map(getPropertyString).join(', '));
         break;
       default:
         break;
