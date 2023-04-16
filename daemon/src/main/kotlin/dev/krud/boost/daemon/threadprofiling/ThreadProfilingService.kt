@@ -62,18 +62,23 @@ class ThreadProfilingService(
             val threadDumpRequest = actuatorClientProvider.provide(instance).threadDump()
             threadDumpRequest.onSuccess { threadDump ->
                 requests.forEach { request ->
-                    val threadLog = ThreadProfilingLog(request.id, threadDump.threads)
-                    threadProfilinLogKrud.create(threadLog)
-                    instanceThreadProfilingProgressChannel.send(
-                        ThreadProfilingProgressMessage(
-                            ThreadProfilingProgressMessage.Payload(
-                                request.id,
-                                instanceId,
-                                (request.finishTime.time - System.currentTimeMillis()) / 1000,
-                                ThreadProfilingStatus.RUNNING
+                    try {
+                        val threadLog = ThreadProfilingLog(request.id, threadDump.threads)
+                        threadProfilinLogKrud.create(threadLog)
+                        instanceThreadProfilingProgressChannel.send(
+                            ThreadProfilingProgressMessage(
+                                ThreadProfilingProgressMessage.Payload(
+                                    request.id,
+                                    instanceId,
+                                    (request.finishTime.time - System.currentTimeMillis()) / 1000,
+                                    ThreadProfilingStatus.RUNNING
+                                )
                             )
                         )
-                    )
+                    } catch (e: Exception) {
+                        log.info { "Error while creating thread profiling log for request ${request.id}, may have been deleted" }
+                    }
+
                 }
             }
 
