@@ -23,7 +23,7 @@ const ThreadLogProvider: FunctionComponent<ThreadLogProviderProps> = ({ children
   const setSearch = useDebounceFn(setSearchInternal, 250);
 
   const getId = useCallback((threadLog: ThreadLog): string => {
-    return `${threadLog.threadId}_${threadLog.creationTime}`;
+    return `${threadLog.threadId}_${threadLog.index}`;
   }, []);
 
   const toggleOpenHandler = useCallback(
