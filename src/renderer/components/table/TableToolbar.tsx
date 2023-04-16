@@ -1,7 +1,7 @@
 import { Stack } from '@mui/material';
 import { useTable } from 'renderer/components/table/TableContext';
 import SearchToolbar from '../common/SearchToolbar';
-import { useMemo } from 'react';
+import React, { useCallback, useMemo } from 'react';
 import ToolbarButton from '../common/ToolbarButton';
 
 type TableToolbarProps = {};
@@ -17,19 +17,38 @@ export default function TableToolbar({}: TableToolbarProps) {
     globalActionsHandler,
   } = useTable();
 
+  const [loadingActionIds, setLoadingActionIds] = React.useState<string[]>([]);
+
+  const globalActionClickHandler = useCallback(
+    async (event: React.MouseEvent, actionId: string): Promise<void> => {
+      event.stopPropagation();
+
+      setLoadingActionIds((prev) => [...prev, actionId]);
+
+      await globalActionsHandler(actionId);
+
+      setLoadingActionIds((prev) => prev.filter((id) => id !== actionId));
+    },
+    [globalActionsHandler, setLoadingActionIds]
+  );
+
   return (
     <SearchToolbar filter={filter} onFilterChange={changeFilterHandler}>
       {entity.CustomFiltersComponent && <entity.CustomFiltersComponent onChange={changeCustomFiltersHandler} />}
       <Stack direction={'row'} alignItems={'center'}>
         {hasGlobalActions &&
-          entity.globalActions.map((action) => (
-            <ToolbarButton
-              tooltipLabelId={action.labelId}
-              icon={action.icon}
-              onClick={() => globalActionsHandler(action.id)}
-              key={action.id}
-            />
-          ))}
+          entity.globalActions.map((action) => {
+            const disabled = loadingActionIds.includes(action.id);
+            return (
+              <ToolbarButton
+                tooltipLabelId={action.labelId}
+                icon={action.icon}
+                disabled={disabled}
+                onClick={(event) => globalActionClickHandler(event, action.id)}
+                key={action.id}
+              />
+            );
+          })}
 
         <ToolbarButton tooltipLabelId={'refresh'} icon={'RefreshOutlined'} onClick={refreshHandler} />
       </Stack>

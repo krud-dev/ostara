@@ -29,7 +29,7 @@ const InstanceSystemProperties: FunctionComponent = () => {
   const actionsHandler = useCallback(async (actionId: string, row: SystemProperty): Promise<void> => {
     switch (actionId) {
       case COPY_ID:
-        copyToClipboard(getPropertyString(row));
+        await copyToClipboard(getPropertyString(row));
         break;
       default:
         break;

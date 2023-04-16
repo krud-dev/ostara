@@ -25,6 +25,8 @@ export default function TableRowCustom<EntityItem>({ row }: TableRowCustomProps<
     actionsHandler,
   } = useTable<EntityItem, unknown>();
 
+  const [loadingActionIds, setLoadingActionIds] = React.useState<string[]>([]);
+
   const selected = useMemo<boolean>(() => isRowSelected(row), [row, selectedRows, isRowSelected]);
   const open = useMemo<boolean>(() => isRowOpen(row), [row, openRows, isRowOpen]);
   const hasDetailsRowAction = useMemo<boolean>(() => entity.rowAction?.type === 'Details', [entity]);
@@ -50,11 +52,16 @@ export default function TableRowCustom<EntityItem>({ row }: TableRowCustomProps<
   );
 
   const actionClickHandler = useCallback(
-    (event: React.MouseEvent, actionId: string): void => {
+    async (event: React.MouseEvent, actionId: string): Promise<void> => {
       event.stopPropagation();
-      actionsHandler(actionId, row);
+
+      setLoadingActionIds((prev) => [...prev, actionId]);
+
+      await actionsHandler(actionId, row);
+
+      setLoadingActionIds((prev) => prev.filter((id) => id !== actionId));
     },
-    [actionsHandler]
+    [actionsHandler, setLoadingActionIds]
   );
 
   return (
@@ -105,7 +112,7 @@ export default function TableRowCustom<EntityItem>({ row }: TableRowCustomProps<
         {hasActions && (
           <TableCell align="right" sx={{ whiteSpace: 'nowrap' }}>
             {entity.actions.map((action) => {
-              const disabled = action.isDisabled?.(row);
+              const disabled = action.isDisabled?.(row) || loadingActionIds.includes(action.id);
               return (
                 <ToolbarButton
                   tooltipLabelId={action.labelId}
