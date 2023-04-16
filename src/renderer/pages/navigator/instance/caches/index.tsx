@@ -18,7 +18,7 @@ import { InstanceRO } from '../../../../../common/generated_definitions';
 import { useEvictInstanceCache } from '../../../../apis/requests/instance/caches/evictInstanceCache';
 import NiceModal from '@ebay/nice-modal-react';
 import QuartzTriggerDetailsDialog from '../quartz/components/QuartzTriggerDetailsDialog';
-import CacheStatisticsDialog from './components/CacheStatisticsDialog';
+import InstanceCacheStatisticsDialog from './components/InstanceCacheStatisticsDialog';
 
 const InstanceCaches: FunctionComponent = () => {
   const { selectedItem } = useNavigatorTree();
@@ -34,7 +34,7 @@ const InstanceCaches: FunctionComponent = () => {
   const actionsHandler = useCallback(async (actionId: string, row: EnrichedInstanceCacheRO): Promise<void> => {
     switch (actionId) {
       case STATISTICS_ID:
-        await NiceModal.show<undefined>(CacheStatisticsDialog, {
+        await NiceModal.show<undefined>(InstanceCacheStatisticsDialog, {
           row: row,
         });
         break;
