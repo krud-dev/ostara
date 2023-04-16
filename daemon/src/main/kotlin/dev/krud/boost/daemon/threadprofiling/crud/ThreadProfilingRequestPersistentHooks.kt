@@ -36,9 +36,6 @@ class ThreadProfilingRequestPersistentHooks(
     }
 
     override fun onDelete(entity: ThreadProfilingRequest) {
-        if (entity.status != ThreadProfilingStatus.FINISHED) {
-            throwBadRequest("Cannot delete profiling request that is not finished")
-        }
         threadProfilingLogKrud.deleteByFilter {
             where {
                 ThreadProfilingLog::requestId Equal entity.id
