@@ -314,4 +314,9 @@ export default {
   heapdumpNotReady: 'Heapdump not ready',
   profilingRequestNotFinished: 'Profiling request not finished',
   whatsNew: "What's New?",
+  allowErrorReporting: 'Allow Error Reporting',
+  allowErrorReportingDescription:
+    'Allow the app to anonymously collect exceptions and crash reports. The data collected is used to improve the app and will not be shared with anyone.',
+  restartAppChangesTakeAffect: '{restart} the app to apply changes.',
+  restart: 'Restart',
 };

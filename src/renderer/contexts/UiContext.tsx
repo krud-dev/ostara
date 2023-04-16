@@ -18,6 +18,7 @@ import { useGetTheme } from 'renderer/apis/requests/ui/getTheme';
 import { useLocalStorageState } from '../hooks/useLocalStorageState';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { urls } from '../routes/urls';
+import { useUpdateEffect } from 'react-use';
 
 export type UiContextProps = {
   developerMode: boolean;
@@ -31,6 +32,9 @@ export type UiContextProps = {
   isRtl: boolean;
   analyticsEnabled: boolean;
   setAnalyticsEnabled: (analyticsEnabled: boolean) => void;
+  errorReportingEnabled: boolean;
+  errorReportingChanged: boolean;
+  setErrorReportingEnabled: (errorReportingEnabled: boolean) => void;
 };
 
 const UiContext = React.createContext<UiContextProps>(undefined!);
@@ -54,6 +58,17 @@ const UiProvider: FunctionComponent<UiProviderProps> = ({ children }) => {
   const isRtl = useMemo<boolean>(() => localeInfo.direction === 'rtl', [localeInfo]);
 
   const [analyticsEnabled, setAnalyticsEnabled] = useLocalStorageState<boolean>('analyticsEnabled', true);
+
+  const errorReportingInitialState = useMemo<boolean>(() => window.configurationStore.isErrorReportingEnabled(), []);
+  const [errorReportingEnabled, setErrorReportingEnabled] = useState<boolean>(errorReportingInitialState);
+  const errorReportingChanged = useMemo<boolean>(
+    () => errorReportingEnabled !== errorReportingInitialState,
+    [errorReportingEnabled]
+  );
+
+  useUpdateEffect(() => {
+    window.configurationStore.setErrorReportingEnabled(errorReportingEnabled);
+  }, [errorReportingEnabled]);
 
   useEffect(() => {
     const newPathname = daemonHealthy ? urls.home.url : urls.daemonUnhealthy.url;
@@ -168,6 +183,9 @@ const UiProvider: FunctionComponent<UiProviderProps> = ({ children }) => {
         isRtl,
         analyticsEnabled,
         setAnalyticsEnabled,
+        errorReportingEnabled,
+        errorReportingChanged,
+        setErrorReportingEnabled,
       }}
     >
       {children}
