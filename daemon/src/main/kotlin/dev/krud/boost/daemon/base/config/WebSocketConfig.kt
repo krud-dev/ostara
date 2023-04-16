@@ -3,6 +3,7 @@ package dev.krud.boost.daemon.base.config
 import dev.krud.boost.daemon.configuration.application.websocket.ApplicationHealthWebsocketDispatcher
 import dev.krud.boost.daemon.configuration.instance.heapdump.websocket.InstanceHeapdumpWebsocketDispatcher
 import dev.krud.boost.daemon.configuration.instance.metric.InstanceMetricWebsocketTopicInterceptor
+import dev.krud.boost.daemon.configuration.instance.websocket.InstanceAbilityWebsocketDispatcher
 import dev.krud.boost.daemon.configuration.instance.websocket.InstanceHealthWebsocketDispatcher
 import dev.krud.boost.daemon.configuration.instance.websocket.InstanceHostnameWebsocketDispatcher
 import dev.krud.boost.daemon.threadprofiling.websocket.ThreadProfilingWebsocketDispatcher
@@ -78,6 +79,14 @@ class WebSocketConfig : WebSocketMessageBrokerConfigurer {
             destination = ThreadProfilingWebsocketDispatcher.THREAD_PROFILING_PROGRESS_TOPIC,
             callback = { message, headerAccessor ->
                 threadProfilingWebsocketDispatcher.replay(headerAccessor.sessionId!!)
+            }
+        )
+
+        @Bean
+        fun instanceAbilityReplayingInterceptor(instanceAbilityWebsocketDispatcher: InstanceAbilityWebsocketDispatcher) = SubscriptionInterceptor(
+            destination = InstanceAbilityWebsocketDispatcher.INSTANCE_ABILITY_TOPIC,
+            callback = { message, headerAccessor ->
+                instanceAbilityWebsocketDispatcher.replay(headerAccessor.sessionId!!)
             }
         )
     }
