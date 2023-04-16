@@ -28,7 +28,7 @@ export default function ThreadLogDetails({ threadLog, sx }: ThreadLogDetailsProp
     <Card variant={'outlined'} sx={{ ...sx }}>
       <CardContent sx={{ minWidth: 400, position: 'relative' }}>
         <ToolbarButton
-          tooltipLabelId={'close'}
+          tooltip={<FormattedMessage id={'close'} />}
           icon={'CloseOutlined'}
           onClick={closeHandler}
           sx={{ position: 'absolute', top: (theme) => theme.spacing(1), right: (theme) => theme.spacing(1) }}
@@ -48,7 +48,10 @@ export default function ThreadLogDetails({ threadLog, sx }: ThreadLogDetailsProp
           <DetailsLabelValueVertical label={<FormattedMessage id={'waitedTime'} />} value={threadLog.waitedTime} />
           <DetailsLabelValueVertical label={<FormattedMessage id={'lockName'} />} value={threadLog.lockName} />
           <DetailsLabelValueVertical label={<FormattedMessage id={'lockOwnerId'} />} value={threadLog.lockOwnerId} />
-          <DetailsLabelValueVertical label={<FormattedMessage id={'lockOwnerName'} />} value={threadLog.lockOwnerName} />
+          <DetailsLabelValueVertical
+            label={<FormattedMessage id={'lockOwnerName'} />}
+            value={threadLog.lockOwnerName}
+          />
         </Stack>
 
         {showStackTrace && (

@@ -78,7 +78,7 @@ export default function TableSelectedActions({ sx, ...other }: TableSelectedActi
         const disabled = loadingActionIds.includes(action.id);
         return (
           <ToolbarButton
-            tooltipLabelId={action.labelId}
+            tooltip={<FormattedMessage id={action.labelId} />}
             icon={action.icon}
             color={'primary'}
             disabled={disabled}

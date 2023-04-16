@@ -6,6 +6,8 @@ import TableCellData from 'renderer/components/table/data/TableCellData';
 import TableRowAction from 'renderer/components/table/action/TableRowAction';
 import { alpha } from '@mui/material/styles';
 import ToolbarButton from '../common/ToolbarButton';
+import { FormattedMessage } from 'react-intl';
+import { isBoolean } from 'lodash';
 
 type TableRowCustomProps<EntityItem> = {
   row: EntityItem;
@@ -89,7 +91,7 @@ export default function TableRowCustom<EntityItem>({ row }: TableRowCustomProps<
         {hasDetailsRowAction && (
           <TableCell sx={{ pr: 0 }}>
             <ToolbarButton
-              tooltipLabelId={open ? 'collapseDetails' : 'expandDetails'}
+              tooltip={<FormattedMessage id={open ? 'collapseDetails' : 'expandDetails'} />}
               icon={open ? 'KeyboardArrowDown' : 'KeyboardArrowRight'}
               disabled={!hasActiveRowAction}
             />
@@ -112,12 +114,14 @@ export default function TableRowCustom<EntityItem>({ row }: TableRowCustomProps<
         {hasActions && (
           <TableCell align="right" sx={{ whiteSpace: 'nowrap' }}>
             {entity.actions.map((action) => {
-              const disabled = action.isDisabled?.(row) || loadingActionIds.includes(action.id);
+              const disabled = action.isDisabled?.(row);
+              const loading = loadingActionIds.includes(action.id);
+              const tooltip = !disabled || isBoolean(disabled) ? <FormattedMessage id={action.labelId} /> : disabled;
               return (
                 <ToolbarButton
-                  tooltipLabelId={action.labelId}
+                  tooltip={tooltip}
                   icon={action.icon}
-                  disabled={disabled}
+                  disabled={!!disabled || loading}
                   onClick={(event) => actionClickHandler(event, action.id)}
                   key={action.id}
                 />

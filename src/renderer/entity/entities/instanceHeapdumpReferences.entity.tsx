@@ -72,7 +72,12 @@ export const instanceHeapdumpReferencesEntity: Entity<EnrichedInstanceHeapdumpRe
       id: DOWNLOAD_ID,
       labelId: 'download',
       icon: 'DownloadOutlined',
-      isDisabled: (item) => item.status !== 'READY',
+      isDisabled: (item) => {
+        if (item.status !== 'READY') {
+          return <FormattedMessage id={'heapdumpNotReady'} />;
+        }
+        return false;
+      },
     },
     {
       id: DELETE_ID,

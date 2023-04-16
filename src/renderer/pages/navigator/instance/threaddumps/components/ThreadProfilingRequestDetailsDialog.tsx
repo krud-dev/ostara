@@ -91,7 +91,7 @@ const ThreadProfilingRequestDetailsDialog: FunctionComponent<
             <DialogContent sx={{ overflow: 'hidden', pb: 2 }}>
               <SearchToolbar onFilterChange={setSearch} sx={{ p: 0 }}>
                 <ToolbarButton
-                  tooltipLabelId={'collapseAll'}
+                  tooltip={<FormattedMessage id={'collapseAll'} />}
                   icon={'UnfoldLessDoubleOutlined'}
                   onClick={closeAllHandler}
                 />

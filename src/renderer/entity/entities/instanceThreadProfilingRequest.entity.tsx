@@ -54,7 +54,12 @@ export const instanceThreadProfilingRequestEntity: Entity<EnrichedThreadProfilin
       id: VIEW_ID,
       labelId: 'viewDetails',
       icon: 'ManageSearchOutlined',
-      isDisabled: (item) => item.status !== 'FINISHED',
+      isDisabled: (item) => {
+        if (item.status !== 'FINISHED') {
+          return <FormattedMessage id={'profilingRequestNotFinished'} />;
+        }
+        return false;
+      },
     },
     {
       id: DELETE_ID,

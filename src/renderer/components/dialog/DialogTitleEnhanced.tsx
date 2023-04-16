@@ -3,6 +3,7 @@ import { Box, DialogTitle, Stack } from '@mui/material';
 import { SxProps } from '@mui/system';
 import { Theme } from '@mui/material/styles';
 import ToolbarButton, { ToolbarButtonProps } from '../common/ToolbarButton';
+import { FormattedMessage } from 'react-intl';
 
 interface IProps extends PropsWithChildren<any> {
   disabled?: boolean;
@@ -22,7 +23,12 @@ const DialogTitleEnhanced: FunctionComponent<IProps> = ({ disabled, buttons, onC
             return <ToolbarButton {...action} disabled={actionDisabledAggregated} key={key} />;
           })}
           {onClose ? (
-            <ToolbarButton tooltipLabelId={'close'} icon={'CloseOutlined'} disabled={disabled} onClick={onClose} />
+            <ToolbarButton
+              tooltip={<FormattedMessage id={'close'} />}
+              icon={'CloseOutlined'}
+              disabled={disabled}
+              onClick={onClose}
+            />
           ) : null}
         </Stack>
 
