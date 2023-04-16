@@ -35,7 +35,7 @@ const ItemCacheStatisticsDialog: FunctionComponent<ItemCacheStatisticsDialogProp
     () => [
       {
         icon: 'RefreshOutlined',
-        tooltipLabelId: 'refresh',
+        tooltip: <FormattedMessage id={'refresh'} />,
         disabled: queryState.isLoading,
         onClick: refreshHandler,
       },

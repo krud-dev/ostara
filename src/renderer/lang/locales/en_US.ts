@@ -309,4 +309,8 @@ export default {
   statistics: 'Statistics',
   remaining: 'Remaining',
   appVersion: 'App Version',
+  readMore: 'Read More',
+  cacheStatisticsNotAvailable: 'Cache statistics not available',
+  heapdumpNotReady: 'Heapdump not ready',
+  profilingRequestNotFinished: 'Profiling request not finished',
 };

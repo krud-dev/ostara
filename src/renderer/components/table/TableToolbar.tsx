@@ -3,6 +3,7 @@ import { useTable } from 'renderer/components/table/TableContext';
 import SearchToolbar from '../common/SearchToolbar';
 import React, { useCallback, useMemo } from 'react';
 import ToolbarButton from '../common/ToolbarButton';
+import { FormattedMessage } from 'react-intl';
 
 type TableToolbarProps = {};
 
@@ -41,7 +42,7 @@ export default function TableToolbar({}: TableToolbarProps) {
             const disabled = loadingActionIds.includes(action.id);
             return (
               <ToolbarButton
-                tooltipLabelId={action.labelId}
+                tooltip={<FormattedMessage id={action.labelId} />}
                 icon={action.icon}
                 disabled={disabled}
                 onClick={(event) => globalActionClickHandler(event, action.id)}
@@ -50,7 +51,11 @@ export default function TableToolbar({}: TableToolbarProps) {
             );
           })}
 
-        <ToolbarButton tooltipLabelId={'refresh'} icon={'RefreshOutlined'} onClick={refreshHandler} />
+        <ToolbarButton
+          tooltip={<FormattedMessage id={'refresh'} />}
+          icon={'RefreshOutlined'}
+          onClick={refreshHandler}
+        />
       </Stack>
     </SearchToolbar>
   );

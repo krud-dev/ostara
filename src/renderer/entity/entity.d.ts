@@ -112,7 +112,7 @@ export type EntityActionBase = {
 };
 
 export type EntityAction<EntityItem> = EntityActionBase & {
-  isDisabled?: (item: EntityItem) => boolean;
+  isDisabled?: (item: EntityItem) => boolean | ReactNode;
 };
 
 export type EntityActionMass = EntityActionBase;

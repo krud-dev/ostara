@@ -55,7 +55,7 @@ export default function TableHeadCustom({ sx }: TableHeadCustomProps) {
         {hasDetailsRowAction && (
           <TableCell sx={{ width: '1%!important', pr: 0 }}>
             <ToolbarButton
-              tooltipLabelId={'collapseAll'}
+              tooltip={<FormattedMessage id={'collapseAll'} />}
               icon={'UnfoldLessDoubleOutlined'}
               onClick={closeAllRowsHandler}
             />
