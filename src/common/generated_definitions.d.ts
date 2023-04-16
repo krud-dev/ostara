@@ -418,7 +418,20 @@ export interface InstanceHeapdumpDownloadProgressMessage$Payload {
     error?: string;
 }
 
+export interface InstanceAbilitiesRefreshedEventMessage$Payload {
+    parentApplicationId: string;
+    instanceId: string;
+    abilities: InstanceAbility[];
+}
+
 export interface InstanceHealthChangedEventMessage$Payload {
+    parentApplicationId: string;
+    instanceId: string;
+    oldHealth: InstanceHealthRO;
+    newHealth: InstanceHealthRO;
+}
+
+export interface InstanceHealthCheckPerformedEventMessage$Payload {
     parentApplicationId: string;
     instanceId: string;
     oldHealth: InstanceHealthRO;

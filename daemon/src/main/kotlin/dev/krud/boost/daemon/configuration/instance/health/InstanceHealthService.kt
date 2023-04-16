@@ -9,6 +9,7 @@ import dev.krud.boost.daemon.configuration.instance.health.ro.InstanceHealthRO
 import dev.krud.boost.daemon.configuration.instance.health.ro.InstanceHealthRO.Companion.isStale
 import dev.krud.boost.daemon.configuration.instance.messaging.InstanceCreatedEventMessage
 import dev.krud.boost.daemon.configuration.instance.messaging.InstanceHealthChangedEventMessage
+import dev.krud.boost.daemon.configuration.instance.messaging.InstanceHealthCheckPerformedEventMessage
 import dev.krud.boost.daemon.configuration.instance.messaging.InstanceUpdatedEventMessage
 import dev.krud.boost.daemon.utils.resolve
 import io.github.oshai.KotlinLogging
@@ -87,6 +88,17 @@ class InstanceHealthService(
                 )
             )
         }
+
+        systemEventsChannel.send(
+            InstanceHealthCheckPerformedEventMessage(
+                InstanceHealthCheckPerformedEventMessage.Payload(
+                    instance.parentApplicationId,
+                    instance.id,
+                    prevHealth ?: InstanceHealthRO.unknown(instance.id),
+                    currentHealth
+                )
+            )
+        )
 
         instanceHealthCache.put(instance.id, currentHealth)
         return currentHealth
