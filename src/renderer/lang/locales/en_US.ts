@@ -308,4 +308,5 @@ export default {
   showStatistics: 'Show Statistics',
   statistics: 'Statistics',
   remaining: 'Remaining',
+  appVersion: 'App Version',
 };

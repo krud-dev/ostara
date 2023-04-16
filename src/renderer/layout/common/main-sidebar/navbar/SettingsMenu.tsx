@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import { Box, Divider, Drawer, IconButton, MenuItem, Stack, TextField, Typography } from '@mui/material';
 import { useUi } from 'renderer/contexts/UiContext';
 import { FormattedMessage } from 'react-intl';
@@ -35,6 +35,8 @@ export default function SettingsMenu() {
       unsubscribe?.();
     };
   }, []);
+
+  const appVersion = useMemo<string>(() => window.appVersion, []);
 
   return (
     <>
@@ -113,6 +115,14 @@ export default function SettingsMenu() {
                     <FormattedMessage id="no" />
                   </MenuItem>
                 </TextField>
+
+                <TextField
+                  fullWidth
+                  label={<FormattedMessage id="appVersion" />}
+                  margin="normal"
+                  value={appVersion}
+                  inputProps={{ readOnly: true }}
+                />
               </Stack>
             </PerfectScrollbar>
           </Box>
