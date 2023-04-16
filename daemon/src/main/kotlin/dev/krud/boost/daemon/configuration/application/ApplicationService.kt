@@ -61,6 +61,23 @@ class ApplicationService(
         }
     }
 
+    fun getAbilities(applicationId: UUID): Set<InstanceAbility> {
+        log.debug { "Getting abilities for application $applicationId" }
+        val application = getApplicationOrThrow(applicationId)
+        return getApplicationInstances(applicationId).flatMap { instance ->
+            instanceAbilityService.getAbilities(instance)
+        }
+            .filter {
+                it in ALLOWED_INSTANCE_ABILITIES_FOR_APP
+            }
+            .toSet()
+            .apply {
+                log.debug {
+                    "Application $applicationId has abilities $this"
+                }
+            }
+    }
+
     fun hasAbilityOrThrow(application: Application, vararg abilities: InstanceAbility) {
         if (!hasAbility(application, *abilities)) {
             throwBadRequest("Application ${application.id} does not have one or more abilities '${abilities.joinToString(", ")}'")
@@ -83,5 +100,10 @@ class ApplicationService(
 
     companion object {
         private val log = KotlinLogging.logger { }
+        private val ALLOWED_INSTANCE_ABILITIES_FOR_APP: Set<InstanceAbility> = setOf(
+            InstanceAbility.CACHES,
+            InstanceAbility.CACHE_STATISTICS,
+            InstanceAbility.LOGGERS
+        )
     }
 }
