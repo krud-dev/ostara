@@ -6,7 +6,6 @@ import dev.krud.boost.daemon.configuration.folder.messaging.FolderMovedEventMess
 import dev.krud.boost.daemon.configuration.folder.stubFolder
 import dev.krud.boost.daemon.test.TestKrud
 import dev.krud.crudframework.crud.handler.krud.Krud
-import kotlinx.coroutines.NonCancellable.children
 import org.junit.jupiter.api.Test
 import org.mockito.kotlin.argumentCaptor
 import org.mockito.kotlin.mock
@@ -24,7 +23,6 @@ class FolderParentAuthenticationChangedListenerTest {
     private val cacheManager = ConcurrentMapCacheManager("folderEffectiveAuthenticationCache")
     private val folderEffectiveAuthenticationCache = cacheManager.getCache("folderEffectiveAuthenticationCache")!!
     val listener = FolderParentAuthenticationChangedListener(folderKrud, systemEventsChannel, cacheManager)
-
 
     @Test
     fun `onMessage FolderAuthenticationChangedMessage should cascade authentication change to child folders`() {
@@ -85,4 +83,3 @@ class FolderParentAuthenticationChangedListenerTest {
             .isNull()
     }
 }
-
