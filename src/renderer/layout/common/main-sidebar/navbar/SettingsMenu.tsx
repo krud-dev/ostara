@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
-import { Box, Divider, Drawer, IconButton, MenuItem, Stack, TextField, Typography } from '@mui/material';
+import { Alert, Box, Divider, Drawer, IconButton, Link, MenuItem, Stack, TextField, Typography } from '@mui/material';
 import { useUi } from 'renderer/contexts/UiContext';
 import { FormattedMessage } from 'react-intl';
 import { CloseOutlined, SettingsOutlined } from '@mui/icons-material';
@@ -9,14 +9,30 @@ import { COMPONENTS_SPACING, NAVBAR_HEIGHT } from '../../../../constants/ui';
 import { ThemeSource } from '../../../../../infra/ui/models/electronTheme';
 import { useSubscribeToEvent } from '../../../../apis/requests/subscriptions/subscribeToEvent';
 import { IpcRendererEvent } from 'electron';
+import { useRestartApp } from '../../../../apis/requests/ui/restartApp';
 
 export default function SettingsMenu() {
-  const { themeSource, setThemeSource, analyticsEnabled, setAnalyticsEnabled } = useUi();
+  const {
+    themeSource,
+    setThemeSource,
+    analyticsEnabled,
+    setAnalyticsEnabled,
+    errorReportingEnabled,
+    errorReportingChanged,
+    setErrorReportingEnabled,
+  } = useUi();
 
   const [open, setOpen] = useState<boolean>(false);
 
   const toggleOpenHandler = useCallback((): void => {
     setOpen((prev) => !prev);
+  }, []);
+
+  const restartAppState = useRestartApp();
+
+  const restartAppHandler = useCallback((event: React.MouseEvent): void => {
+    event.preventDefault();
+    restartAppState.mutate({});
   }, []);
 
   const subscribeToTriggerEventsState = useSubscribeToEvent();
@@ -115,6 +131,38 @@ export default function SettingsMenu() {
                     <FormattedMessage id="no" />
                   </MenuItem>
                 </TextField>
+
+                <TextField
+                  fullWidth
+                  label={<FormattedMessage id="allowErrorReporting" />}
+                  margin="normal"
+                  select
+                  value={errorReportingEnabled}
+                  onChange={(e) => setErrorReportingEnabled(e.target.value === 'true')}
+                  helperText={<FormattedMessage id="allowErrorReportingDescription" />}
+                >
+                  <MenuItem value={'true'}>
+                    <FormattedMessage id="yes" />
+                  </MenuItem>
+                  <MenuItem value={'false'}>
+                    <FormattedMessage id="no" />
+                  </MenuItem>
+                </TextField>
+
+                {errorReportingChanged && (
+                  <Alert severity={'info'} variant={'outlined'}>
+                    <FormattedMessage
+                      id="restartAppChangesTakeAffect"
+                      values={{
+                        restart: (
+                          <Link href={'#'} color={'info.main'} onClick={restartAppHandler}>
+                            <FormattedMessage id={'restart'} />
+                          </Link>
+                        ),
+                      }}
+                    />
+                  </Alert>
+                )}
 
                 <TextField
                   fullWidth

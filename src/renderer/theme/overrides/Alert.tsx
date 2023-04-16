@@ -21,7 +21,7 @@ export default function Alert(theme: Theme): Components {
   const outlinedStyle = (color: ColorSchema) => ({
     color: theme.palette[color][isLight ? 'darker' : 'lighter'],
     border: `solid 1px ${theme.palette[color][isLight ? 'light' : 'dark']}`,
-    backgroundColor: theme.palette[color][isLight ? 'lighter' : 'darker'],
+    backgroundColor: 'transparent',
     '& .MuiAlert-icon': {
       color: theme.palette[color][isLight ? 'main' : 'light'],
     },
