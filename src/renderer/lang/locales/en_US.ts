@@ -230,7 +230,7 @@ export default {
   durationSeconds: 'Duration (seconds)',
   logs: 'Logs',
   status: 'Status',
-  threadDumpRequestedSuccessfully: 'Thread dump requested successfully',
+  threadProfilingInitiated: 'Thread profiling initiated',
   threadDumpDetails: 'Thread Dump Details',
   viewDetails: 'View Details',
   threadId: 'Thread ID',

@@ -95,7 +95,7 @@ const InstanceThreadProfiling: FunctionComponent = () => {
             request: { instanceId: item.id, durationSec: 60 },
           });
           if (result) {
-            enqueueSnackbar(<FormattedMessage id="threadDumpRequestedSuccessfully" />, { variant: 'success' });
+            enqueueSnackbar(<FormattedMessage id="threadProfilingInitiated" />, { variant: 'success' });
           }
         } catch (e) {}
         break;
