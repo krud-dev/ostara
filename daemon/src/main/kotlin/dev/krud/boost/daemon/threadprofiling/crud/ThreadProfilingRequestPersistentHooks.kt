@@ -1,8 +1,6 @@
 package dev.krud.boost.daemon.threadprofiling.crud
 
 import dev.krud.boost.daemon.configuration.instance.InstanceService
-import dev.krud.boost.daemon.exception.throwBadRequest
-import dev.krud.boost.daemon.threadprofiling.enums.ThreadProfilingStatus
 import dev.krud.boost.daemon.threadprofiling.model.ThreadProfilingLog
 import dev.krud.boost.daemon.threadprofiling.model.ThreadProfilingRequest
 import dev.krud.boost.daemon.threadprofiling.ro.ThreadProfilingRequestCreateRO

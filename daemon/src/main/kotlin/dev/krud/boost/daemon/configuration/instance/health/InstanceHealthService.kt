@@ -39,7 +39,7 @@ class InstanceHealthService(
     private val dispatcher = newFixedThreadPoolContext(4, "instance-health-checker")
 
     override fun destroy() {
-        log.debug { "Shutting down dispatcher"}
+        log.debug { "Shutting down dispatcher" }
         dispatcher.close()
     }
 

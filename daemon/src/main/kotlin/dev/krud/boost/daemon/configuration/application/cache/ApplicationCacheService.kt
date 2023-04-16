@@ -58,7 +58,7 @@ class ApplicationCacheService(
     }
 
     fun evictAllCaches(applicationId: UUID) {
-        log.debug { "Evicting all caches for application $applicationId"}
+        log.debug { "Evicting all caches for application $applicationId" }
         val application = applicationService.getApplicationOrThrow(applicationId)
         applicationService.hasAbilityOrThrow(application, InstanceAbility.CACHES)
         applicationService.getApplicationInstances(application.id).forEach { instance ->
@@ -72,7 +72,7 @@ class ApplicationCacheService(
     }
 
     fun evictCaches(applicationId: UUID, request: EvictCachesRequestRO): EvictApplicationCachesResultRO {
-        log.debug { "Evicting caches ${request.cacheNames.joinToString()} for application $applicationId"}
+        log.debug { "Evicting caches ${request.cacheNames.joinToString()} for application $applicationId" }
         val application = applicationService.getApplicationOrThrow(applicationId)
         applicationService.hasAbilityOrThrow(application, InstanceAbility.CACHES)
 
@@ -86,7 +86,7 @@ class ApplicationCacheService(
     }
 
     fun evictCache(applicationId: UUID, cacheName: String) {
-        log.debug { "Evicting cache $cacheName for application $applicationId"}
+        log.debug { "Evicting cache $cacheName for application $applicationId" }
         val application = applicationService.getApplicationOrThrow(applicationId)
         applicationService.hasAbilityOrThrow(application, InstanceAbility.CACHES)
         applicationService.getApplicationInstances(application.id).forEach { instance ->

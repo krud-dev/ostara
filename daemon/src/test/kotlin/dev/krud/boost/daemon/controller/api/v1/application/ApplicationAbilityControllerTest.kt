@@ -2,8 +2,6 @@ package dev.krud.boost.daemon.controller.api.v1.application
 
 import dev.krud.boost.daemon.configuration.application.ApplicationService
 import dev.krud.boost.daemon.configuration.instance.enums.InstanceAbility
-import dev.krud.boost.daemon.configuration.instance.metric.ro.InstanceMetricRO
-import dev.krud.boost.daemon.configuration.instance.metric.ro.InstanceMetricValueRO
 import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.Test
 import org.mockito.kotlin.whenever
@@ -46,6 +44,4 @@ class ApplicationAbilityControllerTest {
             .andExpect(MockMvcResultMatchers.jsonPath("\$[0]").value("CACHES"))
             .andExpect(MockMvcResultMatchers.jsonPath("\$[1]").value("LOGGERS"))
     }
-
-
 }

@@ -50,14 +50,13 @@ class ApplicationHealthService(
             log.debug { "Application ${application.id} has no instances, returning empty health" }
             return ApplicationHealthRO.empty(application.id)
         }
-        log.trace { "Fetching instances for application ${application.id}"}
+        log.trace { "Fetching instances for application ${application.id}" }
         val instances = applicationService.getApplicationInstances(application.id)
-        log.trace { "Got ${instances.size} instances for application ${application.id}}"}
+        log.trace { "Got ${instances.size} instances for application ${application.id}}" }
         val healthStatus = instances
             .map { instanceHealthService.getCachedHealth(it.id).status }
             .toSet()
             .toApplicationHealthStatus()
-
 
         return ApplicationHealthRO(
             application.id,

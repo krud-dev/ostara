@@ -81,5 +81,4 @@ class SubscriptionInterceptorTest {
         )
         return GenericMessage("somePayload", accessor.messageHeaders)
     }
-
 }

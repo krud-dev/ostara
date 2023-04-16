@@ -78,10 +78,8 @@ class ThreadProfilingService(
                     } catch (e: Exception) {
                         log.info { "Error while creating thread profiling log for request ${request.id}, may have been deleted" }
                     }
-
                 }
             }
-
         }
     }
 

@@ -39,29 +39,34 @@ class ApplicationServiceTest {
             stubInstance(parentApplicationId = application.id)
         )
 
-        whenever(instanceAbilityService.getAbilities(firstChild)).thenReturn(setOf(
-            InstanceAbility.CACHES,
-            InstanceAbility.CACHE_STATISTICS,
-            InstanceAbility.HEALTH,
-            InstanceAbility.METRICS,
-            InstanceAbility.SHUTDOWN
-        ))
+        whenever(instanceAbilityService.getAbilities(firstChild)).thenReturn(
+            setOf(
+                InstanceAbility.CACHES,
+                InstanceAbility.CACHE_STATISTICS,
+                InstanceAbility.HEALTH,
+                InstanceAbility.METRICS,
+                InstanceAbility.SHUTDOWN
+            )
+        )
 
-        whenever(instanceAbilityService.getAbilities(secondChild)).thenReturn(setOf(
-            InstanceAbility.LOGGERS,
-            InstanceAbility.METRICS,
-            InstanceAbility.SHUTDOWN
-        ))
+        whenever(instanceAbilityService.getAbilities(secondChild)).thenReturn(
+            setOf(
+                InstanceAbility.LOGGERS,
+                InstanceAbility.METRICS,
+                InstanceAbility.SHUTDOWN
+            )
+        )
 
         val abilities = applicationService.getAbilities(
             application.id
         )
 
-        expectThat(abilities).isEqualTo(setOf(
-            InstanceAbility.CACHES,
-            InstanceAbility.CACHE_STATISTICS,
-            InstanceAbility.LOGGERS
-        ))
-
+        expectThat(abilities).isEqualTo(
+            setOf(
+                InstanceAbility.CACHES,
+                InstanceAbility.CACHE_STATISTICS,
+                InstanceAbility.LOGGERS
+            )
+        )
     }
 }

@@ -14,7 +14,7 @@ class FolderAuthenticationService(
 ) {
     @Cacheable(cacheNames = ["folderEffectiveAuthenticationCache"], key = "#folderId")
     fun getEffectiveAuthentication(folderId: UUID): EffectiveAuthentication {
-        log.debug { "Getting effective authentication for folder $folderId"}
+        log.debug { "Getting effective authentication for folder $folderId" }
         val folder = folderService.getFolderOrThrow(folderId)
         if (folder.authentication !is Authentication.Inherit) {
             val effectiveAuthentication = EffectiveAuthentication(folder.authentication, EffectiveAuthentication.SourceType.FOLDER, folderId)

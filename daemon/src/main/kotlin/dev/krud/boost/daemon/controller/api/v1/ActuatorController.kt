@@ -393,7 +393,6 @@ class ActuatorController(
     @ApiResponse(responseCode = "503", description = "Service unavailable", content = [Content()])
     fun quartzTrigger(@RequestParam instanceId: UUID, @PathVariable group: String, @PathVariable name: String) = getClient(instanceId).quartzTrigger(group, name).getOrThrow()
 
-
     private fun getClient(instanceId: UUID): ActuatorHttpClient {
         val instance = instanceService.getInstanceFromCacheOrThrow(instanceId)
         return actuatorClientProvider.provide(instance)

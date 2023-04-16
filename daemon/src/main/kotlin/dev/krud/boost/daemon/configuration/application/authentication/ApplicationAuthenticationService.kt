@@ -17,7 +17,7 @@ class ApplicationAuthenticationService(
 ) {
     @Cacheable(cacheNames = ["applicationEffectiveAuthenticationCache"], key = "#applicationId")
     fun getEffectiveAuthentication(applicationId: UUID): EffectiveAuthentication {
-        log.debug { "Getting effective authentication for application $applicationId"}
+        log.debug { "Getting effective authentication for application $applicationId" }
         val application = applicationService.getApplicationOrThrow(applicationId)
         if (application.authentication !is Authentication.Inherit) {
             val effectiveAuthentication = EffectiveAuthentication(application.authentication, EffectiveAuthentication.SourceType.APPLICATION, applicationId)
