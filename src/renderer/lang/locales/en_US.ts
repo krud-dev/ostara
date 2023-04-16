@@ -313,4 +313,5 @@ export default {
   cacheStatisticsNotAvailable: 'Cache statistics not available',
   heapdumpNotReady: 'Heapdump not ready',
   profilingRequestNotFinished: 'Profiling request not finished',
+  whatsNew: "What's New?",
 };
