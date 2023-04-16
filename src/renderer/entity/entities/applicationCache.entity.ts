@@ -1,8 +1,8 @@
 import { Entity } from 'renderer/entity/entity';
-import { EVICT_CACHE_ID } from 'renderer/entity/actions';
-import { ApplicationCacheRO } from '../../../common/generated_definitions';
+import { EVICT_CACHE_ID, STATISTICS_ID } from 'renderer/entity/actions';
+import { EnrichedApplicationCacheRO } from '../../apis/requests/application/caches/getApplicationCaches';
 
-export const applicationCacheEntity: Entity<ApplicationCacheRO> = {
+export const applicationCacheEntity: Entity<EnrichedApplicationCacheRO> = {
   id: 'applicationCache',
   columns: [
     {
@@ -17,6 +17,12 @@ export const applicationCacheEntity: Entity<ApplicationCacheRO> = {
     },
   ],
   actions: [
+    {
+      id: STATISTICS_ID,
+      labelId: 'showStatistics',
+      icon: 'DonutLargeOutlined',
+      isDisabled: (item) => !item.hasStatistics,
+    },
     {
       id: EVICT_CACHE_ID,
       labelId: 'evict',

@@ -8,14 +8,20 @@ import { generatePath } from 'react-router-dom';
 import ItemHeader from 'renderer/components/item/ItemHeader';
 import { IconViewer } from 'renderer/components/common/IconViewer';
 import { getItemTypeIcon } from 'renderer/utils/itemUtils';
-import { ApplicationRO } from '../../../../common/generated_definitions';
+import { ApplicationRO, InstanceAbility } from '../../../../common/generated_definitions';
+import { useGetApplicationAbilitiesQuery } from '../../../apis/requests/application/getApplicationAbilities';
 
 type ApplicationSidebarProps = { item: ApplicationRO; width: number };
 
 export default function ApplicationSidebar({ item, width }: ApplicationSidebarProps) {
-  const isServiceInactive = useCallback((): boolean => {
-    return item.health.status === 'EMPTY' || item.health.status === 'ALL_DOWN';
-  }, [item]);
+  const abilitiesState = useGetApplicationAbilitiesQuery({ applicationId: item.id });
+
+  const isServiceInactive = useCallback(
+    (ability: InstanceAbility): boolean => {
+      return item.health.status === 'EMPTY' || !abilitiesState.data || abilitiesState.data.indexOf(ability) === -1;
+    },
+    [item, abilitiesState.data]
+  );
 
   const navConfig = useMemo<SidebarConfig | undefined>(
     () => [
@@ -46,19 +52,19 @@ export default function ApplicationSidebar({ item, width }: ApplicationSidebarPr
             icon: <ListAltOutlined />,
             label: <FormattedMessage id={'loggers'} />,
             to: generatePath(urls.applicationLoggers.url, { id: item.id }),
-            disabled: isServiceInactive(),
+            disabled: isServiceInactive('LOGGERS'),
           },
           {
             id: 'caches',
             icon: <ClassOutlined />,
             label: <FormattedMessage id={'caches'} />,
             to: generatePath(urls.applicationCaches.url, { id: item.id }),
-            disabled: isServiceInactive(),
+            disabled: isServiceInactive('CACHES'),
           },
         ],
       },
     ],
-    [item]
+    [item, isServiceInactive]
   );
 
   return <Sidebar sidebarConfig={navConfig} header={<ItemHeader item={item} />} />;
