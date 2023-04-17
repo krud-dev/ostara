@@ -21,12 +21,11 @@ export default function HomeWelcome({}: HomeWelcomeProps) {
     <Card>
       <CardContent>
         <Typography variant={'h6'} gutterBottom>
-          Welcome to Boost! &#x1F495;
+          <FormattedMessage id={'welcomeToApp'} /> &#x1F495;
         </Typography>
 
         <Typography variant={'body2'} sx={{ color: 'text.secondary' }}>
-          Get started by adding your first Spring Boot actuator instance. Monitor and manage your Spring Boot
-          applications with ease. Enjoy!
+          <FormattedMessage id={'getStartedAddFirstInstance'} />
         </Typography>
 
         <Stack direction={{ xs: 'column', sm: 'row' }} spacing={2} sx={{ mt: 3 }}>

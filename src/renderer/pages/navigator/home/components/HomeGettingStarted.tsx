@@ -22,19 +22,15 @@ export default function HomeGettingStarted({}: HomeGettingStartedProps) {
     <Card>
       <CardContent>
         <Typography variant={'h6'} gutterBottom>
-          Getting Started &#x1F680;
+          <FormattedMessage id={'gettingStarted'} /> &#x1F680;
         </Typography>
 
         <Typography variant={'body2'} gutterBottom sx={{ color: 'text.secondary' }}>
-          {
-            'If you already have a Spring Boot instance with actuator enabled, add it to Boost by clicking the "Create Instance" button.'
-          }
+          <FormattedMessage id={'alreadyHaveInstanceAddIt'} />
         </Typography>
 
         <Typography variant={'body2'} sx={{ color: 'text.secondary', whiteSpace: 'pre-wrap' }}>
-          {
-            'If you are new to Spring Boot actuator follow the steps below to get started.\n1. Build a Spring Boot application with actuator enabled.\n2. Run the application.\n3. Add the application to Boost by clicking the "Create Instance" button.\n4. Monitor and manage your Spring Boot application with ease.\n5. Enjoy!'
-          }
+          <FormattedMessage id={'gettingStartedSteps'} />
         </Typography>
 
         <Stack direction={{ xs: 'column', sm: 'row' }} spacing={2} sx={{ mt: 3 }}>
