@@ -1,6 +1,6 @@
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import { Alert, Box, Divider, Drawer, IconButton, Link, MenuItem, Stack, TextField, Typography } from '@mui/material';
-import { useUi } from 'renderer/contexts/UiContext';
+import { useSettings } from 'renderer/contexts/SettingsContext';
 import { FormattedMessage } from 'react-intl';
 import { CloseOutlined, SettingsOutlined } from '@mui/icons-material';
 import { alpha } from '@mui/material/styles';
@@ -22,7 +22,7 @@ export default function SettingsMenu() {
     setErrorReportingEnabled,
     autoUpdateEnabled,
     setAutoUpdateEnabled,
-  } = useUi();
+  } = useSettings();
 
   const [open, setOpen] = useState<boolean>(false);
 

@@ -1,13 +1,13 @@
 import React, { FunctionComponent, useEffect } from 'react';
 import ReactGA from 'react-ga4';
-import { useUi } from '../../contexts/UiContext';
+import { useSettings } from '../../contexts/SettingsContext';
 import { GOOGLE_ANALYTICS_MEASUREMENT_ID } from '../../constants/ids';
 import { useLocation } from 'react-router-dom';
 
 interface GoogleAnalyticsManagerProps {}
 
 const GoogleAnalyticsManager: FunctionComponent<GoogleAnalyticsManagerProps> = () => {
-  const { analyticsEnabled } = useUi();
+  const { analyticsEnabled } = useSettings();
   const { pathname } = useLocation();
 
   useEffect(() => {

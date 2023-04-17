@@ -1,5 +1,5 @@
 import { Button, Stack } from '@mui/material';
-import { useUi } from 'renderer/contexts/UiContext';
+import { useSettings } from 'renderer/contexts/SettingsContext';
 import { Theme } from '@mui/material/styles';
 import { IconViewer, MUIconType } from '../../../../components/common/IconViewer';
 import { SxProps } from '@mui/system';
@@ -40,7 +40,7 @@ export default function WindowControls({ sx }: WindowControlsProps) {
 type WindowControlProps = { icon: MUIconType; onClick?: () => void };
 
 function WindowControl({ icon, onClick }: WindowControlProps) {
-  const { darkMode } = useUi();
+  const { darkMode } = useSettings();
   return (
     <Button
       color={darkMode ? 'lightGrey' : 'darkGrey'}

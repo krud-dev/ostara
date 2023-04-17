@@ -20,7 +20,7 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import { urls } from '../routes/urls';
 import { useUpdateEffect } from 'react-use';
 
-export type UiContextProps = {
+export type SettingsContextProps = {
   developerMode: boolean;
   daemonHealthy: boolean;
   themeSource: ThemeSource;
@@ -39,11 +39,11 @@ export type UiContextProps = {
   setAutoUpdateEnabled: (autoUpdateEnabled: boolean) => void;
 };
 
-const UiContext = React.createContext<UiContextProps>(undefined!);
+const SettingsContext = React.createContext<SettingsContextProps>(undefined!);
 
-interface UiProviderProps extends PropsWithChildren<any> {}
+interface SettingsProviderProps extends PropsWithChildren<any> {}
 
-const UiProvider: FunctionComponent<UiProviderProps> = ({ children }) => {
+const SettingsProvider: FunctionComponent<SettingsProviderProps> = ({ children }) => {
   const navigate = useNavigate();
   const { pathname } = useLocation();
 
@@ -178,7 +178,7 @@ const UiProvider: FunctionComponent<UiProviderProps> = ({ children }) => {
   }, []);
 
   return (
-    <UiContext.Provider
+    <SettingsContext.Provider
       value={{
         developerMode,
         daemonHealthy,
@@ -199,16 +199,16 @@ const UiProvider: FunctionComponent<UiProviderProps> = ({ children }) => {
       }}
     >
       {children}
-    </UiContext.Provider>
+    </SettingsContext.Provider>
   );
 };
 
-const useUi = (): UiContextProps => {
-  const context = useContext(UiContext);
+const useSettings = (): SettingsContextProps => {
+  const context = useContext(SettingsContext);
 
-  if (!context) throw new Error('UiContext must be used inside UiProvider');
+  if (!context) throw new Error('SettingsContext must be used inside SettingsProvider');
 
   return context;
 };
 
-export { UiContext, UiProvider, useUi };
+export { SettingsContext, SettingsProvider, useSettings };
