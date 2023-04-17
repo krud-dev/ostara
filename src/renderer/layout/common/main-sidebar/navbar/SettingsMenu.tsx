@@ -20,6 +20,8 @@ export default function SettingsMenu() {
     errorReportingEnabled,
     errorReportingChanged,
     setErrorReportingEnabled,
+    autoUpdateEnabled,
+    setAutoUpdateEnabled,
   } = useUi();
 
   const [open, setOpen] = useState<boolean>(false);
@@ -163,6 +165,22 @@ export default function SettingsMenu() {
                     />
                   </Alert>
                 )}
+
+                <TextField
+                  fullWidth
+                  label={<FormattedMessage id="automaticUpdates" />}
+                  margin="normal"
+                  select
+                  value={autoUpdateEnabled}
+                  onChange={(e) => setAutoUpdateEnabled(e.target.value === 'true')}
+                >
+                  <MenuItem value={'true'}>
+                    <FormattedMessage id="yes" />
+                  </MenuItem>
+                  <MenuItem value={'false'}>
+                    <FormattedMessage id="no" />
+                  </MenuItem>
+                </TextField>
 
                 <TextField
                   fullWidth

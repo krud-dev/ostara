@@ -35,6 +35,8 @@ export type UiContextProps = {
   errorReportingEnabled: boolean;
   errorReportingChanged: boolean;
   setErrorReportingEnabled: (errorReportingEnabled: boolean) => void;
+  autoUpdateEnabled: boolean;
+  setAutoUpdateEnabled: (autoUpdateEnabled: boolean) => void;
 };
 
 const UiContext = React.createContext<UiContextProps>(undefined!);
@@ -69,6 +71,12 @@ const UiProvider: FunctionComponent<UiProviderProps> = ({ children }) => {
   useUpdateEffect(() => {
     window.configurationStore.setErrorReportingEnabled(errorReportingEnabled);
   }, [errorReportingEnabled]);
+
+  const [autoUpdateEnabled, setAutoUpdateEnabled] = useState<boolean>(window.configurationStore.isAutoUpdateEnabled());
+
+  useUpdateEffect(() => {
+    window.configurationStore.setAutoUpdateEnabled(autoUpdateEnabled);
+  }, [autoUpdateEnabled]);
 
   useEffect(() => {
     const newPathname = daemonHealthy ? urls.home.url : urls.daemonUnhealthy.url;
@@ -186,6 +194,8 @@ const UiProvider: FunctionComponent<UiProviderProps> = ({ children }) => {
         errorReportingEnabled,
         errorReportingChanged,
         setErrorReportingEnabled,
+        autoUpdateEnabled,
+        setAutoUpdateEnabled,
       }}
     >
       {children}
