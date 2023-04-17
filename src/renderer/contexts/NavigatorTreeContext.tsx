@@ -16,6 +16,7 @@ import {
   ApplicationHealthUpdatedEventMessage$Payload,
   ApplicationRO,
   FolderRO,
+  InstanceAbility,
   InstanceHealthChangedEventMessage$Payload,
   InstanceHostnameUpdatedEventMessage$Payload,
   InstanceRO,
@@ -26,12 +27,14 @@ import { applicationCrudEntity } from '../apis/requests/crud/entity/entities/app
 import { buildTree } from '../utils/treeUtils';
 import { useStomp } from '../apis/websockets/StompContext';
 import { chain } from 'lodash';
+import { useGetItemAbilitiesQuery } from '../apis/requests/item/getItemAbilities';
 
 type NavigatorTreeAction = 'expandAll' | 'collapseAll';
 
 export type NavigatorTreeContextProps = {
   data: TreeItem[] | undefined;
   selectedItem: ItemRO | undefined;
+  selectedItemAbilities: InstanceAbility[] | undefined;
   isLoading: boolean;
   isEmpty: boolean;
   hasData: boolean;
@@ -162,6 +165,16 @@ const NavigatorTreeProvider: FunctionComponent<NavigatorTreeProviderProps> = ({ 
     return item;
   }, [getItem, params.id]);
 
+  const getItemAbilitiesState = useGetItemAbilitiesQuery(
+    { item: selectedItem },
+    { enabled: !!selectedItem, refetchInterval: 1000 * 10 }
+  );
+
+  const selectedItemAbilities = useMemo<InstanceAbility[] | undefined>(
+    () => getItemAbilitiesState.data,
+    [getItemAbilitiesState.data]
+  );
+
   const getNewItemOrder = useCallback((): number => {
     return data?.length
       ? chain(data)
@@ -176,6 +189,7 @@ const NavigatorTreeProvider: FunctionComponent<NavigatorTreeProviderProps> = ({ 
       value={{
         data,
         selectedItem,
+        selectedItemAbilities,
         isLoading,
         isEmpty,
         hasData,

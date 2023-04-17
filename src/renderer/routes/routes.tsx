@@ -33,6 +33,7 @@ import InstanceBeansGraph from '../pages/navigator/instance/beans-graph';
 import InstanceMappings from '../pages/navigator/instance/mappings';
 import DaemonUnhealthy from '../layout/daemon/components/DaemonUnhealthy';
 import DaemonLayout from '../layout/daemon/DaemonLayout';
+import AbilityGuard from './guards/AbilityGuard';
 
 export default function Router() {
   return useRoutes([
@@ -77,11 +78,19 @@ export default function Router() {
             },
             {
               path: urls.applicationLoggers.path,
-              element: <ApplicationLoggers />,
+              element: (
+                <AbilityGuard ability={'LOGGERS'}>
+                  <ApplicationLoggers />
+                </AbilityGuard>
+              ),
             },
             {
               path: urls.applicationCaches.path,
-              element: <ApplicationCaches />,
+              element: (
+                <AbilityGuard ability={'CACHES'}>
+                  <ApplicationCaches />
+                </AbilityGuard>
+              ),
             },
           ],
         },
@@ -96,75 +105,147 @@ export default function Router() {
             },
             {
               path: urls.instanceMetrics.path,
-              element: <InstanceMetrics />,
+              element: (
+                <AbilityGuard ability={'METRICS'}>
+                  <InstanceMetrics />
+                </AbilityGuard>
+              ),
             },
             {
               path: urls.instanceEnvironment.path,
-              element: <InstanceEnvironment />,
+              element: (
+                <AbilityGuard ability={'ENV'}>
+                  <InstanceEnvironment />
+                </AbilityGuard>
+              ),
             },
             {
               path: urls.instanceSystemEnvironment.path,
-              element: <InstanceSystemEnvironment />,
+              element: (
+                <AbilityGuard ability={'SYSTEM_ENVIRONMENT'}>
+                  <InstanceSystemEnvironment />
+                </AbilityGuard>
+              ),
             },
             {
               path: urls.instanceBeans.path,
-              element: <InstanceBeans />,
+              element: (
+                <AbilityGuard ability={'BEANS'}>
+                  <InstanceBeans />
+                </AbilityGuard>
+              ),
             },
             {
               path: urls.instanceBeansGraph.path,
-              element: <InstanceBeansGraph />,
+              element: (
+                <AbilityGuard ability={'BEANS'}>
+                  <InstanceBeansGraph />
+                </AbilityGuard>
+              ),
             },
             {
               path: urls.instanceHttpRequests.path,
-              element: <InstanceHttpRequests />,
+              element: (
+                <AbilityGuard ability={'HTTP_REQUEST_STATISTICS'}>
+                  <InstanceHttpRequests />
+                </AbilityGuard>
+              ),
             },
             {
               path: urls.instanceQuartz.path,
-              element: <InstanceQuartz />,
+              element: (
+                <AbilityGuard ability={'QUARTZ'}>
+                  <InstanceQuartz />
+                </AbilityGuard>
+              ),
             },
             {
               path: urls.instanceScheduledTasks.path,
-              element: <InstanceScheduledTasks />,
+              element: (
+                <AbilityGuard ability={'SCHEDULEDTASKS'}>
+                  <InstanceScheduledTasks />
+                </AbilityGuard>
+              ),
             },
             {
               path: urls.instanceMappings.path,
-              element: <InstanceMappings />,
+              element: (
+                <AbilityGuard ability={'MAPPINGS'}>
+                  <InstanceMappings />
+                </AbilityGuard>
+              ),
             },
             {
               path: urls.instanceFlyway.path,
-              element: <InstanceFlyway />,
+              element: (
+                <AbilityGuard ability={'FLYWAY'}>
+                  <InstanceFlyway />
+                </AbilityGuard>
+              ),
             },
             {
               path: urls.instanceLiquibase.path,
-              element: <InstanceLiquibase />,
+              element: (
+                <AbilityGuard ability={'LIQUIBASE'}>
+                  <InstanceLiquibase />
+                </AbilityGuard>
+              ),
             },
             {
               path: urls.instanceProperties.path,
-              element: <InstanceProperties />,
+              element: (
+                <AbilityGuard ability={'PROPERTIES'}>
+                  <InstanceProperties />
+                </AbilityGuard>
+              ),
             },
             {
               path: urls.instanceSystemProperties.path,
-              element: <InstanceSystemProperties />,
+              element: (
+                <AbilityGuard ability={'SYSTEM_PROPERTIES'}>
+                  <InstanceSystemProperties />
+                </AbilityGuard>
+              ),
             },
             {
               path: urls.instanceIntegrationGraph.path,
-              element: <InstanceIntegrationGraph />,
+              element: (
+                <AbilityGuard ability={'INTEGRATIONGRAPH'}>
+                  <InstanceIntegrationGraph />
+                </AbilityGuard>
+              ),
             },
             {
               path: urls.instanceLoggers.path,
-              element: <InstanceLoggers />,
+              element: (
+                <AbilityGuard ability={'LOGGERS'}>
+                  <InstanceLoggers />
+                </AbilityGuard>
+              ),
             },
             {
               path: urls.instanceCaches.path,
-              element: <InstanceCaches />,
+              element: (
+                <AbilityGuard ability={'CACHES'}>
+                  <InstanceCaches />
+                </AbilityGuard>
+              ),
             },
             {
               path: urls.instanceThreadDump.path,
-              element: <InstanceThreadProfiling />,
+              element: (
+                <AbilityGuard ability={'THREADDUMP'}>
+                  <InstanceThreadProfiling />
+                </AbilityGuard>
+              ),
             },
             {
               path: urls.instanceHeapDump.path,
-              element: <InstanceHeapdumpReferences />,
+              element: (
+                <AbilityGuard ability={'HEAPDUMP'}>
+                  <InstanceHeapdumpReferences />
+                </AbilityGuard>
+              ),
             },
           ],
         },

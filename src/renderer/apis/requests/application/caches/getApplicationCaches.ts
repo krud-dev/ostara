@@ -8,7 +8,6 @@ import { apiKeys } from 'renderer/apis/apiKeys';
 import { ApplicationCacheRO } from '../../../../../common/generated_definitions';
 import { axiosInstance } from '../../../axiosInstance';
 import { AxiosResponse } from 'axios';
-import { getApplicationAbilities } from '../getApplicationAbilities';
 
 export type EnrichedApplicationCacheRO = ApplicationCacheRO & {
   applicationId: string;
@@ -17,20 +16,22 @@ export type EnrichedApplicationCacheRO = ApplicationCacheRO & {
 
 type Variables = {
   applicationId: string;
+  hasStatistics: boolean;
 };
 
 type Data = EnrichedApplicationCacheRO[];
 
 export const getApplicationCaches = async (variables: Variables): Promise<Data> => {
-  const abilities = await getApplicationAbilities(variables);
-  const hasStatistics = abilities.indexOf('CACHE_STATISTICS') > -1;
-
   const result = (
     await axiosInstance.get<ApplicationCacheRO[], AxiosResponse<ApplicationCacheRO[]>>(
       `cache/application/${variables.applicationId}`
     )
   ).data;
-  return result.map((cache) => ({ ...cache, applicationId: variables.applicationId, hasStatistics: hasStatistics }));
+  return result.map((cache) => ({
+    ...cache,
+    applicationId: variables.applicationId,
+    hasStatistics: variables.hasStatistics,
+  }));
 };
 
 export const useGetApplicationCaches = (

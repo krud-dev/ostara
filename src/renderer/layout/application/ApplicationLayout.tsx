@@ -5,7 +5,7 @@ import ApplicationSidebar from 'renderer/layout/application/components/Applicati
 import { ApplicationRO } from '../../../common/generated_definitions';
 
 const ApplicationLayout: FunctionComponent = () => {
-  const { selectedItem } = useNavigatorTree();
+  const { selectedItem, selectedItemAbilities } = useNavigatorTree();
 
   const item = useMemo<ApplicationRO | undefined>(() => selectedItem as ApplicationRO | undefined, [selectedItem]);
 
@@ -13,7 +13,12 @@ const ApplicationLayout: FunctionComponent = () => {
     return null;
   }
 
-  return <SecondarySidebarLayout Sidebar={ApplicationSidebar} sidebarProps={{ item }} />;
+  return (
+    <SecondarySidebarLayout
+      Sidebar={ApplicationSidebar}
+      sidebarProps={{ item, itemAbilities: selectedItemAbilities }}
+    />
+  );
 };
 
 export default ApplicationLayout;
