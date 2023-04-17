@@ -1,5 +1,20 @@
 # @krud-dev/boost
 
+## 0.4.0
+
+### Minor Changes
+
+- 9e83a8e: Added automatic updates control to settings
+- 1b92e5f: Added ability error guard for instance dashboard
+- 7c8dbc0: Added selected item abilities polling and url ability guard
+- d24a8e2: Added ability to control error reporting
+- a272589: Added changelog to home with markdown component
+- 04eae2f: Added explanation for disabled table row actions
+
+### Patch Changes
+
+- f1da682: Fixed application caches add statistics
+
 ## 0.3.0
 
 ### Minor Changes
