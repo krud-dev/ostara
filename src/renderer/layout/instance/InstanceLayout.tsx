@@ -8,7 +8,7 @@ import InstancePending from 'renderer/layout/instance/components/health/Instance
 import { InstanceRO } from '../../../common/generated_definitions';
 
 const InstanceLayout: FunctionComponent = () => {
-  const { selectedItem } = useNavigatorTree();
+  const { selectedItem, selectedItemAbilities } = useNavigatorTree();
 
   const item = useMemo<InstanceRO | undefined>(() => selectedItem as InstanceRO | undefined, [selectedItem]);
 
@@ -37,7 +37,7 @@ const InstanceLayout: FunctionComponent = () => {
   return (
     <SecondarySidebarLayout
       Sidebar={InstanceSidebar}
-      sidebarProps={{ item, disabled: sidebarDisabled }}
+      sidebarProps={{ item, itemAbilities: selectedItemAbilities, disabled: sidebarDisabled }}
       content={content}
     />
   );

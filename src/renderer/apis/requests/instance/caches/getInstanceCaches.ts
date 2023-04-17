@@ -8,7 +8,6 @@ import { apiKeys } from 'renderer/apis/apiKeys';
 import { InstanceCacheRO } from '../../../../../common/generated_definitions';
 import { axiosInstance } from '../../../axiosInstance';
 import { AxiosResponse } from 'axios';
-import { getInstanceAbilities } from '../getInstanceAbilities';
 
 export type EnrichedInstanceCacheRO = InstanceCacheRO & {
   instanceId: string;
@@ -17,20 +16,22 @@ export type EnrichedInstanceCacheRO = InstanceCacheRO & {
 
 type Variables = {
   instanceId: string;
+  hasStatistics: boolean;
 };
 
 type Data = EnrichedInstanceCacheRO[];
 
 export const getInstanceCaches = async (variables: Variables): Promise<Data> => {
-  const abilities = await getInstanceAbilities(variables);
-  const hasStatistics = abilities.indexOf('CACHE_STATISTICS') > -1;
-
   const result = (
     await axiosInstance.get<InstanceCacheRO[], AxiosResponse<InstanceCacheRO[]>>(
       `cache/instance/${variables.instanceId}`
     )
   ).data;
-  return result.map((cache) => ({ ...cache, instanceId: variables.instanceId, hasStatistics: hasStatistics }));
+  return result.map((cache) => ({
+    ...cache,
+    instanceId: variables.instanceId,
+    hasStatistics: variables.hasStatistics,
+  }));
 };
 
 export const useGetInstanceCaches = (

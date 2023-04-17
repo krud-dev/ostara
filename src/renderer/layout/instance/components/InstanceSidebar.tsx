@@ -25,26 +25,23 @@ import { generatePath } from 'react-router-dom';
 import ItemHeader from 'renderer/components/item/ItemHeader';
 import { InstanceAbility, InstanceRO } from '../../../../common/generated_definitions';
 import InstanceActiveProfiles from './InstanceActiveProfiles';
-import { useGetInstanceAbilitiesQuery } from '../../../apis/requests/instance/getInstanceAbilities';
 import { isInstanceInactive } from '../../../utils/itemUtils';
 
-type InstanceSidebarProps = { item: InstanceRO; disabled: boolean; width: number };
+type InstanceSidebarProps = { item: InstanceRO; itemAbilities?: InstanceAbility[]; disabled: boolean; width: number };
 
-export default function InstanceSidebar({ item, disabled, width }: InstanceSidebarProps) {
+export default function InstanceSidebar({ item, itemAbilities, disabled, width }: InstanceSidebarProps) {
   const instanceInactive = useMemo<boolean>(() => isInstanceInactive(item), [item]);
-
-  const abilitiesState = useGetInstanceAbilitiesQuery({ instanceId: item.id }, { enabled: !instanceInactive });
 
   const isServiceInactive = useCallback(
     (ability: InstanceAbility): boolean => {
-      return !abilitiesState.data || abilitiesState.data.indexOf(ability) === -1;
+      return !itemAbilities || itemAbilities.indexOf(ability) === -1;
     },
-    [abilitiesState.data]
+    [itemAbilities]
   );
 
   const navConfig = useMemo<SidebarConfig | undefined>(
     () =>
-      abilitiesState.data || instanceInactive
+      itemAbilities || instanceInactive
         ? [
             {
               id: 'insights',
@@ -199,7 +196,7 @@ export default function InstanceSidebar({ item, disabled, width }: InstanceSideb
             },
           ]
         : undefined,
-    [item, disabled, isServiceInactive, instanceInactive]
+    [item, itemAbilities, disabled, isServiceInactive, instanceInactive]
   );
 
   return (

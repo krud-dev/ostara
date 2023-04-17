@@ -20,14 +20,17 @@ import NiceModal from '@ebay/nice-modal-react';
 import ApplicationCacheStatisticsDialog from './components/ApplicationCacheStatisticsDialog';
 
 const ApplicationCaches: FunctionComponent = () => {
-  const { selectedItem } = useNavigatorTree();
+  const { selectedItem, selectedItemAbilities } = useNavigatorTree();
   const { enqueueSnackbar } = useSnackbar();
 
-  const item = useMemo<ApplicationRO | undefined>(() => selectedItem as ApplicationRO | undefined, [selectedItem]);
-  const itemId = useMemo<string>(() => item?.id || '', [item]);
+  const item = useMemo<ApplicationRO>(() => selectedItem as ApplicationRO, [selectedItem]);
+  const hasStatisticsAbility = useMemo<boolean>(
+    () => !!selectedItemAbilities?.includes('CACHE_STATISTICS'),
+    [selectedItemAbilities]
+  );
 
   const entity = useMemo<Entity<EnrichedApplicationCacheRO>>(() => applicationCacheEntity, []);
-  const queryState = useGetApplicationCachesQuery({ applicationId: itemId });
+  const queryState = useGetApplicationCachesQuery({ applicationId: item.id, hasStatistics: hasStatisticsAbility });
 
   const evictCacheState = useEvictApplicationCache();
 
@@ -40,7 +43,7 @@ const ApplicationCaches: FunctionComponent = () => {
         break;
       case EVICT_CACHE_ID:
         try {
-          await evictCacheState.mutateAsync({ applicationId: itemId, cacheName: row.name });
+          await evictCacheState.mutateAsync({ applicationId: item.id, cacheName: row.name });
           enqueueSnackbar(<FormattedMessage id={'evictedCacheSuccessfully'} values={{ names: row.name }} />, {
             variant: 'success',
           });
@@ -59,7 +62,7 @@ const ApplicationCaches: FunctionComponent = () => {
         case EVICT_CACHE_ID:
           try {
             await evictCachesState.mutateAsync({
-              applicationId: itemId,
+              applicationId: item.id,
               cacheNames: selectedRows.map((r) => r.name),
             });
             enqueueSnackbar(
@@ -86,7 +89,7 @@ const ApplicationCaches: FunctionComponent = () => {
     switch (actionId) {
       case EVICT_CACHE_ID:
         try {
-          await evictAllCachesState.mutateAsync({ applicationId: itemId });
+          await evictAllCachesState.mutateAsync({ applicationId: item.id });
           enqueueSnackbar(<FormattedMessage id={'evictedAllCachesSuccessfully'} />, {
             variant: 'success',
           });

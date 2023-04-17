@@ -17,17 +17,20 @@ import { Card } from '@mui/material';
 import { InstanceRO } from '../../../../../common/generated_definitions';
 import { useEvictInstanceCache } from '../../../../apis/requests/instance/caches/evictInstanceCache';
 import NiceModal from '@ebay/nice-modal-react';
-import QuartzTriggerDetailsDialog from '../quartz/components/QuartzTriggerDetailsDialog';
 import InstanceCacheStatisticsDialog from './components/InstanceCacheStatisticsDialog';
 
 const InstanceCaches: FunctionComponent = () => {
-  const { selectedItem } = useNavigatorTree();
+  const { selectedItem, selectedItemAbilities } = useNavigatorTree();
   const { enqueueSnackbar } = useSnackbar();
 
   const item = useMemo<InstanceRO>(() => selectedItem as InstanceRO, [selectedItem]);
+  const hasStatisticsAbility = useMemo<boolean>(
+    () => !!selectedItemAbilities?.includes('CACHE_STATISTICS'),
+    [selectedItemAbilities]
+  );
 
   const entity = useMemo<Entity<EnrichedInstanceCacheRO>>(() => instanceCacheEntity, []);
-  const queryState = useGetInstanceCachesQuery({ instanceId: item.id });
+  const queryState = useGetInstanceCachesQuery({ instanceId: item.id, hasStatistics: hasStatisticsAbility });
 
   const evictCacheState = useEvictInstanceCache();
 
