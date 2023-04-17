@@ -1,5 +1,11 @@
 # @krud-dev/boost
 
+## 0.4.1
+
+### Patch Changes
+
+- b9094e7: Fix issue with app version not being present in packaged builds
+
 ## 0.4.0
 
 ### Minor Changes
