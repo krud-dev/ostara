@@ -165,7 +165,14 @@
 <div class="version" id="version">Alpha</div>
 
 <script>
-  document.getElementById("version").innerText =`Alpha (${window.appVersion})`;
+  window.ui.getAppVersion().then(version => {
+    document.getElementById("version").innerText =`Alpha (${version})`;
+  })
+    .catch(err => {
+      document.getElementById("version").innerText =`Alpha (unknown)`;
+      console.error(err);
+    });
+
 </script>
 </body>
 </html>

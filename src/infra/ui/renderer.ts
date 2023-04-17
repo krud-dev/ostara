@@ -33,6 +33,10 @@ export const uiServiceBridge: UiServiceBridge = {
     return ipcRenderer.invoke('uiService:downloadFile', url, options);
   },
 
+  getAppVersion(): Promise<string> {
+    return ipcRenderer.invoke('uiService:getAppVersion');
+  },
+
   isMac: isMac,
   isWindows: isWindows,
   isLinux: isLinux,

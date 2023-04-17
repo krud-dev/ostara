@@ -9,3 +9,4 @@ ipcMain.handle('uiService:maximizeWindow', (event) => uiService.maximizeWindow()
 ipcMain.handle('uiService:closeWindow', (event) => uiService.closeWindow());
 ipcMain.handle('uiService:restartApp', (event) => uiService.restartApp());
 ipcMain.handle('uiService:downloadFile', (event, url, options) => uiService.downloadFile(url, options));
+ipcMain.handle('uiService:getAppVersion', (event) => uiService.getAppVersion());

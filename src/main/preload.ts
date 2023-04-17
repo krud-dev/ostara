@@ -15,6 +15,5 @@ contextBridge.exposeInMainWorld('daemonAddress', daemonAddressSupplier());
 contextBridge.exposeInMainWorld('daemonWsAddress', daemonWsAddressSupplier());
 contextBridge.exposeInMainWorld('daemonHealthy', daemonHealthySupplier);
 contextBridge.exposeInMainWorld('NODE_ENV', process.env.NODE_ENV);
-contextBridge.exposeInMainWorld('appVersion', process.env.npm_package_version);
 contextBridge.exposeInMainWorld('configurationStore', configurationStoreBridge);
 contextBridge.exposeInMainWorld('appUpdater', appUpdaterBridge);
