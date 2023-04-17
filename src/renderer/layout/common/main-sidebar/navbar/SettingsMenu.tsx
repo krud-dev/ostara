@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useMemo, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { Alert, Box, Divider, Drawer, IconButton, Link, MenuItem, Stack, TextField, Typography } from '@mui/material';
 import { useSettings } from 'renderer/contexts/SettingsContext';
 import { FormattedMessage } from 'react-intl';
@@ -54,7 +54,13 @@ export default function SettingsMenu() {
     };
   }, []);
 
-  const appVersion = useMemo<string>(() => window.appVersion, []);
+  const [appVersion, setAppVersion] = useState<string>('');
+
+  useEffect(() => {
+    (async () => {
+      setAppVersion(await window.ui.getAppVersion());
+    })();
+  }, []);
 
   return (
     <>
