@@ -7,7 +7,7 @@ import NiceModal from '@ebay/nice-modal-react';
 import NotistackProvider from 'renderer/components/snackbar/NotistackProvider';
 import { QueryClientProvider } from '@tanstack/react-query';
 import useQueryClient from 'renderer/apis/useQueryClient';
-import { UiContext, UiProvider } from 'renderer/contexts/UiContext';
+import { SettingsContext, SettingsProvider } from 'renderer/contexts/SettingsContext';
 import Router from 'renderer/routes/routes';
 import { StompProvider } from './apis/websockets/StompContext';
 import ApiErrorManager from './apis/ApiErrorManager';
@@ -20,8 +20,8 @@ export default function App() {
     <MemoryRouter>
       <QueryClientProvider client={queryClient}>
         <StompProvider>
-          <UiProvider>
-            <UiContext.Consumer>
+          <SettingsProvider>
+            <SettingsContext.Consumer>
               {({ darkMode, localeInfo }) => (
                 <IntlProvider
                   locale={localeInfo.locale}
@@ -52,8 +52,8 @@ export default function App() {
                   </LocalizationProvider>
                 </IntlProvider>
               )}
-            </UiContext.Consumer>
-          </UiProvider>
+            </SettingsContext.Consumer>
+          </SettingsProvider>
         </StompProvider>
       </QueryClientProvider>
     </MemoryRouter>

@@ -8,11 +8,11 @@ import HomeRepository from './components/HomeRepository';
 import HomeGettingStarted from './components/HomeGettingStarted';
 import HomeDocumentation from './components/HomeDocumentation';
 import HomeWhatsNew from './components/HomeWhatsNew';
-import { useUi } from '../../../contexts/UiContext';
+import { useSettings } from '../../../contexts/SettingsContext';
 import HomeDeveloperMode from './components/HomeDeveloperMode';
 
 const Home: FunctionComponent = () => {
-  const { developerMode } = useUi();
+  const { developerMode } = useSettings();
   return (
     <Page sx={{ height: '100%', display: 'flex', p: 0 }}>
       <Container disableGutters maxWidth={'md'} sx={{ m: 'auto', p: COMPONENTS_SPACING }}>

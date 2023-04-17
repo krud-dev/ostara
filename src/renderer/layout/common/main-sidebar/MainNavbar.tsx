@@ -5,7 +5,7 @@ import { useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { urls } from 'renderer/routes/urls';
 import { IconViewer } from 'renderer/components/common/IconViewer';
-import { useUi } from 'renderer/contexts/UiContext';
+import { useSettings } from 'renderer/contexts/SettingsContext';
 import { isMac } from 'renderer/utils/platformUtils';
 import WindowControls from './navbar/WindowControls';
 import { useMaximizeWindow } from '../../../apis/requests/ui/maximizeWindow';
@@ -15,7 +15,7 @@ import HelpMenu from './navbar/HelpMenu';
 type MainNavbarProps = {};
 
 export default function MainNavbar({}: MainNavbarProps) {
-  const { isRtl, daemonHealthy } = useUi();
+  const { isRtl, daemonHealthy } = useSettings();
   const navigate = useNavigate();
 
   const homeHandler = useCallback(() => {
