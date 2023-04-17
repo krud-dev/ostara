@@ -38,7 +38,7 @@ export default function InstancePending({ item }: InstancePendingProps) {
             <FormattedMessage id={'dataAvailableWhenConnection'} />
           </Typography>
 
-          <CircularProgress sx={{ mt: 3 }} />
+          <CircularProgress sx={{ my: 3 }} />
         </CardContent>
       </Card>
     </Page>

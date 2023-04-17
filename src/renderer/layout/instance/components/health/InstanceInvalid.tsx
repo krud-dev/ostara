@@ -28,10 +28,6 @@ export default function InstanceInvalid({ item }: InstanceInvalidProps) {
 
   const healthStatusColor = useMemo<string | undefined>(() => getInstanceHealthStatusColor(health), [health]);
 
-  const updateHandler = useCallback((): void => {
-    showUpdateItemDialog(item);
-  }, [item]);
-
   const healthState = useUpdateInstanceHealth();
 
   const refreshHandler = useCallback(async (): Promise<void> => {
@@ -41,7 +37,7 @@ export default function InstanceInvalid({ item }: InstanceInvalidProps) {
     } catch (e) {}
   }, [item, healthState]);
 
-  const updateInstanceHandler = useCallback(
+  const updateHandler = useCallback(
     (event: React.MouseEvent): void => {
       event.preventDefault();
 
@@ -82,7 +78,7 @@ export default function InstanceInvalid({ item }: InstanceInvalidProps) {
                 <DetailsLabelValueHorizontal
                   label={<FormattedMessage id={'troubleshooting'} />}
                   value={
-                    <Link href={`#`} onClick={updateInstanceHandler}>
+                    <Link href={`#`} onClick={updateHandler}>
                       <FormattedMessage id={'checkActuatorUrl'} />
                     </Link>
                   }

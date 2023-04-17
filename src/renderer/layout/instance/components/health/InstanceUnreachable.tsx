@@ -31,10 +31,6 @@ export default function InstanceUnreachable({ item }: InstanceUnreachableProps) 
 
   const healthStatusColor = useMemo<string | undefined>(() => getInstanceHealthStatusColor(health), [health]);
 
-  const updateHandler = useCallback((): void => {
-    showUpdateItemDialog(item);
-  }, [item]);
-
   const healthState = useUpdateInstanceHealth();
 
   const refreshHandler = useCallback(async (): Promise<void> => {
@@ -44,7 +40,7 @@ export default function InstanceUnreachable({ item }: InstanceUnreachableProps) 
     } catch (e) {}
   }, [item, healthState]);
 
-  const updateInstanceHandler = useCallback(
+  const updateHandler = useCallback(
     (event: React.MouseEvent): void => {
       event.preventDefault();
 
@@ -78,7 +74,7 @@ export default function InstanceUnreachable({ item }: InstanceUnreachableProps) 
         );
       case 404:
         return (
-          <Link href={`#`} onClick={updateInstanceHandler}>
+          <Link href={`#`} onClick={updateHandler}>
             <FormattedMessage id={'checkActuatorUrl'} />
           </Link>
         );

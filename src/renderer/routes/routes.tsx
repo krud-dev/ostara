@@ -33,7 +33,8 @@ import InstanceBeansGraph from '../pages/navigator/instance/beans-graph';
 import InstanceMappings from '../pages/navigator/instance/mappings';
 import DaemonUnhealthy from '../layout/daemon/components/DaemonUnhealthy';
 import DaemonLayout from '../layout/daemon/DaemonLayout';
-import AbilityGuard from './guards/AbilityGuard';
+import AbilityRedirectGuard from './guards/AbilityRedirectGuard';
+import InstanceAbilityErrorGuard from './guards/InstanceAbilityErrorGuard';
 
 export default function Router() {
   return useRoutes([
@@ -79,17 +80,17 @@ export default function Router() {
             {
               path: urls.applicationLoggers.path,
               element: (
-                <AbilityGuard ability={'LOGGERS'}>
+                <AbilityRedirectGuard ability={'LOGGERS'}>
                   <ApplicationLoggers />
-                </AbilityGuard>
+                </AbilityRedirectGuard>
               ),
             },
             {
               path: urls.applicationCaches.path,
               element: (
-                <AbilityGuard ability={'CACHES'}>
+                <AbilityRedirectGuard ability={'CACHES'}>
                   <ApplicationCaches />
-                </AbilityGuard>
+                </AbilityRedirectGuard>
               ),
             },
           ],
@@ -101,150 +102,154 @@ export default function Router() {
             { path: '', element: <Navigate to={urls.instanceDashboard.path} replace /> },
             {
               path: urls.instanceDashboard.path,
-              element: <InstanceDashboard />,
+              element: (
+                <InstanceAbilityErrorGuard ability={'METRICS'}>
+                  <InstanceDashboard />
+                </InstanceAbilityErrorGuard>
+              ),
             },
             {
               path: urls.instanceMetrics.path,
               element: (
-                <AbilityGuard ability={'METRICS'}>
+                <AbilityRedirectGuard ability={'METRICS'}>
                   <InstanceMetrics />
-                </AbilityGuard>
+                </AbilityRedirectGuard>
               ),
             },
             {
               path: urls.instanceEnvironment.path,
               element: (
-                <AbilityGuard ability={'ENV'}>
+                <AbilityRedirectGuard ability={'ENV'}>
                   <InstanceEnvironment />
-                </AbilityGuard>
+                </AbilityRedirectGuard>
               ),
             },
             {
               path: urls.instanceSystemEnvironment.path,
               element: (
-                <AbilityGuard ability={'SYSTEM_ENVIRONMENT'}>
+                <AbilityRedirectGuard ability={'SYSTEM_ENVIRONMENT'}>
                   <InstanceSystemEnvironment />
-                </AbilityGuard>
+                </AbilityRedirectGuard>
               ),
             },
             {
               path: urls.instanceBeans.path,
               element: (
-                <AbilityGuard ability={'BEANS'}>
+                <AbilityRedirectGuard ability={'BEANS'}>
                   <InstanceBeans />
-                </AbilityGuard>
+                </AbilityRedirectGuard>
               ),
             },
             {
               path: urls.instanceBeansGraph.path,
               element: (
-                <AbilityGuard ability={'BEANS'}>
+                <AbilityRedirectGuard ability={'BEANS'}>
                   <InstanceBeansGraph />
-                </AbilityGuard>
+                </AbilityRedirectGuard>
               ),
             },
             {
               path: urls.instanceHttpRequests.path,
               element: (
-                <AbilityGuard ability={'HTTP_REQUEST_STATISTICS'}>
+                <AbilityRedirectGuard ability={'HTTP_REQUEST_STATISTICS'}>
                   <InstanceHttpRequests />
-                </AbilityGuard>
+                </AbilityRedirectGuard>
               ),
             },
             {
               path: urls.instanceQuartz.path,
               element: (
-                <AbilityGuard ability={'QUARTZ'}>
+                <AbilityRedirectGuard ability={'QUARTZ'}>
                   <InstanceQuartz />
-                </AbilityGuard>
+                </AbilityRedirectGuard>
               ),
             },
             {
               path: urls.instanceScheduledTasks.path,
               element: (
-                <AbilityGuard ability={'SCHEDULEDTASKS'}>
+                <AbilityRedirectGuard ability={'SCHEDULEDTASKS'}>
                   <InstanceScheduledTasks />
-                </AbilityGuard>
+                </AbilityRedirectGuard>
               ),
             },
             {
               path: urls.instanceMappings.path,
               element: (
-                <AbilityGuard ability={'MAPPINGS'}>
+                <AbilityRedirectGuard ability={'MAPPINGS'}>
                   <InstanceMappings />
-                </AbilityGuard>
+                </AbilityRedirectGuard>
               ),
             },
             {
               path: urls.instanceFlyway.path,
               element: (
-                <AbilityGuard ability={'FLYWAY'}>
+                <AbilityRedirectGuard ability={'FLYWAY'}>
                   <InstanceFlyway />
-                </AbilityGuard>
+                </AbilityRedirectGuard>
               ),
             },
             {
               path: urls.instanceLiquibase.path,
               element: (
-                <AbilityGuard ability={'LIQUIBASE'}>
+                <AbilityRedirectGuard ability={'LIQUIBASE'}>
                   <InstanceLiquibase />
-                </AbilityGuard>
+                </AbilityRedirectGuard>
               ),
             },
             {
               path: urls.instanceProperties.path,
               element: (
-                <AbilityGuard ability={'PROPERTIES'}>
+                <AbilityRedirectGuard ability={'PROPERTIES'}>
                   <InstanceProperties />
-                </AbilityGuard>
+                </AbilityRedirectGuard>
               ),
             },
             {
               path: urls.instanceSystemProperties.path,
               element: (
-                <AbilityGuard ability={'SYSTEM_PROPERTIES'}>
+                <AbilityRedirectGuard ability={'SYSTEM_PROPERTIES'}>
                   <InstanceSystemProperties />
-                </AbilityGuard>
+                </AbilityRedirectGuard>
               ),
             },
             {
               path: urls.instanceIntegrationGraph.path,
               element: (
-                <AbilityGuard ability={'INTEGRATIONGRAPH'}>
+                <AbilityRedirectGuard ability={'INTEGRATIONGRAPH'}>
                   <InstanceIntegrationGraph />
-                </AbilityGuard>
+                </AbilityRedirectGuard>
               ),
             },
             {
               path: urls.instanceLoggers.path,
               element: (
-                <AbilityGuard ability={'LOGGERS'}>
+                <AbilityRedirectGuard ability={'LOGGERS'}>
                   <InstanceLoggers />
-                </AbilityGuard>
+                </AbilityRedirectGuard>
               ),
             },
             {
               path: urls.instanceCaches.path,
               element: (
-                <AbilityGuard ability={'CACHES'}>
+                <AbilityRedirectGuard ability={'CACHES'}>
                   <InstanceCaches />
-                </AbilityGuard>
+                </AbilityRedirectGuard>
               ),
             },
             {
               path: urls.instanceThreadDump.path,
               element: (
-                <AbilityGuard ability={'THREADDUMP'}>
+                <AbilityRedirectGuard ability={'THREADDUMP'}>
                   <InstanceThreadProfiling />
-                </AbilityGuard>
+                </AbilityRedirectGuard>
               ),
             },
             {
               path: urls.instanceHeapDump.path,
               element: (
-                <AbilityGuard ability={'HEAPDUMP'}>
+                <AbilityRedirectGuard ability={'HEAPDUMP'}>
                   <InstanceHeapdumpReferences />
-                </AbilityGuard>
+                </AbilityRedirectGuard>
               ),
             },
           ],

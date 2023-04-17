@@ -6,6 +6,7 @@ import InstanceUnreachable from 'renderer/layout/instance/components/health/Inst
 import InstanceInvalid from 'renderer/layout/instance/components/health/InstanceInvalid';
 import InstancePending from 'renderer/layout/instance/components/health/InstancePending';
 import { InstanceRO } from '../../../common/generated_definitions';
+import LoadingPage from '../../components/layout/LoadingPage';
 
 const InstanceLayout: FunctionComponent = () => {
   const { selectedItem, selectedItemAbilities } = useNavigatorTree();
@@ -14,19 +15,22 @@ const InstanceLayout: FunctionComponent = () => {
 
   const content = useMemo<ReactNode | undefined>(() => {
     if (!item) {
-      return null;
+      return <LoadingPage />;
     }
-    switch (item.health.status) {
-      case 'PENDING':
-        return <InstancePending item={item} />;
-      case 'UNREACHABLE':
-        return <InstanceUnreachable item={item} />;
-      case 'INVALID':
-        return <InstanceInvalid item={item} />;
-      default:
-        return undefined;
+    if (item.health.status === 'UNREACHABLE') {
+      return <InstanceUnreachable item={item} />;
     }
-  }, [item]);
+    if (item.health.status === 'INVALID') {
+      return <InstanceInvalid item={item} />;
+    }
+    if (item.health.status === 'PENDING') {
+      return <InstancePending item={item} />;
+    }
+    if (!selectedItemAbilities) {
+      return <LoadingPage />;
+    }
+    return undefined;
+  }, [item, selectedItemAbilities]);
 
   const sidebarDisabled = useMemo<boolean>(() => !!content, [content]);
 
