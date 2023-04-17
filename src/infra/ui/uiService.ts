@@ -56,6 +56,10 @@ class UiService {
   downloadFile(url: string, options?: electronDl.Options): void {
     download(this.window!, url, options);
   }
+
+  getAppVersion(): string {
+    return app.getVersion();
+  }
 }
 
 export const uiService = new UiService();
