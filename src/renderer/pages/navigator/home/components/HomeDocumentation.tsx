@@ -1,11 +1,7 @@
 import { Button, Card, CardContent, Stack, Typography } from '@mui/material';
-import React, { useCallback } from 'react';
+import React from 'react';
 import { FormattedMessage } from 'react-intl';
-import { InstanceRO } from '../../../../../common/generated_definitions';
-import NiceModal from '@ebay/nice-modal-react';
-import CreateInstanceDialog from '../../../../components/item/dialogs/create/CreateInstanceDialog';
-import { useNavigatorTree } from '../../../../contexts/NavigatorTreeContext';
-import { DOCUMENTATION_URL, REPOSITORY_URL } from '../../../../constants/ui';
+import { DOCUMENTATION_URL } from '../../../../constants/ui';
 
 type HomeDocumentationProps = {};
 
@@ -14,13 +10,11 @@ export default function HomeDocumentation({}: HomeDocumentationProps) {
     <Card>
       <CardContent>
         <Typography variant={'h6'} gutterBottom>
-          Documentation &#x1F4D6;
+          <FormattedMessage id={'documentation'} /> &#x1F4D6;
         </Typography>
 
         <Typography variant={'body2'} sx={{ color: 'text.secondary' }}>
-          {
-            'We have created a documentation site to help you get started with Boost. We continue to add more content to the site.'
-          }
+          <FormattedMessage id={'documentationSideGetStarted'} />
         </Typography>
 
         <Stack direction={{ xs: 'column', sm: 'row' }} spacing={2} sx={{ mt: 3 }}>

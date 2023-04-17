@@ -323,4 +323,19 @@ export default {
   restartAppChangesTakeAffect: '{restart} the app to apply changes.',
   restart: 'Restart',
   automaticUpdates: 'Automatic Updates',
+  welcomeToApp: 'Welcome to Boost!',
+  getStartedAddFirstInstance:
+    'Get started by adding your first Spring Boot actuator instance. Monitor and manage your Spring Boot applications with ease. Enjoy!',
+  appIsOpenSource: 'Boost is Open Source',
+  checkOutTheSourceCode:
+    'Check out the source code on GitHub. Feel free to contribute, comment, open issues or ask questions.',
+  considerStarringTheRepository: 'If you find Boost useful, please consider starring the repository. Thank you!',
+  documentation: 'Documentation',
+  documentationSideGetStarted:
+    'We have created a documentation site to help you get started with Boost. We continue to add more content to the site.',
+  gettingStarted: 'Getting Started',
+  alreadyHaveInstanceAddIt:
+    'If you already have a Spring Boot instance with actuator enabled, add it to Boost by clicking the "Create Instance" button.',
+  gettingStartedSteps:
+    'If you are new to Spring Boot actuator follow the steps below to get started.\n1. Build a Spring Boot application with actuator enabled.\n2. Run the application.\n3. Add the application to Boost by clicking the "Create Instance" button.\n4. Monitor and manage your Spring Boot application with ease.\n5. Enjoy!',
 };
