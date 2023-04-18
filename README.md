@@ -1,17 +1,18 @@
-# Boost
-
 <p align="center">
     <a href="https://boost.krud.dev/">
     <img src="https://github.com/krud-dev/boost/blob/master/assets/logo.png?raw=true">
     </a>
 </p>
 
+# Boost
 
-<p align="center">
-    Boost is a desktop application that provides various features to monitor and interact with Spring Boot Applications via Actuator.
-</p>
+Boost is a desktop application that provides various features to monitor and interact with Spring Boot Applications via Actuator.
 
 **BOOST IS IN PRE RELEASE!**
+
+<p align="center">
+    <img src="https://github.com/krud-dev/boost/blob/master/assets/screenshots/instance-dashboard.png?raw=true">
+</p>
 
 ## Getting Started
 
@@ -33,6 +34,4 @@ Pull requests are welcome. For major changes, please open an issue first to disc
 
 Boost is released under the Apache-2.0 License. See the [LICENSE](LICENSE) file for more details.
 
-<p align="center">
-    <img src="https://github.com/krud-dev/boost/blob/master/assets/screenshots/instance-dashboard.png?raw=true">
-</p>
+
