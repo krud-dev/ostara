@@ -15,21 +15,12 @@ import java.util.*
 class ThreadProfilingRequestPersistentHooks(
     private val threadProfilingLogKrud: Krud<ThreadProfilingLog, UUID>,
     private val instanceService: InstanceService
-) : CreateHooks<UUID, ThreadProfilingRequest>, CreateFromHooks<UUID, ThreadProfilingRequest>, DeleteHooks<UUID, ThreadProfilingRequest> {
+) : CreateHooks<UUID, ThreadProfilingRequest>, DeleteHooks<UUID, ThreadProfilingRequest> {
     override fun preCreate(entity: ThreadProfilingRequest) {
         instanceService.getInstanceOrThrow(entity.instanceId)
     }
 
-    override fun preCreateFrom(ro: Any) {
-        ro as ThreadProfilingRequestCreateRO
-        instanceService.getInstanceOrThrow(ro.instanceId)
-    }
-
     override fun onCreate(entity: ThreadProfilingRequest) {
-        setFinishTime(entity)
-    }
-
-    override fun onCreateFrom(entity: ThreadProfilingRequest, ro: Any) {
         setFinishTime(entity)
     }
 
