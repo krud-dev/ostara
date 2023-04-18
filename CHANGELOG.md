@@ -1,5 +1,11 @@
 # @krud-dev/boost
 
+## 0.4.3
+
+### Patch Changes
+
+- 1467cc0: Change update check frequency
+
 ## 0.4.2
 
 ### Patch Changes
