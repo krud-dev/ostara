@@ -45,7 +45,7 @@ class WebSocketConfig : WebSocketMessageBrokerConfigurer {
         @Bean
         fun applicationHealthReplayingInterceptor(applicationHealthWebsocketDispatcher: ApplicationHealthWebsocketDispatcher) = SubscriptionInterceptor(
             destination = ApplicationHealthWebsocketDispatcher.APPLICATION_HEALTH_TOPIC,
-            callback = { message, headerAccessor ->
+            callback = { _, headerAccessor ->
                 applicationHealthWebsocketDispatcher.replay(headerAccessor.sessionId!!)
             }
         )
@@ -53,7 +53,7 @@ class WebSocketConfig : WebSocketMessageBrokerConfigurer {
         @Bean
         fun instanceHealthReplayingInterceptor(instanceHealthWebsocketDispatcher: InstanceHealthWebsocketDispatcher) = SubscriptionInterceptor(
             destination = InstanceHealthWebsocketDispatcher.INSTANCE_HEALTH_TOPIC,
-            callback = { message, headerAccessor ->
+            callback = { _, headerAccessor ->
                 instanceHealthWebsocketDispatcher.replay(headerAccessor.sessionId!!)
             }
         )
@@ -61,7 +61,7 @@ class WebSocketConfig : WebSocketMessageBrokerConfigurer {
         @Bean
         fun instanceHostnameReplayingInterceptor(instanceHostnameWebsocketDispatcher: InstanceHostnameWebsocketDispatcher) = SubscriptionInterceptor(
             destination = InstanceHostnameWebsocketDispatcher.INSTANCE_HOSTNAME_TOPIC,
-            callback = { message, headerAccessor ->
+            callback = { _, headerAccessor ->
                 instanceHostnameWebsocketDispatcher.replay(headerAccessor.sessionId!!)
             }
         )
@@ -69,7 +69,7 @@ class WebSocketConfig : WebSocketMessageBrokerConfigurer {
         @Bean
         fun instanceHeapdumpReplayingInterceptor(instanceHeapdumpWebsocketDispatcher: InstanceHeapdumpWebsocketDispatcher) = SubscriptionInterceptor(
             destination = InstanceHeapdumpWebsocketDispatcher.HEAPDUMP_DOWNLOAD_PROGRESS_TOPIC,
-            callback = { message, headerAccessor ->
+            callback = { _, headerAccessor ->
                 instanceHeapdumpWebsocketDispatcher.replay(headerAccessor.sessionId!!)
             }
         )
@@ -77,7 +77,7 @@ class WebSocketConfig : WebSocketMessageBrokerConfigurer {
         @Bean
         fun threadProfilingReplayingInterceptor(threadProfilingWebsocketDispatcher: ThreadProfilingWebsocketDispatcher) = SubscriptionInterceptor(
             destination = ThreadProfilingWebsocketDispatcher.THREAD_PROFILING_PROGRESS_TOPIC,
-            callback = { message, headerAccessor ->
+            callback = { _, headerAccessor ->
                 threadProfilingWebsocketDispatcher.replay(headerAccessor.sessionId!!)
             }
         )
@@ -85,7 +85,7 @@ class WebSocketConfig : WebSocketMessageBrokerConfigurer {
         @Bean
         fun instanceAbilityReplayingInterceptor(instanceAbilityWebsocketDispatcher: InstanceAbilityWebsocketDispatcher) = SubscriptionInterceptor(
             destination = InstanceAbilityWebsocketDispatcher.INSTANCE_ABILITY_TOPIC,
-            callback = { message, headerAccessor ->
+            callback = { _, headerAccessor ->
                 instanceAbilityWebsocketDispatcher.replay(headerAccessor.sessionId!!)
             }
         )

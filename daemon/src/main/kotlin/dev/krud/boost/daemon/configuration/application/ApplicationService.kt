@@ -63,7 +63,7 @@ class ApplicationService(
 
     fun getAbilities(applicationId: UUID): Set<InstanceAbility> {
         log.debug { "Getting abilities for application $applicationId" }
-        val application = getApplicationOrThrow(applicationId)
+        getApplicationOrThrow(applicationId)
         return getApplicationInstances(applicationId).flatMap { instance ->
             instanceAbilityService.getAbilities(instance)
         }

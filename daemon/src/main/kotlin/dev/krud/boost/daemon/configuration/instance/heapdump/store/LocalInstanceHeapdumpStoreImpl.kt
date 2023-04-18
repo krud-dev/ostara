@@ -1,6 +1,7 @@
 package dev.krud.boost.daemon.configuration.instance.heapdump.store
 
 import dev.krud.boost.daemon.base.config.AppMainProperties
+import dev.krud.boost.daemon.exception.throwInternalServerError
 import io.github.oshai.KotlinLogging
 import org.springframework.stereotype.Component
 import java.io.InputStream
@@ -53,9 +54,12 @@ class LocalInstanceHeapdumpStoreImpl(
         log.debug {
             "Deleting heapdump for reference $referenceId at $path"
         }
-        path
+        val success = path
             .toFile()
             .delete()
+        if (!success) {
+            throwInternalServerError("Failed to delete heapdump for reference $referenceId at $path")
+        }
     }
 
     companion object {

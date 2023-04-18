@@ -32,7 +32,9 @@ class InstanceMetricWebsocketTopicInterceptor(
             StompCommand.SUBSCRIBE -> handleSubscribe(headerAccessor)
             StompCommand.UNSUBSCRIBE -> handleUnsubscribe(headerAccessor)
             StompCommand.DISCONNECT -> handleDisconnect(headerAccessor)
-            else -> {}
+            else -> {
+                // Ignore other commands
+            }
         }
         return message
     }
@@ -66,7 +68,6 @@ class InstanceMetricWebsocketTopicInterceptor(
         }
 
         val (instanceId) = InstanceMetricWebsocketUtil.parseMetricAndInstanceIdFromTopic(destination)
-        // todo: perform lighter ifexists check
         instanceService.getInstanceFromCacheOrThrow(instanceId)
         val sessionId = headerAccessor.sessionId ?: return
         val currentSubscriptions = subscriptions[sessionId] ?: emptySet()

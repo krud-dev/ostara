@@ -3,11 +3,10 @@ package dev.krud.boost.daemon.configuration.application.logger
 import dev.krud.boost.daemon.configuration.application.ApplicationService
 import dev.krud.boost.daemon.configuration.application.logger.ro.ApplicationLoggerRO
 import dev.krud.boost.daemon.configuration.instance.enums.InstanceAbility
-import dev.krud.boost.daemon.configuration.instance.health.InstanceHealthService
 import dev.krud.boost.daemon.configuration.instance.logger.InstanceLoggerService
 import dev.krud.boost.daemon.exception.throwBadRequest
 import io.github.oshai.KotlinLogging
-import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.runBlocking
@@ -19,7 +18,7 @@ import java.util.*
 class ApplicationLoggerService(
     private val applicationService: ApplicationService,
     private val instanceLoggerService: InstanceLoggerService,
-    private val instanceHealthService: InstanceHealthService
+    private val defaultDispatcher: CoroutineDispatcher
 ) {
     fun getLoggers(applicationId: UUID): List<ApplicationLoggerRO> {
         log.debug { "Getting loggers for application $applicationId" }
@@ -34,7 +33,7 @@ class ApplicationLoggerService(
             runBlocking {
                 applicationService.getApplicationInstances(application.id)
                     .associateWith {
-                        async(Dispatchers.Default) {
+                        async(defaultDispatcher) {
                             instanceLoggerService.getLoggers(it.id)
                         }
                     }
@@ -107,7 +106,7 @@ class ApplicationLoggerService(
         runBlocking {
             applicationService.getApplicationInstances(application.id)
                 .map {
-                    async(Dispatchers.Default) {
+                    async(defaultDispatcher) {
                         try {
                             instanceLoggerService.setLoggerLevel(it.id, loggerName, level)
                         } catch (e: Exception) {

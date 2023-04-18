@@ -1,7 +1,6 @@
 package dev.krud.boost.daemon.actuator.model
 
 import java.io.Serializable
-import java.lang.management.LockInfo
 
 data class ThreadDumpActuatorResponse(
     val threads: List<Thread>
