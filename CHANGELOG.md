@@ -1,5 +1,11 @@
 # @krud-dev/boost
 
+## 0.4.2
+
+### Patch Changes
+
+- 26a8c3b: Fixed windows icon size
+
 ## 0.4.1
 
 ### Patch Changes
