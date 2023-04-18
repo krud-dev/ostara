@@ -2,7 +2,7 @@
 
 <p align="center">
     <a href="https://boost.krud.dev/">
-    <img width="192" src="https://github.com/krud-dev/boost/blob/master/assets/icons/256x256.png?raw=true">
+    <img src="https://github.com/krud-dev/boost/blob/master/assets/logo.png?raw=true">
     </a>
 </p>
 
@@ -29,6 +29,10 @@ For improvements and bug reports, please don't hesitate to open an issue.
 
 Pull requests are welcome. For major changes, please open an issue first to discuss what you would like to change. See [CONTRIBUTING.md](CONTRIBUTING.md) for more information.
 
-
 ## License
+
 Boost is released under the Apache-2.0 License. See the [LICENSE](LICENSE) file for more details.
+
+<p align="center">
+    <img src="https://github.com/krud-dev/boost/blob/master/assets/screenshots/instance-dashboard.png?raw=true">
+</p>
