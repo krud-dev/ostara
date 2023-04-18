@@ -9,6 +9,8 @@ export const defaults = {
    * Whether auto-updates are enabled or not.
    */
   autoUpdateEnabled: true,
+
+  lastUpdateCheckTime: 0,
 };
 
 export type Configuration = typeof defaults;

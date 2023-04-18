@@ -179,9 +179,6 @@ const createMainWindow = async () => {
   // eslint-disable-next-line
   log.transports.console.level = 'info';
   initializeAppUpdaterSubscriptions(mainWindow);
-  scheduleJob('0 0 */1 * * *', () => {
-    appUpdater.checkForUpdates();
-  });
 };
 
 /**

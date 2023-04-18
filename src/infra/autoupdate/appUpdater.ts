@@ -1,9 +1,10 @@
 import { autoUpdater, UpdateInfo } from 'electron-updater';
 import path from 'path';
 import log from 'electron-log';
-import { BrowserWindow } from 'electron';
+import { app, BrowserWindow } from 'electron';
 import { systemEvents } from '../events';
 import { configurationStore } from '../store/store';
+import { scheduleJob } from 'node-schedule';
 
 export class AppUpdater {
   constructor(autoUpdate = false) {
@@ -47,6 +48,9 @@ export class AppUpdater {
       log.silly(`Update cancelled: ${JSON.stringify(info)}`);
       systemEvents.emit('update-cancelled', info);
     });
+
+    scheduleJob('0 */5 * * * *', this.checkForUpdatesJob.bind(this));
+    this.checkForUpdatesJob();
   }
 
   updateAutoUpdate(autoUpdate: boolean) {
@@ -66,6 +70,13 @@ export class AppUpdater {
 
   quitAndInstall() {
     autoUpdater.quitAndInstall();
+  }
+
+  private async checkForUpdatesJob() {
+    if (configurationStore.get('lastUpdateCheckTime') < Date.now() - 1000 * 60 * 60) {
+      configurationStore.set('lastUpdateCheckTime', Date.now());
+      await this.checkForUpdates();
+    }
   }
 }
 
