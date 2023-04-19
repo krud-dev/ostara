@@ -10,6 +10,7 @@ import { useCrudCreate } from '../../../../apis/requests/crud/crudCreate';
 import { ApplicationModifyRequestRO, ApplicationRO } from '../../../../../common/generated_definitions';
 import { applicationCrudEntity } from '../../../../apis/requests/crud/entity/entities/application.crudEntity';
 import { INHERITED_COLOR_VALUE } from '../../../../hooks/useItemColor';
+import { useAnalytics } from '../../../../contexts/AnalyticsContext';
 
 export type CreateApplicationDialogProps = {
   parentFolderId?: string;
@@ -20,6 +21,7 @@ export type CreateApplicationDialogProps = {
 const CreateApplicationDialog: FunctionComponent<CreateApplicationDialogProps & NiceModalHocProps> = NiceModal.create(
   ({ parentFolderId, sort, onCreated }) => {
     const modal = useModal();
+    const { addEvents } = useAnalytics();
 
     const [submitting, setSubmitting] = useState<boolean>(false);
 
@@ -44,6 +46,8 @@ const CreateApplicationDialog: FunctionComponent<CreateApplicationDialogProps & 
             item: itemToCreate,
           });
           if (result) {
+            addEvents([{ name: 'add_application', params: {} }]);
+
             onCreated?.(result);
 
             modal.resolve(result);

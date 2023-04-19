@@ -18,6 +18,7 @@ import { getActuatorUrls } from '../../../../utils/itemUtils';
 import { useQueryClient } from '@tanstack/react-query';
 import { crudKeys } from '../../../../apis/requests/crud/crudKeys';
 import { useCrudCreateBulk } from '../../../../apis/requests/crud/crudCreateBulk';
+import { useAnalytics } from '../../../../contexts/AnalyticsContext';
 
 export type CreateInstanceDialogProps = {
   parentApplicationId?: string;
@@ -30,6 +31,7 @@ const CreateInstanceDialog: FunctionComponent<CreateInstanceDialogProps & NiceMo
   ({ parentApplicationId, parentFolderId, sort, onCreated }) => {
     const modal = useModal();
     const queryClient = useQueryClient();
+    const { addEvents } = useAnalytics();
 
     const [submitting, setSubmitting] = useState<boolean>(false);
 
@@ -80,6 +82,8 @@ const CreateInstanceDialog: FunctionComponent<CreateInstanceDialogProps & NiceMo
           if (result) {
             queryClient.invalidateQueries(crudKeys.entity(applicationCrudEntity));
             queryClient.invalidateQueries(crudKeys.entity(instanceCrudEntity));
+
+            addEvents([{ name: 'add_instance', params: { count: instancesToCreate.length.toString() } }]);
 
             onCreated?.(result);
 

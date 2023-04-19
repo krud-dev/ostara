@@ -8,6 +8,7 @@ import { FolderModifyRequestRO, FolderRO } from '../../../../../common/generated
 import { useCrudCreate } from '../../../../apis/requests/crud/crudCreate';
 import { folderCrudEntity } from '../../../../apis/requests/crud/entity/entities/folder.crudEntity';
 import { INHERITED_COLOR_VALUE } from '../../../../hooks/useItemColor';
+import { useAnalytics } from '../../../../contexts/AnalyticsContext';
 
 export type CreateFolderDialogProps = {
   parentFolderId?: string;
@@ -18,6 +19,7 @@ export type CreateFolderDialogProps = {
 const CreateFolderDialog: FunctionComponent<CreateFolderDialogProps & NiceModalHocProps> = NiceModal.create(
   ({ parentFolderId, sort, onCreated }) => {
     const modal = useModal();
+    const { addEvents } = useAnalytics();
 
     const [submitting, setSubmitting] = useState<boolean>(false);
 
@@ -38,6 +40,8 @@ const CreateFolderDialog: FunctionComponent<CreateFolderDialogProps & NiceModalH
         try {
           const result = await createState.mutateAsync({ entity: folderCrudEntity, item: itemToCreate });
           if (result) {
+            addEvents([{ name: 'add_folder', params: {} }]);
+
             onCreated?.(result);
 
             modal.resolve(result);
