@@ -11,7 +11,7 @@ import { SettingsContext, SettingsProvider } from 'renderer/contexts/SettingsCon
 import Router from 'renderer/routes/routes';
 import { StompProvider } from './apis/websockets/StompContext';
 import ApiErrorManager from './apis/ApiErrorManager';
-import GoogleAnalyticsManager from './components/managers/GoogleAnalyticsManager';
+import { AnalyticsProvider } from './contexts/AnalyticsContext';
 import NewVersionManager from './components/managers/NewVersionManager';
 
 export default function App() {
@@ -24,35 +24,36 @@ export default function App() {
           <SettingsProvider>
             <SettingsContext.Consumer>
               {({ darkMode, localeInfo }) => (
-                <IntlProvider
-                  locale={localeInfo.locale}
-                  messages={localeInfo.messages}
-                  onError={(err) => {
-                    if (err.code === 'MISSING_TRANSLATION') {
-                      console.warn('Missing translation', err.message);
-                      return;
-                    }
-                    throw err;
-                  }}
-                >
-                  <LocalizationProvider dateAdapter={AdapterDateFns} adapterLocale={localeInfo.dateLocalization}>
-                    <ThemeConfig
-                      isDarkMode={darkMode}
-                      isRtl={localeInfo.direction === 'rtl'}
-                      localization={localeInfo.materialUiLocalization}
-                    >
-                      <NotistackProvider>
-                        <NiceModal.Provider>
-                          <ApiErrorManager />
-                          <GoogleAnalyticsManager />
-                          <NewVersionManager />
+                <AnalyticsProvider>
+                  <IntlProvider
+                    locale={localeInfo.locale}
+                    messages={localeInfo.messages}
+                    onError={(err) => {
+                      if (err.code === 'MISSING_TRANSLATION') {
+                        console.warn('Missing translation', err.message);
+                        return;
+                      }
+                      throw err;
+                    }}
+                  >
+                    <LocalizationProvider dateAdapter={AdapterDateFns} adapterLocale={localeInfo.dateLocalization}>
+                      <ThemeConfig
+                        isDarkMode={darkMode}
+                        isRtl={localeInfo.direction === 'rtl'}
+                        localization={localeInfo.materialUiLocalization}
+                      >
+                        <NotistackProvider>
+                          <NiceModal.Provider>
+                            <ApiErrorManager />
+                            <NewVersionManager />
 
-                          <Router />
-                        </NiceModal.Provider>
-                      </NotistackProvider>
-                    </ThemeConfig>
-                  </LocalizationProvider>
-                </IntlProvider>
+                            <Router />
+                          </NiceModal.Provider>
+                        </NotistackProvider>
+                      </ThemeConfig>
+                    </LocalizationProvider>
+                  </IntlProvider>
+                </AnalyticsProvider>
               )}
             </SettingsContext.Consumer>
           </SettingsProvider>
