@@ -79,8 +79,8 @@ const ApplicationDetailsForm: FunctionComponent<ApplicationDetailsFormProps> = (
                   error={invalid}
                   helperText={error?.message}
                   InputProps={{
-                    startAdornment: (
-                      <InputAdornment position="start">
+                    endAdornment: (
+                      <InputAdornment position="end">
                         <ItemIconFormField type={'application'} />
                       </InputAdornment>
                     ),
