@@ -1,5 +1,5 @@
 import { FormattedMessage, useIntl } from 'react-intl';
-import React, { FunctionComponent, useCallback, useMemo, useState } from 'react';
+import React, { FunctionComponent, useCallback, useMemo } from 'react';
 import { Controller, FormProvider, useForm, useWatch } from 'react-hook-form';
 import { Box, Button, DialogActions, DialogContent, TextField } from '@mui/material';
 import { LoadingButton } from '@mui/lab';
@@ -15,16 +15,16 @@ import AuthenticationDetailsForm from '../../authentication/forms/Authentication
 import { Authentication, InstanceModifyRequestRO } from '../../../../../common/generated_definitions';
 import useEffectiveAuthentication from '../../authentication/hooks/useEffectiveAuthentication';
 import EffectiveAuthenticationDetails from '../../authentication/effective/EffectiveAuthenticationDetails';
-import { FolderFormValues } from './FolderDetailsForm';
 
 export type InstanceDetailsFormProps = {
   defaultValues?: Partial<InstanceFormValues>;
-  onSubmit: (data: InstanceFormValues & { multipleInstances: boolean }) => Promise<void>;
+  onSubmit: (data: InstanceFormValues) => Promise<void>;
   onCancel: () => void;
 };
 
 export type InstanceFormValues = InstanceModifyRequestRO & {
   id?: string;
+  multipleInstances?: boolean;
   parentApplicationName?: string;
   parentFolderId?: string;
   authentication?: Authentication;
@@ -43,23 +43,10 @@ const InstanceDetailsForm: FunctionComponent<InstanceDetailsFormProps> = ({
     control,
     handleSubmit,
     formState: { isSubmitting },
+    setValue,
   } = methods;
 
-  const [multipleInstances, setMultipleInstances] = useState<boolean>(false);
-
   const showMultipleInstancesToggle = useMemo<boolean>(() => !defaultValues?.id, [defaultValues]);
-
-  const toggleMultipleInstances = useCallback((): void => {
-    setMultipleInstances((prev) => !prev);
-  }, [setMultipleInstances]);
-
-  const submitHandler = handleSubmit(async (data): Promise<void> => {
-    await onSubmit?.({ ...data, multipleInstances });
-  });
-
-  const cancelHandler = useCallback((): void => {
-    onCancel();
-  }, [onCancel]);
 
   const testConnectionState = useTestConnectionByUrl({ disableGlobalError: true });
   const actuatorUrl = useWatch<InstanceFormValues>({
@@ -72,11 +59,28 @@ const InstanceDetailsForm: FunctionComponent<InstanceDetailsFormProps> = ({
     name: 'authentication',
     defaultValue: defaultValues?.authentication,
   }) as Authentication | undefined;
+  const multipleInstances = useWatch<InstanceFormValues>({
+    control: control,
+    name: 'multipleInstances',
+    defaultValue: defaultValues?.multipleInstances || false,
+  }) as boolean;
 
   const effectiveAuthentication = useEffectiveAuthentication({
     applicationId: defaultValues?.parentApplicationId,
     folderId: defaultValues?.parentFolderId,
   });
+
+  const toggleMultipleInstances = useCallback((): void => {
+    setValue('multipleInstances', !multipleInstances);
+  }, [setValue, multipleInstances]);
+
+  const submitHandler = handleSubmit(async (data): Promise<void> => {
+    await onSubmit?.({ ...data });
+  });
+
+  const cancelHandler = useCallback((): void => {
+    onCancel();
+  }, [onCancel]);
 
   const testConnectionHandler = useCallback(async (): Promise<void> => {
     try {
