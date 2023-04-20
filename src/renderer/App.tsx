@@ -12,6 +12,7 @@ import Router from 'renderer/routes/routes';
 import { StompProvider } from './apis/websockets/StompContext';
 import ApiErrorManager from './apis/ApiErrorManager';
 import GoogleAnalyticsManager from './components/managers/GoogleAnalyticsManager';
+import NewVersionManager from './components/managers/NewVersionManager';
 
 export default function App() {
   const queryClient = useQueryClient();
@@ -44,6 +45,7 @@ export default function App() {
                         <NiceModal.Provider>
                           <ApiErrorManager />
                           <GoogleAnalyticsManager />
+                          <NewVersionManager />
 
                           <Router />
                         </NiceModal.Provider>

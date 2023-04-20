@@ -4,10 +4,9 @@ import NiceModal, { NiceModalHocProps, useModal } from '@ebay/nice-modal-react';
 import DialogTitleEnhanced from 'renderer/components/dialog/DialogTitleEnhanced';
 import { InstanceBean } from '../../../../../apis/requests/instance/beans/getInstanceBeans';
 import GraphComponent from '../../../../general/graph/components/GraphComponent';
-import { Edge, getConnectedEdges, Node } from 'reactflow';
-import { chain, uniq, uniqBy } from 'lodash';
-import { getConnectedNodes, getIncomingNodes, getOutgoingNodes } from '../../../../general/graph/utils/reactFlowUtils';
-import { notEmpty } from '../../../../../utils/objectUtils';
+import { Edge, Node } from 'reactflow';
+import { chain, uniqBy } from 'lodash';
+import { getIncomingNodes, getOutgoingNodes } from '../../../../general/graph/utils/reactFlowUtils';
 import { FormattedMessage } from 'react-intl';
 
 export type BeansGraphDialogProps = {

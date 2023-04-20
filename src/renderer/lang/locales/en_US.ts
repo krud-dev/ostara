@@ -317,7 +317,8 @@ export default {
   cacheStatisticsNotAvailable: 'Cache statistics not available',
   heapdumpNotReady: 'Heapdump not ready',
   profilingRequestNotFinished: 'Profiling request not finished',
-  whatsNew: "What's New?",
+  whatsNew: "What's New",
+  appVersionUpdated: 'App version updated',
   allowErrorReporting: 'Allow Error Reporting',
   allowErrorReportingDescription:
     'Allow the app to anonymously collect exceptions and crash reports. The data collected is used to improve the app and will not be shared with anyone.',
