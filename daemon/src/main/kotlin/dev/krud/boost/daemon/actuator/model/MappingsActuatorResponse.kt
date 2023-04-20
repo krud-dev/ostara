@@ -8,7 +8,7 @@ data class MappingsActuatorResponse(
         val parentId: String?
     ) {
         data class Mappings(
-            val dispatcherServlets: Map<String, List<DispatcherServletOrHandler>>,
+            val dispatcherServlets: Map<String, List<DispatcherServletOrHandler>>?,
             val servletFilters: List<ServletFilter>,
             val servlets: List<Servlet>,
             val dispatcherHandlers: Map<String, List<DispatcherServletOrHandler>>?

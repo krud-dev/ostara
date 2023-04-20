@@ -757,7 +757,7 @@ export interface LiquibaseActuatorResponse$Context$LiquibaseBean {
 }
 
 export interface MappingsActuatorResponse$Context$Mappings {
-    dispatcherServlets: { [index: string]: MappingsActuatorResponse$Context$Mappings$DispatcherServletOrHandler[] };
+    dispatcherServlets?: { [index: string]: MappingsActuatorResponse$Context$Mappings$DispatcherServletOrHandler[] };
     servletFilters: MappingsActuatorResponse$Context$Mappings$ServletFilter[];
     servlets: MappingsActuatorResponse$Context$Mappings$Servlet[];
     dispatcherHandlers?: { [index: string]: MappingsActuatorResponse$Context$Mappings$DispatcherServletOrHandler[] };
