@@ -166,8 +166,8 @@ const InstanceDetailsForm: FunctionComponent<InstanceDetailsFormProps> = ({
                   error={invalid}
                   helperText={error?.message}
                   InputProps={{
-                    startAdornment: (
-                      <InputAdornment position="start">
+                    endAdornment: (
+                      <InputAdornment position="end">
                         <ItemIconFormField type={'instance'} />
                       </InputAdornment>
                     ),

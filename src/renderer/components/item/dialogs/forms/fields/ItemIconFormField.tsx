@@ -1,5 +1,5 @@
 import React, { useCallback, useMemo } from 'react';
-import { IconButton } from '@mui/material';
+import { IconButton, Tooltip } from '@mui/material';
 import { getItemTypeIcon } from 'renderer/utils/itemUtils';
 import { usePopupState } from 'material-ui-popup-state/hooks';
 import { IconViewer, MUIconType } from 'renderer/components/common/IconViewer';
@@ -7,6 +7,7 @@ import { useFormContext } from 'react-hook-form';
 import ItemIconMenu from 'renderer/components/item/dialogs/forms/fields/ItemIconMenu';
 import { ItemType } from '../../../../../definitions/daemon';
 import { DEFAULT_ICON_VALUE } from '../../../../../hooks/useItemIcon';
+import { FormattedMessage } from 'react-intl';
 
 type ItemIconFormFieldProps = { type: ItemType };
 
@@ -43,9 +44,11 @@ export default function ItemIconFormField({ type }: ItemIconFormFieldProps) {
 
   return (
     <>
-      <IconButton size={'small'} onClick={openMenuHandler} ref={menuState.setAnchorEl}>
-        <IconViewer icon={icon} fontSize={'small'} />
-      </IconButton>
+      <Tooltip title={<FormattedMessage id={'changeIcon'} />}>
+        <IconButton size={'small'} onClick={openMenuHandler} ref={menuState.setAnchorEl}>
+          <IconViewer icon={icon} fontSize={'small'} />
+        </IconButton>
+      </Tooltip>
 
       <ItemIconMenu typeIcon={typeIcon} selectedIcon={icon} onSelected={iconSelectedHandler} menuState={menuState} />
     </>

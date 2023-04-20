@@ -313,6 +313,7 @@ export default {
   remaining: 'Remaining',
   appVersion: 'App Version',
   readMore: 'Read More',
+  changeIcon: 'Change Icon',
   cacheStatisticsNotAvailable: 'Cache statistics not available',
   heapdumpNotReady: 'Heapdump not ready',
   profilingRequestNotFinished: 'Profiling request not finished',
