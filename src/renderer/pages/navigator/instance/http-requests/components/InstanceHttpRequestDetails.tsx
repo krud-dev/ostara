@@ -35,7 +35,7 @@ export default function InstanceHttpRequestDetails({ row }: InstanceBeanDetailsP
   const statusesData = useMemo<InstanceHttpRequestChartsData | undefined>(
     () =>
       statusesState.data
-        ? map(statusesState.data, (statistics, method) => ({ label: method, statistics: statistics }))
+        ? map(statusesState.data, (statistics, status) => ({ label: status, statistics: statistics }))
         : undefined,
     [statusesState.data]
   );
@@ -44,7 +44,7 @@ export default function InstanceHttpRequestDetails({ row }: InstanceBeanDetailsP
   const outcomesData = useMemo<InstanceHttpRequestChartsData | undefined>(
     () =>
       outcomesState.data
-        ? map(outcomesState.data, (statistics, method) => ({ label: method, statistics: statistics }))
+        ? map(outcomesState.data, (statistics, outcome) => ({ label: outcome, statistics: statistics }))
         : undefined,
     [outcomesState.data]
   );
@@ -56,7 +56,7 @@ export default function InstanceHttpRequestDetails({ row }: InstanceBeanDetailsP
   const exceptionsData = useMemo<InstanceHttpRequestChartsData | undefined>(
     () =>
       exceptionsState.data
-        ? map(exceptionsState.data, (statistics, method) => ({ label: method, statistics: statistics }))
+        ? map(exceptionsState.data, (statistics, exception) => ({ label: exception, statistics: statistics }))
         : undefined,
     [exceptionsState.data]
   );

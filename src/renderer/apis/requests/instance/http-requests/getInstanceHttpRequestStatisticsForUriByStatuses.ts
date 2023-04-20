@@ -14,7 +14,7 @@ type Variables = {
   uri: string;
 };
 
-type Data = { [key: number]: InstanceHttpRequestStatisticsRO };
+type Data = { [key: string]: InstanceHttpRequestStatisticsRO };
 
 export const getInstanceHttpRequestStatisticsForUriByStatuses = async (variables: Variables): Promise<Data> => {
   return (
