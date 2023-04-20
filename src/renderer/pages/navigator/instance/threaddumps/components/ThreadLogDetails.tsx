@@ -1,5 +1,5 @@
 import React, { useCallback, useMemo } from 'react';
-import { Box, Card, CardContent, Stack } from '@mui/material';
+import { Box, Card, CardContent, Stack, Typography } from '@mui/material';
 import { ThreadLog } from './ThreadProfilingRequestDetailsDialog';
 import { Theme } from '@mui/material/styles';
 import { SxProps } from '@mui/system';
@@ -8,7 +8,8 @@ import FormattedDateAndRelativeTime from '../../../../../components/format/Forma
 import ThreadLogStackTrace from './ThreadLogStackTrace';
 import ToolbarButton from '../../../../../components/common/ToolbarButton';
 import { useThreadLog } from '../contexts/ThreadLogContext';
-import DetailsLabelValueVertical from '../../../../../components/table/details/DetailsLabelValueVertical';
+import DetailsLabelValueHorizontal from '../../../../../components/table/details/DetailsLabelValueHorizontal';
+import { InlineCodeLabel } from '../../../../../components/code/InlineCodeLabel';
 
 type ThreadLogDetailsProps = {
   threadLog: ThreadLog;
@@ -26,29 +27,38 @@ export default function ThreadLogDetails({ threadLog, sx }: ThreadLogDetailsProp
 
   return (
     <Card variant={'outlined'} sx={{ ...sx }}>
-      <CardContent sx={{ minWidth: 400, position: 'relative' }}>
+      <CardContent sx={{ position: 'relative' }}>
         <ToolbarButton
           tooltip={<FormattedMessage id={'close'} />}
           icon={'CloseOutlined'}
+          size={'small'}
           onClick={closeHandler}
           sx={{ position: 'absolute', top: (theme) => theme.spacing(1), right: (theme) => theme.spacing(1) }}
         />
         <Stack direction={'column'} spacing={1.5}>
-          <DetailsLabelValueVertical label={<FormattedMessage id={'index'} />} value={threadLog.index} />
-          <DetailsLabelValueVertical
+          <Typography variant={'subtitle1'}>
+            <FormattedMessage id={'index'} /> {threadLog.index}
+          </Typography>
+          <DetailsLabelValueHorizontal
             label={<FormattedMessage id={'time'} />}
             value={<FormattedDateAndRelativeTime value={threadLog.creationTime} showRelative={false} />}
           />
-          <DetailsLabelValueVertical label={<FormattedMessage id={'threadId'} />} value={threadLog.threadId} />
-          <DetailsLabelValueVertical label={<FormattedMessage id={'threadName'} />} value={threadLog.threadName} />
-          <DetailsLabelValueVertical label={<FormattedMessage id={'threadState'} />} value={threadLog.threadState} />
-          <DetailsLabelValueVertical label={<FormattedMessage id={'blockedCount'} />} value={threadLog.blockedCount} />
-          <DetailsLabelValueVertical label={<FormattedMessage id={'blockedTime'} />} value={threadLog.blockedTime} />
-          <DetailsLabelValueVertical label={<FormattedMessage id={'waitedCount'} />} value={threadLog.waitedCount} />
-          <DetailsLabelValueVertical label={<FormattedMessage id={'waitedTime'} />} value={threadLog.waitedTime} />
-          <DetailsLabelValueVertical label={<FormattedMessage id={'lockName'} />} value={threadLog.lockName} />
-          <DetailsLabelValueVertical label={<FormattedMessage id={'lockOwnerId'} />} value={threadLog.lockOwnerId} />
-          <DetailsLabelValueVertical
+          <DetailsLabelValueHorizontal label={<FormattedMessage id={'threadId'} />} value={threadLog.threadId} />
+          <DetailsLabelValueHorizontal label={<FormattedMessage id={'threadName'} />} value={threadLog.threadName} />
+          <DetailsLabelValueHorizontal
+            label={<FormattedMessage id={'threadState'} />}
+            value={<InlineCodeLabel code={threadLog.threadState} />}
+          />
+          <DetailsLabelValueHorizontal
+            label={<FormattedMessage id={'blockedCount'} />}
+            value={threadLog.blockedCount}
+          />
+          <DetailsLabelValueHorizontal label={<FormattedMessage id={'blockedTime'} />} value={threadLog.blockedTime} />
+          <DetailsLabelValueHorizontal label={<FormattedMessage id={'waitedCount'} />} value={threadLog.waitedCount} />
+          <DetailsLabelValueHorizontal label={<FormattedMessage id={'waitedTime'} />} value={threadLog.waitedTime} />
+          <DetailsLabelValueHorizontal label={<FormattedMessage id={'lockName'} />} value={threadLog.lockName} />
+          <DetailsLabelValueHorizontal label={<FormattedMessage id={'lockOwnerId'} />} value={threadLog.lockOwnerId} />
+          <DetailsLabelValueHorizontal
             label={<FormattedMessage id={'lockOwnerName'} />}
             value={threadLog.lockOwnerName}
           />

@@ -69,7 +69,7 @@ export default function ThreadLogsBar({ threadLogs, logsCount }: ThreadLogsBarPr
           <PerfectScrollbar options={{ suppressScrollY: true }}>
             <Stack direction={'row'} spacing={1} sx={{ py: 1 }}>
               {openThreadLogs.map((threadLog) => (
-                <ThreadLogDetails threadLog={threadLog} sx={{ flexGrow: 1, minWidth: 500 }} key={threadLog.index} />
+                <ThreadLogDetails threadLog={threadLog} sx={{ flexGrow: 1, minWidth: 360 }} key={threadLog.index} />
               ))}
             </Stack>
           </PerfectScrollbar>
