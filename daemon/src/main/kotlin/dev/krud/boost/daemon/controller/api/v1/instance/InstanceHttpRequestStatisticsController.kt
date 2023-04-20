@@ -63,7 +63,7 @@ class InstanceHttpRequestStatisticsController(
     )
     @ApiResponse(responseCode = "200", description = "Get HTTP request statistics for an instance by URI split by statuses")
     @ApiResponse(responseCode = "404", description = "Instance not found")
-    fun getStatisticsByUriAndStatus(@PathVariable instanceId: UUID, @RequestParam uri: String): Map<Int, InstanceHttpRequestStatisticsRO> {
+    fun getStatisticsByUriAndStatus(@PathVariable instanceId: UUID, @RequestParam uri: String): Map<String, InstanceHttpRequestStatisticsRO> {
         return instanceHttpRequestStatisticsService.getStatisticsByUriAndStatus(instanceId, uri)
     }
 
