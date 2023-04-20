@@ -64,8 +64,8 @@ class InstanceHttpRequestStatisticsService(
     }
 
     @Cacheable(cacheNames = ["httpRequestStatisticsCache"], key = "'by_uri_and_status_' + #instanceId + '_' + #uri")
-    fun getStatisticsByUriAndStatus(instanceId: UUID, uri: String): Map<Int, InstanceHttpRequestStatisticsRO> {
-        return getStatisticsByTag(instanceId, uri, "status") { availableTagValue -> availableTagValue.toInt() }
+    fun getStatisticsByUriAndStatus(instanceId: UUID, uri: String): Map<String, InstanceHttpRequestStatisticsRO> {
+        return getStatisticsByTag(instanceId, uri, "status") { availableTagValue -> availableTagValue }
     }
 
     @Cacheable(cacheNames = ["httpRequestStatisticsCache"], key = "'by_uri_and_exception_' + #instanceId + '_' + #uri")
@@ -138,7 +138,7 @@ class InstanceHttpRequestStatisticsService(
     }
 
     companion object {
-        private const val METRIC_NAME = "http.server.requests"
+        const val METRIC_NAME = "http.server.requests"
         private fun getCacheKeys(instanceId: UUID): Set<String> {
             return setOf(
                 "all_uris_$instanceId",
