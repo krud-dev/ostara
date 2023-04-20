@@ -138,7 +138,7 @@ class InstanceHttpRequestStatisticsService(
     }
 
     companion object {
-        private const val METRIC_NAME = "http.server.requests"
+        const val METRIC_NAME = "http.server.requests"
         private fun getCacheKeys(instanceId: UUID): Set<String> {
             return setOf(
                 "all_uris_$instanceId",
