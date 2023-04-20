@@ -1,16 +1,7 @@
 import { NodeRendererProps } from 'react-arborist';
-import {
-  Badge,
-  CircularProgress,
-  IconButton,
-  ListItem,
-  ListItemIcon,
-  ListItemText,
-  TextField,
-  Tooltip,
-} from '@mui/material';
+import { Badge, Box, IconButton, ListItem, ListItemIcon, ListItemText, TextField, Tooltip } from '@mui/material';
 import { alpha, experimentalStyled as styled, Theme, useTheme } from '@mui/material/styles';
-import React, { ReactNode, useCallback, useEffect, useMemo, useRef } from 'react';
+import React, { ReactNode, useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { TreeItem } from 'renderer/layout/navigator/components/sidebar/tree/tree';
 import typography from 'renderer/theme/config/typography';
 import { KeyboardArrowDown, KeyboardArrowRight, MoreVert, SvgIconComponent } from '@mui/icons-material';
@@ -132,6 +123,8 @@ export default function NavigatorTreeNode({ style, node, tree, dragHandle, previ
     },
     [node]
   );
+
+  const [tooltipOpen, setTooltipOpen] = useState<boolean>(false);
 
   const color = useItemColor(node.data);
   const displayName = useMemo<string>(() => getItemDisplayName(node.data), [node.data]);
@@ -260,8 +253,15 @@ export default function NavigatorTreeNode({ style, node, tree, dragHandle, previ
           <ListItemText
             disableTypography
             primary={
-              <Tooltip title={displayNameTooltip}>
-                <span>{displayName}</span>
+              <Tooltip title={displayNameTooltip} open={tooltipOpen}>
+                <Box
+                  component={'span'}
+                  onMouseEnter={() => setTooltipOpen(true)}
+                  onMouseLeave={() => setTooltipOpen(false)}
+                  onMouseDown={() => setTooltipOpen(false)}
+                >
+                  {displayName}
+                </Box>
               </Tooltip>
             }
             sx={{
