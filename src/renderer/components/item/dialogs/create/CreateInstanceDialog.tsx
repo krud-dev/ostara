@@ -1,6 +1,6 @@
 import { FormattedMessage } from 'react-intl';
-import React, { FunctionComponent, useCallback, useState } from 'react';
-import { Dialog } from '@mui/material';
+import React, { FunctionComponent, useCallback, useEffect, useState } from 'react';
+import { Box, Dialog } from '@mui/material';
 import NiceModal, { NiceModalHocProps, useModal } from '@ebay/nice-modal-react';
 import DialogTitleEnhanced from 'renderer/components/dialog/DialogTitleEnhanced';
 import InstanceDetailsForm, { InstanceFormValues } from 'renderer/components/item/dialogs/forms/InstanceDetailsForm';
@@ -18,6 +18,9 @@ import { getActuatorUrls } from '../../../../utils/itemUtils';
 import { useQueryClient } from '@tanstack/react-query';
 import { crudKeys } from '../../../../apis/requests/crud/crudKeys';
 import { useCrudCreateBulk } from '../../../../apis/requests/crud/crudCreateBulk';
+import LogoLoader from '../../../common/LogoLoader';
+import { every } from 'lodash';
+import { URL_REGEX } from '../../../../constants/regex';
 
 export type CreateInstanceDialogProps = {
   parentApplicationId?: string;
@@ -31,13 +34,26 @@ const CreateInstanceDialog: FunctionComponent<CreateInstanceDialogProps & NiceMo
     const modal = useModal();
     const queryClient = useQueryClient();
 
+    const [defaultValues, setDefaultValues] = useState<Partial<InstanceFormValues> | undefined>(undefined);
     const [submitting, setSubmitting] = useState<boolean>(false);
+
+    useEffect(() => {
+      (async () => {
+        const clipboard = await window.utils.readClipboardText();
+        const actuatorUrls = getActuatorUrls(clipboard);
+        const defaultActuatorUrl = every(actuatorUrls, (url) => URL_REGEX.test(url))
+          ? actuatorUrls.join('\n')
+          : undefined;
+        const multipleInstances = !!defaultActuatorUrl && actuatorUrls.length > 1;
+        setDefaultValues({ parentApplicationId, parentFolderId, actuatorUrl: defaultActuatorUrl, multipleInstances });
+      })();
+    }, []);
 
     const createApplicationState = useCrudCreate<ApplicationRO, ApplicationModifyRequestRO>({ refetchNone: true });
     const createBulkInstanceState = useCrudCreateBulk<InstanceRO, InstanceModifyRequestRO>({ refetchNone: true });
 
     const submitHandler = useCallback(
-      async (data: InstanceFormValues & { multipleInstances: boolean }): Promise<void> => {
+      async (data: InstanceFormValues): Promise<void> => {
         setSubmitting(true);
 
         try {
@@ -115,11 +131,13 @@ const CreateInstanceDialog: FunctionComponent<CreateInstanceDialogProps & NiceMo
         <DialogTitleEnhanced disabled={submitting} onClose={cancelHandler}>
           <FormattedMessage id={'createInstance'} />
         </DialogTitleEnhanced>
-        <InstanceDetailsForm
-          defaultValues={{ parentApplicationId, parentFolderId }}
-          onSubmit={submitHandler}
-          onCancel={cancelHandler}
-        />
+        {!defaultValues ? (
+          <Box sx={{ textAlign: 'center' }}>
+            <LogoLoader />
+          </Box>
+        ) : (
+          <InstanceDetailsForm defaultValues={defaultValues} onSubmit={submitHandler} onCancel={cancelHandler} />
+        )}
       </Dialog>
     );
   }
