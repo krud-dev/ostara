@@ -27,7 +27,7 @@ export default function DetailsLabelValueHorizontal({
       <Typography variant="body2" sx={{ textAlign: 'left', color: 'text.secondary', ...labelSx }}>
         {label}
       </Typography>
-      <Typography variant="subtitle2" sx={{ textAlign: 'right', ...valueSx }}>
+      <Typography variant="subtitle2" sx={{ textAlign: 'right', wordBreak: 'break-all', ...valueSx }}>
         {displayValue}
       </Typography>
     </Stack>

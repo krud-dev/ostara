@@ -9,17 +9,18 @@ export type ToolbarButtonProps = {
   tooltip?: ReactNode;
   icon: MUIconType;
   color?: ColorSchema;
+  size?: 'small' | 'medium' | 'large';
   disabled?: boolean;
   onClick?: (event: React.MouseEvent) => void;
   sx?: SxProps<Theme>;
 };
 
-export default function ToolbarButton({ tooltip, icon, color, disabled, onClick, sx }: ToolbarButtonProps) {
+export default function ToolbarButton({ tooltip, icon, color, size, disabled, onClick, sx }: ToolbarButtonProps) {
   return (
     <Box sx={{ display: 'inline-block', ...sx }}>
       <Tooltip title={tooltip} disableInteractive={false}>
         <Box component={'span'}>
-          <IconButton disabled={disabled} color={color} onClick={onClick}>
+          <IconButton disabled={disabled} color={color} size={size} onClick={onClick}>
             <IconViewer icon={icon} fontSize={'small'} />
           </IconButton>
         </Box>
