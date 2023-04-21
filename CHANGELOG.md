@@ -1,5 +1,23 @@
 # @krud-dev/boost
 
+## 0.5.0
+
+### Minor Changes
+
+- 789d2e0: Added app version updated dialog
+- b67f7b4: Added default actuator url from clipboard to create instance form
+
+### Patch Changes
+
+- 4e5930e: Fixed thread profiling thread data card ui
+- f6849d2: Fixed navbar tooltip doesn't disappear when dragging
+- 4384b82: Fixed URL regex not allowing dashes
+- 4637100: Fix incorrect non-nullable type for dispatcherServlet in mappings response
+- 87d4c87: Fixed update item icon ui
+- 2c9ce4f: Fixed disable error reporting in renderer for development
+- 31c8b52: Change Http Request Statistics by Statuses to be key by string instead of int
+- b1ea44b: Fixed url regex path allowed characters
+
 ## 0.4.3
 
 ### Patch Changes
