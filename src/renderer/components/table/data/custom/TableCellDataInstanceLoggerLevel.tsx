@@ -15,27 +15,29 @@ export default function TableCellDataInstanceLoggerLevel<EntityItem extends Enri
   row,
   column,
 }: TableCellDataLoggerLevelProps<EntityItem>) {
-  const [disabled, setDisabled] = useState<boolean>(false);
+  const [loadingLevels, setLoadingLevels] = useState<LogLevel[] | undefined>(undefined);
+
+  const disabled = useMemo(() => !!loadingLevels, [loadingLevels]);
 
   const setLevelState = useSetInstanceLoggerLevel();
   const changeHandler = useCallback(
-    async (newLevel: LogLevel | undefined): Promise<void> => {
+    async (newLevel: LogLevel): Promise<void> => {
       if (setLevelState.isLoading) {
         return;
       }
 
-      setDisabled(true);
+      setLoadingLevels([newLevel]);
       try {
         await setLevelState.mutateAsync({ instanceId: row.instanceId, loggerName: row.name, level: newLevel });
       } catch (e) {
-        setDisabled(false);
+        setLoadingLevels(undefined);
       }
     },
     [row, setLevelState]
   );
 
   useUpdateEffect(() => {
-    setDisabled(false);
+    setLoadingLevels(undefined);
   }, [row]);
 
   const effectiveLevels = useMemo<LogLevel[]>(
@@ -51,6 +53,7 @@ export default function TableCellDataInstanceLoggerLevel<EntityItem extends Enri
     <LogLevelToggleGroup
       effectiveLevels={effectiveLevels}
       configuredLevels={configuredLevels}
+      loadingLevels={loadingLevels}
       disabled={disabled}
       onChange={changeHandler}
     />

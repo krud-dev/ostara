@@ -1,6 +1,12 @@
 import { Theme } from '@mui/material/styles';
 import { Components } from '@mui/material/styles/components';
 
+declare module '@mui/material/CircularProgress' {
+  interface CircularProgressPropsColorOverrides {
+    fatal: true;
+  }
+}
+
 export default function Progress(theme: Theme): Components {
   const isLight = theme.palette.mode === 'light';
 
