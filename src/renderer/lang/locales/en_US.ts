@@ -185,6 +185,8 @@ export default {
   download: 'Download',
   requestTime: 'Request Time',
   requestHeapdump: 'Request Heapdump',
+  requestHeapdumpExplanation:
+    'Click on the "Request Heapdump" button next to the search bar to generate a new heapdump. Heapdump will be generated in the background. Once it is ready, you will be able to download it.',
   heapdumpRequestedSuccessfully: 'Heapdump requested successfully',
   heapdumpDownloadFailed: 'Heapdump download failed',
   pending: 'Pending',
@@ -230,6 +232,8 @@ export default {
   running: 'Running',
   finished: 'Finished',
   requestThreadProfiling: 'Request Thread Profiling',
+  requestThreadProfilingExplanation:
+    'Click on the "Request Thread Profiling" button next to the search bar to generate a new thread dump. Thread dump will be generated in the background. Once it is ready, you will be able to view the details.',
   durationSeconds: 'Duration (seconds)',
   logs: 'Logs',
   status: 'Status',

@@ -1,4 +1,4 @@
-import React, { PropsWithChildren, useCallback, useContext, useMemo, useState } from 'react';
+import React, { PropsWithChildren, ReactNode, useCallback, useContext, useMemo, useState } from 'react';
 import { Entity } from 'renderer/entity/entity';
 import { isEmpty, orderBy } from 'lodash';
 import { DEFAULT_ROWS_PER_PAGE, TABLE_SCROLL_CONTAINER_ID } from 'renderer/constants/ui';
@@ -25,6 +25,7 @@ export type TableContextProps<EntityItem, CustomFilters> = {
   isRowOpen: (row: EntityItem) => boolean;
   loading: boolean;
   empty: boolean;
+  emptyContent?: ReactNode;
   page: number;
   changePageHandler: (newPage: number) => void;
   rowsPerPage: number;
@@ -51,6 +52,7 @@ interface TableProviderProps<EntityItem, CustomFilters> extends PropsWithChildre
   entity: Entity<EntityItem, CustomFilters>;
   data?: EntityItem[];
   loading: boolean;
+  emptyContent?: ReactNode;
   refetchHandler: () => void;
   actionsHandler: (actionId: string, row: EntityItem) => Promise<void>;
   massActionsHandler: (actionId: string, selectedRows: EntityItem[]) => Promise<void>;
@@ -61,6 +63,7 @@ function TableProvider<EntityItem, CustomFilters>({
   entity,
   data,
   loading,
+  emptyContent,
   refetchHandler,
   actionsHandler,
   massActionsHandler,
@@ -260,6 +263,7 @@ function TableProvider<EntityItem, CustomFilters>({
         isRowOpen,
         loading,
         empty,
+        emptyContent,
         page,
         changePageHandler,
         rowsPerPage,
