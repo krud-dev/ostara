@@ -3,7 +3,7 @@ import Page from 'renderer/components/layout/Page';
 import { useNavigatorTree } from 'renderer/contexts/NavigatorTreeContext';
 import TableComponent from 'renderer/components/table/TableComponent';
 import { Entity } from 'renderer/entity/entity';
-import { Card } from '@mui/material';
+import { Box, Button, Card } from '@mui/material';
 import {
   InstanceHeapdumpDownloadProgressMessage$Payload,
   InstanceRO,
@@ -20,6 +20,9 @@ import { useSnackbar } from 'notistack';
 import { useDeleteInstanceHeapdumpReference } from '../../../../apis/requests/instance/heapdumps/deleteInstanceHeapdumpReference';
 import { useDownloadInstanceHeapdumpReference } from '../../../../apis/requests/instance/heapdumps/downloadInstanceHeapdumpReference';
 import { useStomp } from '../../../../apis/websockets/StompContext';
+import EmptyContent from '../../../../components/help/EmptyContent';
+import { LoadingButton } from '@mui/lab';
+import { IconViewer } from '../../../../components/common/IconViewer';
 
 const InstanceHeapdumpReferences: FunctionComponent = () => {
   const { selectedItem } = useNavigatorTree();
@@ -111,6 +114,14 @@ const InstanceHeapdumpReferences: FunctionComponent = () => {
     }
   }, []);
 
+  const [requestLoading, setRequestLoading] = useState<boolean>(false);
+
+  const requestHandler = useCallback(async (): Promise<void> => {
+    setRequestLoading(true);
+    await globalActionsHandler(REQUEST_ID);
+    setRequestLoading(false);
+  }, [globalActionsHandler, setRequestLoading]);
+
   return (
     <Page>
       <Card>
@@ -118,6 +129,24 @@ const InstanceHeapdumpReferences: FunctionComponent = () => {
           entity={entity}
           data={data}
           loading={loading}
+          emptyContent={
+            <>
+              <Box>
+                <FormattedMessage id={'requestHeapdumpExplanation'} />
+              </Box>
+              <Box sx={{ mt: 2 }}>
+                <LoadingButton
+                  variant={'outlined'}
+                  color={'primary'}
+                  loading={requestLoading}
+                  startIcon={<IconViewer icon={'BrowserUpdatedOutlined'} />}
+                  onClick={requestHandler}
+                >
+                  <FormattedMessage id={'requestHeapdump'} />
+                </LoadingButton>
+              </Box>
+            </>
+          }
           refetchHandler={queryState.refetch}
           actionsHandler={actionsHandler}
           massActionsHandler={massActionsHandler}

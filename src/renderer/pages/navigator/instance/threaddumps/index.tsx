@@ -3,12 +3,8 @@ import Page from 'renderer/components/layout/Page';
 import { useNavigatorTree } from 'renderer/contexts/NavigatorTreeContext';
 import TableComponent from 'renderer/components/table/TableComponent';
 import { Entity } from 'renderer/entity/entity';
-import { Card } from '@mui/material';
-import {
-  InstanceRO,
-  ThreadProfilingProgressMessage$Payload,
-  ThreadProfilingRequestRO,
-} from '../../../../../common/generated_definitions';
+import { Box, Card } from '@mui/material';
+import { InstanceRO, ThreadProfilingProgressMessage$Payload } from '../../../../../common/generated_definitions';
 import { DELETE_ID, REQUEST_ID, VIEW_ID } from '../../../../entity/actions';
 import { useSnackbar } from 'notistack';
 import { instanceThreadProfilingRequestEntity } from '../../../../entity/entities/instanceThreadProfilingRequest.entity';
@@ -22,6 +18,8 @@ import { FormattedMessage } from 'react-intl';
 import NiceModal from '@ebay/nice-modal-react';
 import ThreadProfilingRequestDetailsDialog from './components/ThreadProfilingRequestDetailsDialog';
 import { useStomp } from '../../../../apis/websockets/StompContext';
+import { LoadingButton } from '@mui/lab';
+import { IconViewer } from '../../../../components/common/IconViewer';
 
 const InstanceThreadProfiling: FunctionComponent = () => {
   const { selectedItem } = useNavigatorTree();
@@ -104,6 +102,14 @@ const InstanceThreadProfiling: FunctionComponent = () => {
     }
   }, []);
 
+  const [requestLoading, setRequestLoading] = useState<boolean>(false);
+
+  const requestHandler = useCallback(async (): Promise<void> => {
+    setRequestLoading(true);
+    await globalActionsHandler(REQUEST_ID);
+    setRequestLoading(false);
+  }, [globalActionsHandler, setRequestLoading]);
+
   return (
     <Page>
       <Card>
@@ -111,6 +117,24 @@ const InstanceThreadProfiling: FunctionComponent = () => {
           entity={entity}
           data={data}
           loading={loading}
+          emptyContent={
+            <>
+              <Box>
+                <FormattedMessage id={'requestThreadProfilingExplanation'} />
+              </Box>
+              <Box sx={{ mt: 2 }}>
+                <LoadingButton
+                  variant={'outlined'}
+                  color={'primary'}
+                  loading={requestLoading}
+                  startIcon={<IconViewer icon={'SpeedOutlined'} />}
+                  onClick={requestHandler}
+                >
+                  <FormattedMessage id={'requestThreadProfiling'} />
+                </LoadingButton>
+              </Box>
+            </>
+          }
           refetchHandler={queryState.refetch}
           actionsHandler={actionsHandler}
           massActionsHandler={massActionsHandler}
