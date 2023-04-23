@@ -10,6 +10,9 @@ import InstancePropertiesCode from 'renderer/pages/navigator/instance/properties
 import TabPanel, { TabInfo } from 'renderer/components/layout/TabPanel';
 import { InstanceRO } from '../../../../../common/generated_definitions';
 import LogoLoader from '../../../../components/common/LogoLoader';
+import RedactionAlert from '../../../../components/help/RedactionAlert';
+import { COMPONENTS_SPACING } from '../../../../constants/ui';
+import useRerenderKey from '../../../../hooks/useRerenderKey';
 
 const InstanceProperties: FunctionComponent = () => {
   const { selectedItem } = useNavigatorTree();
@@ -29,6 +32,14 @@ const InstanceProperties: FunctionComponent = () => {
     [propertiesState.data]
   );
 
+  const showRedactionAlert = useMemo<boolean>(
+    () =>
+      !empty && (propertiesState.data?.redactionLevel === 'PARTIAL' || propertiesState.data?.redactionLevel === 'FULL'),
+    [empty, propertiesState.data]
+  );
+
+  const [rerenderKey, rerender] = useRerenderKey();
+
   return (
     <Page sx={{ height: '100%' }}>
       {loading && (
@@ -38,9 +49,12 @@ const InstanceProperties: FunctionComponent = () => {
       )}
 
       {empty && <EmptyContent text={<FormattedMessage id={'noData'} />} />}
+      {showRedactionAlert && (
+        <RedactionAlert localStorageKeySuffix={'properties'} onDismiss={rerender} sx={{ mb: COMPONENTS_SPACING }} />
+      )}
 
       {tabs && (
-        <Card>
+        <Card key={rerenderKey}>
           <TabPanel
             tabs={tabs}
             sx={{ backgroundColor: (theme) => theme.palette.background.neutral }}

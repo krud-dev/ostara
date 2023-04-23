@@ -21,3 +21,5 @@ export const FALSE_LABEL_ID = 'no';
 export const REPOSITORY_URL = 'https://github.com/krud-dev/boost';
 export const DOCUMENTATION_URL = 'https://boost.krud.dev/';
 export const ABILITIES_DOCUMENTATION_URL = 'https://boost.krud.dev/features/abilities';
+export const REDACTION_DOCUMENTATION_URL =
+  'https://boost.krud.dev/troubleshooting/environment-variables-system-properties-app-properties-are-partially-or-fully-masked';

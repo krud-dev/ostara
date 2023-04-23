@@ -6,13 +6,17 @@ import {
 } from 'renderer/apis/requests/base/useBaseMutation';
 import { apiKeys } from 'renderer/apis/apiKeys';
 import { chain } from 'lodash';
-import { InstanceSystemEnvironmentRO } from '../../../../../common/generated_definitions';
+import {
+  InstanceSystemEnvironmentRO,
+  InstanceSystemEnvironmentRO$RedactionLevel,
+} from '../../../../../common/generated_definitions';
 import { axiosInstance } from '../../../axiosInstance';
 import { AxiosResponse } from 'axios';
 
 export type SystemEnvironmentProperty = {
   name: string;
   value: string;
+  redactionLevel: InstanceSystemEnvironmentRO$RedactionLevel;
 };
 
 type Variables = {
@@ -28,7 +32,7 @@ export const getInstanceSystemEnvironment = async (variables: Variables): Promis
     )
   ).data;
   return chain(result.properties)
-    .map((value, name) => ({ name, value }))
+    .map((value, name) => ({ name, value, redactionLevel: result.redactionLevel }))
     .value();
 };
 

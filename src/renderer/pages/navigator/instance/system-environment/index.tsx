@@ -12,6 +12,10 @@ import {
   useGetInstanceSystemEnvironmentQuery,
 } from '../../../../apis/requests/instance/env/getInstanceSystemEnvironment';
 import { instanceSystemEnvironmentEntity } from '../../../../entity/entities/instanceSystemEnvironment.entity';
+import { some } from 'lodash';
+import RedactionAlert from '../../../../components/help/RedactionAlert';
+import { COMPONENTS_SPACING } from '../../../../constants/ui';
+import useRerenderKey from '../../../../hooks/useRerenderKey';
 
 const InstanceSystemEnvironment: FunctionComponent = () => {
   const { selectedItem } = useNavigatorTree();
@@ -43,9 +47,24 @@ const InstanceSystemEnvironment: FunctionComponent = () => {
 
   const globalActionsHandler = useCallback(async (actionId: string): Promise<void> => {}, []);
 
+  const showRedactionAlert = useMemo<boolean>(
+    () => some(queryState.data, (i) => i.redactionLevel === 'PARTIAL' || i.redactionLevel === 'FULL'),
+    [queryState.data]
+  );
+
+  const [rerenderKey, rerender] = useRerenderKey();
+
   return (
     <Page>
-      <Card>
+      {showRedactionAlert && (
+        <RedactionAlert
+          localStorageKeySuffix={'systemEnvironment'}
+          onDismiss={rerender}
+          sx={{ mb: COMPONENTS_SPACING }}
+        />
+      )}
+
+      <Card key={rerenderKey}>
         <TableComponent
           entity={entity}
           data={queryState.data}
