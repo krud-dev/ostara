@@ -344,4 +344,7 @@ export default {
     'If you already have a Spring Boot instance with actuator enabled, add it to Boost by clicking the "Create Instance" button.',
   gettingStartedSteps:
     'If you are new to Spring Boot actuator follow the steps below to get started.\n1. Build a Spring Boot application with actuator enabled.\n2. Run the application.\n3. Add the application to Boost by clicking the "Create Instance" button.\n4. Monitor and manage your Spring Boot application with ease.\n5. Enjoy!',
+  dismiss: 'Dismiss',
+  learnMore: 'Learn More',
+  valuesMaskedLearnMore: 'Values returned from actuator are masked. {learnMore}',
 };

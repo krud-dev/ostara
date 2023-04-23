@@ -12,6 +12,10 @@ import {
   useGetInstanceSystemPropertiesQuery,
 } from '../../../../apis/requests/instance/env/getInstanceSystemProperties';
 import { instanceSystemPropertyEntity } from '../../../../entity/entities/instanceSystemProperty.entity';
+import { some } from 'lodash';
+import RedactionAlert from '../../../../components/help/RedactionAlert';
+import { COMPONENTS_SPACING } from '../../../../constants/ui';
+import useRerenderKey from '../../../../hooks/useRerenderKey';
 
 const InstanceSystemProperties: FunctionComponent = () => {
   const { selectedItem } = useNavigatorTree();
@@ -41,9 +45,24 @@ const InstanceSystemProperties: FunctionComponent = () => {
 
   const globalActionsHandler = useCallback(async (actionId: string): Promise<void> => {}, []);
 
+  const showRedactionAlert = useMemo<boolean>(
+    () => some(queryState.data, (i) => i.redactionLevel === 'PARTIAL' || i.redactionLevel === 'FULL'),
+    [queryState.data]
+  );
+
+  const [rerenderKey, rerender] = useRerenderKey();
+
   return (
     <Page>
-      <Card>
+      {showRedactionAlert && (
+        <RedactionAlert
+          localStorageKeySuffix={'systemProperties'}
+          onDismiss={rerender}
+          sx={{ mb: COMPONENTS_SPACING }}
+        />
+      )}
+
+      <Card key={rerenderKey}>
         <TableComponent
           entity={entity}
           data={queryState.data}
