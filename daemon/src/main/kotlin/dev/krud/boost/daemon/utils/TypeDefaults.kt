@@ -1,5 +1,6 @@
 package dev.krud.boost.daemon.utils
 
+import dev.krud.boost.daemon.jackson.ParsedDate
 import java.util.*
 
 object TypeDefaults {
@@ -14,4 +15,5 @@ object TypeDefaults {
     val CHAR = ' '
     val BYTE = 0.toByte()
     val SHORT = 0.toShort()
+    val PARSED_DATE = ParsedDate()
 }

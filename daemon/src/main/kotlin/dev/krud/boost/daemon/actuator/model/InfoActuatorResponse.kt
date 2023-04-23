@@ -1,26 +1,27 @@
 package dev.krud.boost.daemon.actuator.model
 
 import dev.krud.boost.daemon.jackson.ParsedDate
+import dev.krud.boost.daemon.utils.TypeDefaults
 
 data class InfoActuatorResponse(
-    val build: Build?,
-    val git: Git?
+    val build: Build? = null,
+    val git: Git? = null
 ) {
     data class Build(
-        val artifact: String,
-        val group: String,
-        val name: String,
-        val version: String,
-        val time: ParsedDate?
+        val artifact: String = TypeDefaults.STRING,
+        val group: String = TypeDefaults.STRING,
+        val name: String = TypeDefaults.STRING,
+        val version: String = TypeDefaults.STRING,
+        val time: ParsedDate? = null
     )
 
     data class Git(
-        val branch: String,
-        val commit: Commit
+        val branch: String = TypeDefaults.STRING,
+        val commit: Commit = Commit()
     ) {
         data class Commit(
-            val id: String,
-            val time: ParsedDate?
+            val id: String = TypeDefaults.STRING,
+            val time: ParsedDate? = null
         )
     }
 }
