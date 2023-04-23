@@ -1,28 +1,30 @@
 package dev.krud.boost.daemon.actuator.model
 
+import dev.krud.boost.daemon.utils.TypeDefaults
+
 data class ScheduledTasksActuatorResponse(
-    val cron: List<Cron>,
-    val fixedDelay: List<FixedDelayOrRate>,
-    val fixedRate: List<FixedDelayOrRate>,
-    val custom: List<Custom>
+    val cron: List<Cron> = emptyList(),
+    val fixedDelay: List<FixedDelayOrRate> = emptyList(),
+    val fixedRate: List<FixedDelayOrRate> = emptyList(),
+    val custom: List<Custom> = emptyList()
 ) {
     data class Cron(
-        val runnable: Runnable,
-        val expression: String
+        val runnable: Runnable = Runnable(),
+        val expression: String = TypeDefaults.STRING
     )
 
     data class FixedDelayOrRate(
-        val runnable: Runnable,
-        val initialDelay: Long,
-        val interval: Long
+        val runnable: Runnable = Runnable(),
+        val initialDelay: Long = TypeDefaults.LONG,
+        val interval: Long = TypeDefaults.LONG
     )
 
     data class Custom(
-        val runnable: Runnable,
-        val trigger: String
+        val runnable: Runnable = Runnable(),
+        val trigger: String = TypeDefaults.STRING
     )
 
     data class Runnable(
-        val target: String
+        val target: String = TypeDefaults.STRING
     )
 }

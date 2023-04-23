@@ -1,22 +1,24 @@
 package dev.krud.boost.daemon.actuator.model
 
+import dev.krud.boost.daemon.utils.TypeDefaults
+
 data class EnvPropertyActuatorResponse(
-    val property: Property,
-    val activeProfiles: Set<String>,
-    val propertySources: List<PropertySource>
+    val property: Property = Property(),
+    val activeProfiles: Set<String> = emptySet(),
+    val propertySources: List<PropertySource> = emptyList()
 ) {
     data class Property(
-        val value: String,
-        val source: String
+        val value: String = TypeDefaults.STRING,
+        val source: String = TypeDefaults.STRING
     )
 
     data class PropertySource(
-        val name: String,
-        val property: Property?
+        val name: String = TypeDefaults.STRING,
+        val property: Property? = null
     ) {
         data class Property(
-            val value: String,
-            val origin: String?
+            val value: String = TypeDefaults.STRING,
+            val origin: String? = null
         )
     }
 }

@@ -1,38 +1,39 @@
 package dev.krud.boost.daemon.actuator.model
 
 import com.fasterxml.jackson.annotation.JsonProperty
+import dev.krud.boost.daemon.utils.TypeDefaults
 
 data class IntegrationGraphActuatorResponse(
-    val contentDescriptor: ContentDescriptor,
-    val nodes: List<Node>,
-    val links: List<Link>
+    val contentDescriptor: ContentDescriptor = ContentDescriptor(),
+    val nodes: List<Node> = emptyList(),
+    val links: List<Link> = emptyList()
 ) {
     data class ContentDescriptor(
-        val providerVersion: String,
-        val providerFormatVersion: Double,
-        val provider: String,
-        val name: String?
+        val providerVersion: String = TypeDefaults.STRING,
+        val providerFormatVersion: Double = TypeDefaults.DOUBLE,
+        val provider: String = TypeDefaults.STRING,
+        val name: String? = null
     )
 
     data class Node(
-        val nodeId: Int,
-        val componentType: String,
-        val integrationPatternType: String,
-        val integrationPatternCategory: String,
-        val properties: Map<String, String>,
-        val sendTimers: Map<String, SendTimer>?,
-        val receiveCounters: Map<String, Int>?,
-        val name: String,
-        val input: String?,
-        val output: String?,
-        val errors: String?, // Not sure what type this is
-        val discards: String?, // Not sure what type this is
-        val routes: Set<String>? // Another ambiguous type, need to verify
+        val nodeId: Int = TypeDefaults.INT,
+        val componentType: String = TypeDefaults.STRING,
+        val integrationPatternType: String = TypeDefaults.STRING,
+        val integrationPatternCategory: String = TypeDefaults.STRING,
+        val properties: Map<String, String> = emptyMap(),
+        val sendTimers: Map<String, SendTimer>? = null,
+        val receiveCounters: Map<String, Int>? = null,
+        val name: String = "",
+        val input: String? = null,
+        val output: String? = null,
+        val errors: String? = null, // Not sure what type this is
+        val discards: String? = null, // Not sure what type this is
+        val routes: Set<String>? = null // Another ambiguous type, need to verify
     ) {
         data class SendTimer(
-            val count: Int,
-            val mean: Double,
-            val max: Double
+            val count: Int = TypeDefaults.INT,
+            val mean: Double = TypeDefaults.DOUBLE,
+            val max: Double = TypeDefaults.DOUBLE,
         )
     }
 

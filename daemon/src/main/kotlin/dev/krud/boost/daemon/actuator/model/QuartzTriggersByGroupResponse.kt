@@ -1,58 +1,58 @@
 package dev.krud.boost.daemon.actuator.model
 
 import dev.krud.boost.daemon.jackson.ParsedDate
-import java.util.*
+import dev.krud.boost.daemon.utils.TypeDefaults
 
 data class QuartzTriggersByGroupResponse(
-    val group: String,
-    val paused: Boolean,
-    val triggers: Triggers
+    val group: String = TypeDefaults.STRING,
+    val paused: Boolean = TypeDefaults.BOOLEAN,
+    val triggers: Triggers = Triggers()
 ) {
     data class Triggers(
-        val cron: Map<String, Cron>,
-        val simple: Map<String, Simple>,
-        val dailyTimeInterval: Map<String, DailyTimeInterval>,
-        val calendarInterval: Map<String, CalendarInterval>,
-        val custom: Map<String, Custom>
+        val cron: Map<String, Cron> = emptyMap(),
+        val simple: Map<String, Simple> = emptyMap(),
+        val dailyTimeInterval: Map<String, DailyTimeInterval> = emptyMap(),
+        val calendarInterval: Map<String, CalendarInterval> = emptyMap(),
+        val custom: Map<String, Custom> = emptyMap()
     )
 
     data class Cron(
-        val previousFireTime: ParsedDate?,
-        val nextFireTime: ParsedDate?,
-        val priority: Int,
-        val expression: String,
-        val timeZone: String
+        val previousFireTime: ParsedDate? = null,
+        val nextFireTime: ParsedDate? = null,
+        val priority: Int = TypeDefaults.INT,
+        val expression: String = TypeDefaults.STRING,
+        val timeZone: String = TypeDefaults.STRING
     )
 
     data class Simple(
-        val previousFireTime: ParsedDate?,
-        val nextFireTime: ParsedDate?,
-        val priority: Int,
-        val interval: Long
+        val previousFireTime: ParsedDate? = null,
+        val nextFireTime: ParsedDate? = null,
+        val priority: Int = TypeDefaults.INT,
+        val interval: Long = TypeDefaults.LONG
     )
 
     data class DailyTimeInterval(
-        val previousFireTime: ParsedDate?,
-        val nextFireTime: ParsedDate?,
-        val priority: Int,
-        val interval: Long,
+        val previousFireTime: ParsedDate? = null,
+        val nextFireTime: ParsedDate? = null,
+        val priority: Int = TypeDefaults.INT,
+        val interval: Long = TypeDefaults.LONG,
         val daysOfWeek: List<String>,
-        val startTimeOfDay: String,
-        val endTimeOfDay: String
+        val startTimeOfDay: String = TypeDefaults.STRING,
+        val endTimeOfDay: String = TypeDefaults.STRING
     )
 
     data class CalendarInterval(
-        val previousFireTime: ParsedDate?,
-        val nextFireTime: ParsedDate?,
-        val priority: Int,
-        val interval: Long,
-        val timeZone: String
+        val previousFireTime: ParsedDate? = null,
+        val nextFireTime: ParsedDate? = null,
+        val priority: Int = TypeDefaults.INT,
+        val interval: Long = TypeDefaults.LONG,
+        val timeZone: String = TypeDefaults.STRING
     )
 
     data class Custom(
-        val previousFireTime: ParsedDate?,
-        val nextFireTime: ParsedDate?,
-        val priority: Int,
-        val trigger: String
+        val previousFireTime: ParsedDate? = null,
+        val nextFireTime: ParsedDate? = null,
+        val priority: Int = TypeDefaults.INT,
+        val trigger: String = TypeDefaults.STRING
     )
 }
