@@ -20,12 +20,12 @@ interface EmptyContentProps extends BoxProps {
 export default function EmptyContent({ text, description, ...other }: EmptyContentProps) {
   return (
     <RootStyle {...other}>
-      <Typography variant="subtitle1" gutterBottom>
+      <Typography variant="subtitle1" component={'div'} gutterBottom>
         {text}
       </Typography>
 
       {description && (
-        <Typography variant="body2" sx={{ color: 'text.secondary' }}>
+        <Typography variant="body2" component={'div'} sx={{ color: 'text.secondary' }}>
           {description}
         </Typography>
       )}

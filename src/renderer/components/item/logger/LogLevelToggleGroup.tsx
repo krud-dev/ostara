@@ -1,10 +1,11 @@
 import { useCallback, useMemo } from 'react';
-import { ToggleButton, ToggleButtonGroup } from '@mui/material';
+import { CircularProgress, ToggleButton, ToggleButtonGroup } from '@mui/material';
 import { LogLevel } from '../../../../common/generated_definitions';
 
 type LogLevelToggleGroupProps = {
   configuredLevels?: LogLevel[];
   effectiveLevels: LogLevel[];
+  loadingLevels?: LogLevel[];
   disabled?: boolean;
   onChange?: (newLevel: LogLevel) => void;
 };
@@ -12,6 +13,7 @@ type LogLevelToggleGroupProps = {
 export default function LogLevelToggleGroup({
   configuredLevels,
   effectiveLevels,
+  loadingLevels,
   disabled,
   onChange,
 }: LogLevelToggleGroupProps) {
@@ -47,16 +49,19 @@ export default function LogLevelToggleGroup({
     <ToggleButtonGroup value={configuredLevels} size={'small'} disabled={disabled}>
       {logLevels.map((level) => {
         const selected = !configuredLevels?.includes(level) && effectiveLevels.includes(level) ? true : undefined;
+        const loading = !!loadingLevels?.includes(level);
+        const color = getColor(level);
         return (
           <ToggleButton
             value={level}
-            color={getColor(level)}
+            color={color}
             selected={selected}
             onClick={() => changeHandler(level)}
             sx={{ whiteSpace: 'nowrap', ...(selected ? { opacity: 0.5 } : {}) }}
             key={level}
           >
             {level}
+            {loading && <CircularProgress size={24} color={color} sx={{ position: 'absolute' }} />}
           </ToggleButton>
         );
       })}

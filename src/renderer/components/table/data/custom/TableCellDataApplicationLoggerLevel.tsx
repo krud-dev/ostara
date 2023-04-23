@@ -17,27 +17,29 @@ export default function TableCellDataApplicationLoggerLevel<EntityItem extends E
   row,
   column,
 }: TableCellDataApplicationLoggerLevelProps<EntityItem>) {
-  const [disabled, setDisabled] = useState<boolean>(false);
+  const [loadingLevels, setLoadingLevels] = useState<LogLevel[] | undefined>(undefined);
+
+  const disabled = useMemo(() => !!loadingLevels, [loadingLevels]);
 
   const setLevelState = useSetApplicationLoggerLevel();
   const changeHandler = useCallback(
-    async (newLevel: LogLevel | undefined): Promise<void> => {
+    async (newLevel: LogLevel): Promise<void> => {
       if (setLevelState.isLoading) {
         return;
       }
 
-      setDisabled(true);
+      setLoadingLevels([newLevel]);
       try {
         setLevelState.mutate({ applicationId: row.applicationId, loggerName: row.name, level: newLevel });
       } catch (e) {
-        setDisabled(false);
+        setLoadingLevels(undefined);
       }
     },
     [row, setLevelState]
   );
 
   useUpdateEffect(() => {
-    setDisabled(false);
+    setLoadingLevels(undefined);
   }, [row]);
 
   const effectiveLevels = useMemo<LogLevel[]>(
@@ -53,6 +55,7 @@ export default function TableCellDataApplicationLoggerLevel<EntityItem extends E
     <LogLevelToggleGroup
       effectiveLevels={effectiveLevels}
       configuredLevels={configuredLevels}
+      loadingLevels={loadingLevels}
       disabled={disabled}
       onChange={changeHandler}
     />
