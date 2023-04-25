@@ -1,5 +1,19 @@
 # @krud-dev/boost
 
+## 0.6.0
+
+### Minor Changes
+
+- e3b5ce7: Added empty state to thread/heap dump tables
+- e7819fb: Added loading state to log level toggle
+- d9df5fe: Added redaction warning for masked actuator response
+
+### Patch Changes
+
+- 8ace76b: Fixed analytics implementation with amplitude
+- d3261ac: Fixed heapdump download in MacOS
+- 7cc135d: Add default values to all fields in actuator responses
+
 ## 0.5.0
 
 ### Minor Changes
