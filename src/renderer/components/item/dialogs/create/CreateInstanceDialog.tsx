@@ -21,6 +21,7 @@ import { useCrudCreateBulk } from '../../../../apis/requests/crud/crudCreateBulk
 import LogoLoader from '../../../common/LogoLoader';
 import { every } from 'lodash';
 import { URL_REGEX } from '../../../../constants/regex';
+import { useAnalytics } from '../../../../contexts/AnalyticsContext';
 
 export type CreateInstanceDialogProps = {
   parentApplicationId?: string;
@@ -33,6 +34,7 @@ const CreateInstanceDialog: FunctionComponent<CreateInstanceDialogProps & NiceMo
   ({ parentApplicationId, parentFolderId, sort, onCreated }) => {
     const modal = useModal();
     const queryClient = useQueryClient();
+    const { track } = useAnalytics();
 
     const [defaultValues, setDefaultValues] = useState<Partial<InstanceFormValues> | undefined>(undefined);
     const [submitting, setSubmitting] = useState<boolean>(false);
@@ -96,6 +98,8 @@ const CreateInstanceDialog: FunctionComponent<CreateInstanceDialogProps & NiceMo
           if (result) {
             queryClient.invalidateQueries(crudKeys.entity(applicationCrudEntity));
             queryClient.invalidateQueries(crudKeys.entity(instanceCrudEntity));
+
+            track({ name: 'add_instance', properties: { count: instancesToCreate.length } });
 
             onCreated?.(result);
 

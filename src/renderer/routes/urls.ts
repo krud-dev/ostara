@@ -2,6 +2,7 @@ export type UrlInfo = {
   url: string;
   path: string;
   helpUrl?: string;
+  redirect?: boolean;
 };
 
 function asUrlInfos<T extends { [key: string]: UrlInfo }>(arg: T): T {
@@ -18,6 +19,7 @@ export const urls = asUrlInfos({
   daemon: {
     url: '/daemon',
     path: 'daemon',
+    redirect: true,
   },
   daemonUnhealthy: {
     url: '/daemon/unhealthy',
@@ -27,6 +29,7 @@ export const urls = asUrlInfos({
   navigator: {
     url: '/navigator',
     path: 'navigator',
+    redirect: true,
   },
   home: {
     url: '/navigator/home',
@@ -36,6 +39,7 @@ export const urls = asUrlInfos({
   folder: {
     url: '/navigator/folder/:id',
     path: 'folder/:id',
+    redirect: true,
   },
   folderApplications: {
     url: '/navigator/folder/:id/applications',
@@ -46,6 +50,7 @@ export const urls = asUrlInfos({
   application: {
     url: '/navigator/application/:id',
     path: 'application/:id',
+    redirect: true,
   },
   applicationDashboard: {
     url: '/navigator/application/:id/dashboard',
@@ -70,6 +75,7 @@ export const urls = asUrlInfos({
   instance: {
     url: '/navigator/instance/:id',
     path: 'instance/:id',
+    redirect: true,
   },
   instanceDashboard: {
     url: '/navigator/instance/:id/dashboard',

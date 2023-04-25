@@ -1,1 +1,1 @@
-export const GOOGLE_ANALYTICS_MEASUREMENT_ID = 'G-DXM3T1W3MK';
+export const AMPLITUDE_API_KEY = 'b2fa8904eda2938f0729adcacfea56fb';
