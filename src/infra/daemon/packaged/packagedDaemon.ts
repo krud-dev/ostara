@@ -5,6 +5,7 @@ import { isWindows } from '../../utils/platform';
 import { configurationStore } from '../../store/store';
 import { ChildProcessWithoutNullStreams, spawn } from 'child_process';
 import log from 'electron-log';
+import fs from 'fs-extra';
 
 export class PackagedDaemon extends RestHealthCheckingDaemon {
   private readonly address: string;
@@ -46,11 +47,15 @@ export class PackagedDaemon extends RestHealthCheckingDaemon {
       return;
     }
 
+    const heapdumpDirectory = path.join(app.getPath('userData'), 'heapdumps');
+    fs.ensureDirSync(heapdumpDirectory);
+
     const env = {
       IP: this.host,
       SERVER_PORT: String(this.port),
       SPRING_DATASOURCE_URL: `jdbc:sqlite:${this.daemonDatabaseLocation}`,
       SPRING_PROFILES_ACTIVE: this.sentryEnabled ? 'sentry' : '',
+      APP_MAIN_HEAPDUMP_DIRECTORY: heapdumpDirectory,
     };
 
     if (!app.isPackaged) {
