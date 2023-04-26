@@ -1,5 +1,11 @@
 # @krud-dev/boost
 
+## 0.6.1
+
+### Patch Changes
+
+- 43dc6f6: Added signature for x64 native sqlite library for mac
+
 ## 0.6.0
 
 ### Minor Changes
