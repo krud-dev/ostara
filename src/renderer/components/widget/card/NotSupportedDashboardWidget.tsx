@@ -4,9 +4,14 @@ import DashboardGenericCard from 'renderer/components/widget/card/DashboardGener
 import { FormattedMessage } from 'react-intl';
 import { CardContent, Typography } from '@mui/material';
 
-const NotSupportedDashboardWidget: FunctionComponent<DashboardWidgetCardProps<Widget>> = ({ widget, item }) => {
+const NotSupportedDashboardWidget: FunctionComponent<DashboardWidgetCardProps<Widget>> = ({
+  widget,
+  item,
+  variant,
+  sx,
+}) => {
   return (
-    <DashboardGenericCard title={<FormattedMessage id={widget.titleId} />} loading={false}>
+    <DashboardGenericCard title={widget.title} loading={false} variant={variant} sx={sx}>
       <CardContent>
         <Typography variant="body2" sx={{ color: 'error.main' }}>
           <FormattedMessage id="notSupported" />

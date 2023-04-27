@@ -10,6 +10,8 @@ import { getItemHealthStatusColor, getItemHealthStatusTextId } from '../../../ut
 const HealthStatusDashboardWidget: FunctionComponent<DashboardWidgetCardProps<HealthStatusWidget>> = ({
   widget,
   item,
+  variant,
+  sx,
 }) => {
   const healthStatusColor = useMemo<string | undefined>(() => getItemHealthStatusColor(item), [item]);
   const healthTextId = useMemo<string | undefined>(() => getItemHealthStatusTextId(item), [item]);
@@ -17,7 +19,7 @@ const HealthStatusDashboardWidget: FunctionComponent<DashboardWidgetCardProps<He
   const loading = useMemo<boolean>(() => !healthTextId, [healthTextId]);
 
   return (
-    <DashboardGenericCard title={<FormattedMessage id={widget.titleId} />} loading={loading}>
+    <DashboardGenericCard title={widget.title} loading={loading} variant={variant} sx={sx}>
       <CardContent>
         <Typography variant={'h3'} noWrap sx={{ textAlign: 'center', color: healthStatusColor }}>
           {!isNil(healthTextId) ? <FormattedMessage id={healthTextId} /> : EMPTY_STRING}

@@ -13,31 +13,30 @@ const InstanceDashboard: FunctionComponent = () => {
   const item = useMemo<InstanceRO>(() => selectedItem as InstanceRO, [selectedItem]);
 
   const widgets = useDashboardWidgets();
-  const intervalSeconds = useMemo<number>(() => 5, []);
 
   return (
     <Page>
       <Grid2 container spacing={COMPONENTS_SPACING}>
         <Grid2 xs={12} lg={6}>
-          <DashboardWidget widget={widgets.healthStatusWidget} item={item} intervalSeconds={intervalSeconds} />
+          <DashboardWidget widget={widgets.healthStatusWidget} item={item} />
         </Grid2>
         <Grid2 xs={12} lg={6}>
-          <DashboardWidget widget={widgets.uptimeWidget} item={item} intervalSeconds={intervalSeconds} />
+          <DashboardWidget widget={widgets.uptimeWidget} item={item} />
         </Grid2>
         <Grid2 xs={12} lg={6} xl={4}>
-          <DashboardWidget widget={widgets.memoryUsageCircle} item={item} intervalSeconds={intervalSeconds} />
+          <DashboardWidget widget={widgets.memoryUsageCircle} item={item} />
         </Grid2>
         <Grid2 xs={12} lg={6} xl={4}>
-          <DashboardWidget widget={widgets.diskUsageCircle} item={item} intervalSeconds={intervalSeconds} />
+          <DashboardWidget widget={widgets.diskUsageCircle} item={item} />
         </Grid2>
         <Grid2 xs={12} xl={4}>
-          <DashboardWidget widget={widgets.cpuUsageCircle} item={item} intervalSeconds={intervalSeconds} />
+          <DashboardWidget widget={widgets.cpuUsageCircle} item={item} />
         </Grid2>
         <Grid2 xs={12} xl={6}>
-          <DashboardWidget widget={widgets.threadCount} item={item} intervalSeconds={intervalSeconds} />
+          <DashboardWidget widget={widgets.threadCount} item={item} />
         </Grid2>
         <Grid2 xs={12} xl={6}>
-          <DashboardWidget widget={widgets.memoryUsageTimeline} item={item} intervalSeconds={intervalSeconds} />
+          <DashboardWidget widget={widgets.memoryUsageTimeline} item={item} />
         </Grid2>
       </Grid2>
     </Page>

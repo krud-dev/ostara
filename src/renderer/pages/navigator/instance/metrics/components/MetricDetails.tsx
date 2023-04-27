@@ -8,6 +8,7 @@ import { useGetInstanceMetricDetailsQuery } from '../../../../../apis/requests/i
 import { isNil } from 'lodash';
 import { MetricActuatorResponse } from '../../../../../../common/generated_definitions';
 import LogoLoader from '../../../../../components/common/LogoLoader';
+import MetricTimeline from './MetricTimeline';
 
 type MetricDetailsProps = {
   row: EnrichedInstanceMetric;
@@ -49,6 +50,7 @@ export default function MetricDetails({ row }: MetricDetailsProps) {
 
   const showMeasurements = useMemo<boolean>(() => !!metricDetails?.measurements?.length, [metricDetails]);
   const showTags = useMemo<boolean>(() => !!metricDetails?.availableTags?.length, [metricDetails]);
+  const showTimeline = useMemo<boolean>(() => !!metricDetails?.measurements?.length, [metricDetails]);
 
   return (
     <Box sx={{ my: 2 }}>
@@ -134,6 +136,8 @@ export default function MetricDetails({ row }: MetricDetailsProps) {
               </CardContent>
             </Card>
           )}
+
+          {showTimeline && <MetricTimeline metricDetails={metricDetails} />}
         </Stack>
       )}
     </Box>

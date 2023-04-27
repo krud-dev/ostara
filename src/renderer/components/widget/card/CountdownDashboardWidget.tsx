@@ -6,10 +6,14 @@ import { CardContent, Typography } from '@mui/material';
 import useWidgetSubscribeToMetrics from 'renderer/components/widget/hooks/useWidgetSubscribeToMetrics';
 import { InstanceMetricRO } from '../../../../common/generated_definitions';
 import { EMPTY_STRING } from '../../../constants/ui';
-import { FormattedMessage } from 'react-intl';
 import CountdownValue from '../metric/CountdownValue';
 
-const CountdownDashboardWidget: FunctionComponent<DashboardWidgetCardProps<CountdownWidget>> = ({ widget, item }) => {
+const CountdownDashboardWidget: FunctionComponent<DashboardWidgetCardProps<CountdownWidget>> = ({
+  widget,
+  item,
+  variant,
+  sx,
+}) => {
   const [data, setData] = useState<InstanceMetricRO | undefined>(undefined);
   const loading = useMemo<boolean>(() => !data, [data]);
 
@@ -30,7 +34,7 @@ const CountdownDashboardWidget: FunctionComponent<DashboardWidgetCardProps<Count
   useWidgetSubscribeToMetrics(item.id, metricNames, onMetricUpdate);
 
   return (
-    <DashboardGenericCard title={<FormattedMessage id={widget.titleId} />} loading={loading}>
+    <DashboardGenericCard title={widget.title} loading={loading} variant={variant} sx={sx}>
       <CardContent>
         <Typography variant={'h3'} noWrap sx={{ textAlign: 'center' }}>
           {!isNil(seconds) ? <CountdownValue seconds={seconds} /> : EMPTY_STRING}

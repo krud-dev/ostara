@@ -350,4 +350,5 @@ export default {
   somethingWentWrong: 'Something went wrong',
   somethingWentWrongExplanation: "Sorry, we couldn't complete the requested action.",
   goToHome: 'Go to Home',
+  timeline: 'Timeline',
 };

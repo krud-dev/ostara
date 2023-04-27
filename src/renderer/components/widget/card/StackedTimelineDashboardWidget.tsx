@@ -2,7 +2,7 @@ import React, { FunctionComponent, useCallback, useMemo, useRef, useState } from
 import { DashboardWidgetCardProps, StackedTimelineWidget } from 'renderer/components/widget/widget';
 import DashboardGenericCard from 'renderer/components/widget/card/DashboardGenericCard';
 import { chain, every, isEmpty, isNaN, isNil, takeRight } from 'lodash';
-import { FormattedMessage, useIntl } from 'react-intl';
+import { useIntl } from 'react-intl';
 import useWidgetSubscribeToMetrics from 'renderer/components/widget/hooks/useWidgetSubscribeToMetrics';
 import AreaMultiple from 'renderer/components/widget/pure/AreaMultiple';
 import { formatWidgetChartValue } from 'renderer/utils/formatUtils';
@@ -14,12 +14,13 @@ type DataPoint = { values: number[]; timestamp: number };
 const StackedTimelineDashboardWidget: FunctionComponent<DashboardWidgetCardProps<StackedTimelineWidget>> = ({
   widget,
   item,
-  intervalSeconds,
+  variant,
+  sx,
 }) => {
   const intl = useIntl();
 
   const [data, setData] = useState<{ name: string; data: number[] }[]>(
-    widget.metrics.map((metric) => ({ name: intl.formatMessage({ id: metric.titleId }), data: [] }))
+    widget.metrics.map((metric) => ({ name: metric.title, data: [] }))
   );
   const [chartLabels, setChartLabels] = useState<string[]>([]);
   const loading = useMemo<boolean>(() => isEmpty(chartLabels), [chartLabels]);
@@ -43,7 +44,7 @@ const StackedTimelineDashboardWidget: FunctionComponent<DashboardWidgetCardProps
   });
 
   const addDataPoint = useCallback((dataPointToAdd: DataPoint): void => {
-    if (dataPointToAdd.timestamp - lastDataPointTimestamp.current < intervalSeconds * 1000) {
+    if (dataPointToAdd.timestamp - lastDataPointTimestamp.current < 1000) {
       return;
     }
     lastDataPointTimestamp.current = dataPointToAdd.timestamp;
@@ -64,7 +65,7 @@ const StackedTimelineDashboardWidget: FunctionComponent<DashboardWidgetCardProps
   const chartColors = useMemo<string[]>(() => metrics.map((m) => m.color), [metrics]);
 
   return (
-    <DashboardGenericCard title={<FormattedMessage id={widget.titleId} />} loading={loading} empty={empty}>
+    <DashboardGenericCard title={widget.title} loading={loading} empty={empty} variant={variant} sx={sx}>
       <AreaMultiple series={data} labels={chartLabels} colors={chartColors} tickAmount={MAX_DATA_POINTS / 4} />
     </DashboardGenericCard>
   );

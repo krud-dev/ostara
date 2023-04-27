@@ -8,9 +8,13 @@ import MetricValue from 'renderer/components/widget/metric/MetricValue';
 import useWidgetSubscribeToMetrics from 'renderer/components/widget/hooks/useWidgetSubscribeToMetrics';
 import { InstanceMetricRO } from '../../../../common/generated_definitions';
 import { EMPTY_STRING } from '../../../constants/ui';
-import { FormattedMessage } from 'react-intl';
 
-const DataBarDashboardWidget: FunctionComponent<DashboardWidgetCardProps<DataBarWidget>> = ({ widget, item }) => {
+const DataBarDashboardWidget: FunctionComponent<DashboardWidgetCardProps<DataBarWidget>> = ({
+  widget,
+  item,
+  variant,
+  sx,
+}) => {
   const [data, setData] = useState<{ [key: string]: InstanceMetricRO }>({});
   const loading = useMemo<boolean>(() => Object.keys(data).length < widget.metrics.length, [data]);
   const empty = useMemo<boolean>(() => !loading && Object.keys(data).length < widget.metrics.length, [loading, data]);
@@ -31,7 +35,7 @@ const DataBarDashboardWidget: FunctionComponent<DashboardWidgetCardProps<DataBar
   useWidgetSubscribeToMetrics(item.id, metricNames, onMetricUpdate);
 
   return (
-    <DashboardGenericCard title={<FormattedMessage id={widget.titleId} />} loading={loading} empty={empty}>
+    <DashboardGenericCard title={widget.title} loading={loading} empty={empty} variant={variant} sx={sx}>
       <CardContent>
         <Stack direction={'row'}>
           {metrics.map((metric, index, array) => {
@@ -47,7 +51,7 @@ const DataBarDashboardWidget: FunctionComponent<DashboardWidgetCardProps<DataBar
                   variant={'subtitle2'}
                   sx={{ color: 'text.secondary', display: 'flex', alignItems: 'center', justifyContent: 'center' }}
                 >
-                  <FormattedMessage id={metric.titleId} />
+                  {metric.title}
                   <HelpIcon title={tooltip} sx={{ ml: 0.5 }} />
                 </Typography>
               </Box>

@@ -3,14 +3,25 @@ import { Card, CardContent, CardHeader } from '@mui/material';
 import EmptyContent from 'renderer/components/help/EmptyContent';
 import { FormattedMessage } from 'react-intl';
 import LogoLoader from '../../common/LogoLoader';
+import { SxProps } from '@mui/system';
+import { Theme } from '@mui/material/styles';
 
 type DashboardGenericCardProps = {
-  title: ReactNode;
-  loading: boolean;
+  title?: ReactNode;
+  loading?: boolean;
   empty?: boolean;
+  variant?: 'outlined' | 'elevation';
+  sx?: SxProps<Theme>;
 } & PropsWithChildren;
 
-const DashboardGenericCard: FunctionComponent<DashboardGenericCardProps> = ({ title, loading, empty, children }) => {
+const DashboardGenericCard: FunctionComponent<DashboardGenericCardProps> = ({
+  title,
+  loading,
+  empty,
+  variant,
+  sx,
+  children,
+}) => {
   const cardState = useMemo<'loading' | 'empty' | 'content'>(() => {
     if (empty) {
       return 'empty';
@@ -20,9 +31,10 @@ const DashboardGenericCard: FunctionComponent<DashboardGenericCardProps> = ({ ti
     }
     return 'content';
   }, [loading, empty]);
+
   return (
-    <Card sx={{ height: '100%' }}>
-      <CardHeader title={title} />
+    <Card variant={variant} sx={{ height: '100%', ...sx }}>
+      {title && <CardHeader title={title} />}
       {cardState === 'loading' && (
         <CardContent sx={{ textAlign: 'center' }}>
           <LogoLoader />

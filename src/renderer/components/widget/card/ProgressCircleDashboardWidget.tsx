@@ -5,17 +5,15 @@ import useWidgetSubscribeToMetrics from 'renderer/components/widget/hooks/useWid
 import { chain, isEmpty } from 'lodash';
 import RadialBarSingle from 'renderer/components/widget/pure/RadialBarSingle';
 import { InstanceMetricRO } from '../../../../common/generated_definitions';
-import { FormattedMessage, useIntl } from 'react-intl';
 
 const ProgressCircleDashboardWidget: FunctionComponent<DashboardWidgetCardProps<ProgressCircleWidget>> = ({
   widget,
   item,
+  variant,
+  sx,
 }) => {
-  const intl = useIntl();
-
   const [data, setData] = useState<{ current?: number; max?: number }>({ current: undefined, max: undefined });
 
-  const title = useMemo<string>(() => intl.formatMessage({ id: widget.titleId }), [widget.titleId]);
   const loading = useMemo<boolean>(() => data.current === undefined || data.max === undefined, [data]);
   const percent = useMemo<number>(() => Math.round(((data.current ?? 0) / (data.max ?? 1)) * 10000) / 100, [data]);
   const color = useMemo<string>(() => {
@@ -47,8 +45,8 @@ const ProgressCircleDashboardWidget: FunctionComponent<DashboardWidgetCardProps<
   useWidgetSubscribeToMetrics(item.id, metricNames, onMetricUpdate);
 
   return (
-    <DashboardGenericCard title={<FormattedMessage id={widget.titleId} />} loading={loading}>
-      <RadialBarSingle title={title} color={color} percent={percent} />
+    <DashboardGenericCard title={widget.title} loading={loading} variant={variant} sx={sx}>
+      <RadialBarSingle title={widget.title} color={color} percent={percent} />
     </DashboardGenericCard>
   );
 };

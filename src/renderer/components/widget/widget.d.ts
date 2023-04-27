@@ -1,22 +1,25 @@
 import { ItemRO } from '../../definitions/daemon';
+import { SxProps } from '@mui/system';
+import { Theme } from '@mui/material/styles';
 
 export interface DashboardWidgetCardProps<W extends Widget> {
   widget: W;
   item: ItemRO;
-  intervalSeconds: number;
+  variant?: 'outlined' | 'elevation';
+  sx?: SxProps<Theme>;
 }
 
 export type BaseWidgetDefinition = {
   id: string;
   type: string;
-  titleId: string;
+  title: string;
 };
 
 export type StackedTimelineWidget = BaseWidgetDefinition & {
   type: 'stacked-timeline';
   metrics: {
     name: string;
-    titleId: string;
+    title: string;
     order: number;
     color: string;
     valueType: WidgetValueType;
@@ -27,7 +30,7 @@ export type DataBarWidget = BaseWidgetDefinition & {
   type: 'data-bar';
   metrics: {
     name: string;
-    titleId: string;
+    title: string;
     order: number;
     valueType: WidgetValueType;
   }[];
@@ -47,7 +50,7 @@ export type ProgressCircleWidget = BaseWidgetDefinition & {
   valueType: WidgetValueType;
   maxMetricName: string;
   currentMetricName: string;
-  titleId: string;
+  title: string;
   color: string;
   colorThresholds: {
     value: number;
@@ -58,7 +61,7 @@ export type ProgressCircleWidget = BaseWidgetDefinition & {
 export type PercentCircleWidget = BaseWidgetDefinition & {
   type: 'percent-circle';
   metricName: string;
-  titleId: string;
+  title: string;
   color: string;
   colorThresholds: {
     value: number;

@@ -23,7 +23,7 @@ const ApplicationDashboard: FunctionComponent = () => {
       <Stack direction={'column'} spacing={COMPONENTS_SPACING}>
         {`Application ${item.id}`}
         {widgets.map((widget) => (
-          <DashboardWidget widget={widget} item={item} intervalSeconds={10} key={widget.id} />
+          <DashboardWidget widget={widget} item={item} key={widget.id} />
         ))}
       </Stack>
     </Page>

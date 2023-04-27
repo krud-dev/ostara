@@ -8,14 +8,17 @@ import { ItemRO } from '../../definitions/daemon';
 import PercentCircleDashboardWidget from './card/PercentCircleDashboardWidget';
 import CountdownDashboardWidget from './card/CountdownDashboardWidget';
 import HealthStatusDashboardWidget from './card/HealthStatusDashboardWidget';
+import { SxProps } from '@mui/system';
+import { Theme } from '@mui/material/styles';
 
 interface DashboardWidgetProps {
   widget: Widget;
   item: ItemRO;
-  intervalSeconds: number;
+  variant?: 'outlined' | 'elevation';
+  sx?: SxProps<Theme>;
 }
 
-const DashboardWidget: FunctionComponent<DashboardWidgetProps> = ({ widget, item, intervalSeconds }) => {
+const DashboardWidget: FunctionComponent<DashboardWidgetProps> = ({ widget, item, variant, sx }) => {
   const DashboardCard = useMemo<ComponentType<DashboardWidgetCardProps<any>>>(() => {
     switch (widget.type) {
       case 'progress-circle':
@@ -35,6 +38,6 @@ const DashboardWidget: FunctionComponent<DashboardWidgetProps> = ({ widget, item
     }
   }, [widget]);
 
-  return <DashboardCard widget={widget} item={item} intervalSeconds={intervalSeconds} />;
+  return <DashboardCard widget={widget} item={item} variant={variant} sx={sx} />;
 };
 export default DashboardWidget;
