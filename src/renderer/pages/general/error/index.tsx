@@ -20,14 +20,14 @@ const Error: FunctionComponent<ErrorProps> = (props: ErrorProps) => {
     <RootStyle>
       <Container>
         <Box sx={{ maxWidth: 480, margin: 'auto', textAlign: 'center' }}>
-          <Typography variant="h3" paragraph>
-            <FormattedMessage id="pageNotFoundError" />
+          <Typography variant="h3">
+            <FormattedMessage id="somethingWentWrong" />
           </Typography>
-          <Typography sx={{ color: 'text.secondary' }}>
-            <FormattedMessage id="pageNotFoundErrorExplanation" />
+          <Typography sx={{ color: 'text.secondary', mt: 1 }}>
+            <FormattedMessage id="somethingWentWrongExplanation" />
           </Typography>
 
-          <Stack direction={{ xs: 'column', sm: 'row' }} spacing={2} sx={{ display: 'inline-flex' }}>
+          <Stack direction={{ xs: 'column', sm: 'row' }} spacing={2} sx={{ display: 'inline-flex', mt: 3 }}>
             <Button size="large" variant="contained" to="/" component={RouterLink}>
               <FormattedMessage id="goToHome" />
             </Button>

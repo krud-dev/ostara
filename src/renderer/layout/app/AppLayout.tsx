@@ -3,9 +3,9 @@ import React from 'react';
 import { Outlet } from 'react-router-dom';
 import { Box } from '@mui/material';
 
-type DaemonLayoutProps = {};
+type AppLayoutProps = {};
 
-export default function DaemonLayout({}: DaemonLayoutProps) {
+export default function AppLayout({}: AppLayoutProps) {
   return (
     <Box sx={{ height: '100%', overflow: 'hidden', display: 'flex', flexDirection: 'column' }}>
       <MainNavbar />

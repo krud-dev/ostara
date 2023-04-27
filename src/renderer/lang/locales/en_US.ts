@@ -347,4 +347,7 @@ export default {
   dismiss: 'Dismiss',
   learnMore: 'Learn More',
   valuesMaskedLearnMore: 'Values returned from actuator are masked. {learnMore}',
+  somethingWentWrong: 'Something went wrong',
+  somethingWentWrongExplanation: "Sorry, we couldn't complete the requested action.",
+  goToHome: 'Go to Home',
 };
