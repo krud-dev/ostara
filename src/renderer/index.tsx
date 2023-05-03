@@ -19,7 +19,7 @@ if (window.NODE_ENV !== 'development' && window.configurationStore.isErrorReport
       return event;
     },
   });
-  Sentry.setTag('boost.type', 'electron.renderer');
+  Sentry.setTag('service.type', 'electron.renderer');
 }
 
 const container = document.getElementById('root')!;

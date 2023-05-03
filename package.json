@@ -5,19 +5,20 @@
   "private": "true",
   "keywords": [
     "spring boot",
+    "admin",
     "actuator",
     "monitoring",
     "performance",
     "metrics",
-    "boost"
+    "ostara"
   ],
-  "homepage": "https://github.com/krud-dev/boost#readme",
+  "homepage": "https://github.com/krud-dev/ostara#readme",
   "bugs": {
-    "url": "https://github.com/krud-dev/boost/issues"
+    "url": "https://github.com/krud-dev/ostara/issues"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/krud-dev/boost.git"
+    "url": "git+https://github.com/krud-dev/ostara.git"
   },
   "license": "All rights reserved",
   "author": {
@@ -264,7 +265,7 @@
     "webpack-merge": "^5.8.0"
   },
   "build": {
-    "productName": "Boost",
+    "productName": "Ostara",
     "appId": "dev.krud.boost",
     "asar": true,
     "asarUnpack": "**\\*.{node,dll}",
@@ -334,7 +335,7 @@
     "publish": {
       "provider": "github",
       "owner": "krud-dev",
-      "repo": "boost"
+      "repo": "ostara"
     }
   },
   "devEngines": {
