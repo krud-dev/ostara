@@ -21,7 +21,7 @@ export const applicationLoggerEntity: Entity<EnrichedApplicationLoggerRO, Logger
       id: 'effectiveLevel',
       type: 'Custom',
       labelId: 'level',
-      width: 370,
+      width: 440,
       Component: TableCellDataApplicationLoggerLevel,
     },
   ],

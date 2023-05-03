@@ -20,7 +20,7 @@ export const instanceLoggerEntity: Entity<EnrichedInstanceLoggerRO, LoggerCustom
       id: 'effectiveLevel',
       type: 'Custom',
       labelId: 'level',
-      width: 370,
+      width: 440,
       Component: TableCellDataInstanceLoggerLevel,
     },
   ],

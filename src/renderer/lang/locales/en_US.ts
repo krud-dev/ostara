@@ -350,4 +350,6 @@ export default {
   somethingWentWrong: 'Something went wrong',
   somethingWentWrongExplanation: "Sorry, we couldn't complete the requested action.",
   goToHome: 'Go to Home',
+  logLevel: 'Log Level',
+  enterCustomLogLevel: 'Enter Custom Log Level',
 };
