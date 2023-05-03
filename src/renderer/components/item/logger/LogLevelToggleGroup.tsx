@@ -1,13 +1,12 @@
 import { useCallback, useMemo } from 'react';
 import { CircularProgress, ToggleButton, ToggleButtonGroup } from '@mui/material';
-import { LogLevel } from '../../../../common/generated_definitions';
 
 type LogLevelToggleGroupProps = {
-  configuredLevels?: LogLevel[];
-  effectiveLevels: LogLevel[];
-  loadingLevels?: LogLevel[];
+  configuredLevels?: string[];
+  effectiveLevels: string[];
+  loadingLevels?: string[];
   disabled?: boolean;
-  onChange?: (newLevel: LogLevel) => void;
+  onChange?: (newLevel: string) => void;
 };
 
 export default function LogLevelToggleGroup({
@@ -18,15 +17,15 @@ export default function LogLevelToggleGroup({
   onChange,
 }: LogLevelToggleGroupProps) {
   const changeHandler = useCallback(
-    (newLevel: LogLevel) => {
+    (newLevel: string) => {
       onChange?.(newLevel);
     },
     [onChange]
   );
 
-  const logLevels = useMemo<LogLevel[]>(() => ['OFF', 'ERROR', 'WARN', 'INFO', 'DEBUG', 'TRACE'], []);
+  const logLevels = useMemo<string[]>(() => ['OFF', 'ERROR', 'WARN', 'INFO', 'DEBUG', 'TRACE'], []);
 
-  const getColor = useCallback((level: LogLevel) => {
+  const getColor = useCallback((level: string) => {
     switch (level) {
       case 'OFF':
         return undefined;
