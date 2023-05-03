@@ -5,7 +5,6 @@ import dev.krud.boost.daemon.configuration.instance.InstanceActuatorClientProvid
 import dev.krud.boost.daemon.configuration.instance.InstanceService
 import dev.krud.boost.daemon.configuration.instance.ability.InstanceAbilityService
 import dev.krud.boost.daemon.configuration.instance.enums.InstanceAbility
-import dev.krud.boost.daemon.configuration.instance.httprequeststatistics.enums.HttpMethod
 import dev.krud.boost.daemon.configuration.instance.httprequeststatistics.ro.InstanceHttpRequestStatisticsRO
 import dev.krud.boost.daemon.configuration.instance.messaging.InstanceCreatedEventMessage
 import dev.krud.boost.daemon.configuration.instance.messaging.InstanceDeletedEventMessage
@@ -54,8 +53,8 @@ class InstanceHttpRequestStatisticsService(
     }
 
     @Cacheable(cacheNames = ["httpRequestStatisticsCache"], key = "'by_uri_and_method_' + #instanceId + '_' + #uri")
-    fun getStatisticsByUriAndMethod(instanceId: UUID, uri: String): Map<HttpMethod, InstanceHttpRequestStatisticsRO> {
-        return getStatisticsByTag(instanceId, uri, "method") { availableTagValue -> HttpMethod.valueOf(availableTagValue) }
+    fun getStatisticsByUriAndMethod(instanceId: UUID, uri: String): Map<String, InstanceHttpRequestStatisticsRO> {
+        return getStatisticsByTag(instanceId, uri, "method") { availableTagValue -> availableTagValue }
     }
 
     @Cacheable(cacheNames = ["httpRequestStatisticsCache"], key = "'by_uri_and_outcome_' + #instanceId + '_' + #uri")

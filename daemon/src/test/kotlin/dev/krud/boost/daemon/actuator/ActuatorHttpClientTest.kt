@@ -3,13 +3,11 @@ package dev.krud.boost.daemon.actuator
 import com.fasterxml.jackson.databind.DeserializationFeature
 import dev.krud.boost.daemon.actuator.model.CacheActuatorResponse
 import dev.krud.boost.daemon.actuator.model.HealthActuatorResponse
-import dev.krud.boost.daemon.actuator.model.IntegrationGraphActuatorResponse
 import okhttp3.mockwebserver.MockResponse
 import okhttp3.mockwebserver.MockWebServer
 import org.junit.jupiter.api.AfterEach
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
-import org.springframework.boot.logging.LogLevel
 import strikt.api.expectThat
 import strikt.assertions.isEqualTo
 import strikt.assertions.isNotEmpty
@@ -302,7 +300,7 @@ class ActuatorHttpClientTest {
         server.enqueue(okResponse(204))
         val baseUrl = server.url("/actuator").toString()
         val client = getClient(baseUrl)
-        client.updateLogger("logger", LogLevel.OFF).getOrThrow()
+        client.updateLogger("logger", "OFF").getOrThrow()
     }
 
     @Test
@@ -321,7 +319,7 @@ class ActuatorHttpClientTest {
         expectThat(firstLink.to)
             .isEqualTo(15)
         expectThat(firstLink.type)
-            .isEqualTo(IntegrationGraphActuatorResponse.Link.Type.OUTPUT)
+            .isEqualTo("output")
     }
 
     @Test

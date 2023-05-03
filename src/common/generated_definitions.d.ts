@@ -78,17 +78,17 @@ export interface LiquibaseActuatorResponse {
 }
 
 export interface LoggerActuatorResponse {
-    effectiveLevel?: LogLevel;
-    configuredLevel?: LogLevel;
+    effectiveLevel?: string;
+    configuredLevel?: string;
     members?: string[];
 }
 
 export interface LoggerUpdateRequest {
-    configuredLevel?: LogLevel;
+    configuredLevel?: string;
 }
 
 export interface LoggersActuatorResponse {
-    levels: LogLevel[];
+    levels: string[];
     loggers: { [index: string]: LoggersActuatorResponse$Logger };
     groups: { [index: string]: LoggersActuatorResponse$Group };
 }
@@ -138,8 +138,8 @@ export interface QuartzTriggerResponse {
     group: string;
     name: string;
     description: string;
-    state: QuartzTriggerResponse$State;
-    type: QuartzTriggerResponse$Type;
+    state: string;
+    type: string;
     calendarName?: string;
     startTime?: ParsedDate;
     endTime?: ParsedDate;
@@ -314,8 +314,8 @@ export interface InstanceHttpRequestStatisticsRO {
 
 export interface InstanceLoggerRO {
     name: string;
-    effectiveLevel?: LogLevel;
-    configuredLevel?: LogLevel;
+    effectiveLevel?: string;
+    configuredLevel?: string;
 }
 
 export interface InstanceMetricRO {
@@ -560,7 +560,7 @@ export interface IntegrationGraphActuatorResponse$Node {
 export interface IntegrationGraphActuatorResponse$Link {
     from: number;
     to: number;
-    type: IntegrationGraphActuatorResponse$Link$Type;
+    type: string;
 }
 
 export interface LiquibaseActuatorResponse$Context {
@@ -569,12 +569,12 @@ export interface LiquibaseActuatorResponse$Context {
 }
 
 export interface LoggersActuatorResponse$Logger {
-    effectiveLevel: LogLevel;
-    configuredLevel?: LogLevel;
+    effectiveLevel: string;
+    configuredLevel?: string;
 }
 
 export interface LoggersActuatorResponse$Group {
-    configuredLevel?: LogLevel;
+    configuredLevel?: string;
     members: string[];
 }
 
@@ -958,15 +958,7 @@ export type DateAsNumber = number;
 
 export type InstanceAbility = "METRICS" | "ENV" | "BEANS" | "QUARTZ" | "FLYWAY" | "LIQUIBASE" | "LOGGERS" | "CACHES" | "THREADDUMP" | "HEAPDUMP" | "CACHE_STATISTICS" | "SHUTDOWN" | "REFRESH" | "HTTP_REQUEST_STATISTICS" | "INTEGRATIONGRAPH" | "PROPERTIES" | "MAPPINGS" | "SCHEDULEDTASKS" | "HEALTH" | "INFO" | "SYSTEM_PROPERTIES" | "SYSTEM_ENVIRONMENT";
 
-export type HttpMethod = "GET" | "POST" | "PUT" | "DELETE" | "PATCH" | "HEAD" | "OPTIONS" | "TRACE";
-
 export type HealthActuatorResponse$Status = "UP" | "DOWN" | "OUT_OF_SERVICE" | "UNKNOWN";
-
-export type LogLevel = "TRACE" | "DEBUG" | "INFO" | "WARN" | "ERROR" | "FATAL" | "OFF";
-
-export type QuartzTriggerResponse$State = "NONE" | "NORMAL" | "PAUSED" | "COMPLETE" | "ERROR" | "BLOCKED";
-
-export type QuartzTriggerResponse$Type = "calendarInterval" | "cron" | "custom" | "dailyTimeInterval" | "simple";
 
 export type ResultAggregationSummary$Status = "SUCCESS" | "PARTIAL_SUCCESS" | "FAILURE";
 
@@ -995,5 +987,3 @@ export type EffectiveAuthentication$SourceType = "FOLDER" | "APPLICATION";
 export type FilterFieldOperation = "Equal" | "NotEqual" | "In" | "NotIn" | "GreaterThan" | "GreaterEqual" | "LowerThan" | "LowerEqual" | "Between" | "Contains" | "IsNull" | "IsNotNull" | "IsEmpty" | "IsNotEmpty" | "And" | "Or" | "Not" | "Noop";
 
 export type FilterFieldDataType = "String" | "Integer" | "Long" | "Double" | "Boolean" | "Date" | "Object" | "Enum" | "UUID" | "None";
-
-export type IntegrationGraphActuatorResponse$Link$Type = "input" | "output" | "discard" | "route";

@@ -6,7 +6,6 @@ import dev.krud.boost.daemon.configuration.instance.ability.InstanceAbilityServi
 import dev.krud.boost.daemon.configuration.instance.enums.InstanceAbility
 import dev.krud.boost.daemon.configuration.instance.logger.ro.InstanceLoggerRO
 import io.github.oshai.KotlinLogging
-import org.springframework.boot.logging.LogLevel
 import org.springframework.stereotype.Service
 import java.util.*
 
@@ -48,7 +47,7 @@ class InstanceLoggerService(
         )
     }
 
-    fun setLoggerLevel(instanceId: UUID, loggerName: String, level: LogLevel?): InstanceLoggerRO {
+    fun setLoggerLevel(instanceId: UUID, loggerName: String, level: String?): InstanceLoggerRO {
         log.debug { "Update log level for instance $instanceId and logger name $loggerName, set to $level" }
         val instance = instanceService.getInstanceOrThrow(instanceId)
         instanceAbilityService.hasAbilityOrThrow(instance, InstanceAbility.LOGGERS)
