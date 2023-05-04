@@ -6,18 +6,27 @@ import DialogTitleEnhanced from '../dialog/DialogTitleEnhanced';
 import { FormattedMessage } from 'react-intl';
 import changelog from '../../../../CHANGELOG.md';
 import Markdown from '../code/Markdown';
+import { useAnalytics } from '../../contexts/AnalyticsContext';
 
 interface NewVersionManagerProps {}
 
 const NewVersionManager: FunctionComponent<NewVersionManagerProps> = () => {
+  const { track } = useAnalytics();
+
   const [lastAppVersion, setLastAppVersion] = useLocalStorageState<string | undefined>('lastAppVersion', undefined);
 
   useEffect(() => {
     (async () => {
       const appVersion = await window.ui.getAppVersion();
+
+      if (!lastAppVersion) {
+        track({ name: 'app_first_open', properties: { version: appVersion } });
+      }
+
       if (appVersion !== lastAppVersion) {
         if (lastAppVersion) {
           NiceModal.show<undefined>(NewVersionDialog, { appVersion });
+          track({ name: 'app_update_completed', properties: { version: appVersion } });
         }
         setLastAppVersion(appVersion);
       }

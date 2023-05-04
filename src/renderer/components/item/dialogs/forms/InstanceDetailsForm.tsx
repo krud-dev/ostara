@@ -15,6 +15,7 @@ import AuthenticationDetailsForm from '../../authentication/forms/Authentication
 import { Authentication, InstanceModifyRequestRO } from '../../../../../common/generated_definitions';
 import useEffectiveAuthentication from '../../authentication/hooks/useEffectiveAuthentication';
 import EffectiveAuthenticationDetails from '../../authentication/effective/EffectiveAuthenticationDetails';
+import { useAnalytics } from '../../../../contexts/AnalyticsContext';
 
 export type InstanceDetailsFormProps = {
   defaultValues?: Partial<InstanceFormValues>;
@@ -37,6 +38,7 @@ const InstanceDetailsForm: FunctionComponent<InstanceDetailsFormProps> = ({
 }: InstanceDetailsFormProps) => {
   const intl = useIntl();
   const { enqueueSnackbar } = useSnackbar();
+  const { track } = useAnalytics();
 
   const methods = useForm<InstanceFormValues>({ defaultValues });
   const {
@@ -83,6 +85,8 @@ const InstanceDetailsForm: FunctionComponent<InstanceDetailsFormProps> = ({
   }, [onCancel]);
 
   const testConnectionHandler = useCallback(async (): Promise<void> => {
+    track({ name: 'test_connection', properties: { item_type: 'instance' } });
+
     try {
       const result = await testConnectionState.mutateAsync({
         actuatorUrl,
@@ -209,7 +213,7 @@ const InstanceDetailsForm: FunctionComponent<InstanceDetailsFormProps> = ({
                 }}
               />
 
-              <AuthenticationDetailsForm />
+              <AuthenticationDetailsForm itemType={'instance'} />
             </>
           )}
 

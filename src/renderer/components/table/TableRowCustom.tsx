@@ -8,6 +8,7 @@ import { alpha } from '@mui/material/styles';
 import ToolbarButton from '../common/ToolbarButton';
 import { FormattedMessage } from 'react-intl';
 import { isBoolean } from 'lodash';
+import { useAnalytics } from '../../contexts/AnalyticsContext';
 
 type TableRowCustomProps<EntityItem> = {
   row: EntityItem;
@@ -26,6 +27,7 @@ export default function TableRowCustom<EntityItem>({ row }: TableRowCustomProps<
     hasMassActions,
     actionsHandler,
   } = useTable<EntityItem, unknown>();
+  const { track } = useAnalytics();
 
   const [loadingActionIds, setLoadingActionIds] = React.useState<string[]>([]);
 
@@ -59,6 +61,7 @@ export default function TableRowCustom<EntityItem>({ row }: TableRowCustomProps<
 
       setLoadingActionIds((prev) => [...prev, actionId]);
 
+      track({ name: 'table_row_action', properties: { table: entity.id, action: actionId } });
       await actionsHandler(actionId, row);
 
       setLoadingActionIds((prev) => prev.filter((id) => id !== actionId));

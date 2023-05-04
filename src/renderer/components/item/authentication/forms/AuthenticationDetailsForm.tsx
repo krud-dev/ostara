@@ -9,13 +9,19 @@ import AuthenticationDetailsFormBasic from './AuthenticationDetailsFormBasic';
 import AuthenticationDetailsFormHeader from './AuthenticationDetailsFormHeader';
 import AuthenticationDetailsFormBearer from './AuthenticationDetailsFormBearer';
 import AuthenticationDetailsFormQuerystring from './AuthenticationDetailsFormQuerystring';
+import { useUpdateEffect } from 'react-use';
+import { useAnalytics } from '../../../../contexts/AnalyticsContext';
+import { ItemType } from '../../../../definitions/daemon';
 
-export type AuthenticationDetailsFormProps = {};
+export type AuthenticationDetailsFormProps = {
+  itemType: ItemType;
+};
 
-const AuthenticationDetailsForm: FunctionComponent<
-  AuthenticationDetailsFormProps
-> = ({}: AuthenticationDetailsFormProps) => {
+const AuthenticationDetailsForm: FunctionComponent<AuthenticationDetailsFormProps> = ({
+  itemType,
+}: AuthenticationDetailsFormProps) => {
   const intl = useIntl();
+  const { track } = useAnalytics();
 
   const { control, watch } = useFormContext<{ authentication: Authentication$Typed }>();
 
@@ -37,6 +43,10 @@ const AuthenticationDetailsForm: FunctionComponent<
       case 'query-string':
         return AuthenticationDetailsFormQuerystring;
     }
+  }, [type]);
+
+  useUpdateEffect(() => {
+    track({ name: 'authentication_type_change', properties: { item_type: itemType, authentication_type: type } });
   }, [type]);
 
   return (
@@ -84,7 +94,7 @@ const AuthenticationDetailsForm: FunctionComponent<
         }}
       />
 
-      <AuthenticationDetailsFormType />
+      <AuthenticationDetailsFormType itemType={itemType} />
     </>
   );
 };
