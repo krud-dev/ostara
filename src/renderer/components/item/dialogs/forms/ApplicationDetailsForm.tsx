@@ -90,7 +90,7 @@ const ApplicationDetailsForm: FunctionComponent<ApplicationDetailsFormProps> = (
             }}
           />
 
-          <AuthenticationDetailsForm />
+          <AuthenticationDetailsForm itemType={'application'} />
 
           <EffectiveAuthenticationDetails
             authentication={authentication}

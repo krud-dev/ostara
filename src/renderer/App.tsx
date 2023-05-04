@@ -13,6 +13,7 @@ import { StompProvider } from './apis/websockets/StompContext';
 import ApiErrorManager from './apis/ApiErrorManager';
 import { AnalyticsProvider } from './contexts/AnalyticsContext';
 import NewVersionManager from './components/managers/NewVersionManager';
+import AnalyticsEventsManager from './components/managers/AnalyticsEventsManager';
 
 export default function App() {
   const queryClient = useQueryClient();
@@ -45,6 +46,7 @@ export default function App() {
                         <NotistackProvider>
                           <NiceModal.Provider>
                             <ApiErrorManager />
+                            <AnalyticsEventsManager />
                             <NewVersionManager />
 
                             <Router />

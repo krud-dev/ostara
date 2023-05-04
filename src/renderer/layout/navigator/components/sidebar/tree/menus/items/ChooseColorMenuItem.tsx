@@ -6,6 +6,8 @@ import { CheckOutlined } from '@mui/icons-material';
 import { DEFAULT_COLOR_VALUE, INHERITED_COLOR_VALUE } from 'renderer/hooks/useItemColor';
 import { ItemRO } from '../../../../../../../definitions/daemon';
 import { useUpdateItem } from '../../../../../../../apis/requests/item/updateItem';
+import { getItemType } from '../../../../../../../utils/itemUtils';
+import { useAnalytics } from '../../../../../../../contexts/AnalyticsContext';
 
 const MenuItemStyle = styled(MenuItem)(({ theme }) => ({
   cursor: 'default',
@@ -21,6 +23,7 @@ type ChooseColorMenuItemProps = {
 
 export default function ChooseColorMenuItem({ item, onClose }: ChooseColorMenuItemProps) {
   const theme = useTheme();
+  const { track } = useAnalytics();
 
   const [selectedColor, setSelectedColor] = useState<string | undefined>(item.color);
 
@@ -29,6 +32,9 @@ export default function ChooseColorMenuItem({ item, onClose }: ChooseColorMenuIt
   const setColorHandler = useCallback(
     async (newColor: string): Promise<void> => {
       setSelectedColor(newColor);
+
+      track({ name: 'item_color_change', properties: { item_type: getItemType(item), color: newColor } });
+
       try {
         await updateItemState.mutateAsync({ item: { ...item, color: newColor } });
       } catch (e) {}

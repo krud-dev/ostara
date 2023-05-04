@@ -5,6 +5,7 @@ import { useSetInstanceLoggerLevel } from 'renderer/apis/requests/instance/logge
 import { EnrichedInstanceLoggerRO } from 'renderer/apis/requests/instance/loggers/getInstanceLoggers';
 import { LogLevel } from '../../../../../common/generated_definitions';
 import { useUpdateEffect } from 'react-use';
+import { useAnalytics } from '../../../../contexts/AnalyticsContext';
 
 type TableCellDataLoggerLevelProps<EntityItem extends EnrichedInstanceLoggerRO> = {
   row: EntityItem;
@@ -15,6 +16,8 @@ export default function TableCellDataInstanceLoggerLevel<EntityItem extends Enri
   row,
   column,
 }: TableCellDataLoggerLevelProps<EntityItem>) {
+  const { track } = useAnalytics();
+
   const [loadingLevels, setLoadingLevels] = useState<LogLevel[] | undefined>(undefined);
 
   const disabled = useMemo(() => !!loadingLevels, [loadingLevels]);
@@ -25,6 +28,8 @@ export default function TableCellDataInstanceLoggerLevel<EntityItem extends Enri
       if (setLevelState.isLoading) {
         return;
       }
+
+      track({ name: 'log_level_change', properties: { item_type: 'instance', level: newLevel } });
 
       setLoadingLevels([newLevel]);
       try {
