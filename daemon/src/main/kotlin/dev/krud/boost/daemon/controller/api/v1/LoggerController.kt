@@ -8,7 +8,6 @@ import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.media.Content
 import io.swagger.v3.oas.annotations.responses.ApiResponse
 import io.swagger.v3.oas.annotations.tags.Tag
-import org.springframework.boot.logging.LogLevel
 import org.springframework.http.HttpStatus
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PathVariable
@@ -59,7 +58,7 @@ class LoggerController(
     )
     @ApiResponse(responseCode = "200", description = "Updated logger")
     @ApiResponse(responseCode = "400", description = "Instance is missing ability", content = [Content()])
-    fun updateInstanceLogger(@PathVariable instanceId: UUID, @PathVariable loggerName: String, @RequestParam(required = false) level: LogLevel? = null): InstanceLoggerRO {
+    fun updateInstanceLogger(@PathVariable instanceId: UUID, @PathVariable loggerName: String, @RequestParam(required = false) level: String? = null): InstanceLoggerRO {
         return instanceLoggerService.setLoggerLevel(instanceId, loggerName, level)
     }
 
@@ -96,7 +95,7 @@ class LoggerController(
     )
     @ApiResponse(responseCode = "200", description = "Updated logger")
     @ApiResponse(responseCode = "400", description = "Application is missing ability", content = [Content()])
-    fun updateApplicationLogger(@PathVariable applicationId: UUID, @PathVariable loggerName: String, @RequestParam(required = false) level: LogLevel? = null): ApplicationLoggerRO {
+    fun updateApplicationLogger(@PathVariable applicationId: UUID, @PathVariable loggerName: String, @RequestParam(required = false) level: String? = null): ApplicationLoggerRO {
         return applicationLoggerService.setLoggerLevel(applicationId, loggerName, level)
     }
 }

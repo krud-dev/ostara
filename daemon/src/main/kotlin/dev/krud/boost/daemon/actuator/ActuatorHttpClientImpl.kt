@@ -50,7 +50,6 @@ import okhttp3.Request
 import okhttp3.RequestBody
 import okhttp3.RequestBody.Companion.toRequestBody
 import okhttp3.Response
-import org.springframework.boot.logging.LogLevel
 import org.springframework.web.server.ResponseStatusException
 import java.io.InputStream
 import java.net.ConnectException
@@ -267,7 +266,7 @@ class ActuatorHttpClientImpl(
 
     override fun logger(loggerOrGroupName: String): Result<LoggerActuatorResponse> = doGet(asUrl("loggers", loggerOrGroupName))
 
-    override fun updateLogger(loggerOrGroupName: String, level: LogLevel?): Result<Unit> = doPost(
+    override fun updateLogger(loggerOrGroupName: String, level: String?): Result<Unit> = doPost(
         asUrl("loggers", loggerOrGroupName),
         objectMapper.writeValueAsString(
             LoggerUpdateRequest(level)

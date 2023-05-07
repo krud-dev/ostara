@@ -5,7 +5,6 @@ import { EnrichedApplicationLoggerRO } from 'renderer/apis/requests/application/
 import { useSetApplicationLoggerLevel } from 'renderer/apis/requests/application/loggers/setApplicationLoggerLevel';
 import { map } from 'lodash';
 import { notEmpty } from 'renderer/utils/objectUtils';
-import { LogLevel } from '../../../../../common/generated_definitions';
 import { useUpdateEffect } from 'react-use';
 import { useAnalytics } from '../../../../contexts/AnalyticsContext';
 
@@ -20,13 +19,13 @@ export default function TableCellDataApplicationLoggerLevel<EntityItem extends E
 }: TableCellDataApplicationLoggerLevelProps<EntityItem>) {
   const { track } = useAnalytics();
 
-  const [loadingLevels, setLoadingLevels] = useState<LogLevel[] | undefined>(undefined);
+  const [loadingLevels, setLoadingLevels] = useState<string[] | undefined>(undefined);
 
   const disabled = useMemo(() => !!loadingLevels, [loadingLevels]);
 
   const setLevelState = useSetApplicationLoggerLevel();
   const changeHandler = useCallback(
-    async (newLevel: LogLevel): Promise<void> => {
+    async (newLevel: string): Promise<void> => {
       if (setLevelState.isLoading) {
         return;
       }
@@ -47,11 +46,11 @@ export default function TableCellDataApplicationLoggerLevel<EntityItem extends E
     setLoadingLevels(undefined);
   }, [row]);
 
-  const effectiveLevels = useMemo<LogLevel[]>(
+  const effectiveLevels = useMemo<string[]>(
     () => map(row.loggers, (logger) => logger.effectiveLevel).filter(notEmpty),
     [row.loggers]
   );
-  const configuredLevels = useMemo<LogLevel[] | undefined>(
+  const configuredLevels = useMemo<string[] | undefined>(
     () => map(row.loggers, (logger) => logger.configuredLevel).filter(notEmpty),
     [row.loggers]
   );

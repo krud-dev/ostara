@@ -6,12 +6,12 @@ import {
 import { apiKeys } from 'renderer/apis/apiKeys';
 import { axiosInstance } from '../../../axiosInstance';
 import { AxiosResponse } from 'axios';
-import { ApplicationLoggerRO, LogLevel } from '../../../../../common/generated_definitions';
+import { ApplicationLoggerRO } from '../../../../../common/generated_definitions';
 
 type Variables = {
   applicationId: string;
   loggerName: string;
-  level?: LogLevel;
+  level?: string;
 };
 
 type Data = ApplicationLoggerRO;

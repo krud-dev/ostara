@@ -1,6 +1,5 @@
 package dev.krud.boost.daemon.actuator.model
 
-import com.fasterxml.jackson.annotation.JsonProperty
 import dev.krud.boost.daemon.utils.TypeDefaults
 
 data class IntegrationGraphActuatorResponse(
@@ -40,20 +39,6 @@ data class IntegrationGraphActuatorResponse(
     data class Link(
         val from: Int,
         val to: Int,
-        val type: Type
-    ) {
-        enum class Type {
-            @JsonProperty("input")
-            INPUT,
-
-            @JsonProperty("output")
-            OUTPUT,
-
-            @JsonProperty("discard")
-            DISCARD,
-
-            @JsonProperty("route")
-            ROUTE
-        }
-    }
+        val type: String
+    )
 }

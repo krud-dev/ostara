@@ -3,7 +3,6 @@ package dev.krud.boost.daemon.configuration.application.logger
 import dev.krud.boost.daemon.configuration.application.ApplicationService
 import dev.krud.boost.daemon.configuration.application.logger.ro.ApplicationLoggerRO
 import dev.krud.boost.daemon.configuration.instance.enums.InstanceAbility
-import dev.krud.boost.daemon.configuration.instance.health.InstanceHealthService
 import dev.krud.boost.daemon.configuration.instance.logger.InstanceLoggerService
 import dev.krud.boost.daemon.exception.throwBadRequest
 import io.github.oshai.KotlinLogging
@@ -11,15 +10,13 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.runBlocking
-import org.springframework.boot.logging.LogLevel
 import org.springframework.stereotype.Service
 import java.util.*
 
 @Service
 class ApplicationLoggerService(
     private val applicationService: ApplicationService,
-    private val instanceLoggerService: InstanceLoggerService,
-    private val instanceHealthService: InstanceHealthService
+    private val instanceLoggerService: InstanceLoggerService
 ) {
     fun getLoggers(applicationId: UUID): List<ApplicationLoggerRO> {
         log.debug { "Getting loggers for application $applicationId" }
@@ -99,7 +96,7 @@ class ApplicationLoggerService(
         return applicationLogger
     }
 
-    fun setLoggerLevel(applicationId: UUID, loggerName: String, level: LogLevel?): ApplicationLoggerRO {
+    fun setLoggerLevel(applicationId: UUID, loggerName: String, level: String?): ApplicationLoggerRO {
         log.debug { "Setting logger $loggerName level to $level for application $applicationId" }
         val application = applicationService.getApplicationOrThrow(applicationId)
         applicationService.hasAbilityOrThrow(application, InstanceAbility.LOGGERS)

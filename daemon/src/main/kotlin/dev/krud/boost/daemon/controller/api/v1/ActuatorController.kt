@@ -8,7 +8,6 @@ import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.media.Content
 import io.swagger.v3.oas.annotations.responses.ApiResponse
 import io.swagger.v3.oas.annotations.tags.Tag
-import org.springframework.boot.logging.LogLevel
 import org.springframework.http.HttpStatus
 import org.springframework.web.bind.annotation.*
 import java.util.*
@@ -292,7 +291,7 @@ class ActuatorController(
     @ApiResponse(responseCode = "200", description = "Logger object")
     @ApiResponse(responseCode = "404", description = "Endpoint not available", content = [Content()])
     @ApiResponse(responseCode = "503", description = "Service unavailable", content = [Content()])
-    fun updateLogger(@RequestParam instanceId: UUID, @PathVariable loggerOrGroupName: String, @RequestParam logLevel: LogLevel) = getClient(instanceId).updateLogger(loggerOrGroupName, logLevel).getOrThrow()
+    fun updateLogger(@RequestParam instanceId: UUID, @PathVariable loggerOrGroupName: String, @RequestParam logLevel: String) = getClient(instanceId).updateLogger(loggerOrGroupName, logLevel).getOrThrow()
 
     @GetMapping("/integrationgraph")
     @ResponseStatus(HttpStatus.OK)

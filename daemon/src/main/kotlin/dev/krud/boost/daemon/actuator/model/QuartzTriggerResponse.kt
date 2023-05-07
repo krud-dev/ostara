@@ -1,16 +1,14 @@
 package dev.krud.boost.daemon.actuator.model
 
-import com.fasterxml.jackson.annotation.JsonProperty
 import dev.krud.boost.daemon.jackson.ParsedDate
 import dev.krud.boost.daemon.utils.TypeDefaults
-import java.util.*
 
 data class QuartzTriggerResponse(
     val group: String = TypeDefaults.STRING,
     val name: String = TypeDefaults.STRING,
     val description: String = TypeDefaults.STRING,
-    val state: State = State.NONE,
-    val type: Type = Type.CUSTOM,
+    val state: String = TypeDefaults.STRING,
+    val type: String = TypeDefaults.STRING,
     val calendarName: String? = null,
     val startTime: ParsedDate? = null,
     val endTime: ParsedDate? = null,
@@ -26,31 +24,6 @@ data class QuartzTriggerResponse(
     val simple: Simple? = null
 
 ) {
-    enum class State {
-        NONE,
-        NORMAL,
-        PAUSED,
-        COMPLETE,
-        ERROR,
-        BLOCKED
-    }
-
-    enum class Type {
-        @JsonProperty("calendarInterval")
-        CALENDAR_INTERVAL,
-
-        @JsonProperty("cron")
-        CRON,
-
-        @JsonProperty("custom")
-        CUSTOM,
-
-        @JsonProperty("dailyTimeInterval")
-        DAILY_TIME_INTERVAL,
-
-        @JsonProperty("simple")
-        SIMPLE
-    }
 
     data class CalendarInterval(
         val interval: Long = TypeDefaults.LONG,

@@ -27,7 +27,6 @@ import dev.krud.boost.daemon.actuator.model.ScheduledTasksActuatorResponse
 import dev.krud.boost.daemon.actuator.model.TestConnectionResponse
 import dev.krud.boost.daemon.actuator.model.ThreadDumpActuatorResponse
 import dev.krud.boost.daemon.okhttp.ProgressListener
-import org.springframework.boot.logging.LogLevel
 import java.io.InputStream
 
 interface ActuatorHttpClient {
@@ -141,7 +140,7 @@ interface ActuatorHttpClient {
 
     fun logger(loggerOrGroupName: String): Result<LoggerActuatorResponse>
 
-    fun updateLogger(loggerOrGroupName: String, level: LogLevel?): Result<Unit>
+    fun updateLogger(loggerOrGroupName: String, level: String?): Result<Unit>
 
     /**
      * Integration Graph

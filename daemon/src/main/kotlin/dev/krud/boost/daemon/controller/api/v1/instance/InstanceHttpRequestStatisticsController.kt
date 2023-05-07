@@ -1,7 +1,6 @@
 package dev.krud.boost.daemon.controller.api.v1.instance
 
 import dev.krud.boost.daemon.configuration.instance.httprequeststatistics.InstanceHttpRequestStatisticsService
-import dev.krud.boost.daemon.configuration.instance.httprequeststatistics.enums.HttpMethod
 import dev.krud.boost.daemon.configuration.instance.httprequeststatistics.ro.InstanceHttpRequestStatisticsRO
 import dev.krud.boost.daemon.controller.api.v1.API_PREFIX
 import io.swagger.v3.oas.annotations.Operation
@@ -41,7 +40,7 @@ class InstanceHttpRequestStatisticsController(
     )
     @ApiResponse(responseCode = "200", description = "Get HTTP request statistics for an instance by URI split by methods")
     @ApiResponse(responseCode = "404", description = "Instance not found")
-    fun getStatisticsByUriAndMethod(@PathVariable instanceId: UUID, @RequestParam uri: String): Map<HttpMethod, InstanceHttpRequestStatisticsRO> {
+    fun getStatisticsByUriAndMethod(@PathVariable instanceId: UUID, @RequestParam uri: String): Map<String, InstanceHttpRequestStatisticsRO> {
         return instanceHttpRequestStatisticsService.getStatisticsByUriAndMethod(instanceId, uri)
     }
 

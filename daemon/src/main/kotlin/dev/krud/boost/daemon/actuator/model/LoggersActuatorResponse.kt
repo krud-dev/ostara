@@ -1,25 +1,19 @@
 package dev.krud.boost.daemon.actuator.model
 
-import com.fasterxml.jackson.databind.DeserializationFeature
-import com.fasterxml.jackson.databind.ObjectMapper
-import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule
-import com.fasterxml.jackson.module.kotlin.KotlinModule
-import com.fasterxml.jackson.module.kotlin.readValue
-import dev.krud.boost.daemon.jackson.MultiDateParsingModule
-import org.springframework.boot.logging.LogLevel
+import dev.krud.boost.daemon.utils.TypeDefaults
 
 data class LoggersActuatorResponse(
-    val levels: List<LogLevel> = emptyList(),
+    val levels: List<String> = emptyList(),
     val loggers: Map<String, Logger> = emptyMap(),
     val groups: Map<String, Group> = emptyMap()
 ) {
     data class Logger(
-        val effectiveLevel: LogLevel = LogLevel.OFF,
-        val configuredLevel: LogLevel? = null
+        val effectiveLevel: String = TypeDefaults.STRING,
+        val configuredLevel: String? = null
     )
 
     data class Group(
-        val configuredLevel: LogLevel? = LogLevel.OFF,
+        val configuredLevel: String? = TypeDefaults.STRING,
         val members: List<String> = emptyList()
     )
 }
