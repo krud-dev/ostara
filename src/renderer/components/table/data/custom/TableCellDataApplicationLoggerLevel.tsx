@@ -6,6 +6,7 @@ import { useSetApplicationLoggerLevel } from 'renderer/apis/requests/application
 import { map } from 'lodash';
 import { notEmpty } from 'renderer/utils/objectUtils';
 import { useUpdateEffect } from 'react-use';
+import { useAnalytics } from '../../../../contexts/AnalyticsContext';
 
 type TableCellDataApplicationLoggerLevelProps<EntityItem extends EnrichedApplicationLoggerRO> = {
   row: EntityItem;
@@ -16,6 +17,8 @@ export default function TableCellDataApplicationLoggerLevel<EntityItem extends E
   row,
   column,
 }: TableCellDataApplicationLoggerLevelProps<EntityItem>) {
+  const { track } = useAnalytics();
+
   const [loadingLevels, setLoadingLevels] = useState<string[] | undefined>(undefined);
 
   const disabled = useMemo(() => !!loadingLevels, [loadingLevels]);
@@ -26,6 +29,8 @@ export default function TableCellDataApplicationLoggerLevel<EntityItem extends E
       if (setLevelState.isLoading) {
         return;
       }
+
+      track({ name: 'log_level_change', properties: { item_type: 'application', level: newLevel } });
 
       setLoadingLevels([newLevel]);
       try {

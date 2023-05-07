@@ -88,7 +88,7 @@ const FolderDetailsForm: FunctionComponent<FolderDetailsFormProps> = ({
             }}
           />
 
-          <AuthenticationDetailsForm />
+          <AuthenticationDetailsForm itemType={'folder'} />
 
           <EffectiveAuthenticationDetails
             authentication={authentication}
