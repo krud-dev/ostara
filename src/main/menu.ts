@@ -44,10 +44,10 @@ export default class MenuBuilder {
 
   buildMacTemplate(): MenuItemConstructorOptions[] {
     const subMenuAbout: DarwinMenuItemConstructorOptions = {
-      label: 'Boost',
+      label: 'Ostara',
       submenu: [
         {
-          label: 'About Boost',
+          label: 'About Ostara',
           selector: 'orderFrontStandardAboutPanel:',
         },
         { type: 'separator' },
@@ -64,7 +64,7 @@ export default class MenuBuilder {
         },
         { type: 'separator' },
         {
-          label: 'Hide Boost',
+          label: 'Hide Ostara',
           accelerator: 'Command+H',
           selector: 'hide:',
         },
@@ -197,27 +197,27 @@ export default class MenuBuilder {
         {
           label: 'Star us on GitHub',
           click() {
-            shell.openExternal('https://github.com/krud-dev/boost');
+            shell.openExternal('https://github.com/krud-dev/ostara');
           },
         },
         {
           label: 'Documentation',
           click() {
-            shell.openExternal('https://boost.krud.dev/');
+            shell.openExternal('https://docs.ostara.dev/');
           },
         },
         { type: 'separator' },
         {
           label: 'Search Issues',
           click() {
-            shell.openExternal('https://github.com/krud-dev/boost/issues');
+            shell.openExternal('https://github.com/krud-dev/ostara/issues');
           },
         },
         {
           label: 'Submit a Bug Report',
           click() {
             shell.openExternal(
-              'https://github.com/krud-dev/boost/issues/new?assignees=&labels=bug&template=1-Bug_report.md'
+              'https://github.com/krud-dev/ostara/issues/new?assignees=&labels=bug&template=1-Bug_report.md'
             );
           },
         },

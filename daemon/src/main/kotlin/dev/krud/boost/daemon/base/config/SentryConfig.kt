@@ -10,6 +10,6 @@ class SentryConfig {
 
     @Bean
     fun applySentryTags() = CommandLineRunner {
-        Sentry.setTag("boost.type", "daemon")
+        Sentry.setTag("service.type", "daemon")
     }
 }
