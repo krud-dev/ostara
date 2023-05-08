@@ -47,6 +47,10 @@ class Instance(
     @OneToOne(cascade = [CascadeType.ALL], mappedBy = "instance")
     var hostname: InstanceHostname = InstanceHostname(this, null)
 
+    @MappedField
+    @Column(columnDefinition = "boolean default false")
+    var demo: Boolean = false
+
     companion object {
         const val NAME = "instance"
     }

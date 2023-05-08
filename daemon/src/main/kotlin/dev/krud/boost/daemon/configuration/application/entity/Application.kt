@@ -56,6 +56,10 @@ class Application(
     @Formula("(json_extract(authentication, '$.type'))")
     var authenticationType: String = authentication?.type ?: Authentication.Inherit.DEFAULT.type // Elvis is needed due to Hibernate
 
+    @MappedField
+    @Column(columnDefinition = "boolean default false")
+    var demo: Boolean = false
+
     companion object {
         const val NAME = "application"
     }

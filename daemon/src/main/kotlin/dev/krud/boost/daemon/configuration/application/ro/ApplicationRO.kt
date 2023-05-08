@@ -16,5 +16,6 @@ class ApplicationRO(
     val sort: Double? = null,
     val parentFolderId: UUID? = null,
     var health: ApplicationHealthRO = ApplicationHealthRO.unknown(id),
-    var authentication: Authentication = Authentication.Inherit.DEFAULT
+    var authentication: Authentication = Authentication.Inherit.DEFAULT,
+    var demo: Boolean = false
 )
