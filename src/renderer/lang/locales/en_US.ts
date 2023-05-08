@@ -352,4 +352,10 @@ export default {
   goToHome: 'Go to Home',
   logLevel: 'Log Level',
   enterCustomLogLevel: 'Enter Custom Log Level',
+  star: 'Star',
+  feedback: 'Feedback',
+  feedbackHelpImprove:
+    'We would love to hear your feedback. Any feature request, recommendation or bug report is more than welcome. Please let us know what you think and help us improve.',
+  openIssue: 'Open Issue',
+  sendEmail: 'Send Email',
 };
