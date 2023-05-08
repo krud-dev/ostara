@@ -21,6 +21,7 @@ import { useGetApplicationsHealth } from '../../../../apis/requests/application/
 import { useDeleteItem } from '../../../../apis/requests/item/deleteItem';
 import { folderCrudEntity } from '../../../../apis/requests/crud/entity/entities/folder.crudEntity';
 import { showDeleteConfirmationDialog } from '../../../../utils/dialogUtils';
+import { axiosInstance } from '../../../../apis/axiosInstance';
 
 type ApplicationToCreate = {
   applicationName: string;
@@ -190,6 +191,20 @@ export default function HomeDeveloperMode({}: HomeDeveloperModeProps) {
     }
   }, [applicationsHealthState]);
 
+  const createDemoHandler = useCallback(async (): Promise<void> => {
+    setLoading(true);
+    try {
+      console.log('Starting demo');
+      const actuatorUrl = await window.demo.startDemo();
+      console.log(`Demo started at ${actuatorUrl}`);
+      await axiosInstance.post('/demo', null, { params: { actuatorUrl } });
+      console.log('Demo created');
+    } catch (e) {
+    } finally {
+      setLoading(false);
+    }
+  }, []);
+
   return (
     <Card sx={{ flexGrow: 1, minHeight: 300 }}>
       <CardContent>
@@ -230,6 +245,9 @@ export default function HomeDeveloperMode({}: HomeDeveloperModeProps) {
           </LoadingButton>
           <LoadingButton variant="outlined" color="error" loading={loading} onClick={deleteAllHandler}>
             Delete All
+          </LoadingButton>
+          <LoadingButton variant="outlined" color="error" loading={loading} onClick={createDemoHandler}>
+            Create Demo
           </LoadingButton>
           {/*<LoadingButton variant="outlined" color="primary" loading={loading} onClick={logApplicationsHealthHandler}>*/}
           {/*  Log Applications Health*/}

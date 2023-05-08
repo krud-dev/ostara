@@ -16,8 +16,8 @@ import strikt.assertions.isEqualTo
 import java.util.*
 
 class ApplicationServiceTest {
-    private val applicationKrud: Krud<Application, UUID> = TestKrud(Application::class.java)
-    private val instanceKrud: Krud<Instance, UUID> = TestKrud(Instance::class.java)
+    private val applicationKrud: Krud<Application, UUID> = TestKrud(Application::class.java) { UUID.randomUUID() }
+    private val instanceKrud: Krud<Instance, UUID> = TestKrud(Instance::class.java) { UUID.randomUUID() }
     private val instanceAbilityService: InstanceAbilityService = mock()
     private val systemEventsChannel: PublishSubscribeChannel = mock()
     private val applicationService = ApplicationService(

@@ -243,6 +243,7 @@ export interface ApplicationRO {
     parentFolderId?: string;
     health: ApplicationHealthRO;
     authentication: Authentication;
+    demo: boolean;
 }
 
 export interface FolderModifyRequestRO {
@@ -356,6 +357,7 @@ export interface InstanceRO {
     icon?: string;
     sort?: number;
     health: InstanceHealthRO;
+    demo: boolean;
 }
 
 export interface InstanceSystemEnvironmentRO {

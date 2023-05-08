@@ -7,8 +7,9 @@ import dev.krud.crudframework.modelfilter.DynamicModelFilter
 import dev.krud.crudframework.ro.PagedResult
 import dev.krud.crudframework.util.filtersMatch
 import java.io.Serializable
+import java.util.UUID
 
-class TestKrud<Entity : BaseCrudEntity<ID>, ID : Serializable>(override val entityClazz: Class<Entity>) :
+class TestKrud<Entity : BaseCrudEntity<ID>, ID : Serializable>(override val entityClazz: Class<Entity>, private val idSupplier: () -> ID) :
     Krud<Entity, ID> {
     val entities = mutableListOf<Entity>()
     override fun bulkCreate(entities: List<Entity>, applyPolicies: Boolean): List<Entity> {
@@ -17,6 +18,7 @@ class TestKrud<Entity : BaseCrudEntity<ID>, ID : Serializable>(override val enti
     }
 
     override fun create(entity: Entity, applyPolicies: Boolean): Entity {
+        entity.id = idSupplier()
         entities.add(entity)
         return entity
     }
