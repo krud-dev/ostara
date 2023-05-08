@@ -1,5 +1,13 @@
 # @krud-dev/boost
 
+## 0.7.0
+
+### Minor Changes
+
+- debaf31: Added analytics events and disabled analytics in developer mode
+- 75551a4: Rename app from Boost to Ostara
+- 2614ab0: Added error boundary and user feedback on error
+
 ## 0.6.1
 
 ### Patch Changes
