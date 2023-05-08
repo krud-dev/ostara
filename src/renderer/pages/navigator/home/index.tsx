@@ -10,6 +10,7 @@ import HomeDocumentation from './components/HomeDocumentation';
 import HomeWhatsNew from './components/HomeWhatsNew';
 import { useSettings } from '../../../contexts/SettingsContext';
 import HomeDeveloperMode from './components/HomeDeveloperMode';
+import HomeFeedback from './components/HomeFeedback';
 
 const Home: FunctionComponent = () => {
   const { developerMode } = useSettings();
@@ -27,6 +28,7 @@ const Home: FunctionComponent = () => {
           <Grid2 xs={12} lg={6}>
             <Stack direction={'column'} spacing={COMPONENTS_SPACING} sx={{ height: '100%' }}>
               <HomeRepository />
+              <HomeFeedback />
               <HomeWhatsNew />
             </Stack>
           </Grid2>

@@ -1,7 +1,8 @@
-import { Button, Card, CardContent, Stack, Typography } from '@mui/material';
+import { Box, Button, Card, CardContent, Stack, Typography } from '@mui/material';
 import React from 'react';
 import { FormattedMessage } from 'react-intl';
 import { REPOSITORY_URL } from '../../../../constants/ui';
+import { StarOutlined } from '@mui/icons-material';
 
 type HomeRepositoryProps = {};
 
@@ -24,6 +25,16 @@ export default function HomeRepository({}: HomeRepositoryProps) {
         <Stack direction={{ xs: 'column', sm: 'row' }} spacing={2} sx={{ mt: 3 }}>
           <Button variant="outlined" color="primary" href={REPOSITORY_URL} target="_blank" rel="noopener noreferrer">
             <FormattedMessage id={'openRepository'} />
+          </Button>
+          <Button
+            variant="outlined"
+            color="primary"
+            href={REPOSITORY_URL}
+            target="_blank"
+            rel="noopener noreferrer"
+            startIcon={<StarOutlined sx={{ color: 'warning.main' }} />}
+          >
+            <FormattedMessage id={'star'} />
           </Button>
         </Stack>
       </CardContent>
