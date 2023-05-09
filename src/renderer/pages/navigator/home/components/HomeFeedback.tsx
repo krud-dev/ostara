@@ -1,8 +1,7 @@
-import { Box, Button, Card, CardContent, Stack, Typography } from '@mui/material';
+import { Button, Card, CardContent, Stack, Typography } from '@mui/material';
 import React from 'react';
 import { FormattedMessage } from 'react-intl';
-import { REPOSITORY_ISSUES_URL, REPOSITORY_URL, SUPPORT_EMAIL } from '../../../../constants/ui';
-import { StarOutlined } from '@mui/icons-material';
+import { REPOSITORY_ISSUES_URL, SUPPORT_EMAIL } from '../../../../constants/ui';
 
 type HomeFeedbackProps = {};
 

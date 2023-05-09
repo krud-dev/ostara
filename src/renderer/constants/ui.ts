@@ -24,3 +24,4 @@ export const DOCUMENTATION_URL = 'https://docs.ostara.dev/';
 export const ABILITIES_DOCUMENTATION_URL = 'https://docs.ostara.dev/features/abilities';
 export const REDACTION_DOCUMENTATION_URL =
   'https://docs.ostara.dev/troubleshooting/environment-variables-system-properties-app-properties-are-partially-or-fully-masked';
+export const SUPPORT_EMAIL = 'support@ostara.dev';
