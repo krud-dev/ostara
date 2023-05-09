@@ -104,7 +104,7 @@ export default function TableRowCustom<EntityItem>({ row }: TableRowCustomProps<
         {entity.columns.map((column: EntityColumn<EntityItem>) => {
           const tooltip = column.getTooltip?.(row);
           return (
-            <TableCell align={column.align || 'left'} sx={{ wordBreak: 'break-all' }} key={column.id}>
+            <TableCell align={column.align || 'left'} sx={{ wordBreak: 'break-word' }} key={column.id}>
               <Tooltip title={tooltip} disableInteractive={false}>
                 <Box component={'span'}>
                   <TableCellData row={row} column={column} />

@@ -10,13 +10,13 @@ export const instanceBeanEntity: Entity<InstanceBean> = {
       id: 'name',
       type: 'Text',
       labelId: 'name',
-      width: 300,
+      width: 250,
     },
     {
       id: 'package',
       type: 'Text',
       labelId: 'package',
-      width: 300,
+      width: 250,
     },
     {
       id: 'scope',

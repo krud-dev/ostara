@@ -22,7 +22,7 @@ export default function DetailsLabelValueVertical({ label, value, tooltip, sx }:
       </Typography>
       <Typography component={'div'} variant={'body2'}>
         <Tooltip title={tooltip}>
-          <Box component={'span'} sx={{ wordBreak: 'break-all' }}>
+          <Box component={'span'} sx={{ wordBreak: 'break-word' }}>
             {displayValue}
           </Box>
         </Tooltip>
