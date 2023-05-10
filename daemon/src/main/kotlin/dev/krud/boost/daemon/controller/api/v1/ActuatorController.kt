@@ -392,6 +392,39 @@ class ActuatorController(
     @ApiResponse(responseCode = "503", description = "Service unavailable", content = [Content()])
     fun quartzTrigger(@RequestParam instanceId: UUID, @PathVariable group: String, @PathVariable name: String) = getClient(instanceId).quartzTrigger(group, name).getOrThrow()
 
+    @GetMapping("/togglz")
+    @ResponseStatus(HttpStatus.OK)
+    @Operation(
+        summary = "Get a list of Togglz features",
+        description = "Equivalent call to actuator /togglz"
+    )
+    @ApiResponse(responseCode = "200", description = "Togglz feature list")
+    @ApiResponse(responseCode = "404", description = "Endpoint not available", content = [Content()])
+    @ApiResponse(responseCode = "503", description = "Service unavailable", content = [Content()])
+    fun togglz(@RequestParam instanceId: UUID) = getClient(instanceId).togglz().getOrThrow()
+
+    @GetMapping("/togglz/{featureName}")
+    @ResponseStatus(HttpStatus.OK)
+    @Operation(
+        summary = "Get a Togglz feature by name",
+        description = "Equivalent call to actuator /togglz/{name}"
+    )
+    @ApiResponse(responseCode = "200", description = "Togglz feature")
+    @ApiResponse(responseCode = "404", description = "Endpoint not available or feature not found", content = [Content()])
+    @ApiResponse(responseCode = "503", description = "Service unavailable", content = [Content()])
+    fun togglzFeature(@RequestParam instanceId: UUID, @PathVariable featureName: String) = getClient(instanceId).togglzFeature(featureName).getOrThrow()
+
+    @PostMapping("/togglz/{featureName}")
+    @ResponseStatus(HttpStatus.OK)
+    @Operation(
+        summary = "Update a Togglz feature by name",
+        description = "Equivalent call to actuator POST /togglz/{name}"
+    )
+    @ApiResponse(responseCode = "200", description = "Togglz feature")
+    @ApiResponse(responseCode = "404", description = "Endpoint not available or feature not found", content = [Content()])
+    @ApiResponse(responseCode = "503", description = "Service unavailable", content = [Content()])
+    fun updateTogglzFeature(@RequestParam instanceId: UUID, @PathVariable featureName: String, @RequestParam enabled: Boolean) = getClient(instanceId).togglzFeature(featureName).getOrThrow()
+
     private fun getClient(instanceId: UUID): ActuatorHttpClient {
         val instance = instanceService.getInstanceFromCacheOrThrow(instanceId)
         return actuatorClientProvider.provide(instance)

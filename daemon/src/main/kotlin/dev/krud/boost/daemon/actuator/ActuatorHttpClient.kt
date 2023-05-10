@@ -26,6 +26,7 @@ import dev.krud.boost.daemon.actuator.model.QuartzTriggersResponse
 import dev.krud.boost.daemon.actuator.model.ScheduledTasksActuatorResponse
 import dev.krud.boost.daemon.actuator.model.TestConnectionResponse
 import dev.krud.boost.daemon.actuator.model.ThreadDumpActuatorResponse
+import dev.krud.boost.daemon.actuator.model.TogglzFeatureActuatorResponse
 import dev.krud.boost.daemon.okhttp.ProgressListener
 import java.io.InputStream
 
@@ -171,4 +172,14 @@ interface ActuatorHttpClient {
     fun quartzTriggersByGroup(group: String): Result<QuartzTriggersByGroupResponse>
 
     fun quartzTrigger(group: String, name: String): Result<QuartzTriggerResponse>
+
+    /**
+     * Togglz
+     */
+
+    fun togglz(): Result<List<TogglzFeatureActuatorResponse>>
+
+    fun togglzFeature(featureName: String): Result<TogglzFeatureActuatorResponse>
+
+    fun updateTogglzFeature(featureName: String, enabled: Boolean): Result<TogglzFeatureActuatorResponse>
 }

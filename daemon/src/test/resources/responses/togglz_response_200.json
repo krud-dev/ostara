@@ -1,0 +1,14 @@
+[
+    {
+        "name": "AUTODISCOVERY",
+        "enabled": true,
+        "strategy": null,
+        "params": {}
+    },
+    {
+        "name": "DISCOUNTS",
+        "enabled": true,
+        "strategy": null,
+        "params": {}
+    }
+]
