@@ -35,6 +35,7 @@ class MultiDateDeserializer : StdDeserializer<ParsedDate?> {
                 LocalDateTime.parse(node.asText(), formatter.get())
                     .toDate()
             }
+
             ValueType.MILLIS_NUMBER -> Date(node.asLong())
             ValueType.SECONDS_NUMBER -> Date(node.asLong() * 1000)
             ValueType.UNKNOWN -> {
@@ -61,7 +62,7 @@ class MultiDateDeserializer : StdDeserializer<ParsedDate?> {
             }
         } else {
             val pattern = PARSER.determineFormatString(node.asText())
-            if (pattern.contains("?")) {
+            if (pattern == null || pattern.contains("?")) {
                 ValueType.UNKNOWN
             } else {
                 val dateTimeFormatter = DateTimeFormatterBuilder().appendPattern(pattern)
