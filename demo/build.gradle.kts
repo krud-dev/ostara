@@ -27,7 +27,7 @@ dependencies {
   implementation("org.flywaydb:flyway-core")
   implementation("org.jetbrains.kotlin:kotlin-reflect")
   implementation("org.jetbrains.kotlinx:kotlinx-coroutines-reactor")
-  implementation("org.springframework.integration:spring-integration-webflux")
+  implementation("org.togglz:togglz-spring-boot-starter:4.0.0-M4")
   runtimeOnly("com.h2database:h2")
   testImplementation("org.springframework.boot:spring-boot-starter-test")
   testImplementation("io.projectreactor:reactor-test")
