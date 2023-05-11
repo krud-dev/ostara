@@ -183,6 +183,18 @@ export interface ThreadDumpActuatorResponse {
     threads: ThreadDumpActuatorResponse$Thread[];
 }
 
+export interface TogglzFeatureActuatorResponse {
+    name: string;
+    enabled: boolean;
+    strategy?: string;
+    params?: { [index: string]: string | undefined };
+}
+
+export interface TogglzFeatureUpdateRequest {
+    name: string;
+    enabled: boolean;
+}
+
 export interface CountResultRO {
     total: number;
 }
@@ -960,7 +972,7 @@ export interface MappingsActuatorResponse$Context$Mappings$DispatcherServletOrHa
 
 export type DateAsNumber = number;
 
-export type InstanceAbility = "METRICS" | "ENV" | "BEANS" | "QUARTZ" | "FLYWAY" | "LIQUIBASE" | "LOGGERS" | "CACHES" | "THREADDUMP" | "HEAPDUMP" | "CACHE_STATISTICS" | "SHUTDOWN" | "REFRESH" | "HTTP_REQUEST_STATISTICS" | "INTEGRATIONGRAPH" | "PROPERTIES" | "MAPPINGS" | "SCHEDULEDTASKS" | "HEALTH" | "INFO" | "SYSTEM_PROPERTIES" | "SYSTEM_ENVIRONMENT";
+export type InstanceAbility = "METRICS" | "ENV" | "BEANS" | "QUARTZ" | "FLYWAY" | "LIQUIBASE" | "LOGGERS" | "CACHES" | "THREADDUMP" | "HEAPDUMP" | "CACHE_STATISTICS" | "SHUTDOWN" | "REFRESH" | "HTTP_REQUEST_STATISTICS" | "INTEGRATIONGRAPH" | "PROPERTIES" | "MAPPINGS" | "SCHEDULEDTASKS" | "HEALTH" | "INFO" | "SYSTEM_PROPERTIES" | "SYSTEM_ENVIRONMENT" | "TOGGLZ";
 
 export type HealthActuatorResponse$Status = "UP" | "DOWN" | "OUT_OF_SERVICE" | "UNKNOWN";
 

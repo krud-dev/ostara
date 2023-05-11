@@ -1,12 +1,12 @@
 [
     {
-        "name": "AUTODISCOVERY",
+        "name": "FEATURE_ONE",
         "enabled": true,
         "strategy": null,
         "params": {}
     },
     {
-        "name": "DISCOUNTS",
+        "name": "FEATURE_TWO",
         "enabled": true,
         "strategy": null,
         "params": {}
