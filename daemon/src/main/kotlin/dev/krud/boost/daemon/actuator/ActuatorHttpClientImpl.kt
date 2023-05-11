@@ -2,6 +2,7 @@ package dev.krud.boost.daemon.actuator
 
 import com.fasterxml.jackson.databind.DeserializationFeature
 import com.fasterxml.jackson.databind.ObjectMapper
+import com.fasterxml.jackson.dataformat.xml.XmlMapper
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule
 import com.fasterxml.jackson.module.kotlin.KotlinModule
 import dev.krud.boost.daemon.actuator.model.BeansActuatorResponse
@@ -44,6 +45,7 @@ import dev.krud.boost.daemon.okhttp.ProgressResponseBody
 import okhttp3.Authenticator
 import okhttp3.HttpUrl
 import okhttp3.HttpUrl.Companion.toHttpUrl
+import okhttp3.MediaType
 import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.OkHttpClient
 import okhttp3.Request
@@ -59,6 +61,15 @@ class ActuatorHttpClientImpl(
     private val authenticator: Authenticator = Authenticator.NONE
 ) : ActuatorHttpClient {
     internal val objectMapper = ObjectMapper().apply {
+        registerModule(JavaTimeModule())
+        registerModule(KotlinModule.Builder().build())
+        registerModule(
+            MultiDateParsingModule()
+        )
+        configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false)
+    }
+
+    internal val xmlMapper = XmlMapper().apply {
         registerModule(JavaTimeModule())
         registerModule(KotlinModule.Builder().build())
         registerModule(
@@ -327,7 +338,11 @@ class ActuatorHttpClientImpl(
             if (responseBody == null) {
                 throwInternalServerError("Actuator response body is null: $request")
             } else {
-                objectMapper.readValue(responseBody, Type::class.java)
+                if (response.contentType()?.subtype?.contains("xml") == true) {
+                    xmlMapper.readValue(responseBody, Type::class.java)
+                } else {
+                    objectMapper.readValue(responseBody, Type::class.java)
+                }
             }
         }
     }
@@ -400,6 +415,8 @@ class ActuatorHttpClientImpl(
             else -> throwInternalServerError("Actuator request failed: $bodyString")
         }
     }
+
+    private fun Response.contentType(): MediaType? = body?.contentType()
 
     private fun getClient(block: OkHttpClient.Builder.() -> Unit = {}): OkHttpClient = OkHttpClient
         .Builder()
