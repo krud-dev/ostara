@@ -37,7 +37,5 @@ Ostara is released under the Apache-2.0 License. See the [LICENSE](LICENSE) file
 ## Special Thanks
 These companies have been kind to provide us with free access to their tools for the ongoing development of Ostara, check them out!
 
-[![Sentry](./.github/assets/sentry.svg)](https://sentry.io)
-
-
+[![Sentry](./.github/assets/sentry.svg)](https://sentry.io)<br/>
 [![Gitbook](./.github/assets/gitbook.svg)](https://www.gitbook.com/)
