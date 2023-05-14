@@ -21,7 +21,7 @@ const useStopDemo = (): StopDemoResult => {
     } catch (error) {}
 
     setLoading(false);
-  }, []);
+  }, [setLoading]);
 
   return useMemo<StopDemoResult>(() => ({ stopDemo, loading }), [stopDemo, loading]);
 };

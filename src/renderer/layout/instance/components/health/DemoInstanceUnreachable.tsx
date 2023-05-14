@@ -1,16 +1,15 @@
-import { Button, Card, CardContent, CardHeader, Divider, Stack, Typography } from '@mui/material';
+import { Card, CardContent, CardHeader, Divider, Stack, Typography } from '@mui/material';
 import Page from 'renderer/components/layout/Page';
-import React, { useCallback, useState } from 'react';
+import React from 'react';
 import { IconViewer } from 'renderer/components/common/IconViewer';
 import { FormattedMessage } from 'react-intl';
 import FormattedDateAndRelativeTime from 'renderer/components/format/FormattedDateAndRelativeTime';
 import { LoadingButton } from '@mui/lab';
-import { useUpdateEffect } from 'react-use';
-import { InstanceHealthRO, InstanceRO } from '../../../../../common/generated_definitions';
+import { InstanceRO } from '../../../../../common/generated_definitions';
 import DetailsLabelValueHorizontal from '../../../../components/table/details/DetailsLabelValueHorizontal';
-import { useUpdateInstanceHealth } from '../../../../apis/requests/instance/health/updateInstanceHealth';
 import useRestartDemo from '../../../../hooks/demo/useRestartDemo';
 import useStopDemo from '../../../../hooks/demo/useStopDemo';
+import useInstanceHealth from '../../../../hooks/useInstanceHealth';
 
 type DemoInstanceUnreachableProps = {
   item: InstanceRO;
@@ -19,21 +18,7 @@ type DemoInstanceUnreachableProps = {
 export default function DemoInstanceUnreachable({ item }: DemoInstanceUnreachableProps) {
   const { restartDemo, loading: loadingRestart } = useRestartDemo();
   const { stopDemo, loading: loadingStop } = useStopDemo();
-
-  const [health, setHealth] = useState<InstanceHealthRO>(item.health);
-
-  useUpdateEffect(() => {
-    setHealth(item.health);
-  }, [item.health]);
-
-  const healthState = useUpdateInstanceHealth();
-
-  const refreshHandler = useCallback(async (): Promise<void> => {
-    try {
-      const result = await healthState.mutateAsync({ instanceId: item.id });
-      setHealth(result);
-    } catch (e) {}
-  }, [item, healthState]);
+  const { health, loading: refreshLoading, refreshHealth } = useInstanceHealth(item);
 
   return (
     <Page sx={{ height: '100%' }}>
@@ -80,7 +65,7 @@ export default function DemoInstanceUnreachable({ item }: DemoInstanceUnreachabl
           </Card>
 
           <Stack direction={{ xs: 'column', sm: 'row' }} spacing={2} sx={{ mt: 3 }}>
-            <LoadingButton variant="outlined" color="primary" onClick={refreshHandler} loading={healthState.isLoading}>
+            <LoadingButton variant="outlined" color="primary" onClick={refreshHealth} loading={refreshLoading}>
               <FormattedMessage id={'refreshStatus'} />
             </LoadingButton>
             <LoadingButton variant="outlined" color="warning" onClick={restartDemo} loading={loadingRestart}>

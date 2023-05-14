@@ -12,33 +12,34 @@ type InstanceActiveProfilesProps = { item: InstanceRO };
 
 export default function InstanceActiveProfiles({ item }: InstanceActiveProfilesProps) {
   const instanceInactive = useMemo<boolean>(() => isInstanceInactive(item), [item]);
+  const instanceLoading = useMemo<boolean>(() => item.health.status === 'PENDING', [item]);
 
   const envState = useGetInstanceEnvQuery(
     { instanceId: item.id },
-    { enabled: !instanceInactive, disableGlobalError: true }
+    { enabled: !instanceInactive && !instanceLoading, disableGlobalError: true }
   );
 
   useUpdateEffect(() => {
-    if (!instanceInactive) {
+    if (!instanceInactive && !instanceLoading) {
       envState.refetch();
     }
-  }, [item.health.status]);
+  }, [instanceInactive, instanceLoading]);
 
   const status = useMemo<'error' | 'success' | 'loading' | 'empty' | 'inactive'>(() => {
     if (instanceInactive) {
       return 'inactive';
     }
+    if (instanceLoading || !envState.data) {
+      return 'loading';
+    }
     if (envState.error) {
       return 'error';
-    }
-    if (!envState.data) {
-      return 'loading';
     }
     if (!envState.data.activeProfiles?.length) {
       return 'empty';
     }
     return 'success';
-  }, [instanceInactive, envState]);
+  }, [instanceInactive, instanceLoading, envState]);
 
   return (
     <Box

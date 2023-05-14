@@ -17,7 +17,7 @@ const useRestartDemo = (): RestartDemoResult => {
     } catch (error) {}
 
     setLoading(false);
-  }, []);
+  }, [setLoading]);
 
   return useMemo<RestartDemoResult>(() => ({ restartDemo, loading }), [restartDemo, loading]);
 };

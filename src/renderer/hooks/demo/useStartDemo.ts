@@ -5,6 +5,7 @@ import { InstanceRO } from '../../../common/generated_definitions';
 import { instanceCrudEntity } from '../../apis/requests/crud/entity/entities/instance.crudEntity';
 import { getItemUrl } from '../../utils/itemUtils';
 import { useNavigate } from 'react-router-dom';
+import { useNavigatorTree } from '../../contexts/NavigatorTreeContext';
 
 type StartDemoResult = {
   startDemo: () => Promise<void>;
@@ -12,6 +13,7 @@ type StartDemoResult = {
 };
 
 const useStartDemo = (): StartDemoResult => {
+  const { addItem } = useNavigatorTree();
   const navigate = useNavigate();
 
   const [loading, setLoading] = useState<boolean>(false);
@@ -36,12 +38,13 @@ const useStartDemo = (): StartDemoResult => {
       });
       const demoInstance = demoInstancesResult.results[0];
       if (demoInstance) {
+        addItem(demoInstance);
         navigate(getItemUrl(demoInstance));
       }
     } catch (e) {}
 
     setLoading(false);
-  }, []);
+  }, [setLoading, createDemoState, searchInstanceState, addItem, navigate]);
 
   return useMemo<StartDemoResult>(() => ({ startDemo, loading }), [startDemo, loading]);
 };

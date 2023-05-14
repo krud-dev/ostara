@@ -28,6 +28,7 @@ import { buildTree } from '../utils/treeUtils';
 import { useStomp } from '../apis/websockets/StompContext';
 import { chain } from 'lodash';
 import { useGetItemAbilitiesQuery } from '../apis/requests/item/getItemAbilities';
+import { isApplication, isFolder, isInstance } from '../utils/itemUtils';
 
 type NavigatorTreeAction = 'expandAll' | 'collapseAll';
 
@@ -40,6 +41,7 @@ export type NavigatorTreeContextProps = {
   hasData: boolean;
   action: NavigatorTreeAction | undefined;
   performAction: (action: NavigatorTreeAction) => void;
+  addItem: (item: ItemRO) => void;
   getItem: (id: string) => ItemRO | undefined;
   getNewItemOrder: () => number;
 };
@@ -147,6 +149,18 @@ const NavigatorTreeProvider: FunctionComponent<NavigatorTreeProviderProps> = ({ 
     }
   }, [action]);
 
+  const addItem = useCallback((item: ItemRO): void => {
+    if (isInstance(item)) {
+      setInstances((prev) => [...(prev?.filter((i) => i.id !== item.id) ?? []), item]);
+    }
+    if (isApplication(item)) {
+      setApplications((prev) => [...(prev?.filter((a) => a.id !== item.id) ?? []), item]);
+    }
+    if (isFolder(item)) {
+      setFolders((prev) => [...(prev?.filter((f) => f.id !== item.id) ?? []), item]);
+    }
+  }, []);
+
   const getItem = useCallback(
     (id: string): ItemRO | undefined => {
       return items?.find((i) => i.id === id);
@@ -163,7 +177,7 @@ const NavigatorTreeProvider: FunctionComponent<NavigatorTreeProviderProps> = ({ 
       return undefined;
     }
     return item;
-  }, [getItem, params.id]);
+  }, [getItem, items, params.id]);
 
   const getItemAbilitiesState = useGetItemAbilitiesQuery(
     { item: selectedItem },
@@ -195,6 +209,7 @@ const NavigatorTreeProvider: FunctionComponent<NavigatorTreeProviderProps> = ({ 
         hasData,
         action,
         performAction,
+        addItem,
         getItem,
         getNewItemOrder,
       }}

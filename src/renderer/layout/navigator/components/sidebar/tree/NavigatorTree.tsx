@@ -50,7 +50,7 @@ type NavigatorTreeProps = {
 };
 
 export default function NavigatorTree({ width, height, search }: NavigatorTreeProps) {
-  const { data, isLoading, isEmpty, hasData, action, getItem } = useNavigatorTree();
+  const { data, selectedItem, isLoading, isEmpty, hasData, action, getItem } = useNavigatorTree();
   const navigate = useNavigate();
   const { pathname } = useLocation();
   const { startDemo, loading: loadingDemo } = useStartDemo();
@@ -73,6 +73,12 @@ export default function NavigatorTree({ width, height, search }: NavigatorTreePr
         break;
     }
   }, [action]);
+
+  useEffect(() => {
+    if (selectedItem) {
+      treeRef.current?.openParents(selectedItem);
+    }
+  }, [selectedItem?.id]);
 
   const initialOpenState = useMemo<OpenMap>(() => {
     const openMap: OpenMap = {};

@@ -7,6 +7,8 @@ import { axiosInstance } from '../../../axiosInstance';
 import { AxiosResponse } from 'axios';
 import { apiKeys } from '../../../apiKeys';
 import { InstanceHealthRO } from '../../../../../common/generated_definitions';
+import { BaseQueryOptions, BaseUseQueryResult, useBaseQuery } from '../../base/useBaseQuery';
+import { getInstancesHealth } from './getInstancesHealth';
 
 type Variables = {
   instanceId: string;
@@ -25,3 +27,9 @@ export const useUpdateInstanceHealth = (
     ...options,
     invalidateQueriesKeyFn: (data, variables) => apiKeys.instancesHealth(),
   });
+
+export const useUpdateInstanceHealthQuery = (
+  variables: Variables,
+  options?: BaseQueryOptions<Data, Variables>
+): BaseUseQueryResult<Data> =>
+  useBaseQuery<Data, Variables>(apiKeys.instancesHealth(), updateInstanceHealth, variables, options);
