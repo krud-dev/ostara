@@ -2,7 +2,7 @@ import { useCallback, useMemo } from 'react';
 import { FormattedMessage } from 'react-intl';
 import { NodeApi } from 'react-arborist';
 import { TreeItem } from 'renderer/layout/navigator/components/sidebar/tree/tree';
-import { getItemTypeIcon, isFolder } from 'renderer/utils/itemUtils';
+import { getItemTypeIcon, isFolder, isItemUpdatable } from 'renderer/utils/itemUtils';
 import NiceModal from '@ebay/nice-modal-react';
 import CreateFolderDialog from 'renderer/components/item/dialogs/create/CreateFolderDialog';
 import { getNewItemSort } from 'renderer/utils/treeUtils';
@@ -18,6 +18,8 @@ type AddFolderMenuItemProps = {
 };
 
 export default function AddFolderMenuItem({ node, onClose, onCreated }: AddFolderMenuItemProps) {
+  const disabled = useMemo<boolean>(() => !isItemUpdatable(node.data), [node.data]);
+
   const createFolderHandler = useCallback((): void => {
     onClose?.();
 
@@ -35,6 +37,11 @@ export default function AddFolderMenuItem({ node, onClose, onCreated }: AddFolde
   const folderIcon = useMemo<MUIconType>(() => getItemTypeIcon('folder'), []);
 
   return (
-    <CustomMenuItem icon={folderIcon} text={<FormattedMessage id={'addFolder'} />} onClick={createFolderHandler} />
+    <CustomMenuItem
+      icon={folderIcon}
+      text={<FormattedMessage id={'addFolder'} />}
+      onClick={createFolderHandler}
+      disabled={disabled}
+    />
   );
 }

@@ -133,6 +133,30 @@ export const getItemNameTooltip = (item: ItemRO): ReactNode | undefined => {
   return undefined;
 };
 
+export const isItemDemo = (item: ItemRO): boolean => {
+  if (isApplication(item)) {
+    return item.demo;
+  }
+  if (isInstance(item)) {
+    return item.demo;
+  }
+  return false;
+};
+
+export const isItemUpdatable = (item: ItemRO): boolean => {
+  if (isItemDemo(item)) {
+    return false;
+  }
+  return true;
+};
+
+export const isItemDeletable = (item: ItemRO): boolean => {
+  if (isItemDemo(item)) {
+    return false;
+  }
+  return true;
+};
+
 export const isInstanceInactive = (instance: InstanceRO): boolean => {
   return instance.health.status === 'UNREACHABLE' || instance.health.status === 'INVALID';
 };

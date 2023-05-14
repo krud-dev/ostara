@@ -3,7 +3,6 @@ import React, { Fragment, useCallback, useMemo, useState } from 'react';
 import {
   ApplicationModifyRequestRO,
   ApplicationRO,
-  Authentication,
   InstanceModifyRequestRO,
   InstanceRO,
 } from '../../../../../common/generated_definitions';
@@ -21,7 +20,7 @@ import { useGetApplicationsHealth } from '../../../../apis/requests/application/
 import { useDeleteItem } from '../../../../apis/requests/item/deleteItem';
 import { folderCrudEntity } from '../../../../apis/requests/crud/entity/entities/folder.crudEntity';
 import { showDeleteConfirmationDialog } from '../../../../utils/dialogUtils';
-import { axiosInstance } from '../../../../apis/axiosInstance';
+import { isItemDeletable } from '../../../../utils/itemUtils';
 
 type ApplicationToCreate = {
   applicationName: string;
@@ -160,11 +159,13 @@ export default function HomeDeveloperMode({}: HomeDeveloperModeProps) {
     setLoading(true);
 
     try {
-      const promises = data.map((itemToDelete) =>
-        deleteItemState.mutateAsync({
-          item: itemToDelete,
-        })
-      );
+      const promises = data
+        .filter((item) => isItemDeletable(item))
+        .map((itemToDelete) =>
+          deleteItemState.mutateAsync({
+            item: itemToDelete,
+          })
+        );
       const result = await Promise.all(promises);
       if (result) {
         queryClient.invalidateQueries(crudKeys.entity(folderCrudEntity));
@@ -190,20 +191,6 @@ export default function HomeDeveloperMode({}: HomeDeveloperModeProps) {
       setLoading(false);
     }
   }, [applicationsHealthState]);
-
-  const createDemoHandler = useCallback(async (): Promise<void> => {
-    setLoading(true);
-    try {
-      console.log('Starting demo');
-      const actuatorUrl = await window.demo.startDemo();
-      console.log(`Demo started at ${actuatorUrl}`);
-      await axiosInstance.post('/demo', null, { params: { actuatorUrl } });
-      console.log('Demo created');
-    } catch (e) {
-    } finally {
-      setLoading(false);
-    }
-  }, []);
 
   return (
     <Card sx={{ flexGrow: 1, minHeight: 300 }}>
@@ -245,9 +232,6 @@ export default function HomeDeveloperMode({}: HomeDeveloperModeProps) {
           </LoadingButton>
           <LoadingButton variant="outlined" color="error" loading={loading} onClick={deleteAllHandler}>
             Delete All
-          </LoadingButton>
-          <LoadingButton variant="outlined" color="error" loading={loading} onClick={createDemoHandler}>
-            Create Demo
           </LoadingButton>
           {/*<LoadingButton variant="outlined" color="primary" loading={loading} onClick={logApplicationsHealthHandler}>*/}
           {/*  Log Applications Health*/}

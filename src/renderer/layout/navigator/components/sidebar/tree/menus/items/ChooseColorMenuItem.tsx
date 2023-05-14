@@ -6,7 +6,7 @@ import { CheckOutlined } from '@mui/icons-material';
 import { DEFAULT_COLOR_VALUE, INHERITED_COLOR_VALUE } from 'renderer/hooks/useItemColor';
 import { ItemRO } from '../../../../../../../definitions/daemon';
 import { useUpdateItem } from '../../../../../../../apis/requests/item/updateItem';
-import { getItemType } from '../../../../../../../utils/itemUtils';
+import { getItemType, isItemUpdatable } from '../../../../../../../utils/itemUtils';
 import { useAnalytics } from '../../../../../../../contexts/AnalyticsContext';
 
 const MenuItemStyle = styled(MenuItem)(({ theme }) => ({
@@ -26,6 +26,8 @@ export default function ChooseColorMenuItem({ item, onClose }: ChooseColorMenuIt
   const { track } = useAnalytics();
 
   const [selectedColor, setSelectedColor] = useState<string | undefined>(item.color);
+
+  const disabled = useMemo<boolean>(() => !isItemUpdatable(item), [item]);
 
   const updateItemState = useUpdateItem();
 
@@ -74,6 +76,7 @@ export default function ChooseColorMenuItem({ item, onClose }: ChooseColorMenuIt
               value={color.value}
               selected={selected}
               onClick={setColorHandler}
+              disabled={disabled}
               key={color.color}
             />
           );
@@ -89,14 +92,23 @@ type ColorSwitchProps = {
   value: string;
   size?: number;
   selected?: boolean;
+  disabled?: boolean;
   onClick?: (value: string) => void;
 };
 
-function ColorSwitch({ color, fillColor, value, size = 18, selected, onClick }: ColorSwitchProps) {
+function ColorSwitch({ color, fillColor, value, size = 18, selected, disabled, onClick }: ColorSwitchProps) {
   const backgroundColor = useMemo<string>(() => fillColor || color, [color, fillColor]);
+
+  const clickHandler = useCallback((): void => {
+    if (disabled) {
+      return;
+    }
+    onClick?.(value);
+  }, [onClick, disabled]);
+
   return (
     <Box
-      onClick={() => onClick?.(value)}
+      onClick={clickHandler}
       sx={{
         width: size,
         height: size,
@@ -107,6 +119,7 @@ function ColorSwitch({ color, fillColor, value, size = 18, selected, onClick }: 
         alignItems: 'center',
         justifyContent: 'center',
         cursor: 'pointer',
+        opacity: disabled ? 0.5 : 1,
       }}
     >
       {selected && <CheckOutlined sx={{ color: 'text.primary', fontSize: '16px' }} />}

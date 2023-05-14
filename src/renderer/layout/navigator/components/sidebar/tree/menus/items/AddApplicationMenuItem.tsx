@@ -2,7 +2,7 @@ import { useCallback, useMemo } from 'react';
 import { FormattedMessage } from 'react-intl';
 import { NodeApi } from 'react-arborist';
 import { TreeItem } from 'renderer/layout/navigator/components/sidebar/tree/tree';
-import { getItemTypeIcon, isFolder } from 'renderer/utils/itemUtils';
+import { getItemTypeIcon, isFolder, isItemUpdatable } from 'renderer/utils/itemUtils';
 import NiceModal from '@ebay/nice-modal-react';
 import { getNewItemSort } from 'renderer/utils/treeUtils';
 import CreateApplicationDialog from 'renderer/components/item/dialogs/create/CreateApplicationDialog';
@@ -18,6 +18,8 @@ type AddApplicationMenuItemProps = {
 };
 
 export default function AddApplicationMenuItem({ node, onClose, onCreated }: AddApplicationMenuItemProps) {
+  const disabled = useMemo<boolean>(() => !isItemUpdatable(node.data), [node.data]);
+
   const createApplicationHandler = useCallback((): void => {
     onClose?.();
 
@@ -39,6 +41,7 @@ export default function AddApplicationMenuItem({ node, onClose, onCreated }: Add
       icon={applicationIcon}
       text={<FormattedMessage id={'addApplication'} />}
       onClick={createApplicationHandler}
+      disabled={disabled}
     />
   );
 }

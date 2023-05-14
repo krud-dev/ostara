@@ -5,7 +5,7 @@ import { TreeItem } from 'renderer/layout/navigator/components/sidebar/tree/tree
 import NiceModal from '@ebay/nice-modal-react';
 import CreateInstanceDialog from 'renderer/components/item/dialogs/create/CreateInstanceDialog';
 import { getNewItemSort } from 'renderer/utils/treeUtils';
-import { getItemTypeIcon, isApplication, isFolder } from 'renderer/utils/itemUtils';
+import { getItemTypeIcon, isApplication, isFolder, isItemUpdatable } from 'renderer/utils/itemUtils';
 import CustomMenuItem from 'renderer/components/menu/item/CustomMenuItem';
 import { MUIconType } from 'renderer/components/common/IconViewer';
 import { InstanceRO } from '../../../../../../../../common/generated_definitions';
@@ -18,6 +18,8 @@ type AddInstanceMenuItemProps = {
 };
 
 export default function AddInstanceMenuItem({ node, onClose, onCreated }: AddInstanceMenuItemProps) {
+  const disabled = useMemo<boolean>(() => !isItemUpdatable(node.data), [node.data]);
+
   const createInstanceHandler = useCallback((): void => {
     onClose?.();
 
@@ -43,6 +45,7 @@ export default function AddInstanceMenuItem({ node, onClose, onCreated }: AddIns
       icon={instanceIcon}
       text={<FormattedMessage id={'addInstance'} />}
       onClick={createInstanceHandler}
+      disabled={disabled}
     />
   );
 }
