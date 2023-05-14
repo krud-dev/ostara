@@ -93,5 +93,9 @@ export class PackagedDaemon extends RestHealthCheckingDaemon {
     this.childProcess.stderr.on('data', (data) => {
       log.error(`daemon: ${data}`);
     });
+
+    process.on('exit', () => {
+      this.childProcess?.kill();
+    });
   }
 }

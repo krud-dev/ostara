@@ -85,5 +85,9 @@ export class PackagedDemoManager implements DemoManager {
     this.childProcess.stderr.on('data', (data) => {
       log.error(`demo: ${data}`);
     });
+
+    process.on('exit', () => {
+      this.childProcess?.kill();
+    });
   }
 }
