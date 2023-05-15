@@ -6,6 +6,7 @@ import { instanceCrudEntity } from '../../apis/requests/crud/entity/entities/ins
 import { getItemUrl } from '../../utils/itemUtils';
 import { useNavigate } from 'react-router-dom';
 import { useNavigatorTree } from '../../contexts/NavigatorTreeContext';
+import { useAnalytics } from '../../contexts/AnalyticsContext';
 
 type StartDemoResult = {
   startDemo: () => Promise<void>;
@@ -15,6 +16,7 @@ type StartDemoResult = {
 const useStartDemo = (): StartDemoResult => {
   const { addItem } = useNavigatorTree();
   const navigate = useNavigate();
+  const { track } = useAnalytics();
 
   const [loading, setLoading] = useState<boolean>(false);
 
@@ -23,12 +25,12 @@ const useStartDemo = (): StartDemoResult => {
 
   const startDemo = useCallback(async (): Promise<void> => {
     setLoading(true);
+    track({ name: 'demo_started' });
 
     try {
       const demoAddress = window.demo.getDemoAddress();
-      await createDemoState.mutateAsync({ actuatorUrl: demoAddress });
-
       await window.demo.startDemo();
+      await createDemoState.mutateAsync({ actuatorUrl: demoAddress });
     } catch (error) {}
 
     try {

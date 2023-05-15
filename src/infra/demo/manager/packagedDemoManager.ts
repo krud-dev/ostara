@@ -46,10 +46,10 @@ export class PackagedDemoManager implements DemoManager {
     return this.address;
   }
 
-  async start(): Promise<void> {
+  start(): Promise<void> {
     if (this.childProcess) {
       log.warn('Packaged Demo is already started');
-      return;
+      return Promise.resolve();
     }
 
     const env = {
@@ -63,6 +63,33 @@ export class PackagedDemoManager implements DemoManager {
     });
     log.info(`Demo process started with PID: ${this.childProcess.pid}`);
     this.initProcessEvents();
+    let healthCheckAttempts = 0;
+    const promise = new Promise<void>((resolve, reject) => {
+      const healthCheck = setInterval(async () => {
+        if (healthCheckAttempts > 10) {
+          clearInterval(healthCheck);
+          if (this.childProcess) {
+            this.childProcess.kill();
+            this.childProcess = undefined;
+          }
+          reject(new Error('Demo process did not start in time'));
+          return;
+        }
+        try {
+          const isHealthy = await this.doHealthCheck();
+          if (isHealthy) {
+            clearInterval(healthCheck);
+            resolve();
+            return;
+          }
+        } catch (e) {
+        } finally {
+          healthCheckAttempts += 1;
+        }
+      }, 1000);
+    });
+
+    return promise;
   }
 
   async stop(): Promise<void> {
