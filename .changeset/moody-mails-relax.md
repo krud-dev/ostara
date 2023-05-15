@@ -2,4 +2,4 @@
 '@krud-dev/boost': minor
 ---
 
-Add in-app demo
+Added in-app demo

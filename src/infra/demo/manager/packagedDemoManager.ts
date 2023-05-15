@@ -53,7 +53,7 @@ export class PackagedDemoManager implements DemoManager {
     }
 
     const env = {
-      IP: this.host,
+      SERVER_ADDRESS: this.host,
       SERVER_PORT: String(this.port),
     };
 
@@ -66,7 +66,7 @@ export class PackagedDemoManager implements DemoManager {
     let healthCheckAttempts = 0;
     const promise = new Promise<void>((resolve, reject) => {
       const healthCheck = setInterval(async () => {
-        if (healthCheckAttempts > 10) {
+        if (healthCheckAttempts > 60) {
           clearInterval(healthCheck);
           if (this.childProcess) {
             this.childProcess.kill();
