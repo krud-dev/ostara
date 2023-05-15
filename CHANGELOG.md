@@ -1,5 +1,17 @@
 # @krud-dev/boost
 
+## 0.8.0
+
+### Minor Changes
+
+- 1ed0b79: Added in-app demo
+- 78106d6: Deep sort app properties keys alphabetically
+
+### Patch Changes
+
+- 70fe8ca: Add missing pattern nullcheck to the multi date deserializer
+- 5d7cfd2: Fixed grid text line break mid-word
+
 ## 0.7.0
 
 ### Minor Changes
