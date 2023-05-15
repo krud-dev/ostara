@@ -358,4 +358,10 @@ export default {
     'We would love to hear your feedback. Any feature request, recommendation or bug report is more than welcome. Please let us know what you think and help us improve.',
   openIssue: 'Open Issue',
   sendEmail: 'Send Email',
+  startDemo: 'Start Demo',
+  stopDemo: 'Stop Demo',
+  restartDemo: 'Restart Demo',
+  demoServiceLoading: 'Demo service is loading...',
+  takeTimeToLoadDemo: 'It can take a few minutes to load the demo service.',
+  or: 'or',
 };

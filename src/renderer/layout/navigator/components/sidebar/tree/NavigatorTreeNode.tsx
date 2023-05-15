@@ -14,6 +14,7 @@ import {
   getItemUrl,
   isApplication,
   isFolder,
+  isItemUpdatable,
 } from 'renderer/utils/itemUtils';
 import { SxProps } from '@mui/system';
 import { matchPath, useLocation, useNavigate } from 'react-router-dom';
@@ -157,6 +158,13 @@ export default function NavigatorTreeNode({ style, node, tree, dragHandle, previ
       node.deselect();
     }
   }, [isSelected]);
+
+  // Bug fix because disableEdit on tree not working
+  useEffect(() => {
+    if (node.isEditing && !isItemUpdatable(node.data)) {
+      node.reset();
+    }
+  }, [node.isEditing]);
 
   const focusRootStyle = useMemo<SxProps<Theme>>(
     () => ({

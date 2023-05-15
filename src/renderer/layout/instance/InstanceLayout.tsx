@@ -7,6 +7,7 @@ import InstanceInvalid from 'renderer/layout/instance/components/health/Instance
 import InstancePending from 'renderer/layout/instance/components/health/InstancePending';
 import { InstanceRO } from '../../../common/generated_definitions';
 import LoadingPage from '../../components/layout/LoadingPage';
+import DemoInstanceUnreachable from './components/health/DemoInstanceUnreachable';
 
 const InstanceLayout: FunctionComponent = () => {
   const { selectedItem, selectedItemAbilities } = useNavigatorTree();
@@ -18,6 +19,9 @@ const InstanceLayout: FunctionComponent = () => {
       return <LoadingPage />;
     }
     if (item.health.status === 'UNREACHABLE') {
+      if (item.demo) {
+        return <DemoInstanceUnreachable item={item} />;
+      }
       return <InstanceUnreachable item={item} />;
     }
     if (item.health.status === 'INVALID') {

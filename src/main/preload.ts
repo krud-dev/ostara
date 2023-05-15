@@ -6,6 +6,7 @@ import { daemonAddressSupplier, daemonHealthySupplier, daemonWsAddressSupplier }
 import { configurationStore } from '../infra/store/store';
 import { configurationStoreBridge } from '../infra/store/renderer';
 import { appUpdaterBridge } from '../infra/autoupdate/renderer';
+import { demoBridge } from '../infra/demo/renderer';
 
 contextBridge.exposeInMainWorld('utils', utilsBridge);
 contextBridge.exposeInMainWorld('subscriptions', subscriptionsBridge);
@@ -17,3 +18,4 @@ contextBridge.exposeInMainWorld('daemonHealthy', daemonHealthySupplier);
 contextBridge.exposeInMainWorld('NODE_ENV', process.env.NODE_ENV);
 contextBridge.exposeInMainWorld('configurationStore', configurationStoreBridge);
 contextBridge.exposeInMainWorld('appUpdater', appUpdaterBridge);
+contextBridge.exposeInMainWorld('demo', demoBridge);

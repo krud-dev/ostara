@@ -1,41 +1,27 @@
 import { Button, Card, CardContent, CardHeader, Divider, Link, Stack, Typography } from '@mui/material';
 import Page from 'renderer/components/layout/Page';
-import React, { useCallback, useMemo, useState } from 'react';
-import { getInstanceHealthStatusColor } from 'renderer/utils/itemUtils';
+import React, { useCallback, useMemo } from 'react';
+import { getInstanceHealthStatusColor, isItemUpdatable } from 'renderer/utils/itemUtils';
 import { IconViewer } from 'renderer/components/common/IconViewer';
 import { FormattedMessage } from 'react-intl';
 import { showUpdateItemDialog } from 'renderer/utils/dialogUtils';
 import FormattedDateAndRelativeTime from 'renderer/components/format/FormattedDateAndRelativeTime';
-import { useUpdateEffect } from 'react-use';
 import { LoadingButton } from '@mui/lab';
-import { InstanceHealthRO, InstanceRO } from '../../../../../common/generated_definitions';
+import { InstanceRO } from '../../../../../common/generated_definitions';
 import DetailsLabelValueHorizontal from '../../../../components/table/details/DetailsLabelValueHorizontal';
-import { useUpdateInstanceHealth } from '../../../../apis/requests/instance/health/updateInstanceHealth';
 import useItemDisplayName from '../../../../hooks/useItemDisplayName';
+import useInstanceHealth from '../../../../hooks/useInstanceHealth';
 
 type InstanceInvalidProps = {
   item: InstanceRO;
 };
 
 export default function InstanceInvalid({ item }: InstanceInvalidProps) {
-  const [health, setHealth] = useState<InstanceHealthRO>(item.health);
+  const { health, loading: refreshLoading, refreshHealth } = useInstanceHealth(item);
 
   const displayName = useItemDisplayName(item);
-
-  useUpdateEffect(() => {
-    setHealth(item.health);
-  }, [item.health]);
-
+  const updateDisabled = useMemo<boolean>(() => !isItemUpdatable(item), [item]);
   const healthStatusColor = useMemo<string | undefined>(() => getInstanceHealthStatusColor(health), [health]);
-
-  const healthState = useUpdateInstanceHealth();
-
-  const refreshHandler = useCallback(async (): Promise<void> => {
-    try {
-      const result = await healthState.mutateAsync({ instanceId: item.id });
-      setHealth(result);
-    } catch (e) {}
-  }, [item, healthState]);
 
   const updateHandler = useCallback(
     (event: React.MouseEvent): void => {
@@ -99,10 +85,10 @@ export default function InstanceInvalid({ item }: InstanceInvalidProps) {
           </Card>
 
           <Stack direction={{ xs: 'column', sm: 'row' }} spacing={2} sx={{ mt: 3 }}>
-            <Button variant="outlined" color="primary" onClick={updateHandler}>
+            <Button variant="outlined" color="primary" onClick={updateHandler} disabled={updateDisabled}>
               <FormattedMessage id={'updateInstance'} />
             </Button>
-            <LoadingButton variant="outlined" color="primary" onClick={refreshHandler} loading={healthState.isLoading}>
+            <LoadingButton variant="outlined" color="primary" onClick={refreshHealth} loading={refreshLoading}>
               <FormattedMessage id={'refreshStatus'} />
             </LoadingButton>
           </Stack>

@@ -22,6 +22,8 @@ import {
   isApplication,
   isFolder,
   isInstance,
+  isItemDeletable,
+  isItemUpdatable,
 } from 'renderer/utils/itemUtils';
 import { OpenMap } from 'react-arborist/src/state/open-slice';
 import { InstanceRO } from '../../../../../../common/generated_definitions';
@@ -30,6 +32,8 @@ import { NodeApi } from 'react-arborist/dist/interfaces/node-api';
 import { useUpdateEffect } from 'react-use';
 import { isWindows } from '../../../../../utils/platformUtils';
 import LogoLoader from '../../../../../components/common/LogoLoader';
+import { LoadingButton } from '@mui/lab';
+import useStartDemo from '../../../../../hooks/demo/useStartDemo';
 
 const TreeStyle = styled(Tree<TreeItem>)(({ theme }) => ({
   '& [role="treeitem"]': {
@@ -46,9 +50,10 @@ type NavigatorTreeProps = {
 };
 
 export default function NavigatorTree({ width, height, search }: NavigatorTreeProps) {
-  const { data, isLoading, isEmpty, hasData, action, getItem } = useNavigatorTree();
+  const { data, selectedItem, isLoading, isEmpty, hasData, action, getItem } = useNavigatorTree();
   const navigate = useNavigate();
   const { pathname } = useLocation();
+  const { startDemo, loading: loadingDemo } = useStartDemo();
 
   const treeRef = useRef<TreeApi<TreeItem> | null>(null);
 
@@ -68,6 +73,12 @@ export default function NavigatorTree({ width, height, search }: NavigatorTreePr
         break;
     }
   }, [action]);
+
+  useEffect(() => {
+    if (selectedItem) {
+      treeRef.current?.openParents(selectedItem);
+    }
+  }, [selectedItem?.id]);
 
   const initialOpenState = useMemo<OpenMap>(() => {
     const openMap: OpenMap = {};
@@ -195,7 +206,11 @@ export default function NavigatorTree({ width, height, search }: NavigatorTreePr
   );
 
   const onDelete: DeleteHandler<TreeItem> = useCallback(async ({ ids, nodes }): Promise<void> => {
-    const items = nodes.map((node) => node.data);
+    const items = nodes.map((node) => node.data).filter((item) => isItemDeletable(item));
+    if (!items.length) {
+      return;
+    }
+
     const confirm = await showDeleteConfirmationDialog(items);
     if (!confirm) {
       return;
@@ -203,10 +218,30 @@ export default function NavigatorTree({ width, height, search }: NavigatorTreePr
     items.forEach((item) => deleteItem(item));
   }, []);
 
-  const disableDrop = useCallback(
+  const disableEditItem = useCallback((treeItem: TreeItem): boolean => {
+    return !isItemUpdatable(treeItem);
+  }, []);
+
+  const disableDragItem = useCallback(
+    (treeItem: TreeItem): boolean => {
+      if (disableDrag) {
+        return true;
+      }
+      if (!isItemUpdatable(treeItem)) {
+        return true;
+      }
+      return false;
+    },
+    [disableDrag]
+  );
+
+  const disableDropItems = useCallback(
     (args: { parentNode: NodeApi<TreeItem>; dragNodes: NodeApi<TreeItem>[]; index: number }): boolean => {
       const { parentNode, dragNodes } = args;
       if (isInstance(parentNode.data)) {
+        return true;
+      }
+      if (!isItemUpdatable(parentNode.data)) {
         return true;
       }
       if (dragNodes.some((node) => isInstance(node.data)) && dragNodes.some((node) => !isInstance(node.data))) {
@@ -264,6 +299,12 @@ export default function NavigatorTree({ width, height, search }: NavigatorTreePr
             <Button variant="outlined" color="primary" size={'small'} onClick={createInstanceHandler}>
               <FormattedMessage id={'createInstance'} />
             </Button>
+            <Typography variant="body1" sx={{ color: 'text.secondary', mt: 0.5, mb: 0.75 }}>
+              <FormattedMessage id="or" />
+            </Typography>
+            <LoadingButton variant="outlined" color="primary" size={'small'} onClick={startDemo} loading={loadingDemo}>
+              <FormattedMessage id={'startDemo'} />
+            </LoadingButton>
           </Box>
         </Box>
       )}
@@ -287,9 +328,9 @@ export default function NavigatorTree({ width, height, search }: NavigatorTreePr
             onRename={onRename}
             onMove={onMove}
             onDelete={onDelete}
-            disableDrag={disableDrag}
-            disableDrop={disableDrop}
-            disableEdit
+            disableDrag={disableDragItem}
+            disableDrop={disableDropItems}
+            disableEdit={disableEditItem}
           >
             {NavigatorTreeNode}
           </TreeStyle>

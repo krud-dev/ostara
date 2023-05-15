@@ -5,7 +5,8 @@ import { InstanceRO } from '../../../../../common/generated_definitions';
 import NiceModal from '@ebay/nice-modal-react';
 import CreateInstanceDialog from '../../../../components/item/dialogs/create/CreateInstanceDialog';
 import { useNavigatorTree } from '../../../../contexts/NavigatorTreeContext';
-import { DOCUMENTATION_URL } from '../../../../constants/ui';
+import useStartDemo from '../../../../hooks/demo/useStartDemo';
+import { LoadingButton } from '@mui/lab';
 
 type HomeGettingStartedProps = {};
 
@@ -17,6 +18,8 @@ export default function HomeGettingStarted({}: HomeGettingStartedProps) {
       sort: getNewItemOrder(),
     });
   }, [getNewItemOrder]);
+
+  const { startDemo, loading } = useStartDemo();
 
   return (
     <Card>
@@ -37,9 +40,9 @@ export default function HomeGettingStarted({}: HomeGettingStartedProps) {
           <Button variant="outlined" color="primary" onClick={createInstanceHandler}>
             <FormattedMessage id={'createInstance'} />
           </Button>
-          <Button variant="outlined" color="primary" href={DOCUMENTATION_URL} target="_blank" rel="noopener noreferrer">
-            <FormattedMessage id={'openDocumentation'} />
-          </Button>
+          <LoadingButton variant="outlined" color="primary" onClick={startDemo} loading={loading}>
+            <FormattedMessage id={'startDemo'} />
+          </LoadingButton>
         </Stack>
       </CardContent>
     </Card>

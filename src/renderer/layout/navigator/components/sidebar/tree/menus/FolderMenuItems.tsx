@@ -10,6 +10,7 @@ import React from 'react';
 import AddFolderMenuItem from 'renderer/layout/navigator/components/sidebar/tree/menus/items/AddFolderMenuItem';
 import AddApplicationMenuItem from 'renderer/layout/navigator/components/sidebar/tree/menus/items/AddApplicationMenuItem';
 import CopyItemToClipboardMenuItem from './items/CopyItemToClipboardMenuItem';
+import StopDemoMenuItem from './items/StopDemoMenuItem';
 
 export default function FolderMenuItems({ item, node, onCreated, menuState }: TreeItemMenuProps) {
   const { close } = menuState;
@@ -30,6 +31,7 @@ export default function FolderMenuItems({ item, node, onCreated, menuState }: Tr
       <UpdateMenuItem item={item} onClose={close} />
       <RenameMenuItem item={item} node={node} onClose={close} />
       <DeleteMenuItem item={item} onClose={close} />
+      <StopDemoMenuItem item={item} onClose={close} />
     </>
   );
 }

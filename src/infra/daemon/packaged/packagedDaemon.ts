@@ -51,7 +51,7 @@ export class PackagedDaemon extends RestHealthCheckingDaemon {
     fs.ensureDirSync(heapdumpDirectory);
 
     const env = {
-      IP: this.host,
+      SERVER_ADDRESS: this.host,
       SERVER_PORT: String(this.port),
       SPRING_DATASOURCE_URL: `jdbc:sqlite:${this.daemonDatabaseLocation}`,
       SPRING_PROFILES_ACTIVE: this.sentryEnabled ? 'sentry' : '',
@@ -92,6 +92,10 @@ export class PackagedDaemon extends RestHealthCheckingDaemon {
 
     this.childProcess.stderr.on('data', (data) => {
       log.error(`daemon: ${data}`);
+    });
+
+    process.on('exit', () => {
+      this.childProcess?.kill();
     });
   }
 }

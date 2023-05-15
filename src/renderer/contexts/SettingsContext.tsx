@@ -44,10 +44,10 @@ const SettingsContext = React.createContext<SettingsContextProps>(undefined!);
 interface SettingsProviderProps extends PropsWithChildren<any> {}
 
 const SettingsProvider: FunctionComponent<SettingsProviderProps> = ({ children }) => {
-  const navigate = useNavigate();
+  const navigate = useNavigate(); 
   const { pathname } = useLocation();
 
-  const developerMode = useMemo<boolean>(() => window.NODE_ENV === 'development', []);
+  const developerMode = useMemo<boolean>(() => window.NODE_ENV === 'development' || process.env.DEBUG_PROD === 'true', []);
 
   const [daemonHealthy, setDaemonHealthy] = useState<boolean>(window.daemonHealthy());
 

@@ -3,7 +3,6 @@ import React, { Fragment, useCallback, useMemo, useState } from 'react';
 import {
   ApplicationModifyRequestRO,
   ApplicationRO,
-  Authentication,
   InstanceModifyRequestRO,
   InstanceRO,
 } from '../../../../../common/generated_definitions';
@@ -21,6 +20,7 @@ import { useGetApplicationsHealth } from '../../../../apis/requests/application/
 import { useDeleteItem } from '../../../../apis/requests/item/deleteItem';
 import { folderCrudEntity } from '../../../../apis/requests/crud/entity/entities/folder.crudEntity';
 import { showDeleteConfirmationDialog } from '../../../../utils/dialogUtils';
+import { isItemDeletable } from '../../../../utils/itemUtils';
 
 type ApplicationToCreate = {
   applicationName: string;
@@ -159,11 +159,13 @@ export default function HomeDeveloperMode({}: HomeDeveloperModeProps) {
     setLoading(true);
 
     try {
-      const promises = data.map((itemToDelete) =>
-        deleteItemState.mutateAsync({
-          item: itemToDelete,
-        })
-      );
+      const promises = data
+        .filter((item) => isItemDeletable(item))
+        .map((itemToDelete) =>
+          deleteItemState.mutateAsync({
+            item: itemToDelete,
+          })
+        );
       const result = await Promise.all(promises);
       if (result) {
         queryClient.invalidateQueries(crudKeys.entity(folderCrudEntity));
