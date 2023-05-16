@@ -8,10 +8,14 @@ import okhttp3.mockwebserver.MockWebServer
 import org.junit.jupiter.api.AfterEach
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
+import strikt.api.expect
 import strikt.api.expectThat
 import strikt.assertions.isEqualTo
+import strikt.assertions.isFalse
 import strikt.assertions.isNotEmpty
 import strikt.assertions.isNotNull
+import strikt.assertions.isTrue
+import javax.net.ssl.SSLHandshakeException
 
 class ActuatorHttpClientTest {
     private val server = MockWebServer()
@@ -416,6 +420,32 @@ class ActuatorHttpClientTest {
             .isEqualTo("Quartz_CronTrigger")
     }
 
+    @Test
+    fun `bad SSL should fail if verification is not disabled`() {
+        val url = "https://self-signed.badssl.com/"
+        val client = getClient(url)
+        val result = client.testConnection()
+        expect {
+            that(result.success)
+                .isFalse()
+            that(result.statusCode)
+                .isEqualTo(-3)
+        }
+    }
+
+    @Test
+    fun `bad SSL should succeed if verification is disabled`() {
+        val url = "https://self-signed.badssl.com/"
+        val client = getClient(url, true)
+        val result = client.testConnection()
+        expect {
+            that(result.success)
+                .isTrue()
+            that(result.statusCode)
+                .isEqualTo(200)
+        }
+    }
+
     private fun okResponse(code: Int = 200) = MockResponse()
         .setResponseCode(code)
 
@@ -435,8 +465,8 @@ class ActuatorHttpClientTest {
             .toString(Charsets.UTF_8)
     }
 
-    private fun getClient(baseUrl: String): ActuatorHttpClient {
-        val client = ActuatorHttpClientImpl(baseUrl)
+    private fun getClient(baseUrl: String, disableSslVerification: Boolean = false): ActuatorHttpClient {
+        val client = ActuatorHttpClientImpl(baseUrl, disableSslVerification = disableSslVerification)
         client.objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, true)
         return client
     }

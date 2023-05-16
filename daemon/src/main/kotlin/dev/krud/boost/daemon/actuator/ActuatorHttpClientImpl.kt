@@ -4,59 +4,28 @@ import com.fasterxml.jackson.databind.DeserializationFeature
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule
 import com.fasterxml.jackson.module.kotlin.KotlinModule
-import dev.krud.boost.daemon.actuator.model.BeansActuatorResponse
-import dev.krud.boost.daemon.actuator.model.CacheActuatorResponse
-import dev.krud.boost.daemon.actuator.model.CachesActuatorResponse
-import dev.krud.boost.daemon.actuator.model.ConfigPropsActuatorResponse
-import dev.krud.boost.daemon.actuator.model.EndpointsActuatorResponse
-import dev.krud.boost.daemon.actuator.model.EnvActuatorResponse
-import dev.krud.boost.daemon.actuator.model.EnvPropertyActuatorResponse
-import dev.krud.boost.daemon.actuator.model.FlywayActuatorResponse
-import dev.krud.boost.daemon.actuator.model.HealthActuatorResponse
-import dev.krud.boost.daemon.actuator.model.InfoActuatorResponse
-import dev.krud.boost.daemon.actuator.model.IntegrationGraphActuatorResponse
-import dev.krud.boost.daemon.actuator.model.LiquibaseActuatorResponse
-import dev.krud.boost.daemon.actuator.model.LoggerActuatorResponse
-import dev.krud.boost.daemon.actuator.model.LoggerUpdateRequest
-import dev.krud.boost.daemon.actuator.model.LoggersActuatorResponse
-import dev.krud.boost.daemon.actuator.model.MappingsActuatorResponse
-import dev.krud.boost.daemon.actuator.model.MetricActuatorResponse
-import dev.krud.boost.daemon.actuator.model.MetricsActuatorResponse
-import dev.krud.boost.daemon.actuator.model.QuartzActuatorResponse
-import dev.krud.boost.daemon.actuator.model.QuartzJobResponse
-import dev.krud.boost.daemon.actuator.model.QuartzJobsByGroupResponse
-import dev.krud.boost.daemon.actuator.model.QuartzJobsResponse
-import dev.krud.boost.daemon.actuator.model.QuartzTriggerResponse
-import dev.krud.boost.daemon.actuator.model.QuartzTriggersByGroupResponse
-import dev.krud.boost.daemon.actuator.model.QuartzTriggersResponse
-import dev.krud.boost.daemon.actuator.model.ScheduledTasksActuatorResponse
-import dev.krud.boost.daemon.actuator.model.TestConnectionResponse
-import dev.krud.boost.daemon.actuator.model.ThreadDumpActuatorResponse
-import dev.krud.boost.daemon.exception.throwBadRequest
-import dev.krud.boost.daemon.exception.throwForbidden
-import dev.krud.boost.daemon.exception.throwInternalServerError
-import dev.krud.boost.daemon.exception.throwNotFound
-import dev.krud.boost.daemon.exception.throwServiceUnavailable
-import dev.krud.boost.daemon.exception.throwUnauthorized
+import dev.krud.boost.daemon.actuator.model.*
+import dev.krud.boost.daemon.exception.*
 import dev.krud.boost.daemon.jackson.MultiDateParsingModule
 import dev.krud.boost.daemon.okhttp.ProgressListener
 import dev.krud.boost.daemon.okhttp.ProgressResponseBody
-import okhttp3.Authenticator
-import okhttp3.HttpUrl
+import okhttp3.*
 import okhttp3.HttpUrl.Companion.toHttpUrl
 import okhttp3.MediaType.Companion.toMediaType
-import okhttp3.OkHttpClient
-import okhttp3.Request
-import okhttp3.RequestBody
 import okhttp3.RequestBody.Companion.toRequestBody
-import okhttp3.Response
 import org.springframework.web.server.ResponseStatusException
 import java.io.InputStream
 import java.net.ConnectException
+import java.security.SecureRandom
+import java.security.cert.X509Certificate
+import javax.net.ssl.SSLContext
+import javax.net.ssl.SSLException
+import javax.net.ssl.X509TrustManager
 
 class ActuatorHttpClientImpl(
     private val baseUrl: String,
-    private val authenticator: Authenticator = Authenticator.NONE
+    private val authenticator: Authenticator = Authenticator.NONE,
+    private val disableSslVerification: Boolean = false,
 ) : ActuatorHttpClient {
     internal val objectMapper = ObjectMapper().apply {
         registerModule(JavaTimeModule())
@@ -78,20 +47,32 @@ class ActuatorHttpClientImpl(
             .fold(
                 onSuccess = { it },
                 onFailure = {
-                    if (it is ResponseStatusException) {
-                        return TestConnectionResponse(
-                            it.statusCode.value(),
-                            it.message,
-                            false,
-                            false
-                        )
-                    } else {
-                        return TestConnectionResponse(
-                            -1,
-                            it.message,
-                            false,
-                            false
-                        )
+                    return when (it) {
+                        is ResponseStatusException -> {
+                            TestConnectionResponse(
+                                it.statusCode.value(),
+                                it.message,
+                                false,
+                                false
+                            )
+                        }
+                        is SSLException -> {
+                            TestConnectionResponse(
+                                -3,
+                                it.message,
+                                false,
+                                false
+                            )
+                        }
+
+                        else -> {
+                            TestConnectionResponse(
+                                -1,
+                                it.message,
+                                false,
+                                false
+                            )
+                        }
                     }
                 }
             )
@@ -346,6 +327,7 @@ class ActuatorHttpClientImpl(
                 is ConnectException -> throwServiceUnavailable("Actuator unreachable: $request")
                 is IllegalArgumentException -> throwBadRequest("Actuator request failed: $request")
                 is ResponseStatusException -> throw it
+                is SSLException -> throw it
                 else -> throwInternalServerError("Actuator request failed: $request")
             }
         }
@@ -406,5 +388,32 @@ class ActuatorHttpClientImpl(
         .authenticator(authenticator)
         .proxyAuthenticator(authenticator)
         .apply(block)
+        .apply {
+            if (disableSslVerification) {
+                val sslContext: SSLContext = SSLContext.getInstance("SSL")
+                sslContext.init(null, arrayOf(TRUST_MANAGER), SecureRandom())
+                sslSocketFactory(
+                    sslContext.socketFactory,
+                    TRUST_MANAGER
+                )
+                hostnameVerifier { _, _ -> true }
+            }
+        }
         .build()
+
+    companion object {
+        private val TRUST_MANAGER = object : X509TrustManager {
+            override fun checkClientTrusted(chain: Array<out X509Certificate>?, authType: String?) {
+                // no-op
+            }
+
+            override fun checkServerTrusted(chain: Array<out X509Certificate>?, authType: String?) {
+                // no-op
+            }
+
+            override fun getAcceptedIssuers(): Array<X509Certificate> {
+                return emptyArray()
+            }
+        }
+    }
 }
