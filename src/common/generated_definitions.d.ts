@@ -229,6 +229,7 @@ export interface ApplicationModifyRequestRO {
     icon?: string;
     sort?: number;
     parentFolderId?: string;
+    disableSslVerification?: boolean;
 }
 
 export interface ApplicationRO {
@@ -244,6 +245,7 @@ export interface ApplicationRO {
     health: ApplicationHealthRO;
     authentication: Authentication;
     demo: boolean;
+    disableSslVerification: boolean;
 }
 
 export interface FolderModifyRequestRO {

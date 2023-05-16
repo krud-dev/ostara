@@ -1,7 +1,7 @@
 import { FormattedMessage, useIntl } from 'react-intl';
 import React, { FunctionComponent, useCallback } from 'react';
 import { Controller, FormProvider, useForm, useWatch } from 'react-hook-form';
-import { Box, Button, DialogActions, DialogContent, TextField } from '@mui/material';
+import { Box, Button, DialogActions, DialogContent, MenuItem, TextField } from '@mui/material';
 import { LoadingButton } from '@mui/lab';
 import InputAdornment from '@mui/material/InputAdornment';
 import ItemIconFormField from 'renderer/components/item/dialogs/forms/fields/ItemIconFormField';
@@ -95,6 +95,33 @@ const ApplicationDetailsForm: FunctionComponent<ApplicationDetailsFormProps> = (
           <EffectiveAuthenticationDetails
             authentication={authentication}
             effectiveAuthentication={effectiveAuthentication}
+          />
+          <Controller
+            name="disableSslVerification"
+            rules={{
+              required: intl.formatMessage({ id: 'requiredField' }),
+            }}
+            control={control}
+            defaultValue={false}
+            render={({ field: { ref, ...field }, fieldState: { invalid, error } }) => {
+              return (
+                <TextField
+                  {...field}
+                  inputRef={ref}
+                  fullWidth
+                  label={<FormattedMessage id="disableSslVerification" />}
+                  margin="normal"
+                  select
+                >
+                  <MenuItem value={'true'}>
+                    <FormattedMessage id="yes" />
+                  </MenuItem>
+                  <MenuItem value={'false'}>
+                    <FormattedMessage id="no" />
+                  </MenuItem>
+                </TextField>
+              );
+            }}
           />
         </DialogContent>
         <DialogActions>

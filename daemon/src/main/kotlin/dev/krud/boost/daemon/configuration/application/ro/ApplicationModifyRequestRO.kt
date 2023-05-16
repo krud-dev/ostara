@@ -29,5 +29,7 @@ data class ApplicationModifyRequestRO(
     val sort: Double? = null,
     @MappedField
     @get:ValidFolderIdOrNull
-    val parentFolderId: UUID? = null
+    val parentFolderId: UUID? = null,
+    @MappedField
+    var disableSslVerification: Boolean? = null
 )

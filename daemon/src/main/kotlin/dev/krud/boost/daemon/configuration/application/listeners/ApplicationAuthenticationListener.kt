@@ -3,6 +3,7 @@ package dev.krud.boost.daemon.configuration.application.listeners
 import dev.krud.boost.daemon.configuration.application.ApplicationService
 import dev.krud.boost.daemon.configuration.application.entity.Application
 import dev.krud.boost.daemon.configuration.application.messaging.ApplicationAuthenticationChangedMessage
+import dev.krud.boost.daemon.configuration.application.messaging.ApplicationDisableSslVerificationChangedMessage
 import dev.krud.boost.daemon.configuration.application.messaging.ApplicationMovedEventMessage
 import dev.krud.boost.daemon.configuration.authentication.Authentication
 import dev.krud.boost.daemon.configuration.folder.messaging.FolderAuthenticationChangedMessage
@@ -37,6 +38,10 @@ class ApplicationAuthenticationListener(
             }
             is ApplicationAuthenticationChangedMessage -> {
                 log.debug { "Handling application authentication changed event for application ${message.payload.applicationId}" }
+                forceUpdateInstancesHealth(message.payload.applicationId)
+            }
+            is ApplicationDisableSslVerificationChangedMessage -> {
+                log.debug { "Handling application disable ssl verification changed event for application ${message.payload.applicationId}" }
                 forceUpdateInstancesHealth(message.payload.applicationId)
             }
         }

@@ -12,6 +12,7 @@ import { useNavigatorTree } from '../../../../contexts/NavigatorTreeContext';
 import DetailsLabelValueHorizontal from '../../../../components/table/details/DetailsLabelValueHorizontal';
 import useItemDisplayName from '../../../../hooks/useItemDisplayName';
 import useInstanceHealth from '../../../../hooks/useInstanceHealth';
+import { useSettings } from '../../../../contexts/SettingsContext';
 
 type InstanceUnreachableProps = {
   item: InstanceRO;
@@ -19,6 +20,7 @@ type InstanceUnreachableProps = {
 
 export default function InstanceUnreachable({ item }: InstanceUnreachableProps) {
   const { getItem } = useNavigatorTree();
+  const { setSettingsMenuOpen } = useSettings();
   const { health, loading: refreshLoading, refreshHealth } = useInstanceHealth(item);
 
   const displayName = useItemDisplayName(item);
@@ -33,6 +35,11 @@ export default function InstanceUnreachable({ item }: InstanceUnreachableProps) 
     },
     [item]
   );
+
+  const openSettingsHandler = useCallback((event: React.MouseEvent): void => {
+    event.preventDefault();
+    setSettingsMenuOpen(true);
+  }, []);
 
   const updateApplicationHandler = useCallback(
     (event: React.MouseEvent): void => {
@@ -61,6 +68,12 @@ export default function InstanceUnreachable({ item }: InstanceUnreachableProps) 
         return (
           <Link href={`#`} onClick={updateHandler}>
             <FormattedMessage id={'checkActuatorUrl'} />
+          </Link>
+        );
+      case -3:
+        return (
+          <Link href={`#`} onClick={updateApplicationHandler}>
+            <FormattedMessage id={'disableSslVerification'} />
           </Link>
         );
       default:

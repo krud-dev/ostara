@@ -29,7 +29,7 @@ class TestInstanceActuatorClientProvider : InstanceActuatorClientProvider {
         return instanceMocks.getOrPut(instance.id) { mock(ActuatorHttpClient::class.java) }
     }
 
-    override fun provideForUrl(url: String, authentication: Authentication): ActuatorHttpClient {
+    override fun provideForUrl(url: String, authentication: Authentication, disableSslVerification: Boolean): ActuatorHttpClient {
         return urlMocks.getOrPut(url) { mock(ActuatorHttpClient::class.java) }
     }
 

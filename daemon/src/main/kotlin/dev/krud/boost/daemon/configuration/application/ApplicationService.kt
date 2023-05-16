@@ -1,15 +1,25 @@
 package dev.krud.boost.daemon.configuration.application
 
 import dev.krud.boost.daemon.configuration.application.entity.Application
+import dev.krud.boost.daemon.configuration.application.messaging.ApplicationDisableSslVerificationChangedMessage
 import dev.krud.boost.daemon.configuration.application.messaging.ApplicationMovedEventMessage
 import dev.krud.boost.daemon.configuration.instance.ability.InstanceAbilityService
 import dev.krud.boost.daemon.configuration.instance.entity.Instance
 import dev.krud.boost.daemon.configuration.instance.enums.InstanceAbility
+import dev.krud.boost.daemon.configuration.instance.messaging.InstanceCreatedEventMessage
+import dev.krud.boost.daemon.configuration.instance.messaging.InstanceHealthChangedEventMessage
+import dev.krud.boost.daemon.configuration.instance.messaging.InstanceMovedEventMessage
+import dev.krud.boost.daemon.configuration.instance.messaging.InstanceUpdatedEventMessage
 import dev.krud.boost.daemon.exception.throwBadRequest
 import dev.krud.boost.daemon.exception.throwNotFound
+import dev.krud.boost.daemon.utils.resolve
 import dev.krud.crudframework.crud.handler.krud.Krud
 import io.github.oshai.KotlinLogging
+import org.springframework.cache.CacheManager
+import org.springframework.cache.annotation.Cacheable
+import org.springframework.integration.annotation.ServiceActivator
 import org.springframework.integration.channel.PublishSubscribeChannel
+import org.springframework.messaging.Message
 import org.springframework.stereotype.Service
 import java.util.*
 
@@ -18,8 +28,11 @@ class ApplicationService(
     private val applicationKrud: Krud<Application, UUID>,
     private val instanceKrud: Krud<Instance, UUID>,
     private val instanceAbilityService: InstanceAbilityService,
-    private val systemEventsChannel: PublishSubscribeChannel
+    private val systemEventsChannel: PublishSubscribeChannel,
+    private val cacheManager: CacheManager
 ) {
+    private val applicationDisableSslVerificationCache by cacheManager.resolve()
+
     fun getApplication(applicationId: UUID): Application? {
         log.debug { "Getting application $applicationId from database" }
         val application = applicationKrud.showById(applicationId)
@@ -48,6 +61,11 @@ class ApplicationService(
 
     fun getApplicationOrThrow(applicationId: UUID): Application {
         return getApplication(applicationId) ?: throwNotFound("Application $applicationId not found")
+    }
+
+    @Cacheable("applicationDisableSslVerificationCache", key = "#applicationId")
+    fun getApplicationDisableSslVerification(applicationId: UUID): Boolean {
+        return getApplicationOrThrow(applicationId).disableSslVerification
     }
 
     fun hasAbility(application: Application, vararg abilities: InstanceAbility): Boolean {
@@ -96,6 +114,15 @@ class ApplicationService(
         val updatedApplication = applicationKrud.update(application)
         systemEventsChannel.send(ApplicationMovedEventMessage(ApplicationMovedEventMessage.Payload(applicationId, application.parentFolderId, newParentFolderId, newSort)))
         return updatedApplication
+    }
+
+    @ServiceActivator(inputChannel = "systemEventsChannel")
+    fun onSystemEvent(message: Message<*>) {
+        when (message) {
+            is ApplicationDisableSslVerificationChangedMessage -> {
+                applicationDisableSslVerificationCache.put(message.payload.applicationId, message.payload.newValue)
+            }
+        }
     }
 
     companion object {

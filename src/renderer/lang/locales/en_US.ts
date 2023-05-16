@@ -364,4 +364,5 @@ export default {
   demoServiceLoading: 'Demo service is loading...',
   takeTimeToLoadDemo: 'It can take a few minutes to load the demo service.',
   or: 'or',
+  disableSslVerification: 'Disable SSL Verification',
 };

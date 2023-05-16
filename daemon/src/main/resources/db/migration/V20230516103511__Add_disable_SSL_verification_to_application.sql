@@ -1,0 +1,1 @@
+alter table application add column disable_ssl_verification boolean default false not null;

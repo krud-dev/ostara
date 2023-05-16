@@ -27,7 +27,7 @@ class ActuatorController(
     )
     @ApiResponse(responseCode = "200", description = "Connection successful")
     @ApiResponse(responseCode = "500", description = "Test Connection failed", content = [Content()])
-    fun testConnection(@RequestParam url: String, @RequestBody(required = false) authentication: Authentication?) = actuatorClientProvider.provideForUrl(url, authentication = authentication ?: Authentication.None.DEFAULT).testConnection()
+    fun testConnection(@RequestParam url: String, @RequestParam(required = false, defaultValue = "false") disableSslVerification: Boolean, @RequestBody(required = false) authentication: Authentication?) = actuatorClientProvider.provideForUrl(url, authentication = authentication ?: Authentication.None.DEFAULT, disableSslVerification).testConnection()
 
     @GetMapping
     @ResponseStatus(HttpStatus.OK)

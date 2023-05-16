@@ -2,6 +2,7 @@ package dev.krud.boost.daemon.configuration.application.crud
 
 import dev.krud.boost.daemon.configuration.application.entity.Application
 import dev.krud.boost.daemon.configuration.application.messaging.ApplicationAuthenticationChangedMessage
+import dev.krud.boost.daemon.configuration.application.messaging.ApplicationDisableSslVerificationChangedMessage
 import dev.krud.boost.daemon.configuration.instance.entity.Instance
 import dev.krud.crudframework.crud.handler.krud.Krud
 import dev.krud.crudframework.crud.hooks.interfaces.DeleteHooks
@@ -13,7 +14,7 @@ import java.util.*
 @Component
 class ApplicationPersistentHooks(
     private val instanceKrud: Krud<Instance, UUID>,
-    private val systemEventsChannel: PublishSubscribeChannel
+    private val systemEventsChannel: PublishSubscribeChannel,
 ) : DeleteHooks<UUID, Application>, UpdateHooks<UUID, Application> {
     override fun postUpdate(entity: Application) {
         val copy = entity.saveOrGetCopy() as Application
@@ -21,6 +22,17 @@ class ApplicationPersistentHooks(
             systemEventsChannel.send(
                 ApplicationAuthenticationChangedMessage(
                     ApplicationAuthenticationChangedMessage.Payload(entity.id)
+                )
+            )
+        }
+        if (copy.disableSslVerification != entity.disableSslVerification) {
+            systemEventsChannel.send(
+                ApplicationDisableSslVerificationChangedMessage(
+                    ApplicationDisableSslVerificationChangedMessage.Payload(
+                        entity.id,
+                        copy.disableSslVerification,
+                        entity.disableSslVerification
+                    )
                 )
             )
         }
