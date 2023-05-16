@@ -6,7 +6,8 @@ data class InstanceMetricRO(
     val name: String,
     val description: String?,
     val unit: String?,
-    val values: List<InstanceMetricValueRO>
+    val values: List<InstanceMetricValueRO>,
+    val exists: Boolean
 )
 
 data class InstanceMetricValueRO(

@@ -324,6 +324,7 @@ export interface InstanceMetricRO {
     description?: string;
     unit?: string;
     values: InstanceMetricValueRO[];
+    exists: boolean;
 }
 
 export interface InstanceMetricValueRO {
