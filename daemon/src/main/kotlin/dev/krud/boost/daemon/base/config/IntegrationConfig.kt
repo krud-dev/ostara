@@ -42,6 +42,11 @@ class IntegrationConfig {
     }
 
     @Bean
+    fun instanceMetricUpdatedChannel(): PublishSubscribeChannel {
+        return MessageChannels.publishSubscribe().get()
+    }
+
+    @Bean
     fun instanceHeapdumpDownloadProgressFlow() = integrationFlow(instanceHeapdumpDownloadProgressInputChannel()) {
         aggregate {
             correlationStrategy {

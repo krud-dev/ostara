@@ -1,5 +1,6 @@
 package dev.krud.boost.daemon.configuration.instance.metric
 
+import dev.krud.boost.daemon.utils.ParsedMetricName
 import java.util.*
 
 object InstanceMetricWebsocketUtil {
@@ -10,8 +11,8 @@ object InstanceMetricWebsocketUtil {
         return METRIC_TOPIC_TEMPLATE_REGEX.matches(topic)
     }
 
-    fun parseMetricAndInstanceIdFromTopic(topic: String): Pair<UUID, String> {
+    fun parseMetricAndInstanceIdFromTopic(topic: String): Pair<UUID, ParsedMetricName> {
         val match = METRIC_TOPIC_TEMPLATE_REGEX.matchEntire(topic) ?: error("Invalid topic: $topic")
-        return UUID.fromString(match.groupValues[1]) to match.groupValues[2]
+        return UUID.fromString(match.groupValues[1]) to ParsedMetricName.from(match.groupValues[2])
     }
 }

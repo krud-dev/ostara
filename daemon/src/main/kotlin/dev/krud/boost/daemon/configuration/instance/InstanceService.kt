@@ -34,11 +34,19 @@ class InstanceService(
     }
 
     /**
+     * Attempt to get an instance from the cache. If it's not in the cache, attempt to get it from the database
+     */
+    @Cacheable("instanceCache")
+    fun getInstanceFromCache(instanceId: UUID): Instance? {
+        return getInstance(instanceId)
+    }
+
+    /**
      * Attempt to get an instance from the cache. If it's not in the cache, attempt to get it from the database, otherwise throw
      */
     @Cacheable("instanceCache")
     fun getInstanceFromCacheOrThrow(instanceId: UUID): Instance {
-        return getInstance(instanceId)
+        return getInstanceFromCache(instanceId)
             ?: throwNotFound("Instance $instanceId not found")
     }
 

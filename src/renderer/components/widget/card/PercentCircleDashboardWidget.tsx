@@ -33,7 +33,7 @@ const PercentCircleDashboardWidget: FunctionComponent<DashboardWidgetCardProps<P
       if (!metricDto) {
         return;
       }
-      setData((prev) => ({ ...prev, percent: metricDto.values[0].value }));
+      setData((prev) => ({ ...prev, percent: metricDto.value.value }));
     },
     [widget, setData]
   );

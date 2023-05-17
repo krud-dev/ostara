@@ -34,9 +34,9 @@ const ProgressCircleDashboardWidget: FunctionComponent<DashboardWidgetCardProps<
         return;
       }
       if (metricDto.name === widget.currentMetricName) {
-        setData((prev) => ({ ...prev, current: metricDto.values[0].value }));
+        setData((prev) => ({ ...prev, current: metricDto.value.value }));
       } else {
-        setData((prev) => ({ ...prev, max: metricDto.values[0].value }));
+        setData((prev) => ({ ...prev, max: metricDto.value.value }));
       }
     },
     [widget, setData]
