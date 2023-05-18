@@ -3,6 +3,7 @@ package dev.krud.boost.daemon.controller.api.v1.instance
 import dev.krud.boost.daemon.configuration.instance.metric.InstanceMetricService
 import dev.krud.boost.daemon.configuration.instance.metric.ro.InstanceMetricRO
 import dev.krud.boost.daemon.controller.api.v1.API_PREFIX
+import dev.krud.boost.daemon.utils.ParsedMetricName
 import io.swagger.v3.oas.annotations.media.Content
 import io.swagger.v3.oas.annotations.responses.ApiResponse
 import io.swagger.v3.oas.annotations.tags.Tag
@@ -27,6 +28,6 @@ class InstanceMetricController(
     @ApiResponse(responseCode = "200", description = "Latest metrics for an instance")
     @ApiResponse(responseCode = "400", description = "Instance is missing ability", content = [Content()])
     fun getLatestMetrics(@PathVariable instanceId: UUID, @RequestParam metricName: String): InstanceMetricRO {
-        return instanceMetricService.getLatestMetric(instanceId, metricName)
+        return instanceMetricService.getLatestMetric(instanceId, ParsedMetricName.from(metricName))
     }
 }

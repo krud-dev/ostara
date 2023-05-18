@@ -1,0 +1,3 @@
+spring:
+  datasource:
+    url: jdbc:sqlite::memory

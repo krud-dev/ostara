@@ -3,6 +3,7 @@ package dev.krud.boost.daemon.configuration.instance.metric
 import dev.krud.boost.daemon.configuration.instance.InstanceService
 import dev.krud.boost.daemon.configuration.instance.health.InstanceHealthService
 import dev.krud.boost.daemon.configuration.instance.metric.ro.InstanceMetricValueRO
+import dev.krud.boost.daemon.metricmonitor.MetricManager
 import org.springframework.context.annotation.Lazy
 import org.springframework.messaging.Message
 import org.springframework.messaging.MessageChannel
@@ -20,10 +21,11 @@ class InstanceMetricWebsocketTopicInterceptor(
     @Lazy
     private val messagingTemplate: SimpMessagingTemplate,
     private val instanceMetricService: InstanceMetricService,
-    private val instanceHealthService: InstanceHealthService
+    private val instanceHealthService: InstanceHealthService,
+    private val metricManager: MetricManager
 ) : ChannelInterceptor {
     private val subscriptions = ConcurrentHashMap<String, Set<String>>()
-    private val previousValueCache = ConcurrentHashMap<String, List<InstanceMetricValueRO>>()
+    private val previousValueCache = ConcurrentHashMap<String, InstanceMetricValueRO>()
 
     override fun preSend(message: Message<*>, channel: MessageChannel): Message<*>? {
         val headerAccessor = StompHeaderAccessor.wrap(message)
@@ -51,10 +53,10 @@ class InstanceMetricWebsocketTopicInterceptor(
                 .getOrNull()
                 ?: continue
             val previousValues = previousValueCache[topic]
-            if (previousValues != null && previousValues == metric.values) {
+            if (previousValues != null && previousValues == metric.value) {
                 continue
             }
-            previousValueCache[topic] = metric.values
+            previousValueCache[topic] = metric.value
             messagingTemplate.convertAndSend(topic, metric)
         }
     }
@@ -65,12 +67,13 @@ class InstanceMetricWebsocketTopicInterceptor(
             return
         }
 
-        val (instanceId) = InstanceMetricWebsocketUtil.parseMetricAndInstanceIdFromTopic(destination)
+        val (instanceId, metricName) = InstanceMetricWebsocketUtil.parseMetricAndInstanceIdFromTopic(destination)
         // todo: perform lighter ifexists check
         instanceService.getInstanceFromCacheOrThrow(instanceId)
         val sessionId = headerAccessor.sessionId ?: return
         val currentSubscriptions = subscriptions[sessionId] ?: emptySet()
         subscriptions[sessionId] = currentSubscriptions + destination
+        metricManager.requestMetric(instanceId, metricName)
     }
 
     private fun handleUnsubscribe(headerAccessor: StompHeaderAccessor) {
@@ -79,6 +82,7 @@ class InstanceMetricWebsocketTopicInterceptor(
             return
         }
 
+        val (instanceId, metricName) = InstanceMetricWebsocketUtil.parseMetricAndInstanceIdFromTopic(destination)
         val sessionId = headerAccessor.sessionId ?: return
         val currentSubscriptions = subscriptions[sessionId] ?: emptySet()
         val newSubscriptions = currentSubscriptions - destination
@@ -87,6 +91,7 @@ class InstanceMetricWebsocketTopicInterceptor(
         } else {
             subscriptions[sessionId] = newSubscriptions
         }
+        metricManager.releaseMetric(instanceId, metricName)
     }
 
     private fun handleDisconnect(headerAccessor: StompHeaderAccessor) {

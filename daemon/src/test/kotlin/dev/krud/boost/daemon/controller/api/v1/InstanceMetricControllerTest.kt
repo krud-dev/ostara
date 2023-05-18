@@ -6,6 +6,7 @@ import dev.krud.boost.daemon.configuration.instance.metric.ro.InstanceMetricValu
 import dev.krud.boost.daemon.controller.api.v1.instance.InstanceMetricController
 import dev.krud.boost.daemon.exception.throwBadRequest
 import dev.krud.boost.daemon.exception.throwNotFound
+import dev.krud.boost.daemon.utils.ParsedMetricName
 import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.Test
 import org.mockito.kotlin.whenever
@@ -32,42 +33,39 @@ class InstanceMetricControllerTest {
     @Test
     fun `get latest metrics happy flow`() {
         val instanceId = UUID.randomUUID()
-        whenever(instanceMetricService.getLatestMetric(instanceId, "test"))
+        whenever(instanceMetricService.getLatestMetric(instanceId, ParsedMetricName.from("test[VALUE]")))
             .thenReturn(
                 InstanceMetricRO(
-                    "test",
+                    "test[VALUE]",
                     "description",
                     "bytes",
-                    listOf(
-                        InstanceMetricValueRO(
-                            1.0,
-                            Date(0L)
-                        )
+                    InstanceMetricValueRO(
+                        1.0,
+                        Date(0L)
                     )
                 )
             )
-        val baseUrl = baseUrlProvider(instanceId) + "/latest?metricName=test"
+        val baseUrl = baseUrlProvider(instanceId) + "/latest?metricName=test[VALUE]"
         mockMvc.perform(
             MockMvcRequestBuilders.get(baseUrl)
         )
             .andExpect(status().isOk)
             .andExpect(content().contentType("application/json"))
-            .andExpect(jsonPath("\$.name").value("test"))
+            .andExpect(jsonPath("\$.name").value("test[VALUE]"))
             .andExpect(jsonPath("\$.description").value("description"))
             .andExpect(jsonPath("\$.unit").value("bytes"))
-            .andExpect(jsonPath("\$.values").isArray)
-            .andExpect(jsonPath("\$.values[0].value").value(1.0))
-            .andExpect(jsonPath("\$.values[0].timestamp").value(0L))
+            .andExpect(jsonPath("\$.value.value").value(1.0))
+            .andExpect(jsonPath("\$.value.timestamp").value(0L))
     }
 
     @Test
     fun `get latest metrics instance not found should return 404`() {
         val instanceId = UUID.randomUUID()
-        whenever(instanceMetricService.getLatestMetric(instanceId, "test"))
+        whenever(instanceMetricService.getLatestMetric(instanceId, ParsedMetricName.from("test[VALUE]")))
             .then {
                 throwNotFound()
             }
-        val baseUrl = baseUrlProvider(instanceId) + "/latest?metricName=test"
+        val baseUrl = baseUrlProvider(instanceId) + "/latest?metricName=test[VALUE]"
         mockMvc.perform(
             MockMvcRequestBuilders.get(baseUrl)
         )
@@ -77,11 +75,11 @@ class InstanceMetricControllerTest {
     @Test
     fun `get latest metrics instance missing ability should return 400`() {
         val instanceId = UUID.randomUUID()
-        whenever(instanceMetricService.getLatestMetric(instanceId, "test"))
+        whenever(instanceMetricService.getLatestMetric(instanceId, ParsedMetricName.from("test[VALUE]")))
             .then {
                 throwBadRequest()
             }
-        val baseUrl = baseUrlProvider(instanceId) + "/latest?metricName=test"
+        val baseUrl = baseUrlProvider(instanceId) + "/latest?metricName=test[VALUE]"
         mockMvc.perform(
             MockMvcRequestBuilders.get(baseUrl)
         )

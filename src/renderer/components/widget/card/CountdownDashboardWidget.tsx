@@ -13,7 +13,7 @@ const CountdownDashboardWidget: FunctionComponent<DashboardWidgetCardProps<Count
   const [data, setData] = useState<InstanceMetricRO | undefined>(undefined);
   const loading = useMemo<boolean>(() => !data, [data]);
 
-  const seconds = useMemo<number | undefined>(() => data?.values[0]?.value, [data]);
+  const seconds = useMemo<number | undefined>(() => data?.value.value, [data]);
 
   const onMetricUpdate = useCallback(
     (metricDto?: InstanceMetricRO): void => {

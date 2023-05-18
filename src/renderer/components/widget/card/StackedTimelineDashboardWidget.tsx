@@ -34,8 +34,8 @@ const StackedTimelineDashboardWidget: FunctionComponent<DashboardWidgetCardProps
   useWidgetSubscribeToMetrics(item.id, metricNames, (metricDto) => {
     const index = metrics.findIndex((metric) => metric.name === metricDto.name);
     const metric = metrics[index];
-    dataPoint.current.values[index] = formatWidgetChartValue(metricDto.values[0].value, metric.valueType);
-    dataPoint.current.timestamp = metricDto.values[0].timestamp;
+    dataPoint.current.values[index] = formatWidgetChartValue(metricDto.value.value, metric.valueType);
+    dataPoint.current.timestamp = metricDto.value.timestamp;
     if (dataPoint.current.values.length === metrics.length && every(dataPoint.current.values, isValidValue)) {
       addDataPoint(dataPoint.current);
       dataPoint.current = { values: [], timestamp: 0 };

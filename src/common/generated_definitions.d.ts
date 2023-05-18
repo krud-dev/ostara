@@ -323,7 +323,7 @@ export interface InstanceMetricRO {
     name: string;
     description?: string;
     unit?: string;
-    values: InstanceMetricValueRO[];
+    value: InstanceMetricValueRO;
 }
 
 export interface InstanceMetricValueRO {

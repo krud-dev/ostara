@@ -36,7 +36,7 @@ const DataBarDashboardWidget: FunctionComponent<DashboardWidgetCardProps<DataBar
         <Stack direction={'row'}>
           {metrics.map((metric, index, array) => {
             const dto = data[metric.name];
-            const value = dto?.values[0]?.value;
+            const value = dto?.value.value;
             const tooltip = dto?.description;
             return (
               <Box sx={{ width: `${100 / array.length}%`, textAlign: 'center' }} key={metric.name}>
