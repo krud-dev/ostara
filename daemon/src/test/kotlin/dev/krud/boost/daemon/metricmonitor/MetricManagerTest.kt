@@ -8,6 +8,7 @@ import dev.krud.boost.daemon.configuration.instance.stubInstance
 import dev.krud.boost.daemon.metricmonitor.messaging.InstanceMetricUpdatedMessage
 import dev.krud.boost.daemon.utils.ParsedMetricName
 import io.micrometer.core.instrument.MeterRegistry
+import io.micrometer.core.instrument.simple.SimpleMeterRegistry
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
 import org.mockito.kotlin.argumentCaptor
@@ -16,6 +17,8 @@ import org.mockito.kotlin.verify
 import org.mockito.kotlin.whenever
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.mock.mockito.MockBean
+import org.springframework.context.annotation.Bean
+import org.springframework.context.annotation.Configuration
 import org.springframework.integration.channel.PublishSubscribeChannel
 import org.springframework.test.context.ContextConfiguration
 import org.springframework.test.context.junit.jupiter.SpringExtension
@@ -25,7 +28,7 @@ import strikt.assertions.isEqualTo
 import java.util.*
 
 @ExtendWith(SpringExtension::class)
-@ContextConfiguration(classes = [MetricManager::class])
+@ContextConfiguration(classes = [MetricManager::class, MetricManagerTest.Config::class])
 @TestInstanceActuatorClientProvider.Configure
 class MetricManagerTest {
     @Autowired
@@ -37,11 +40,14 @@ class MetricManagerTest {
     @MockBean
     private lateinit var instanceMetricUpdatedChannel: PublishSubscribeChannel
 
-    @MockBean
-    private lateinit var meterRegistry: MeterRegistry
-
     @Autowired
     private lateinit var actuatorClientProvider: InstanceActuatorClientProvider
+
+    @Configuration
+    internal class Config {
+        @Bean
+        fun meterRegistry(): MeterRegistry = SimpleMeterRegistry()
+    }
 
     @Test
     fun `request metric should add a metric request`() {
