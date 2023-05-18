@@ -1,7 +1,7 @@
 import { FormattedMessage, useIntl } from 'react-intl';
-import React, { FunctionComponent, useCallback, useMemo } from 'react';
+import React, { FunctionComponent, useCallback, useMemo, useState } from 'react';
 import { Controller, FormProvider, useForm, useWatch } from 'react-hook-form';
-import { Box, Button, DialogActions, DialogContent, TextField } from '@mui/material';
+import { Box, Button, DialogActions, DialogContent, Divider, MenuItem, TextField } from '@mui/material';
 import { LoadingButton } from '@mui/lab';
 import { useSnackbar } from 'notistack';
 import { useTestConnectionByUrl } from 'renderer/apis/requests/actuator/testConnectionByUrl';
@@ -12,10 +12,12 @@ import { URL_REGEX } from 'renderer/constants/regex';
 import { IconViewer } from '../../../common/IconViewer';
 import { getActuatorUrls } from '../../../../utils/itemUtils';
 import AuthenticationDetailsForm from '../../authentication/forms/AuthenticationDetailsForm';
-import { Authentication, InstanceModifyRequestRO } from '../../../../../common/generated_definitions';
+import { ApplicationRO, Authentication, InstanceModifyRequestRO } from '../../../../../common/generated_definitions';
 import useEffectiveAuthentication from '../../authentication/hooks/useEffectiveAuthentication';
 import EffectiveAuthenticationDetails from '../../authentication/effective/EffectiveAuthenticationDetails';
 import { useAnalytics } from '../../../../contexts/AnalyticsContext';
+import { useCrudShow } from '../../../../apis/requests/crud/crudShow';
+import { applicationCrudEntity } from '../../../../apis/requests/crud/entity/entities/application.crudEntity';
 
 export type InstanceDetailsFormProps = {
   defaultValues?: Partial<InstanceFormValues>;
@@ -27,6 +29,7 @@ export type InstanceFormValues = InstanceModifyRequestRO & {
   id?: string;
   multipleInstances?: boolean;
   parentApplicationName?: string;
+  disableSslVerification?: boolean;
   parentFolderId?: string;
   authentication?: Authentication;
 };
@@ -50,12 +53,16 @@ const InstanceDetailsForm: FunctionComponent<InstanceDetailsFormProps> = ({
 
   const showMultipleInstancesToggle = useMemo<boolean>(() => !defaultValues?.id, [defaultValues]);
 
-  const testConnectionState = useTestConnectionByUrl({ disableGlobalError: true });
   const actuatorUrl = useWatch<InstanceFormValues>({
     control: control,
     name: 'actuatorUrl',
     defaultValue: defaultValues?.actuatorUrl || '',
   }) as string;
+  const disableSslVerification = useWatch<InstanceFormValues>({
+    control: control,
+    name: 'disableSslVerification',
+    defaultValue: defaultValues?.disableSslVerification,
+  }) as boolean | undefined;
   const authentication = useWatch<InstanceFormValues>({
     control: control,
     name: 'authentication',
@@ -84,12 +91,29 @@ const InstanceDetailsForm: FunctionComponent<InstanceDetailsFormProps> = ({
     onCancel();
   }, [onCancel]);
 
+  const [loadingTestConnection, setLoadingTestConnection] = useState<boolean>(false);
+
+  const testConnectionState = useTestConnectionByUrl({ disableGlobalError: true });
+  const showApplicationState = useCrudShow<ApplicationRO>({ disableGlobalError: true });
+
   const testConnectionHandler = useCallback(async (): Promise<void> => {
     track({ name: 'test_connection', properties: { item_type: 'instance' } });
 
+    setLoadingTestConnection(true);
+
     try {
+      let effectiveDisableSslVerification = disableSslVerification;
+      if (defaultValues?.parentApplicationId) {
+        const parentApplication = await showApplicationState.mutateAsync({
+          entity: applicationCrudEntity,
+          id: defaultValues.parentApplicationId,
+        });
+        effectiveDisableSslVerification = parentApplication.disableSslVerification;
+      }
+
       const result = await testConnectionState.mutateAsync({
         actuatorUrl,
+        disableSslVerification: effectiveDisableSslVerification,
         authentication: effectiveAuthentication?.authentication,
       });
       if (result.success) {
@@ -101,8 +125,18 @@ const InstanceDetailsForm: FunctionComponent<InstanceDetailsFormProps> = ({
       }
     } catch (e) {
       enqueueSnackbar(<TestConnectionError message={getErrorMessage(e)} />, { variant: 'error' });
+    } finally {
+      setLoadingTestConnection(false);
     }
-  }, [testConnectionState, actuatorUrl, effectiveAuthentication]);
+  }, [
+    setLoadingTestConnection,
+    showApplicationState,
+    testConnectionState,
+    defaultValues,
+    actuatorUrl,
+    disableSslVerification,
+    effectiveAuthentication,
+  ]);
 
   return (
     <FormProvider {...methods}>
@@ -187,6 +221,8 @@ const InstanceDetailsForm: FunctionComponent<InstanceDetailsFormProps> = ({
 
           {!defaultValues?.parentApplicationId && (
             <>
+              <Divider sx={{ mt: 2, mb: 1 }} />
+
               <Controller
                 name="parentApplicationName"
                 rules={{
@@ -213,6 +249,33 @@ const InstanceDetailsForm: FunctionComponent<InstanceDetailsFormProps> = ({
                 }}
               />
 
+              <Controller
+                name="disableSslVerification"
+                control={control}
+                defaultValue={false}
+                render={({ field: { ref, ...field }, fieldState: { invalid, error } }) => {
+                  return (
+                    <TextField
+                      {...field}
+                      inputRef={ref}
+                      margin="normal"
+                      fullWidth
+                      label={<FormattedMessage id="disableSslVerification" />}
+                      select
+                      error={invalid}
+                      helperText={error?.message}
+                    >
+                      <MenuItem value={true as any}>
+                        <FormattedMessage id="yes" />
+                      </MenuItem>
+                      <MenuItem value={false as any}>
+                        <FormattedMessage id="no" />
+                      </MenuItem>
+                    </TextField>
+                  );
+                }}
+              />
+
               <AuthenticationDetailsForm itemType={'instance'} />
             </>
           )}
@@ -227,7 +290,7 @@ const InstanceDetailsForm: FunctionComponent<InstanceDetailsFormProps> = ({
             <LoadingButton
               variant="text"
               color="primary"
-              loading={testConnectionState.isLoading}
+              loading={loadingTestConnection}
               onClick={testConnectionHandler}
             >
               <FormattedMessage id={'testConnection'} />

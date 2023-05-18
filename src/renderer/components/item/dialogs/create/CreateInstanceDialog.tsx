@@ -69,6 +69,7 @@ const CreateInstanceDialog: FunctionComponent<CreateInstanceDialogProps & NiceMo
               parentFolderId: parentFolderId,
               sort: sort ?? 1,
               color: data.color ?? INHERITED_COLOR_VALUE,
+              disableSslVerification: data.disableSslVerification,
               authentication: data.authentication || { type: 'inherit' },
             };
 

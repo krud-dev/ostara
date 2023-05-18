@@ -90,17 +90,8 @@ const ApplicationDetailsForm: FunctionComponent<ApplicationDetailsFormProps> = (
             }}
           />
 
-          <AuthenticationDetailsForm itemType={'application'} />
-
-          <EffectiveAuthenticationDetails
-            authentication={authentication}
-            effectiveAuthentication={effectiveAuthentication}
-          />
           <Controller
             name="disableSslVerification"
-            rules={{
-              required: intl.formatMessage({ id: 'requiredField' }),
-            }}
             control={control}
             defaultValue={false}
             render={({ field: { ref, ...field }, fieldState: { invalid, error } }) => {
@@ -108,20 +99,29 @@ const ApplicationDetailsForm: FunctionComponent<ApplicationDetailsFormProps> = (
                 <TextField
                   {...field}
                   inputRef={ref}
+                  margin="normal"
                   fullWidth
                   label={<FormattedMessage id="disableSslVerification" />}
-                  margin="normal"
                   select
+                  error={invalid}
+                  helperText={error?.message}
                 >
-                  <MenuItem value={'true'}>
+                  <MenuItem value={true as any}>
                     <FormattedMessage id="yes" />
                   </MenuItem>
-                  <MenuItem value={'false'}>
+                  <MenuItem value={false as any}>
                     <FormattedMessage id="no" />
                   </MenuItem>
                 </TextField>
               );
             }}
+          />
+
+          <AuthenticationDetailsForm itemType={'application'} />
+
+          <EffectiveAuthenticationDetails
+            authentication={authentication}
+            effectiveAuthentication={effectiveAuthentication}
           />
         </DialogContent>
         <DialogActions>
