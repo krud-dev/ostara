@@ -24,8 +24,9 @@ const useStartDemo = (): StartDemoResult => {
   const searchInstanceState = useCrudSearch<InstanceRO>({ cacheTime: 0 });
 
   const startDemo = useCallback(async (): Promise<void> => {
+    track({ name: 'demo_start' });
+
     setLoading(true);
-    track({ name: 'demo_started' });
 
     try {
       const demoAddress = window.demo.getDemoAddress();

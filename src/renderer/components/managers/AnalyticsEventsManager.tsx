@@ -31,6 +31,13 @@ const AnalyticsEventsSender: FunctionComponent<AnalyticsEventsSenderProps> = () 
   const { daemonHealthy } = useSettings();
 
   useEffect(() => {
+    const interval = setInterval(() => {
+      track({ name: 'heartbeat' });
+    }, 1000 * 60 * 5);
+    return () => clearInterval(interval);
+  }, []);
+
+  useEffect(() => {
     const urlInfo: UrlInfo | undefined = findLast(urls, (u) => !!matchPath({ path: u.url }, pathname));
     if (!urlInfo) {
       return;
