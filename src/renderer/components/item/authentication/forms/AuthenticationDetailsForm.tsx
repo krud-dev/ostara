@@ -9,7 +9,7 @@ import AuthenticationDetailsFormBasic from './AuthenticationDetailsFormBasic';
 import AuthenticationDetailsFormHeader from './AuthenticationDetailsFormHeader';
 import AuthenticationDetailsFormBearer from './AuthenticationDetailsFormBearer';
 import AuthenticationDetailsFormQuerystring from './AuthenticationDetailsFormQuerystring';
-import { useUpdateEffect } from 'react-use';
+import { usePrevious, useUpdateEffect } from 'react-use';
 import { useAnalytics } from '../../../../contexts/AnalyticsContext';
 import { ItemType } from '../../../../definitions/daemon';
 
@@ -26,6 +26,7 @@ const AuthenticationDetailsForm: FunctionComponent<AuthenticationDetailsFormProp
   const { control, watch } = useFormContext<{ authentication: Authentication$Typed }>();
 
   const type = watch('authentication.type');
+  const previousType = usePrevious(type);
 
   const AuthenticationDetailsFormType = useMemo<ComponentType<AuthenticationDetailsFormProps>>(() => {
     switch (type) {
@@ -46,7 +47,9 @@ const AuthenticationDetailsForm: FunctionComponent<AuthenticationDetailsFormProp
   }, [type]);
 
   useUpdateEffect(() => {
-    track({ name: 'authentication_type_change', properties: { item_type: itemType, authentication_type: type } });
+    if (previousType && previousType !== type) {
+      track({ name: 'authentication_type_change', properties: { item_type: itemType, authentication_type: type } });
+    }
   }, [type]);
 
   return (
