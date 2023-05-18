@@ -5,7 +5,7 @@ import {
   UseMutationResult,
   useQueryClient,
 } from '@tanstack/react-query';
-import { disableGlobalErrorMeta } from '../../useQueryClient';
+import { disableGlobalErrorMeta } from '../../ApiErrorManager';
 
 export type BaseMutationOptions<Data, Variables> = Omit<UseMutationOptions<Data, unknown, Variables>, 'mutationFn'> & {
   refetchNone?: boolean;

@@ -1,7 +1,7 @@
 import { UseQueryOptions, UseQueryResult } from '@tanstack/react-query/src/types';
 import { QueryKey, useQuery } from '@tanstack/react-query';
 import { useMemo } from 'react';
-import { disableGlobalErrorMeta } from '../../useQueryClient';
+import { disableGlobalErrorMeta } from '../../ApiErrorManager';
 
 export type BaseQueryOptions<Data, Variables> = Omit<
   UseQueryOptions<Data, unknown, Data>,

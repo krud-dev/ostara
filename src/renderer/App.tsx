@@ -6,7 +6,7 @@ import ThemeConfig from 'renderer/theme/ThemeConfig';
 import NiceModal from '@ebay/nice-modal-react';
 import NotistackProvider from 'renderer/components/snackbar/NotistackProvider';
 import { QueryClientProvider } from '@tanstack/react-query';
-import useQueryClient from 'renderer/apis/useQueryClient';
+import useCreateQueryClient from 'renderer/apis/useCreateQueryClient';
 import { SettingsContext, SettingsProvider } from 'renderer/contexts/SettingsContext';
 import Router from 'renderer/routes/routes';
 import { StompProvider } from './apis/websockets/StompContext';
@@ -16,7 +16,7 @@ import NewVersionManager from './components/managers/NewVersionManager';
 import AnalyticsEventsManager from './components/managers/AnalyticsEventsManager';
 
 export default function App() {
-  const queryClient = useQueryClient();
+  const queryClient = useCreateQueryClient();
 
   return (
     <MemoryRouter>

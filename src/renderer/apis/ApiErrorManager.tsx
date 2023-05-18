@@ -1,22 +1,40 @@
-import React, { FunctionComponent, useCallback, useEffect } from 'react';
+import React, { FunctionComponent, useCallback, useEffect, useState } from 'react';
 import { FormattedMessage } from 'react-intl';
 import { useSnackbar, VariantType } from 'notistack';
 import { getErrorMessage } from '../utils/errorUtils';
-import { useGlobalQueryClientError } from './useQueryClient';
+import { useQueryClient } from '@tanstack/react-query';
+
+export const disableGlobalErrorMeta = { disableGlobalError: true };
 
 interface ApiErrorManagerProps {}
 
 const ApiErrorManager: FunctionComponent<ApiErrorManagerProps> = () => {
+  const queryClient = useQueryClient();
   const { enqueueSnackbar } = useSnackbar();
 
-  const [globalError, setGlobalError] = useGlobalQueryClientError();
+  const [apiError, setApiError] = useState<unknown | undefined>(undefined);
 
   useEffect(() => {
-    if (globalError) {
-      notificationHandler(globalError);
-      setGlobalError(undefined);
+    queryClient.getQueryCache().config.onError = (error, query) => {
+      // If this query has a noError meta, skip error
+      if (query.options.meta?.disableGlobalError) return;
+
+      setApiError(error);
+    };
+    queryClient.getMutationCache().config.onError = (error, _variables, _context, mutation) => {
+      // If this mutation has a noError meta, skip error
+      if (mutation.options.meta?.disableGlobalError) return;
+
+      setApiError(error);
+    };
+  }, []);
+
+  useEffect(() => {
+    if (apiError) {
+      notificationHandler(apiError);
+      setApiError(undefined);
     }
-  }, [globalError]);
+  }, [apiError]);
 
   const notificationHandler = useCallback(
     (error: any) => {
