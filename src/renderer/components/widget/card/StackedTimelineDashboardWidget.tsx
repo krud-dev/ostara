@@ -6,6 +6,8 @@ import { FormattedMessage, useIntl } from 'react-intl';
 import useWidgetSubscribeToMetrics from 'renderer/components/widget/hooks/useWidgetSubscribeToMetrics';
 import AreaMultiple from 'renderer/components/widget/pure/AreaMultiple';
 import { formatWidgetChartValue } from 'renderer/utils/formatUtils';
+import { InstanceMetricRO } from '../../../../common/generated_definitions';
+import useWidgetErrorMetrics from '../hooks/useWidgetErrorMetrics';
 
 const MAX_DATA_POINTS = 50;
 
@@ -22,6 +24,7 @@ const StackedTimelineDashboardWidget: FunctionComponent<DashboardWidgetCardProps
     widget.metrics.map((metric) => ({ name: intl.formatMessage({ id: metric.titleId }), data: [] }))
   );
   const [chartLabels, setChartLabels] = useState<string[]>([]);
+
   const loading = useMemo<boolean>(() => isEmpty(chartLabels), [chartLabels]);
   const empty = useMemo<boolean>(() => !loading && isEmpty(chartLabels), [loading, chartLabels]);
 
@@ -30,17 +33,6 @@ const StackedTimelineDashboardWidget: FunctionComponent<DashboardWidgetCardProps
 
   const metrics = useMemo(() => chain(widget.metrics).sortBy('order').value(), [widget]);
   const metricNames = useMemo<string[]>(() => metrics.map((metric) => metric.name), [metrics]);
-
-  useWidgetSubscribeToMetrics(item.id, metricNames, (metricDto) => {
-    const index = metrics.findIndex((metric) => metric.name === metricDto.name);
-    const metric = metrics[index];
-    dataPoint.current.values[index] = formatWidgetChartValue(metricDto.value.value, metric.valueType);
-    dataPoint.current.timestamp = metricDto.value.timestamp;
-    if (dataPoint.current.values.length === metrics.length && every(dataPoint.current.values, isValidValue)) {
-      addDataPoint(dataPoint.current);
-      dataPoint.current = { values: [], timestamp: 0 };
-    }
-  });
 
   const addDataPoint = useCallback((dataPointToAdd: DataPoint): void => {
     if (dataPointToAdd.timestamp - lastDataPointTimestamp.current < intervalSeconds * 1000) {
@@ -59,12 +51,38 @@ const StackedTimelineDashboardWidget: FunctionComponent<DashboardWidgetCardProps
     );
   }, []);
 
+  const onMetricUpdate = useCallback(
+    (metricDto?: InstanceMetricRO): void => {
+      if (!metricDto) {
+        return;
+      }
+      const index = metrics.findIndex((metric) => metric.name === metricDto.name);
+      const metric = metrics[index];
+      dataPoint.current.values[index] = formatWidgetChartValue(metricDto.value.value, metric.valueType);
+      dataPoint.current.timestamp = metricDto.value.timestamp;
+      if (dataPoint.current.values.length === metrics.length && every(dataPoint.current.values, isValidValue)) {
+        addDataPoint(dataPoint.current);
+        dataPoint.current = { values: [], timestamp: 0 };
+      }
+    },
+    [metrics, addDataPoint]
+  );
+
+  const { error, onMetricError } = useWidgetErrorMetrics(loading);
+
+  useWidgetSubscribeToMetrics(item.id, metricNames, { callback: onMetricUpdate, errorCallback: onMetricError });
+
   const isValidValue = useCallback((value: number) => !isNil(value) && !isNaN(value), []);
 
   const chartColors = useMemo<string[]>(() => metrics.map((m) => m.color), [metrics]);
 
   return (
-    <DashboardGenericCard title={<FormattedMessage id={widget.titleId} />} loading={loading} empty={empty}>
+    <DashboardGenericCard
+      title={<FormattedMessage id={widget.titleId} />}
+      loading={loading}
+      empty={empty}
+      error={error}
+    >
       <AreaMultiple series={data} labels={chartLabels} colors={chartColors} tickAmount={MAX_DATA_POINTS / 4} />
     </DashboardGenericCard>
   );

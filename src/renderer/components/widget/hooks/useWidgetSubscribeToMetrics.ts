@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useCallback, useEffect } from 'react';
 import { isEmpty } from 'lodash';
 import { InstanceMetricRO } from '../../../../common/generated_definitions';
 import { useStomp } from '../../../apis/websockets/StompContext';
@@ -8,13 +8,30 @@ import { notEmpty } from '../../../utils/objectUtils';
 const useWidgetSubscribeToMetrics = (
   itemId: string,
   metricNames: string[],
-  callback: (metricDto: InstanceMetricRO) => void,
-  options: { active?: boolean } = {}
+  options: {
+    active?: boolean;
+    callback?: (metricDto: InstanceMetricRO) => void;
+    errorCallback?: (metricName: string) => void;
+  } = {}
 ): void => {
   const { active = true } = options;
   const { subscribe } = useStomp();
 
-  const latestMetricState = useGetLatestMetric();
+  const metricUpdateHandler = useCallback(
+    (metricDto: InstanceMetricRO): void => {
+      options?.callback?.(metricDto);
+    },
+    [options]
+  );
+
+  const metricErrorHandler = useCallback(
+    (metricName: string): void => {
+      options?.errorCallback?.(metricName);
+    },
+    [options]
+  );
+
+  const latestMetricState = useGetLatestMetric({ disableGlobalError: true });
 
   useEffect(() => {
     if (active && itemId && !isEmpty(metricNames)) {
@@ -25,11 +42,12 @@ const useWidgetSubscribeToMetrics = (
               try {
                 return await latestMetricState.mutateAsync({ instanceId: itemId, metricName });
               } catch (e) {
+                metricErrorHandler(metricName);
                 return undefined;
               }
             })
           );
-          results.filter(notEmpty).forEach(callback);
+          results.filter(notEmpty).forEach(metricUpdateHandler);
         } catch (e) {}
       })();
     }
@@ -43,7 +61,11 @@ const useWidgetSubscribeToMetrics = (
           unsubscribes = await Promise.all(
             metricNames.map(
               async (metricName): Promise<() => void> =>
-                subscribe('/topic/metric/:instanceId/:metricName', { instanceId: itemId, metricName }, callback)
+                subscribe(
+                  '/topic/metric/:instanceId/:metricName',
+                  { instanceId: itemId, metricName },
+                  metricUpdateHandler
+                )
             )
           );
         } catch (e) {}

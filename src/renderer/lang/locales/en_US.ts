@@ -159,6 +159,7 @@ export default {
   learnMoreAboutInstanceAbilities: 'Learn more about instance abilities',
   dataAvailableWhenConnection: 'Data will be available when the connection is established',
   error: 'Error',
+  errorRetrievingMetrics: 'Error retrieving metrics {metrics}',
   lastStatusChangeTime: 'Last Status Change Time',
   additionalInformation: 'Additional Information',
   executionType: 'Execution Type',
