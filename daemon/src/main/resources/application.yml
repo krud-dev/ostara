@@ -60,3 +60,6 @@ cache:
     - name: instanceSystemEnvironmentCache
       expire-after-write: 30m
       expire-after-access: 10m
+    - name: applicationDisableSslVerificationCache
+      expire-after-write: 30m
+      expire-after-access: 10m

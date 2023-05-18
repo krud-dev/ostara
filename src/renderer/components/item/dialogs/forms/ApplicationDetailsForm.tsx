@@ -1,7 +1,7 @@
 import { FormattedMessage, useIntl } from 'react-intl';
 import React, { FunctionComponent, useCallback } from 'react';
 import { Controller, FormProvider, useForm, useWatch } from 'react-hook-form';
-import { Box, Button, DialogActions, DialogContent, TextField } from '@mui/material';
+import { Box, Button, DialogActions, DialogContent, MenuItem, TextField } from '@mui/material';
 import { LoadingButton } from '@mui/lab';
 import InputAdornment from '@mui/material/InputAdornment';
 import ItemIconFormField from 'renderer/components/item/dialogs/forms/fields/ItemIconFormField';
@@ -86,6 +86,33 @@ const ApplicationDetailsForm: FunctionComponent<ApplicationDetailsFormProps> = (
                     ),
                   }}
                 />
+              );
+            }}
+          />
+
+          <Controller
+            name="disableSslVerification"
+            control={control}
+            defaultValue={false}
+            render={({ field: { ref, ...field }, fieldState: { invalid, error } }) => {
+              return (
+                <TextField
+                  {...field}
+                  inputRef={ref}
+                  margin="normal"
+                  fullWidth
+                  label={<FormattedMessage id="disableSslVerification" />}
+                  select
+                  error={invalid}
+                  helperText={error?.message}
+                >
+                  <MenuItem value={true as any}>
+                    <FormattedMessage id="yes" />
+                  </MenuItem>
+                  <MenuItem value={false as any}>
+                    <FormattedMessage id="no" />
+                  </MenuItem>
+                </TextField>
               );
             }}
           />

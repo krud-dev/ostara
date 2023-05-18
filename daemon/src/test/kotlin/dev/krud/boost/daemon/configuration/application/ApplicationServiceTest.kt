@@ -10,6 +10,7 @@ import dev.krud.crudframework.crud.handler.krud.Krud
 import org.junit.jupiter.api.Test
 import org.mockito.kotlin.mock
 import org.mockito.kotlin.whenever
+import org.springframework.cache.concurrent.ConcurrentMapCacheManager
 import org.springframework.integration.channel.PublishSubscribeChannel
 import strikt.api.expectThat
 import strikt.assertions.isEqualTo
@@ -24,7 +25,8 @@ class ApplicationServiceTest {
         applicationKrud,
         instanceKrud,
         instanceAbilityService,
-        systemEventsChannel
+        systemEventsChannel,
+        ConcurrentMapCacheManager("applicationDisableSslVerificationCache")
     )
 
     @Test

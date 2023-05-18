@@ -52,9 +52,12 @@ class Application(
     @Formula("(select count(*) from instance i where i.parent_application_id = id)")
     var instanceCount: Int = 0
 
-    // TODO: change type to enum
     @Formula("(json_extract(authentication, '$.type'))")
     var authenticationType: String = authentication?.type ?: Authentication.Inherit.DEFAULT.type // Elvis is needed due to Hibernate
+
+    @MappedField
+    @Column(columnDefinition = "boolean default false")
+    var disableSslVerification: Boolean = false
 
     @MappedField
     @Column(columnDefinition = "boolean default false")
