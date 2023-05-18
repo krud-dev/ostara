@@ -1,5 +1,5 @@
 import React, { FunctionComponent, PropsWithChildren, ReactNode, useMemo } from 'react';
-import { Card, CardContent, CardHeader } from '@mui/material';
+import { Box, Card, CardContent, CardHeader } from '@mui/material';
 import EmptyContent from 'renderer/components/help/EmptyContent';
 import { FormattedMessage } from 'react-intl';
 import LogoLoader from '../../common/LogoLoader';
@@ -8,10 +8,20 @@ type DashboardGenericCardProps = {
   title: ReactNode;
   loading: boolean;
   empty?: boolean;
+  error?: ReactNode;
 } & PropsWithChildren;
 
-const DashboardGenericCard: FunctionComponent<DashboardGenericCardProps> = ({ title, loading, empty, children }) => {
-  const cardState = useMemo<'loading' | 'empty' | 'content'>(() => {
+const DashboardGenericCard: FunctionComponent<DashboardGenericCardProps> = ({
+  title,
+  loading,
+  empty,
+  error,
+  children,
+}) => {
+  const cardState = useMemo<'loading' | 'empty' | 'error' | 'content'>(() => {
+    if (error) {
+      return 'error';
+    }
     if (empty) {
       return 'empty';
     }
@@ -19,16 +29,26 @@ const DashboardGenericCard: FunctionComponent<DashboardGenericCardProps> = ({ ti
       return 'loading';
     }
     return 'content';
-  }, [loading, empty]);
+  }, [loading, empty, error]);
+
   return (
-    <Card sx={{ height: '100%' }}>
+    <Card sx={{ height: '100%', display: 'flex', flexDirection: 'column' }}>
       <CardHeader title={title} />
       {cardState === 'loading' && (
-        <CardContent sx={{ textAlign: 'center' }}>
+        <Box sx={{ flexGrow: 1, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
           <LogoLoader />
-        </CardContent>
+        </Box>
       )}
-      {cardState === 'empty' && <EmptyContent text={<FormattedMessage id={'noData'} />} />}
+      {cardState === 'empty' && (
+        <Box sx={{ flexGrow: 1 }}>
+          <EmptyContent text={<FormattedMessage id={'noData'} />} />
+        </Box>
+      )}
+      {cardState === 'error' && (
+        <Box sx={{ flexGrow: 1 }}>
+          <EmptyContent text={<FormattedMessage id={'error'} />} description={error} />
+        </Box>
+      )}
       {cardState === 'content' && children}
     </Card>
   );

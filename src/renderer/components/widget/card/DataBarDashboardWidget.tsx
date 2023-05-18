@@ -9,9 +9,11 @@ import useWidgetSubscribeToMetrics from 'renderer/components/widget/hooks/useWid
 import { InstanceMetricRO } from '../../../../common/generated_definitions';
 import { EMPTY_STRING } from '../../../constants/ui';
 import { FormattedMessage } from 'react-intl';
+import useWidgetErrorMetrics from '../hooks/useWidgetErrorMetrics';
 
 const DataBarDashboardWidget: FunctionComponent<DashboardWidgetCardProps<DataBarWidget>> = ({ widget, item }) => {
   const [data, setData] = useState<{ [key: string]: InstanceMetricRO }>({});
+
   const loading = useMemo<boolean>(() => Object.keys(data).length < widget.metrics.length, [data]);
   const empty = useMemo<boolean>(() => !loading && Object.keys(data).length < widget.metrics.length, [loading, data]);
 
@@ -25,13 +27,20 @@ const DataBarDashboardWidget: FunctionComponent<DashboardWidgetCardProps<DataBar
     [setData]
   );
 
+  const { error, onMetricError } = useWidgetErrorMetrics(loading);
+
   const metrics = useMemo(() => chain(widget.metrics).sortBy('order').value(), [widget]);
   const metricNames = useMemo<string[]>(() => metrics.map((metric) => metric.name), [metrics]);
 
-  useWidgetSubscribeToMetrics(item.id, metricNames, onMetricUpdate);
+  useWidgetSubscribeToMetrics(item.id, metricNames, { callback: onMetricUpdate, errorCallback: onMetricError });
 
   return (
-    <DashboardGenericCard title={<FormattedMessage id={widget.titleId} />} loading={loading} empty={empty}>
+    <DashboardGenericCard
+      title={<FormattedMessage id={widget.titleId} />}
+      loading={loading}
+      empty={empty}
+      error={error}
+    >
       <CardContent>
         <Stack direction={'row'}>
           {metrics.map((metric, index, array) => {
