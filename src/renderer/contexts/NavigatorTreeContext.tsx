@@ -80,7 +80,10 @@ const NavigatorTreeProvider: FunctionComponent<NavigatorTreeProviderProps> = ({ 
     () => (folders && applications && instances ? [...folders, ...applications, ...instances] : undefined),
     [folders, applications, instances]
   );
-  const data = useMemo<TreeItem[] | undefined>(() => items && buildTree(items), [items]);
+  const data = useMemo<TreeItem[] | undefined>(
+    () => (folders && applications && instances ? buildTree([...folders, ...applications, ...instances]) : undefined),
+    [folders, applications, instances]
+  );
   const isLoading = useMemo<boolean>(() => !data, [data]);
   const isEmpty = useMemo<boolean>(() => !!data && data.length === 0, [data]);
   const hasData = useMemo<boolean>(() => !!data && data.length > 0, [data]);
@@ -177,7 +180,7 @@ const NavigatorTreeProvider: FunctionComponent<NavigatorTreeProviderProps> = ({ 
       return undefined;
     }
     return item;
-  }, [getItem, items, params.id]);
+  }, [items, params.id]);
 
   const getItemAbilitiesState = useGetItemAbilitiesQuery(
     { item: selectedItem },
