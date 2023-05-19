@@ -34,6 +34,7 @@ import { isWindows } from '../../../../../utils/platformUtils';
 import LogoLoader from '../../../../../components/common/LogoLoader';
 import { LoadingButton } from '@mui/lab';
 import useStartDemo from '../../../../../hooks/demo/useStartDemo';
+import useDelayedEffect from '../../../../../hooks/useDelayedEffect';
 
 const TreeStyle = styled(Tree<TreeItem>)(({ theme }) => ({
   '& [role="treeitem"]': {
@@ -74,7 +75,7 @@ export default function NavigatorTree({ width, height, search }: NavigatorTreePr
     }
   }, [action]);
 
-  useEffect(() => {
+  useDelayedEffect(() => {
     if (selectedItem) {
       treeRef.current?.openParents(selectedItem);
     }
