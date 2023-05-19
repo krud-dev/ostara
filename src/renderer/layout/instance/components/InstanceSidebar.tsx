@@ -15,6 +15,7 @@ import {
   StorageOutlined,
   SyncAltOutlined,
   TextSnippetOutlined,
+  ToggleOnOutlined,
   WysiwygOutlined,
   YardOutlined,
 } from '@mui/icons-material';
@@ -171,6 +172,14 @@ export default function InstanceSidebar({ item, itemAbilities, disabled, width }
                   label: <FormattedMessage id={'caches'} />,
                   to: generatePath(urls.instanceCaches.url, { id: item.id }),
                   disabled: disabled || isServiceInactive('CACHES'),
+                },
+                {
+                  id: 'togglz',
+                  icon: <ToggleOnOutlined />,
+                  label: <FormattedMessage id={'togglz'} />,
+                  to: generatePath(urls.instanceTogglz.url, { id: item.id }),
+                  disabled: disabled,
+                  hidden: isServiceInactive('TOGGLZ'),
                 },
               ],
             },

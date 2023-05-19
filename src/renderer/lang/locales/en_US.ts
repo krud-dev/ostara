@@ -366,4 +366,7 @@ export default {
   takeTimeToLoadDemo: 'It can take a few minutes to load the demo service.',
   or: 'or',
   disableSslVerification: 'Disable SSL Verification',
+  togglz: 'Togglz',
+  strategy: 'Strategy',
+  toggle: 'Toggle',
 };
