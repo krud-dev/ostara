@@ -4,6 +4,7 @@ import dev.krud.boost.daemon.configuration.application.entity.Application
 import dev.krud.boost.daemon.entity.AbstractEntity
 import dev.krud.boost.daemon.metricmonitor.rule.enums.ApplicationMetricRuleOperation
 import dev.krud.boost.daemon.metricmonitor.rule.ro.ApplicationMetricRuleRO
+import dev.krud.crudframework.crud.annotation.PersistCopyOnFetch
 import dev.krud.shapeshift.resolver.annotation.DefaultMappingTarget
 import dev.krud.shapeshift.resolver.annotation.MappedField
 import jakarta.persistence.Column
@@ -16,6 +17,7 @@ import jakarta.persistence.ManyToOne
 
 @Entity
 @DefaultMappingTarget(ApplicationMetricRuleRO::class)
+@PersistCopyOnFetch
 class ApplicationMetricRule(
     @Column(nullable = false)
     @MappedField
@@ -32,7 +34,7 @@ class ApplicationMetricRule(
     @MappedField
     var value2: Double? = null,
     @ManyToOne
-    @JoinColumn(name = "application_id", nullable = false)
+    @JoinColumn(name = "application_id", nullable = false, updatable = false)
     var application: Application,
     @Column(nullable = false, columnDefinition = "boolean default true")
     @MappedField
