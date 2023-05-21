@@ -25,10 +25,7 @@ export default function TogglzDetails({ row }: TogglzDetailsProps) {
               gridGap: (theme) => theme.spacing(1),
             }}
           >
-            <DetailsLabelValueVertical
-              label={<FormattedMessage id={'strategy'} />}
-              value={row.strategy || <FormattedMessage id={'none'} />}
-            />
+            <DetailsLabelValueVertical label={<FormattedMessage id={'strategy'} />} value={row.strategy} />
             {map(row.params, (value, key) => (
               <DetailsLabelValueVertical label={key} value={value} key={key} />
             ))}
