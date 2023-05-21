@@ -10,6 +10,6 @@ data class InstanceMetricRO(
 )
 
 data class InstanceMetricValueRO(
-    val value: Number,
+    val value: Double,
     val timestamp: Date
 )

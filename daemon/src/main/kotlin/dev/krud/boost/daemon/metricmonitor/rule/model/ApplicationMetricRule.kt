@@ -16,12 +16,15 @@ import jakarta.persistence.Enumerated
 import jakarta.persistence.JoinColumn
 import jakarta.persistence.Lob
 import jakarta.persistence.ManyToOne
+import java.util.*
+import kotlin.contracts.ExperimentalContracts
+import kotlin.contracts.contract
 
 @Entity
 @DefaultMappingTarget(ApplicationMetricRuleRO::class)
 @PersistCopyOnFetch
 class ApplicationMetricRule(
-    @Column(nullable = false)
+    @Column(nullable = false, updatable = false)
     @MappedField
     @Lob
     var metricName: String,
@@ -35,14 +38,30 @@ class ApplicationMetricRule(
     @Column(nullable = true)
     @MappedField
     var value2: Double? = null,
-    @ManyToOne
-    @JoinColumn(name = "application_id", nullable = false, updatable = false)
-    var application: Application,
     @Column(nullable = false, columnDefinition = "boolean default true")
     @MappedField
-    var enabled: Boolean = true
+    var enabled: Boolean = true,
+    @Column(name = "application_id", nullable = false, updatable = false)
+    var applicationId: UUID
 ) : AbstractEntity() {
+    @ManyToOne
+    @JoinColumn(name = "application_id", nullable = false, updatable = false, insertable = false)
+    var application: Application? = null
+
     companion object {
         val ApplicationMetricRule.parsedMetricName: ParsedMetricName get() = ParsedMetricName.from(metricName)
+        @ExperimentalContracts
+        fun ApplicationMetricRule?.evaluate(value: Double?): Boolean {
+            contract {
+                returns(true) implies (this@evaluate != null)
+            }
+            this ?: return false
+            value ?: return false
+            return when (operation) {
+                ApplicationMetricRuleOperation.GREATER_THAN -> value > value1
+                ApplicationMetricRuleOperation.BETWEEN -> value > value1 && value < value2!!
+                ApplicationMetricRuleOperation.LOWER_THAN -> value < value1
+            }
+        }
     }
 }

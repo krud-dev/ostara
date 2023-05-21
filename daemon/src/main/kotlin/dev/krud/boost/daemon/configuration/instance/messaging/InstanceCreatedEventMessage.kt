@@ -5,6 +5,7 @@ import java.util.*
 
 class InstanceCreatedEventMessage(payload: Payload) : AbstractMessage<InstanceCreatedEventMessage.Payload>(payload) {
     data class Payload(
-        val instanceId: UUID
+        val instanceId: UUID,
+        val parentApplicationId: UUID
     )
 }

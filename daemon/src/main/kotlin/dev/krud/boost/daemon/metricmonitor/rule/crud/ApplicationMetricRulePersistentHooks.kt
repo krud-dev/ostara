@@ -22,7 +22,7 @@ class ApplicationMetricRulePersistentHooks(
             ApplicationMetricRuleCreatedMessage(
                 ApplicationMetricRuleCreatedMessage.Payload(
                     entity.id,
-                    entity.application.id,
+                    entity.applicationId,
                     entity.enabled
                 )
             )
@@ -37,7 +37,7 @@ class ApplicationMetricRulePersistentHooks(
                     ApplicationMetricRuleEnabledMessage(
                         ApplicationMetricRuleEnabledMessage.Payload(
                             entity.id,
-                            entity.application.id
+                            entity.applicationId
                         )
                     )
                 )
@@ -46,7 +46,7 @@ class ApplicationMetricRulePersistentHooks(
                     ApplicationMetricRuleDisabledMessage(
                         ApplicationMetricRuleDisabledMessage.Payload(
                             entity.id,
-                            entity.application.id
+                            entity.applicationId
                         )
                     )
                 )
@@ -58,7 +58,7 @@ class ApplicationMetricRulePersistentHooks(
                 ApplicationMetricRuleMetricModifiedMessage(
                     ApplicationMetricRuleMetricModifiedMessage.Payload(
                         entity.id,
-                        entity.application.id,
+                        entity.applicationId,
                         entity.metricName,
                         copy.metricName
                     )
@@ -72,7 +72,7 @@ class ApplicationMetricRulePersistentHooks(
             ApplicationMetricRuleDeletedMessage(
                 ApplicationMetricRuleDeletedMessage.Payload(
                     entity.id,
-                    entity.application.id
+                    entity.applicationId
                 )
             )
         )
