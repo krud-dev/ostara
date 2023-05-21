@@ -29,7 +29,7 @@ export default function TableCellDataInstanceTogglzToggle<EntityItem extends Enr
         await updateTogglzState.mutateAsync({
           instanceId: row.instanceId,
           featureName: row.name,
-          enabled: row.enabled,
+          enabled: newEnabled,
         });
       } catch (e) {
         setEnabled(!newEnabled);
