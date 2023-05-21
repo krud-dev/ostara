@@ -19,6 +19,7 @@ import { useLocalStorageState } from '../hooks/useLocalStorageState';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { urls } from '../routes/urls';
 import { useUpdateEffect } from 'react-use';
+import { UpdateInfo } from 'electron-updater';
 
 export type SettingsContextProps = {
   developerMode: boolean;
@@ -35,8 +36,10 @@ export type SettingsContextProps = {
   errorReportingEnabled: boolean;
   errorReportingChanged: boolean;
   setErrorReportingEnabled: (errorReportingEnabled: boolean) => void;
+  autoUpdateSupported: boolean;
   autoUpdateEnabled: boolean;
   setAutoUpdateEnabled: (autoUpdateEnabled: boolean) => void;
+  newVersionInfo: UpdateInfo | undefined;
 };
 
 const SettingsContext = React.createContext<SettingsContextProps>(undefined!);
@@ -44,10 +47,13 @@ const SettingsContext = React.createContext<SettingsContextProps>(undefined!);
 interface SettingsProviderProps extends PropsWithChildren<any> {}
 
 const SettingsProvider: FunctionComponent<SettingsProviderProps> = ({ children }) => {
-  const navigate = useNavigate(); 
+  const navigate = useNavigate();
   const { pathname } = useLocation();
 
-  const developerMode = useMemo<boolean>(() => window.NODE_ENV === 'development' || process.env.DEBUG_PROD === 'true', []);
+  const developerMode = useMemo<boolean>(
+    () => window.NODE_ENV === 'development' || process.env.DEBUG_PROD === 'true',
+    []
+  );
 
   const [daemonHealthy, setDaemonHealthy] = useState<boolean>(window.daemonHealthy());
 
@@ -72,11 +78,41 @@ const SettingsProvider: FunctionComponent<SettingsProviderProps> = ({ children }
     window.configurationStore.setErrorReportingEnabled(errorReportingEnabled);
   }, [errorReportingEnabled]);
 
+  const autoUpdateSupported = useMemo<boolean>(() => false, []);
+
   const [autoUpdateEnabled, setAutoUpdateEnabled] = useState<boolean>(window.configurationStore.isAutoUpdateEnabled());
 
   useUpdateEffect(() => {
     window.configurationStore.setAutoUpdateEnabled(autoUpdateEnabled);
   }, [autoUpdateEnabled]);
+
+  const [newVersionInfo, setNewVersionInfo] = useState<UpdateInfo | undefined>(undefined);
+
+  useEffect(() => {
+    (async () => {
+      const updateInfo = await window.appUpdater.checkForUpdates();
+      if (updateInfo) {
+        setNewVersionInfo(updateInfo);
+      }
+    })();
+  }, []);
+
+  const subscribeToUpdateAvailableState = useSubscribeToEvent();
+
+  useEffect(() => {
+    let unsubscribe: (() => void) | undefined;
+    (async () => {
+      unsubscribe = await subscribeToUpdateAvailableState.mutateAsync({
+        event: 'app:updateAvailable',
+        listener: (event: IpcRendererEvent, updateInfo: UpdateInfo) => {
+          setNewVersionInfo(updateInfo);
+        },
+      });
+    })();
+    return () => {
+      unsubscribe?.();
+    };
+  }, []);
 
   useEffect(() => {
     const newPathname = daemonHealthy ? urls.home.url : urls.daemonUnhealthy.url;
@@ -194,8 +230,10 @@ const SettingsProvider: FunctionComponent<SettingsProviderProps> = ({ children }
         errorReportingEnabled,
         errorReportingChanged,
         setErrorReportingEnabled,
+        autoUpdateSupported,
         autoUpdateEnabled,
         setAutoUpdateEnabled,
+        newVersionInfo,
       }}
     >
       {children}

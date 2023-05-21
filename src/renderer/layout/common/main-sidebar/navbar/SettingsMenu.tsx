@@ -20,6 +20,7 @@ export default function SettingsMenu() {
     errorReportingEnabled,
     errorReportingChanged,
     setErrorReportingEnabled,
+    autoUpdateSupported,
     autoUpdateEnabled,
     setAutoUpdateEnabled,
   } = useSettings();
@@ -172,21 +173,23 @@ export default function SettingsMenu() {
                   </Alert>
                 )}
 
-                <TextField
-                  fullWidth
-                  label={<FormattedMessage id="automaticUpdates" />}
-                  margin="normal"
-                  select
-                  value={autoUpdateEnabled}
-                  onChange={(e) => setAutoUpdateEnabled(e.target.value === 'true')}
-                >
-                  <MenuItem value={'true'}>
-                    <FormattedMessage id="yes" />
-                  </MenuItem>
-                  <MenuItem value={'false'}>
-                    <FormattedMessage id="no" />
-                  </MenuItem>
-                </TextField>
+                {autoUpdateSupported && (
+                  <TextField
+                    fullWidth
+                    label={<FormattedMessage id="automaticUpdates" />}
+                    margin="normal"
+                    select
+                    value={autoUpdateEnabled}
+                    onChange={(e) => setAutoUpdateEnabled(e.target.value === 'true')}
+                  >
+                    <MenuItem value={'true'}>
+                      <FormattedMessage id="yes" />
+                    </MenuItem>
+                    <MenuItem value={'false'}>
+                      <FormattedMessage id="no" />
+                    </MenuItem>
+                  </TextField>
+                )}
 
                 <TextField
                   fullWidth
