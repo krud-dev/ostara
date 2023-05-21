@@ -20,6 +20,7 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import { urls } from '../routes/urls';
 import { useUpdateEffect } from 'react-use';
 import { UpdateInfo } from 'electron-updater';
+import { isMac } from '../utils/platformUtils';
 
 export type SettingsContextProps = {
   developerMode: boolean;
@@ -40,6 +41,7 @@ export type SettingsContextProps = {
   autoUpdateEnabled: boolean;
   setAutoUpdateEnabled: (autoUpdateEnabled: boolean) => void;
   newVersionInfo: UpdateInfo | undefined;
+  newVersionDownloaded: UpdateInfo | undefined;
 };
 
 const SettingsContext = React.createContext<SettingsContextProps>(undefined!);
@@ -78,15 +80,14 @@ const SettingsProvider: FunctionComponent<SettingsProviderProps> = ({ children }
     window.configurationStore.setErrorReportingEnabled(errorReportingEnabled);
   }, [errorReportingEnabled]);
 
-  const autoUpdateSupported = useMemo<boolean>(() => false, []);
-
+  const autoUpdateSupported = useMemo<boolean>(() => isMac, []);
   const [autoUpdateEnabled, setAutoUpdateEnabled] = useState<boolean>(window.configurationStore.isAutoUpdateEnabled());
+  const [newVersionInfo, setNewVersionInfo] = useState<UpdateInfo | undefined>(undefined);
+  const [newVersionDownloaded, setNewVersionDownloaded] = useState<UpdateInfo | undefined>(undefined);
 
   useUpdateEffect(() => {
     window.configurationStore.setAutoUpdateEnabled(autoUpdateEnabled);
   }, [autoUpdateEnabled]);
-
-  const [newVersionInfo, setNewVersionInfo] = useState<UpdateInfo | undefined>(undefined);
 
   useEffect(() => {
     (async () => {
@@ -106,6 +107,23 @@ const SettingsProvider: FunctionComponent<SettingsProviderProps> = ({ children }
         event: 'app:updateAvailable',
         listener: (event: IpcRendererEvent, updateInfo: UpdateInfo) => {
           setNewVersionInfo(updateInfo);
+        },
+      });
+    })();
+    return () => {
+      unsubscribe?.();
+    };
+  }, []);
+
+  const subscribeToUpdateDownloadedState = useSubscribeToEvent();
+
+  useEffect(() => {
+    let unsubscribe: (() => void) | undefined;
+    (async () => {
+      unsubscribe = await subscribeToUpdateDownloadedState.mutateAsync({
+        event: 'app:updateDownloaded',
+        listener: (event: IpcRendererEvent, updateInfo: UpdateInfo) => {
+          setNewVersionDownloaded(updateInfo);
         },
       });
     })();
@@ -234,6 +252,7 @@ const SettingsProvider: FunctionComponent<SettingsProviderProps> = ({ children }
         autoUpdateEnabled,
         setAutoUpdateEnabled,
         newVersionInfo,
+        newVersionDownloaded,
       }}
     >
       {children}

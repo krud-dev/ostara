@@ -14,6 +14,7 @@ import ApiErrorManager from './apis/ApiErrorManager';
 import { AnalyticsProvider } from './contexts/AnalyticsContext';
 import NewVersionManager from './components/managers/NewVersionManager';
 import AnalyticsEventsManager from './components/managers/AnalyticsEventsManager';
+import AppUpdatesManager from './components/managers/AppUpdatesManager';
 
 export default function App() {
   const queryClient = useCreateQueryClient();
@@ -47,6 +48,7 @@ export default function App() {
                           <NiceModal.Provider>
                             <ApiErrorManager />
                             <AnalyticsEventsManager />
+                            <AppUpdatesManager />
                             <NewVersionManager />
 
                             <Router />

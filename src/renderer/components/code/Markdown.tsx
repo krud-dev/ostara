@@ -17,6 +17,7 @@ import {
 import Typography from '@mui/material/Typography';
 import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
+import rehypeRaw from 'rehype-raw';
 import { ReactMarkdownOptions } from 'react-markdown/lib/react-markdown';
 import {
   CodeProps,
@@ -234,6 +235,7 @@ export default function Markdown({ children, ...props }: MarkdownProps) {
   return (
     <ReactMarkdown
       remarkPlugins={[[remarkGfm, { singleTilde: false }]]}
+      rehypePlugins={[rehypeRaw]}
       linkTarget={'_blank'}
       components={renderers}
       {...props}
