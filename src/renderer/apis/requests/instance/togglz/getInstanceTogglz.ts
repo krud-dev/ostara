@@ -9,15 +9,26 @@ import { TogglzFeatureActuatorResponse } from '../../../../../common/generated_d
 import { axiosInstance } from '../../../axiosInstance';
 import { AxiosResponse } from 'axios';
 
-type Variables = {
+export type EnrichedTogglzFeature = TogglzFeatureActuatorResponse & {
   instanceId: string;
 };
 
-type Data = TogglzFeatureActuatorResponse[];
+type Variables = {
+  instanceId: string;
+  group?: string;
+};
+
+type Data = EnrichedTogglzFeature[];
 
 export const getInstanceTogglz = async (variables: Variables): Promise<Data> => {
-  return (await axiosInstance.get<Data, AxiosResponse<Data>>(`actuator/togglz?instanceId=${variables.instanceId}`))
-    .data;
+  const result = (
+    await axiosInstance.get<TogglzFeatureActuatorResponse[], AxiosResponse<TogglzFeatureActuatorResponse[]>>(
+      `actuator/togglz?instanceId=${variables.instanceId}`
+    )
+  ).data;
+  return result
+    .filter((togglz) => !variables.group || togglz.metadata?.groups?.includes(variables.group))
+    .map((togglz) => ({ ...togglz, instanceId: variables.instanceId }));
 };
 
 export const useGetInstanceTogglz = (
@@ -28,4 +39,11 @@ export const useGetInstanceTogglzQuery = (
   variables: Variables,
   options?: BaseQueryOptions<Data, Variables>
 ): BaseUseQueryResult<Data> =>
-  useBaseQuery<Data, Variables>(apiKeys.itemTogglz(variables.instanceId), getInstanceTogglz, variables, options);
+  useBaseQuery<Data, Variables>(
+    variables.group
+      ? apiKeys.itemTogglzByGroup(variables.instanceId, variables.group)
+      : apiKeys.itemTogglz(variables.instanceId),
+    getInstanceTogglz,
+    variables,
+    options
+  );

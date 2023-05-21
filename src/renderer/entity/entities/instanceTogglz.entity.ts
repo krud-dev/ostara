@@ -1,27 +1,26 @@
 import { Entity } from 'renderer/entity/entity';
-import { TogglzFeatureActuatorResponse } from '../../../common/generated_definitions';
 import TableCellDataInstanceTogglzToggle from '../../components/table/data/custom/TableCellDataInstanceTogglzToggle';
+import { EnrichedTogglzFeature } from '../../apis/requests/instance/togglz/getInstanceTogglz';
 
-export const instanceTogglzEntity: Entity<TogglzFeatureActuatorResponse> = {
-  id: 'instanceCache',
+export const instanceTogglzEntity: Entity<EnrichedTogglzFeature> = {
+  id: 'instanceTogglz',
   columns: [
     {
       id: 'name',
       type: 'Text',
       labelId: 'name',
-      width: '100%',
+    },
+    {
+      id: 'status',
+      type: 'Custom',
+      labelId: 'status',
+      width: 100,
+      Component: TableCellDataInstanceTogglzToggle,
     },
     {
       id: 'strategy',
       type: 'Text',
       labelId: 'strategy',
-    },
-    {
-      id: 'toggle',
-      type: 'Custom',
-      labelId: 'toggle',
-      width: 200,
-      Component: TableCellDataInstanceTogglzToggle,
     },
   ],
   actions: [],
@@ -38,7 +37,7 @@ export const instanceTogglzEntity: Entity<TogglzFeatureActuatorResponse> = {
   filterData: (data, filter) =>
     data.filter(
       (item) =>
-        item.name?.toLowerCase().includes(filter.toLowerCase()) &&
+        item.name?.toLowerCase().includes(filter.toLowerCase()) ||
         item.strategy?.toLowerCase().includes(filter.toLowerCase())
     ),
 };

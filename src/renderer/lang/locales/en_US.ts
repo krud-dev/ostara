@@ -369,4 +369,5 @@ export default {
   togglz: 'Togglz',
   strategy: 'Strategy',
   toggle: 'Toggle',
+  all: 'All',
 };

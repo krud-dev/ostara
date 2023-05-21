@@ -1,47 +1,50 @@
 import { EntityBaseColumn } from 'renderer/entity/entity';
-import { useCallback, useMemo, useState } from 'react';
-import { useSetInstanceLoggerLevel } from 'renderer/apis/requests/instance/loggers/setInstanceLoggerLevel';
-import { useUpdateEffect } from 'react-use';
+import React, { useCallback, useState } from 'react';
 import { useAnalytics } from '../../../../contexts/AnalyticsContext';
-import { TogglzFeatureActuatorResponse } from '../../../../../common/generated_definitions';
+import { Switch } from '@mui/material';
+import { useUpdateInstanceTogglzFeature } from '../../../../apis/requests/instance/togglz/updateInstanceTogglzFeature';
+import { EnrichedTogglzFeature } from '../../../../apis/requests/instance/togglz/getInstanceTogglz';
 
-type TableCellDataInstanceTogglzToggleProps<EntityItem extends TogglzFeatureActuatorResponse> = {
+type TableCellDataInstanceTogglzToggleProps<EntityItem extends EnrichedTogglzFeature> = {
   row: EntityItem;
   column: EntityBaseColumn<EntityItem>;
 };
 
-export default function TableCellDataInstanceTogglzToggle<EntityItem extends TogglzFeatureActuatorResponse>({
+export default function TableCellDataInstanceTogglzToggle<EntityItem extends EnrichedTogglzFeature>({
   row,
   column,
 }: TableCellDataInstanceTogglzToggleProps<EntityItem>) {
   const { track } = useAnalytics();
 
-  const [loadingLevels, setLoadingLevels] = useState<string[] | undefined>(undefined);
+  const [enabled, setEnabled] = useState<boolean>(row.enabled);
 
-  const disabled = useMemo(() => !!loadingLevels, [loadingLevels]);
+  const updateTogglzState = useUpdateInstanceTogglzFeature({ refetchNone: true });
 
-  const setLevelState = useSetInstanceLoggerLevel();
   const changeHandler = useCallback(
-    async (newLevel: string): Promise<void> => {
-      if (setLevelState.isLoading) {
-        return;
+    async (event: React.ChangeEvent<HTMLInputElement>, newEnabled: boolean): Promise<void> => {
+      track({ name: 'togglz_change', properties: { item_type: 'instance', enabled: newEnabled } });
+
+      setEnabled(newEnabled);
+      try {
+        await updateTogglzState.mutateAsync({
+          instanceId: row.instanceId,
+          featureName: row.name,
+          enabled: row.enabled,
+        });
+      } catch (e) {
+        setEnabled(!newEnabled);
       }
-
-      track({ name: 'log_level_change', properties: { item_type: 'instance', level: newLevel } });
-
-      setLoadingLevels([newLevel]);
-      // try {
-      //   await setLevelState.mutateAsync({ instanceId: row.instanceId, loggerName: row.name, level: newLevel });
-      // } catch (e) {
-      //   setLoadingLevels(undefined);
-      // }
     },
-    [row, setLevelState]
+    [row, updateTogglzState]
   );
 
-  useUpdateEffect(() => {
-    setLoadingLevels(undefined);
-  }, [row]);
-
-  return null;
+  return (
+    <Switch
+      checked={enabled}
+      onChange={changeHandler}
+      disabled={updateTogglzState.isLoading}
+      color={'primary'}
+      edge={'start'}
+    />
+  );
 }
