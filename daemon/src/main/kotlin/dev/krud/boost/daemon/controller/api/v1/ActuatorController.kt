@@ -423,7 +423,7 @@ class ActuatorController(
     @ApiResponse(responseCode = "200", description = "Togglz feature")
     @ApiResponse(responseCode = "404", description = "Endpoint not available or feature not found", content = [Content()])
     @ApiResponse(responseCode = "503", description = "Service unavailable", content = [Content()])
-    fun updateTogglzFeature(@RequestParam instanceId: UUID, @PathVariable featureName: String, @RequestParam enabled: Boolean) = getClient(instanceId).togglzFeature(featureName).getOrThrow()
+    fun updateTogglzFeature(@RequestParam instanceId: UUID, @PathVariable featureName: String, @RequestParam enabled: Boolean) = getClient(instanceId).updateTogglzFeature(featureName, enabled).getOrThrow()
 
     private fun getClient(instanceId: UUID): ActuatorHttpClient {
         val instance = instanceService.getInstanceFromCacheOrThrow(instanceId)

@@ -1,0 +1,99 @@
+togglz:
+    features:
+      FEATURE_GENERIC:
+        enabled: true
+      FEATURE_SPRING_ENVIRONMENT_PROPERTY:
+        enabled: true
+        groups:
+          - first_group
+          - second_group
+        strategy: spring-environment-property
+        param:
+          name: some.property
+          value: false
+      FEATURE_SPRING_PROFILE:
+        enabled: true
+        groups:
+          - first_group
+          - second_group
+        strategy: spring-profile
+        param:
+            profiles: dev
+      FEATURE_CLIENT_IP:
+        enabled: true
+        groups:
+          - second_group
+        strategy: client-ip
+        param:
+            ips: 127.0.0.1/32
+      FEATURE_HEADER:
+        enabled: true
+        groups:
+          - first_group
+        strategy: header
+        param:
+            name: X-Some-Header
+            value: true
+      FEATURE_QUERY_PARAMETER:
+        enabled: true
+        groups:
+          - first_group
+          - third_group
+        strategy: query-parameter
+        param:
+            params: someParam=true
+      FEATURE_SERVER_NAME:
+        enabled: true
+        groups:
+          - third_group
+          - second_group
+        strategy: servername
+        param:
+            servernames: localhost
+      FEATURE_USER_NAME:
+        enabled: true
+        groups:
+          - third_group
+        strategy: username
+        param:
+            users: admin
+      FEATURE_GRADUAL:
+        enabled: true
+        groups:
+          - first_group
+        strategy: gradual
+        param:
+            percentage: 50
+      FEATURE_SCRIPT:
+        enabled: true
+        groups:
+          - second_group
+          - third_group
+        strategy: script
+        param:
+            lang: groovy
+            script: "user.name == 'admin'"
+      FEATURE_RELEASE_DATE:
+        enabled: true
+        groups:
+          - first_group
+        strategy: release-date
+        param:
+            date: 2019-01-01
+            time: 00:00:00
+      FEATURE_SERVER_IP:
+        enabled: true
+        strategy: server-ip
+        param:
+            ips: 127.0.0.1
+      FEATURE_USER_ROLE:
+        enabled: true
+        strategy: user-role
+        param:
+            roles: ROLE_ADMIN
+      FEATURE_PROPERTY:
+        enabled: true
+        strategy: property
+        param:
+            system-property: some.property
+            value: true
