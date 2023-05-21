@@ -7,3 +7,5 @@ export const DELETE_ID = 'delete';
 export const VIEW_ID = 'view';
 export const GRAPH_ID = 'graph';
 export const STATISTICS_ID = 'statistics';
+export const ENABLE_ID = 'enable';
+export const DISABLE_ID = 'disable';

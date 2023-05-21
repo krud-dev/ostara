@@ -370,4 +370,6 @@ export default {
   strategy: 'Strategy',
   toggle: 'Toggle',
   all: 'All',
+  disableAll: 'Disable All',
+  enableAll: 'Enable All',
 };

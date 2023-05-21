@@ -1,6 +1,7 @@
 import { Entity } from 'renderer/entity/entity';
 import TableCellDataInstanceTogglzToggle from '../../components/table/data/custom/TableCellDataInstanceTogglzToggle';
 import { EnrichedTogglzFeature } from '../../apis/requests/instance/togglz/getInstanceTogglz';
+import { DISABLE_ID, ENABLE_ID } from '../actions';
 
 export const instanceTogglzEntity: Entity<EnrichedTogglzFeature> = {
   id: 'instanceTogglz',
@@ -25,7 +26,10 @@ export const instanceTogglzEntity: Entity<EnrichedTogglzFeature> = {
   ],
   actions: [],
   massActions: [],
-  globalActions: [],
+  globalActions: [
+    { id: DISABLE_ID, labelId: 'disableAll', icon: 'ToggleOffOutlined' },
+    { id: ENABLE_ID, labelId: 'enableAll', icon: 'ToggleOnOutlined' },
+  ],
   defaultOrder: [
     {
       id: 'name',

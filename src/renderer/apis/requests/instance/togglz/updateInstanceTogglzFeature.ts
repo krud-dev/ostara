@@ -6,7 +6,8 @@ import {
 import { apiKeys } from 'renderer/apis/apiKeys';
 import { axiosInstance } from '../../../axiosInstance';
 import { AxiosResponse } from 'axios';
-import { InstanceLoggerRO } from '../../../../../common/generated_definitions';
+import { TogglzFeatureActuatorResponse } from '../../../../../common/generated_definitions';
+import { EnrichedTogglzFeature } from './getInstanceTogglz';
 
 type Variables = {
   instanceId: string;
@@ -14,14 +15,19 @@ type Variables = {
   enabled: boolean;
 };
 
-type Data = InstanceLoggerRO;
+type Data = EnrichedTogglzFeature;
 
 export const updateInstanceTogglzFeature = async (variables: Variables): Promise<Data> => {
-  return (
-    await axiosInstance.post<Data, AxiosResponse<Data>, null>(`actuator/togglz/${variables.featureName}`, null, {
-      params: { instanceId: variables.instanceId, enabled: variables.enabled },
-    })
+  const result = (
+    await axiosInstance.post<TogglzFeatureActuatorResponse, AxiosResponse<TogglzFeatureActuatorResponse>, null>(
+      `actuator/togglz/${variables.featureName}`,
+      null,
+      {
+        params: { instanceId: variables.instanceId, enabled: variables.enabled },
+      }
+    )
   ).data;
+  return { ...result, instanceId: variables.instanceId };
 };
 
 export const useUpdateInstanceTogglzFeature = (

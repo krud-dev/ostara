@@ -7,6 +7,15 @@ import {
   useGetInstanceTogglzQuery,
 } from '../../../../../apis/requests/instance/togglz/getInstanceTogglz';
 import { instanceTogglzEntity } from '../../../../../entity/entities/instanceTogglz.entity';
+import { DISABLE_ID, ENABLE_ID } from '../../../../../entity/actions';
+import { isItemDeletable } from '../../../../../utils/itemUtils';
+import { crudKeys } from '../../../../../apis/requests/crud/crudKeys';
+import { folderCrudEntity } from '../../../../../apis/requests/crud/entity/entities/folder.crudEntity';
+import { applicationCrudEntity } from '../../../../../apis/requests/crud/entity/entities/application.crudEntity';
+import { instanceCrudEntity } from '../../../../../apis/requests/crud/entity/entities/instance.crudEntity';
+import { useUpdateInstanceTogglzFeature } from '../../../../../apis/requests/instance/togglz/updateInstanceTogglzFeature';
+import { useQueryClient } from '@tanstack/react-query';
+import { apiKeys } from '../../../../../apis/apiKeys';
 
 type TogglzGroupTableProps = {
   instanceId: string;
@@ -14,6 +23,8 @@ type TogglzGroupTableProps = {
 };
 
 const TogglzGroupTable: FunctionComponent<TogglzGroupTableProps> = ({ instanceId, group }) => {
+  const queryClient = useQueryClient();
+
   const entity = useMemo<Entity<EnrichedTogglzFeature>>(() => instanceTogglzEntity, []);
   const queryState = useGetInstanceTogglzQuery({ instanceId: instanceId, group: group });
 
@@ -29,7 +40,48 @@ const TogglzGroupTable: FunctionComponent<TogglzGroupTableProps> = ({ instanceId
     []
   );
 
-  const globalActionsHandler = useCallback(async (actionId: string): Promise<void> => {}, []);
+  const updateTogglzState = useUpdateInstanceTogglzFeature({ refetchNone: true });
+
+  const toggleAllHandler = useCallback(
+    async (enabled: boolean): Promise<void> => {
+      if (!queryState.data) {
+        return;
+      }
+
+      try {
+        const promises = queryState.data
+          .filter((togglz) => togglz.enabled !== enabled)
+          .map((togglz) =>
+            updateTogglzState.mutateAsync({
+              instanceId: togglz.instanceId,
+              featureName: togglz.name,
+              enabled: enabled,
+            })
+          );
+        const result = await Promise.all(promises);
+        if (result) {
+          await queryClient.invalidateQueries(apiKeys.itemTogglz(instanceId));
+        }
+      } catch (e) {}
+    },
+    [queryState]
+  );
+
+  const globalActionsHandler = useCallback(
+    async (actionId: string): Promise<void> => {
+      switch (actionId) {
+        case DISABLE_ID:
+          await toggleAllHandler(false);
+          break;
+        case ENABLE_ID:
+          await toggleAllHandler(true);
+          break;
+        default:
+          break;
+      }
+    },
+    [toggleAllHandler]
+  );
 
   return (
     <TableComponent
