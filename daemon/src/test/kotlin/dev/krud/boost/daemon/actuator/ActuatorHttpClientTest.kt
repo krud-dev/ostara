@@ -456,7 +456,7 @@ class ActuatorHttpClientTest {
 
     @Test
     fun `togglz update feature should return correct response`() {
-        server.enqueue(okResponse())
+        server.enqueue(okJsonResponse("responses/togglz_feature_response_200.json"))
         val baseUrl = server.url("/actuator").toString()
         val client = getClient(baseUrl)
         val feature = client.updateTogglzFeature("FEATURE_ONE", true).getOrThrow()
