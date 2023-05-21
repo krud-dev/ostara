@@ -3,7 +3,9 @@ package dev.krud.boost.daemon.metricmonitor.rule.model
 import dev.krud.boost.daemon.configuration.application.entity.Application
 import dev.krud.boost.daemon.entity.AbstractEntity
 import dev.krud.boost.daemon.metricmonitor.rule.enums.ApplicationMetricRuleOperation
+import dev.krud.boost.daemon.metricmonitor.rule.model.ApplicationMetricRule.Companion.parsedMetricName
 import dev.krud.boost.daemon.metricmonitor.rule.ro.ApplicationMetricRuleRO
+import dev.krud.boost.daemon.utils.ParsedMetricName
 import dev.krud.crudframework.crud.annotation.PersistCopyOnFetch
 import dev.krud.shapeshift.resolver.annotation.DefaultMappingTarget
 import dev.krud.shapeshift.resolver.annotation.MappedField
@@ -39,4 +41,8 @@ class ApplicationMetricRule(
     @Column(nullable = false, columnDefinition = "boolean default true")
     @MappedField
     var enabled: Boolean = true
-) : AbstractEntity()
+) : AbstractEntity() {
+    companion object {
+        val ApplicationMetricRule.parsedMetricName: ParsedMetricName get() = ParsedMetricName.from(metricName)
+    }
+}
