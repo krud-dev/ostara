@@ -27,7 +27,7 @@ const InstanceTogglz: FunctionComponent = () => {
     () =>
       groupsState.data
         ? [
-            { id: 'all', label: <FormattedMessage id={'all'} />, lazy: true, group: undefined },
+            { id: 'all', label: <FormattedMessage id={'allFeatures'} />, lazy: true, group: undefined },
             ...chain(groupsState.data)
               .map((togglz) => togglz.metadata?.groups || [])
               .flatten()

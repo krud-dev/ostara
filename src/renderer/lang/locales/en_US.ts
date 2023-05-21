@@ -369,7 +369,9 @@ export default {
   togglz: 'Togglz',
   strategy: 'Strategy',
   toggle: 'Toggle',
-  all: 'All',
+  allFeatures: 'All Features',
   disableAll: 'Disable All',
   enableAll: 'Enable All',
+  parameters: 'Parameters',
+  attributes: 'Attributes',
 };

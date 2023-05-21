@@ -4,6 +4,7 @@ import { useAnalytics } from '../../../../contexts/AnalyticsContext';
 import { Switch } from '@mui/material';
 import { useUpdateInstanceTogglzFeature } from '../../../../apis/requests/instance/togglz/updateInstanceTogglzFeature';
 import { EnrichedTogglzFeature } from '../../../../apis/requests/instance/togglz/getInstanceTogglz';
+import { useUpdateEffect } from 'react-use';
 
 type TableCellDataInstanceTogglzToggleProps<EntityItem extends EnrichedTogglzFeature> = {
   row: EntityItem;
@@ -18,7 +19,11 @@ export default function TableCellDataInstanceTogglzToggle<EntityItem extends Enr
 
   const [enabled, setEnabled] = useState<boolean>(row.enabled);
 
-  const updateTogglzState = useUpdateInstanceTogglzFeature({ refetchNone: true });
+  useUpdateEffect(() => {
+    setEnabled(row.enabled);
+  }, [row.enabled]);
+
+  const updateTogglzState = useUpdateInstanceTogglzFeature();
 
   const changeHandler = useCallback(
     async (event: React.ChangeEvent<HTMLInputElement>, newEnabled: boolean): Promise<void> => {
@@ -38,10 +43,15 @@ export default function TableCellDataInstanceTogglzToggle<EntityItem extends Enr
     [row, updateTogglzState]
   );
 
+  const clickHandler = useCallback((event: React.MouseEvent): void => {
+    event.stopPropagation();
+  }, []);
+
   return (
     <Switch
       checked={enabled}
       onChange={changeHandler}
+      onClick={clickHandler}
       disabled={updateTogglzState.isLoading}
       color={'primary'}
       edge={'start'}

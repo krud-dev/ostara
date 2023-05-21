@@ -49,13 +49,15 @@ const TogglzGroupTable: FunctionComponent<TogglzGroupTableProps> = ({ instanceId
       }
 
       try {
-        const promises = queryState.data.map((togglz) =>
-          updateTogglzState.mutateAsync({
-            instanceId: togglz.instanceId,
-            featureName: togglz.name,
-            enabled: enabled,
-          })
-        );
+        const promises = queryState.data
+          .filter((togglz) => togglz.enabled !== enabled)
+          .map((togglz) =>
+            updateTogglzState.mutateAsync({
+              instanceId: togglz.instanceId,
+              featureName: togglz.name,
+              enabled: enabled,
+            })
+          );
         const result = await Promise.all(promises);
         if (result) {
           await queryClient.invalidateQueries(apiKeys.itemTogglz(instanceId));
