@@ -394,6 +394,23 @@ export interface EventLogRO {
     message?: string;
 }
 
+export interface ApplicationMetricRuleModifyRequestRO {
+    metricName: string;
+    operation: ApplicationMetricRuleOperation;
+    value1: number;
+    value2?: number;
+    enabled: boolean;
+}
+
+export interface ApplicationMetricRuleRO {
+    id: string;
+    metricName: string;
+    operation?: ApplicationMetricRuleOperation;
+    value1: number;
+    value2?: number;
+    enabled: boolean;
+}
+
 export interface ThreadProfilingLogRO {
     id: string;
     creationTime: DateAsNumber;
@@ -1003,6 +1020,8 @@ export type InstanceSystemPropertiesRO$RedactionLevel = "NONE" | "PARTIAL" | "FU
 export type EventLogType = "INSTANCE_HEALTH_CHANGED";
 
 export type EventLogSeverity = "INFO" | "WARN" | "ERROR";
+
+export type ApplicationMetricRuleOperation = "GREATER_THAN" | "LOWER_THAN" | "BETWEEN";
 
 export type ThreadProfilingStatus = "RUNNING" | "FINISHED";
 
