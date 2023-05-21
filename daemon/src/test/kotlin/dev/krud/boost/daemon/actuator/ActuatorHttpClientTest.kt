@@ -428,14 +428,14 @@ class ActuatorHttpClientTest {
         val featureList = client.togglz().getOrThrow()
         expect {
             that(featureList.size)
-                .isEqualTo(2)
+                .isEqualTo(4)
             that(featureList.first().name)
                 .isEqualTo("FEATURE_ONE")
             that(featureList.first().enabled)
                 .isEqualTo(true)
-            that(featureList.last().name)
+            that(featureList[1].name)
                 .isEqualTo("FEATURE_TWO")
-            that(featureList.last().enabled)
+            that(featureList[1].enabled)
                 .isEqualTo(false)
         }
     }

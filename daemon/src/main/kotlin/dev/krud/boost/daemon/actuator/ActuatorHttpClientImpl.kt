@@ -1,5 +1,6 @@
 package dev.krud.boost.daemon.actuator
 
+import com.fasterxml.jackson.core.type.TypeReference
 import com.fasterxml.jackson.databind.DeserializationFeature
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule
@@ -319,7 +320,8 @@ class ActuatorHttpClientImpl(
             if (responseBody == null) {
                 throwInternalServerError("Actuator response body is null: $request")
             } else {
-                objectMapper.readValue(responseBody, Type::class.java)
+                val typeReference = object : TypeReference<Type>() {}
+                objectMapper.readValue(responseBody, typeReference)
             }
         }
     }

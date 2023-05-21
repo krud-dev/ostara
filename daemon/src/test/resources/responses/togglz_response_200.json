@@ -3,12 +3,48 @@
         "name": "FEATURE_ONE",
         "enabled": true,
         "strategy": null,
-        "params": {}
+        "params": {},
+        "metadata": {
+            "label": "FEATURE_ONE",
+            "groups": [],
+            "enabledByDefault": true,
+            "attributes": {}
+        }
     },
     {
         "name": "FEATURE_TWO",
-        "enabled": true,
+        "enabled": false,
         "strategy": null,
-        "params": {}
+        "params": {},
+        "metadata": {
+            "label": "FEATURE_TWO",
+            "groups": [],
+            "enabledByDefault": true,
+            "attributes": {}
+        }
+    },
+    {
+        "name": "FEATURE_THREE",
+        "enabled": false,
+        "strategy": null,
+        "params": {},
+        "metadata": {
+            "label": "FEATURE_THREE",
+            "groups": [],
+            "enabledByDefault": false,
+            "attributes": {}
+        }
+    },
+    {
+        "name": "FEATURE_FOUR",
+        "enabled": false,
+        "strategy": null,
+        "params": {},
+        "metadata": {
+            "label": "FEATURE_FOUR",
+            "groups": [],
+            "enabledByDefault": true,
+            "attributes": {}
+        }
     }
 ]

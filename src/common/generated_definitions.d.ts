@@ -188,6 +188,7 @@ export interface TogglzFeatureActuatorResponse {
     enabled: boolean;
     strategy?: string;
     params?: { [index: string]: string | undefined };
+    metadata?: TogglzFeatureActuatorResponse$Metadata;
 }
 
 export interface TogglzFeatureUpdateRequest {
@@ -714,6 +715,13 @@ export interface ThreadDumpActuatorResponse$Thread {
     lockedMonitors: ThreadDumpActuatorResponse$Thread$LockedMonitor[];
     lockedSynchronizers: ThreadDumpActuatorResponse$Thread$LockedSynchronizer[];
     lockInfo?: ThreadDumpActuatorResponse$Thread$LockInfo;
+}
+
+export interface TogglzFeatureActuatorResponse$Metadata {
+    label: string;
+    groups: string[];
+    enabledByDefault: boolean;
+    attributes?: { [index: string]: string | undefined };
 }
 
 export interface Unit {
