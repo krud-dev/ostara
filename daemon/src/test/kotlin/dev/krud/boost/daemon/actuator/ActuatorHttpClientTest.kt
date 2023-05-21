@@ -421,6 +421,54 @@ class ActuatorHttpClientTest {
     }
 
     @Test
+    fun `togglz should return correct response`() {
+        server.enqueue(okJsonResponse("responses/togglz_response_200.json"))
+        val baseUrl = server.url("/actuator").toString()
+        val client = getClient(baseUrl)
+        val featureList = client.togglz().getOrThrow()
+        expect {
+            that(featureList.size)
+                .isEqualTo(4)
+            that(featureList.first().name)
+                .isEqualTo("FEATURE_ONE")
+            that(featureList.first().enabled)
+                .isEqualTo(true)
+            that(featureList[1].name)
+                .isEqualTo("FEATURE_TWO")
+            that(featureList[1].enabled)
+                .isEqualTo(false)
+        }
+    }
+
+    @Test
+    fun `togglz feature should return correct response`() {
+        server.enqueue(okJsonResponse("responses/togglz_feature_response_200.json"))
+        val baseUrl = server.url("/actuator").toString()
+        val client = getClient(baseUrl)
+        val feature = client.togglzFeature("FEATURE_ONE").getOrThrow()
+        expect {
+            that(feature.name)
+                .isEqualTo("FEATURE_ONE")
+            that(feature.enabled)
+                .isEqualTo(true)
+        }
+    }
+
+    @Test
+    fun `togglz update feature should return correct response`() {
+        server.enqueue(okJsonResponse("responses/togglz_feature_response_200.json"))
+        val baseUrl = server.url("/actuator").toString()
+        val client = getClient(baseUrl)
+        val feature = client.updateTogglzFeature("FEATURE_ONE", true).getOrThrow()
+        expect {
+            that(feature.name)
+                .isEqualTo("FEATURE_ONE")
+            that(feature.enabled)
+                .isEqualTo(true)
+        }
+    }
+
+    @Test
     fun `bad SSL should fail if verification is not disabled`() {
         val url = "https://self-signed.badssl.com/"
         val client = getClient(url)

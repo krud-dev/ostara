@@ -1,0 +1,6 @@
+{
+    "name": "FEATURE_ONE",
+    "enabled": true,
+    "strategy": null,
+    "params": {}
+}

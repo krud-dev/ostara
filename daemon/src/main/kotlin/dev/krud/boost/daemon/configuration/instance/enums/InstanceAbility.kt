@@ -25,7 +25,9 @@ enum class InstanceAbility {
     HEALTH,
     INFO,
     SYSTEM_PROPERTIES,
-    SYSTEM_ENVIRONMENT;
+    SYSTEM_ENVIRONMENT,
+    TOGGLZ
+    ;
 
     companion object {
         val VALUES = values().toSet()

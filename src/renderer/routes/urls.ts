@@ -161,6 +161,11 @@ export const urls = asUrlInfos({
     path: 'caches',
     helpUrl: 'https://docs.ostara.dev/features/instance-features/manage/caches',
   },
+  instanceTogglz: {
+    url: '/navigator/instance/:id/togglz',
+    path: 'togglz',
+    helpUrl: 'https://docs.ostara.dev/features/instance-features/manage/togglz',
+  },
   instanceThreadDump: {
     url: '/navigator/instance/:id/thread-dump',
     path: 'thread-dump',

@@ -1,5 +1,6 @@
 package dev.krud.boost.daemon.actuator
 
+import com.fasterxml.jackson.core.type.TypeReference
 import com.fasterxml.jackson.databind.DeserializationFeature
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule
@@ -284,6 +285,17 @@ class ActuatorHttpClientImpl(
 
     override fun quartzTrigger(group: String, name: String): Result<QuartzTriggerResponse> = doGet(asUrl("quartz", "triggers", group, name))
 
+    override fun togglz() = doGet<List<TogglzFeatureActuatorResponse>>(asUrl("togglz"))
+
+    override fun togglzFeature(featureName: String) = doGet<TogglzFeatureActuatorResponse>(asUrl("togglz", featureName))
+
+    override fun updateTogglzFeature(featureName: String, enabled: Boolean) = doPost<TogglzFeatureActuatorResponse>(
+        asUrl("togglz", featureName),
+        objectMapper.writeValueAsString(
+            TogglzFeatureUpdateRequest(featureName, enabled)
+        ).toRequestBody("application/json".toMediaType())
+    )
+
     private inline fun <reified Type> doGet(url: HttpUrl, build: Request.Builder.() -> Unit = {}): Result<Type> =
         doRequest(url, "GET", null, build)
 
@@ -308,7 +320,8 @@ class ActuatorHttpClientImpl(
             if (responseBody == null) {
                 throwInternalServerError("Actuator response body is null: $request")
             } else {
-                objectMapper.readValue(responseBody, Type::class.java)
+                val typeReference = object : TypeReference<Type>() {}
+                objectMapper.readValue(responseBody, typeReference)
             }
         }
     }

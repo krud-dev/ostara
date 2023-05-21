@@ -37,6 +37,7 @@ import InstanceAbilityErrorGuard from './guards/InstanceAbilityErrorGuard';
 import AppLayout from '../layout/app/AppLayout';
 import ErrorBoundaryNavigator from './ErrorBoundaryNavigator';
 import { ErrorBoundary } from 'react-error-boundary';
+import InstanceTogglz from '../pages/navigator/instance/togglz';
 
 export default function Router() {
   return useRoutes([
@@ -240,6 +241,14 @@ export default function Router() {
                   element: (
                     <AbilityRedirectGuard ability={'CACHES'}>
                       <InstanceCaches />
+                    </AbilityRedirectGuard>
+                  ),
+                },
+                {
+                  path: urls.instanceTogglz.path,
+                  element: (
+                    <AbilityRedirectGuard ability={'TOGGLZ'}>
+                      <InstanceTogglz />
                     </AbilityRedirectGuard>
                   ),
                 },
