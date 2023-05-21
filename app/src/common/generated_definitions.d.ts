@@ -477,6 +477,19 @@ export interface InstanceHostnameUpdatedEventMessage$Payload {
     hostname?: string;
 }
 
+export interface ApplicationMetricRuleTriggeredMessage$InstanceIdAndValue {
+    instanceId: string;
+    value: number;
+}
+
+export interface ApplicationMetricRuleTriggeredMessage$Payload {
+    applicationMetricRuleId: string;
+    operation: ApplicationMetricRuleOperation;
+    applicationId: string;
+    metricName: ParsedMetricName;
+    instanceIdsAndValues: ApplicationMetricRuleTriggeredMessage$InstanceIdAndValue[];
+}
+
 export interface ThreadProfilingProgressMessage$Payload {
     requestId: string;
     instanceId: string;
@@ -745,6 +758,12 @@ export interface Unit {
 }
 
 export interface Authentication {
+}
+
+export interface ParsedMetricName {
+    name: string;
+    statistic: string;
+    tags: { [index: string]: string };
 }
 
 export interface Iterable<T> {

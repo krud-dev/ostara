@@ -10,6 +10,7 @@ import dev.krud.boost.daemon.metricmonitor.rule.messaging.ApplicationMetricRuleC
 import dev.krud.boost.daemon.metricmonitor.rule.messaging.ApplicationMetricRuleDeletedMessage
 import dev.krud.boost.daemon.metricmonitor.rule.messaging.ApplicationMetricRuleDisabledMessage
 import dev.krud.boost.daemon.metricmonitor.rule.messaging.ApplicationMetricRuleEnabledMessage
+import dev.krud.boost.daemon.metricmonitor.rule.messaging.InstanceApplicationMetricRuleTriggeredMessage
 import dev.krud.boost.daemon.metricmonitor.rule.model.ApplicationMetricRule
 import dev.krud.boost.daemon.metricmonitor.rule.model.ApplicationMetricRule.Companion.evaluate
 import dev.krud.boost.daemon.metricmonitor.rule.model.ApplicationMetricRule.Companion.parsedMetricName
@@ -18,6 +19,7 @@ import dev.krud.crudframework.crud.handler.krud.Krud
 import io.github.oshai.KotlinLogging
 import jakarta.annotation.PostConstruct
 import org.springframework.integration.annotation.ServiceActivator
+import org.springframework.integration.channel.PublishSubscribeChannel
 import org.springframework.messaging.Message
 import org.springframework.stereotype.Service
 import java.util.*
@@ -27,7 +29,8 @@ import kotlin.contracts.ExperimentalContracts
 class ApplicationMetricRuleService(
     private val metricManager: MetricManager,
     private val applicationService: ApplicationService,
-    private val applicationMetricRuleKrud: Krud<ApplicationMetricRule, UUID>
+    private val applicationMetricRuleKrud: Krud<ApplicationMetricRule, UUID>,
+    private val instanceApplicationMetricRuleTriggerChannel: PublishSubscribeChannel
 ) {
     private val cache: MutableMap<UUID, MutableList<RuleInstanceAssociation>> = mutableMapOf()
 
@@ -109,18 +112,29 @@ class ApplicationMetricRuleService(
     @ServiceActivator(inputChannel = "instanceMetricUpdatedChannel")
     @ExperimentalContracts
     fun onMetricUpdated(message: InstanceMetricUpdatedMessage) {
-        println("Metriced updated: ${message.payload}")
         val associations = cache[message.payload.instanceId] ?: return
         associations.forEach { association ->
             if (association.metricName == message.payload.metricName) {
-                association.lastValue = message.payload.newValue?.value?.value
+                val value = message.payload.newValue?.value?.value ?: return@forEach
+                association.lastValue = value
                 association.lastEvaluation = Date()
                 val rule = applicationMetricRuleKrud.showById(association.applicationMetricRuleId)
                 log.debug { "Evaluating rule: ${rule?.id}"}
                 if(rule.evaluate(association.lastValue)) {
                     if (association.lastTriggered == null || association.lastTriggered!!.time < System.currentTimeMillis() - COOLDOWN) {
                         log.debug { "Triggering rule: ${rule.id}"}
-                        println("Triggered for $association")
+                        instanceApplicationMetricRuleTriggerChannel.send(
+                            InstanceApplicationMetricRuleTriggeredMessage(
+                                InstanceApplicationMetricRuleTriggeredMessage.Payload(
+                                    rule.id,
+                                    rule.operation,
+                                    rule.applicationId,
+                                    message.payload.instanceId,
+                                    rule.parsedMetricName,
+                                    value
+                                )
+                            )
+                        )
                     } else {
                         log.debug { "Rule on cooldown: ${rule.id}"}
                     }
