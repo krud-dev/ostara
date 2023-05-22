@@ -10,6 +10,7 @@ export class AppUpdater {
   constructor(autoUpdate = false) {
     if (process.env.NODE_ENV === 'development') {
       autoUpdater.updateConfigPath = path.join(__dirname, 'app-dev-update.yml');
+      autoUpdater.forceDevUpdateConfig = true;
     }
     this.updateAutoUpdate(autoUpdate);
     log.transports.file.level = 'info';
