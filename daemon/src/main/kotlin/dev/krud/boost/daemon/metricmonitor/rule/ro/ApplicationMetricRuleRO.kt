@@ -6,6 +6,7 @@ import java.util.*
 
 class ApplicationMetricRuleRO(
     var id: UUID = TypeDefaults.UUID,
+    var name: String? = null,
     var metricName: String = TypeDefaults.STRING,
     var operation: ApplicationMetricRuleOperation? = null,
     var value1: Double = TypeDefaults.DOUBLE,

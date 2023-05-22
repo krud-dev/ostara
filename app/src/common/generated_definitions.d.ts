@@ -395,6 +395,7 @@ export interface EventLogRO {
 }
 
 export interface ApplicationMetricRuleModifyRequestRO {
+    name?: string;
     metricName: string;
     operation: ApplicationMetricRuleOperation;
     value1: number;
@@ -404,6 +405,7 @@ export interface ApplicationMetricRuleModifyRequestRO {
 
 export interface ApplicationMetricRuleRO {
     id: string;
+    name?: string;
     metricName: string;
     operation?: ApplicationMetricRuleOperation;
     value1: number;
@@ -495,6 +497,12 @@ export interface ThreadProfilingProgressMessage$Payload {
     instanceId: string;
     secondsRemaining: number;
     status: ThreadProfilingStatus;
+}
+
+export interface ParsedMetricName {
+    name: string;
+    statistic: string;
+    tags: { [index: string]: string };
 }
 
 export interface ResultAggregationSummary<T> {
@@ -758,12 +766,6 @@ export interface Unit {
 }
 
 export interface Authentication {
-}
-
-export interface ParsedMetricName {
-    name: string;
-    statistic: string;
-    tags: { [index: string]: string };
 }
 
 export interface Iterable<T> {

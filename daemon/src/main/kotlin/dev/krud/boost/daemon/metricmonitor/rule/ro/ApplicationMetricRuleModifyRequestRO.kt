@@ -11,6 +11,8 @@ import java.util.*
 @DefaultMappingTarget(ApplicationMetricRule::class)
 class ApplicationMetricRuleModifyRequestRO(
     @MappedField
+    var name: String? = null,
+    @MappedField
     @get:ValidMetricName
     var metricName: String,
     @MappedField
