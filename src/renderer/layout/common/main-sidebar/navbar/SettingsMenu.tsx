@@ -11,8 +11,8 @@ import { useSubscribeToEvent } from '../../../../apis/requests/subscriptions/sub
 import { IpcRendererEvent } from 'electron';
 import { useRestartApp } from '../../../../apis/requests/ui/restartApp';
 import { useAppUpdates } from '../../../../contexts/AppUpdatesContext';
-import { showUpdateItemDialog } from '../../../../utils/dialogUtils';
 import { useSnackbar } from 'notistack';
+import { useAnalytics } from '../../../../contexts/AnalyticsContext';
 
 export default function SettingsMenu() {
   const {
@@ -35,6 +35,7 @@ export default function SettingsMenu() {
     installUpdate,
   } = useAppUpdates();
   const { enqueueSnackbar } = useSnackbar();
+  const { track } = useAnalytics();
 
   const [open, setOpen] = useState<boolean>(false);
 
@@ -88,6 +89,8 @@ export default function SettingsMenu() {
     async (event: React.MouseEvent): Promise<void> => {
       event.preventDefault();
 
+      track({ name: 'settings_check_for_updates' });
+
       const result = await checkForUpdates();
       if (result) {
         enqueueSnackbar(<FormattedMessage id="newVersionIsAvailable" values={{ version: result.version }} />, {
@@ -104,6 +107,8 @@ export default function SettingsMenu() {
     (event: React.MouseEvent): void => {
       event.preventDefault();
 
+      track({ name: 'settings_download_update' });
+
       const downloadType = downloadUpdate();
       if (downloadType === 'internal') {
         enqueueSnackbar(<FormattedMessage id="downloadStarted" />, { variant: 'info' });
@@ -115,6 +120,8 @@ export default function SettingsMenu() {
   const installUpdateHandler = useCallback(
     (event: React.MouseEvent): void => {
       event.preventDefault();
+
+      track({ name: 'settings_install_update' });
 
       installUpdate();
     },
@@ -258,30 +265,30 @@ export default function SettingsMenu() {
                   helperText={
                     <>
                       {appUpdatesView === 'check' && (
-                        <Link href={`#`} onClick={checkForUpdatesHandler} variant={'body2'}>
+                        <Link href={`#`} onClick={checkForUpdatesHandler} variant={'inherit'}>
                           <FormattedMessage id={'checkForUpdates'} />
                         </Link>
                       )}
                       {appUpdatesView === 'download' && (
-                        <Typography variant={'body2'} gutterBottom={false}>
+                        <>
                           <FormattedMessage
                             id="newVersionIsAvailableAndReady"
                             values={{ version: newVersionInfo?.version }}
                           />
                           <br />
-                          <Link href={`#`} onClick={downloadUpdateHandler} variant={'body2'}>
+                          <Link href={`#`} onClick={downloadUpdateHandler} variant={'inherit'}>
                             <FormattedMessage id={'downloadUpdate'} />
                           </Link>
-                        </Typography>
+                        </>
                       )}
                       {appUpdatesView === 'install' && (
-                        <Typography variant={'body2'} gutterBottom={false}>
+                        <>
                           <FormattedMessage id="appUpdateDownloadedAndReady" />
                           <br />
-                          <Link href={`#`} onClick={installUpdateHandler} variant={'body2'}>
+                          <Link href={`#`} onClick={installUpdateHandler} variant={'inherit'}>
                             <FormattedMessage id={'quitAndInstall'} />
                           </Link>
-                        </Typography>
+                        </>
                       )}
                     </>
                   }
