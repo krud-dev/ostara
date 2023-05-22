@@ -146,11 +146,6 @@ class ApplicationMetricRuleService(
         }
     }
 
-    @ServiceActivator(inputChannel = "applicationMetricRuleTriggerChannel")
-    fun temp(message: ApplicationMetricRuleTriggeredMessage) {
-        println("Called ${message.payload}")
-    }
-
     private fun ApplicationMetricRule.initialize() {
         val metricName = this.parsedMetricName
         val instances = applicationService.getApplicationInstances(this.applicationId)
