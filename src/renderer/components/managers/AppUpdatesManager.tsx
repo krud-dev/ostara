@@ -5,17 +5,17 @@ import DialogTitleEnhanced from '../dialog/DialogTitleEnhanced';
 import { FormattedMessage } from 'react-intl';
 import Markdown from '../code/Markdown';
 import { useAnalytics } from '../../contexts/AnalyticsContext';
-import { useSettings } from '../../contexts/SettingsContext';
 import { UpdateInfo } from 'electron-updater';
 import { isString } from 'lodash';
 import { notEmpty } from '../../utils/objectUtils';
 import { useLocalStorageState } from '../../hooks/useLocalStorageState';
-import { LATEST_RELEASE_URL } from '../../constants/ui';
+import { useAppUpdates } from '../../contexts/AppUpdatesContext';
+import { useSnackbar } from 'notistack';
 
 interface AppUpdatesManagerProps {}
 
 const AppUpdatesManager: FunctionComponent<AppUpdatesManagerProps> = () => {
-  const { autoUpdateSupported, autoUpdateEnabled, newVersionDownloaded, newVersionInfo } = useSettings();
+  const { autoUpdateSupported, autoUpdateEnabled, newVersionDownloaded, newVersionInfo } = useAppUpdates();
 
   const [newVersionDetailsShown, setNewVersionDetailsShown] = useState<string | undefined>(undefined);
   const [newVersionDetailsSkipVersion, setNewVersionDetailsSkipVersion] = useLocalStorageState<string | undefined>(
@@ -72,7 +72,8 @@ const AppUpdateDetailsDialog: FunctionComponent<AppUpdateDetailsDialogProps & Ni
   ({ updateInfo, onSkipVersion }) => {
     const modal = useModal();
     const { track } = useAnalytics();
-    const { autoUpdateSupported } = useSettings();
+    const { downloadUpdate } = useAppUpdates();
+    const { enqueueSnackbar } = useSnackbar();
 
     const closeHandler = useCallback((): void => {
       modal.resolve(undefined);
@@ -100,14 +101,13 @@ const AppUpdateDetailsDialog: FunctionComponent<AppUpdateDetailsDialogProps & Ni
     const downloadHandler = useCallback((): void => {
       track({ name: 'app_update_details_dialog_download' });
 
-      if (autoUpdateSupported) {
-        window.appUpdater.downloadUpdate();
-      } else {
-        window.open(LATEST_RELEASE_URL, '_blank');
+      const downloadType = downloadUpdate();
+      if (downloadType === 'internal') {
+        enqueueSnackbar(<FormattedMessage id="downloadStarted" />, { variant: 'info' });
       }
 
       closeHandler();
-    }, [autoUpdateSupported, closeHandler]);
+    }, [downloadUpdate, closeHandler]);
 
     const laterHandler = useCallback((): void => {
       track({ name: 'app_update_details_dialog_later' });
@@ -137,7 +137,7 @@ const AppUpdateDetailsDialog: FunctionComponent<AppUpdateDetailsDialogProps & Ni
         </DialogTitleEnhanced>
         <DialogContent>
           <DialogContentText>
-            <FormattedMessage id={'newVersionIsAvailable'} values={{ version: updateInfo.version }} />
+            <FormattedMessage id={'newVersionIsAvailableAndReady'} values={{ version: updateInfo.version }} />
           </DialogContentText>
           <Markdown>{markdown}</Markdown>
         </DialogContent>
@@ -166,6 +166,7 @@ const AppUpdateDownloadedDialog: FunctionComponent<AppUpdateDownloadedDialogProp
   NiceModal.create(({ updateInfo }) => {
     const modal = useModal();
     const { track } = useAnalytics();
+    const { installUpdate } = useAppUpdates();
 
     const closeHandler = useCallback((): void => {
       modal.resolve(undefined);
@@ -179,9 +180,9 @@ const AppUpdateDownloadedDialog: FunctionComponent<AppUpdateDownloadedDialogProp
     const installHandler = useCallback((): void => {
       track({ name: 'app_update_downloaded_dialog_install' });
 
-      window.appUpdater.quitAndInstall();
+      installUpdate();
       closeHandler();
-    }, [closeHandler]);
+    }, [installUpdate, closeHandler]);
 
     const laterHandler = useCallback((): void => {
       track({ name: 'app_update_downloaded_dialog_later' });

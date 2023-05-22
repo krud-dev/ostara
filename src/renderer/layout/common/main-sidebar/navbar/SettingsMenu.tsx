@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import { Alert, Box, Divider, Drawer, IconButton, Link, MenuItem, Stack, TextField, Typography } from '@mui/material';
 import { useSettings } from 'renderer/contexts/SettingsContext';
 import { FormattedMessage } from 'react-intl';
@@ -10,6 +10,9 @@ import { ThemeSource } from '../../../../../infra/ui/models/electronTheme';
 import { useSubscribeToEvent } from '../../../../apis/requests/subscriptions/subscribeToEvent';
 import { IpcRendererEvent } from 'electron';
 import { useRestartApp } from '../../../../apis/requests/ui/restartApp';
+import { useAppUpdates } from '../../../../contexts/AppUpdatesContext';
+import { showUpdateItemDialog } from '../../../../utils/dialogUtils';
+import { useSnackbar } from 'notistack';
 
 export default function SettingsMenu() {
   const {
@@ -20,10 +23,18 @@ export default function SettingsMenu() {
     errorReportingEnabled,
     errorReportingChanged,
     setErrorReportingEnabled,
+  } = useSettings();
+  const {
     autoUpdateSupported,
     autoUpdateEnabled,
     setAutoUpdateEnabled,
-  } = useSettings();
+    newVersionInfo,
+    newVersionDownloaded,
+    checkForUpdates,
+    downloadUpdate,
+    installUpdate,
+  } = useAppUpdates();
+  const { enqueueSnackbar } = useSnackbar();
 
   const [open, setOpen] = useState<boolean>(false);
 
@@ -62,6 +73,53 @@ export default function SettingsMenu() {
       setAppVersion(await window.ui.getAppVersion());
     })();
   }, []);
+
+  const appUpdatesView = useMemo<'check' | 'download' | 'install'>(() => {
+    if (newVersionDownloaded && autoUpdateSupported) {
+      return 'install';
+    }
+    if (newVersionInfo) {
+      return 'download';
+    }
+    return 'check';
+  }, [autoUpdateSupported, newVersionInfo, newVersionDownloaded]);
+
+  const checkForUpdatesHandler = useCallback(
+    async (event: React.MouseEvent): Promise<void> => {
+      event.preventDefault();
+
+      const result = await checkForUpdates();
+      if (result) {
+        enqueueSnackbar(<FormattedMessage id="newVersionIsAvailable" values={{ version: result.version }} />, {
+          variant: 'info',
+        });
+      } else {
+        enqueueSnackbar(<FormattedMessage id="appIsUpToDate" />, { variant: 'info' });
+      }
+    },
+    [checkForUpdates]
+  );
+
+  const downloadUpdateHandler = useCallback(
+    (event: React.MouseEvent): void => {
+      event.preventDefault();
+
+      const downloadType = downloadUpdate();
+      if (downloadType === 'internal') {
+        enqueueSnackbar(<FormattedMessage id="downloadStarted" />, { variant: 'info' });
+      }
+    },
+    [downloadUpdate]
+  );
+
+  const installUpdateHandler = useCallback(
+    (event: React.MouseEvent): void => {
+      event.preventDefault();
+
+      installUpdate();
+    },
+    [installUpdate]
+  );
 
   return (
     <>
@@ -197,6 +255,36 @@ export default function SettingsMenu() {
                   margin="normal"
                   value={appVersion}
                   inputProps={{ readOnly: true }}
+                  helperText={
+                    <>
+                      {appUpdatesView === 'check' && (
+                        <Link href={`#`} onClick={checkForUpdatesHandler} variant={'body2'}>
+                          <FormattedMessage id={'checkForUpdates'} />
+                        </Link>
+                      )}
+                      {appUpdatesView === 'download' && (
+                        <Typography variant={'body2'} gutterBottom={false}>
+                          <FormattedMessage
+                            id="newVersionIsAvailableAndReady"
+                            values={{ version: newVersionInfo?.version }}
+                          />
+                          <br />
+                          <Link href={`#`} onClick={downloadUpdateHandler} variant={'body2'}>
+                            <FormattedMessage id={'downloadUpdate'} />
+                          </Link>
+                        </Typography>
+                      )}
+                      {appUpdatesView === 'install' && (
+                        <Typography variant={'body2'} gutterBottom={false}>
+                          <FormattedMessage id="appUpdateDownloadedAndReady" />
+                          <br />
+                          <Link href={`#`} onClick={installUpdateHandler} variant={'body2'}>
+                            <FormattedMessage id={'quitAndInstall'} />
+                          </Link>
+                        </Typography>
+                      )}
+                    </>
+                  }
                 />
               </Stack>
             </PerfectScrollbar>

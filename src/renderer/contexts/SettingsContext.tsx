@@ -19,8 +19,6 @@ import { useLocalStorageState } from '../hooks/useLocalStorageState';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { urls } from '../routes/urls';
 import { useUpdateEffect } from 'react-use';
-import { UpdateInfo } from 'electron-updater';
-import { isMac } from '../utils/platformUtils';
 
 export type SettingsContextProps = {
   developerMode: boolean;
@@ -37,11 +35,6 @@ export type SettingsContextProps = {
   errorReportingEnabled: boolean;
   errorReportingChanged: boolean;
   setErrorReportingEnabled: (errorReportingEnabled: boolean) => void;
-  autoUpdateSupported: boolean;
-  autoUpdateEnabled: boolean;
-  setAutoUpdateEnabled: (autoUpdateEnabled: boolean) => void;
-  newVersionInfo: UpdateInfo | undefined;
-  newVersionDownloaded: UpdateInfo | undefined;
 };
 
 const SettingsContext = React.createContext<SettingsContextProps>(undefined!);
@@ -79,58 +72,6 @@ const SettingsProvider: FunctionComponent<SettingsProviderProps> = ({ children }
   useUpdateEffect(() => {
     window.configurationStore.setErrorReportingEnabled(errorReportingEnabled);
   }, [errorReportingEnabled]);
-
-  const autoUpdateSupported = useMemo<boolean>(() => isMac, []);
-  const [autoUpdateEnabled, setAutoUpdateEnabled] = useState<boolean>(window.configurationStore.isAutoUpdateEnabled());
-  const [newVersionInfo, setNewVersionInfo] = useState<UpdateInfo | undefined>(undefined);
-  const [newVersionDownloaded, setNewVersionDownloaded] = useState<UpdateInfo | undefined>(undefined);
-
-  useUpdateEffect(() => {
-    window.configurationStore.setAutoUpdateEnabled(autoUpdateEnabled);
-  }, [autoUpdateEnabled]);
-
-  useEffect(() => {
-    (async () => {
-      const updateInfo = await window.appUpdater.checkForUpdates();
-      if (updateInfo) {
-        setNewVersionInfo(updateInfo);
-      }
-    })();
-  }, []);
-
-  const subscribeToUpdateAvailableState = useSubscribeToEvent();
-
-  useEffect(() => {
-    let unsubscribe: (() => void) | undefined;
-    (async () => {
-      unsubscribe = await subscribeToUpdateAvailableState.mutateAsync({
-        event: 'app:updateAvailable',
-        listener: (event: IpcRendererEvent, updateInfo: UpdateInfo) => {
-          setNewVersionInfo(updateInfo);
-        },
-      });
-    })();
-    return () => {
-      unsubscribe?.();
-    };
-  }, []);
-
-  const subscribeToUpdateDownloadedState = useSubscribeToEvent();
-
-  useEffect(() => {
-    let unsubscribe: (() => void) | undefined;
-    (async () => {
-      unsubscribe = await subscribeToUpdateDownloadedState.mutateAsync({
-        event: 'app:updateDownloaded',
-        listener: (event: IpcRendererEvent, updateInfo: UpdateInfo) => {
-          setNewVersionDownloaded(updateInfo);
-        },
-      });
-    })();
-    return () => {
-      unsubscribe?.();
-    };
-  }, []);
 
   useEffect(() => {
     const newPathname = daemonHealthy ? urls.home.url : urls.daemonUnhealthy.url;
@@ -248,11 +189,6 @@ const SettingsProvider: FunctionComponent<SettingsProviderProps> = ({ children }
         errorReportingEnabled,
         errorReportingChanged,
         setErrorReportingEnabled,
-        autoUpdateSupported,
-        autoUpdateEnabled,
-        setAutoUpdateEnabled,
-        newVersionInfo,
-        newVersionDownloaded,
       }}
     >
       {children}

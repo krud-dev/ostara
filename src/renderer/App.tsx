@@ -15,6 +15,7 @@ import { AnalyticsProvider } from './contexts/AnalyticsContext';
 import NewVersionManager from './components/managers/NewVersionManager';
 import AnalyticsEventsManager from './components/managers/AnalyticsEventsManager';
 import AppUpdatesManager from './components/managers/AppUpdatesManager';
+import { AppUpdatesProvider } from './contexts/AppUpdatesContext';
 
 export default function App() {
   const queryClient = useCreateQueryClient();
@@ -26,38 +27,40 @@ export default function App() {
           <SettingsProvider>
             <SettingsContext.Consumer>
               {({ darkMode, localeInfo }) => (
-                <AnalyticsProvider>
-                  <IntlProvider
-                    locale={localeInfo.locale}
-                    messages={localeInfo.messages}
-                    onError={(err) => {
-                      if (err.code === 'MISSING_TRANSLATION') {
-                        console.warn('Missing translation', err.message);
-                        return;
-                      }
-                      throw err;
-                    }}
-                  >
-                    <LocalizationProvider dateAdapter={AdapterDateFns} adapterLocale={localeInfo.dateLocalization}>
-                      <ThemeConfig
-                        isDarkMode={darkMode}
-                        isRtl={localeInfo.direction === 'rtl'}
-                        localization={localeInfo.materialUiLocalization}
-                      >
-                        <NotistackProvider>
-                          <NiceModal.Provider>
-                            <ApiErrorManager />
-                            <AnalyticsEventsManager />
-                            <AppUpdatesManager />
-                            <NewVersionManager />
+                <AppUpdatesProvider>
+                  <AnalyticsProvider>
+                    <IntlProvider
+                      locale={localeInfo.locale}
+                      messages={localeInfo.messages}
+                      onError={(err) => {
+                        if (err.code === 'MISSING_TRANSLATION') {
+                          console.warn('Missing translation', err.message);
+                          return;
+                        }
+                        throw err;
+                      }}
+                    >
+                      <LocalizationProvider dateAdapter={AdapterDateFns} adapterLocale={localeInfo.dateLocalization}>
+                        <ThemeConfig
+                          isDarkMode={darkMode}
+                          isRtl={localeInfo.direction === 'rtl'}
+                          localization={localeInfo.materialUiLocalization}
+                        >
+                          <NotistackProvider>
+                            <NiceModal.Provider>
+                              <ApiErrorManager />
+                              <AnalyticsEventsManager />
+                              <AppUpdatesManager />
+                              <NewVersionManager />
 
-                            <Router />
-                          </NiceModal.Provider>
-                        </NotistackProvider>
-                      </ThemeConfig>
-                    </LocalizationProvider>
-                  </IntlProvider>
-                </AnalyticsProvider>
+                              <Router />
+                            </NiceModal.Provider>
+                          </NotistackProvider>
+                        </ThemeConfig>
+                      </LocalizationProvider>
+                    </IntlProvider>
+                  </AnalyticsProvider>
+                </AppUpdatesProvider>
               )}
             </SettingsContext.Consumer>
           </SettingsProvider>
