@@ -11,6 +11,7 @@ import { notEmpty } from '../../utils/objectUtils';
 import { useLocalStorageState } from '../../hooks/useLocalStorageState';
 import { useAppUpdates } from '../../contexts/AppUpdatesContext';
 import { useSnackbar } from 'notistack';
+import semverGte from 'semver/functions/gte';
 
 interface AppUpdatesManagerProps {}
 
@@ -25,37 +26,49 @@ const AppUpdatesManager: FunctionComponent<AppUpdatesManagerProps> = () => {
   const [newVersionDownloadedShown, setNewVersionDownloadedShown] = useState<string | undefined>(undefined);
 
   useEffect(() => {
-    if (!newVersionInfo) {
-      return;
-    }
-    if (newVersionDetailsShown === newVersionInfo.version) {
-      return;
-    }
-    if (newVersionDetailsSkipVersion === newVersionInfo.version) {
-      return;
-    }
-    if (autoUpdateSupported && (autoUpdateEnabled || newVersionDownloaded)) {
-      return;
-    }
-    setNewVersionDetailsShown(newVersionInfo.version);
-    NiceModal.show<undefined>(AppUpdateDetailsDialog, {
-      updateInfo: newVersionInfo,
-      onSkipVersion: setNewVersionDetailsSkipVersion,
-    });
+    (async () => {
+      if (!newVersionInfo) {
+        return;
+      }
+      const appVersion = await window.ui.getAppVersion();
+      if (semverGte(appVersion, newVersionInfo.version)) {
+        return;
+      }
+      if (newVersionDetailsShown === newVersionInfo.version) {
+        return;
+      }
+      if (newVersionDetailsSkipVersion === newVersionInfo.version) {
+        return;
+      }
+      if (autoUpdateSupported && (autoUpdateEnabled || newVersionDownloaded)) {
+        return;
+      }
+      setNewVersionDetailsShown(newVersionInfo.version);
+      NiceModal.show<undefined>(AppUpdateDetailsDialog, {
+        updateInfo: newVersionInfo,
+        onSkipVersion: setNewVersionDetailsSkipVersion,
+      });
+    })();
   }, [newVersionInfo]);
 
   useEffect(() => {
-    if (!newVersionDownloaded) {
-      return;
-    }
-    if (newVersionDownloadedShown === newVersionDownloaded.version) {
-      return;
-    }
-    if (!autoUpdateSupported) {
-      return;
-    }
-    setNewVersionDownloadedShown(newVersionDownloaded.version);
-    NiceModal.show<undefined>(AppUpdateDownloadedDialog, { updateInfo: newVersionDownloaded });
+    (async () => {
+      if (!newVersionDownloaded) {
+        return;
+      }
+      const appVersion = await window.ui.getAppVersion();
+      if (semverGte(appVersion, newVersionDownloaded.version)) {
+        return;
+      }
+      if (newVersionDownloadedShown === newVersionDownloaded.version) {
+        return;
+      }
+      if (!autoUpdateSupported) {
+        return;
+      }
+      setNewVersionDownloadedShown(newVersionDownloaded.version);
+      NiceModal.show<undefined>(AppUpdateDownloadedDialog, { updateInfo: newVersionDownloaded });
+    })();
   }, [newVersionDownloaded]);
 
   return null;

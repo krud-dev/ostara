@@ -13,6 +13,7 @@ import { useRestartApp } from '../../../../apis/requests/ui/restartApp';
 import { useAppUpdates } from '../../../../contexts/AppUpdatesContext';
 import { useSnackbar } from 'notistack';
 import { useAnalytics } from '../../../../contexts/AnalyticsContext';
+import semverGt from 'semver/functions/gt';
 
 export default function SettingsMenu() {
   const {
@@ -75,15 +76,18 @@ export default function SettingsMenu() {
     })();
   }, []);
 
-  const appUpdatesView = useMemo<'check' | 'download' | 'install'>(() => {
-    if (newVersionDownloaded && autoUpdateSupported) {
+  const appUpdatesView = useMemo<'none' | 'check' | 'download' | 'install'>(() => {
+    if (!appVersion) {
+      return 'none';
+    }
+    if (newVersionDownloaded && semverGt(newVersionDownloaded.version, appVersion) && autoUpdateSupported) {
       return 'install';
     }
-    if (newVersionInfo) {
+    if (newVersionInfo && semverGt(newVersionInfo.version, appVersion)) {
       return 'download';
     }
     return 'check';
-  }, [autoUpdateSupported, newVersionInfo, newVersionDownloaded]);
+  }, [appVersion, autoUpdateSupported, newVersionInfo, newVersionDownloaded]);
 
   const checkForUpdatesHandler = useCallback(
     async (event: React.MouseEvent): Promise<void> => {
