@@ -20,6 +20,7 @@ export const FALSE_LABEL_ID = 'no';
 
 export const REPOSITORY_URL = 'https://github.com/krud-dev/ostara';
 export const REPOSITORY_ISSUES_URL = 'https://github.com/krud-dev/ostara/issues';
+export const LATEST_RELEASE_URL = 'https://github.com/krud-dev/ostara/releases/latest';
 export const DOCUMENTATION_URL = 'https://docs.ostara.dev/';
 export const ABILITIES_DOCUMENTATION_URL = 'https://docs.ostara.dev/features/abilities';
 export const REDACTION_DOCUMENTATION_URL =

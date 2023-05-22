@@ -35,8 +35,6 @@ export type SettingsContextProps = {
   errorReportingEnabled: boolean;
   errorReportingChanged: boolean;
   setErrorReportingEnabled: (errorReportingEnabled: boolean) => void;
-  autoUpdateEnabled: boolean;
-  setAutoUpdateEnabled: (autoUpdateEnabled: boolean) => void;
 };
 
 const SettingsContext = React.createContext<SettingsContextProps>(undefined!);
@@ -44,10 +42,13 @@ const SettingsContext = React.createContext<SettingsContextProps>(undefined!);
 interface SettingsProviderProps extends PropsWithChildren<any> {}
 
 const SettingsProvider: FunctionComponent<SettingsProviderProps> = ({ children }) => {
-  const navigate = useNavigate(); 
+  const navigate = useNavigate();
   const { pathname } = useLocation();
 
-  const developerMode = useMemo<boolean>(() => window.NODE_ENV === 'development' || process.env.DEBUG_PROD === 'true', []);
+  const developerMode = useMemo<boolean>(
+    () => window.NODE_ENV === 'development' || process.env.DEBUG_PROD === 'true',
+    []
+  );
 
   const [daemonHealthy, setDaemonHealthy] = useState<boolean>(window.daemonHealthy());
 
@@ -71,12 +72,6 @@ const SettingsProvider: FunctionComponent<SettingsProviderProps> = ({ children }
   useUpdateEffect(() => {
     window.configurationStore.setErrorReportingEnabled(errorReportingEnabled);
   }, [errorReportingEnabled]);
-
-  const [autoUpdateEnabled, setAutoUpdateEnabled] = useState<boolean>(window.configurationStore.isAutoUpdateEnabled());
-
-  useUpdateEffect(() => {
-    window.configurationStore.setAutoUpdateEnabled(autoUpdateEnabled);
-  }, [autoUpdateEnabled]);
 
   useEffect(() => {
     const newPathname = daemonHealthy ? urls.home.url : urls.daemonUnhealthy.url;
@@ -194,8 +189,6 @@ const SettingsProvider: FunctionComponent<SettingsProviderProps> = ({ children }
         errorReportingEnabled,
         errorReportingChanged,
         setErrorReportingEnabled,
-        autoUpdateEnabled,
-        setAutoUpdateEnabled,
       }}
     >
       {children}
