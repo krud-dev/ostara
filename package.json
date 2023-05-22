@@ -186,6 +186,7 @@
     "reflect-metadata": "^0.1.13",
     "rehype-raw": "^6.1.1",
     "remark-gfm": "^3.0.1",
+    "semver": "^7.5.1",
     "stylis-plugin-rtl": "^2.1.1",
     "typeorm": "^0.3.11",
     "uuid": "^9.0.0"
@@ -207,6 +208,7 @@
     "@types/react-scroll": "^1.8.6",
     "@types/react-test-renderer": "^18.0.0",
     "@types/react-virtualized-auto-sizer": "^1.0.1",
+    "@types/semver": "^7.5.0",
     "@types/terser-webpack-plugin": "^5.0.4",
     "@types/uuid": "^9.0.0",
     "@types/webpack-bundle-analyzer": "^4.4.2",
