@@ -10,7 +10,6 @@ import dev.krud.boost.daemon.utils.ParsedMetricName
 import dev.krud.boost.daemon.utils.ParsedMetricName.Companion.getRo
 import dev.krud.boost.daemon.utils.newLimitedCachedThreadPool
 import io.micrometer.core.instrument.Counter
-import io.micrometer.core.instrument.Gauge
 import io.micrometer.core.instrument.MeterRegistry
 import kotlinx.coroutines.asCoroutineDispatcher
 import kotlinx.coroutines.launch
