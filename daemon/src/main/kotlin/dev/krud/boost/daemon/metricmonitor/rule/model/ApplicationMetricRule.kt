@@ -44,6 +44,8 @@ class ApplicationMetricRule(
     @Column(name = "application_id", nullable = false, updatable = false)
     var applicationId: UUID
 ) : AbstractEntity() {
+    // add name
+
     @ManyToOne
     @JoinColumn(name = "application_id", nullable = false, updatable = false, insertable = false)
     var application: Application? = null

@@ -10,6 +10,7 @@ import dev.krud.boost.daemon.metricmonitor.rule.messaging.ApplicationMetricRuleC
 import dev.krud.boost.daemon.metricmonitor.rule.messaging.ApplicationMetricRuleDeletedMessage
 import dev.krud.boost.daemon.metricmonitor.rule.messaging.ApplicationMetricRuleDisabledMessage
 import dev.krud.boost.daemon.metricmonitor.rule.messaging.ApplicationMetricRuleEnabledMessage
+import dev.krud.boost.daemon.metricmonitor.rule.messaging.ApplicationMetricRuleTriggeredMessage
 import dev.krud.boost.daemon.metricmonitor.rule.messaging.InstanceApplicationMetricRuleTriggeredMessage
 import dev.krud.boost.daemon.metricmonitor.rule.model.ApplicationMetricRule
 import dev.krud.boost.daemon.metricmonitor.rule.model.ApplicationMetricRule.Companion.evaluate
@@ -112,6 +113,7 @@ class ApplicationMetricRuleService(
     @ServiceActivator(inputChannel = "instanceMetricUpdatedChannel")
     @ExperimentalContracts
     fun onMetricUpdated(message: InstanceMetricUpdatedMessage) {
+        println("Metriced updated: ${message.payload}")
         val associations = cache[message.payload.instanceId] ?: return
         associations.forEach { association ->
             if (association.metricName == message.payload.metricName) {
@@ -142,6 +144,11 @@ class ApplicationMetricRuleService(
                 }
             }
         }
+    }
+
+    @ServiceActivator(inputChannel = "applicationMetricRuleTriggerChannel")
+    fun temp(message: ApplicationMetricRuleTriggeredMessage) {
+        println("Called ${message.payload}")
     }
 
     private fun ApplicationMetricRule.initialize() {

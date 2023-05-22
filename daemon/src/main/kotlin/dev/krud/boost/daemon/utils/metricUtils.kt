@@ -1,11 +1,13 @@
 package dev.krud.boost.daemon.utils
 
 import dev.krud.boost.daemon.actuator.model.MetricActuatorResponse
+import dev.krud.boost.daemon.base.annotations.GenerateTypescript
 import dev.krud.boost.daemon.configuration.instance.metric.ro.InstanceMetricRO
 import dev.krud.boost.daemon.configuration.instance.metric.ro.InstanceMetricValueRO
 import dev.krud.boost.daemon.exception.throwBadRequest
 import java.util.*
 
+@GenerateTypescript
 data class ParsedMetricName(
     val name: String,
     val statistic: String,
