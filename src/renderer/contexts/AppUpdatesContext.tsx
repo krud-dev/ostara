@@ -13,6 +13,7 @@ import { useUpdateEffect } from 'react-use';
 import { UpdateInfo } from 'electron-updater';
 import { isMac } from '../utils/platformUtils';
 import { LATEST_RELEASE_URL } from '../constants/ui';
+import semverGte from 'semver/functions/gte';
 
 export type AppUpdatesDownloadType = 'external' | 'internal';
 
@@ -86,9 +87,13 @@ const AppUpdatesProvider: FunctionComponent<AppUpdatesProviderProps> = ({ childr
 
   const checkForUpdates = useCallback(async (): Promise<UpdateInfo | undefined> => {
     const updateInfo = await window.appUpdater.checkForUpdates();
-    if (updateInfo) {
-      setNewVersionInfo(updateInfo);
+    const appVersion = await window.ui.getAppVersion();
+
+    if (!updateInfo || semverGte(appVersion, updateInfo.version)) {
+      return undefined;
     }
+
+    setNewVersionInfo(updateInfo);
     return updateInfo;
   }, [setNewVersionInfo]);
 
