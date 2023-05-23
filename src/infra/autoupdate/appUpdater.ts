@@ -5,11 +5,13 @@ import { app, BrowserWindow } from 'electron';
 import { systemEvents } from '../events';
 import { configurationStore } from '../store/store';
 import { scheduleJob } from 'node-schedule';
+import semverGt from 'semver/functions/gt';
 
 export class AppUpdater {
   constructor(autoUpdate = false) {
     if (process.env.NODE_ENV === 'development') {
       autoUpdater.updateConfigPath = path.join(__dirname, 'app-dev-update.yml');
+      autoUpdater.forceDevUpdateConfig = true;
     }
     this.updateAutoUpdate(autoUpdate);
     log.transports.file.level = 'info';
@@ -21,7 +23,9 @@ export class AppUpdater {
     });
     autoUpdater.on('update-available', (info) => {
       log.silly(`Update available: ${JSON.stringify(info)}`);
-      systemEvents.emit('update-available', info);
+      if (info.version && semverGt(info.version, app.getVersion())) {
+        systemEvents.emit('update-available', info);
+      }
     });
 
     autoUpdater.on('update-not-available', (info) => {
@@ -61,7 +65,10 @@ export class AppUpdater {
 
   async checkForUpdates(): Promise<UpdateInfo | undefined> {
     const result = await autoUpdater.checkForUpdates();
-    return result?.updateInfo;
+    if (result?.updateInfo && semverGt(result.updateInfo.version, app.getVersion())) {
+      return result.updateInfo;
+    }
+    return undefined;
   }
 
   downloadUpdate() {
