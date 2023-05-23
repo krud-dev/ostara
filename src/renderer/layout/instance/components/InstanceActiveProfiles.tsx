@@ -3,7 +3,6 @@ import { Box, Chip, Stack, Tooltip, Typography } from '@mui/material';
 import { COMPONENTS_SPACING, NAVIGATOR_ITEM_HEIGHT } from 'renderer/constants/ui';
 import { InstanceRO } from '../../../../common/generated_definitions';
 import { FormattedMessage } from 'react-intl';
-import PerfectScrollbar from 'react-perfect-scrollbar';
 import { useGetInstanceEnvQuery } from '../../../apis/requests/instance/env/getInstanceEnv';
 import { useUpdateEffect } from 'react-use';
 import { isInstanceInactive } from '../../../utils/itemUtils';
@@ -44,7 +43,7 @@ export default function InstanceActiveProfiles({ item }: InstanceActiveProfilesP
   return (
     <Box
       sx={{
-        height: NAVIGATOR_ITEM_HEIGHT,
+        minHeight: NAVIGATOR_ITEM_HEIGHT,
         display: 'flex',
         flexDirection: 'column',
         justifyContent: 'center',
@@ -72,22 +71,20 @@ export default function InstanceActiveProfiles({ item }: InstanceActiveProfilesP
           </Typography>
         )}
         {status === 'success' && (
-          <Box sx={{ width: '100%' }}>
-            <PerfectScrollbar options={{ wheelPropagation: true, suppressScrollY: true }}>
-              <Stack
-                direction={'row'}
-                spacing={1}
-                alignItems={'center'}
-                sx={{ height: '100%', display: 'inline-flex', px: COMPONENTS_SPACING }}
-              >
-                {envState.data?.activeProfiles?.map((profile) => (
-                  <Tooltip title={<FormattedMessage id={'activeProfile'} />} key={profile}>
-                    <Chip label={profile} size={'small'} color={'default'} />
-                  </Tooltip>
-                ))}
-              </Stack>
-            </PerfectScrollbar>
-          </Box>
+          <Stack
+            direction={'row'}
+            spacing={1}
+            alignItems={'center'}
+            useFlexGap
+            flexWrap={'wrap'}
+            sx={{ height: '100%', px: COMPONENTS_SPACING, py: 0.5 }}
+          >
+            {envState.data?.activeProfiles?.map((profile) => (
+              <Tooltip title={<FormattedMessage id={'activeProfile'} />} key={profile}>
+                <Chip label={profile} color={'default'} />
+              </Tooltip>
+            ))}
+          </Stack>
         )}
       </>
     </Box>
