@@ -154,7 +154,7 @@ tasks.jacocoTestReport {
 
 sonar {
     properties {
-        property("sonar.projectKey", "boost_daemon")
+        property("sonar.projectKey", "ostara-daemon")
         property("sonar.organization", "krud-dev")
         property("sonar.host.url", "https://sonarcloud.io")
     }

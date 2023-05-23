@@ -2,7 +2,7 @@ name: Test Daemon
 
 on:
   push:
-    branches:
+    branches: #
       - master
     paths:
       - daemon/**
