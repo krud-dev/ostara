@@ -7,6 +7,7 @@ import { getItemUrl } from '../../utils/itemUtils';
 import { useNavigate } from 'react-router-dom';
 import { useNavigatorTree } from '../../contexts/NavigatorTreeContext';
 import { useAnalytics } from '../../contexts/AnalyticsContext';
+import { isEmpty } from 'lodash';
 
 type StartDemoResult = {
   startDemo: () => Promise<void>;
@@ -20,34 +21,47 @@ const useStartDemo = (): StartDemoResult => {
 
   const [loading, setLoading] = useState<boolean>(false);
 
-  const createDemoState = useCreateDemo();
   const searchInstanceState = useCrudSearch<InstanceRO>({ cacheTime: 0 });
+
+  const getDemoInstance = useCallback(async (): Promise<InstanceRO | undefined> => {
+    try {
+      const demoInstancesResult = await searchInstanceState.mutateAsync({
+        entity: instanceCrudEntity,
+        filterFields: [{ fieldName: 'demo', operation: 'Equal', values: [true] }],
+      });
+      if (!isEmpty(demoInstancesResult.results)) {
+        return demoInstancesResult.results[0];
+      }
+    } catch (e) {}
+    return undefined;
+  }, [searchInstanceState]);
+
+  const createDemoState = useCreateDemo();
 
   const startDemo = useCallback(async (): Promise<void> => {
     track({ name: 'demo_start' });
 
     setLoading(true);
 
-    try {
-      const demoAddress = window.demo.getDemoAddress();
-      await window.demo.startDemo();
-      await createDemoState.mutateAsync({ actuatorUrl: demoAddress });
-    } catch (error) {}
+    let demoInstance = await getDemoInstance();
 
-    try {
-      const demoInstancesResult = await searchInstanceState.mutateAsync({
-        entity: instanceCrudEntity,
-        filterFields: [{ fieldName: 'demo', operation: 'Equal', values: [true] }],
-      });
-      const demoInstance = demoInstancesResult.results[0];
-      if (demoInstance) {
-        addItem(demoInstance);
-        navigate(getItemUrl(demoInstance));
-      }
-    } catch (e) {}
+    if (!demoInstance) {
+      try {
+        const demoAddress = window.demo.getDemoAddress();
+        await window.demo.startDemo();
+        await createDemoState.mutateAsync({ actuatorUrl: demoAddress });
+      } catch (error) {}
+
+      demoInstance = await getDemoInstance();
+    }
+
+    if (demoInstance) {
+      addItem(demoInstance);
+      navigate(getItemUrl(demoInstance));
+    }
 
     setLoading(false);
-  }, [setLoading, createDemoState, searchInstanceState, addItem, navigate]);
+  }, [setLoading, getDemoInstance, createDemoState, addItem, navigate]);
 
   return useMemo<StartDemoResult>(() => ({ startDemo, loading }), [startDemo, loading]);
 };
