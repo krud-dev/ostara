@@ -1,4 +1,4 @@
-# @krud-dev/boost
+# @krud-dev/ostara-main
 
 ## 0.9.0
 
