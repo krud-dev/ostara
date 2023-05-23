@@ -3,7 +3,6 @@ package dev.krud.boost.daemon.metricmonitor.rule.ro
 import dev.krud.boost.daemon.metricmonitor.rule.enums.ApplicationMetricRuleOperation
 import dev.krud.boost.daemon.metricmonitor.rule.model.ApplicationMetricRule
 import dev.krud.boost.daemon.metricmonitor.rule.validation.ValidMetricName
-import dev.krud.boost.daemon.utils.TypeDefaults
 import dev.krud.shapeshift.resolver.annotation.DefaultMappingTarget
 import dev.krud.shapeshift.resolver.annotation.MappedField
 import java.util.*

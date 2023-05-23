@@ -1,9 +1,6 @@
 package dev.krud.boost.daemon.metricmonitor.rule.validation
 
-import dev.krud.boost.daemon.configuration.application.entity.Application
-import dev.krud.boost.daemon.configuration.application.validation.ValidApplicationId
 import dev.krud.boost.daemon.utils.ParsedMetricName
-import dev.krud.crudframework.crud.handler.krud.Krud
 import io.github.oshai.KotlinLogging
 import jakarta.validation.Constraint
 import jakarta.validation.ConstraintValidator
