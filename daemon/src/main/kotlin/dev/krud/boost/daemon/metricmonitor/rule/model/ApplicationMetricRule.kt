@@ -3,7 +3,6 @@ package dev.krud.boost.daemon.metricmonitor.rule.model
 import dev.krud.boost.daemon.configuration.application.entity.Application
 import dev.krud.boost.daemon.entity.AbstractEntity
 import dev.krud.boost.daemon.metricmonitor.rule.enums.ApplicationMetricRuleOperation
-import dev.krud.boost.daemon.metricmonitor.rule.model.ApplicationMetricRule.Companion.parsedMetricName
 import dev.krud.boost.daemon.metricmonitor.rule.ro.ApplicationMetricRuleRO
 import dev.krud.boost.daemon.utils.ParsedMetricName
 import dev.krud.crudframework.crud.annotation.PersistCopyOnFetch
@@ -55,6 +54,7 @@ class ApplicationMetricRule(
 
     companion object {
         val ApplicationMetricRule.parsedMetricName: ParsedMetricName get() = ParsedMetricName.from(metricName)
+
         @ExperimentalContracts
         fun ApplicationMetricRule?.evaluate(value: Double?): Boolean {
             contract {
@@ -62,9 +62,10 @@ class ApplicationMetricRule(
             }
             this ?: return false
             value ?: return false
+
             return when (operation) {
                 ApplicationMetricRuleOperation.GREATER_THAN -> value > value1
-                ApplicationMetricRuleOperation.BETWEEN -> value > value1 && value < value2!!
+                ApplicationMetricRuleOperation.BETWEEN -> value > value1 && value < (value2 ?: return false)
                 ApplicationMetricRuleOperation.LOWER_THAN -> value < value1
             }
         }

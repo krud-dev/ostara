@@ -10,15 +10,19 @@ import dev.krud.boost.daemon.metricmonitor.rule.messaging.ApplicationMetricRuleC
 import dev.krud.boost.daemon.metricmonitor.rule.messaging.ApplicationMetricRuleDeletedMessage
 import dev.krud.boost.daemon.metricmonitor.rule.messaging.ApplicationMetricRuleDisabledMessage
 import dev.krud.boost.daemon.metricmonitor.rule.messaging.ApplicationMetricRuleEnabledMessage
-import dev.krud.boost.daemon.metricmonitor.rule.messaging.ApplicationMetricRuleTriggeredMessage
 import dev.krud.boost.daemon.metricmonitor.rule.messaging.InstanceApplicationMetricRuleTriggeredMessage
 import dev.krud.boost.daemon.metricmonitor.rule.model.ApplicationMetricRule
 import dev.krud.boost.daemon.metricmonitor.rule.model.ApplicationMetricRule.Companion.evaluate
 import dev.krud.boost.daemon.metricmonitor.rule.model.ApplicationMetricRule.Companion.parsedMetricName
 import dev.krud.boost.daemon.utils.ParsedMetricName
+import dev.krud.boost.daemon.utils.computeIfAbsent
+import dev.krud.boost.daemon.utils.getTyped
+import dev.krud.boost.daemon.utils.resolve
 import dev.krud.crudframework.crud.handler.krud.Krud
 import io.github.oshai.KotlinLogging
 import jakarta.annotation.PostConstruct
+import org.springframework.cache.Cache
+import org.springframework.cache.CacheManager
 import org.springframework.integration.annotation.ServiceActivator
 import org.springframework.integration.channel.PublishSubscribeChannel
 import org.springframework.messaging.Message
@@ -31,9 +35,10 @@ class ApplicationMetricRuleService(
     private val metricManager: MetricManager,
     private val applicationService: ApplicationService,
     private val applicationMetricRuleKrud: Krud<ApplicationMetricRule, UUID>,
-    private val instanceApplicationMetricRuleTriggerChannel: PublishSubscribeChannel
+    private val instanceApplicationMetricRuleTriggerChannel: PublishSubscribeChannel,
+    private val cacheManager: CacheManager
 ) {
-    private val cache: MutableMap<UUID, MutableList<RuleInstanceAssociation>> = mutableMapOf()
+    private val ruleInstanceAssociationCache: Cache by cacheManager.resolve()
 
     @PostConstruct
     fun initialize() {
@@ -52,7 +57,9 @@ class ApplicationMetricRuleService(
             is ApplicationMetricRuleCreatedMessage -> {
                 log.debug { "Metric Rule created: ${message.payload.applicationMetricRuleId}, initializing" }
                 val rule = applicationMetricRuleKrud.showById(message.payload.applicationMetricRuleId)
-                rule?.initialize()
+                if (rule?.enabled == true) {
+                    rule.initialize()
+                }
             }
             is ApplicationMetricRuleDeletedMessage -> {
                 log.debug { "Metric Rule deleted: ${message.payload.applicationMetricRuleId}, uninitializing" }
@@ -74,7 +81,7 @@ class ApplicationMetricRuleService(
     fun onSystemEvent(message: Message<*>) {
         when (message) {
             is InstanceDeletedEventMessage -> {
-                cache.remove(message.payload.instanceId)
+                ruleInstanceAssociationCache.evict(message.payload.instanceId)
             }
             is InstanceCreatedEventMessage -> {
                 applicationMetricRuleKrud.searchByFilter {
@@ -91,13 +98,13 @@ class ApplicationMetricRuleService(
                     return
                 }
 
-                cache[message.payload.instanceId]
+                ruleInstanceAssociationCache.getTyped<List<RuleInstanceAssociation>>(message.payload.instanceId)
                     ?.let { associations ->
                         associations.forEach { association ->
                             metricManager.releaseMetric(message.payload.instanceId, association.metricName)
                         }
                     }
-                cache.remove(message.payload.instanceId)
+                ruleInstanceAssociationCache.evict(message.payload.instanceId)
                 applicationMetricRuleKrud.searchByFilter {
                     where {
                         ApplicationMetricRule::applicationId Equal message.payload.newParentApplicationId
@@ -113,8 +120,14 @@ class ApplicationMetricRuleService(
     @ServiceActivator(inputChannel = "instanceMetricUpdatedChannel")
     @ExperimentalContracts
     fun onMetricUpdated(message: InstanceMetricUpdatedMessage) {
-        println("Metriced updated: ${message.payload}")
-        val associations = cache[message.payload.instanceId] ?: return
+        log.trace {
+            "onMetricUpdated: ${message.payload.instanceId}, ${message.payload.metricName}, ${message.payload.newValue}"
+        }
+        val associations = ruleInstanceAssociationCache.getTyped<List<RuleInstanceAssociation>>(message.payload.instanceId) ?: return
+        if (associations.isEmpty()) {
+            return
+        }
+
         associations.forEach { association ->
             if (association.metricName == message.payload.metricName) {
                 val value = message.payload.newValue?.value?.value ?: return@forEach
@@ -151,7 +164,7 @@ class ApplicationMetricRuleService(
         val instances = applicationService.getApplicationInstances(this.applicationId)
         instances.forEach { instance ->
             metricManager.requestMetric(instance.id, metricName)
-            cache.computeIfAbsent(instance.id) { mutableListOf() }
+            ruleInstanceAssociationCache.computeIfAbsent<MutableList<RuleInstanceAssociation>>(instance.id) { mutableListOf() }
                 .add(RuleInstanceAssociation(this.id, this.applicationId, metricName))
 
         }
@@ -161,14 +174,14 @@ class ApplicationMetricRuleService(
     private fun ApplicationMetricRule.initializeForInstance(instanceId: UUID) {
         val metricName = this.parsedMetricName
         metricManager.requestMetric(instanceId, metricName)
-        cache.computeIfAbsent(instanceId) { mutableListOf() }
+        ruleInstanceAssociationCache.computeIfAbsent<MutableList<RuleInstanceAssociation>>(instanceId) { mutableListOf() }
             .add(RuleInstanceAssociation(this.id, this.applicationId, metricName))
     }
 
     private fun uninitializeRule(applicationMetricRuleId: UUID, applicationId: UUID) {
         val instances = applicationService.getApplicationInstances(applicationId)
         instances.forEach { instance ->
-            cache[instance.id]?.removeIf {
+            ruleInstanceAssociationCache.getTyped<MutableList<RuleInstanceAssociation>>(instance.id)?.removeIf {
                 val condition = it.applicationMetricRuleId == applicationMetricRuleId
                 if (condition) {
                     metricManager.releaseMetric(instance.id, it.metricName)
@@ -179,7 +192,7 @@ class ApplicationMetricRuleService(
     }
 
 
-    private data class RuleInstanceAssociation(
+    internal data class RuleInstanceAssociation(
         val applicationMetricRuleId: UUID,
         val parentApplicationId: UUID,
         val metricName: ParsedMetricName,
