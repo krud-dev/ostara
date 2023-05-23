@@ -40,8 +40,8 @@ export default function HomeGettingStarted({}: HomeGettingStartedProps) {
           <Button variant="outlined" color="primary" onClick={createInstanceHandler}>
             <FormattedMessage id={'createInstance'} />
           </Button>
-          <LoadingButton variant="outlined" color="primary" onClick={startDemo} loading={loading}>
-            <FormattedMessage id={'startDemo'} />
+          <LoadingButton variant="outlined" color="info" onClick={startDemo} loading={loading}>
+            <FormattedMessage id={'startDemoInstance'} />
           </LoadingButton>
         </Stack>
       </CardContent>

@@ -303,8 +303,8 @@ export default function NavigatorTree({ width, height, search }: NavigatorTreePr
             <Typography variant="body1" sx={{ color: 'text.secondary', mt: 0.5, mb: 0.75 }}>
               <FormattedMessage id="or" />
             </Typography>
-            <LoadingButton variant="outlined" color="primary" size={'small'} onClick={startDemo} loading={loadingDemo}>
-              <FormattedMessage id={'startDemo'} />
+            <LoadingButton variant="outlined" color="info" size={'small'} onClick={startDemo} loading={loadingDemo}>
+              <FormattedMessage id={'startDemoInstance'} />
             </LoadingButton>
           </Box>
         </Box>

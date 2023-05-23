@@ -371,6 +371,7 @@ export default {
   openIssue: 'Open Issue',
   sendEmail: 'Send Email',
   startDemo: 'Start Demo',
+  startDemoInstance: 'Start Demo Instance',
   stopDemo: 'Stop Demo',
   restartDemo: 'Restart Demo',
   demoServiceLoading: 'Demo service is loading...',
