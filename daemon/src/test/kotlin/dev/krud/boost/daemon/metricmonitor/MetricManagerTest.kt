@@ -107,7 +107,7 @@ class MetricManagerTest {
         }
         val messageCaptor = argumentCaptor<InstanceMetricUpdatedMessage>()
         verify(instanceMetricUpdatedChannel, times(2)).send(messageCaptor.capture())
-        val message = messageCaptor.firstValue
+        val message = messageCaptor.secondValue
         expect {
             that(message.payload.instanceId).isEqualTo(instance.id)
             that(message.payload.metricName).isEqualTo(metricName)
