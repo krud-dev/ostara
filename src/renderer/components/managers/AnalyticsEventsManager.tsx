@@ -1,4 +1,4 @@
-import React, { FunctionComponent, useEffect } from 'react';
+import React, { FunctionComponent, useEffect, useState } from 'react';
 import { useAnalytics } from '../../contexts/AnalyticsContext';
 import { UrlInfo, urls } from '../../routes/urls';
 import { findLast } from 'lodash';
@@ -30,9 +30,15 @@ const AnalyticsEventsSender: FunctionComponent<AnalyticsEventsSenderProps> = () 
   const { pathname } = useLocation();
   const { daemonHealthy } = useSettings();
 
+  const [heartbeatFlag, setHeartbeatFlag] = useState<boolean>(false);
+
+  useEffect(() => {
+    track({ name: 'heartbeat' });
+  }, [heartbeatFlag]);
+
   useEffect(() => {
     const interval = setInterval(() => {
-      track({ name: 'heartbeat' });
+      setHeartbeatFlag((prev) => !prev);
     }, 1000 * 60 * 5);
     return () => clearInterval(interval);
   }, []);
