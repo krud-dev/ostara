@@ -54,7 +54,7 @@
     "package:dev": "npm run build && electron-builder build --publish never -c.mac.identity=null",
     "package": "npm run jdk:download && ts-node ./.erb/scripts/clean.js dist && npm run build && electron-builder build --publish never",
     "package:all": "npm run jdk:download && ts-node ./.erb/scripts/clean.js dist && npm run build && electron-builder build --publish never -mwl --arm64 --x64",
-    "prepare": "cd .. && husky install ./app",
+    "prepare": "cd .. && husky install ./app/.husky",
     "rebuild": "electron-rebuild --parallel --types prod,dev,optional --module-dir release/app",
     "start": "concurrently \"npm run start:daemon\"  \"ts-node ./.erb/scripts/check-port-in-use.js && npm run start:renderer\"",
     "start:thin": "ts-node ./.erb/scripts/check-port-in-use.js && npm run start:renderer",
