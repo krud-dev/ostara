@@ -1,5 +1,20 @@
 # @krud-dev/boost
 
+## 0.9.0
+
+### Minor Changes
+
+- 26211c7: Added manual app updates mechanism
+- 3a04b8b: Added ability to disable SSL verification for applications
+- 18b5f69: Added Togglz support
+- 2b6508e: Added analytics heartbeat and additional demo events
+
+### Patch Changes
+
+- c23fa41: Fixed demo application not opened on start
+- 7d0e0e0: Fixed dashboard metric error handling
+- 58b2df7: Fixed global api error handler invalid app rerenders
+
 ## 0.8.0
 
 ### Minor Changes
