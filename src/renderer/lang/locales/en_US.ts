@@ -350,7 +350,7 @@ export default {
   considerStarringTheRepository: 'If you find Ostara useful, please consider starring the repository. Thank you!',
   documentation: 'Documentation',
   documentationSideGetStarted:
-    'We have created a documentation site to help you get started with Ostara. We continue to add more content to the site.',
+    'We have created a documentation site to help you get started with Ostara. If you have any questions, we are also available on Discord.',
   gettingStarted: 'Getting Started',
   alreadyHaveInstanceAddIt:
     'If you already have a Spring Boot instance with actuator enabled, add it to Ostara by clicking the "Create Instance" button.',
@@ -386,4 +386,5 @@ export default {
   enableAll: 'Enable All',
   parameters: 'Parameters',
   attributes: 'Attributes',
+  joinDiscord: 'Join Discord',
 };
