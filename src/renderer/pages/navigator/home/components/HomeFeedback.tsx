@@ -1,7 +1,7 @@
 import { Button, Card, CardContent, Stack, Typography } from '@mui/material';
 import React from 'react';
 import { FormattedMessage } from 'react-intl';
-import { REPOSITORY_ISSUES_URL, SUPPORT_EMAIL } from '../../../../constants/ui';
+import { DISCORD_INVITE_URL, REPOSITORY_ISSUES_URL, SUPPORT_EMAIL } from '../../../../constants/ui';
 
 type HomeFeedbackProps = {};
 
@@ -26,6 +26,15 @@ export default function HomeFeedback({}: HomeFeedbackProps) {
             rel="noopener noreferrer"
           >
             <FormattedMessage id={'openIssue'} />
+          </Button>
+          <Button
+            variant="outlined"
+            color="primary"
+            href={DISCORD_INVITE_URL}
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            <FormattedMessage id={'joinDiscord'} />
           </Button>
           <Button
             variant="outlined"
