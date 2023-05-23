@@ -25,12 +25,20 @@ jobs:
         with:
           distribution: 'zulu'
           java-version: '17'
-      - name: Test Daemon
-        run: |
-          cd daemon && ./gradlew test
-      - name: Upload coverage reports to Codecov
-        uses: codecov/codecov-action@v3
+      - name: Cache SonarCloud packages
+        uses: actions/cache@v3
         with:
-          files: daemon/build/reports/jacoco/test/jacocoTestReport.xml
-          flags: daemon
-          fail_ci_if_error: true
+          path: ~/.sonar/cache
+          key: ${{ runner.os }}-sonar
+          restore-keys: ${{ runner.os }}-sonar
+      - name: Cache Gradle packages
+        uses: actions/cache@v3
+        with:
+          path: ~/.gradle/caches
+          key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle') }}
+          restore-keys: ${{ runner.os }}-gradle
+      - name: Build and analyze
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+        run: cd daemon && ./gradlew test sonarqube --info
