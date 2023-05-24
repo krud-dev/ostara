@@ -1,9 +1,7 @@
 package dev.krud.boost.daemon.configuration.instance.websocket
 
-import dev.krud.boost.daemon.configuration.instance.enums.InstanceHealthStatus
 import dev.krud.boost.daemon.configuration.instance.messaging.InstanceHealthChangedEventMessage
 import dev.krud.boost.daemon.eventlog.EventLogService
-import dev.krud.boost.daemon.eventlog.enums.EventLogSeverity
 import dev.krud.boost.daemon.utils.addOrReplaceIf
 import io.github.oshai.KotlinLogging
 import org.springframework.context.annotation.Lazy
@@ -47,12 +45,12 @@ class InstanceHealthWebsocketDispatcher(
 
     private fun createEventLog(event: InstanceHealthChangedEventMessage) {
         log.debug { "Creating event log for instance health event: $event" }
-        val (_, instanceId, oldHealth, newStatus) = event.payload
-        val severity = if (oldHealth.status == InstanceHealthStatus.UP) {
-            EventLogSeverity.ERROR
-        } else {
-            EventLogSeverity.INFO
-        }
+        val (_, _, oldHealth, _) = event.payload
+//        val severity = if (oldHealth.status == InstanceHealthStatus.UP) {
+//            EventLogSeverity.ERROR
+//        } else {
+//            EventLogSeverity.INFO
+//        }
 
         // TODO: Re-enable when needed
 //        eventLogService.logEvent(

@@ -6,10 +6,6 @@ import dev.krud.boost.daemon.configuration.application.messaging.ApplicationMove
 import dev.krud.boost.daemon.configuration.instance.ability.InstanceAbilityService
 import dev.krud.boost.daemon.configuration.instance.entity.Instance
 import dev.krud.boost.daemon.configuration.instance.enums.InstanceAbility
-import dev.krud.boost.daemon.configuration.instance.messaging.InstanceCreatedEventMessage
-import dev.krud.boost.daemon.configuration.instance.messaging.InstanceHealthChangedEventMessage
-import dev.krud.boost.daemon.configuration.instance.messaging.InstanceMovedEventMessage
-import dev.krud.boost.daemon.configuration.instance.messaging.InstanceUpdatedEventMessage
 import dev.krud.boost.daemon.exception.throwBadRequest
 import dev.krud.boost.daemon.exception.throwNotFound
 import dev.krud.boost.daemon.utils.resolve
@@ -81,7 +77,7 @@ class ApplicationService(
 
     fun getAbilities(applicationId: UUID): Set<InstanceAbility> {
         log.debug { "Getting abilities for application $applicationId" }
-        val application = getApplicationOrThrow(applicationId)
+        getApplicationOrThrow(applicationId)
         return getApplicationInstances(applicationId).flatMap { instance ->
             instanceAbilityService.getAbilities(instance)
         }

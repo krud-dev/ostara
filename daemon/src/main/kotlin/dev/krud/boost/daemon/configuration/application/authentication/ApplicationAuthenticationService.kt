@@ -5,7 +5,6 @@ import dev.krud.boost.daemon.configuration.authentication.Authentication
 import dev.krud.boost.daemon.configuration.authentication.EffectiveAuthentication
 import dev.krud.boost.daemon.configuration.folder.authentication.FolderAuthenticationService
 import io.github.oshai.KotlinLogging
-import org.hibernate.query.sqm.tree.SqmNode.log
 import org.springframework.cache.annotation.Cacheable
 import org.springframework.stereotype.Service
 import java.util.*

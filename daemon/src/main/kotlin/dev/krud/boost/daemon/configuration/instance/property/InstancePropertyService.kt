@@ -37,7 +37,7 @@ class InstancePropertyService(
 
         for ((contextName, context) in configProps.contexts) {
             val flattened = context.beans.values.flattenProperties()
-            flattened.forEach { (key, value) ->
+            flattened.forEach { (_, value) ->
                 propertyCount++
                 if (value == ACTUATOR_REDACTED_STRING) {
                     redactedCount++

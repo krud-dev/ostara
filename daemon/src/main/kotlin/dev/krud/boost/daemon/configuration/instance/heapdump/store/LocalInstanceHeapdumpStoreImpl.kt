@@ -53,9 +53,19 @@ class LocalInstanceHeapdumpStoreImpl(
         log.debug {
             "Deleting heapdump for reference $referenceId at $path"
         }
-        path
+        val result = path
             .toFile()
             .delete()
+        if (result) {
+            log.debug {
+                "Deleted heapdump for reference $referenceId at $path"
+            }
+        } else {
+            log.debug {
+                "Failed to delete heapdump for reference $referenceId at $path"
+            }
+            error("Failed to delete heapdump for reference $referenceId at $path")
+        }
     }
 
     companion object {

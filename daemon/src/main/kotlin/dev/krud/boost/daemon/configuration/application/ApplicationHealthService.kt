@@ -12,7 +12,6 @@ import dev.krud.boost.daemon.configuration.instance.messaging.InstanceHealthChan
 import dev.krud.boost.daemon.configuration.instance.messaging.InstanceMovedEventMessage
 import dev.krud.boost.daemon.utils.resolve
 import io.github.oshai.KotlinLogging
-import org.hibernate.query.sqm.tree.SqmNode.log
 import org.springframework.cache.CacheManager
 import org.springframework.cache.annotation.CachePut
 import org.springframework.integration.annotation.ServiceActivator
