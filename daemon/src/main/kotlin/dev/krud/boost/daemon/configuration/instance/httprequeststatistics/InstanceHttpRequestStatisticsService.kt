@@ -93,23 +93,19 @@ class InstanceHttpRequestStatisticsService(
 
     @ServiceActivator(inputChannel = "systemEventsChannel")
     protected fun onInstanceEvent(event: Message<*>) {
-        when (event) {
-            is InstanceCreatedEventMessage -> {
-                getCacheKeys(event.payload.instanceId).forEach {
-                    httpRequestStatisticsCache.evict(it)
-                }
-            }
-            is InstanceUpdatedEventMessage -> {
-                getCacheKeys(event.payload.instanceId).forEach {
-                    httpRequestStatisticsCache.evict(it)
-                }
-            }
-            is InstanceDeletedEventMessage -> {
-                getCacheKeys(event.payload.instanceId).forEach {
-                    httpRequestStatisticsCache.evict(it)
-                }
+        val instanceId = when (event) {
+            is InstanceCreatedEventMessage -> event.payload.instanceId
+            is InstanceUpdatedEventMessage -> event.payload.instanceId
+            is InstanceDeletedEventMessage -> event.payload.instanceId
+            else -> null
+        }
+
+        if (instanceId != null) {
+            getCacheKeys(instanceId).forEach {
+                httpRequestStatisticsCache.evict(it)
             }
         }
+
     }
 
     private fun ActuatorHttpClient.getAvailableUris(): List<String> {

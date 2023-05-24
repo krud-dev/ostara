@@ -84,7 +84,7 @@ class ThreadProfilingService(
     }
 
     fun getLogsForRequest(requestId: UUID): PagedResult<ThreadProfilingLog> {
-        val request = getProfilingRequestByIdOrThrow(requestId)
+        getProfilingRequestByIdOrThrow(requestId)
         val filter = where {
             ThreadProfilingLog::requestId Equal requestId
         }

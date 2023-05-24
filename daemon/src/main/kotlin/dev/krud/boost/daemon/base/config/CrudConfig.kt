@@ -3,7 +3,6 @@ package dev.krud.boost.daemon.base.config
 import dev.krud.boost.daemon.configuration.application.entity.Application
 import dev.krud.boost.daemon.configuration.instance.entity.Instance
 import dev.krud.crudframework.crud.handler.krud.EnableKrud
-import dev.krud.crudframework.crud.policy.Policy
 import dev.krud.crudframework.crud.policy.policy
 import dev.krud.crudframework.crud.security.PrincipalProvider
 import org.springframework.context.annotation.Bean

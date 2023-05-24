@@ -10,7 +10,6 @@ import dev.krud.boost.daemon.configuration.folder.messaging.FolderAuthentication
 import dev.krud.boost.daemon.utils.resolve
 import dev.krud.crudframework.crud.handler.krud.Krud
 import io.github.oshai.KotlinLogging
-import org.hibernate.query.sqm.tree.SqmNode.log
 import org.springframework.cache.CacheManager
 import org.springframework.integration.annotation.ServiceActivator
 import org.springframework.integration.channel.QueueChannel
