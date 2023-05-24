@@ -59,7 +59,7 @@ if (!project.hasProperty("prod")) {
     """.trimIndent()
         noFileComment = true
         outputKind = cz.habarta.typescript.generator.TypeScriptOutputKind.module
-        outputFile = Paths.get(project.projectDir.path, "..", "src", "common", "generated_definitions.d.ts").toString()
+        outputFile = Paths.get(project.projectDir.path, "..", "app", "src", "common", "generated_definitions.d.ts").toString()
         nullabilityDefinition = cz.habarta.typescript.generator.NullabilityDefinition.undefinedInlineUnion
         mapDate = cz.habarta.typescript.generator.DateMapping.asNumber
     }

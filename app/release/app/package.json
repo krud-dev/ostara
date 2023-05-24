@@ -1,0 +1,50 @@
+{
+  "name": "@krud-dev/boost",
+  "version": "0.9.0",
+  "description": "A visual tool to monitor and interact with Spring Boot applications via Actuator",
+  "keywords": [
+    "spring boot",
+    "actuator",
+    "monitoring",
+    "performance",
+    "metrics",
+    "ostara"
+  ],
+  "homepage": "https://github.com/krud-dev/ostara#readme",
+  "bugs": {
+    "url": "https://github.com/krud-dev/ostara/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/krud-dev/ostara.git"
+  },
+  "license": "Apache-2.0",
+  "author": {
+    "name": "Krud Dev",
+    "email": "admin@krud.dev",
+    "url": "https://krud.dev/"
+  },
+  "contributors": [
+    {
+      "name": "Shani Holdengreber",
+      "url": "https://github.com/thewizkid87"
+    },
+    {
+      "name": "Aviv Mor",
+      "url": "https://github.com/avivm"
+    },
+    {
+      "name": "Idan Elhalwani",
+      "email": "idan@elhalwani.com",
+      "url": "https://github.com/idane"
+    }
+  ],
+  "main": "./dist/main/main.js",
+  "scripts": {
+    "rebuild": "node -r ts-node/register ../../.erb/scripts/electron-rebuild.js",
+    "postinstall": "npm run rebuild && npm run link-modules",
+    "link-modules": "node -r ts-node/register ../../.erb/scripts/link-modules.ts"
+  },
+  "dependencies": {
+  }
+}
