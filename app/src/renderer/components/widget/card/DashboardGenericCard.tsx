@@ -46,7 +46,11 @@ const DashboardGenericCard: FunctionComponent<DashboardGenericCardProps> = ({
       )}
       {cardState === 'error' && (
         <Box sx={{ flexGrow: 1 }}>
-          <EmptyContent text={<FormattedMessage id={'error'} />} description={error} />
+          <EmptyContent
+            text={<FormattedMessage id={'widgetNotAvailable'} />}
+            description={error}
+            icon={'InfoOutlined'}
+          />
         </Box>
       )}
       {cardState === 'content' && children}

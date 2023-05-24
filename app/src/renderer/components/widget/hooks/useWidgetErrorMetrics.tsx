@@ -12,7 +12,11 @@ const useWidgetErrorMetrics = (loading: boolean): WidgetErrorMetricsResult => {
 
   const error = useMemo<ReactNode | undefined>(() => {
     return loading && !isEmpty(errorMetricNames) ? (
-      <FormattedMessage id={'errorRetrievingMetrics'} values={{ metrics: errorMetricNames.join(', ') }} />
+      <>
+        <FormattedMessage id={'metricsNotAvailableInstance'} />
+        <br />
+        {errorMetricNames.join(', ')}
+      </>
     ) : undefined;
   }, [loading, errorMetricNames]);
 
