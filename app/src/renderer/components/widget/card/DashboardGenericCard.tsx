@@ -35,7 +35,7 @@ const DashboardGenericCard: FunctionComponent<DashboardGenericCardProps> = ({
     <Card sx={{ height: '100%', display: 'flex', flexDirection: 'column' }}>
       <CardHeader title={title} />
       {cardState === 'loading' && (
-        <Box sx={{ flexGrow: 1, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+        <Box sx={{ minHeight: 180, flexGrow: 1, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
           <LogoLoader />
         </Box>
       )}
