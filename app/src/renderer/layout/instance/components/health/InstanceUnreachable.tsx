@@ -8,19 +8,17 @@ import { showUpdateItemDialog } from 'renderer/utils/dialogUtils';
 import FormattedDateAndRelativeTime from 'renderer/components/format/FormattedDateAndRelativeTime';
 import { LoadingButton } from '@mui/lab';
 import { InstanceRO } from '../../../../../common/generated_definitions';
-import { useNavigatorTree } from '../../../../contexts/NavigatorTreeContext';
 import DetailsLabelValueHorizontal from '../../../../components/table/details/DetailsLabelValueHorizontal';
 import useItemDisplayName from '../../../../hooks/useItemDisplayName';
 import useInstanceHealth from '../../../../hooks/useInstanceHealth';
-import { useSettings } from '../../../../contexts/SettingsContext';
+import { useItems } from '../../../../contexts/ItemsContext';
 
 type InstanceUnreachableProps = {
   item: InstanceRO;
 };
 
 export default function InstanceUnreachable({ item }: InstanceUnreachableProps) {
-  const { getItem } = useNavigatorTree();
-  const { setSettingsMenuOpen } = useSettings();
+  const { getItem } = useItems();
   const { health, loading: refreshLoading, refreshHealth } = useInstanceHealth(item);
 
   const displayName = useItemDisplayName(item);
@@ -35,11 +33,6 @@ export default function InstanceUnreachable({ item }: InstanceUnreachableProps) 
     },
     [item]
   );
-
-  const openSettingsHandler = useCallback((event: React.MouseEvent): void => {
-    event.preventDefault();
-    setSettingsMenuOpen(true);
-  }, []);
 
   const updateApplicationHandler = useCallback(
     (event: React.MouseEvent): void => {

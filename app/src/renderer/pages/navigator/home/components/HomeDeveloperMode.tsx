@@ -21,6 +21,7 @@ import { useDeleteItem } from '../../../../apis/requests/item/deleteItem';
 import { folderCrudEntity } from '../../../../apis/requests/crud/entity/entities/folder.crudEntity';
 import { showDeleteConfirmationDialog } from '../../../../utils/dialogUtils';
 import { isItemDeletable } from '../../../../utils/itemUtils';
+import { urls } from '../../../../routes/urls';
 
 type ApplicationToCreate = {
   applicationName: string;
@@ -192,6 +193,13 @@ export default function HomeDeveloperMode({}: HomeDeveloperModeProps) {
     }
   }, [applicationsHealthState]);
 
+  const sendTestNotificationHandler = useCallback(async (): Promise<void> => {
+    window.notifications.sendNotification({
+      title: 'Test Notification Title',
+      body: 'Test notification body text',
+    });
+  }, []);
+
   return (
     <Card sx={{ flexGrow: 1, minHeight: 300 }}>
       <CardContent>
@@ -232,6 +240,9 @@ export default function HomeDeveloperMode({}: HomeDeveloperModeProps) {
           </LoadingButton>
           <LoadingButton variant="outlined" color="error" loading={loading} onClick={deleteAllHandler}>
             Delete All
+          </LoadingButton>
+          <LoadingButton variant="outlined" color="primary" onClick={sendTestNotificationHandler}>
+            Send Test Notification
           </LoadingButton>
           {/*<LoadingButton variant="outlined" color="primary" loading={loading} onClick={logApplicationsHealthHandler}>*/}
           {/*  Log Applications Health*/}

@@ -24,6 +24,7 @@ import * as Sentry from '@sentry/electron';
 import { configurationStore } from '../infra/store/store';
 import { scheduleJob } from 'node-schedule';
 import { appUpdater, initializeAppUpdaterSubscriptions } from '../infra/autoupdate/appUpdater';
+import { notificationsService } from '../infra/notifications/notificationsService';
 
 if (configurationStore.get('errorReportingEnabled')) {
   Sentry.init({ dsn: 'https://d28c9ac8891348d0926af5d2b8454988@o4504882077302784.ingest.sentry.io/4504882079531008' });
@@ -173,6 +174,7 @@ const createMainWindow = async () => {
   });
 
   uiService.initialize(mainWindow);
+  notificationsService.initialize(mainWindow);
   getDaemonController()?.initializeSubscriptions(mainWindow);
 
   // Remove this if your app does not use auto updates

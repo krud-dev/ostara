@@ -7,6 +7,7 @@ import { configurationStore } from '../infra/store/store';
 import { configurationStoreBridge } from '../infra/store/renderer';
 import { appUpdaterBridge } from '../infra/autoupdate/renderer';
 import { demoBridge } from '../infra/demo/renderer';
+import { notificationsServiceBridge } from '../infra/notifications/renderer';
 
 contextBridge.exposeInMainWorld('utils', utilsBridge);
 contextBridge.exposeInMainWorld('subscriptions', subscriptionsBridge);
@@ -19,3 +20,4 @@ contextBridge.exposeInMainWorld('NODE_ENV', process.env.NODE_ENV);
 contextBridge.exposeInMainWorld('configurationStore', configurationStoreBridge);
 contextBridge.exposeInMainWorld('appUpdater', appUpdaterBridge);
 contextBridge.exposeInMainWorld('demo', demoBridge);
+contextBridge.exposeInMainWorld('notifications', notificationsServiceBridge);

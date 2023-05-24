@@ -35,6 +35,7 @@ import LogoLoader from '../../../../../components/common/LogoLoader';
 import { LoadingButton } from '@mui/lab';
 import useStartDemo from '../../../../../hooks/demo/useStartDemo';
 import useDelayedEffect from '../../../../../hooks/useDelayedEffect';
+import { useItems } from '../../../../../contexts/ItemsContext';
 
 const TreeStyle = styled(Tree<TreeItem>)(({ theme }) => ({
   '& [role="treeitem"]': {
@@ -51,7 +52,8 @@ type NavigatorTreeProps = {
 };
 
 export default function NavigatorTree({ width, height, search }: NavigatorTreeProps) {
-  const { data, selectedItem, isLoading, isEmpty, hasData, action, getItem } = useNavigatorTree();
+  const { getItem } = useItems();
+  const { data, selectedItem, isLoading, isEmpty, hasData, action } = useNavigatorTree();
   const navigate = useNavigate();
   const { pathname } = useLocation();
   const { startDemo, loading: loadingDemo } = useStartDemo();

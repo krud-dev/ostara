@@ -2,6 +2,7 @@ import { IpcRendererEvent } from 'electron';
 import { ElectronTheme } from '../ui/models/electronTheme';
 import { UpdateInfo } from 'electron-updater';
 import { ProgressInfo } from 'electron-builder';
+import { NotificationInfo } from '../notifications/models/notificationInfo';
 
 export type Subscriptions = {
   'app:themeUpdated': (event: IpcRendererEvent, data: ElectronTheme) => void;
@@ -19,4 +20,9 @@ export type Subscriptions = {
   'app:updateDownloaded': (event: IpcRendererEvent, data: UpdateInfo) => void;
   'app:updateError': (event: IpcRendererEvent, data: Error) => void;
   'app:updateCancelled': (event: IpcRendererEvent, data: UpdateInfo) => void;
+
+  /**
+   * Notifications
+   */
+  'app:notificationClicked': (event: IpcRendererEvent, data: NotificationInfo) => void;
 };

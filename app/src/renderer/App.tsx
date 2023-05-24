@@ -16,6 +16,8 @@ import NewVersionManager from './components/managers/NewVersionManager';
 import AnalyticsEventsManager from './components/managers/AnalyticsEventsManager';
 import AppUpdatesManager from './components/managers/AppUpdatesManager';
 import { AppUpdatesProvider } from './contexts/AppUpdatesContext';
+import NotificationsManager from './components/managers/NotificationsManager';
+import { ItemsProvider } from './contexts/ItemsContext';
 
 export default function App() {
   const queryClient = useCreateQueryClient();
@@ -46,16 +48,19 @@ export default function App() {
                           isRtl={localeInfo.direction === 'rtl'}
                           localization={localeInfo.materialUiLocalization}
                         >
-                          <NotistackProvider>
-                            <NiceModal.Provider>
-                              <ApiErrorManager />
-                              <AnalyticsEventsManager />
-                              <AppUpdatesManager />
-                              <NewVersionManager />
+                          <ItemsProvider>
+                            <NotistackProvider>
+                              <NiceModal.Provider>
+                                <ApiErrorManager />
+                                <AnalyticsEventsManager />
+                                <AppUpdatesManager />
+                                <NewVersionManager />
+                                <NotificationsManager />
 
-                              <Router />
-                            </NiceModal.Provider>
-                          </NotistackProvider>
+                                <Router />
+                              </NiceModal.Provider>
+                            </NotistackProvider>
+                          </ItemsProvider>
                         </ThemeConfig>
                       </LocalizationProvider>
                     </IntlProvider>
