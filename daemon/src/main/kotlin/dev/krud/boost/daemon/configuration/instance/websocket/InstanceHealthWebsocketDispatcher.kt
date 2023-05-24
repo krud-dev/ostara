@@ -45,20 +45,7 @@ class InstanceHealthWebsocketDispatcher(
 
     private fun createEventLog(event: InstanceHealthChangedEventMessage) {
         log.debug { "Creating event log for instance health event: $event" }
-        val (_, _, oldHealth, _) = event.payload
-//        val severity = if (oldHealth.status == InstanceHealthStatus.UP) {
-//            EventLogSeverity.ERROR
-//        } else {
-//            EventLogSeverity.INFO
-//        }
-
-        // TODO: Re-enable when needed
-//        eventLogService.logEvent(
-//            EventLogType.INSTANCE_HEALTH_CHANGED,
-//            instanceId,
-//            "Instance $instanceId ] health status changed from $oldStatus to $newStatus",
-//            severity
-//        )
+        // Currently not implemented
     }
 
     companion object {
