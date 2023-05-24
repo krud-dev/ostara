@@ -101,7 +101,9 @@ class InstanceHttpRequestStatisticsService(
         }
 
         if (instanceId != null) {
-            httpRequestStatisticsCache.evict(instanceId)
+            getCacheKeys(instanceId).forEach {
+                httpRequestStatisticsCache.evict(it)
+            }
         }
 
     }
