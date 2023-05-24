@@ -1,6 +1,6 @@
 <p align="center">
     <a href="https://ostara.dev/">
-    <img src="https://github.com/krud-dev/ostara/blob/master/assets/logo.png?raw=true">
+    <img src="https://github.com/krud-dev/ostara/blob/master/app/assets/logo.png?raw=true">
     </a>
 </p>
 
@@ -11,7 +11,7 @@ Ostara is a desktop application that provides various features to monitor and in
 **OSTARA IS IN PRE RELEASE!**
 
 <p align="center">
-    <img src="https://github.com/krud-dev/ostara/blob/master/assets/screenshots/instance-dashboard.png?raw=true">
+    <img src="https://github.com/krud-dev/ostara/blob/master/app/assets/screenshots/instance-dashboard.png?raw=true">
 </p>
 
 ## Getting Started
@@ -22,7 +22,9 @@ Head to the [latest release](https://github.com/krud-dev/ostara/releases/latest)
 
 ## Support
 
-See the [documentation site](https://docs.ostara.dev/)
+See the [documentation site](https://docs.ostara.dev/).
+
+We are also available on [Discord](https://discord.gg/VJ82fuSYxd).
 
 For improvements and bug reports, please don't hesitate to open an issue.
 
