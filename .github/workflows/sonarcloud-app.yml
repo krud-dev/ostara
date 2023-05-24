@@ -1,0 +1,32 @@
+name: SonarCloud App
+
+on:
+  push:
+    branches:
+      - master
+    paths:
+      - app/**
+      - .github/workflows/sonarcloud-app.yml
+  pull_request:
+    branches:
+      - master
+    paths:
+      - apps/**
+      - .github/workflows/sonarcloud-app.yml
+
+jobs:
+  sonarcloud:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out Git repository
+        uses: actions/checkout@v3
+      - name: Analyze with SonarCloud
+        uses: sonarsource/sonarcloud-github-action@master
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+        with:
+          projectBaseDir: app
+          args: >
+            -Dsonar.organization=krud-dev
+            -Dsonar.projectKey=ostara-app
