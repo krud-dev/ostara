@@ -1,6 +1,7 @@
 import { styled } from '@mui/material/styles';
 import { Typography, Box, BoxProps } from '@mui/material';
 import { ReactNode } from 'react';
+import { IconViewer, MUIconType } from '../common/IconViewer';
 
 const RootStyle = styled(Box)(({ theme }) => ({
   height: '100%',
@@ -15,11 +16,14 @@ const RootStyle = styled(Box)(({ theme }) => ({
 interface EmptyContentProps extends BoxProps {
   text: ReactNode;
   description?: ReactNode;
+  icon?: MUIconType;
 }
 
-export default function EmptyContent({ text, description, ...other }: EmptyContentProps) {
+export default function EmptyContent({ text, description, icon, ...other }: EmptyContentProps) {
   return (
     <RootStyle {...other}>
+      {icon && <IconViewer icon={icon} fontSize={'large'} sx={{ mb: 1 }} />}
+
       <Typography variant="subtitle1" component={'div'} gutterBottom>
         {text}
       </Typography>
