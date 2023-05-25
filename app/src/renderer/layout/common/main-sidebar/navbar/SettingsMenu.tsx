@@ -1,5 +1,17 @@
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
-import { Alert, Box, Divider, Drawer, IconButton, Link, MenuItem, Stack, TextField, Typography } from '@mui/material';
+import {
+  Alert,
+  Box,
+  Divider,
+  Drawer,
+  IconButton,
+  Link,
+  MenuItem,
+  Stack,
+  TextField,
+  Tooltip,
+  Typography,
+} from '@mui/material';
 import { useSettings } from 'renderer/contexts/SettingsContext';
 import { FormattedMessage } from 'react-intl';
 import { CloseOutlined, SettingsOutlined } from '@mui/icons-material';
@@ -14,6 +26,7 @@ import { useAppUpdates } from '../../../../contexts/AppUpdatesContext';
 import { useSnackbar } from 'notistack';
 import { useAnalytics } from '../../../../contexts/AnalyticsContext';
 import semverGt from 'semver/functions/gt';
+import { NAVBAR_TOOLTIP_DELAY } from '../MainNavbar';
 
 export default function SettingsMenu() {
   const {
@@ -135,9 +148,11 @@ export default function SettingsMenu() {
   return (
     <>
       <Box sx={{ '-webkit-app-region': 'no-drag' }}>
-        <IconButton size={'small'} onClick={toggleOpenHandler} sx={{ color: 'text.primary' }}>
-          <SettingsOutlined fontSize={'medium'} />
-        </IconButton>
+        <Tooltip title={<FormattedMessage id={'settings'} />} enterDelay={NAVBAR_TOOLTIP_DELAY}>
+          <IconButton size={'small'} onClick={toggleOpenHandler} sx={{ color: 'text.primary' }}>
+            <SettingsOutlined fontSize={'medium'} />
+          </IconButton>
+        </Tooltip>
       </Box>
 
       <Drawer
