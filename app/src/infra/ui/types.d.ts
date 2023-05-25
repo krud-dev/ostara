@@ -12,6 +12,7 @@ declare global {
     restartApp(): Promise<void>;
     downloadFile(url: string, options?: electronDl.Options): Promise<void>;
     getAppVersion(): Promise<string>;
+    getAppId(): Promise<string>;
     isMac: boolean;
     isWindows: boolean;
     isLinux: boolean;

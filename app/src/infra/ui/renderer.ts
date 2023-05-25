@@ -37,6 +37,10 @@ export const uiServiceBridge: UiServiceBridge = {
     return ipcRenderer.invoke('uiService:getAppVersion');
   },
 
+  getAppId(): Promise<string> {
+    return ipcRenderer.invoke('uiService:getAppId');
+  },
+
   isMac: isMac,
   isWindows: isWindows,
   isLinux: isLinux,

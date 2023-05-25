@@ -1,7 +1,9 @@
-import { BrowserWindow, Notification } from 'electron';
+import { app, BrowserWindow, Notification } from 'electron';
 import log from 'electron-log';
 import { NotificationInfo } from './models/notificationInfo';
 import { systemEvents } from '../events';
+import { uiService } from '../ui/uiService';
+import { isWindows } from '../utils/platform';
 
 class NotificationsService {
   private window: BrowserWindow | undefined;
@@ -14,6 +16,10 @@ class NotificationsService {
     systemEvents.on('notification-clicked', (info) => {
       window.webContents.send('app:notificationClicked', info);
     });
+
+    if (isWindows) {
+      app.setAppUserModelId(uiService.getAppId());
+    }
   }
 
   sendNotification(info: NotificationInfo): void {

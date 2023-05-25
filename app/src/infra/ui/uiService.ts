@@ -60,6 +60,10 @@ class UiService {
   getAppVersion(): string {
     return app.getVersion();
   }
+
+  getAppId(): string {
+    return 'dev.krud.boost';
+  }
 }
 
 export const uiService = new UiService();
