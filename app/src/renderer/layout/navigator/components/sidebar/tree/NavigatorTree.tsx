@@ -250,7 +250,10 @@ export default function NavigatorTree({ width, height, search }: NavigatorTreePr
       if (dragNodes.some((node) => isInstance(node.data)) && dragNodes.some((node) => !isInstance(node.data))) {
         return true;
       }
-      if (dragNodes.some((node) => isInstance(node.data)) && !isApplication(parentNode.data)) {
+      if (
+        dragNodes.some((node) => isInstance(node.data)) &&
+        dragNodes.some((node) => getItemParentId(node.data) !== parentNode.data.id)
+      ) {
         return true;
       }
       if (dragNodes.some((node) => isApplication(node.data)) && !parentNode.isRoot && !isFolder(parentNode.data)) {
