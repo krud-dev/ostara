@@ -4,3 +4,4 @@ import './daemon';
 import './rendererUtils';
 import './ui';
 import './demo';
+import './notifications';

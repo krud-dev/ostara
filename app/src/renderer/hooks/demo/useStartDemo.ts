@@ -5,9 +5,9 @@ import { InstanceRO } from '../../../common/generated_definitions';
 import { instanceCrudEntity } from '../../apis/requests/crud/entity/entities/instance.crudEntity';
 import { getItemUrl } from '../../utils/itemUtils';
 import { useNavigate } from 'react-router-dom';
-import { useNavigatorTree } from '../../contexts/NavigatorTreeContext';
 import { useAnalytics } from '../../contexts/AnalyticsContext';
 import { isEmpty } from 'lodash';
+import { useItems } from '../../contexts/ItemsContext';
 
 type StartDemoResult = {
   startDemo: () => Promise<void>;
@@ -15,7 +15,7 @@ type StartDemoResult = {
 };
 
 const useStartDemo = (): StartDemoResult => {
-  const { addItem } = useNavigatorTree();
+  const { addItem } = useItems();
   const navigate = useNavigate();
   const { track } = useAnalytics();
 

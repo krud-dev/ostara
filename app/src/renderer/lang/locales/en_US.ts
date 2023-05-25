@@ -388,4 +388,12 @@ export default {
   parameters: 'Parameters',
   attributes: 'Attributes',
   joinDiscord: 'Join Discord',
+  notificationTitleApplicationAllUp: '{application} is UP',
+  notificationBodyApplicationAllUp: 'All instances of {application} are UP.',
+  notificationTitleApplicationAllDown: '{application} is DOWN',
+  notificationBodyApplicationAllDown: 'All instances of {application} are DOWN.',
+  notificationTitleApplicationPartiallyUp: '{application} is PARTIALLY UP',
+  notificationBodyApplicationPartiallyUp: 'Some instances of {application} are UP.',
+  notificationTitleApplicationPartiallyDown: '{application} is PARTIALLY DOWN',
+  notificationBodyApplicationPartiallyDown: 'Some instances of {application} are DOWN.',
 };

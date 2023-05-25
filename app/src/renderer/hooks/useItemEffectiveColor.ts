@@ -3,9 +3,11 @@ import { ItemRO } from '../definitions/daemon';
 import { useNavigatorTree } from '../contexts/NavigatorTreeContext';
 import { DEFAULT_COLOR_VALUE, INHERITED_COLOR_VALUE } from './useItemColor';
 import { isInstance } from '../utils/itemUtils';
+import { useItems } from '../contexts/ItemsContext';
 
 const useItemEffectiveColor = (item: ItemRO): string => {
-  const { data, getItem } = useNavigatorTree();
+  const { getItem } = useItems();
+  const { data } = useNavigatorTree();
 
   const getItemEffectiveColor = useCallback(
     (itemToCheck: ItemRO): string => {
