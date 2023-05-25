@@ -328,7 +328,7 @@
     "extraResources": [
       "./assets/**",
       {
-        "from": "devops/jdks/${os}/${arch}",
+        "from": "../devops/jdks/${os}/${arch}",
         "filter": [
           "**/*"
         ]
