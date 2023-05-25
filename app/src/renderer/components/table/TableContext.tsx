@@ -6,6 +6,10 @@ import { notEmpty } from 'renderer/utils/objectUtils';
 import { useUpdateEffect } from 'react-use';
 import { useLocalStorageState } from '../../hooks/useLocalStorageState';
 import { useScrollAndHighlightElement } from '../../hooks/useScrollAndHighlightElement';
+import { useSnackbar } from 'notistack';
+import { FormattedMessage } from 'react-intl';
+import { Button } from '@mui/material';
+import useDelayedEffect from '../../hooks/useDelayedEffect';
 
 export type TableContextProps<EntityItem, CustomFilters> = {
   entity: Entity<EntityItem, CustomFilters>;
@@ -34,6 +38,7 @@ export type TableContextProps<EntityItem, CustomFilters> = {
   changeFilterHandler: (newFilter: string) => void;
   customFilters: CustomFilters;
   changeCustomFiltersHandler: (newCustomFilters?: CustomFilters) => void;
+  clearFiltersHandler: () => void;
   orderColumn: string | undefined;
   orderDirection: 'asc' | 'desc' | undefined;
   changeOrderHandler: (columnId: string) => void;
@@ -70,6 +75,8 @@ function TableProvider<EntityItem, CustomFilters>({
   globalActionsHandler,
   children,
 }: TableProviderProps<EntityItem, CustomFilters>) {
+  const { enqueueSnackbar, closeSnackbar } = useSnackbar();
+
   const [filter, setFilter] = useState<string>('');
   const [customFilters, setCustomFilters] = useState<CustomFilters | undefined>(undefined);
   const [orderColumn, setOrderColumn] = useState<string | undefined>(undefined);
@@ -144,6 +151,12 @@ function TableProvider<EntityItem, CustomFilters>({
     [setCustomFilters, setPage]
   );
 
+  const clearFiltersHandler = useCallback((): void => {
+    setFilter('');
+    setCustomFilters(undefined);
+    setPage(0);
+  }, [setFilter, setCustomFilters, setPage]);
+
   const changeOrderHandler = useCallback(
     (columnId: string): void => {
       if (orderColumn === columnId) {
@@ -214,6 +227,7 @@ function TableProvider<EntityItem, CustomFilters>({
   const highlightAndScroll = useScrollAndHighlightElement();
 
   const [highlightAnchor, setHighlightAnchor] = useState<string | undefined>(undefined);
+  const [delayedHighlightAnchor, setDelayedHighlightAnchor] = useState<string | undefined>(undefined);
 
   useUpdateEffect(() => {
     if (highlightAnchor) {
@@ -221,6 +235,13 @@ function TableProvider<EntityItem, CustomFilters>({
       setHighlightAnchor(undefined);
     }
   }, [highlightAnchor]);
+
+  useDelayedEffect(() => {
+    if (delayedHighlightAnchor) {
+      highlightHandler(delayedHighlightAnchor);
+      setDelayedHighlightAnchor(undefined);
+    }
+  }, [delayedHighlightAnchor]);
 
   const highlightHandler = useCallback(
     (anchor: string): void => {
@@ -230,6 +251,26 @@ function TableProvider<EntityItem, CustomFilters>({
 
       const anchorIndex = filteredTableData.findIndex((row) => entity.getAnchor!(row) === anchor);
       if (anchorIndex < 0) {
+        const allDataAnchorIndex = tableData.findIndex((row) => entity.getAnchor!(row) === anchor);
+        if (allDataAnchorIndex >= 0) {
+          const key = enqueueSnackbar(<FormattedMessage id="selectedItemIsFiltered" />, {
+            variant: 'info',
+            action: (
+              <Button
+                color={'info'}
+                size={'small'}
+                variant={'outlined'}
+                onClick={() => {
+                  closeSnackbar(key);
+                  clearFiltersHandler();
+                  setDelayedHighlightAnchor(anchor);
+                }}
+              >
+                <FormattedMessage id={'clearFilters'} />
+              </Button>
+            ),
+          });
+        }
         return;
       }
 
@@ -240,7 +281,15 @@ function TableProvider<EntityItem, CustomFilters>({
 
       setHighlightAnchor(anchor);
     },
-    [entity, filteredTableData, rowsPerPage, changePageHandler, setHighlightAnchor]
+    [
+      entity,
+      filteredTableData,
+      rowsPerPage,
+      clearFiltersHandler,
+      setDelayedHighlightAnchor,
+      changePageHandler,
+      setHighlightAnchor,
+    ]
   );
 
   return (
@@ -272,6 +321,7 @@ function TableProvider<EntityItem, CustomFilters>({
         changeFilterHandler,
         customFilters,
         changeCustomFiltersHandler,
+        clearFiltersHandler,
         orderColumn,
         orderDirection,
         changeOrderHandler,

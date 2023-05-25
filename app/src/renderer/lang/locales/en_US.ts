@@ -391,6 +391,8 @@ export default {
   home: 'Home',
   back: 'Back',
   forward: 'Forward',
+  clearFilters: 'Clear Filters',
+  selectedItemIsFiltered: 'Selected item is filtered',
   notificationTitleApplicationAllUp: '{application} is UP',
   notificationBodyApplicationAllUp: 'All instances of {application} are UP.',
   notificationTitleApplicationAllDown: '{application} is DOWN',
