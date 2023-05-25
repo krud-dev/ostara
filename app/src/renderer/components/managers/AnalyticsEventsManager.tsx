@@ -8,6 +8,7 @@ import { useSubscribeToEvent } from '../../apis/requests/subscriptions/subscribe
 import { IpcRendererEvent } from 'electron';
 import { UpdateInfo } from 'electron-updater';
 import { getErrorMessage } from '../../utils/errorUtils';
+import { getUrlInfo } from '../../utils/urlUtils';
 
 interface AnalyticsEventsManagerProps {}
 
@@ -44,14 +45,14 @@ const AnalyticsEventsSender: FunctionComponent<AnalyticsEventsSenderProps> = () 
   }, []);
 
   useEffect(() => {
-    const urlInfo: UrlInfo | undefined = findLast(urls, (u) => !!matchPath({ path: u.url }, pathname));
+    const urlInfo = getUrlInfo(pathname);
     if (!urlInfo) {
       return;
     }
     if (urlInfo.redirect) {
       return;
     }
-    track({ name: 'page_view', properties: { page_title: urlInfo.path, page_location: pathname } });
+    track({ name: 'page_view', properties: { page_title: urlInfo.path, page_location: urlInfo.url } });
   }, [pathname]);
 
   useEffect(() => {

@@ -9,6 +9,8 @@ import ToolbarButton from '../common/ToolbarButton';
 import { FormattedMessage } from 'react-intl';
 import { isBoolean } from 'lodash';
 import { useAnalytics } from '../../contexts/AnalyticsContext';
+import { useLocation } from 'react-router-dom';
+import { getUrlInfo } from '../../utils/urlUtils';
 
 type TableRowCustomProps<EntityItem> = {
   row: EntityItem;
@@ -28,6 +30,7 @@ export default function TableRowCustom<EntityItem>({ row }: TableRowCustomProps<
     actionsHandler,
   } = useTable<EntityItem, unknown>();
   const { track } = useAnalytics();
+  const { pathname } = useLocation();
 
   const [loadingActionIds, setLoadingActionIds] = React.useState<string[]>([]);
 
@@ -42,9 +45,16 @@ export default function TableRowCustom<EntityItem>({ row }: TableRowCustomProps<
       if (!hasActiveRowAction) {
         return;
       }
+      if (!open) {
+        const urlInfo = getUrlInfo(pathname);
+        track({
+          name: 'table_row_expand',
+          properties: { table: entity.id, page_title: urlInfo?.path, page_location: urlInfo?.url },
+        });
+      }
       toggleRowOpenHandler(row);
     },
-    [hasActiveRowAction, toggleRowOpenHandler]
+    [hasActiveRowAction, open, toggleRowOpenHandler]
   );
 
   const checkboxClickHandler = useCallback(
