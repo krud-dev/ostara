@@ -4,15 +4,24 @@ import { HelpOutlineOutlined } from '@mui/icons-material';
 import { matchPath, useLocation } from 'react-router-dom';
 import { findLast } from 'lodash';
 import { UrlInfo, urls } from '../../../../routes/urls';
+import { getUrlInfo } from '../../../../utils/urlUtils';
+import { useAnalytics } from '../../../../contexts/AnalyticsContext';
 
 export default function HelpMenu() {
   const { pathname } = useLocation();
+  const { track } = useAnalytics();
 
   const [url, setUrl] = useState<string | undefined>(undefined);
 
   const openUrlHandler = useCallback((): void => {
     window.open(url, '_blank');
-  }, [url]);
+
+    const urlInfo = getUrlInfo(pathname);
+    track({
+      name: 'help_documentation_open',
+      properties: { help_url: url, page_title: urlInfo?.path, page_location: urlInfo?.url },
+    });
+  }, [url, pathname]);
 
   useEffect(() => {
     if (!pathname) {
@@ -20,7 +29,7 @@ export default function HelpMenu() {
       return;
     }
 
-    const urlInfo: UrlInfo | undefined = findLast(urls, (u) => !!matchPath({ path: u.url }, pathname));
+    const urlInfo = getUrlInfo(pathname);
     if (!urlInfo) {
       setUrl(undefined);
       return;
