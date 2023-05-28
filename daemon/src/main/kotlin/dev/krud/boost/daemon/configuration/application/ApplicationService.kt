@@ -127,7 +127,8 @@ class ApplicationService(
             InstanceAbility.CACHES,
             InstanceAbility.SHUTDOWN,
             InstanceAbility.CACHE_STATISTICS,
-            InstanceAbility.LOGGERS
+            InstanceAbility.LOGGERS,
+            InstanceAbility.METRICS
         )
     }
 }
