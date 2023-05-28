@@ -8,7 +8,7 @@ import dev.krud.boost.daemon.configuration.application.ro.ApplicationHealthRO
 import dev.krud.boost.daemon.configuration.instance.health.InstanceHealthService
 import dev.krud.boost.daemon.configuration.instance.health.ro.InstanceHealthRO
 import dev.krud.boost.daemon.configuration.instance.messaging.InstanceDeletedEventMessage
-import dev.krud.boost.daemon.configuration.instance.messaging.InstanceHealthChangedEventMessage
+import dev.krud.boost.daemon.configuration.instance.messaging.InstanceHealthCheckPerformedEventMessage
 import dev.krud.boost.daemon.configuration.instance.messaging.InstanceMovedEventMessage
 import dev.krud.boost.daemon.utils.resolve
 import io.github.oshai.KotlinLogging
@@ -68,7 +68,7 @@ class ApplicationHealthService(
     @ServiceActivator(inputChannel = "systemEventsChannel")
     protected fun onInstanceEvent(event: Message<*>) {
         when (event) {
-            is InstanceHealthChangedEventMessage -> {
+            is InstanceHealthCheckPerformedEventMessage -> {
                 log.debug { "Handling instance health changed event for instance ${event.payload.instanceId}" }
                 handleInstanceHealthChange(event.payload.parentApplicationId, event.payload.instanceId, event.payload.newHealth)
             }
