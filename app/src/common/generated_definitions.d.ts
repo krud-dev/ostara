@@ -414,6 +414,7 @@ export interface ApplicationMetricRuleModifyRequestRO {
 
 export interface ApplicationMetricRuleRO {
     id: string;
+    applicationId: string;
     name: string;
     metricName: ParsedMetricName;
     operation?: ApplicationMetricRuleOperation;
@@ -494,10 +495,7 @@ export interface ApplicationMetricRuleTriggeredMessage$InstanceIdAndValue {
 }
 
 export interface ApplicationMetricRuleTriggeredMessage$Payload {
-    applicationMetricRuleId: string;
-    operation: ApplicationMetricRuleOperation;
-    applicationId: string;
-    metricName: ParsedMetricName;
+    applicationMetricRule: ApplicationMetricRuleRO;
     instanceIdsAndValues: ApplicationMetricRuleTriggeredMessage$InstanceIdAndValue[];
 }
 

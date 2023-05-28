@@ -14,11 +14,13 @@ import dev.krud.boost.daemon.metricmonitor.rule.messaging.InstanceApplicationMet
 import dev.krud.boost.daemon.metricmonitor.rule.model.ApplicationMetricRule
 import dev.krud.boost.daemon.metricmonitor.rule.model.ApplicationMetricRule.Companion.evaluate
 import dev.krud.boost.daemon.metricmonitor.rule.model.ApplicationMetricRule.Companion.parsedMetricName
+import dev.krud.boost.daemon.metricmonitor.rule.ro.ApplicationMetricRuleRO
 import dev.krud.boost.daemon.utils.ParsedMetricName
 import dev.krud.boost.daemon.utils.computeIfAbsent
 import dev.krud.boost.daemon.utils.getTyped
 import dev.krud.boost.daemon.utils.resolve
 import dev.krud.crudframework.crud.handler.krud.Krud
+import dev.krud.shapeshift.ShapeShift
 import io.github.oshai.KotlinLogging
 import jakarta.annotation.PostConstruct
 import org.springframework.cache.Cache
@@ -36,7 +38,8 @@ class ApplicationMetricRuleService(
     private val applicationService: ApplicationService,
     private val applicationMetricRuleKrud: Krud<ApplicationMetricRule, UUID>,
     private val instanceApplicationMetricRuleTriggerChannel: PublishSubscribeChannel,
-    private val cacheManager: CacheManager
+    private val cacheManager: CacheManager,
+    private val shapeShift: ShapeShift
 ) {
     private val ruleInstanceAssociationCache: Cache by cacheManager.resolve()
 
@@ -141,11 +144,8 @@ class ApplicationMetricRuleService(
                         instanceApplicationMetricRuleTriggerChannel.send(
                             InstanceApplicationMetricRuleTriggeredMessage(
                                 InstanceApplicationMetricRuleTriggeredMessage.Payload(
-                                    rule.id,
-                                    rule.operation,
-                                    rule.applicationId,
+                                    shapeShift.map<ApplicationMetricRule, ApplicationMetricRuleRO>(rule),
                                     message.payload.instanceId,
-                                    rule.parsedMetricName,
                                     value
                                 )
                             )

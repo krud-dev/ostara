@@ -34,7 +34,7 @@ class MetricRuleWebsocketDispatcher(
     private fun sendToWebSocket(message: ApplicationMetricRuleTriggeredMessage) {
         log.debug { "Sending application metric rule event to websocket: $message" }
         messagingTemplate.convertAndSend(APPLICATION_METRIC_RULE_TRIGGERS_TOPIC, message.payload)
-        history.addOrReplaceIf({ message }) { it.payload.applicationMetricRuleId == message.payload.applicationMetricRuleId }
+        history.addOrReplaceIf({ message }) { it.payload.applicationMetricRule.id == message.payload.applicationMetricRule.id }
     }
 
     companion object {

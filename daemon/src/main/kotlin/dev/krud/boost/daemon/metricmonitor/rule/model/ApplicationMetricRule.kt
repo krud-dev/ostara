@@ -48,6 +48,7 @@ class ApplicationMetricRule(
     @MappedField
     var enabled: Boolean = true,
     @Column(name = "application_id", nullable = false, updatable = false)
+    @MappedField
     var applicationId: UUID
 ) : AbstractEntity() {
     @ManyToOne

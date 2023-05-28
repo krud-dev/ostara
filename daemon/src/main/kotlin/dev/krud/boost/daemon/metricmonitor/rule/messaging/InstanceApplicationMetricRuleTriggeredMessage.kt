@@ -1,17 +1,13 @@
 package dev.krud.boost.daemon.metricmonitor.rule.messaging
 
 import dev.krud.boost.daemon.base.messaging.AbstractMessage
-import dev.krud.boost.daemon.metricmonitor.rule.enums.ApplicationMetricRuleOperation
-import dev.krud.boost.daemon.utils.ParsedMetricName
+import dev.krud.boost.daemon.metricmonitor.rule.ro.ApplicationMetricRuleRO
 import java.util.*
 
 class InstanceApplicationMetricRuleTriggeredMessage(payload: Payload) : AbstractMessage<InstanceApplicationMetricRuleTriggeredMessage.Payload>(payload) {
     data class Payload(
-        val applicationMetricRuleId: UUID,
-        val operation: ApplicationMetricRuleOperation,
-        val applicationId: UUID,
+        val applicationMetricRule: ApplicationMetricRuleRO,
         val instanceId: UUID,
-        val metricName: ParsedMetricName,
         val value: Double,
     )
 }

@@ -2,17 +2,13 @@ package dev.krud.boost.daemon.metricmonitor.rule.messaging
 
 import dev.krud.boost.daemon.base.annotations.GenerateTypescript
 import dev.krud.boost.daemon.base.messaging.AbstractMessage
-import dev.krud.boost.daemon.metricmonitor.rule.enums.ApplicationMetricRuleOperation
-import dev.krud.boost.daemon.utils.ParsedMetricName
+import dev.krud.boost.daemon.metricmonitor.rule.ro.ApplicationMetricRuleRO
 import java.util.*
 
 class ApplicationMetricRuleTriggeredMessage(payload: Payload) : AbstractMessage<ApplicationMetricRuleTriggeredMessage.Payload>(payload) {
     @GenerateTypescript
     data class Payload(
-        val applicationMetricRuleId: UUID,
-        val operation: ApplicationMetricRuleOperation,
-        val applicationId: UUID,
-        val metricName: ParsedMetricName,
+        val applicationMetricRule: ApplicationMetricRuleRO,
         val instanceIdsAndValues: Set<InstanceIdAndValue>
     )
 
@@ -31,10 +27,7 @@ class ApplicationMetricRuleTriggeredMessage(payload: Payload) : AbstractMessage<
             val instanceIdsAndValues = messages.map { InstanceIdAndValue(it.payload.instanceId, it.payload.value) }.toSet()
             return ApplicationMetricRuleTriggeredMessage(
                 Payload(
-                    applicationMetricRuleId = first.payload.applicationMetricRuleId,
-                    operation = first.payload.operation,
-                    applicationId = first.payload.applicationId,
-                    metricName = first.payload.metricName,
+                    applicationMetricRule = first.payload.applicationMetricRule,
                     instanceIdsAndValues = instanceIdsAndValues
                 )
             )

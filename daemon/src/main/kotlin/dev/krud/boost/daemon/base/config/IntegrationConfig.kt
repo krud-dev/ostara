@@ -70,7 +70,7 @@ class IntegrationConfig {
         aggregate {
             correlationStrategy {
                 it as InstanceApplicationMetricRuleTriggeredMessage
-                it.payload.applicationId to it.payload.applicationMetricRuleId
+                it.payload.applicationMetricRule.id
             }
             releaseStrategy {
                 false

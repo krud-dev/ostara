@@ -7,6 +7,7 @@ import java.util.*
 
 class ApplicationMetricRuleRO(
     var id: UUID = TypeDefaults.UUID,
+    var applicationId: UUID = TypeDefaults.UUID,
     var name: String = TypeDefaults.STRING,
     var metricName: ParsedMetricName = ParsedMetricName.DEFAULT,
     var operation: ApplicationMetricRuleOperation? = null,

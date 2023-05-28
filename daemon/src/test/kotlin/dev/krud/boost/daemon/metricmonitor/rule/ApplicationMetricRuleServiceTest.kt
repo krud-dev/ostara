@@ -23,6 +23,8 @@ import dev.krud.boost.daemon.test.TestKrud
 import dev.krud.boost.daemon.utils.ParsedMetricName
 import dev.krud.boost.daemon.utils.getTyped
 import dev.krud.boost.daemon.utils.resolve
+import dev.krud.boost.daemon.utils.withParsedMetricNameTransformers
+import dev.krud.shapeshift.ShapeShiftBuilder
 import org.junit.jupiter.api.Test
 import org.mockito.kotlin.any
 import org.mockito.kotlin.argumentCaptor
@@ -49,12 +51,17 @@ class ApplicationMetricRuleServiceTest {
     private val instanceApplicationMetricRuleTriggerChannel: PublishSubscribeChannel = mock()
     private val cacheManager = ConcurrentMapCacheManager("ruleInstanceAssociationCache")
     private val ruleInstanceAssociationCache by cacheManager.resolve()
+    private val shapeShift = ShapeShiftBuilder()
+        .withParsedMetricNameTransformers()
+        .build()
     private val applicationMetricRuleService = ApplicationMetricRuleService(
         metricManager,
         applicationService,
         applicationMetricRuleKrud,
         instanceApplicationMetricRuleTriggerChannel,
-        cacheManager
+        cacheManager,
+        shapeShift
+
     )
 
     @Test
@@ -416,11 +423,14 @@ class ApplicationMetricRuleServiceTest {
             that(first!!.lastValue).isEqualTo(51.0)
             that(first.lastEvaluation).isNotNull()
             that(first.lastTriggered).isNotNull()
-            that(message.payload.applicationMetricRuleId).isEqualTo(rule.id)
-            that(message.payload.operation).isEqualTo(rule.operation)
-            that(message.payload.applicationId).isEqualTo(application.id)
+            that(message.payload.applicationMetricRule.id).isEqualTo(rule.id)
+            that(message.payload.applicationMetricRule.applicationId).isEqualTo(application.id)
+            that(message.payload.applicationMetricRule.operation).isEqualTo(rule.operation)
+            that(message.payload.applicationMetricRule.metricName).isEqualTo(rule.parsedMetricName)
+            that(message.payload.applicationMetricRule.name).isEqualTo(rule.name)
+            that(message.payload.applicationMetricRule.value1).isEqualTo(rule.value1)
+            that(message.payload.applicationMetricRule.value2).isEqualTo(rule.value2)
             that(message.payload.instanceId).isEqualTo(instance.id)
-            that(message.payload.metricName).isEqualTo(rule.parsedMetricName)
             that(message.payload.value).isEqualTo(51.0)
         }
     }

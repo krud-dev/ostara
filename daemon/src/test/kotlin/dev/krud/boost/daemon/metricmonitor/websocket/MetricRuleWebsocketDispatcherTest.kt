@@ -2,6 +2,7 @@ package dev.krud.boost.daemon.metricmonitor.websocket
 
 import dev.krud.boost.daemon.metricmonitor.rule.enums.ApplicationMetricRuleOperation
 import dev.krud.boost.daemon.metricmonitor.rule.messaging.ApplicationMetricRuleTriggeredMessage
+import dev.krud.boost.daemon.metricmonitor.rule.stubApplicationMetricRuleRO
 import dev.krud.boost.daemon.utils.ParsedMetricName
 import org.junit.jupiter.api.Test
 import org.mockito.kotlin.mock
@@ -37,10 +38,7 @@ class MetricRuleWebsocketDispatcherTest {
     private fun sendMessageToDispatcher(): ApplicationMetricRuleTriggeredMessage {
         val message = ApplicationMetricRuleTriggeredMessage(
             ApplicationMetricRuleTriggeredMessage.Payload(
-                UUID.randomUUID(),
-                ApplicationMetricRuleOperation.GREATER_THAN,
-                UUID.randomUUID(),
-                ParsedMetricName.from("test.metric[VALUE]"),
+                stubApplicationMetricRuleRO(),
                 emptySet()
             )
         )
