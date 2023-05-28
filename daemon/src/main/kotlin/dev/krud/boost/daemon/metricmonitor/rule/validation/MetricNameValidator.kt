@@ -15,9 +15,9 @@ import kotlin.reflect.KClass
 annotation class ValidMetricName(val message: String = "Invalid metric name", val groups: Array<KClass<*>> = [], val payload: Array<KClass<out Payload>> = [])
 
 @Component
-class MetricNameValidator : ConstraintValidator<ValidMetricName, UUID> {
+class MetricNameValidator : ConstraintValidator<ValidMetricName, String> {
 
-    override fun isValid(value: UUID?, context: ConstraintValidatorContext?): Boolean {
+    override fun isValid(value: String?, context: ConstraintValidatorContext?): Boolean {
         log.debug { "Validating metric name $value" }
         ParsedMetricName.from(value.toString())
         return true

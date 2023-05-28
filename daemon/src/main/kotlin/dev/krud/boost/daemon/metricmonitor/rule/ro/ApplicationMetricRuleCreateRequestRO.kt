@@ -8,9 +8,12 @@ import dev.krud.shapeshift.resolver.annotation.MappedField
 import java.util.*
 
 @DefaultMappingTarget(ApplicationMetricRule::class)
-class ApplicationMetricRuleModifyRequestRO(
+class ApplicationMetricRuleCreateRequestRO(
     @MappedField
     var name: String? = null,
+    @MappedField
+    @get:ValidMetricName
+    var metricName: String,
     @MappedField
     var operation: ApplicationMetricRuleOperation,
     @MappedField
@@ -18,5 +21,7 @@ class ApplicationMetricRuleModifyRequestRO(
     @MappedField
     var value2: Double?,
     @MappedField
-    var enabled: Boolean
+    var enabled: Boolean,
+    @MappedField
+    var applicationId: UUID,
 )

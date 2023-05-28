@@ -394,7 +394,7 @@ export interface EventLogRO {
     message?: string;
 }
 
-export interface ApplicationMetricRuleModifyRequestRO {
+export interface ApplicationMetricRuleCreateRequestRO {
     name?: string;
     metricName: string;
     operation: ApplicationMetricRuleOperation;
@@ -402,6 +402,14 @@ export interface ApplicationMetricRuleModifyRequestRO {
     value2?: number;
     enabled: boolean;
     applicationId: string;
+}
+
+export interface ApplicationMetricRuleModifyRequestRO {
+    name?: string;
+    operation: ApplicationMetricRuleOperation;
+    value1: number;
+    value2?: number;
+    enabled: boolean;
 }
 
 export interface ApplicationMetricRuleRO {

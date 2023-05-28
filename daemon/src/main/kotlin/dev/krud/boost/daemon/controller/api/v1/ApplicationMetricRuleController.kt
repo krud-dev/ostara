@@ -1,6 +1,7 @@
 package dev.krud.boost.daemon.controller.api.v1
 
 import dev.krud.boost.daemon.metricmonitor.rule.model.ApplicationMetricRule
+import dev.krud.boost.daemon.metricmonitor.rule.ro.ApplicationMetricRuleCreateRequestRO
 import dev.krud.boost.daemon.metricmonitor.rule.ro.ApplicationMetricRuleModifyRequestRO
 import dev.krud.boost.daemon.metricmonitor.rule.ro.ApplicationMetricRuleRO
 import dev.krud.crudframework.crud.handler.krud.Krud
@@ -16,4 +17,4 @@ import java.util.*
 class ApplicationMetricRuleController(
     private val shapeShift: ShapeShift,
     private val applicationMetricRuleKrud: Krud<ApplicationMetricRule, UUID>
-) : AbstractCrudController<ApplicationMetricRule, ApplicationMetricRuleRO, ApplicationMetricRuleRO, ApplicationMetricRuleModifyRequestRO>(ApplicationMetricRule::class, ApplicationMetricRuleRO::class, shapeShift, applicationMetricRuleKrud)
+) : AbstractCrudController<ApplicationMetricRule, ApplicationMetricRuleRO, ApplicationMetricRuleCreateRequestRO, ApplicationMetricRuleModifyRequestRO>(ApplicationMetricRule::class, ApplicationMetricRuleRO::class, shapeShift, applicationMetricRuleKrud)
