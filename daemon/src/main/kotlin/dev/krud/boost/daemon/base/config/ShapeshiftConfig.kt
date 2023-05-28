@@ -16,6 +16,8 @@ import dev.krud.boost.daemon.threadprofiling.enums.ThreadProfilingStatus
 import dev.krud.boost.daemon.threadprofiling.model.ThreadProfilingRequest
 import dev.krud.boost.daemon.threadprofiling.ro.ThreadProfilingLogRO
 import dev.krud.boost.daemon.threadprofiling.ro.ThreadProfilingRequestRO
+import dev.krud.boost.daemon.utils.ParsedMetricNameToStringTransformer
+import dev.krud.boost.daemon.utils.StringToParsedMetricNameTransformer
 import dev.krud.boost.daemon.utils.TypeDefaults
 import dev.krud.shapeshift.ShapeShiftBuilder
 import dev.krud.shapeshift.spring.ShapeShiftAutoConfiguration
@@ -26,6 +28,8 @@ import org.springframework.context.annotation.Configuration
 class ShapeshiftConfig : ShapeShiftBuilderCustomizer, ShapeShiftAutoConfiguration() {
     override fun customize(builder: ShapeShiftBuilder) {
         builder
+            .withTransformer(ParsedMetricNameToStringTransformer())
+            .withTransformer(StringToParsedMetricNameTransformer())
             .withObjectSupplier { FolderModifyRequestRO(TypeDefaults.STRING) }
             .withObjectSupplier { FolderRO(TypeDefaults.UUID, TypeDefaults.STRING) }
             .withObjectSupplier { ApplicationModifyRequestRO(TypeDefaults.STRING, ApplicationType.SPRING_BOOT) }

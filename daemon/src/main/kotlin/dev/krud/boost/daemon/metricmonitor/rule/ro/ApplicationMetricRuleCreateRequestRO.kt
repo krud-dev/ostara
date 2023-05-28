@@ -3,6 +3,8 @@ package dev.krud.boost.daemon.metricmonitor.rule.ro
 import dev.krud.boost.daemon.metricmonitor.rule.enums.ApplicationMetricRuleOperation
 import dev.krud.boost.daemon.metricmonitor.rule.model.ApplicationMetricRule
 import dev.krud.boost.daemon.metricmonitor.rule.validation.ValidMetricName
+import dev.krud.boost.daemon.utils.ParsedMetricName
+import dev.krud.boost.daemon.utils.ParsedMetricNameToStringTransformer
 import dev.krud.shapeshift.resolver.annotation.DefaultMappingTarget
 import dev.krud.shapeshift.resolver.annotation.MappedField
 import java.util.*
@@ -11,9 +13,8 @@ import java.util.*
 class ApplicationMetricRuleCreateRequestRO(
     @MappedField
     var name: String? = null,
-    @MappedField
-    @get:ValidMetricName
-    var metricName: String,
+    @MappedField(transformer = ParsedMetricNameToStringTransformer::class)
+    var metricName: ParsedMetricName,
     @MappedField
     var operation: ApplicationMetricRuleOperation,
     @MappedField

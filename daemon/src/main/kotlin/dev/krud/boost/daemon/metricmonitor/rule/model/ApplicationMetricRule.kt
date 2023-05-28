@@ -5,6 +5,7 @@ import dev.krud.boost.daemon.entity.AbstractEntity
 import dev.krud.boost.daemon.metricmonitor.rule.enums.ApplicationMetricRuleOperation
 import dev.krud.boost.daemon.metricmonitor.rule.ro.ApplicationMetricRuleRO
 import dev.krud.boost.daemon.utils.ParsedMetricName
+import dev.krud.boost.daemon.utils.StringToParsedMetricNameTransformer
 import dev.krud.crudframework.crud.annotation.Deleteable
 import dev.krud.crudframework.crud.annotation.PersistCopyOnFetch
 import dev.krud.shapeshift.resolver.annotation.DefaultMappingTarget
@@ -27,7 +28,7 @@ import kotlin.contracts.contract
 @Deleteable(softDelete = false)
 class ApplicationMetricRule(
     @Column(nullable = false, updatable = false)
-    @MappedField
+    @MappedField(transformer = StringToParsedMetricNameTransformer::class)
     @Lob
     var metricName: String,
     @Column(nullable = false)
