@@ -16,6 +16,8 @@ class ApplicationMetricRuleCreateRequestRO(
     var name: String,
     @MappedField(transformer = ParsedMetricNameToStringTransformer::class)
     var metricName: ParsedMetricName,
+    @MappedField(transformer = ParsedMetricNameToStringTransformer::class)
+    var divisorMetricName: ParsedMetricName?,
     @MappedField
     var operation: ApplicationMetricRuleOperation,
     @MappedField

@@ -397,6 +397,7 @@ export interface EventLogRO {
 export interface ApplicationMetricRuleCreateRequestRO {
     name: string;
     metricName: ParsedMetricName;
+    divisorMetricName?: ParsedMetricName;
     operation: ApplicationMetricRuleOperation;
     value1: number;
     value2?: number;
@@ -417,6 +418,7 @@ export interface ApplicationMetricRuleRO {
     applicationId: string;
     name: string;
     metricName: ParsedMetricName;
+    divisorMetricName?: ParsedMetricName;
     operation?: ApplicationMetricRuleOperation;
     value1: number;
     value2?: number;

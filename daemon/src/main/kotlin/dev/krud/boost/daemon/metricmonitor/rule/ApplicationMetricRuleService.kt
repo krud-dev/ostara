@@ -6,6 +6,8 @@ import dev.krud.boost.daemon.configuration.instance.messaging.InstanceDeletedEve
 import dev.krud.boost.daemon.configuration.instance.messaging.InstanceMovedEventMessage
 import dev.krud.boost.daemon.metricmonitor.MetricManager
 import dev.krud.boost.daemon.metricmonitor.messaging.InstanceMetricUpdatedMessage
+import dev.krud.boost.daemon.metricmonitor.rule.ApplicationMetricRuleService.RuleInstanceAssociation.Companion.isRelevant
+import dev.krud.boost.daemon.metricmonitor.rule.ApplicationMetricRuleService.RuleInstanceAssociation.Companion.updateValue
 import dev.krud.boost.daemon.metricmonitor.rule.messaging.ApplicationMetricRuleCreatedMessage
 import dev.krud.boost.daemon.metricmonitor.rule.messaging.ApplicationMetricRuleDeletedMessage
 import dev.krud.boost.daemon.metricmonitor.rule.messaging.ApplicationMetricRuleDisabledMessage
@@ -13,6 +15,7 @@ import dev.krud.boost.daemon.metricmonitor.rule.messaging.ApplicationMetricRuleE
 import dev.krud.boost.daemon.metricmonitor.rule.messaging.InstanceApplicationMetricRuleTriggeredMessage
 import dev.krud.boost.daemon.metricmonitor.rule.model.ApplicationMetricRule
 import dev.krud.boost.daemon.metricmonitor.rule.model.ApplicationMetricRule.Companion.evaluate
+import dev.krud.boost.daemon.metricmonitor.rule.model.ApplicationMetricRule.Companion.parsedDivisorMetricName
 import dev.krud.boost.daemon.metricmonitor.rule.model.ApplicationMetricRule.Companion.parsedMetricName
 import dev.krud.boost.daemon.metricmonitor.rule.ro.ApplicationMetricRuleRO
 import dev.krud.boost.daemon.utils.ParsedMetricName
@@ -64,14 +67,17 @@ class ApplicationMetricRuleService(
                     rule.initialize()
                 }
             }
+
             is ApplicationMetricRuleDeletedMessage -> {
                 log.debug { "Metric Rule deleted: ${message.payload.applicationMetricRuleId}, uninitializing" }
                 uninitializeRule(message.payload.applicationMetricRuleId, message.payload.applicationId)
             }
+
             is ApplicationMetricRuleDisabledMessage -> {
                 log.debug { "Metric Rule disabled: ${message.payload.applicationMetricRuleId}, uninitializing" }
                 uninitializeRule(message.payload.applicationMetricRuleId, message.payload.applicationId)
             }
+
             is ApplicationMetricRuleEnabledMessage -> {
                 log.debug { "Metric Rule enabled: ${message.payload.applicationMetricRuleId}, initializing" }
                 val rule = applicationMetricRuleKrud.showById(message.payload.applicationMetricRuleId)
@@ -86,6 +92,7 @@ class ApplicationMetricRuleService(
             is InstanceDeletedEventMessage -> {
                 ruleInstanceAssociationCache.evict(message.payload.instanceId)
             }
+
             is InstanceCreatedEventMessage -> {
                 applicationMetricRuleKrud.searchByFilter {
                     where {
@@ -96,6 +103,7 @@ class ApplicationMetricRuleService(
                     rule.initializeForInstance(message.payload.instanceId)
                 }
             }
+
             is InstanceMovedEventMessage -> {
                 if (message.payload.oldParentApplicationId == message.payload.newParentApplicationId) {
                     return
@@ -105,6 +113,7 @@ class ApplicationMetricRuleService(
                     ?.let { associations ->
                         associations.forEach { association ->
                             metricManager.releaseMetric(message.payload.instanceId, association.metricName)
+                            association.divisorMetricName?.let { metricManager.releaseMetric(message.payload.instanceId, it) }
                         }
                     }
                 ruleInstanceAssociationCache.evict(message.payload.instanceId)
@@ -132,15 +141,13 @@ class ApplicationMetricRuleService(
         }
 
         associations.forEach { association ->
-            if (association.metricName == message.payload.metricName) {
-                val value = message.payload.newValue?.value?.value ?: return@forEach
-                association.lastValue = value
-                association.lastEvaluation = Date()
+            if (association.isRelevant(message.payload.metricName)) {
+                val value = association.updateValue(message.payload.metricName, (message.payload.newValue?.value?.value ?: return)) ?: return
                 val rule = applicationMetricRuleKrud.showById(association.applicationMetricRuleId)
-                log.debug { "Evaluating rule: ${rule?.id}"}
-                if(rule.evaluate(association.lastValue)) {
+                log.debug { "Evaluating rule: ${rule?.id}" }
+                if (rule.evaluate(association.lastEvaluationValue)) {
                     if (association.lastTriggered == null || association.lastTriggered!!.time < System.currentTimeMillis() - COOLDOWN) {
-                        log.debug { "Triggering rule: ${rule.id}"}
+                        log.debug { "Triggering rule: ${rule.id}" }
                         instanceApplicationMetricRuleTriggerChannel.send(
                             InstanceApplicationMetricRuleTriggeredMessage(
                                 InstanceApplicationMetricRuleTriggeredMessage.Payload(
@@ -151,7 +158,7 @@ class ApplicationMetricRuleService(
                             )
                         )
                     } else {
-                        log.debug { "Rule on cooldown: ${rule.id}"}
+                        log.debug { "Rule on cooldown: ${rule.id}" }
                     }
                     association.lastTriggered = Date()
                 }
@@ -160,22 +167,28 @@ class ApplicationMetricRuleService(
     }
 
     private fun ApplicationMetricRule.initialize() {
-        val metricName = this.parsedMetricName
+        val parsedMetricName = this.parsedMetricName
         val instances = applicationService.getApplicationInstances(this.applicationId)
         instances.forEach { instance ->
-            metricManager.requestMetric(instance.id, metricName)
+            metricManager.requestMetric(instance.id, parsedMetricName)
+            this.parsedDivisorMetricName?.let { parsedDivisorMetricName ->
+                metricManager.requestMetric(instance.id, parsedDivisorMetricName)
+            }
             ruleInstanceAssociationCache.computeIfAbsent<MutableList<RuleInstanceAssociation>>(instance.id) { mutableListOf() }
-                .add(RuleInstanceAssociation(this.id, this.applicationId, metricName))
+                .add(RuleInstanceAssociation(this.id, this.applicationId, parsedMetricName, parsedDivisorMetricName))
 
         }
     }
 
 
     private fun ApplicationMetricRule.initializeForInstance(instanceId: UUID) {
-        val metricName = this.parsedMetricName
-        metricManager.requestMetric(instanceId, metricName)
+        val parsedMetricName = this.parsedMetricName
+        metricManager.requestMetric(instanceId, parsedMetricName)
+        this.parsedDivisorMetricName?.let { parsedDivisorMetricName ->
+            metricManager.requestMetric(instanceId, parsedDivisorMetricName)
+        }
         ruleInstanceAssociationCache.computeIfAbsent<MutableList<RuleInstanceAssociation>>(instanceId) { mutableListOf() }
-            .add(RuleInstanceAssociation(this.id, this.applicationId, metricName))
+            .add(RuleInstanceAssociation(this.id, this.applicationId, parsedMetricName, parsedDivisorMetricName))
     }
 
     private fun uninitializeRule(applicationMetricRuleId: UUID, applicationId: UUID) {
@@ -185,6 +198,9 @@ class ApplicationMetricRuleService(
                 val condition = it.applicationMetricRuleId == applicationMetricRuleId
                 if (condition) {
                     metricManager.releaseMetric(instance.id, it.metricName)
+                    it.divisorMetricName?.let { divisorMetricName ->
+                        metricManager.releaseMetric(instance.id, divisorMetricName)
+                    }
                 }
                 condition
             }
@@ -196,10 +212,29 @@ class ApplicationMetricRuleService(
         val applicationMetricRuleId: UUID,
         val parentApplicationId: UUID,
         val metricName: ParsedMetricName,
-        var lastValue: Double? = null,
+        val divisorMetricName: ParsedMetricName? = null,
+        var lastMetricValue: Double? = null,
+        var lastDivisorMetricValue: Double? = null,
+        var lastEvaluationValue: Double? = null,
         var lastEvaluation: Date? = null,
         var lastTriggered: Date? = null,
-    )
+    ) {
+        companion object {
+            fun RuleInstanceAssociation.isRelevant(metricName: ParsedMetricName): Boolean =
+                this.metricName == metricName || this.divisorMetricName == metricName
+
+            fun RuleInstanceAssociation.updateValue(metricName: ParsedMetricName, value: Double): Double? {
+                if (this.metricName == metricName) {
+                    this.lastMetricValue = value
+                } else if (this.divisorMetricName == metricName) {
+                    this.lastDivisorMetricValue = value
+                }
+                lastEvaluation = Date()
+                lastEvaluationValue = lastMetricValue?.div(lastDivisorMetricValue ?: 1.0)
+                return lastEvaluationValue
+            }
+        }
+    }
 
     companion object {
         private const val COOLDOWN = 1000L * 60L

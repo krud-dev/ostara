@@ -34,6 +34,10 @@ class ApplicationMetricRule(
     @MappedField(transformer = StringToParsedMetricNameTransformer::class)
     @Lob
     var metricName: String,
+    @Column(nullable = true, updatable = false)
+    @MappedField(transformer = StringToParsedMetricNameTransformer::class)
+    @Lob
+    var divisorMetricName: String? = null,
     @Column(nullable = false)
     @Enumerated(EnumType.STRING)
     @MappedField
@@ -57,6 +61,9 @@ class ApplicationMetricRule(
 
     companion object {
         val ApplicationMetricRule.parsedMetricName: ParsedMetricName get() = ParsedMetricName.from(metricName)
+        val ApplicationMetricRule.parsedDivisorMetricName: ParsedMetricName? get() = divisorMetricName?.let {
+            ParsedMetricName.from(it)
+        }
 
         @ExperimentalContracts
         fun ApplicationMetricRule?.evaluate(value: Double?): Boolean {

@@ -371,7 +371,7 @@ class ApplicationMetricRuleServiceTest {
                 it.metricName == rule.parsedMetricName
             }
             that(first).isNotNull()
-            that(first!!.lastValue).isEqualTo(1.0)
+            that(first!!.lastEvaluationValue).isEqualTo(1.0)
             that(first.lastEvaluation).isNotNull()
             that(first.lastTriggered).isNull()
         }
@@ -420,7 +420,7 @@ class ApplicationMetricRuleServiceTest {
                 it.metricName == rule.parsedMetricName
             }
             that(first).isNotNull()
-            that(first!!.lastValue).isEqualTo(51.0)
+            that(first!!.lastEvaluationValue).isEqualTo(51.0)
             that(first.lastEvaluation).isNotNull()
             that(first.lastTriggered).isNotNull()
             that(message.payload.applicationMetricRule.id).isEqualTo(rule.id)

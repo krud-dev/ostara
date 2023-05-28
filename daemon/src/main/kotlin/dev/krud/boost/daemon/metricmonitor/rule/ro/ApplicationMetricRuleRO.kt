@@ -10,6 +10,7 @@ class ApplicationMetricRuleRO(
     var applicationId: UUID = TypeDefaults.UUID,
     var name: String = TypeDefaults.STRING,
     var metricName: ParsedMetricName = ParsedMetricName.DEFAULT,
+    var divisorMetricName: ParsedMetricName? = null,
     var operation: ApplicationMetricRuleOperation? = null,
     var value1: Double = TypeDefaults.DOUBLE,
     var value2: Double? = null,
