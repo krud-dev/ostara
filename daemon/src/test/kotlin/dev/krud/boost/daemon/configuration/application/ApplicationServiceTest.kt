@@ -69,6 +69,7 @@ class ApplicationServiceTest {
                 InstanceAbility.CACHES,
                 InstanceAbility.CACHE_STATISTICS,
                 InstanceAbility.LOGGERS,
+                InstanceAbility.METRICS,
                 InstanceAbility.SHUTDOWN
             )
         )
