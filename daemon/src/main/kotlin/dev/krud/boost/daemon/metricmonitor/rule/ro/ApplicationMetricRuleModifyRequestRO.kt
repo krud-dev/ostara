@@ -21,5 +21,7 @@ class ApplicationMetricRuleModifyRequestRO(
     @MappedField
     var value2: Double?,
     @MappedField
-    var enabled: Boolean
+    var enabled: Boolean,
+    @MappedField
+    var applicationId: UUID,
 )
