@@ -10,3 +10,5 @@ export const STATISTICS_ID = 'statistics';
 export const ENABLE_ID = 'enable';
 export const DISABLE_ID = 'disable';
 export const SHUTDOWN_ID = 'shutdown';
+export const ADD_ID = 'add';
+export const UPDATE_ID = 'update';

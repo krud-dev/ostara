@@ -93,6 +93,7 @@ export const apiKeys = {
     'logs',
     requestId,
   ],
+  itemMetricRules: (id: string) => [...apiKeys.item(id), 'metricRules'],
 
   itemApplications: (ids: string[]) => [...crudKeys.entity(applicationCrudEntity), 'item', ids],
   itemInstances: (id: string) => [...crudKeys.entity(instanceCrudEntity), 'item', id],

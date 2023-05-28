@@ -1,6 +1,6 @@
 import Sidebar from 'renderer/components/menu/sidebar/Sidebar';
 import { SidebarConfig } from 'renderer/components/menu/sidebar/SidebarSection';
-import { BarChartOutlined, ClassOutlined, ListAltOutlined } from '@mui/icons-material';
+import { BarChartOutlined, ClassOutlined, EditNotificationsOutlined, ListAltOutlined } from '@mui/icons-material';
 import { urls } from 'renderer/routes/urls';
 import { useCallback, useMemo } from 'react';
 import { FormattedMessage } from 'react-intl';
@@ -59,6 +59,19 @@ export default function ApplicationSidebar({ item, itemAbilities, width }: Appli
                   label: <FormattedMessage id={'caches'} />,
                   to: generatePath(urls.applicationCaches.url, { id: item.id }),
                   disabled: isServiceInactive('CACHES'),
+                },
+              ],
+            },
+            {
+              id: 'monitor',
+              label: <FormattedMessage id={'monitor'} />,
+              items: [
+                {
+                  id: 'metric-rules',
+                  icon: <EditNotificationsOutlined />,
+                  label: <FormattedMessage id={'metricNotifications'} />,
+                  to: generatePath(urls.applicationMetricRules.url, { id: item.id }),
+                  disabled: isServiceInactive('METRICS'),
                 },
               ],
             },

@@ -1,5 +1,6 @@
 import {
   ApplicationHealthUpdatedEventMessage$Payload,
+  ApplicationMetricRuleTriggeredMessage$Payload,
   InstanceHealthChangedEventMessage$Payload,
   InstanceHeapdumpDownloadProgressMessage$Payload,
   InstanceHostnameUpdatedEventMessage$Payload,
@@ -14,6 +15,7 @@ export type StompTopics = {
   '/topic/instanceHostname': InstanceHostnameUpdatedEventMessage$Payload;
   '/topic/instanceHeapdumpDownloadProgress': InstanceHeapdumpDownloadProgressMessage$Payload;
   '/topic/instanceThreadProfilingProgress': ThreadProfilingProgressMessage$Payload;
+  '/topic/applicationMetricRuleTriggers': ApplicationMetricRuleTriggeredMessage$Payload;
 };
 
 export type StompTopicKey = keyof StompTopics;

@@ -38,6 +38,7 @@ import AppLayout from '../layout/app/AppLayout';
 import ErrorBoundaryNavigator from './ErrorBoundaryNavigator';
 import { ErrorBoundary } from 'react-error-boundary';
 import InstanceTogglz from '../pages/navigator/instance/togglz';
+import ApplicationMetricRules from '../pages/navigator/application/metric-rules';
 import FolderDashboard from '../pages/navigator/folder/dashboard';
 
 export default function Router() {
@@ -107,6 +108,14 @@ export default function Router() {
                   element: (
                     <AbilityRedirectGuard ability={'CACHES'}>
                       <ApplicationCaches />
+                    </AbilityRedirectGuard>
+                  ),
+                },
+                {
+                  path: urls.applicationMetricRules.path,
+                  element: (
+                    <AbilityRedirectGuard ability={'METRICS'}>
+                      <ApplicationMetricRules />
                     </AbilityRedirectGuard>
                   ),
                 },

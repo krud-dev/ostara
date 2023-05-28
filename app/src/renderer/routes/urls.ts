@@ -79,6 +79,11 @@ export const urls = asUrlInfos({
     path: 'caches',
     helpUrl: 'https://docs.ostara.dev/features/application-features/manage/caches',
   },
+  applicationMetricRules: {
+    url: '/navigator/application/:id/metric-rules',
+    path: 'metric-rules',
+    helpUrl: 'https://docs.ostara.dev/features/application-features/monitor/metric-rules',
+  },
   // Instance Root
   instance: {
     url: '/navigator/instance/:id',

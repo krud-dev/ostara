@@ -7,6 +7,8 @@ import { axiosInstance } from '../../../axiosInstance';
 import { AxiosResponse } from 'axios';
 import { heapdumpReferenceCrudEntity } from '../../crud/entity/entities/heapdumpReference.crudEntity';
 import { apiKeys } from '../../../apiKeys';
+import { crudKeys } from '../../crud/crudKeys';
+import { crudDelete } from '../../crud/crudDelete';
 
 type Variables = {
   instanceId: string;
@@ -16,11 +18,7 @@ type Variables = {
 type Data = void;
 
 export const deleteInstanceHeapdumpReference = async (variables: Variables): Promise<Data> => {
-  return (
-    await axiosInstance.delete<Data, AxiosResponse<Data>>(
-      `${heapdumpReferenceCrudEntity.path}/${variables.referenceId}`
-    )
-  ).data;
+  return await crudDelete({ entity: heapdumpReferenceCrudEntity, id: variables.referenceId });
 };
 
 export const useDeleteInstanceHeapdumpReference = (
@@ -28,5 +26,8 @@ export const useDeleteInstanceHeapdumpReference = (
 ): BaseUseMutationResult<Data, Variables> =>
   useBaseMutation<Data, Variables>(deleteInstanceHeapdumpReference, {
     ...options,
-    invalidateQueriesKeyFn: (data, variables) => apiKeys.itemHeapdumps(variables.instanceId),
+    invalidateQueriesKeysFn: (data, variables) => [
+      apiKeys.itemHeapdumps(variables.instanceId),
+      crudKeys.entity(heapdumpReferenceCrudEntity),
+    ],
   });
