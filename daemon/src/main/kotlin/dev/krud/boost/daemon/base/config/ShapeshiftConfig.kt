@@ -16,8 +16,6 @@ import dev.krud.boost.daemon.threadprofiling.enums.ThreadProfilingStatus
 import dev.krud.boost.daemon.threadprofiling.model.ThreadProfilingRequest
 import dev.krud.boost.daemon.threadprofiling.ro.ThreadProfilingLogRO
 import dev.krud.boost.daemon.threadprofiling.ro.ThreadProfilingRequestRO
-import dev.krud.boost.daemon.utils.ParsedMetricNameToStringTransformer
-import dev.krud.boost.daemon.utils.StringToParsedMetricNameTransformer
 import dev.krud.boost.daemon.utils.TypeDefaults
 import dev.krud.boost.daemon.utils.withParsedMetricNameTransformers
 import dev.krud.shapeshift.ShapeShiftBuilder
