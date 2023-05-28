@@ -4,7 +4,6 @@ import dev.krud.boost.daemon.metricmonitor.rule.messaging.ApplicationMetricRuleC
 import dev.krud.boost.daemon.metricmonitor.rule.messaging.ApplicationMetricRuleDeletedMessage
 import dev.krud.boost.daemon.metricmonitor.rule.messaging.ApplicationMetricRuleDisabledMessage
 import dev.krud.boost.daemon.metricmonitor.rule.messaging.ApplicationMetricRuleEnabledMessage
-import dev.krud.boost.daemon.metricmonitor.rule.messaging.ApplicationMetricRuleMetricModifiedMessage
 import dev.krud.boost.daemon.metricmonitor.rule.model.ApplicationMetricRule
 import dev.krud.crudframework.crud.hooks.interfaces.CreateHooks
 import dev.krud.crudframework.crud.hooks.interfaces.DeleteHooks
@@ -51,19 +50,6 @@ class ApplicationMetricRulePersistentHooks(
                     )
                 )
             }
-        }
-
-        if (copy.metricName != entity.metricName) {
-            applicationMetricRuleChannel.send(
-                ApplicationMetricRuleMetricModifiedMessage(
-                    ApplicationMetricRuleMetricModifiedMessage.Payload(
-                        entity.id,
-                        entity.applicationId,
-                        entity.metricName,
-                        copy.metricName
-                    )
-                )
-            )
         }
     }
 
