@@ -401,6 +401,7 @@ export interface ApplicationMetricRuleModifyRequestRO {
     value1: number;
     value2?: number;
     enabled: boolean;
+    applicationId: string;
 }
 
 export interface ApplicationMetricRuleRO {

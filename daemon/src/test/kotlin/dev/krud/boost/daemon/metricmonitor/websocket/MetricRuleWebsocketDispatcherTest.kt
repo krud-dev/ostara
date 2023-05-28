@@ -27,7 +27,7 @@ class MetricRuleWebsocketDispatcherTest {
     fun `replay should contain recently sent messages`() {
         val message = sendMessageToDispatcher()
         metricRuleWebsocketDispatcher.replay("test")
-        verify(messagingTemplate, times(2)).convertAndSend(
+        verify(messagingTemplate, times(1)).convertAndSend(
             MetricRuleWebsocketDispatcher.APPLICATION_METRIC_RULE_TRIGGERS_TOPIC,
             message.payload,
             mapOf("replay" to true)
