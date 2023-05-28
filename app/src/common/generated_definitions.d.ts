@@ -395,7 +395,7 @@ export interface EventLogRO {
 }
 
 export interface ApplicationMetricRuleCreateRequestRO {
-    name?: string;
+    name: string;
     metricName: ParsedMetricName;
     operation: ApplicationMetricRuleOperation;
     value1: number;
@@ -405,7 +405,7 @@ export interface ApplicationMetricRuleCreateRequestRO {
 }
 
 export interface ApplicationMetricRuleModifyRequestRO {
-    name?: string;
+    name: string;
     operation: ApplicationMetricRuleOperation;
     value1: number;
     value2?: number;
@@ -414,7 +414,7 @@ export interface ApplicationMetricRuleModifyRequestRO {
 
 export interface ApplicationMetricRuleRO {
     id: string;
-    name?: string;
+    name: string;
     metricName: ParsedMetricName;
     operation?: ApplicationMetricRuleOperation;
     value1: number;

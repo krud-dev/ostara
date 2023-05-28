@@ -7,6 +7,7 @@ import java.util.*
 
 fun stubApplicationMetricRule(
     id: UUID = UUID.randomUUID(),
+    name: String = "example rule",
     metricName: ParsedMetricName = ParsedMetricName.from("example.metric[VALUE]"),
     operation: ApplicationMetricRuleOperation = ApplicationMetricRuleOperation.GREATER_THAN,
     value1: Double = 1.0,
@@ -15,6 +16,7 @@ fun stubApplicationMetricRule(
     applicationId: UUID = UUID.randomUUID()
 ): ApplicationMetricRule {
     return ApplicationMetricRule(
+        name,
         metricName.toString(),
         operation,
         value1,

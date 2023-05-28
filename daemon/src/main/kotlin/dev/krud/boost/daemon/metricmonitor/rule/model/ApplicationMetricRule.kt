@@ -27,6 +27,9 @@ import kotlin.contracts.contract
 @MappedField(mapFrom = "id")
 @Deleteable(softDelete = false)
 class ApplicationMetricRule(
+    @Column(nullable = false)
+    @MappedField
+    var name: String,
     @Column(nullable = false, updatable = false)
     @MappedField(transformer = StringToParsedMetricNameTransformer::class)
     @Lob
@@ -47,11 +50,6 @@ class ApplicationMetricRule(
     @Column(name = "application_id", nullable = false, updatable = false)
     var applicationId: UUID
 ) : AbstractEntity() {
-
-    @Column(nullable = true)
-    @MappedField
-    var name: String? = null
-
     @ManyToOne
     @JoinColumn(name = "application_id", nullable = false, updatable = false, insertable = false)
     var application: Application? = null

@@ -4,12 +4,14 @@ import dev.krud.boost.daemon.metricmonitor.rule.enums.ApplicationMetricRuleOpera
 import dev.krud.boost.daemon.metricmonitor.rule.model.ApplicationMetricRule
 import dev.krud.shapeshift.resolver.annotation.DefaultMappingTarget
 import dev.krud.shapeshift.resolver.annotation.MappedField
+import jakarta.validation.constraints.NotBlank
 import java.util.*
 
 @DefaultMappingTarget(ApplicationMetricRule::class)
 class ApplicationMetricRuleModifyRequestRO(
     @MappedField
-    var name: String? = null,
+    @get:NotBlank
+    var name: String,
     @MappedField
     var operation: ApplicationMetricRuleOperation,
     @MappedField

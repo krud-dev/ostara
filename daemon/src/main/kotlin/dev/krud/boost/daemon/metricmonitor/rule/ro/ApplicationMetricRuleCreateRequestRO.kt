@@ -6,12 +6,14 @@ import dev.krud.boost.daemon.utils.ParsedMetricName
 import dev.krud.boost.daemon.utils.ParsedMetricNameToStringTransformer
 import dev.krud.shapeshift.resolver.annotation.DefaultMappingTarget
 import dev.krud.shapeshift.resolver.annotation.MappedField
+import jakarta.validation.constraints.NotBlank
 import java.util.*
 
 @DefaultMappingTarget(ApplicationMetricRule::class)
 class ApplicationMetricRuleCreateRequestRO(
     @MappedField
-    var name: String? = null,
+    @get:NotBlank
+    var name: String,
     @MappedField(transformer = ParsedMetricNameToStringTransformer::class)
     var metricName: ParsedMetricName,
     @MappedField
