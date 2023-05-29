@@ -13,7 +13,7 @@ type Variables = {
 type Data = void;
 
 export const shutdownInstance = async (variables: Variables): Promise<Data> => {
-  return (await axiosInstance.get<Data, AxiosResponse<Data>>(`actuator/shutdown?instanceId=${variables.instanceId}`))
+  return (await axiosInstance.post<Data, AxiosResponse<Data>>(`actuator/shutdown?instanceId=${variables.instanceId}`))
     .data;
 };
 
