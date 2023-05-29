@@ -1,4 +1,3 @@
-import { SvgIconComponent } from '@mui/icons-material';
 import React, { ReactNode } from 'react';
 import { ListItemIcon, ListItemText, MenuItem, MenuItemProps } from '@mui/material';
 import { IconViewer, MUIconType } from 'renderer/components/common/IconViewer';
@@ -31,7 +30,7 @@ export default function CustomMenuItem({ icon, text, color, info, sx, children, 
         {text}
         {children}
       </ListItemText>
-      {info && info}
+      {info}
     </MenuItem>
   );
 }

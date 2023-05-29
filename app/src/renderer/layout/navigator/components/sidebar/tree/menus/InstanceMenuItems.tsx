@@ -8,6 +8,7 @@ import CopyIdToClipboardMenuItem from 'renderer/layout/navigator/components/side
 import React from 'react';
 import CopyItemToClipboardMenuItem from './items/CopyItemToClipboardMenuItem';
 import StopDemoMenuItem from './items/StopDemoMenuItem';
+import ShutdownMenuItem from './items/ShutdownMenuItem';
 
 export default function InstanceMenuItems({ item, node, onCreated, menuState }: TreeItemMenuProps) {
   const { close } = menuState;
@@ -20,6 +21,7 @@ export default function InstanceMenuItems({ item, node, onCreated, menuState }: 
       <UpdateMenuItem item={item} onClose={close} />
       <RenameMenuItem item={item} node={node} onClose={close} />
       <DeleteMenuItem item={item} onClose={close} />
+      <ShutdownMenuItem item={item} onClose={close} />
       <StopDemoMenuItem item={item} onClose={close} />
     </>
   );
