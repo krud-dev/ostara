@@ -4,31 +4,32 @@ import { useNavigatorTree } from 'renderer/contexts/NavigatorTreeContext';
 import TableComponent from 'renderer/components/table/TableComponent';
 import { Entity } from 'renderer/entity/entity';
 import { useGetApplicationInstancesQuery } from 'renderer/apis/requests/application/getApplicationInstances';
-import { applicationInstanceEntity } from 'renderer/entity/entities/applicationInstance.entity';
+import { applicationInstanceEntity, EnrichedInstanceRO } from 'renderer/entity/entities/applicationInstance.entity';
 import { Card } from '@mui/material';
 import {
   ApplicationRO,
   InstanceHealthChangedEventMessage$Payload,
   InstanceHostnameUpdatedEventMessage$Payload,
-  InstanceRO,
 } from '../../../../../common/generated_definitions';
 import { useStomp } from '../../../../apis/websockets/StompContext';
+import useItemShutdown from '../../../../hooks/useItemShutdown';
+import { SHUTDOWN_ID } from '../../../../entity/actions';
 
 const ApplicationInstances: FunctionComponent = () => {
-  const { selectedItem } = useNavigatorTree();
+  const { selectedItem, selectedItemAbilities } = useNavigatorTree();
   const { subscribe } = useStomp();
 
   const item = useMemo<ApplicationRO>(() => selectedItem as ApplicationRO, [selectedItem]);
 
-  const entity = useMemo<Entity<InstanceRO>>(() => applicationInstanceEntity, []);
+  const entity = useMemo<Entity<EnrichedInstanceRO>>(() => applicationInstanceEntity, []);
   const queryState = useGetApplicationInstancesQuery({ applicationId: item.id });
 
-  const [data, setData] = useState<InstanceRO[] | undefined>(undefined);
+  const [data, setData] = useState<EnrichedInstanceRO[] | undefined>(undefined);
   const loading = useMemo<boolean>(() => !data, [data]);
 
   useEffect(() => {
-    setData(queryState.data);
-  }, [queryState.data]);
+    setData(queryState.data?.map<EnrichedInstanceRO>((i) => ({ ...i, applicationAbilities: selectedItemAbilities })));
+  }, [queryState.data, selectedItemAbilities]);
 
   useEffect(() => {
     const unsubscribe = subscribe(
@@ -60,9 +61,25 @@ const ApplicationInstances: FunctionComponent = () => {
     };
   }, []);
 
-  const actionsHandler = useCallback(async (actionId: string, row: InstanceRO): Promise<void> => {}, []);
+  const { itemShutdown } = useItemShutdown();
 
-  const massActionsHandler = useCallback(async (actionId: string, selectedRows: InstanceRO[]): Promise<void> => {}, []);
+  const actionsHandler = useCallback(
+    async (actionId: string, row: EnrichedInstanceRO): Promise<void> => {
+      switch (actionId) {
+        case SHUTDOWN_ID:
+          await itemShutdown(row);
+          break;
+        default:
+          break;
+      }
+    },
+    [itemShutdown]
+  );
+
+  const massActionsHandler = useCallback(
+    async (actionId: string, selectedRows: EnrichedInstanceRO[]): Promise<void> => {},
+    []
+  );
 
   const globalActionsHandler = useCallback(async (actionId: string): Promise<void> => {}, []);
 

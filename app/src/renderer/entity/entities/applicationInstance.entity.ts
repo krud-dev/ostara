@@ -2,10 +2,15 @@ import { Entity } from 'renderer/entity/entity';
 import TableCellDataHealthStatus from 'renderer/components/table/data/custom/TableCellDataHealthStatus';
 import { generatePath } from 'react-router-dom';
 import { urls } from 'renderer/routes/urls';
-import { InstanceRO } from '../../../common/generated_definitions';
+import { InstanceAbility, InstanceRO } from '../../../common/generated_definitions';
 import { getItemDisplayName } from '../../utils/itemUtils';
+import { SHUTDOWN_ID } from '../actions';
 
-export const applicationInstanceEntity: Entity<InstanceRO> = {
+export type EnrichedInstanceRO = InstanceRO & {
+  applicationAbilities?: InstanceAbility[];
+};
+
+export const applicationInstanceEntity: Entity<EnrichedInstanceRO> = {
   id: 'applicationInstance',
   columns: [
     {
@@ -33,7 +38,14 @@ export const applicationInstanceEntity: Entity<InstanceRO> = {
       labelId: 'lastChangeTime',
     },
   ],
-  actions: [],
+  actions: [
+    {
+      id: SHUTDOWN_ID,
+      labelId: 'shutdown',
+      icon: 'PowerSettingsNewOutlined',
+      isDisabled: (item) => item.health.status !== 'UP' || !item.applicationAbilities?.includes('SHUTDOWN'),
+    },
+  ],
   massActions: [],
   globalActions: [],
   rowAction: {

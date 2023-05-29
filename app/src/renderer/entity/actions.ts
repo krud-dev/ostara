@@ -9,3 +9,4 @@ export const GRAPH_ID = 'graph';
 export const STATISTICS_ID = 'statistics';
 export const ENABLE_ID = 'enable';
 export const DISABLE_ID = 'disable';
+export const SHUTDOWN_ID = 'shutdown';
