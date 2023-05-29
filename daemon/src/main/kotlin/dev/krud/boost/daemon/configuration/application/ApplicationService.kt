@@ -125,6 +125,7 @@ class ApplicationService(
         private val log = KotlinLogging.logger { }
         private val ALLOWED_INSTANCE_ABILITIES_FOR_APP: Set<InstanceAbility> = setOf(
             InstanceAbility.CACHES,
+            InstanceAbility.SHUTDOWN,
             InstanceAbility.CACHE_STATISTICS,
             InstanceAbility.LOGGERS
         )
