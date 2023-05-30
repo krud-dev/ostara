@@ -45,6 +45,8 @@ import dev.krud.boost.daemon.jackson.MultiDateParsingModule
 import dev.krud.boost.daemon.okhttp.ProgressListener
 import dev.krud.boost.daemon.okhttp.ProgressResponseBody
 import okhttp3.Authenticator
+import okhttp3.Call
+import okhttp3.Callback
 import okhttp3.HttpUrl
 import okhttp3.HttpUrl.Companion.toHttpUrl
 import okhttp3.MediaType.Companion.toMediaType
@@ -54,6 +56,7 @@ import okhttp3.RequestBody
 import okhttp3.RequestBody.Companion.toRequestBody
 import okhttp3.Response
 import org.springframework.web.server.ResponseStatusException
+import java.io.IOException
 import java.io.InputStream
 import java.net.ConnectException
 import java.security.SecureRandom
@@ -262,21 +265,39 @@ class ActuatorHttpClientImpl(
      */
 
     // TODO: Write tests
-    override fun heapDump(progressListener: ProgressListener): Result<InputStream> = runCatching {
+    override fun heapDump(progressListener: ProgressListener, onDownloadComplete: (InputStream) -> Unit, onDownloadFailed: (IOException) -> Unit, onDownloadCancelled: () -> Unit): Result<ActuatorHttpClient.HeapdumpResponse> = runCatching {
         val client = getClient() {
             addNetworkInterceptor { chain ->
                 val originalResponse: Response = chain.proceed(chain.request())
                 originalResponse
                     .newBuilder()
-                    .body(ProgressResponseBody(originalResponse.body!!, progressListener))
+                    .body(ProgressResponseBody(originalResponse.body!!, progressListener, chain.call()))
                     .build()
             }
         }
         val request = Request.Builder()
             .url(asUrl("heapdump"))
             .build()
-        val response = client.newCall(request).execute()
-        response.bodyAsByteArrayAndClose()?.inputStream() ?: throwInternalServerError("Response body of heapdump was null")
+        val call = client.newCall(request)
+        call.enqueue(object : Callback {
+            override fun onFailure(call: Call, e: IOException) {
+                onDownloadFailed(e)
+            }
+
+            override fun onResponse(call: Call, response: Response) {
+                val bytes = response.body?.byteStream()?.readBytes()
+                if (call.isCanceled()) {
+                    onDownloadCancelled()
+                } else {
+                    onDownloadComplete(bytes?.inputStream() ?: InputStream.nullInputStream())
+                }
+            }
+        })
+        ActuatorHttpClient.HeapdumpResponse {
+            if (!call.isCanceled()) {
+                call.cancel()
+            }
+        }
     }
 
     /**
@@ -410,12 +431,6 @@ class ActuatorHttpClientImpl(
     private fun Response.bodyAsStringAndClose(): String? {
         return body?.use {
             it.string()
-        }
-    }
-
-    private fun Response.bodyAsByteArrayAndClose(): ByteArray? {
-        return body?.use {
-            it.bytes()
         }
     }
 

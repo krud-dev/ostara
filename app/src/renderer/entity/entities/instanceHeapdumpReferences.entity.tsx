@@ -83,7 +83,6 @@ export const instanceHeapdumpReferencesEntity: Entity<EnrichedInstanceHeapdumpRe
       id: DELETE_ID,
       labelId: 'delete',
       icon: 'DeleteOutlined',
-      isDisabled: (item) => item.status !== 'READY' && item.status !== 'FAILED',
     },
   ],
   massActions: [],

@@ -249,17 +249,6 @@ class ActuatorController(
     @ApiResponse(responseCode = "503", description = "Service unavailable", content = [Content()])
     fun threadDump(@RequestParam instanceId: UUID) = getClient(instanceId).threadDump().getOrThrow()
 
-    @GetMapping("/heapDump")
-    @ResponseStatus(HttpStatus.OK)
-    @Operation(
-        summary = "Get heap dump",
-        description = "Equivalent call to actuator heapDump /heapDump"
-    )
-    @ApiResponse(responseCode = "200", description = "Heap dump object")
-    @ApiResponse(responseCode = "404", description = "Endpoint not available", content = [Content()])
-    @ApiResponse(responseCode = "503", description = "Service unavailable", content = [Content()])
-    fun heapDump(@RequestParam instanceId: UUID) = getClient(instanceId).heapDump().getOrThrow()
-
     @GetMapping("/loggers")
     @ResponseStatus(HttpStatus.OK)
     @Operation(
