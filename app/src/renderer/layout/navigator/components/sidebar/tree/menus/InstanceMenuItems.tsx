@@ -9,13 +9,14 @@ import React from 'react';
 import CopyItemToClipboardMenuItem from './items/CopyItemToClipboardMenuItem';
 import StopDemoMenuItem from './items/StopDemoMenuItem';
 import ShutdownMenuItem from './items/ShutdownMenuItem';
+import MenuDivider from '../../../../../../components/menu/item/MenuDivider';
 
 export default function InstanceMenuItems({ item, node, onCreated, menuState }: TreeItemMenuProps) {
   const { close } = menuState;
   return (
     <>
       <ChooseColorMenuItem item={item} onClose={close} />
-      <Divider />
+      <MenuDivider />
       <CopyIdToClipboardMenuItem item={item} onClose={close} />
       <CopyItemToClipboardMenuItem item={item} onClose={close} />
       <UpdateMenuItem item={item} onClose={close} />

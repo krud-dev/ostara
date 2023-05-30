@@ -11,6 +11,7 @@ import AddFolderMenuItem from 'renderer/layout/navigator/components/sidebar/tree
 import AddApplicationMenuItem from 'renderer/layout/navigator/components/sidebar/tree/menus/items/AddApplicationMenuItem';
 import CopyItemToClipboardMenuItem from './items/CopyItemToClipboardMenuItem';
 import StopDemoMenuItem from './items/StopDemoMenuItem';
+import MenuDivider from '../../../../../../components/menu/item/MenuDivider';
 
 export default function FolderMenuItems({ item, node, onCreated, menuState }: TreeItemMenuProps) {
   const { close } = menuState;
@@ -21,11 +22,11 @@ export default function FolderMenuItems({ item, node, onCreated, menuState }: Tr
           <AddFolderMenuItem node={node} onClose={close} onCreated={onCreated} />
           <AddApplicationMenuItem node={node} onClose={close} onCreated={onCreated} />
           <AddInstanceMenuItem node={node} onClose={close} onCreated={onCreated} />
-          <Divider />
+          <MenuDivider />
         </>
       )}
       <ChooseColorMenuItem item={item} onClose={close} />
-      <Divider />
+      <MenuDivider />
       <CopyIdToClipboardMenuItem item={item} onClose={close} />
       <CopyItemToClipboardMenuItem item={item} onClose={close} />
       <UpdateMenuItem item={item} onClose={close} />

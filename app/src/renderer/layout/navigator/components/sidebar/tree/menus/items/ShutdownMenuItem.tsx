@@ -1,22 +1,29 @@
-import { useCallback, useMemo } from 'react';
+import { ReactNode, useCallback, useMemo } from 'react';
 import { FormattedMessage } from 'react-intl';
 import CustomMenuItem from 'renderer/components/menu/item/CustomMenuItem';
 import { ItemRO } from '../../../../../../../definitions/daemon';
 import { useGetItemAbilitiesQuery } from '../../../../../../../apis/requests/item/getItemAbilities';
 import Divider from '@mui/material/Divider';
 import useItemShutdown from '../../../../../../../hooks/useItemShutdown';
+import { isItemHealthy } from '../../../../../../../utils/itemUtils';
+import { Box, Tooltip } from '@mui/material';
+import MenuDivider from '../../../../../../../components/menu/item/MenuDivider';
 
-type DeleteMenuItemProps = {
+type ShutdownMenuItemProps = {
   item: ItemRO;
   onClose?: () => void;
 };
 
-export default function ShutdownMenuItem({ item, onClose }: DeleteMenuItemProps) {
+export default function ShutdownMenuItem({ item, onClose }: ShutdownMenuItemProps) {
   const abilitiesState = useGetItemAbilitiesQuery({ item: item });
 
   const disabled = useMemo<boolean>(
-    () => !abilitiesState.data || !abilitiesState.data.includes('SHUTDOWN'),
+    () => !isItemHealthy(item) || !abilitiesState.data?.includes('SHUTDOWN'),
     [abilitiesState.data]
+  );
+  const tooltip = useMemo<ReactNode | undefined>(
+    () => (disabled ? <FormattedMessage id={'shutdownInstanceDisabled'} /> : undefined),
+    [disabled]
   );
 
   const { itemShutdown } = useItemShutdown();
@@ -29,7 +36,7 @@ export default function ShutdownMenuItem({ item, onClose }: DeleteMenuItemProps)
 
   return (
     <>
-      <Divider />
+      <MenuDivider />
 
       <CustomMenuItem
         icon={'PowerSettingsNewOutlined'}
@@ -37,6 +44,7 @@ export default function ShutdownMenuItem({ item, onClose }: DeleteMenuItemProps)
         onClick={showdownHandler}
         color={'error.main'}
         disabled={disabled}
+        tooltip={tooltip}
       />
     </>
   );

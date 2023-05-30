@@ -38,6 +38,7 @@ export default {
   areYouSureYouWantToDelete: 'Are you sure you want to delete "{name}"?',
   areYouSureYouWantToShutdown: 'Are you sure you want to shutdown "{name}"?',
   shutdownRequestSuccessful: 'Shutdown request was successful. It may take a few seconds for the instance to shutdown.',
+  shutdownInstanceDisabled: 'Shutdown is only available for healthy instances with the shutdown endpoint enabled',
   actuatorUrl: 'Actuator URL',
   actuatorUrls: 'Actuator URLs',
   requiredField: 'Required field',

@@ -5,6 +5,7 @@ import { urls } from 'renderer/routes/urls';
 import { InstanceAbility, InstanceRO } from '../../../common/generated_definitions';
 import { getItemDisplayName } from '../../utils/itemUtils';
 import { SHUTDOWN_ID } from '../actions';
+import { FormattedMessage } from 'react-intl';
 
 export type EnrichedInstanceRO = InstanceRO & {
   applicationAbilities?: InstanceAbility[];
@@ -43,7 +44,12 @@ export const applicationInstanceEntity: Entity<EnrichedInstanceRO> = {
       id: SHUTDOWN_ID,
       labelId: 'shutdown',
       icon: 'PowerSettingsNewOutlined',
-      isDisabled: (item) => item.health.status !== 'UP' || !item.applicationAbilities?.includes('SHUTDOWN'),
+      isDisabled: (item) => {
+        if (item.health.status !== 'UP' || !item.applicationAbilities?.includes('SHUTDOWN')) {
+          return <FormattedMessage id="shutdownInstanceDisabled" />;
+        }
+        return false;
+      },
     },
   ],
   massActions: [],

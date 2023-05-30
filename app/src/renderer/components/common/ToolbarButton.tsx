@@ -22,7 +22,7 @@ export default function ToolbarButton({ tooltip, icon, color, size, disabled, on
 
   return (
     <Box sx={{ display: 'inline-block', ...sx }}>
-      <Tooltip title={tooltip} disableInteractive={false}>
+      <Tooltip title={tooltip}>
         <Box component={'span'} onClick={wrapperClickHandler}>
           <IconButton disabled={disabled} color={color} size={size} onClick={onClick}>
             <IconViewer icon={icon} fontSize={'small'} />
