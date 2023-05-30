@@ -129,20 +129,19 @@ class InstanceHeapdumpService(
             }
 
             val onDownloadCompleted: (InputStream) -> Unit = { inputStream ->
-
+                ongoingDownloads.remove(referenceId)
                 val (path, size) = instanceHeapdumpStore.storeHeapdump(reference.id, inputStream)
                     .getOrThrow()
                 reference.ready(
                     path = path,
                     size = size)
                 reference.update()
-                ongoingDownloads.remove(referenceId)
             }
 
             val onDownloadFailed: (IOException) -> Unit = { error ->
+                ongoingDownloads.remove(referenceId)
                 reference.failed(error)
                 reference.update()
-                ongoingDownloads.remove(referenceId)
             }
 
             val onDownloadCancelled: () -> Unit = {

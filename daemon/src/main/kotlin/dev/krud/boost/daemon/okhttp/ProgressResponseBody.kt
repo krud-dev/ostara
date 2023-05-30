@@ -33,7 +33,6 @@ class ProgressResponseBody(private val realResponseBody: ResponseBody, private v
                 }
                 val bytesRead = super.read(sink, byteCount)
                 totalBytesRead += if (bytesRead != -1L) bytesRead else 0
-                Thread.sleep(1000)
                 listener(totalBytesRead, realResponseBody.contentLength(), bytesRead == -1L)
                 return bytesRead
             }
