@@ -434,12 +434,6 @@ class ActuatorHttpClientImpl(
         }
     }
 
-    private fun Response.bodyAsByteArrayAndClose(): ByteArray? {
-        return body?.use {
-            it.bytes()
-        }
-    }
-
     private fun Response.throwStatusException() {
         if (isSuccessful) {
             return
