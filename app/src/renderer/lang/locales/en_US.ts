@@ -390,6 +390,7 @@ export default {
   enableAll: 'Enable All',
   parameters: 'Parameters',
   attributes: 'Attributes',
+  discord: 'Discord',
   joinDiscord: 'Join Discord',
   shutdown: 'Shutdown',
   home: 'Home',

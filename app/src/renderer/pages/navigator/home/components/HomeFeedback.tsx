@@ -24,6 +24,9 @@ export default function HomeFeedback({}: HomeFeedbackProps) {
         </Typography>
 
         <Stack direction={{ xs: 'column', sm: 'row' }} spacing={2} sx={{ mt: 3 }}>
+          <Button variant="outlined" color="primary" onClick={sendFeedbackHandler}>
+            <FormattedMessage id={'sendFeedback'} />
+          </Button>
           <Button
             variant="outlined"
             color="primary"
@@ -40,10 +43,7 @@ export default function HomeFeedback({}: HomeFeedbackProps) {
             target="_blank"
             rel="noopener noreferrer"
           >
-            <FormattedMessage id={'joinDiscord'} />
-          </Button>
-          <Button variant="outlined" color="primary" onClick={sendFeedbackHandler}>
-            <FormattedMessage id={'sendFeedback'} />
+            <FormattedMessage id={'discord'} />
           </Button>
           {/*<Button*/}
           {/*  variant="outlined"*/}
