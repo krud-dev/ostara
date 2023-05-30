@@ -265,7 +265,7 @@ class ActuatorHttpClientImpl(
      */
 
     // TODO: Write tests
-    override fun heapDump(progressListener: ProgressListener, onDownloadComplete: (InputStream) -> Unit, onDownloadFailed: (IOException) -> Unit): Result<ActuatorHttpClient.HeapdumpResponse> = runCatching {
+    override fun heapDump(progressListener: ProgressListener, onDownloadComplete: (InputStream) -> Unit, onDownloadFailed: (IOException) -> Unit, onDownloadCancelled: () -> Unit): Result<ActuatorHttpClient.HeapdumpResponse> = runCatching {
         val client = getClient() {
             addNetworkInterceptor { chain ->
                 val originalResponse: Response = chain.proceed(chain.request())
@@ -285,7 +285,12 @@ class ActuatorHttpClientImpl(
             }
 
             override fun onResponse(call: Call, response: Response) {
-                onDownloadComplete(response.bodyAsByteArrayAndClose()?.inputStream() ?: InputStream.nullInputStream())
+                val bytes = response.body?.byteStream()?.readBytes()
+                if (call.isCanceled()) {
+                    onDownloadCancelled()
+                } else {
+                    onDownloadComplete(bytes?.inputStream() ?: InputStream.nullInputStream())
+                }
             }
         })
         ActuatorHttpClient.HeapdumpResponse {

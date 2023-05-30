@@ -132,7 +132,7 @@ interface ActuatorHttpClient {
      */
 
     // TODO: Write tests
-    fun heapDump(progressListener: ProgressListener = { _, _, _ -> }, onDownloadComplete: (InputStream) -> Unit, onDownloadFailed: (IOException) -> Unit): Result<HeapdumpResponse>
+    fun heapDump(progressListener: ProgressListener = { _, _, _ -> }, onDownloadComplete: (InputStream) -> Unit, onDownloadFailed: (IOException) -> Unit, onDownloadCancelled: () -> Unit): Result<HeapdumpResponse>
 
     /**
      * Loggers
