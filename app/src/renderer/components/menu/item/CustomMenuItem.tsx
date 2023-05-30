@@ -1,6 +1,5 @@
-import { SvgIconComponent } from '@mui/icons-material';
 import React, { ReactNode } from 'react';
-import { ListItemIcon, ListItemText, MenuItem, MenuItemProps } from '@mui/material';
+import { Box, ListItemIcon, ListItemText, MenuItem, MenuItemProps, Tooltip } from '@mui/material';
 import { IconViewer, MUIconType } from 'renderer/components/common/IconViewer';
 
 export type CustomMenuItemProps = {
@@ -8,30 +7,44 @@ export type CustomMenuItemProps = {
   text?: ReactNode;
   color?: string;
   info?: ReactNode;
+  tooltip?: ReactNode;
 } & MenuItemProps;
 
-export default function CustomMenuItem({ icon, text, color, info, sx, children, ...props }: CustomMenuItemProps) {
+export default function CustomMenuItem({
+  icon,
+  text,
+  color,
+  info,
+  tooltip,
+  sx,
+  children,
+  ...props
+}: CustomMenuItemProps) {
   return (
-    <MenuItem
-      {...props}
-      sx={{
-        color: color,
-        '.MuiListItemIcon-root': { color: color },
-        '&:hover': { color: 'text.primary', backgroundColor: color },
-        '&:hover .MuiListItemIcon-root': { color: 'text.primary' },
-        ...sx,
-      }}
-    >
-      {icon && (
-        <ListItemIcon>
-          <IconViewer icon={icon} fontSize="small" />
-        </ListItemIcon>
-      )}
-      <ListItemText>
-        {text}
-        {children}
-      </ListItemText>
-      {info && info}
-    </MenuItem>
+    <Tooltip title={tooltip} placement={'right'}>
+      <Box>
+        <MenuItem
+          {...props}
+          sx={{
+            color: color,
+            '.MuiListItemIcon-root': { color: color },
+            '&:hover': { color: 'text.primary', backgroundColor: color },
+            '&:hover .MuiListItemIcon-root': { color: 'text.primary' },
+            ...sx,
+          }}
+        >
+          {icon && (
+            <ListItemIcon>
+              <IconViewer icon={icon} fontSize="small" />
+            </ListItemIcon>
+          )}
+          <ListItemText>
+            {text}
+            {children}
+          </ListItemText>
+          {info}
+        </MenuItem>
+      </Box>
+    </Tooltip>
   );
 }

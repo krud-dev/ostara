@@ -4,6 +4,8 @@ import CustomMenuItem from 'renderer/components/menu/item/CustomMenuItem';
 import { ItemRO } from '../../../../../../../definitions/daemon';
 import { isItemDemo } from '../../../../../../../utils/itemUtils';
 import useStopDemo from '../../../../../../../hooks/demo/useStopDemo';
+import Divider from '@mui/material/Divider';
+import MenuDivider from '../../../../../../../components/menu/item/MenuDivider';
 
 type DeleteMenuItemProps = {
   item: ItemRO;
@@ -28,11 +30,15 @@ export default function StopDemoMenuItem({ item, onClose }: DeleteMenuItemProps)
   }
 
   return (
-    <CustomMenuItem
-      icon={'DangerousOutlined'}
-      text={<FormattedMessage id={'stopDemo'} />}
-      onClick={stopDemoHandler}
-      color={'error.main'}
-    />
+    <>
+      <MenuDivider />
+
+      <CustomMenuItem
+        icon={'DangerousOutlined'}
+        text={<FormattedMessage id={'stopDemo'} />}
+        onClick={stopDemoHandler}
+        color={'error.main'}
+      />
+    </>
   );
 }

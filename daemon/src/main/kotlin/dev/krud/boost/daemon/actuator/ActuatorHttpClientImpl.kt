@@ -360,7 +360,7 @@ class ActuatorHttpClientImpl(
         doRequest(url, "GET", null, build)
 
     private inline fun <reified Type> doPost(url: HttpUrl, requestBody: RequestBody? = null, build: Request.Builder.() -> Unit = {}): Result<Type> =
-        doRequest(url, "POST", requestBody, build)
+        doRequest(url, "POST", requestBody ?: "".toRequestBody(), build)
 
     private inline fun <reified Type> doDelete(url: HttpUrl, build: Request.Builder.() -> Unit = {}): Result<Type> = doRequest(url, "DELETE", null, build)
 

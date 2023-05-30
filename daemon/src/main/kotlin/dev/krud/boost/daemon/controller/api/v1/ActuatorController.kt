@@ -172,7 +172,7 @@ class ActuatorController(
     @ApiResponse(responseCode = "503", description = "Service unavailable", content = [Content()])
     fun metric(@RequestParam instanceId: UUID, @PathVariable metric: String, @RequestBody(required = false) tags: Map<String, String>?) = getClient(instanceId).metric(metric, tags ?: emptyMap()).getOrThrow()
 
-    @GetMapping("/shutdown")
+    @PostMapping("/shutdown")
     @ResponseStatus(HttpStatus.OK)
     @Operation(
         summary = "Shutdown the application",

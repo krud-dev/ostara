@@ -47,7 +47,8 @@ class ApplicationServiceTest {
                 InstanceAbility.CACHE_STATISTICS,
                 InstanceAbility.HEALTH,
                 InstanceAbility.METRICS,
-                InstanceAbility.SHUTDOWN
+                InstanceAbility.SHUTDOWN,
+                InstanceAbility.SYSTEM_PROPERTIES
             )
         )
 
@@ -67,7 +68,8 @@ class ApplicationServiceTest {
             setOf(
                 InstanceAbility.CACHES,
                 InstanceAbility.CACHE_STATISTICS,
-                InstanceAbility.LOGGERS
+                InstanceAbility.LOGGERS,
+                InstanceAbility.SHUTDOWN
             )
         )
     }

@@ -9,6 +9,7 @@ import CopyIdToClipboardMenuItem from 'renderer/layout/navigator/components/side
 import React from 'react';
 import CopyItemToClipboardMenuItem from './items/CopyItemToClipboardMenuItem';
 import StopDemoMenuItem from './items/StopDemoMenuItem';
+import MenuDivider from '../../../../../../components/menu/item/MenuDivider';
 
 export default function ApplicationMenuItems({ item, node, onCreated, menuState }: TreeItemMenuProps) {
   const { close } = menuState;
@@ -17,11 +18,11 @@ export default function ApplicationMenuItems({ item, node, onCreated, menuState 
       {node && (
         <>
           <AddInstanceMenuItem node={node} onClose={close} onCreated={onCreated} />
-          <Divider />
+          <MenuDivider />
         </>
       )}
       <ChooseColorMenuItem item={item} onClose={close} />
-      <Divider />
+      <MenuDivider />
       <CopyIdToClipboardMenuItem item={item} onClose={close} />
       <CopyItemToClipboardMenuItem item={item} onClose={close} />
       <UpdateMenuItem item={item} onClose={close} />

@@ -161,6 +161,16 @@ export const isInstanceInactive = (instance: InstanceRO): boolean => {
   return instance.health.status === 'UNREACHABLE' || instance.health.status === 'INVALID';
 };
 
+export const isItemHealthy = (item: ItemRO): boolean => {
+  if (isApplication(item)) {
+    return item.health.status === 'ALL_UP';
+  }
+  if (isInstance(item)) {
+    return item.health.status === 'UP';
+  }
+  return true;
+};
+
 const HEALTH_STATUS_COLORS_INDEX = 600;
 
 export const getInstanceHealthStatusColor = (instanceHealth: InstanceHealthRO): string | undefined => {
