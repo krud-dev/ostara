@@ -1,17 +1,9 @@
-import React, { FunctionComponent, useCallback, useEffect, useMemo, useState } from 'react';
+import React, { FunctionComponent, useCallback, useMemo } from 'react';
 import Page from 'renderer/components/layout/Page';
 import { useNavigatorTree } from 'renderer/contexts/NavigatorTreeContext';
 import { Box, Button, Card, CardContent, CardHeader, Stack } from '@mui/material';
-import {
-  ApplicationRO,
-  InstanceHealthChangedEventMessage$Payload,
-  InstanceHealthStatus,
-  InstanceHostnameUpdatedEventMessage$Payload,
-  InstanceRO,
-} from '../../../../../common/generated_definitions';
-import { useStomp } from '../../../../apis/websockets/StompContext';
+import { ApplicationRO, InstanceHealthStatus, InstanceRO } from '../../../../../common/generated_definitions';
 import { EnrichedInstanceRO } from '../../../../entity/entities/applicationInstance.entity';
-import { useGetApplicationInstancesQuery } from '../../../../apis/requests/application/getApplicationInstances';
 import LogoLoader from '../../../../components/common/LogoLoader';
 import EmptyContent from '../../../../components/help/EmptyContent';
 import { FormattedMessage } from 'react-intl';
@@ -20,59 +12,27 @@ import Grid2 from '@mui/material/Unstable_Grid2';
 import ApplicationInstancesHealthStatusWidget from './components/ApplicationInstancesHealthStatusWidget';
 import ApplicationInstanceWidget from './components/ApplicationInstanceWidget';
 import { isEmpty } from 'lodash';
-import { LoadingButton } from '@mui/lab';
-import { IconViewer } from '../../../../components/common/IconViewer';
 import NiceModal from '@ebay/nice-modal-react';
 import CreateInstanceDialog from '../../../../components/item/dialogs/create/CreateInstanceDialog';
-import { getNewItemSort } from '../../../../utils/treeUtils';
+import { useItems } from '../../../../contexts/ItemsContext';
 
 const ApplicationDashboard: FunctionComponent = () => {
+  const { instances } = useItems();
   const { selectedItem, selectedItemAbilities } = useNavigatorTree();
-  const { subscribe } = useStomp();
 
   const item = useMemo<ApplicationRO>(() => selectedItem as ApplicationRO, [selectedItem]);
 
-  const queryState = useGetApplicationInstancesQuery({ applicationId: item.id });
-
-  const [data, setData] = useState<EnrichedInstanceRO[] | undefined>(undefined);
+  const data = useMemo<EnrichedInstanceRO[] | undefined>(
+    () =>
+      instances
+        ?.filter((i) => i.parentApplicationId === item.id)
+        ?.map<EnrichedInstanceRO>((i) => ({ ...i, applicationAbilities: selectedItemAbilities })),
+    [instances, selectedItemAbilities]
+  );
   const healthStatuses = useMemo<InstanceHealthStatus[]>(
     () => ['UP', 'DOWN', 'UNREACHABLE', 'OUT_OF_SERVICE', 'INVALID', 'PENDING'],
     []
   );
-
-  useEffect(() => {
-    setData(queryState.data?.map<EnrichedInstanceRO>((i) => ({ ...i, applicationAbilities: selectedItemAbilities })));
-  }, [queryState.data, selectedItemAbilities]);
-
-  useEffect(() => {
-    const unsubscribe = subscribe(
-      '/topic/instanceHealth',
-      {},
-      (healthChanged: InstanceHealthChangedEventMessage$Payload): void => {
-        setData((prev) =>
-          prev?.map((i) => (i.id === healthChanged.instanceId ? { ...i, health: healthChanged.newHealth } : i))
-        );
-      }
-    );
-    return () => {
-      unsubscribe();
-    };
-  }, []);
-
-  useEffect(() => {
-    const unsubscribe = subscribe(
-      '/topic/instanceHostname',
-      {},
-      (hostnameUpdated: InstanceHostnameUpdatedEventMessage$Payload): void => {
-        setData((prev) =>
-          prev?.map((i) => (i.id === hostnameUpdated.instanceId ? { ...i, hostname: hostnameUpdated.hostname } : i))
-        );
-      }
-    );
-    return () => {
-      unsubscribe();
-    };
-  }, []);
 
   const createInstanceHandler = useCallback(async (): Promise<void> => {
     await NiceModal.show<InstanceRO[] | undefined>(CreateInstanceDialog, {
