@@ -12,6 +12,7 @@ import { useMaximizeWindow } from '../../../apis/requests/ui/maximizeWindow';
 import SettingsMenu from './navbar/SettingsMenu';
 import HelpMenu from './navbar/HelpMenu';
 import { FormattedMessage } from 'react-intl';
+import AppFeedbackMenu from './navbar/AppFeedbackMenu';
 
 export const NAVBAR_TOOLTIP_DELAY = 1000;
 
@@ -90,6 +91,7 @@ export default function MainNavbar({}: MainNavbarProps) {
 
         <Stack direction="row" spacing={0.5}>
           <HelpMenu />
+          <AppFeedbackMenu />
           <SettingsMenu />
         </Stack>
 
