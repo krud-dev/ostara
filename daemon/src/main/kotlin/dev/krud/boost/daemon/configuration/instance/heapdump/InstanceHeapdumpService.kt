@@ -1,5 +1,6 @@
 package dev.krud.boost.daemon.configuration.instance.heapdump
 
+import dev.krud.boost.daemon.actuator.ActuatorHttpClient
 import dev.krud.boost.daemon.configuration.instance.InstanceActuatorClientProvider
 import dev.krud.boost.daemon.configuration.instance.InstanceService
 import dev.krud.boost.daemon.configuration.instance.heapdump.messaging.InstanceHeapdumpDownloadProgressMessage
@@ -11,6 +12,8 @@ import dev.krud.boost.daemon.configuration.instance.heapdump.ro.InstanceHeapdump
 import dev.krud.boost.daemon.configuration.instance.heapdump.store.InstanceHeapdumpStore
 import dev.krud.boost.daemon.exception.throwBadRequest
 import dev.krud.boost.daemon.exception.throwNotFound
+import dev.krud.boost.daemon.okhttp.ProgressListener
+import dev.krud.boost.daemon.utils.emptyResult
 import dev.krud.crudframework.crud.handler.krud.Krud
 import dev.krud.shapeshift.ShapeShift
 import io.github.oshai.KotlinLogging
@@ -19,8 +22,10 @@ import org.springframework.integration.annotation.ServiceActivator
 import org.springframework.integration.channel.PublishSubscribeChannel
 import org.springframework.integration.channel.QueueChannel
 import org.springframework.stereotype.Service
+import java.io.IOException
 import java.io.InputStream
 import java.util.*
+import java.util.concurrent.ConcurrentHashMap
 
 @Service
 class InstanceHeapdumpService(
@@ -33,6 +38,7 @@ class InstanceHeapdumpService(
     private val instanceHeapdumpDownloadProgressInputChannel: PublishSubscribeChannel
 ) : InitializingBean {
     private val mutex = Any()
+    private val ongoingDownloads = ConcurrentHashMap<UUID, ActuatorHttpClient.HeapdumpResponse>()
 
     override fun afterPropertiesSet() {
         synchronized(mutex) {
@@ -108,7 +114,7 @@ class InstanceHeapdumpService(
         try {
             val instance = instanceService.getInstanceOrThrow(instanceId)
             val client = actuatorClientProvider.provide(instance)
-            val heapdumpInputStream = client.heapDump { bytesRead, contentLength, done ->
+            val downloadProgressListener: ProgressListener = { bytesRead, contentLength, done ->
                 instanceHeapdumpDownloadProgressInputChannel.send(
                     InstanceHeapdumpDownloadProgressMessage(
                         InstanceHeapdumpDownloadProgressMessage.Payload(
@@ -121,16 +127,29 @@ class InstanceHeapdumpService(
                     )
                 )
             }
+
+            val onDownloadCompleted: (InputStream) -> Unit = { inputStream ->
+                val (path, size) = instanceHeapdumpStore.storeHeapdump(reference.id, inputStream)
+                    .getOrThrow()
+                reference.ready(
+                    path = path,
+                    size = size)
+                reference.update()
+                ongoingDownloads.remove(referenceId)
+            }
+
+            val onDownloadFailed: (IOException) -> Unit = { error ->
+                reference.failed(error)
+                reference.update()
+                ongoingDownloads.remove(referenceId)
+            }
+            val response = client.heapDump(downloadProgressListener, onDownloadCompleted, onDownloadFailed)
                 .getOrThrow()
-            val (path, size) = instanceHeapdumpStore.storeHeapdump(reference.id, heapdumpInputStream)
-                .getOrThrow()
-            reference.ready(
-                path = path,
-                size = size
-            )
+            ongoingDownloads.putIfAbsent(referenceId, response)
         } catch (e: Exception) {
             log.error(e) { "Failed to download heapdump for instance $instanceId" }
             reference.failed(e)
+            reference.update()
             instanceHeapdumpDownloadProgressInputChannel.send(
                 InstanceHeapdumpDownloadProgressMessage(
                     InstanceHeapdumpDownloadProgressMessage.Payload(
@@ -143,14 +162,14 @@ class InstanceHeapdumpService(
                     )
                 )
             )
-        } finally {
-            instanceHeapdumpReferenceKrud.updateById(referenceId) {
-                status = reference.status
-                error = reference.error
-                path = reference.path
-                size = reference.size
-            }
         }
+    }
+
+    fun cancelHeapdumpDownload(referenceId: UUID) {
+        log.debug { "Cancelling heapdump download for reference $referenceId" }
+        val response = ongoingDownloads[referenceId]
+        response?.cancelDownload?.invoke()
+        ongoingDownloads.remove(referenceId)
     }
 
     fun downloadHeapdump(referenceId: UUID): InputStream {
@@ -165,12 +184,28 @@ class InstanceHeapdumpService(
     fun deleteHeapdump(referenceId: UUID) {
         log.debug { "Deleting heapdump $referenceId" }
         val reference = getHeapdumpReferenceOrThrow(referenceId)
-        if (reference.status == InstanceHeapdumpReference.Status.DOWNLOADING) {
-            throwBadRequest("Heapdump $referenceId is downloading, please wait.")
+        val result = when (reference.status) {
+            InstanceHeapdumpReference.Status.PENDING_DOWNLOAD -> emptyResult()
+            InstanceHeapdumpReference.Status.DOWNLOADING -> {
+                cancelHeapdumpDownload(referenceId)
+                emptyResult()
+            }
+            InstanceHeapdumpReference.Status.READY -> {
+                instanceHeapdumpStore.deleteHeapdump(referenceId)
+            }
+            InstanceHeapdumpReference.Status.FAILED -> emptyResult()
         }
-        instanceHeapdumpStore.deleteHeapdump(referenceId)
-            .getOrThrow()
+        result.getOrThrow()
         instanceHeapdumpReferenceKrud.deleteById(referenceId)
+    }
+
+    private fun InstanceHeapdumpReference.update() {
+        instanceHeapdumpReferenceKrud.updateById(this.id) {
+            this.status = this@update.status
+            this.error = this@update.error
+            this.path = this@update.path
+            this.size = this@update.size
+        }
     }
 
     companion object {

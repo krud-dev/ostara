@@ -28,6 +28,7 @@ import dev.krud.boost.daemon.actuator.model.TestConnectionResponse
 import dev.krud.boost.daemon.actuator.model.ThreadDumpActuatorResponse
 import dev.krud.boost.daemon.actuator.model.TogglzFeatureActuatorResponse
 import dev.krud.boost.daemon.okhttp.ProgressListener
+import java.io.IOException
 import java.io.InputStream
 
 interface ActuatorHttpClient {
@@ -131,7 +132,7 @@ interface ActuatorHttpClient {
      */
 
     // TODO: Write tests
-    fun heapDump(progressListener: ProgressListener = { _, _, _ -> }): Result<InputStream>
+    fun heapDump(progressListener: ProgressListener = { _, _, _ -> }, onDownloadComplete: (InputStream) -> Unit, onDownloadFailed: (IOException) -> Unit): Result<HeapdumpResponse>
 
     /**
      * Loggers
@@ -182,4 +183,8 @@ interface ActuatorHttpClient {
     fun togglzFeature(featureName: String): Result<TogglzFeatureActuatorResponse>
 
     fun updateTogglzFeature(featureName: String, enabled: Boolean): Result<TogglzFeatureActuatorResponse>
+
+    data class HeapdumpResponse(
+        val cancelDownload: () -> Unit
+    )
 }
