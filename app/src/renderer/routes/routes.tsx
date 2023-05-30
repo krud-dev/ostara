@@ -76,7 +76,7 @@ export default function Router() {
               path: urls.application.path,
               element: <ApplicationLayout />,
               children: [
-                { path: '', element: <Navigate to={urls.applicationInstances.path} replace /> },
+                { path: '', element: <Navigate to={urls.applicationDashboard.path} replace /> },
                 {
                   path: urls.applicationDashboard.path,
                   element: <ApplicationDashboard />,

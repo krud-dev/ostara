@@ -1,6 +1,6 @@
 import Sidebar from 'renderer/components/menu/sidebar/Sidebar';
 import { SidebarConfig } from 'renderer/components/menu/sidebar/SidebarSection';
-import { ClassOutlined, ListAltOutlined } from '@mui/icons-material';
+import { BarChartOutlined, ClassOutlined, ListAltOutlined } from '@mui/icons-material';
 import { urls } from 'renderer/routes/urls';
 import { useCallback, useMemo } from 'react';
 import { FormattedMessage } from 'react-intl';
@@ -28,12 +28,12 @@ export default function ApplicationSidebar({ item, itemAbilities, width }: Appli
               id: 'overview',
               label: <FormattedMessage id={'overview'} />,
               items: [
-                // {
-                //   id: 'dashboard',
-                //   icon: <BarChartOutlined />,
-                //   label: <FormattedMessage id={'dashboard'} />,
-                //   to: generatePath(urls.applicationDashboard.url, { id: item.id }),
-                // },
+                {
+                  id: 'dashboard',
+                  icon: <BarChartOutlined />,
+                  label: <FormattedMessage id={'dashboard'} />,
+                  to: generatePath(urls.applicationDashboard.url, { id: item.id }),
+                },
                 {
                   id: 'instances',
                   icon: <IconViewer icon={getItemTypeIcon('instance')} />,

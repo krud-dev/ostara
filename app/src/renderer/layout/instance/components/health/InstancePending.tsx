@@ -1,8 +1,8 @@
 import { Card, CardContent, CircularProgress, Typography } from '@mui/material';
 import Page from 'renderer/components/layout/Page';
 import React, { useMemo } from 'react';
-import { getItemHealthStatusColor } from 'renderer/utils/itemUtils';
-import { IconViewer } from 'renderer/components/common/IconViewer';
+import { getInstanceHealthStatusIcon, getItemHealthStatusColor } from 'renderer/utils/itemUtils';
+import { IconViewer, MUIconType } from 'renderer/components/common/IconViewer';
 import { FormattedMessage } from 'react-intl';
 import { InstanceRO } from '../../../../../common/generated_definitions';
 import useItemDisplayName from '../../../../hooks/useItemDisplayName';
@@ -14,6 +14,7 @@ type InstancePendingProps = {
 export default function InstancePending({ item }: InstancePendingProps) {
   const displayName = useItemDisplayName(item);
   const healthStatusColor = useMemo<string | undefined>(() => getItemHealthStatusColor(item), [item]);
+  const healthStatusIcon = useMemo<MUIconType>(() => getInstanceHealthStatusIcon(item.health.status), [item]);
 
   return (
     <Page sx={{ height: '100%' }}>
@@ -28,7 +29,7 @@ export default function InstancePending({ item }: InstancePendingProps) {
             justifyContent: 'center',
           }}
         >
-          <IconViewer icon={'HourglassEmptyOutlined'} sx={{ color: healthStatusColor, fontSize: 48 }} />
+          <IconViewer icon={healthStatusIcon} sx={{ color: healthStatusColor, fontSize: 48 }} />
 
           <Typography variant="h5" gutterBottom sx={{ mt: 2 }}>
             <FormattedMessage id={'instanceAliasPending'} values={{ alias: displayName }} />
