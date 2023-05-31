@@ -75,3 +75,143 @@ class BackupParser(
         private val log = KotlinLogging.logger { }
     }
 }
+
+fun main() {
+    val json = """
+        {
+            "version": 1,
+            "deprecatedField": false,
+            "tree": [
+                {
+                    "model": {
+                        "alias": "rootFolder1",
+                        "description": null,
+                        "color": "inherited",
+                        "icon": null,
+                        "sort": null,
+                        "authentication": "inherit"
+                    },
+                    "children": [
+                        {
+                            "model": {
+                                "alias": "rootFolder1_1",
+                                "description": null,
+                                "color": "inherited",
+                                "icon": null,
+                                "sort": null,
+                                "authentication": "inherit"
+                            },
+                            "children": [],
+                            "type": "folder"
+                        },
+                        {
+                            "model": {
+                                "alias": "rootFolder1_2",
+                                "description": null,
+                                "color": "inherited",
+                                "icon": null,
+                                "sort": null,
+                                "authentication": "inherit"
+                            },
+                            "children": [],
+                            "type": "folder"
+                        },
+                        {
+                            "model": {
+                                "alias": "rootFolder1Application1",
+                                "description": null,
+                                "type": "SPRING_BOOT",
+                                "color": "inherited",
+                                "icon": null,
+                                "sort": null,
+                                "authentication": "inherit",
+                                "disableSslVerification": false
+                            },
+                            "children": [
+                                {
+                                    "model": {
+                                        "alias": "rootFolder1ApplicationInstance1",
+                                        "actuatorUrl": "http://example.com/actuator",
+                                        "description": null,
+                                        "color": "inherited",
+                                        "icon": null,
+                                        "sort": null
+                                    },
+                                    "type": "instance"
+                                },
+                                {
+                                    "model": {
+                                        "alias": "rootFolder1ApplicationInstance2",
+                                        "actuatorUrl": "http://example.com/actuator",
+                                        "description": null,
+                                        "color": "inherited",
+                                        "icon": null,
+                                        "sort": null
+                                    },
+                                    "type": "instance"
+                                }
+                            ],
+                            "type": "application"
+                        }
+                    ],
+                    "type": "folder"
+                },
+                {
+                    "model": {
+                        "alias": "rootApplication1",
+                        "description": null,
+                        "type": "SPRING_BOOT",
+                        "color": "inherited",
+                        "icon": null,
+                        "sort": null,
+                        "authentication": "inherit",
+                        "disableSslVerification": false
+                    },
+                    "children": [
+                        {
+                            "model": {
+                                "alias": "rootApplicationInstance1",
+                                "actuatorUrl": "http://example.com/actuator",
+                                "description": null,
+                                "color": "inherited",
+                                "icon": null,
+                                "sort": null
+                            },
+                            "type": "instance"
+                        },
+                        {
+                            "model": {
+                                "alias": "rootApplicationInstance2",
+                                "actuatorUrl": "http://example.com/actuator",
+                                "description": null,
+                                "color": "inherited",
+                                "icon": null,
+                                "sort": null
+                            },
+                            "type": "instance"
+                        }
+                    ],
+                    "type": "application"
+                }
+            ]
+        }
+    """.trimIndent()
+
+    val backupParser = BackupParser(listOf(
+        object : BackupMigration {
+            override val toVersion: Int = 5
+            override fun migrate(input: ObjectNode) {
+                super.migrate(input)
+            }
+        },
+        object : BackupMigration {
+            override val toVersion: Int = 6
+            override fun migrate(input: ObjectNode) {
+                super.migrate(input)
+                input.remove("deprecatedField")
+            }
+        },
+    ))
+    val backupDTO = backupParser.parse(json)
+    println(backupDTO)
+}
