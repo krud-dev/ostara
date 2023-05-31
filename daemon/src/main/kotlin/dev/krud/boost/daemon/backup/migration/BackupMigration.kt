@@ -1,0 +1,25 @@
+package dev.krud.boost.daemon.backup.migration
+
+import com.fasterxml.jackson.databind.node.NumericNode
+import com.fasterxml.jackson.databind.node.ObjectNode
+
+interface BackupMigration {
+    val toVersion: Int
+    fun migrate(input: ObjectNode) {
+        input.set<NumericNode>("version", input.numberNode(toVersion))
+    }
+
+    companion object {
+        fun Collection<BackupMigration>.getForVersion(fromVersion: Int): List<BackupMigration> {
+            return this.filter { it.toVersion > fromVersion }.sortedBy { it.toVersion }
+        }
+
+        fun Collection<BackupMigration>.getLatestVersion(): Int {
+            if (this.isEmpty()) {
+                error("No backup migrations found")
+            }
+            return this.maxBy { it.toVersion }.toVersion
+        }
+    }
+}
+
