@@ -53,11 +53,28 @@ class ApplicationMetricRule(
     var enabled: Boolean = true,
     @Column(name = "application_id", nullable = false, updatable = false)
     @MappedField
-    var applicationId: UUID
+    var applicationId: UUID,
+    @Column(nullable = false)
+    @Enumerated(EnumType.STRING)
+    @MappedField
+    var type: Type
 ) : AbstractEntity() {
     @ManyToOne
     @JoinColumn(name = "application_id", nullable = false, updatable = false, insertable = false)
     var application: Application? = null
+
+    enum class Type {
+        /**
+         * Simple rule, that is evaluated on the value of the metric
+         */
+        SIMPLE,
+
+        /**
+         * Rule, that is evaluated on the value of the metric divided by the value of the divisor metric
+         */
+        RELATIVE,
+        // TODO: Add support for adaptive type
+    }
 
     companion object {
         val ApplicationMetricRule.parsedMetricName: ParsedMetricName get() = ParsedMetricName.from(metricName)

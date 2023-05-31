@@ -403,6 +403,7 @@ export interface ApplicationMetricRuleCreateRequestRO {
     value2?: number;
     enabled: boolean;
     applicationId: string;
+    type: ApplicationMetricRule$Type;
 }
 
 export interface ApplicationMetricRuleModifyRequestRO {
@@ -423,6 +424,7 @@ export interface ApplicationMetricRuleRO {
     value1: number;
     value2?: number;
     enabled: boolean;
+    type: ApplicationMetricRule$Type;
 }
 
 export interface ThreadProfilingLogRO {
@@ -1052,6 +1054,8 @@ export type EventLogType = "INSTANCE_HEALTH_CHANGED";
 export type EventLogSeverity = "INFO" | "WARN" | "ERROR";
 
 export type ApplicationMetricRuleOperation = "GREATER_THAN" | "LOWER_THAN" | "BETWEEN";
+
+export type ApplicationMetricRule$Type = "SIMPLE" | "RELATIVE";
 
 export type ThreadProfilingStatus = "RUNNING" | "FINISHED";
 

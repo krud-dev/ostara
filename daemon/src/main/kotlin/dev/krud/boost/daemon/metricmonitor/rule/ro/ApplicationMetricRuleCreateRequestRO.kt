@@ -28,4 +28,6 @@ class ApplicationMetricRuleCreateRequestRO(
     var enabled: Boolean,
     @MappedField
     var applicationId: UUID,
+    @MappedField
+    var type: ApplicationMetricRule.Type
 )
