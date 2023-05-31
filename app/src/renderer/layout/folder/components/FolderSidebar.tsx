@@ -1,6 +1,5 @@
 import Sidebar from 'renderer/components/menu/sidebar/Sidebar';
 import { SidebarConfig } from 'renderer/components/menu/sidebar/SidebarSection';
-import { ClassOutlined, ListAltOutlined } from '@mui/icons-material';
 import { urls } from 'renderer/routes/urls';
 import { useMemo } from 'react';
 import { FormattedMessage } from 'react-intl';
@@ -10,6 +9,7 @@ import { Box } from '@mui/material';
 import { IconViewer } from 'renderer/components/common/IconViewer';
 import { getItemTypeIcon } from 'renderer/utils/itemUtils';
 import { FolderRO } from '../../../../common/generated_definitions';
+import { BarChartOutlined } from '@mui/icons-material';
 
 type FolderSidebarProps = { item: FolderRO; width: number };
 
@@ -20,6 +20,12 @@ export default function FolderSidebar({ item, width }: FolderSidebarProps) {
         id: 'overview',
         label: <FormattedMessage id={'overview'} />,
         items: [
+          {
+            id: 'dashboard',
+            icon: <BarChartOutlined />,
+            label: <FormattedMessage id={'dashboard'} />,
+            to: generatePath(urls.folderDashboard.url, { id: item.id }),
+          },
           {
             id: 'applications',
             icon: <IconViewer icon={getItemTypeIcon('application')} />,

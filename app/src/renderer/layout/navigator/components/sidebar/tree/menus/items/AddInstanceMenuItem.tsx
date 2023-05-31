@@ -33,7 +33,7 @@ export default function AddInstanceMenuItem({ node, onClose, onCreated }: AddIns
     NiceModal.show<InstanceRO[] | undefined>(CreateInstanceDialog, {
       parentApplicationId: parentApplicationId,
       parentFolderId: parentFolderId,
-      sort: getNewItemSort(node),
+      sort: getNewItemSort(node.data),
       onCreated: onCreated,
     });
   }, [onClose, node, onCreated]);

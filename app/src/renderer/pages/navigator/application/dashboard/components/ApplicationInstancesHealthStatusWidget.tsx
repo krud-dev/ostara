@@ -40,9 +40,9 @@ const ApplicationInstancesHealthStatusWidget: FunctionComponent<ApplicationInsta
       }}
     >
       <CardContent>
-        <Stack direction={'row'} justifyContent={'space-between'} alignItems={'center'}>
-          <Box>
-            <Typography variant={'subtitle2'} component={'div'} sx={{ color: 'text.secondary' }}>
+        <Stack direction={'row'} spacing={1} justifyContent={'space-between'} alignItems={'center'}>
+          <Box sx={{ overflow: 'hidden' }}>
+            <Typography variant={'subtitle2'} component={'div'} noWrap sx={{ color: 'text.secondary' }}>
               <FormattedMessage id={titleId} />
             </Typography>
             <Typography variant={'h3'} component={'div'} sx={{ lineHeight: 1.2 }}>

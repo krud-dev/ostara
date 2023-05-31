@@ -29,7 +29,7 @@ export default function AddApplicationMenuItem({ node, onClose, onCreated }: Add
 
     NiceModal.show<ApplicationRO | undefined>(CreateApplicationDialog, {
       parentFolderId: node.data.id,
-      sort: getNewItemSort(node),
+      sort: getNewItemSort(node.data),
       onCreated: onCreated,
     });
   }, [onClose, node, onCreated]);

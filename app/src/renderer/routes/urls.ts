@@ -41,6 +41,10 @@ export const urls = asUrlInfos({
     path: 'folder/:id',
     redirect: true,
   },
+  folderDashboard: {
+    url: '/navigator/folder/:id/dashboard',
+    path: 'dashboard',
+  },
   folderApplications: {
     url: '/navigator/folder/:id/applications',
     path: 'applications',

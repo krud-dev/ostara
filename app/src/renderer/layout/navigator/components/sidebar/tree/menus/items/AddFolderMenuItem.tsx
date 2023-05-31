@@ -29,7 +29,7 @@ export default function AddFolderMenuItem({ node, onClose, onCreated }: AddFolde
 
     NiceModal.show<FolderRO | undefined>(CreateFolderDialog, {
       parentFolderId: node.data.id,
-      sort: getNewItemSort(node),
+      sort: getNewItemSort(node.data),
       onCreated: onCreated,
     });
   }, [onClose, node, onCreated]);

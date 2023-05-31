@@ -1,11 +1,11 @@
 import React, { FunctionComponent, useCallback, useMemo } from 'react';
-import { Box, Card, CardContent, Stack, Tooltip, Typography } from '@mui/material';
+import { Card, CardContent, Stack, Tooltip, Typography } from '@mui/material';
 import { FormattedMessage } from 'react-intl';
-import { InstanceRO } from '../../../../../../common/generated_definitions';
+import { ApplicationRO } from '../../../../../../common/generated_definitions';
 import {
-  getInstanceHealthStatusColor,
-  getInstanceHealthStatusIcon,
-  getInstanceHealthStatusTextId,
+  getApplicationHealthStatusColor,
+  getApplicationHealthStatusIcon,
+  getApplicationHealthStatusTextId,
   getItemDisplayName,
   getItemUrl,
 } from '../../../../../utils/itemUtils';
@@ -14,30 +14,39 @@ import FormattedRelativeTimeNow from '../../../../../components/format/Formatted
 import { useNavigate } from 'react-router-dom';
 import useItemIcon from '../../../../../hooks/useItemIcon';
 import useItemColor from '../../../../../hooks/useItemColor';
+import { useItems } from '../../../../../contexts/ItemsContext';
 
-type ApplicationInstanceWidgetProps = {
-  instance: InstanceRO;
+type FolderApplicationWidgetProps = {
+  application: ApplicationRO;
 };
 
-const ApplicationInstanceWidget: FunctionComponent<ApplicationInstanceWidgetProps> = ({ instance }) => {
+const FolderApplicationWidget: FunctionComponent<FolderApplicationWidgetProps> = ({ application }) => {
+  const { instances } = useItems();
   const navigate = useNavigate();
 
-  const title = useMemo<string>(() => getItemDisplayName(instance), [instance]);
+  const title = useMemo<string>(() => getItemDisplayName(application), [application]);
   const healthStatusColor = useMemo<string>(
-    () => getInstanceHealthStatusColor(instance.health.status) || 'transparent',
-    [instance]
+    () => getApplicationHealthStatusColor(application.health.status) || 'transparent',
+    [application]
   );
-  const healthStatusIcon = useMemo<MUIconType>(() => getInstanceHealthStatusIcon(instance.health.status), [instance]);
+  const healthStatusIcon = useMemo<MUIconType>(
+    () => getApplicationHealthStatusIcon(application.health.status),
+    [application]
+  );
   const healthStatusTextId = useMemo<string>(
-    () => getInstanceHealthStatusTextId(instance.health.status) || 'notAvailable',
-    [instance]
+    () => getApplicationHealthStatusTextId(application.health.status) || 'notAvailable',
+    [application]
   );
-  const icon = useItemIcon(instance);
-  const color = useItemColor(instance);
+  const icon = useItemIcon(application);
+  const color = useItemColor(application);
+  const instancesCount = useMemo<number>(
+    () => instances?.filter((instance) => instance.parentApplicationId === application.id).length || 0,
+    [instances, application]
+  );
 
   const cardClickHandler = useCallback((): void => {
-    navigate(getItemUrl(instance));
-  }, [instance]);
+    navigate(getItemUrl(application));
+  }, [application]);
 
   return (
     <Card
@@ -65,6 +74,9 @@ const ApplicationInstanceWidget: FunctionComponent<ApplicationInstanceWidgetProp
               <span>
                 <FormattedMessage id={title} />
               </span>
+            </Tooltip>{' '}
+            <Tooltip title={<FormattedMessage id={'instances'} />}>
+              <span>{`(${instancesCount})`}</span>
             </Tooltip>
           </Typography>
         </Stack>
@@ -72,7 +84,7 @@ const ApplicationInstanceWidget: FunctionComponent<ApplicationInstanceWidgetProp
         <Typography variant={'body2'} component={'div'} sx={{ color: 'text.secondary' }}>
           <Tooltip title={<FormattedMessage id={'lastStatusChangeTime'} />}>
             <span>
-              <FormattedRelativeTimeNow value={instance.health.lastStatusChangeTime} />
+              <FormattedRelativeTimeNow value={application.health.lastStatusChangeTime} />
             </span>
           </Tooltip>
         </Typography>
@@ -80,4 +92,4 @@ const ApplicationInstanceWidget: FunctionComponent<ApplicationInstanceWidgetProp
     </Card>
   );
 };
-export default ApplicationInstanceWidget;
+export default FolderApplicationWidget;

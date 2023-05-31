@@ -1,15 +1,14 @@
 import React, { FunctionComponent, useMemo } from 'react';
 import Page from 'renderer/components/layout/Page';
 import { useNavigatorTree } from 'renderer/contexts/NavigatorTreeContext';
-import { Box, Card } from '@mui/material';
+import { Card } from '@mui/material';
 import { isEmpty, map } from 'lodash';
 import EmptyContent from 'renderer/components/help/EmptyContent';
-import { FormattedMessage } from 'react-intl';
 import TabPanel, { TabInfo } from 'renderer/components/layout/TabPanel';
 import { useGetInstanceFlywayQuery } from 'renderer/apis/requests/instance/flyway/getInstanceFlyway';
 import FlywayMigrationsTable from 'renderer/pages/navigator/instance/flyway/components/FlywayMigrationsTable';
 import { InstanceRO } from '../../../../../common/generated_definitions';
-import LogoLoader from '../../../../components/common/LogoLoader';
+import LogoLoaderCenter from '../../../../components/common/LogoLoaderCenter';
 
 const InstanceFlyway: FunctionComponent = () => {
   const { selectedItem } = useNavigatorTree();
@@ -31,13 +30,9 @@ const InstanceFlyway: FunctionComponent = () => {
 
   return (
     <Page sx={{ height: '100%' }}>
-      {loading && (
-        <Box sx={{ height: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-          <LogoLoader />
-        </Box>
-      )}
+      {loading && <LogoLoaderCenter />}
 
-      {empty && <EmptyContent text={<FormattedMessage id={'noData'} />} />}
+      {empty && <EmptyContent />}
 
       {tabs && (
         <Card>
