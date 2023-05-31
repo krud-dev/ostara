@@ -9,13 +9,18 @@ import { COMPONENTS_SPACING } from '../../../../constants/ui';
 import Grid2 from '@mui/material/Unstable_Grid2';
 import FolderApplicationsHealthStatusWidget from './components/FolderApplicationsHealthStatusWidget';
 import FolderApplicationWidget from './components/FolderApplicationWidget';
-import { isEmpty } from 'lodash';
+import { chain, isEmpty } from 'lodash';
 import NiceModal from '@ebay/nice-modal-react';
 import { useItems } from '../../../../contexts/ItemsContext';
-import { getNewItemSort, getSubTreeItemsForItem, getSubTreeRoot } from '../../../../utils/treeUtils';
-import { isFolder } from '../../../../utils/itemUtils';
+import { findTreeItemPath, getNewItemSort, getSubTreeItemsForItem, getSubTreeRoot } from '../../../../utils/treeUtils';
+import { getItemDisplayName, isFolder } from '../../../../utils/itemUtils';
 import LogoLoaderCenter from '../../../../components/common/LogoLoaderCenter';
 import CreateInstanceDialog from '../../../../components/item/dialogs/create/CreateInstanceDialog';
+
+type DashboardApplicationRO = ApplicationRO & {
+  path: string;
+  displayPath: string;
+};
 
 const FolderDashboard: FunctionComponent = () => {
   const { applications } = useItems();
@@ -33,6 +38,33 @@ const FolderDashboard: FunctionComponent = () => {
     () => applications?.filter((a) => !!a.parentFolderId && folderIds.includes(a.parentFolderId)),
     [applications, folderIds]
   );
+  const groupedData = useMemo<
+    { path: string; displayPath: string; applications: DashboardApplicationRO[] }[] | undefined
+  >(
+    () =>
+      data
+        ? chain(data)
+            .map<DashboardApplicationRO>((a) => {
+              const path = findTreeItemPath(navigatorData || [], a.id);
+              return {
+                ...a,
+                path: path?.map((i) => i.id).join('/') || '',
+                displayPath: path?.map((i) => getItemDisplayName(i)).join(' / ') || '',
+              };
+            })
+            .groupBy((a) => a.path)
+            .map((groupApplications, path) => ({
+              path,
+              applications: groupApplications,
+              displayPath: groupApplications[0].displayPath,
+            }))
+            .sortBy((group) => group.displayPath)
+            .value()
+        : undefined,
+    [data]
+  );
+  const loading = useMemo<boolean>(() => !data || !groupedData, [data, groupedData]);
+
   const healthStatuses = useMemo<ApplicationHealthStatus[]>(
     () => ['ALL_UP', 'ALL_DOWN', 'SOME_DOWN', 'EMPTY', 'UNKNOWN', 'PENDING'],
     []
@@ -49,8 +81,8 @@ const FolderDashboard: FunctionComponent = () => {
   }, [item, navigatorData]);
 
   return (
-    <Page sx={{ height: '100%' }}>
-      {!data ? (
+    <Page sx={{ ...(loading ? { height: '100%' } : {}) }}>
+      {loading ? (
         <LogoLoaderCenter />
       ) : (
         <Stack direction={'column'} spacing={COMPONENTS_SPACING}>
@@ -60,17 +92,17 @@ const FolderDashboard: FunctionComponent = () => {
               <Grid2 container spacing={COMPONENTS_SPACING}>
                 {healthStatuses.map((healthStatus) => (
                   <Grid2 xs={12} md={6} lg={4} xl={3} xxl={2} key={healthStatus}>
-                    <FolderApplicationsHealthStatusWidget applications={data} healthStatus={healthStatus} />
+                    <FolderApplicationsHealthStatusWidget applications={data!} healthStatus={healthStatus} />
                   </Grid2>
                 ))}
               </Grid2>
             </CardContent>
           </Card>
 
-          <Card>
-            <CardHeader title={<FormattedMessage id={'applications'} />} />
-            <CardContent>
-              {isEmpty(data) ? (
+          {isEmpty(data) && (
+            <Card>
+              <CardHeader title={<FormattedMessage id={'applications'} />} />
+              <CardContent>
                 <EmptyContent
                   text={<FormattedMessage id={'folderIsEmpty'} />}
                   description={
@@ -86,17 +118,24 @@ const FolderDashboard: FunctionComponent = () => {
                     </>
                   }
                 />
-              ) : (
+              </CardContent>
+            </Card>
+          )}
+
+          {groupedData?.map((group) => (
+            <Card key={group.path}>
+              <CardHeader title={group.displayPath} />
+              <CardContent>
                 <Grid2 container spacing={COMPONENTS_SPACING}>
-                  {data.map((application) => (
+                  {group.applications.map((application) => (
                     <Grid2 xs={12} md={6} lg={4} xl={3} xxl={2} key={application.id}>
                       <FolderApplicationWidget application={application} />
                     </Grid2>
                   ))}
                 </Grid2>
-              )}
-            </CardContent>
-          </Card>
+              </CardContent>
+            </Card>
+          ))}
         </Stack>
       )}
     </Page>
