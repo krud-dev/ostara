@@ -46,6 +46,7 @@ export default {
   chooseColor: 'Choose Color',
   insights: 'Insights',
   dashboard: 'Dashboard',
+  globalDashboard: 'Global Dashboard',
   metrics: 'Metrics',
   quartz: 'Quartz',
   cron: 'Cron',

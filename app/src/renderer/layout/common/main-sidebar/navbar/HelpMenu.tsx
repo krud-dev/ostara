@@ -1,11 +1,9 @@
 import React, { useCallback, useEffect, useState } from 'react';
-import { Box, IconButton, Tooltip } from '@mui/material';
 import { HelpOutlineOutlined } from '@mui/icons-material';
 import { useLocation } from 'react-router-dom';
 import { getUrlInfo } from '../../../../utils/urlUtils';
 import { useAnalytics } from '../../../../contexts/AnalyticsContext';
-import { FormattedMessage } from 'react-intl';
-import { NAVBAR_TOOLTIP_DELAY } from '../MainNavbar';
+import NavbarIconButton from './NavbarIconButton';
 
 export default function HelpMenu() {
   const { pathname } = useLocation();
@@ -42,13 +40,5 @@ export default function HelpMenu() {
     return null;
   }
 
-  return (
-    <Box sx={{ '-webkit-app-region': 'no-drag' }}>
-      <Tooltip title={<FormattedMessage id={'documentation'} />} enterDelay={NAVBAR_TOOLTIP_DELAY}>
-        <IconButton size={'small'} onClick={openUrlHandler} sx={{ color: 'text.primary' }}>
-          <HelpOutlineOutlined fontSize={'medium'} />
-        </IconButton>
-      </Tooltip>
-    </Box>
-  );
+  return <NavbarIconButton titleId={'documentation'} icon={'HelpOutlineOutlined'} onClick={openUrlHandler} />;
 }

@@ -24,18 +24,22 @@ type DashboardApplicationRO = ApplicationRO & {
 
 const FolderDashboard: FunctionComponent = () => {
   const { applications } = useItems();
-  const { selectedItem, data: navigatorData } = useNavigatorTree();
+  const { selectedItem, data: navigatorData, getNewItemOrder } = useNavigatorTree();
 
-  const item = useMemo<ApplicationRO>(() => selectedItem as ApplicationRO, [selectedItem]);
-  const folderIds = useMemo<string[]>(
+  const folderIds = useMemo<string[] | undefined>(
     () =>
-      getSubTreeItemsForItem(navigatorData || [], item.id)
-        .filter((i) => isFolder(i))
-        .map((i) => i.id),
-    [item.id, navigatorData]
+      selectedItem
+        ? getSubTreeItemsForItem(navigatorData || [], selectedItem.id)
+            .filter((i) => isFolder(i))
+            .map((i) => i.id)
+        : undefined,
+    [selectedItem, navigatorData]
   );
   const data = useMemo<ApplicationRO[] | undefined>(
-    () => applications?.filter((a) => !!a.parentFolderId && folderIds.includes(a.parentFolderId)),
+    () =>
+      folderIds
+        ? applications?.filter((a) => !!a.parentFolderId && folderIds.includes(a.parentFolderId))
+        : applications,
     [applications, folderIds]
   );
   const groupedData = useMemo<
@@ -71,14 +75,19 @@ const FolderDashboard: FunctionComponent = () => {
   );
 
   const createInstanceHandler = useCallback(async (): Promise<void> => {
-    const treeItem = getSubTreeRoot(navigatorData || [], item.id);
-    const sort = treeItem ? getNewItemSort(treeItem) : 1;
+    let sort = getNewItemOrder();
+    if (selectedItem) {
+      const treeItem = getSubTreeRoot(navigatorData || [], selectedItem.id);
+      if (treeItem) {
+        sort = getNewItemSort(treeItem);
+      }
+    }
 
     await NiceModal.show<InstanceRO[] | undefined>(CreateInstanceDialog, {
-      parentFolderId: item.id,
+      parentFolderId: selectedItem?.id,
       sort: sort,
     });
-  }, [item, navigatorData]);
+  }, [selectedItem, navigatorData, getNewItemOrder]);
 
   return (
     <Page sx={{ ...(loading ? { height: '100%' } : {}) }}>

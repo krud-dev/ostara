@@ -35,6 +35,10 @@ export const urls = asUrlInfos({
     url: '/navigator/home',
     path: 'home',
   },
+  dashboard: {
+    url: '/navigator/dashboard',
+    path: 'dashboard',
+  },
   // Folder Root
   folder: {
     url: '/navigator/folder/:id',
