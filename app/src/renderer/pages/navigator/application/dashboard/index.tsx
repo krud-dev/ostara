@@ -64,11 +64,11 @@ const ApplicationDashboard: FunctionComponent = () => {
             <CardContent>
               {isEmpty(data) ? (
                 <EmptyContent
-                  text={<FormattedMessage id={'applicationNoInstances'} />}
+                  text={<FormattedMessage id={'applicationIsEmpty'} />}
                   description={
                     <>
                       <Box>
-                        <FormattedMessage id={'applicationNoInstancesDescription'} />
+                        <FormattedMessage id={'addNewInstanceByClicking'} />
                       </Box>
                       <Box sx={{ mt: 2 }}>
                         <Button variant={'outlined'} color={'primary'} onClick={createInstanceHandler}>

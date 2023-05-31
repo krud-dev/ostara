@@ -15,7 +15,7 @@ import { useItems } from '../../../../contexts/ItemsContext';
 import { getNewItemSort, getSubTreeItemsForItem, getSubTreeRoot } from '../../../../utils/treeUtils';
 import { isFolder } from '../../../../utils/itemUtils';
 import LogoLoaderCenter from '../../../../components/common/LogoLoaderCenter';
-import CreateApplicationDialog from '../../../../components/item/dialogs/create/CreateApplicationDialog';
+import CreateInstanceDialog from '../../../../components/item/dialogs/create/CreateInstanceDialog';
 
 const FolderDashboard: FunctionComponent = () => {
   const { applications } = useItems();
@@ -38,11 +38,11 @@ const FolderDashboard: FunctionComponent = () => {
     []
   );
 
-  const createApplicationHandler = useCallback(async (): Promise<void> => {
+  const createInstanceHandler = useCallback(async (): Promise<void> => {
     const treeItem = getSubTreeRoot(navigatorData || [], item.id);
     const sort = treeItem ? getNewItemSort(treeItem) : 1;
 
-    await NiceModal.show<InstanceRO[] | undefined>(CreateApplicationDialog, {
+    await NiceModal.show<InstanceRO[] | undefined>(CreateInstanceDialog, {
       parentFolderId: item.id,
       sort: sort,
     });
@@ -72,15 +72,15 @@ const FolderDashboard: FunctionComponent = () => {
             <CardContent>
               {isEmpty(data) ? (
                 <EmptyContent
-                  text={<FormattedMessage id={'folderNoApplications'} />}
+                  text={<FormattedMessage id={'folderIsEmpty'} />}
                   description={
                     <>
                       <Box>
-                        <FormattedMessage id={'folderNoApplicationsDescription'} />
+                        <FormattedMessage id={'addNewInstanceByClicking'} />
                       </Box>
                       <Box sx={{ mt: 2 }}>
-                        <Button variant={'outlined'} color={'primary'} onClick={createApplicationHandler}>
-                          <FormattedMessage id={'createApplication'} />
+                        <Button variant={'outlined'} color={'primary'} onClick={createInstanceHandler}>
+                          <FormattedMessage id={'createInstance'} />
                         </Button>
                       </Box>
                     </>

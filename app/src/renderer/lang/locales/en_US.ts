@@ -407,10 +407,9 @@ export default {
   sendFeedbackDescription:
     'We would love to hear your feedback. Any feature request, recommendation or bug report is more than welcome. Please let us know what you think and help us improve.',
   sendFeedbackSuccess: 'Feedback sent successfully. Thank you!',
-  applicationNoInstances: 'Application has no instances',
-  applicationNoInstancesDescription: 'Add a new instance by clicking the button below.',
-  folderNoApplications: 'Folder has no applications',
-  folderNoApplicationsDescription: 'Add a new application by clicking the button below.',
+  applicationIsEmpty: 'Application is empty',
+  folderIsEmpty: 'Folder is empty',
+  addNewInstanceByClicking: 'Add a new instance by clicking the button below.',
   notificationTitleApplicationAllUp: '{application} is UP',
   notificationBodyApplicationAllUp: 'All instances of {application} are UP.',
   notificationTitleApplicationAllDown: '{application} is DOWN',
