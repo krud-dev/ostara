@@ -3,6 +3,7 @@ package dev.krud.boost.daemon.backup
 import com.fasterxml.jackson.annotation.JsonSubTypes
 import com.fasterxml.jackson.annotation.JsonTypeInfo
 import dev.krud.boost.daemon.configuration.application.entity.Application
+import dev.krud.boost.daemon.configuration.application.enums.ApplicationType
 import dev.krud.boost.daemon.configuration.folder.entity.Folder
 import dev.krud.boost.daemon.configuration.instance.entity.Instance
 import dev.krud.boost.daemon.utils.DEFAULT_COLOR
@@ -50,7 +51,7 @@ class BackupDTO(
                 val icon: String? = null,
                 val sort: Double? = null,
                 val authentication: String? = null,
-                val disableSslVerification: Boolean? = null
+                val disableSslVerification: Boolean = false
             )
 
             class Instance(
@@ -83,6 +84,17 @@ class BackupDTO(
             )
         }
 
+        fun TreeElement.Folder.toFolder(): Folder {
+            return Folder(
+                alias = this.model.alias,
+                description = this.model.description,
+                color = this.model.color,
+                icon = this.model.icon,
+                sort = this.model.sort,
+                // TODO authentication
+            )
+        }
+
         fun Application.toTreeElement(): TreeElement.Application {
             return TreeElement.Application(
                 model = TreeElement.Application.Model(
@@ -98,6 +110,20 @@ class BackupDTO(
             )
         }
 
+        fun TreeElement.Application.toApplication(): Application {
+            return Application(
+                alias = this.model.alias,
+                description = this.model.description,
+                type = ApplicationType.valueOf(this.model.type),
+                color = this.model.color,
+                icon = this.model.icon,
+                sort = this.model.sort,
+                // TODO authentication
+            ).apply {
+                disableSslVerification = this@toApplication.model.disableSslVerification
+            }
+        }
+
         fun Instance.toTreeElement(): TreeElement.Application.Instance {
             return TreeElement.Application.Instance(
                 model = TreeElement.Application.Instance.Model(
@@ -108,6 +134,18 @@ class BackupDTO(
                     icon = icon,
                     sort = sort
                 ),
+            )
+        }
+
+        fun TreeElement.Application.Instance.toInstance(): Instance {
+            return Instance(
+                alias = this.model.alias,
+                actuatorUrl = this.model.actuatorUrl,
+                description = this.model.description,
+                color = this.model.color,
+                icon = this.model.icon,
+                sort = this.model.sort,
+                parentApplicationId =
             )
         }
     }
