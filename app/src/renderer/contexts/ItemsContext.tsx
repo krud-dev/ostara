@@ -8,7 +8,7 @@ import React, {
   useState,
 } from 'react';
 import { ItemRO } from '../definitions/daemon';
-import { useCrudSearchQuery } from '../apis/requests/crud/crudSearch';
+import { CrudSearchData, useCrudSearchQuery } from '../apis/requests/crud/crudSearch';
 import {
   ApplicationHealthUpdatedEventMessage$Payload,
   ApplicationRO,
@@ -22,11 +22,15 @@ import { folderCrudEntity } from '../apis/requests/crud/entity/entities/folder.c
 import { applicationCrudEntity } from '../apis/requests/crud/entity/entities/application.crudEntity';
 import { useStomp } from '../apis/websockets/StompContext';
 import { isApplication, isFolder, isInstance } from '../utils/itemUtils';
+import { QueryObserverResult } from '@tanstack/react-query';
 
 export type ItemsContextProps = {
   folders: FolderRO[] | undefined;
   applications: ApplicationRO[] | undefined;
   instances: InstanceRO[] | undefined;
+  refetchFolders: () => Promise<QueryObserverResult<CrudSearchData<FolderRO>>>;
+  refetchApplications: () => Promise<QueryObserverResult<CrudSearchData<ApplicationRO>>>;
+  refetchInstances: () => Promise<QueryObserverResult<CrudSearchData<InstanceRO>>>;
   items: ItemRO[] | undefined;
   addItem: (item: ItemRO) => void;
   getItem: (id: string) => ItemRO | undefined;
@@ -134,6 +138,9 @@ const ItemsProvider: FunctionComponent<ItemsProviderProps> = ({ children }) => {
         folders,
         applications,
         instances,
+        refetchFolders: searchFolderState.refetch,
+        refetchApplications: searchApplicationState.refetch,
+        refetchInstances: searchInstanceState.refetch,
         items,
         addItem,
         getItem,

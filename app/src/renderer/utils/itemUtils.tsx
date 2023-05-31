@@ -1,10 +1,16 @@
 import { generatePath } from 'react-router-dom';
 import { urls } from 'renderer/routes/urls';
-import { green, orange, pink, red, yellow } from '@mui/material/colors';
+import { green, orange, pink, purple, red, yellow } from '@mui/material/colors';
 import blueGrey from '@mui/material/colors/blueGrey';
 import { MUIconType } from 'renderer/components/common/IconViewer';
 import { ItemRO, ItemType } from '../definitions/daemon';
-import { ApplicationRO, FolderRO, InstanceHealthRO, InstanceRO } from '../../common/generated_definitions';
+import {
+  ApplicationHealthStatus,
+  ApplicationRO,
+  FolderRO,
+  InstanceHealthStatus,
+  InstanceRO,
+} from '../../common/generated_definitions';
 import { CrudEntity } from '../apis/requests/crud/entity/entity';
 import { applicationCrudEntity } from '../apis/requests/crud/entity/entities/application.crudEntity';
 import { instanceCrudEntity } from '../apis/requests/crud/entity/entities/instance.crudEntity';
@@ -173,8 +179,8 @@ export const isItemHealthy = (item: ItemRO): boolean => {
 
 const HEALTH_STATUS_COLORS_INDEX = 600;
 
-export const getInstanceHealthStatusColor = (instanceHealth: InstanceHealthRO): string | undefined => {
-  switch (instanceHealth.status) {
+export const getInstanceHealthStatusColor = (status: InstanceHealthStatus): string | undefined => {
+  switch (status) {
     case 'UP':
       return green[HEALTH_STATUS_COLORS_INDEX];
     case 'DOWN':
@@ -185,6 +191,8 @@ export const getInstanceHealthStatusColor = (instanceHealth: InstanceHealthRO): 
       return pink[HEALTH_STATUS_COLORS_INDEX];
     case 'UNKNOWN':
       return blueGrey[HEALTH_STATUS_COLORS_INDEX];
+    case 'INVALID':
+      return purple[HEALTH_STATUS_COLORS_INDEX];
     case 'PENDING':
       return 'text.primary';
     default:
@@ -192,8 +200,8 @@ export const getInstanceHealthStatusColor = (instanceHealth: InstanceHealthRO): 
   }
 };
 
-export const getApplicationHealthStatusColor = (application: ApplicationRO): string | undefined => {
-  switch (application.health.status) {
+export const getApplicationHealthStatusColor = (status: ApplicationHealthStatus): string | undefined => {
+  switch (status) {
     case 'ALL_UP':
       return green[HEALTH_STATUS_COLORS_INDEX];
     case 'ALL_DOWN':
@@ -213,10 +221,10 @@ export const getApplicationHealthStatusColor = (application: ApplicationRO): str
 
 export const getItemHealthStatusColor = (item: ItemRO): string | undefined => {
   if (isInstance(item)) {
-    return getInstanceHealthStatusColor(item.health);
+    return getInstanceHealthStatusColor(item.health.status);
   }
   if (isApplication(item)) {
-    return getApplicationHealthStatusColor(item);
+    return getApplicationHealthStatusColor(item.health.status);
   }
   return undefined;
 };
@@ -231,44 +239,75 @@ export const getItemHealthStatusComponent = (item: ItemRO): ReactNode | undefine
   return undefined;
 };
 
+export const getInstanceHealthStatusTextId = (status: InstanceHealthStatus): string | undefined => {
+  switch (status) {
+    case 'UP':
+      return 'up';
+    case 'DOWN':
+      return 'down';
+    case 'OUT_OF_SERVICE':
+      return 'outOfService';
+    case 'UNREACHABLE':
+      return 'unreachable';
+    case 'UNKNOWN':
+      return 'unknown';
+    case 'INVALID':
+      return 'invalid';
+    case 'PENDING':
+      return 'loading';
+    default:
+      return undefined;
+  }
+};
+
+export const getApplicationHealthStatusTextId = (status: ApplicationHealthStatus): string | undefined => {
+  switch (status) {
+    case 'ALL_UP':
+      return 'up';
+    case 'ALL_DOWN':
+      return 'down';
+    case 'SOME_DOWN':
+      return 'mixed';
+    case 'UNKNOWN':
+      return 'unknown';
+    case 'PENDING':
+      return 'loading';
+    case 'EMPTY':
+      return undefined;
+    default:
+      return undefined;
+  }
+};
+
 export const getItemHealthStatusTextId = (item: ItemRO): string | undefined => {
   if (isInstance(item)) {
-    switch (item.health.status) {
-      case 'UP':
-        return 'up';
-      case 'DOWN':
-        return 'down';
-      case 'OUT_OF_SERVICE':
-        return 'outOfService';
-      case 'UNREACHABLE':
-        return 'unreachable';
-      case 'UNKNOWN':
-        return 'unknown';
-      case 'PENDING':
-        return 'loading';
-      default:
-        return undefined;
-    }
+    return getInstanceHealthStatusTextId(item.health.status);
   }
   if (isApplication(item)) {
-    switch (item.health.status) {
-      case 'ALL_UP':
-        return 'up';
-      case 'ALL_DOWN':
-        return 'down';
-      case 'SOME_DOWN':
-        return 'mixed';
-      case 'UNKNOWN':
-        return 'unknown';
-      case 'PENDING':
-        return 'loading';
-      case 'EMPTY':
-        return undefined;
-      default:
-        return undefined;
-    }
+    return getApplicationHealthStatusTextId(item.health.status);
   }
   return undefined;
+};
+
+export const getInstanceHealthStatusIcon = (status: InstanceHealthStatus): MUIconType => {
+  switch (status) {
+    case 'UP':
+      return 'ArrowCircleUpOutlined';
+    case 'DOWN':
+      return 'ArrowCircleDownOutlined';
+    case 'OUT_OF_SERVICE':
+      return 'WarningAmberOutlined';
+    case 'UNREACHABLE':
+      return 'CrisisAlertOutlined';
+    case 'UNKNOWN':
+      return 'QuestionMarkOutlined';
+    case 'INVALID':
+      return 'LinkOffOutlined';
+    case 'PENDING':
+      return 'HourglassEmptyOutlined';
+    default:
+      return 'QuestionMarkOutlined';
+  }
 };
 
 // export const getDataCollectionModeColor = (dataCollectionMode: DataCollectionMode): ColorSchema => {

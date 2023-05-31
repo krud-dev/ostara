@@ -7,7 +7,6 @@ import MAvatar from 'renderer/components/common/MAvatar';
 import { bindMenu, usePopupState } from 'material-ui-popup-state/hooks';
 import CustomMenuItem from 'renderer/components/menu/item/CustomMenuItem';
 import { useNavigate } from 'react-router-dom';
-import { urls } from 'renderer/routes/urls';
 
 export default function AccountMenu() {
   const { isRtl } = useSettings();
@@ -20,7 +19,6 @@ export default function AccountMenu() {
   }, [menuState]);
 
   const settingsHandler = useCallback((): void => {
-    navigate(urls.settings.url);
     menuState.close();
   }, [navigate, menuState]);
 

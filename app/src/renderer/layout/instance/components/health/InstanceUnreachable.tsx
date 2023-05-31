@@ -1,8 +1,8 @@
 import { Button, Card, CardContent, CardHeader, Divider, Link, Stack, Typography } from '@mui/material';
 import Page from 'renderer/components/layout/Page';
 import React, { ReactNode, useCallback, useMemo } from 'react';
-import { getInstanceHealthStatusColor, isItemUpdatable } from 'renderer/utils/itemUtils';
-import { IconViewer } from 'renderer/components/common/IconViewer';
+import { getInstanceHealthStatusColor, getInstanceHealthStatusIcon, isItemUpdatable } from 'renderer/utils/itemUtils';
+import { IconViewer, MUIconType } from 'renderer/components/common/IconViewer';
 import { FormattedMessage } from 'react-intl';
 import { showUpdateItemDialog } from 'renderer/utils/dialogUtils';
 import FormattedDateAndRelativeTime from 'renderer/components/format/FormattedDateAndRelativeTime';
@@ -23,7 +23,8 @@ export default function InstanceUnreachable({ item }: InstanceUnreachableProps) 
 
   const displayName = useItemDisplayName(item);
   const updateDisabled = useMemo<boolean>(() => !isItemUpdatable(item), [item]);
-  const healthStatusColor = useMemo<string | undefined>(() => getInstanceHealthStatusColor(health), [health]);
+  const healthStatusColor = useMemo<string | undefined>(() => getInstanceHealthStatusColor(health.status), [health]);
+  const healthStatusIcon = useMemo<MUIconType>(() => getInstanceHealthStatusIcon(health.status), [health]);
 
   const updateHandler = useCallback(
     (event: React.MouseEvent): void => {
@@ -87,7 +88,7 @@ export default function InstanceUnreachable({ item }: InstanceUnreachableProps) 
             justifyContent: 'center',
           }}
         >
-          <IconViewer icon={'CrisisAlertOutlined'} sx={{ color: healthStatusColor, fontSize: 48 }} />
+          <IconViewer icon={healthStatusIcon} sx={{ color: healthStatusColor, fontSize: 48 }} />
 
           <Typography variant="h5" gutterBottom sx={{ mt: 2 }}>
             <FormattedMessage id={'instanceAliasUnreachable'} values={{ alias: displayName }} />
