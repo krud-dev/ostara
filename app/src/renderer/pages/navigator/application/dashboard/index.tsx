@@ -25,6 +25,7 @@ const ApplicationDashboard: FunctionComponent = () => {
     () => instances?.filter((i) => i.parentApplicationId === item.id),
     [instances, item.id]
   );
+  const loading = useMemo<boolean>(() => !data, [data]);
   const healthStatuses = useMemo<InstanceHealthStatus[]>(
     () => ['UP', 'DOWN', 'UNREACHABLE', 'OUT_OF_SERVICE', 'INVALID', 'PENDING'],
     []
@@ -41,8 +42,8 @@ const ApplicationDashboard: FunctionComponent = () => {
   }, [item, navigatorData]);
 
   return (
-    <Page sx={{ height: '100%' }}>
-      {!data ? (
+    <Page sx={{ ...(loading ? { height: '100%' } : {}) }}>
+      {loading ? (
         <LogoLoaderCenter />
       ) : (
         <Stack direction={'column'} spacing={COMPONENTS_SPACING}>
@@ -52,7 +53,7 @@ const ApplicationDashboard: FunctionComponent = () => {
               <Grid2 container spacing={COMPONENTS_SPACING}>
                 {healthStatuses.map((healthStatus) => (
                   <Grid2 xs={12} md={6} lg={4} xl={3} xxl={2} key={healthStatus}>
-                    <ApplicationInstancesHealthStatusWidget instances={data} healthStatus={healthStatus} />
+                    <ApplicationInstancesHealthStatusWidget instances={data!} healthStatus={healthStatus} />
                   </Grid2>
                 ))}
               </Grid2>
@@ -64,11 +65,11 @@ const ApplicationDashboard: FunctionComponent = () => {
             <CardContent>
               {isEmpty(data) ? (
                 <EmptyContent
-                  text={<FormattedMessage id={'applicationNoInstances'} />}
+                  text={<FormattedMessage id={'applicationIsEmpty'} />}
                   description={
                     <>
                       <Box>
-                        <FormattedMessage id={'applicationNoInstancesDescription'} />
+                        <FormattedMessage id={'addNewInstanceByClicking'} />
                       </Box>
                       <Box sx={{ mt: 2 }}>
                         <Button variant={'outlined'} color={'primary'} onClick={createInstanceHandler}>
@@ -80,7 +81,7 @@ const ApplicationDashboard: FunctionComponent = () => {
                 />
               ) : (
                 <Grid2 container spacing={COMPONENTS_SPACING}>
-                  {data.map((instance) => (
+                  {data?.map((instance) => (
                     <Grid2 xs={12} md={6} lg={4} xl={3} xxl={2} key={instance.id}>
                       <ApplicationInstanceWidget instance={instance} />
                     </Grid2>

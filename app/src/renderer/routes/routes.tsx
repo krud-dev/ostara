@@ -63,6 +63,10 @@ export default function Router() {
               element: <Home />,
             },
             {
+              path: urls.dashboard.path,
+              element: <FolderDashboard />,
+            },
+            {
               path: urls.folder.path,
               element: <FolderLayout />,
               children: [

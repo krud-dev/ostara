@@ -77,3 +77,24 @@ export const getSubTreeItemsForItem = (tree: TreeItem[], itemId: string): TreeIt
   }
   return getSubTreeItems(root).map((item) => item);
 };
+
+export const findTreeItemPath = (tree: TreeItem[], id: string): TreeItem[] | null => {
+  for (const item of tree) {
+    if (item.id === id) {
+      // If the current item has the desired id, return it as a single-item path
+      return []; // Change to [item] to include the item in the path
+    }
+
+    if (item.children?.length) {
+      // Recursively search for the item in the children
+      const childPath = findTreeItemPath(item.children, id);
+      if (childPath !== null) {
+        // If the item is found in the children, prepend the current item to the path and return it
+        return [item, ...childPath];
+      }
+    }
+  }
+
+  // If the item is not found in the current tree or its children, return null
+  return null;
+};

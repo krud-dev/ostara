@@ -53,8 +53,27 @@ const FormattedRelativeTimeNow: FunctionComponent<FormattedRelativeTimeNowProps>
     return 'year';
   }, [calculatedSeconds]);
 
+  const updateIntervalInSeconds = useMemo<number>(() => {
+    switch (unit) {
+      case 'second':
+        return 1;
+      case 'minute':
+        return 10;
+      case 'hour':
+        return 60;
+      default:
+        return 0;
+    }
+  }, [unit]);
+
   return (
-    <FormattedRelativeTime value={calculatedValue} numeric="auto" updateIntervalInSeconds={1} unit={unit} {...rest} />
+    <FormattedRelativeTime
+      value={calculatedValue}
+      numeric="auto"
+      updateIntervalInSeconds={updateIntervalInSeconds}
+      unit={unit}
+      {...rest}
+    />
   );
 };
 export default FormattedRelativeTimeNow;
