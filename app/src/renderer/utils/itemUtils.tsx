@@ -1,6 +1,6 @@
 import { generatePath } from 'react-router-dom';
 import { urls } from 'renderer/routes/urls';
-import { green, orange, pink, purple, red, yellow } from '@mui/material/colors';
+import { green, grey, orange, pink, purple, red, yellow } from '@mui/material/colors';
 import blueGrey from '@mui/material/colors/blueGrey';
 import { MUIconType } from 'renderer/components/common/IconViewer';
 import { ItemRO, ItemType } from '../definitions/daemon';
@@ -210,10 +210,10 @@ export const getApplicationHealthStatusColor = (status: ApplicationHealthStatus)
       return orange[HEALTH_STATUS_COLORS_INDEX];
     case 'UNKNOWN':
       return blueGrey[HEALTH_STATUS_COLORS_INDEX];
+    case 'EMPTY':
+      return grey[HEALTH_STATUS_COLORS_INDEX];
     case 'PENDING':
       return 'text.primary';
-    case 'EMPTY':
-      return undefined;
     default:
       return undefined;
   }
@@ -273,7 +273,7 @@ export const getApplicationHealthStatusTextId = (status: ApplicationHealthStatus
     case 'PENDING':
       return 'loading';
     case 'EMPTY':
-      return undefined;
+      return 'empty';
     default:
       return undefined;
   }
@@ -303,6 +303,25 @@ export const getInstanceHealthStatusIcon = (status: InstanceHealthStatus): MUIco
       return 'QuestionMarkOutlined';
     case 'INVALID':
       return 'LinkOffOutlined';
+    case 'PENDING':
+      return 'HourglassEmptyOutlined';
+    default:
+      return 'QuestionMarkOutlined';
+  }
+};
+
+export const getApplicationHealthStatusIcon = (status: ApplicationHealthStatus): MUIconType => {
+  switch (status) {
+    case 'ALL_UP':
+      return 'ArrowCircleUpOutlined';
+    case 'ALL_DOWN':
+      return 'ArrowCircleDownOutlined';
+    case 'SOME_DOWN':
+      return 'SwapVerticalCircleOutlined';
+    case 'UNKNOWN':
+      return 'QuestionMarkOutlined';
+    case 'EMPTY':
+      return 'MotionPhotosOffOutlined';
     case 'PENDING':
       return 'HourglassEmptyOutlined';
     default:

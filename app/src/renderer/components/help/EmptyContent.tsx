@@ -1,7 +1,8 @@
 import { styled } from '@mui/material/styles';
 import { Typography, Box, BoxProps } from '@mui/material';
-import { ReactNode } from 'react';
+import React, { ReactNode } from 'react';
 import { IconViewer, MUIconType } from '../common/IconViewer';
+import { FormattedMessage } from 'react-intl';
 
 const RootStyle = styled(Box)(({ theme }) => ({
   height: '100%',
@@ -14,7 +15,7 @@ const RootStyle = styled(Box)(({ theme }) => ({
 }));
 
 interface EmptyContentProps extends BoxProps {
-  text: ReactNode;
+  text?: ReactNode;
   description?: ReactNode;
   icon?: MUIconType;
 }
@@ -25,7 +26,7 @@ export default function EmptyContent({ text, description, icon, ...other }: Empt
       {icon && <IconViewer icon={icon} fontSize={'large'} sx={{ mb: 1 }} />}
 
       <Typography variant="subtitle1" component={'div'} gutterBottom>
-        {text}
+        {text || <FormattedMessage id={'noData'} />}
       </Typography>
 
       {description && (

@@ -38,6 +38,7 @@ import AppLayout from '../layout/app/AppLayout';
 import ErrorBoundaryNavigator from './ErrorBoundaryNavigator';
 import { ErrorBoundary } from 'react-error-boundary';
 import InstanceTogglz from '../pages/navigator/instance/togglz';
+import FolderDashboard from '../pages/navigator/folder/dashboard';
 
 export default function Router() {
   return useRoutes([
@@ -65,7 +66,11 @@ export default function Router() {
               path: urls.folder.path,
               element: <FolderLayout />,
               children: [
-                { path: '', element: <Navigate to={urls.folderApplications.path} replace /> },
+                { path: '', element: <Navigate to={urls.folderDashboard.path} replace /> },
+                {
+                  path: urls.folderDashboard.path,
+                  element: <FolderDashboard />,
+                },
                 {
                   path: urls.folderApplications.path,
                   element: <FolderApplications />,

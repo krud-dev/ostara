@@ -1,5 +1,5 @@
 import React, { FunctionComponent, PropsWithChildren, ReactNode, useMemo } from 'react';
-import { Box, Card, CardContent, CardHeader } from '@mui/material';
+import { Box, Card, CardHeader } from '@mui/material';
 import EmptyContent from 'renderer/components/help/EmptyContent';
 import { FormattedMessage } from 'react-intl';
 import LogoLoader from '../../common/LogoLoader';
@@ -41,7 +41,7 @@ const DashboardGenericCard: FunctionComponent<DashboardGenericCardProps> = ({
       )}
       {cardState === 'empty' && (
         <Box sx={{ flexGrow: 1 }}>
-          <EmptyContent text={<FormattedMessage id={'noData'} />} />
+          <EmptyContent />
         </Box>
       )}
       {cardState === 'error' && (

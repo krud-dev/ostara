@@ -4,9 +4,9 @@ import { NodeApi } from 'react-arborist';
 import { ItemRO } from '../definitions/daemon';
 import { isInstance } from './itemUtils';
 
-export const getNewItemSort = (node: NodeApi<TreeItem>): number => {
-  return node.data.children?.length
-    ? chain(node.data.children)
+export const getNewItemSort = (treeItem: TreeItem): number => {
+  return treeItem.children?.length
+    ? chain(treeItem.children)
         .map<number>((c) => c.sort ?? 0)
         .max()
         .value() + 1
@@ -52,7 +52,7 @@ export const buildTree = (items: ItemRO[]): TreeItem[] => {
   return dataTree;
 };
 
-const getSubTreeRoot = (tree: TreeItem[], id: string): TreeItem | undefined => {
+export const getSubTreeRoot = (tree: TreeItem[], id: string): TreeItem | undefined => {
   return tree
     .map((item) => {
       if (item.id === id) {
@@ -63,7 +63,7 @@ const getSubTreeRoot = (tree: TreeItem[], id: string): TreeItem | undefined => {
       }
       return undefined;
     })
-    .find((item) => item !== undefined);
+    .find((item) => !!item);
 };
 
 const getSubTreeItems = (root: TreeItem): TreeItem[] => {

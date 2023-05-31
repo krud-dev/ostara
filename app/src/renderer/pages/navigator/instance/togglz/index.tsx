@@ -1,15 +1,15 @@
 import React, { FunctionComponent, useMemo } from 'react';
 import Page from 'renderer/components/layout/Page';
 import { useNavigatorTree } from 'renderer/contexts/NavigatorTreeContext';
-import { Box, Card } from '@mui/material';
+import { Card } from '@mui/material';
 import { InstanceRO } from '../../../../../common/generated_definitions';
 import { useGetInstanceTogglzQuery } from '../../../../apis/requests/instance/togglz/getInstanceTogglz';
 import { chain, isEmpty } from 'lodash';
 import TabPanel, { TabInfo } from '../../../../components/layout/TabPanel';
-import LogoLoader from '../../../../components/common/LogoLoader';
 import EmptyContent from '../../../../components/help/EmptyContent';
 import { FormattedMessage } from 'react-intl';
 import TogglzGroupTable from './components/TogglzGroupTable';
+import LogoLoaderCenter from '../../../../components/common/LogoLoaderCenter';
 
 type GroupTabInfo = TabInfo & { group?: string };
 
@@ -41,13 +41,9 @@ const InstanceTogglz: FunctionComponent = () => {
 
   return (
     <Page sx={{ height: '100%' }}>
-      {loading && (
-        <Box sx={{ height: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-          <LogoLoader />
-        </Box>
-      )}
+      {loading && <LogoLoaderCenter />}
 
-      {empty && <EmptyContent text={<FormattedMessage id={'noData'} />} />}
+      {empty && <EmptyContent />}
 
       {tabs && (
         <Card>

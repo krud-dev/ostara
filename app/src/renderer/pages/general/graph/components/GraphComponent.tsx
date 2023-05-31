@@ -1,12 +1,11 @@
 import React, { FunctionComponent } from 'react';
 import { Box, Divider } from '@mui/material';
 import EmptyContent from 'renderer/components/help/EmptyContent';
-import { FormattedMessage } from 'react-intl';
 import { Edge, Node } from 'reactflow';
 import CustomReactFlow from './CustomReactFlow';
 import SearchToolbar from '../../../../components/common/SearchToolbar';
 import { ReactFlowContext, ReactFlowProvider } from '../contexts/ReactFlowContext';
-import LogoLoader from '../../../../components/common/LogoLoader';
+import LogoLoaderCenter from '../../../../components/common/LogoLoaderCenter';
 
 type GraphComponentProps = {
   nodes?: Node[];
@@ -23,13 +22,9 @@ const GraphComponent: FunctionComponent<GraphComponentProps> = ({ nodes, edges, 
             <SearchToolbar filter={search} onFilterChange={setSearch} />
             <Divider />
 
-            {loading && (
-              <Box sx={{ height: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                <LogoLoader />
-              </Box>
-            )}
+            {loading && <LogoLoaderCenter />}
 
-            {empty && <EmptyContent text={<FormattedMessage id={'noData'} />} />}
+            {empty && <EmptyContent />}
 
             {graphData && !empty && (
               <Box sx={{ flexGrow: 1 }}>
