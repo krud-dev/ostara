@@ -422,6 +422,7 @@ export default {
   metricRuleExplanationRelative:
     'Use "Relative" to compare a metric divided by another metric to the value. For example: disk.free[VALUE] / disk.total[VALUE] < 0.1.',
   divisorMetric: 'Relative Metric',
+  formula: 'Formula',
   summary: 'Summary',
   send: 'Send',
   email: 'Email',

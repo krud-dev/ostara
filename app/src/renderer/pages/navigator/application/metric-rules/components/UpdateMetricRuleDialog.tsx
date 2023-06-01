@@ -6,7 +6,7 @@ import DialogTitleEnhanced from 'renderer/components/dialog/DialogTitleEnhanced'
 import { useUpdateApplicationMetricRule } from '../../../../../apis/requests/application/metric-rules/updateApplicationMetricRule';
 import MetricRuleDetailsForm, { MetricRuleFormValues } from './MetricRuleDetailsForm';
 import { ApplicationMetricRuleRO } from '../../../../../../common/generated_definitions';
-import { map } from 'lodash';
+import { getMetricRuleFormValues } from '../../../../../utils/metricUtils';
 
 export type UpdateMetricRuleDialogProps = {
   metricRule: ApplicationMetricRuleRO;
@@ -60,23 +60,7 @@ const UpdateMetricRuleDialog: FunctionComponent<UpdateMetricRuleDialogProps & Ni
       modal.hide();
     }, [submitting, modal]);
 
-    const defaultValues = useMemo<MetricRuleFormValues>(
-      () => ({
-        name: metricRule.name,
-        type: metricRule.type,
-        metricName: metricRule.metricName.name,
-        metricStatistic: metricRule.metricName.statistic,
-        metricTags: map(metricRule.metricName.tags, (value, key) => `${key}=${value}`),
-        divisorMetricName: metricRule.divisorMetricName?.name || '',
-        divisorMetricStatistic: metricRule.divisorMetricName?.statistic || '',
-        divisorMetricTags: map(metricRule.divisorMetricName?.tags, (value, key) => `${key}=${value}`),
-        operation: metricRule.operation || 'GREATER_THAN',
-        enabled: metricRule.enabled,
-        value1: metricRule.value1.toString(),
-        value2: metricRule.value2?.toString() || '',
-      }),
-      [metricRule]
-    );
+    const defaultValues = useMemo<MetricRuleFormValues>(() => getMetricRuleFormValues(metricRule), [metricRule]);
 
     return (
       <Dialog

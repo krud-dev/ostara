@@ -1,7 +1,17 @@
 import { FormattedMessage, useIntl } from 'react-intl';
 import React, { FunctionComponent, useCallback, useMemo } from 'react';
-import { Controller, FormProvider, useForm, useWatch } from 'react-hook-form';
-import { Alert, Box, Button, DialogActions, DialogContent, Divider, MenuItem, TextField } from '@mui/material';
+import { Controller, FormProvider, useForm } from 'react-hook-form';
+import {
+  Alert,
+  Box,
+  Button,
+  DialogActions,
+  DialogContent,
+  Divider,
+  MenuItem,
+  TextField,
+  Typography,
+} from '@mui/material';
 import { LoadingButton } from '@mui/lab';
 import {
   ApplicationMetricRule$Type,
@@ -11,6 +21,7 @@ import { toString } from 'lodash';
 import { FLOAT_REGEX } from '../../../../../constants/regex';
 import MetricSelectionForm from './MetricSelectionForm';
 import { useUpdateEffect } from 'react-use';
+import { getMetricRuleFormValuesFormula } from '../../../../../utils/metricUtils';
 
 export type MetricRuleDetailsFormProps = {
   applicationId: string;
@@ -50,18 +61,12 @@ const MetricRuleDetailsForm: FunctionComponent<MetricRuleDetailsFormProps> = ({
     handleSubmit,
     formState: { isSubmitting },
     setValue,
+    watch,
   } = methods;
 
-  const type = useWatch<MetricRuleFormValues>({
-    control: control,
-    name: 'type',
-    defaultValue: defaultValues.type,
-  }) as ApplicationMetricRule$Type;
-  const operation = useWatch<MetricRuleFormValues>({
-    control: control,
-    name: 'operation',
-    defaultValue: defaultValues.operation,
-  }) as ApplicationMetricRuleOperation;
+  const formValues = watch();
+  const type = watch('type');
+  const operation = watch('operation');
 
   const submitHandler = handleSubmit(async (data): Promise<void> => {
     await onSubmit?.(data);
@@ -71,6 +76,7 @@ const MetricRuleDetailsForm: FunctionComponent<MetricRuleDetailsFormProps> = ({
     onCancel();
   }, [onCancel]);
 
+  const formula = useMemo<string>(() => getMetricRuleFormValuesFormula(formValues), [formValues]);
   const typeExplanationId = useMemo<string>(() => {
     switch (type) {
       case 'SIMPLE':
@@ -151,7 +157,7 @@ const MetricRuleDetailsForm: FunctionComponent<MetricRuleDetailsFormProps> = ({
             <FormattedMessage id={typeExplanationId} />
           </Alert>
 
-          <Divider sx={{ mt: 2, mb: 1 }} />
+          <Divider sx={{ mt: 3, mb: 1 }} />
 
           <MetricSelectionForm namePrefix={'metric'} applicationId={applicationId} disabled={disableMetrics} />
 
@@ -244,6 +250,14 @@ const MetricRuleDetailsForm: FunctionComponent<MetricRuleDetailsFormProps> = ({
               />
             )}
           </Box>
+
+          <Divider sx={{ mt: 2, mb: 2 }} />
+
+          <Typography variant={'body1'}>
+            <FormattedMessage id={'formula'} />
+            {': '}
+            {formula}
+          </Typography>
         </DialogContent>
         <DialogActions>
           <Box sx={{ flexGrow: 1 }} />
