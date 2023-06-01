@@ -416,6 +416,12 @@ export default {
   forward: 'Forward',
   clearFilters: 'Clear Filters',
   selectedItemIsFiltered: 'Selected item is filtered',
+  relative: 'Relative',
+  metricRuleExplanationSimple:
+    'Use "Simple" to compare a metric to the value. For example: disk.free[VALUE] < 1000000.',
+  metricRuleExplanationRelative:
+    'Use "Relative" to compare a metric divided by another metric to the value. For example: disk.free[VALUE] / disk.total[VALUE] < 0.1.',
+  divisorMetric: 'Relative Metric',
   summary: 'Summary',
   send: 'Send',
   email: 'Email',

@@ -1,24 +1,16 @@
 import { FormattedMessage, useIntl } from 'react-intl';
-import React, { FunctionComponent, useCallback, useEffect } from 'react';
+import React, { FunctionComponent, useCallback, useMemo } from 'react';
 import { Controller, FormProvider, useForm, useWatch } from 'react-hook-form';
-import {
-  Box,
-  Button,
-  CircularProgress,
-  DialogActions,
-  DialogContent,
-  Divider,
-  ListSubheader,
-  MenuItem,
-  TextField,
-} from '@mui/material';
+import { Alert, Box, Button, DialogActions, DialogContent, Divider, MenuItem, TextField } from '@mui/material';
 import { LoadingButton } from '@mui/lab';
-import InputAdornment from '@mui/material/InputAdornment';
-import { ApplicationMetricRuleOperation } from '../../../../../../common/generated_definitions';
+import {
+  ApplicationMetricRule$Type,
+  ApplicationMetricRuleOperation,
+} from '../../../../../../common/generated_definitions';
 import { toString } from 'lodash';
-import { useGetApplicationMetricsQuery } from '../../../../../apis/requests/application/metrics/getApplicationMetrics';
 import { FLOAT_REGEX } from '../../../../../constants/regex';
-import { useGetApplicationMetricDetailsQuery } from '../../../../../apis/requests/application/metrics/getApplicationMetricDetails';
+import MetricSelectionForm from './MetricSelectionForm';
+import { useUpdateEffect } from 'react-use';
 
 export type MetricRuleDetailsFormProps = {
   applicationId: string;
@@ -30,9 +22,13 @@ export type MetricRuleDetailsFormProps = {
 
 export type MetricRuleFormValues = {
   name: string;
+  type: ApplicationMetricRule$Type;
   metricName: string;
   metricStatistic: string;
   metricTags: string[];
+  divisorMetricName: string;
+  divisorMetricStatistic: string;
+  divisorMetricTags: string[];
   operation: ApplicationMetricRuleOperation;
   value1: string;
   value2: string;
@@ -56,16 +52,11 @@ const MetricRuleDetailsForm: FunctionComponent<MetricRuleDetailsFormProps> = ({
     setValue,
   } = methods;
 
-  const metricName = useWatch<MetricRuleFormValues>({
+  const type = useWatch<MetricRuleFormValues>({
     control: control,
-    name: 'metricName',
-    defaultValue: defaultValues.metricName,
-  }) as string;
-  const metricTags = useWatch<MetricRuleFormValues>({
-    control: control,
-    name: 'metricTags',
-    defaultValue: defaultValues.metricTags,
-  }) as string[];
+    name: 'type',
+    defaultValue: defaultValues.type,
+  }) as ApplicationMetricRule$Type;
   const operation = useWatch<MetricRuleFormValues>({
     control: control,
     name: 'operation',
@@ -80,33 +71,24 @@ const MetricRuleDetailsForm: FunctionComponent<MetricRuleDetailsFormProps> = ({
     onCancel();
   }, [onCancel]);
 
-  const getMetricsState = useGetApplicationMetricsQuery({ applicationId: applicationId });
-  const getMetricDetailsState = useGetApplicationMetricDetailsQuery(
-    {
-      applicationId: applicationId,
-      name: metricName,
-    },
-    { enabled: !!metricName }
-  );
-
-  useEffect(() => {
-    if (disableMetrics) {
-      return;
+  const typeExplanationId = useMemo<string>(() => {
+    switch (type) {
+      case 'SIMPLE':
+        return 'metricRuleExplanationSimple';
+      case 'RELATIVE':
+        return 'metricRuleExplanationRelative';
+      default:
+        return 'notAvailable';
     }
+  }, [type]);
 
-    const metricDetails = getMetricDetailsState.data;
-    if (!metricDetails) {
-      return;
+  useUpdateEffect(() => {
+    if (type === 'SIMPLE') {
+      setValue('divisorMetricName', '');
+      setValue('divisorMetricStatistic', '');
+      setValue('divisorMetricTags', []);
     }
-
-    const measurement = metricDetails.measurements?.[0];
-    if (!measurement) {
-      return;
-    }
-
-    setValue('metricStatistic', measurement.statistic);
-    setValue('metricTags', []);
-  }, [getMetricDetailsState.data]);
+  }, [type]);
 
   return (
     <FormProvider {...methods}>
@@ -137,140 +119,45 @@ const MetricRuleDetailsForm: FunctionComponent<MetricRuleDetailsFormProps> = ({
             }}
           />
 
+          <Controller
+            name="type"
+            control={control}
+            render={({ field: { ref, ...field }, fieldState: { invalid, error } }) => {
+              return (
+                <TextField
+                  {...field}
+                  inputRef={ref}
+                  margin="normal"
+                  required
+                  fullWidth
+                  label={<FormattedMessage id="type" />}
+                  select
+                  error={invalid}
+                  helperText={error?.message}
+                  disabled={disableMetrics}
+                >
+                  <MenuItem value={'SIMPLE'}>
+                    <FormattedMessage id="simple" />
+                  </MenuItem>
+                  <MenuItem value={'RELATIVE'}>
+                    <FormattedMessage id="relative" />
+                  </MenuItem>
+                </TextField>
+              );
+            }}
+          />
+
+          <Alert severity={'info'} variant={'outlined'} sx={{ mt: 1 }}>
+            <FormattedMessage id={typeExplanationId} />
+          </Alert>
+
           <Divider sx={{ mt: 2, mb: 1 }} />
 
-          <Controller
-            name="metricName"
-            rules={{
-              required: intl.formatMessage({ id: 'requiredField' }),
-            }}
-            control={control}
-            render={({ field: { ref, ...field }, fieldState: { invalid, error } }) => {
-              return (
-                <TextField
-                  {...field}
-                  inputRef={ref}
-                  margin="normal"
-                  required
-                  fullWidth
-                  label={<FormattedMessage id="metric" />}
-                  select
-                  error={invalid}
-                  helperText={error?.message}
-                  disabled={disableMetrics || getMetricsState.isLoading}
-                  InputProps={{
-                    startAdornment: getMetricsState.isLoading ? (
-                      <InputAdornment position="start">
-                        <CircularProgress size={20} />
-                      </InputAdornment>
-                    ) : undefined,
-                  }}
-                >
-                  {getMetricsState.data?.map((metric) => (
-                    <MenuItem value={metric.name} key={metric.name}>
-                      {metric.name}
-                    </MenuItem>
-                  )) || (
-                    <MenuItem value={''} disabled>
-                      <FormattedMessage id={'loading'} />
-                    </MenuItem>
-                  )}
-                </TextField>
-              );
-            }}
-          />
+          <MetricSelectionForm namePrefix={'metric'} applicationId={applicationId} disabled={disableMetrics} />
 
-          <Controller
-            name="metricStatistic"
-            rules={{
-              required: intl.formatMessage({ id: 'requiredField' }),
-            }}
-            control={control}
-            render={({ field: { ref, ...field }, fieldState: { invalid, error } }) => {
-              return (
-                <TextField
-                  {...field}
-                  inputRef={ref}
-                  margin="normal"
-                  required
-                  fullWidth
-                  label={<FormattedMessage id="statistic" />}
-                  select
-                  error={invalid}
-                  helperText={error?.message}
-                  disabled={disableMetrics || !metricName || getMetricDetailsState.isLoading}
-                  InputProps={{
-                    startAdornment: getMetricDetailsState.isFetching ? (
-                      <InputAdornment position="start">
-                        <CircularProgress size={20} />
-                      </InputAdornment>
-                    ) : undefined,
-                  }}
-                >
-                  {getMetricDetailsState.data?.measurements?.map((measurement) => (
-                    <MenuItem value={measurement.statistic} key={measurement.statistic}>
-                      {measurement.statistic}
-                    </MenuItem>
-                  )) || (
-                    <MenuItem value={''} disabled>
-                      <FormattedMessage id={'loading'} />
-                    </MenuItem>
-                  )}
-                </TextField>
-              );
-            }}
-          />
-
-          <Controller
-            name="metricTags"
-            control={control}
-            render={({ field: { ref, ...field }, fieldState: { invalid, error } }) => {
-              return (
-                <TextField
-                  {...field}
-                  inputRef={ref}
-                  margin="normal"
-                  fullWidth
-                  label={<FormattedMessage id="tags" />}
-                  select
-                  error={invalid}
-                  helperText={error?.message}
-                  disabled={disableMetrics || !metricName || getMetricDetailsState.isLoading}
-                  InputProps={{
-                    startAdornment: getMetricDetailsState.isFetching ? (
-                      <InputAdornment position="start">
-                        <CircularProgress size={20} />
-                      </InputAdornment>
-                    ) : undefined,
-                  }}
-                  SelectProps={{
-                    multiple: true,
-                  }}
-                >
-                  {getMetricDetailsState.data?.availableTags
-                    ?.flatMap((tagValues) => [
-                      { type: 'Group', name: tagValues.tag, value: '' },
-                      ...tagValues.values.map((value) => ({ type: 'Item', name: tagValues.tag, value })),
-                    ])
-                    ?.map((item) => {
-                      const tagValue = `${item.name}=${item.value}`;
-                      const disabled = !!metricTags.find((tag) => tag !== tagValue && tag.startsWith(`${item.name}=`));
-                      return item.type === 'Group' ? (
-                        <ListSubheader key={item.name}>{item.name}</ListSubheader>
-                      ) : (
-                        <MenuItem value={tagValue} disabled={disabled} key={tagValue}>
-                          {item.value}
-                        </MenuItem>
-                      );
-                    }) || (
-                    <MenuItem value={''} disabled>
-                      <FormattedMessage id={'loading'} />
-                    </MenuItem>
-                  )}
-                </TextField>
-              );
-            }}
-          />
+          {type === 'RELATIVE' && (
+            <MetricSelectionForm namePrefix={'divisorMetric'} applicationId={applicationId} disabled={disableMetrics} />
+          )}
 
           <Divider sx={{ mt: 2, mb: 1 }} />
 

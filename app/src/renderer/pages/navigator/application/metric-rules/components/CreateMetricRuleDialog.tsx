@@ -32,11 +32,21 @@ const CreateMetricRuleDialog: FunctionComponent<CreateMetricRuleDialogProps & Ni
         const metricRuleToCreate: ApplicationMetricRuleCreateRequestRO = {
           applicationId: applicationId,
           name: data.name,
+          type: data.type,
           operation: data.operation,
           metricName: {
             name: data.metricName,
             statistic: data.metricStatistic,
             tags: data.metricTags.reduce((accumulator, currentValue) => {
+              const [key, value] = currentValue.split('=');
+              accumulator[key] = value;
+              return accumulator;
+            }, {} as { [key: string]: string }),
+          },
+          divisorMetricName: {
+            name: data.divisorMetricName,
+            statistic: data.divisorMetricStatistic,
+            tags: data.divisorMetricTags.reduce((accumulator, currentValue) => {
               const [key, value] = currentValue.split('=');
               accumulator[key] = value;
               return accumulator;
@@ -75,9 +85,13 @@ const CreateMetricRuleDialog: FunctionComponent<CreateMetricRuleDialogProps & Ni
     const defaultValues = useMemo<MetricRuleFormValues>(
       () => ({
         name: '',
+        type: 'SIMPLE',
         metricName: '',
         metricStatistic: '',
         metricTags: [],
+        divisorMetricName: '',
+        divisorMetricStatistic: '',
+        divisorMetricTags: [],
         operation: 'GREATER_THAN',
         enabled: true,
         value1: '',
@@ -94,7 +108,7 @@ const CreateMetricRuleDialog: FunctionComponent<CreateMetricRuleDialogProps & Ni
           onExited: () => modal.remove(),
         }}
         fullWidth
-        maxWidth={'xs'}
+        maxWidth={'md'}
       >
         <DialogTitleEnhanced disabled={submitting} onClose={cancelHandler}>
           <FormattedMessage id={'addMetricNotification'} />

@@ -63,9 +63,13 @@ const UpdateMetricRuleDialog: FunctionComponent<UpdateMetricRuleDialogProps & Ni
     const defaultValues = useMemo<MetricRuleFormValues>(
       () => ({
         name: metricRule.name,
+        type: metricRule.type,
         metricName: metricRule.metricName.name,
         metricStatistic: metricRule.metricName.statistic,
         metricTags: map(metricRule.metricName.tags, (value, key) => `${key}=${value}`),
+        divisorMetricName: metricRule.divisorMetricName?.name || '',
+        divisorMetricStatistic: metricRule.divisorMetricName?.statistic || '',
+        divisorMetricTags: map(metricRule.divisorMetricName?.tags, (value, key) => `${key}=${value}`),
         operation: metricRule.operation || 'GREATER_THAN',
         enabled: metricRule.enabled,
         value1: metricRule.value1.toString(),
@@ -82,7 +86,7 @@ const UpdateMetricRuleDialog: FunctionComponent<UpdateMetricRuleDialogProps & Ni
           onExited: () => modal.remove(),
         }}
         fullWidth
-        maxWidth={'xs'}
+        maxWidth={'md'}
       >
         <DialogTitleEnhanced disabled={submitting} onClose={cancelHandler}>
           <FormattedMessage id={'updateMetricNotification'} />
