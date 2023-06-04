@@ -8,8 +8,6 @@
 
 [Ostara](https://ostara.dev/) is a desktop application that provides various features to monitor and interact with Spring Boot Applications via Actuator API.
 
-**OSTARA IS IN PRE RELEASE!**
-
 <p align="center">
     <img src="https://github.com/krud-dev/ostara/blob/master/app/assets/screenshots/instance-dashboard.png?raw=true">
 </p>
