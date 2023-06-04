@@ -24,7 +24,7 @@ interface BackupMigration {
         }
 
         var BackupRootNode.version: Int
-            get() = this.get("version").asInt()
+            get() = this["version"].asInt()
             set(value) {
                 this.set<NumericNode>("version", this.numberNode(value))
             }

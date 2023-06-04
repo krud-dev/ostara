@@ -46,13 +46,7 @@ class BackupImporter(
     private fun importApplication(element: BackupDTO.TreeElement.Application, parentFolderId: UUID? = null): Application {
         val application = element.toApplication(parentFolderId)
         val createdApplication = applicationKrud.create(application)
-        element.children.forEach {
-            when (it) {
-                is BackupDTO.TreeElement.Application.Instance -> {
-                    importInstance(it, createdApplication.id)
-                }
-            }
-        }
+        element.children.forEach { importInstance(it, createdApplication.id) }
         element.metricRules.forEach {
             importMetricRule(it, createdApplication.id)
         }
