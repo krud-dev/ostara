@@ -15,7 +15,8 @@ fun stubApplicationMetricRule(
     value1: Double = 1.0,
     value2: Double? = null,
     enabled: Boolean = true,
-    applicationId: UUID = UUID.randomUUID()
+    applicationId: UUID = UUID.randomUUID(),
+    type: ApplicationMetricRule.Type = ApplicationMetricRule.Type.SIMPLE
 ): ApplicationMetricRule {
     return ApplicationMetricRule(
         name,
@@ -25,7 +26,8 @@ fun stubApplicationMetricRule(
         value1,
         value2,
         enabled,
-        applicationId
+        applicationId,
+        type
     ).apply {
         this.id = id
     }
