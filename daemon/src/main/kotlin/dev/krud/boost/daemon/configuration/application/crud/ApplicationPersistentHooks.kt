@@ -4,6 +4,7 @@ import dev.krud.boost.daemon.configuration.application.entity.Application
 import dev.krud.boost.daemon.configuration.application.messaging.ApplicationAuthenticationChangedMessage
 import dev.krud.boost.daemon.configuration.application.messaging.ApplicationDisableSslVerificationChangedMessage
 import dev.krud.boost.daemon.configuration.instance.entity.Instance
+import dev.krud.boost.daemon.metricmonitor.rule.model.ApplicationMetricRule
 import dev.krud.crudframework.crud.handler.krud.Krud
 import dev.krud.crudframework.crud.hooks.interfaces.DeleteHooks
 import dev.krud.crudframework.crud.hooks.interfaces.UpdateHooks
@@ -14,6 +15,7 @@ import java.util.*
 @Component
 class ApplicationPersistentHooks(
     private val instanceKrud: Krud<Instance, UUID>,
+    private val applicationMetricRuleKrud: Krud<ApplicationMetricRule, UUID>,
     private val systemEventsChannel: PublishSubscribeChannel,
 ) : DeleteHooks<UUID, Application>, UpdateHooks<UUID, Application> {
     override fun postUpdate(entity: Application) {
@@ -42,6 +44,11 @@ class ApplicationPersistentHooks(
         instanceKrud.deleteByFilter {
             where {
                 Instance::parentApplicationId Equal entity.id
+            }
+        }
+        applicationMetricRuleKrud.deleteByFilter {
+            where {
+                ApplicationMetricRule::applicationId Equal entity.id
             }
         }
     }
