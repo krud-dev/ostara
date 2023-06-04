@@ -1,6 +1,7 @@
 package dev.krud.boost.daemon.controller.api.v1
 
 import com.fasterxml.jackson.databind.JsonNode
+import dev.krud.boost.daemon.backup.BackupDTO
 import dev.krud.boost.daemon.backup.BackupService
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.responses.ApiResponse
@@ -25,7 +26,7 @@ class BackupController(
         summary = "Export all configurations to JSON"
     )
     @ApiResponse(responseCode = "200", description = "Exported configurations")
-    fun exportAll(): String {
+    fun exportAll(): BackupDTO {
         return backupService.exportAll()
     }
 

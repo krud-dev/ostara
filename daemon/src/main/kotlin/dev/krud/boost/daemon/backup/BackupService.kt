@@ -1,8 +1,6 @@
 package dev.krud.boost.daemon.backup
 
 import com.fasterxml.jackson.databind.JsonNode
-import com.fasterxml.jackson.databind.ObjectMapper
-import com.fasterxml.jackson.module.kotlin.kotlinModule
 import org.springframework.stereotype.Service
 
 @Service
@@ -11,17 +9,12 @@ class BackupService(
     private val backupParser: BackupParser,
     private val backupImporter: BackupImporter
 ) {
-    internal val objectMapper = ObjectMapper().apply {
-        registerModule(kotlinModule())
-    }
-
     fun importAll(json: JsonNode) {
         val backupDTO = backupParser.parse(json)
         backupImporter.import(backupDTO)
     }
 
-    fun exportAll(): String {
-        val backupDTO = backupExporter.exportAll()
-        return objectMapper.writeValueAsString(backupDTO)
+    fun exportAll(): BackupDTO {
+        return backupExporter.exportAll()
     }
 }
