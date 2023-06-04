@@ -11,6 +11,7 @@ import strikt.api.expectThat
 import strikt.assertions.hasSize
 import strikt.assertions.isEmpty
 import strikt.assertions.isEqualTo
+import strikt.assertions.isNull
 
 class BackupParserTest {
     @Test
@@ -67,7 +68,16 @@ class BackupParserTest {
             val parsedBackup = backupParser.parse(json)
             expect {
                 that(parsedBackup.version).isEqualTo(latestVersion)
-                val flywayApp = parsedBackup.tree.first() as BackupDTO.TreeElement.Application
+                val flywayFolder = parsedBackup.tree.first() as BackupDTO.TreeElement.Folder
+                that(flywayFolder.type).isEqualTo("folder")
+                that(flywayFolder.model.alias).isEqualTo("Some Folder")
+                that(flywayFolder.model.description).isNull()
+                that(flywayFolder.model.color).isEqualTo("inherited")
+                that(flywayFolder.model.icon).isNull()
+                that(flywayFolder.model.sort).isNull()
+                that(flywayFolder.model.authenticationProperties).isEqualTo(mapOf("type" to "inherit"))
+                that(flywayFolder.children).hasSize(1)
+                val flywayApp = flywayFolder.children.first() as BackupDTO.TreeElement.Application
                 that(flywayApp.type).isEqualTo("application")
                 // region flywayApp
                 flywayApp.validate(
