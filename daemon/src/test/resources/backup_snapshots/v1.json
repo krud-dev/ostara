@@ -3,53 +3,69 @@
     "tree": [
         {
             "model": {
-                "alias": "Flyway",
+                "alias": "Some Folder",
                 "description": null,
-                "type": "SPRING_BOOT",
                 "color": "inherited",
                 "icon": null,
-                "sort": 1,
+                "sort": null,
                 "authenticationProperties": {
                     "type": "inherit"
-                },
-                "disableSslVerification": false
+                }
             },
             "children": [
                 {
                     "model": {
-                        "alias": null,
-                        "actuatorUrl": "https://sbclient.krud.dev/first/1/actuator",
+                        "alias": "Flyway",
                         "description": null,
+                        "type": "SPRING_BOOT",
                         "color": "inherited",
                         "icon": null,
-                        "sort": 1
+                        "sort": 1,
+                        "authenticationProperties": {
+                            "type": "inherit"
+                        },
+                        "disableSslVerification": false
                     },
-                    "type": "instance"
-                },
-                {
-                    "model": {
-                        "alias": null,
-                        "actuatorUrl": "https://sbclient.krud.dev/first/2/actuator",
-                        "description": null,
-                        "color": "inherited",
-                        "icon": null,
-                        "sort": 2
-                    },
-                    "type": "instance"
-                },
-                {
-                    "model": {
-                        "alias": null,
-                        "actuatorUrl": "https://sbclient.krud.dev/first/3/actuator",
-                        "description": null,
-                        "color": "inherited",
-                        "icon": null,
-                        "sort": 3
-                    },
-                    "type": "instance"
+                    "children": [
+                        {
+                            "model": {
+                                "alias": null,
+                                "actuatorUrl": "https://sbclient.krud.dev/first/1/actuator",
+                                "description": null,
+                                "color": "inherited",
+                                "icon": null,
+                                "sort": 1
+                            },
+                            "type": "instance"
+                        },
+                        {
+                            "model": {
+                                "alias": null,
+                                "actuatorUrl": "https://sbclient.krud.dev/first/2/actuator",
+                                "description": null,
+                                "color": "inherited",
+                                "icon": null,
+                                "sort": 2
+                            },
+                            "type": "instance"
+                        },
+                        {
+                            "model": {
+                                "alias": null,
+                                "actuatorUrl": "https://sbclient.krud.dev/first/3/actuator",
+                                "description": null,
+                                "color": "inherited",
+                                "icon": null,
+                                "sort": 3
+                            },
+                            "type": "instance"
+                        }
+                    ],
+                    "metricRules": [],
+                    "type": "application"
                 }
             ],
-            "type": "application"
+            "type": "folder"
         },
         {
             "model": {
@@ -97,6 +113,18 @@
                         "sort": 3
                     },
                     "type": "instance"
+                }
+            ],
+            "metricRules": [
+                {
+                    "name": "Less than 20% disk space",
+                    "metricName": "disk.free[VALUE]",
+                    "divisorMetricName": "disk.total[VALUE]",
+                    "operation": "LOWER_THAN",
+                    "value1": 0.2,
+                    "value2": null,
+                    "enabled": true,
+                    "type": "RELATIVE"
                 }
             ],
             "type": "application"
@@ -151,6 +179,7 @@
                     "type": "instance"
                 }
             ],
+            "metricRules": [],
             "type": "application"
         },
         {
@@ -179,6 +208,7 @@
                     "type": "instance"
                 }
             ],
+            "metricRules": [],
             "type": "application"
         }
     ]

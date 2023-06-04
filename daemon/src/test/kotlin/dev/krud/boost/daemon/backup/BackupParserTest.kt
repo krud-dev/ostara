@@ -15,7 +15,13 @@ import strikt.assertions.isEqualTo
 class BackupParserTest {
     @Test
     fun `parse backup version sanity`() {
-        val backupParser = BackupParser(emptyList())
+        val backupParser = BackupParser(
+            listOf(
+                object : BackupMigration {
+                    override val toVersion = 1
+                }
+            )
+        )
         val backup = """
             {
                 "version": 1,

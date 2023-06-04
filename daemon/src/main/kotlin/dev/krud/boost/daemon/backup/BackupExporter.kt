@@ -6,6 +6,7 @@ import dev.krud.boost.daemon.backup.migration.BackupMigration.Companion.getLates
 import dev.krud.boost.daemon.configuration.application.entity.Application
 import dev.krud.boost.daemon.configuration.folder.entity.Folder
 import dev.krud.boost.daemon.configuration.instance.entity.Instance
+import dev.krud.boost.daemon.metricmonitor.rule.model.ApplicationMetricRule
 import dev.krud.boost.daemon.utils.searchSequence
 import dev.krud.crudframework.crud.handler.krud.Krud
 import org.springframework.stereotype.Component
@@ -17,6 +18,7 @@ class BackupExporter(
     private val folderKrud: Krud<Folder, UUID>,
     private val applicationKrud: Krud<Application, UUID>,
     private val instanceKrud: Krud<Instance, UUID>,
+    private val applicationMetricRuleKrud: Krud<ApplicationMetricRule, UUID>
 ) {
     fun exportAll(): BackupDTO {
         val rootFolders = getFolders()
@@ -52,6 +54,14 @@ class BackupExporter(
                 children = application.getInstances()
                     .map { buildInstanceTreeElement(it) }
                     .toList()
+                metricRules = applicationMetricRuleKrud.searchByFilter {
+                    where {
+                        ApplicationMetricRule::applicationId Equal application.id
+                    }
+                }
+                    .map {
+                        it.toTreeElement()
+                    }
             }
         return treeElement
     }

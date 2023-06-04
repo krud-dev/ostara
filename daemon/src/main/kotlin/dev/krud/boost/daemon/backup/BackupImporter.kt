@@ -1,11 +1,13 @@
 package dev.krud.boost.daemon.backup
 
 import dev.krud.boost.daemon.backup.BackupDTO.Companion.toApplication
+import dev.krud.boost.daemon.backup.BackupDTO.Companion.toApplicationMetricRule
 import dev.krud.boost.daemon.backup.BackupDTO.Companion.toFolder
 import dev.krud.boost.daemon.backup.BackupDTO.Companion.toInstance
 import dev.krud.boost.daemon.configuration.application.entity.Application
 import dev.krud.boost.daemon.configuration.folder.entity.Folder
 import dev.krud.boost.daemon.configuration.instance.entity.Instance
+import dev.krud.boost.daemon.metricmonitor.rule.model.ApplicationMetricRule
 import dev.krud.crudframework.crud.handler.krud.Krud
 import org.springframework.stereotype.Component
 import org.springframework.transaction.annotation.Transactional
@@ -15,7 +17,8 @@ import java.util.*
 class BackupImporter(
     private val folderKrud: Krud<Folder, UUID>,
     private val applicationKrud: Krud<Application, UUID>,
-    private val instanceKrud: Krud<Instance, UUID>
+    private val instanceKrud: Krud<Instance, UUID>,
+    private val applicationMetricRuleKrud: Krud<ApplicationMetricRule, UUID>
 ) {
     @Transactional(readOnly = false)
     fun import(backup: BackupDTO) {
@@ -50,6 +53,9 @@ class BackupImporter(
                 }
             }
         }
+        element.metricRules.forEach {
+            importMetricRule(it, createdApplication.id)
+        }
 
         return application
     }
@@ -57,5 +63,10 @@ class BackupImporter(
     private fun importInstance(element: BackupDTO.TreeElement.Application.Instance, parentApplicationId: UUID): Instance {
         val instance = element.toInstance(parentApplicationId)
         return instanceKrud.create(instance)
+    }
+
+    private fun importMetricRule(element: BackupDTO.TreeElement.Application.MetricRule, parentApplicationId: UUID): ApplicationMetricRule {
+        val metricRule = element.toApplicationMetricRule(parentApplicationId)
+        return applicationMetricRuleKrud.create(metricRule)
     }
 }

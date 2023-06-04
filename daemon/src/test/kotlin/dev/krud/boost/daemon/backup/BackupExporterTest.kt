@@ -8,7 +8,10 @@ import dev.krud.boost.daemon.configuration.folder.entity.Folder
 import dev.krud.boost.daemon.configuration.folder.stubFolder
 import dev.krud.boost.daemon.configuration.instance.entity.Instance
 import dev.krud.boost.daemon.configuration.instance.stubInstance
+import dev.krud.boost.daemon.metricmonitor.rule.model.ApplicationMetricRule
+import dev.krud.boost.daemon.metricmonitor.rule.stubApplicationMetricRule
 import dev.krud.boost.daemon.test.TestKrud
+import dev.krud.crudframework.crud.handler.krud.Krud
 import org.junit.jupiter.api.Test
 import strikt.api.expect
 import strikt.assertions.hasSize
@@ -24,11 +27,14 @@ class BackupExporterTest {
     private val folderKrud = TestKrud(Folder::class.java) { UUID.randomUUID() }
     private val applicationKrud = TestKrud(Application::class.java) { UUID.randomUUID() }
     private val instanceKrud = TestKrud(Instance::class.java) { UUID.randomUUID() }
+    private val applicationMetricRuleKrud = TestKrud(ApplicationMetricRule::class.java) { UUID.randomUUID() }
+
     private val backupExporter = BackupExporter(
         backupMigrations,
         folderKrud,
         applicationKrud,
-        instanceKrud
+        instanceKrud,
+        applicationMetricRuleKrud
     )
 
     @Test
@@ -36,8 +42,10 @@ class BackupExporterTest {
         folderKrud.create(stubFolder(alias = "rootFolder1")).apply {
             folderKrud.create(stubFolder(alias = "rootFolder1_1", parentFolderId = this.id))
             applicationKrud.create(stubApplication(alias = "rootFolder1_1Application1", parentFolderId = this.id, authentication = Authentication.Basic("test", "test"))).apply {
+                applicationMetricRuleKrud.create(stubApplicationMetricRule(applicationId = this.id))
                 instanceKrud.create(stubInstance(alias = "rootFolder1_1Application1Instance1", parentApplicationId = this.id))
             }
+
         }
         val dto = backupExporter.exportAll()
         expect {
@@ -62,6 +70,17 @@ class BackupExporterTest {
             that(application.children[0].type).isEqualTo("instance")
             val instance = application.children[0] as BackupDTO.TreeElement.Application.Instance
             that(instance.model.alias).isEqualTo("rootFolder1_1Application1Instance1")
+            that(application.metricRules).hasSize(1)
+            val savedMetricRule = applicationMetricRuleKrud.entities[0]
+            val metricRule = application.metricRules[0]
+            that(metricRule.name).isEqualTo(savedMetricRule.name)
+            that(metricRule.metricName).isEqualTo(savedMetricRule.metricName)
+            that(metricRule.divisorMetricName).isEqualTo(savedMetricRule.divisorMetricName)
+            that(metricRule.enabled).isEqualTo(savedMetricRule.enabled)
+            that(metricRule.type).isEqualTo(savedMetricRule.type.name)
+            that(metricRule.operation).isEqualTo(savedMetricRule.operation.name)
+            that(metricRule.value1).isEqualTo(savedMetricRule.value1)
+            that(metricRule.value2).isEqualTo(savedMetricRule.value2)
         }
     }
 }

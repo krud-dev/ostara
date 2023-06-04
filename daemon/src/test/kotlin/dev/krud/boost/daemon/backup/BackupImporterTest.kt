@@ -4,6 +4,8 @@ import dev.krud.boost.daemon.configuration.application.entity.Application
 import dev.krud.boost.daemon.configuration.application.enums.ApplicationType
 import dev.krud.boost.daemon.configuration.folder.entity.Folder
 import dev.krud.boost.daemon.configuration.instance.entity.Instance
+import dev.krud.boost.daemon.metricmonitor.rule.enums.ApplicationMetricRuleOperation
+import dev.krud.boost.daemon.metricmonitor.rule.model.ApplicationMetricRule
 import dev.krud.boost.daemon.test.TestKrud
 import dev.krud.boost.daemon.utils.DEFAULT_COLOR
 import dev.krud.crudframework.crud.handler.krud.Krud
@@ -17,7 +19,8 @@ class BackupImporterTest {
     private val folderKrud = TestKrud(Folder::class.java) { UUID.randomUUID() }
     private val applicationKrud = TestKrud(Application::class.java) { UUID.randomUUID() }
     private val instanceKrud = TestKrud(Instance::class.java) { UUID.randomUUID() }
-    private val backupImporter = BackupImporter(folderKrud, applicationKrud, instanceKrud)
+    private val applicationMetricRuleKrud = TestKrud(ApplicationMetricRule::class.java) { UUID.randomUUID() }
+    private val backupImporter = BackupImporter(folderKrud, applicationKrud, instanceKrud, applicationMetricRuleKrud)
 
     @Test
     fun `importBackup should recursively import a backupDTO`() {
@@ -55,6 +58,18 @@ class BackupImporterTest {
                                         1.0
                                     )
                                 )
+                            ),
+                            metricRules = listOf(
+                                BackupDTO.TreeElement.Application.MetricRule(
+                                    name = "rootFolder1Application1MetricRule1",
+                                    metricName = "test[VALUE]",
+                                    divisorMetricName = null,
+                                    operation = "GREATER_THAN",
+                                    value1 = 1.0,
+                                    value2 = null,
+                                    enabled = true,
+                                    type = "SIMPLE"
+                                )
                             )
                         )
                     )
@@ -67,6 +82,7 @@ class BackupImporterTest {
             that(folderKrud.entities).hasSize(1)
             that(applicationKrud.entities).hasSize(1)
             that(instanceKrud.entities).hasSize(1)
+            that(applicationMetricRuleKrud.entities).hasSize(1)
             folderKrud.entities[0].apply {
                 that(alias).isEqualTo("rootFolder1")
                 that(parentFolderId).isEqualTo(null)
@@ -92,6 +108,17 @@ class BackupImporterTest {
                 that(icon).isEqualTo("gear")
                 that(sort).isEqualTo(1.0)
                 that(parentApplicationId).isEqualTo(applicationKrud.entities[0].id)
+            }
+            applicationMetricRuleKrud.entities[0].apply {
+                that(name).isEqualTo("rootFolder1Application1MetricRule1")
+                that(metricName).isEqualTo("test[VALUE]")
+                that(divisorMetricName).isEqualTo(null)
+                that(operation).isEqualTo(ApplicationMetricRuleOperation.GREATER_THAN)
+                that(value1).isEqualTo(1.0)
+                that(value2).isEqualTo(null)
+                that(enabled).isEqualTo(true)
+                that(type).isEqualTo(ApplicationMetricRule.Type.SIMPLE)
+                that(applicationId).isEqualTo(applicationKrud.entities[0].id)
             }
         }
     }

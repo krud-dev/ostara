@@ -7,7 +7,10 @@ import dev.krud.boost.daemon.configuration.application.enums.ApplicationType
 import dev.krud.boost.daemon.configuration.authentication.Authentication
 import dev.krud.boost.daemon.configuration.folder.entity.Folder
 import dev.krud.boost.daemon.configuration.instance.entity.Instance
+import dev.krud.boost.daemon.metricmonitor.rule.enums.ApplicationMetricRuleOperation
+import dev.krud.boost.daemon.metricmonitor.rule.model.ApplicationMetricRule
 import dev.krud.boost.daemon.utils.DEFAULT_COLOR
+import dev.krud.boost.daemon.utils.TypeDefaults
 import java.io.Serializable
 import java.util.*
 
@@ -25,13 +28,13 @@ class BackupDTO(
         val type: String
 
         class Folder(
-            val model: Model,
+            val model: Model = Model(),
             var children: List<TreeElement> = emptyList()
         ) : TreeElement {
             override val type = "folder"
 
             data class Model(
-                val alias: String,
+                val alias: String = TypeDefaults.STRING,
                 val description: String? = null,
                 val color: String = DEFAULT_COLOR,
                 val icon: String? = null,
@@ -41,15 +44,16 @@ class BackupDTO(
         }
 
         class Application(
-            val model: Model,
-            var children: List<Instance> = emptyList()
+            val model: Model = Model(),
+            var children: List<Instance> = emptyList(),
+            var metricRules: List<MetricRule> = emptyList()
         ) : TreeElement {
             override val type = "application"
 
             data class Model(
-                val alias: String,
+                val alias: String = TypeDefaults.STRING,
                 val description: String? = null,
-                val type: String,
+                val type: String = ApplicationType.SPRING_BOOT.name,
                 val color: String = DEFAULT_COLOR,
                 val icon: String? = null,
                 val sort: Double? = null,
@@ -58,19 +62,30 @@ class BackupDTO(
             )
 
             class Instance(
-                val model: Model,
+                val model: Model = Model(),
             ) {
                 val type = "instance"
 
                 data class Model(
-                    val alias: String?,
-                    val actuatorUrl: String,
+                    val alias: String? = null,
+                    val actuatorUrl: String = TypeDefaults.STRING,
                     val description: String? = null,
                     val color: String = DEFAULT_COLOR,
                     val icon: String? = null,
                     val sort: Double? = null
                 )
             }
+
+            class MetricRule(
+                val name: String = TypeDefaults.STRING,
+                val metricName: String = TypeDefaults.STRING,
+                val divisorMetricName: String? = null,
+                val operation: String = TypeDefaults.STRING,
+                val value1: Double = TypeDefaults.DOUBLE,
+                val value2: Double? = null,
+                val enabled: Boolean = TypeDefaults.BOOLEAN,
+                val type: String = TypeDefaults.STRING,
+            )
         }
     }
 
@@ -153,6 +168,33 @@ class BackupDTO(
                 icon = this.model.icon,
                 sort = this.model.sort,
                 parentApplicationId = parentApplicationId
+            )
+        }
+
+        fun ApplicationMetricRule.toTreeElement(): TreeElement.Application.MetricRule {
+            return TreeElement.Application.MetricRule(
+                name = name,
+                metricName = metricName,
+                divisorMetricName = divisorMetricName,
+                operation = operation.toString(),
+                value1 = value1,
+                value2 = value2,
+                enabled = enabled,
+                type = type.toString()
+            )
+        }
+
+        fun TreeElement.Application.MetricRule.toApplicationMetricRule(parentApplicationId: UUID): ApplicationMetricRule {
+            return ApplicationMetricRule(
+                name = name,
+                metricName = metricName,
+                divisorMetricName = divisorMetricName,
+                operation = ApplicationMetricRuleOperation.valueOf(operation),
+                value1 = value1,
+                value2 = value2,
+                enabled = enabled,
+                type = ApplicationMetricRule.Type.valueOf(type),
+                applicationId = parentApplicationId
             )
         }
     }
