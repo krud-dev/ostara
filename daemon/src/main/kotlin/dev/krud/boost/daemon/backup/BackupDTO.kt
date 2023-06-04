@@ -4,11 +4,12 @@ import com.fasterxml.jackson.annotation.JsonSubTypes
 import com.fasterxml.jackson.annotation.JsonTypeInfo
 import dev.krud.boost.daemon.configuration.application.entity.Application
 import dev.krud.boost.daemon.configuration.application.enums.ApplicationType
+import dev.krud.boost.daemon.configuration.authentication.Authentication
 import dev.krud.boost.daemon.configuration.folder.entity.Folder
 import dev.krud.boost.daemon.configuration.instance.entity.Instance
 import dev.krud.boost.daemon.utils.DEFAULT_COLOR
 import java.io.Serializable
-import java.util.UUID
+import java.util.*
 
 
 class BackupDTO(
@@ -35,7 +36,7 @@ class BackupDTO(
                 val color: String = DEFAULT_COLOR,
                 val icon: String? = null,
                 val sort: Double? = null,
-                val authentication: String? = null, // TODO
+                val authenticationProperties: Map<String, String?>? = null
             )
         }
 
@@ -52,7 +53,7 @@ class BackupDTO(
                 val color: String = DEFAULT_COLOR,
                 val icon: String? = null,
                 val sort: Double? = null,
-                val authentication: String? = null,
+                val authenticationProperties: Map<String, String?>? = null,
                 val disableSslVerification: Boolean = false
             )
 
@@ -81,7 +82,7 @@ class BackupDTO(
                     description = description,
                     color = color,
                     icon = icon,
-                    authentication = authentication.type
+                    authenticationProperties = authentication.asMap(),
                 ),
             )
         }
@@ -93,7 +94,7 @@ class BackupDTO(
                 color = this.model.color,
                 icon = this.model.icon,
                 sort = this.model.sort,
-                // TODO authentication
+                authentication = Authentication.fromMap(this.model.authenticationProperties ?: emptyMap()),
             ).apply {
                 this.parentFolderId = parentFolderId
             }
@@ -108,7 +109,7 @@ class BackupDTO(
                     color = color,
                     icon = icon,
                     sort = sort,
-                    authentication = authentication.type,
+                    authenticationProperties = authentication.asMap(),
                     disableSslVerification = disableSslVerification
                 ),
             )
@@ -122,9 +123,10 @@ class BackupDTO(
                 color = this.model.color,
                 icon = this.model.icon,
                 sort = this.model.sort,
-                // TODO authentication
+                authentication = Authentication.fromMap(this.model.authenticationProperties ?: emptyMap()),
             ).apply {
                 disableSslVerification = this@toApplication.model.disableSslVerification
+                this.authentication = Authentication.fromMap(this@toApplication.model.authenticationProperties ?: emptyMap())
                 this.parentFolderId = parentFolderId
             }
         }

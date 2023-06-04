@@ -82,123 +82,191 @@ class BackupParser(
 
 fun main() {
     val json = """
+{
+  "version": 1,
+  "tree": [
+    {
+      "model": {
+        "alias": "Flyway",
+        "description": null,
+        "type": "SPRING_BOOT",
+        "color": "inherited",
+        "icon": null,
+        "sort": 1,
+        "authenticationProperties": {
+          "type": "inherit"
+        },
+        "disableSslVerification": false
+      },
+      "children": [
         {
-            "version": 1,
-            "deprecatedField": false,
-            "tree": [
-                {
-                    "model": {
-                        "alias": "rootFolder1",
-                        "description": null,
-                        "color": "inherited",
-                        "icon": null,
-                        "sort": null,
-                        "authentication": "inherit"
-                    },
-                    "children": [
-                        {
-                            "model": {
-                                "alias": "rootFolder1_1",
-                                "description": null,
-                                "color": "inherited",
-                                "icon": null,
-                                "sort": null,
-                                "authentication": "inherit"
-                            },
-                            "children": [],
-                            "type": "folder"
-                        },
-                        {
-                            "model": {
-                                "alias": "rootFolder1_2",
-                                "description": null,
-                                "color": "inherited",
-                                "icon": null,
-                                "sort": null,
-                                "authentication": "inherit"
-                            },
-                            "children": [],
-                            "type": "folder"
-                        },
-                        {
-                            "model": {
-                                "alias": "rootFolder1Application1",
-                                "description": null,
-                                "type": "SPRING_BOOT",
-                                "color": "inherited",
-                                "icon": null,
-                                "sort": null,
-                                "authentication": "inherit",
-                                "disableSslVerification": false
-                            },
-                            "children": [
-                                {
-                                    "model": {
-                                        "alias": "rootFolder1ApplicationInstance1",
-                                        "actuatorUrl": "http://example.com/actuator",
-                                        "description": null,
-                                        "color": "inherited",
-                                        "icon": null,
-                                        "sort": null
-                                    },
-                                    "type": "instance"
-                                },
-                                {
-                                    "model": {
-                                        "alias": "rootFolder1ApplicationInstance2",
-                                        "actuatorUrl": "http://example.com/actuator",
-                                        "description": null,
-                                        "color": "inherited",
-                                        "icon": null,
-                                        "sort": null
-                                    },
-                                    "type": "instance"
-                                }
-                            ],
-                            "type": "application"
-                        }
-                    ],
-                    "type": "folder"
-                },
-                {
-                    "model": {
-                        "alias": "rootApplication1",
-                        "description": null,
-                        "type": "SPRING_BOOT",
-                        "color": "inherited",
-                        "icon": null,
-                        "sort": null,
-                        "authentication": "inherit",
-                        "disableSslVerification": false
-                    },
-                    "children": [
-                        {
-                            "model": {
-                                "alias": "rootApplicationInstance1",
-                                "actuatorUrl": "http://example.com/actuator",
-                                "description": null,
-                                "color": "inherited",
-                                "icon": null,
-                                "sort": null
-                            },
-                            "type": "instance"
-                        },
-                        {
-                            "model": {
-                                "alias": "rootApplicationInstance2",
-                                "actuatorUrl": "http://example.com/actuator",
-                                "description": null,
-                                "color": "inherited",
-                                "icon": null,
-                                "sort": null
-                            },
-                            "type": "instance"
-                        }
-                    ],
-                    "type": "application"
-                }
-            ]
+          "model": {
+            "alias": null,
+            "actuatorUrl": "https://sbclient.krud.dev/first/1/actuator",
+            "description": null,
+            "color": "inherited",
+            "icon": null,
+            "sort": 1
+          },
+          "type": "instance"
+        },
+        {
+          "model": {
+            "alias": null,
+            "actuatorUrl": "https://sbclient.krud.dev/first/2/actuator",
+            "description": null,
+            "color": "inherited",
+            "icon": null,
+            "sort": 2
+          },
+          "type": "instance"
+        },
+        {
+          "model": {
+            "alias": null,
+            "actuatorUrl": "https://sbclient.krud.dev/first/3/actuator",
+            "description": null,
+            "color": "inherited",
+            "icon": null,
+            "sort": 3
+          },
+          "type": "instance"
         }
+      ],
+      "type": "application"
+    },
+    {
+      "model": {
+        "alias": "Liquibase",
+        "description": null,
+        "type": "SPRING_BOOT",
+        "color": "inherited",
+        "icon": null,
+        "sort": 2,
+        "authenticationProperties": {
+          "type": "inherit"
+        },
+        "disableSslVerification": false
+      },
+      "children": [
+        {
+          "model": {
+            "alias": null,
+            "actuatorUrl": "https://sbclient.krud.dev/second/1/actuator",
+            "description": null,
+            "color": "inherited",
+            "icon": null,
+            "sort": 1
+          },
+          "type": "instance"
+        },
+        {
+          "model": {
+            "alias": null,
+            "actuatorUrl": "https://sbclient.krud.dev/second/2/actuator",
+            "description": null,
+            "color": "inherited",
+            "icon": null,
+            "sort": 2
+          },
+          "type": "instance"
+        },
+        {
+          "model": {
+            "alias": null,
+            "actuatorUrl": "https://sbclient.krud.dev/second/3/actuator",
+            "description": null,
+            "color": "inherited",
+            "icon": null,
+            "sort": 3
+          },
+          "type": "instance"
+        }
+      ],
+      "type": "application"
+    },
+    {
+      "model": {
+        "alias": "Secure",
+        "description": null,
+        "type": "SPRING_BOOT",
+        "color": "inherited",
+        "icon": null,
+        "sort": 3,
+        "authenticationProperties": {
+          "type": "basic",
+          "username": "user",
+          "password": "user"
+        },
+        "disableSslVerification": false
+      },
+      "children": [
+        {
+          "model": {
+            "alias": null,
+            "actuatorUrl": "https://sbclient.krud.dev/third/1/actuator",
+            "description": null,
+            "color": "inherited",
+            "icon": null,
+            "sort": 1
+          },
+          "type": "instance"
+        },
+        {
+          "model": {
+            "alias": null,
+            "actuatorUrl": "https://sbclient.krud.dev/third/2/actuator",
+            "description": null,
+            "color": "inherited",
+            "icon": null,
+            "sort": 2
+          },
+          "type": "instance"
+        },
+        {
+          "model": {
+            "alias": null,
+            "actuatorUrl": "https://sbclient.krud.dev/third/3/actuator",
+            "description": null,
+            "color": "inherited",
+            "icon": null,
+            "sort": 3
+          },
+          "type": "instance"
+        }
+      ],
+      "type": "application"
+    },
+    {
+      "model": {
+        "alias": "Daemon",
+        "description": null,
+        "type": "SPRING_BOOT",
+        "color": "inherited",
+        "icon": null,
+        "sort": 4,
+        "authenticationProperties": {
+          "type": "inherit"
+        },
+        "disableSslVerification": false
+      },
+      "children": [
+        {
+          "model": {
+            "alias": null,
+            "actuatorUrl": "http://127.0.0.1:12222/actuator",
+            "description": null,
+            "color": "inherited",
+            "icon": null,
+            "sort": 1
+          },
+          "type": "instance"
+        }
+      ],
+      "type": "application"
+    }
+  ]
+}
     """.trimIndent()
 
     val backupParser = BackupParser(listOf(

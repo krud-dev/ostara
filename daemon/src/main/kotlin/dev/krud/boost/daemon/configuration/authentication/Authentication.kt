@@ -25,6 +25,9 @@ sealed interface Authentication {
 
     @get:JsonIgnore
     val authenticator: Authenticator get() = Authenticator.NONE
+
+    fun asMap(): Map<String, String?> = mapOf("type" to type)
+
     class Inherit : Authentication {
         override val type: String = "inherit"
 
@@ -47,6 +50,12 @@ sealed interface Authentication {
     ) : Authentication {
         override val type: String = "basic"
         override val authenticator: Authenticator get() = BasicAuthenticator(username, password)
+        override fun asMap(): Map<String, String?> {
+            return super.asMap() + mapOf(
+                "username" to username,
+                "password" to password
+            )
+        }
     }
 
     data class Header(
@@ -55,6 +64,12 @@ sealed interface Authentication {
     ) : Authentication {
         override val type: String = "header"
         override val authenticator: Authenticator get() = HeaderAuthenticator(headerName, headerValue)
+        override fun asMap(): Map<String, String?> {
+            return super.asMap() + mapOf(
+                "headerName" to headerName,
+                "headerValue" to headerValue
+            )
+        }
     }
 
     data class QueryString(
@@ -63,6 +78,12 @@ sealed interface Authentication {
     ) : Authentication {
         override val type: String = "query-string"
         override val authenticator: Authenticator get() = QueryStringAuthenticator(key, value)
+        override fun asMap(): Map<String, String?> {
+            return super.asMap() + mapOf(
+                "key" to key,
+                "value" to value
+            )
+        }
     }
 
     data class BearerToken(
@@ -70,5 +91,36 @@ sealed interface Authentication {
     ) : Authentication {
         override val type: String = "bearer-token"
         override val authenticator: Authenticator get() = BearerTokenAuthenticator(token)
+        override fun asMap(): Map<String, String?> {
+            return super.asMap() + mapOf(
+                "token" to token
+            )
+        }
+    }
+
+    companion object {
+        fun fromMap(map: Map<String, String?>): Authentication {
+            val type = map["type"]
+            return when (type) {
+                "none" -> None()
+                "inherit" -> Inherit()
+                "basic" -> Basic(
+                    username = map["username"] ?: "",
+                    password = map["password"] ?: ""
+                )
+                "header" -> Header(
+                    headerName = map["headerName"] ?: "",
+                    headerValue = map["headerValue"] ?: ""
+                )
+                "query-string" -> QueryString(
+                    key = map["key"] ?: "",
+                    value = map["value"] ?: ""
+                )
+                "bearer-token" -> BearerToken(
+                    token = map["token"] ?: ""
+                )
+                else -> None()
+            }
+        }
     }
 }
