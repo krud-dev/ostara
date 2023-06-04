@@ -15,8 +15,8 @@ class BackupService(
         registerModule(kotlinModule())
     }
 
-    fun importAll(backupJsonString: JsonNode) {
-        val backupDTO = backupParser.parse(backupJsonString)
+    fun importAll(json: JsonNode) {
+        val backupDTO = backupParser.parse(json)
         backupImporter.import(backupDTO)
     }
 
