@@ -113,7 +113,7 @@ const FolderDashboard: FunctionComponent = () => {
               <CardHeader title={<FormattedMessage id={'applications'} />} />
               <CardContent>
                 <EmptyContent
-                  text={<FormattedMessage id={'folderIsEmpty'} />}
+                  text={<FormattedMessage id={selectedItem ? 'folderIsEmpty' : 'dashboardIsEmpty'} />}
                   description={
                     <>
                       <Box>
@@ -133,7 +133,7 @@ const FolderDashboard: FunctionComponent = () => {
 
           {groupedData?.map((group) => (
             <Card key={group.path}>
-              <CardHeader title={group.displayPath} />
+              <CardHeader title={group.displayPath || <FormattedMessage id={'root'} />} />
               <CardContent>
                 <Grid2 container spacing={COMPONENTS_SPACING}>
                   {group.applications.map((application) => (

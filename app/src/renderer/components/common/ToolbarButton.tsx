@@ -11,14 +11,30 @@ export type ToolbarButtonProps = {
   color?: ColorSchema;
   size?: 'small' | 'medium' | 'large';
   disabled?: boolean;
+  stopPropagation?: boolean;
   onClick?: (event: React.MouseEvent) => void;
   sx?: SxProps<Theme>;
 };
 
-export default function ToolbarButton({ tooltip, icon, color, size, disabled, onClick, sx }: ToolbarButtonProps) {
-  const wrapperClickHandler = useCallback((event: React.MouseEvent): void => {
-    event.stopPropagation();
-  }, []);
+export default function ToolbarButton({
+  tooltip,
+  icon,
+  color,
+  size,
+  disabled,
+  stopPropagation,
+  onClick,
+  sx,
+}: ToolbarButtonProps) {
+  const wrapperClickHandler = useCallback(
+    (event: React.MouseEvent): void => {
+      if (!stopPropagation) {
+        return;
+      }
+      event.stopPropagation();
+    },
+    [stopPropagation]
+  );
 
   return (
     <Box sx={{ display: 'inline-block', ...sx }}>

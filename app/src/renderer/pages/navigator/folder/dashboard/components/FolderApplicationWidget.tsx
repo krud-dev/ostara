@@ -71,9 +71,7 @@ const FolderApplicationWidget: FunctionComponent<FolderApplicationWidgetProps> =
           <IconViewer icon={icon} fontSize={'medium'} sx={{ color }} />
           <Typography variant={'h4'} component={'div'} noWrap sx={{ lineHeight: 1.4 }}>
             <Tooltip title={title}>
-              <span>
-                <FormattedMessage id={title} />
-              </span>
+              <span>{title}</span>
             </Tooltip>{' '}
             <Tooltip title={<FormattedMessage id={'instances'} />}>
               <span>{`(${instancesCount})`}</span>

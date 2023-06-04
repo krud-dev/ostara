@@ -141,6 +141,7 @@ const createMainWindow = async () => {
           symbolColor: color,
         }
       : undefined,
+    trafficLightPosition: { x: 12, y: 12 },
     webPreferences: {
       preload: app.isPackaged ? path.join(__dirname, 'preload.js') : path.join(__dirname, '../../.erb/dll/preload.js'),
     },
