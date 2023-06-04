@@ -3,10 +3,12 @@ package dev.krud.boost.daemon.backup.migration
 import com.fasterxml.jackson.databind.node.NumericNode
 import com.fasterxml.jackson.databind.node.ObjectNode
 
+typealias BackupRootNode = ObjectNode
+
 interface BackupMigration {
     val toVersion: Int
-    fun migrate(input: ObjectNode) {
-        input.set<NumericNode>("version", input.numberNode(toVersion))
+    fun migrate(input: BackupRootNode) {
+        input.version = toVersion
     }
 
     companion object {
@@ -20,6 +22,12 @@ interface BackupMigration {
             }
             return this.maxBy { it.toVersion }.toVersion
         }
+
+        var BackupRootNode.version: Int
+            get() = this.get("version").asInt()
+            set(value) {
+                this.set<NumericNode>("version", this.numberNode(value))
+            }
     }
 }
 
