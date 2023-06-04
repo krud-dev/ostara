@@ -1,5 +1,6 @@
 package dev.krud.boost.daemon.backup
 
+import com.fasterxml.jackson.databind.node.ObjectNode
 import dev.krud.boost.daemon.backup.migration.BackupMigration
 import dev.krud.boost.daemon.backup.migration.BackupMigration.Companion.getLatestVersion
 import dev.krud.boost.daemon.util.FileUtils
@@ -8,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
 import strikt.api.expect
 import strikt.api.expectThat
+import strikt.api.expectThrows
 import strikt.assertions.hasSize
 import strikt.assertions.isEmpty
 import strikt.assertions.isEqualTo
@@ -35,6 +37,89 @@ class BackupParserTest {
     }
 
     @Test
+    fun `parser should throw if version is missing`() {
+        val backupParser = BackupParser(
+            listOf(
+                object : BackupMigration {
+                    override val toVersion = 1
+                }
+            )
+        )
+        val backup = """
+            {
+                "tree": []
+            }
+        """.trimIndent()
+        val exception = expectThrows<IllegalStateException> {
+            backupParser.parse(backup)
+        }.subject
+        expectThat(exception.message).isEqualTo("Missing version")
+    }
+
+    @Test
+    fun `parser should throw if version is greater than latest version`() {
+        val backupParser = BackupParser(
+            listOf(
+                object : BackupMigration {
+                    override val toVersion = 1
+                }
+            )
+        )
+        val backup = """
+            {
+                "version": 2,
+                "tree": []
+            }
+        """.trimIndent()
+        val exception = expectThrows<IllegalStateException> {
+            backupParser.parse(backup)
+        }.subject
+        expectThat(exception.message).isEqualTo("Backup format version 2 is not supported")
+    }
+
+    @Test
+    fun `parser should throw if a migration throws`() {
+        val backupParser = BackupParser(
+            listOf(
+                object : BackupMigration {
+                    override val toVersion = 1
+                    override fun migrate(input: ObjectNode) {
+                        error("Migration failed")
+                    }
+                }
+            )
+        )
+        val backup = """
+            {
+                "version": 0,
+                "tree": []
+            }
+        """.trimIndent()
+        val exception = expectThrows<IllegalStateException> {
+            backupParser.parse(backup)
+        }.subject
+        expectThat(exception.message).isEqualTo("Failed to run migrate backup format to version 1: Migration failed")
+    }
+
+    @Test
+    fun `parser should throw if received a non object json node`() {
+        val backupParser = BackupParser(
+            listOf(
+                object : BackupMigration {
+                    override val toVersion = 1
+                }
+            )
+        )
+        val backup = """
+            []
+        """.trimIndent()
+        val exception = expectThrows<IllegalStateException> {
+            backupParser.parse(backup)
+        }.subject
+        expectThat(exception.message).isEqualTo("Invalid backup format")
+    }
+
+    @Test
     fun `parse backup of a version 0 backup should return a version 1 dto`() {
         val backupParser = BackupParser(
             listOf(
@@ -51,6 +136,21 @@ class BackupParserTest {
         """.trimIndent()
         val parsedBackup = backupParser.parse(backup)
         expectThat(parsedBackup.version).isEqualTo(1)
+    }
+
+    @Test
+    fun `parser should throw if version is lower than latest but no migrations are available`() {
+        val backupParser = BackupParser(emptyList())
+        val backup = """
+            {
+                "version":-1,
+                "tree": []
+            }
+        """.trimIndent()
+        val exception = expectThrows<IllegalStateException> {
+            backupParser.parse(backup)
+        }.subject
+        expectThat(exception.message).isEqualTo("Backup format version -1 is not supported")
     }
 
     @SpringBootTest

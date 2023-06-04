@@ -18,7 +18,7 @@ interface BackupMigration {
 
         fun Collection<BackupMigration>.getLatestVersion(): Int {
             if (this.isEmpty()) {
-                error("No backup migrations found")
+                return 0
             }
             return this.maxBy { it.toVersion }.toVersion
         }
