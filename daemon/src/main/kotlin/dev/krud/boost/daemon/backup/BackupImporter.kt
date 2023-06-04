@@ -1,5 +1,8 @@
 package dev.krud.boost.daemon.backup
 
+import dev.krud.boost.daemon.backup.BackupDTO.Companion.toApplication
+import dev.krud.boost.daemon.backup.BackupDTO.Companion.toFolder
+import dev.krud.boost.daemon.backup.BackupDTO.Companion.toInstance
 import dev.krud.boost.daemon.configuration.application.entity.Application
 import dev.krud.boost.daemon.configuration.folder.entity.Folder
 import dev.krud.boost.daemon.configuration.instance.entity.Instance
@@ -15,7 +18,7 @@ class BackupImporter(
     private val instanceKrud: Krud<Instance, UUID>
 ) {
     @Transactional(readOnly = false)
-    fun importBackup(backup: BackupDTO) {
+    fun import(backup: BackupDTO) {
         backup.tree.forEach {
             when (it) {
                 is BackupDTO.TreeElement.Folder -> importFolder(it)
@@ -24,21 +27,35 @@ class BackupImporter(
         }
     }
 
-    private fun importFolder(element: BackupDTO.TreeElement.Folder): Folder {
-        val folder = element.model.toFolder()
-        folderKrud.save(folder)
+    private fun importFolder(element: BackupDTO.TreeElement.Folder, parentFolderId: UUID? = null): Folder {
+        val folder = element.toFolder(parentFolderId)
+        val createdFolder = folderKrud.create(folder)
         element.children.forEach {
             when (it) {
-                is BackupDTO.TreeElement.Folder -> {
-                    val childFolder = importFolder(it)
-                    folderKrud.save(childFolder)
-                }
-                is BackupDTO.TreeElement.Application -> {
-                    val childApplication = importApplication(it)
-                    folderKrud.save(childApplication)
+                is BackupDTO.TreeElement.Folder -> importFolder(it, createdFolder.id)
+                is BackupDTO.TreeElement.Application -> importApplication(it, createdFolder.id)
+            }
+        }
+
+        return folder
+    }
+
+    private fun importApplication(element: BackupDTO.TreeElement.Application, parentFolderId: UUID? = null): Application {
+        val application = element.toApplication(parentFolderId)
+        val createdApplication = applicationKrud.create(application)
+        element.children.forEach {
+            when (it) {
+                is BackupDTO.TreeElement.Application.Instance -> {
+                    importInstance(it, createdApplication.id)
                 }
             }
         }
-        return folder
+
+        return application
+    }
+
+    private fun importInstance(element: BackupDTO.TreeElement.Application.Instance, parentApplicationId: UUID): Instance {
+        val instance = element.toInstance(parentApplicationId)
+        return instanceKrud.create(instance)
     }
 }

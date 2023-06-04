@@ -7,12 +7,14 @@ import dev.krud.boost.daemon.configuration.application.enums.ApplicationType
 import dev.krud.boost.daemon.configuration.folder.entity.Folder
 import dev.krud.boost.daemon.configuration.instance.entity.Instance
 import dev.krud.boost.daemon.utils.DEFAULT_COLOR
+import java.io.Serializable
+import java.util.UUID
 
 
 class BackupDTO(
     val version: Int? = null,
     val tree: List<TreeElement>
-) {
+) : Serializable {
     @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.EXISTING_PROPERTY, property = "type")
     @JsonSubTypes(
         JsonSubTypes.Type(value = TreeElement.Folder::class, name = "folder"),
@@ -84,7 +86,7 @@ class BackupDTO(
             )
         }
 
-        fun TreeElement.Folder.toFolder(): Folder {
+        fun TreeElement.Folder.toFolder(parentFolderId: UUID? = null): Folder {
             return Folder(
                 alias = this.model.alias,
                 description = this.model.description,
@@ -92,7 +94,9 @@ class BackupDTO(
                 icon = this.model.icon,
                 sort = this.model.sort,
                 // TODO authentication
-            )
+            ).apply {
+                this.parentFolderId = parentFolderId
+            }
         }
 
         fun Application.toTreeElement(): TreeElement.Application {
@@ -110,7 +114,7 @@ class BackupDTO(
             )
         }
 
-        fun TreeElement.Application.toApplication(): Application {
+        fun TreeElement.Application.toApplication(parentFolderId: UUID? = null): Application {
             return Application(
                 alias = this.model.alias,
                 description = this.model.description,
@@ -121,6 +125,7 @@ class BackupDTO(
                 // TODO authentication
             ).apply {
                 disableSslVerification = this@toApplication.model.disableSslVerification
+                this.parentFolderId = parentFolderId
             }
         }
 
@@ -137,7 +142,7 @@ class BackupDTO(
             )
         }
 
-        fun TreeElement.Application.Instance.toInstance(): Instance {
+        fun TreeElement.Application.Instance.toInstance(parentApplicationId: UUID): Instance {
             return Instance(
                 alias = this.model.alias,
                 actuatorUrl = this.model.actuatorUrl,
@@ -145,7 +150,7 @@ class BackupDTO(
                 color = this.model.color,
                 icon = this.model.icon,
                 sort = this.model.sort,
-                parentApplicationId =
+                parentApplicationId = parentApplicationId
             )
         }
     }

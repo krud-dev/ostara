@@ -24,6 +24,10 @@ class BackupParser(
 
     fun parse(input: String): BackupDTO {
         val json = objectMapper.readTree(input)
+        return parse(json)
+    }
+
+    fun parse(json: JsonNode): BackupDTO {
         if (!json.isObject) {
             error("Invalid backup format")
         }

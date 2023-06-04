@@ -42,7 +42,7 @@ class BackupExporterTest {
             instanceKrud.create(stubInstance(alias = "rootApplicationInstance1", parentApplicationId = this.id))
             instanceKrud.create(stubInstance(alias = "rootApplicationInstance2", parentApplicationId = this.id))
         }
-        val dto = backupExporter.exportCurrentConfiguration()
+        val dto = backupExporter.exportAll()
 
         // todo: assertions
     }

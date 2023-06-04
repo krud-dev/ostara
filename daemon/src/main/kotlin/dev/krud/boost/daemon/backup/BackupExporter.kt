@@ -18,7 +18,7 @@ class BackupExporter(
     private val applicationKrud: Krud<Application, UUID>,
     private val instanceKrud: Krud<Instance, UUID>,
 ) {
-    fun exportCurrentConfiguration(): BackupDTO {
+    fun exportAll(): BackupDTO {
         val rootFolders = getFolders()
             .map {
                 buildFolderTreeElement(it)
