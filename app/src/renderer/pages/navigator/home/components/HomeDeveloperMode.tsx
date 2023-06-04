@@ -1,8 +1,11 @@
 import { Card, CardContent, Stack, Typography } from '@mui/material';
 import React, { Fragment, useCallback, useMemo, useState } from 'react';
 import {
+  ApplicationMetricRuleCreateRequestRO,
   ApplicationModifyRequestRO,
   ApplicationRO,
+  FolderModifyRequestRO,
+  FolderRO,
   InstanceModifyRequestRO,
   InstanceRO,
 } from '../../../../../common/generated_definitions';
@@ -21,12 +24,14 @@ import { useDeleteItem } from '../../../../apis/requests/item/deleteItem';
 import { folderCrudEntity } from '../../../../apis/requests/crud/entity/entities/folder.crudEntity';
 import { showDeleteConfirmationDialog } from '../../../../utils/dialogUtils';
 import { isItemDeletable } from '../../../../utils/itemUtils';
-import { urls } from '../../../../routes/urls';
+import { useCreateApplicationMetricRule } from '../../../../apis/requests/application/metric-rules/createApplicationMetricRule';
 
 type ApplicationToCreate = {
+  folderName?: string;
   applicationName: string;
   instances: string[];
   authentication?: Authentication$Typed;
+  metricRule?: Omit<ApplicationMetricRuleCreateRequestRO, 'applicationId'>;
 };
 
 type HomeDeveloperModeProps = {};
@@ -38,6 +43,7 @@ export default function HomeDeveloperMode({}: HomeDeveloperModeProps) {
   const testApplications = useMemo<ApplicationToCreate[]>(
     () => [
       {
+        folderName: 'Flyway',
         applicationName: 'Flyway',
         instances: [
           'https://sbclient.krud.dev/first/1/actuator',
@@ -52,6 +58,18 @@ export default function HomeDeveloperMode({}: HomeDeveloperModeProps) {
           'https://sbclient.krud.dev/second/2/actuator',
           'https://sbclient.krud.dev/second/3/actuator',
         ],
+        metricRule: {
+          name: 'CPU usage > 90%',
+          metricName: {
+            name: 'process.cpu.usage',
+            statistic: 'VALUE',
+            tags: {},
+          },
+          type: 'SIMPLE',
+          operation: 'GREATER_THAN',
+          value1: 0.9,
+          enabled: true,
+        },
       },
       {
         applicationName: 'Secure',
@@ -76,25 +94,40 @@ export default function HomeDeveloperMode({}: HomeDeveloperModeProps) {
 
   const [loading, setLoading] = useState<boolean>(false);
 
+  const createFolderState = useCrudCreate<FolderRO, FolderModifyRequestRO>({ refetchNone: true });
   const createApplicationState = useCrudCreate<ApplicationRO, ApplicationModifyRequestRO>({ refetchNone: true });
   const createBulkInstanceState = useCrudCreateBulk<InstanceRO, InstanceModifyRequestRO>({ refetchNone: true });
+  const createMetricRuleState = useCreateApplicationMetricRule();
 
   const createApplicationsHandler = useCallback(
     async (itemsToCreate: ApplicationToCreate[]): Promise<void> => {
       setLoading(true);
 
       try {
-        let applicationSort = getNewItemOrder();
+        let itemSort = getNewItemOrder();
         for (const itemToCreate of itemsToCreate) {
+          const folder = itemToCreate.folderName
+            ? await createFolderState.mutateAsync({
+                entity: folderCrudEntity,
+                item: {
+                  alias: itemToCreate.folderName,
+                  color: INHERITED_COLOR_VALUE,
+                  authentication: { type: 'inherit' },
+                  sort: itemSort,
+                },
+              })
+            : undefined;
+
           const applicationToCreate: ApplicationModifyRequestRO = {
             alias: itemToCreate.applicationName,
             type: 'SPRING_BOOT',
-            parentFolderId: undefined,
-            sort: applicationSort,
+            parentFolderId: folder?.id,
+            sort: itemSort,
             color: INHERITED_COLOR_VALUE,
             authentication: itemToCreate.authentication ?? { type: 'inherit' },
           };
-          applicationSort += 1;
+
+          itemSort += 1;
 
           const application = await createApplicationState.mutateAsync({
             entity: applicationCrudEntity,
@@ -116,8 +149,15 @@ export default function HomeDeveloperMode({}: HomeDeveloperModeProps) {
             entity: instanceCrudEntity,
             items: instancesToCreate,
           });
+
+          if (itemToCreate.metricRule) {
+            await createMetricRuleState.mutateAsync({
+              metricRule: { ...itemToCreate.metricRule, applicationId: application.id },
+            });
+          }
         }
 
+        queryClient.invalidateQueries(crudKeys.entity(folderCrudEntity));
         queryClient.invalidateQueries(crudKeys.entity(applicationCrudEntity));
         queryClient.invalidateQueries(crudKeys.entity(instanceCrudEntity));
       } catch (e) {
