@@ -93,6 +93,7 @@ export default function LogLevelToggleGroup({
             selected={selected}
             onClick={() => changeHandler(level)}
             sx={{ whiteSpace: 'nowrap', ...(selected ? { opacity: 0.5 } : {}) }}
+            key={level}
           >
             <Tooltip title={tooltip} key={level}>
               <Box component={'span'}>{level}</Box>

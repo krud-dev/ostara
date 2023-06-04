@@ -135,6 +135,7 @@ export default function TableRowCustom<EntityItem>({ row }: TableRowCustomProps<
                   tooltip={tooltip}
                   icon={action.icon}
                   disabled={!!disabled || loading}
+                  stopPropagation
                   onClick={(event) => actionClickHandler(event, action.id)}
                   key={action.id}
                 />

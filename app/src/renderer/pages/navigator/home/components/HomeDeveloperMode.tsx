@@ -194,7 +194,7 @@ export default function HomeDeveloperMode({}: HomeDeveloperModeProps) {
   }, [applicationsHealthState]);
 
   const sendTestNotificationHandler = useCallback(async (): Promise<void> => {
-    window.notifications.sendNotification({
+    await window.notifications.sendNotification({
       title: 'Test Notification Title',
       body: 'Test notification body text',
     });
