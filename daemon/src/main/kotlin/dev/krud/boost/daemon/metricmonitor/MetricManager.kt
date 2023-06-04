@@ -128,14 +128,14 @@ class MetricManager(
             Optional.of(it)
         } ?: Optional.empty()
         lastMetricData[instance.id to metricRequest.metricName] = newMetricValue
-            if (lastMetricValue != null && lastMetricValue.getOrNull()?.value?.value != newMetricValue.getOrNull()?.value?.value) {
+            if (lastMetricValue?.getOrNull()?.value?.value != newMetricValue.getOrNull()?.value?.value) {
                 instanceMetricUpdatedChannel.send(
                     InstanceMetricUpdatedMessage(
                         InstanceMetricUpdatedMessage.Payload(
                             instance.id,
                             instance.parentApplicationId,
                             metricRequest.metricName,
-                            lastMetricValue.getOrNull(),
+                            lastMetricValue?.getOrNull(),
                             newMetricValue.getOrNull()
                         )
                     )

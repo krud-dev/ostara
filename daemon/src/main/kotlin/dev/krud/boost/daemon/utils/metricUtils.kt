@@ -1,11 +1,34 @@
 package dev.krud.boost.daemon.utils
 
 import dev.krud.boost.daemon.actuator.model.MetricActuatorResponse
+import dev.krud.boost.daemon.base.annotations.GenerateTypescript
 import dev.krud.boost.daemon.configuration.instance.metric.ro.InstanceMetricRO
 import dev.krud.boost.daemon.configuration.instance.metric.ro.InstanceMetricValueRO
 import dev.krud.boost.daemon.exception.throwBadRequest
+import dev.krud.shapeshift.ShapeShiftBuilder
+import dev.krud.shapeshift.transformer.base.MappingTransformer
+import dev.krud.shapeshift.transformer.base.MappingTransformerContext
 import java.util.*
 
+class ParsedMetricNameToStringTransformer : MappingTransformer<ParsedMetricName, String> {
+    override fun transform(context: MappingTransformerContext<out ParsedMetricName>): String? {
+        return context.originalValue?.toString()
+    }
+}
+
+class StringToParsedMetricNameTransformer : MappingTransformer<String, ParsedMetricName> {
+    override fun transform(context: MappingTransformerContext<out String>): ParsedMetricName? {
+        return context.originalValue?.let { ParsedMetricName.from(it) }
+    }
+}
+
+fun ShapeShiftBuilder.withParsedMetricNameTransformers(): ShapeShiftBuilder {
+    return this
+        .withTransformer(ParsedMetricNameToStringTransformer())
+        .withTransformer(StringToParsedMetricNameTransformer())
+}
+
+@GenerateTypescript
 data class ParsedMetricName(
     val name: String,
     val statistic: String,
@@ -22,6 +45,7 @@ data class ParsedMetricName(
     }
 
     companion object {
+        val DEFAULT = ParsedMetricName("", "")
         val METRIC_NAME_REGEX = Regex("(.*)\\[(.*)\\](.*)")
         fun from(name: String): ParsedMetricName {
             val match = METRIC_NAME_REGEX.matchEntire(name) ?: throwBadRequest("Invalid metric name: $name")

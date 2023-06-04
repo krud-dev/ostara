@@ -3,7 +3,7 @@ import Page from 'renderer/components/layout/Page';
 import { useNavigatorTree } from 'renderer/contexts/NavigatorTreeContext';
 import TableComponent from 'renderer/components/table/TableComponent';
 import { Entity } from 'renderer/entity/entity';
-import { Box, Button, Card } from '@mui/material';
+import { Box, Card } from '@mui/material';
 import {
   InstanceHeapdumpDownloadProgressMessage$Payload,
   InstanceRO,
@@ -20,7 +20,6 @@ import { useSnackbar } from 'notistack';
 import { useDeleteInstanceHeapdumpReference } from '../../../../apis/requests/instance/heapdumps/deleteInstanceHeapdumpReference';
 import { useDownloadInstanceHeapdumpReference } from '../../../../apis/requests/instance/heapdumps/downloadInstanceHeapdumpReference';
 import { useStomp } from '../../../../apis/websockets/StompContext';
-import EmptyContent from '../../../../components/help/EmptyContent';
 import { LoadingButton } from '@mui/lab';
 import { IconViewer } from '../../../../components/common/IconViewer';
 
@@ -98,29 +97,34 @@ const InstanceHeapdumpReferences: FunctionComponent = () => {
     []
   );
 
-  const requestHeapdumpState = useRequestInstanceHeapdump();
-  const globalActionsHandler = useCallback(async (actionId: string): Promise<void> => {
-    switch (actionId) {
-      case REQUEST_ID:
-        try {
-          await requestHeapdumpState.mutateAsync({ instanceId: item.id });
-          enqueueSnackbar(<FormattedMessage id={'heapdumpRequestedSuccessfully'} />, {
-            variant: 'success',
-          });
-        } catch (e) {}
-        break;
-      default:
-        break;
-    }
-  }, []);
-
   const [requestLoading, setRequestLoading] = useState<boolean>(false);
+  const requestHeapdumpState = useRequestInstanceHeapdump();
 
   const requestHandler = useCallback(async (): Promise<void> => {
     setRequestLoading(true);
-    await globalActionsHandler(REQUEST_ID);
+
+    try {
+      await requestHeapdumpState.mutateAsync({ instanceId: item.id });
+      enqueueSnackbar(<FormattedMessage id={'heapdumpRequestedSuccessfully'} />, {
+        variant: 'success',
+      });
+    } catch (e) {}
+
     setRequestLoading(false);
-  }, [globalActionsHandler, setRequestLoading]);
+  }, [item, setRequestLoading]);
+
+  const globalActionsHandler = useCallback(
+    async (actionId: string): Promise<void> => {
+      switch (actionId) {
+        case REQUEST_ID:
+          await requestHandler();
+          break;
+        default:
+          break;
+      }
+    },
+    [requestHandler]
+  );
 
   return (
     <Page>

@@ -1,6 +1,8 @@
 package dev.krud.boost.daemon.base.config
 
 import dev.krud.boost.daemon.configuration.instance.heapdump.messaging.InstanceHeapdumpDownloadProgressMessage
+import dev.krud.boost.daemon.metricmonitor.rule.messaging.ApplicationMetricRuleTriggeredMessage
+import dev.krud.boost.daemon.metricmonitor.rule.messaging.InstanceApplicationMetricRuleTriggeredMessage
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 import org.springframework.integration.channel.PublishSubscribeChannel
@@ -45,6 +47,48 @@ class IntegrationConfig {
     fun instanceMetricUpdatedChannel(): PublishSubscribeChannel {
         return MessageChannels.publishSubscribe().get()
     }
+
+    @Bean
+    fun applicationMetricRuleChannel(): PublishSubscribeChannel {
+        return MessageChannels.publishSubscribe().get()
+    }
+
+    @Bean
+    fun instanceApplicationMetricRuleTriggerChannel(): PublishSubscribeChannel {
+        return MessageChannels.publishSubscribe().get()
+    }
+
+    @Bean
+    fun applicationMetricRuleTriggerChannel(): QueueChannel {
+        return MessageChannels.queue().get()
+    }
+
+    @Bean
+    fun applicationMetricRuleTriggerFlow() = integrationFlow(
+        instanceApplicationMetricRuleTriggerChannel()
+    ) {
+        aggregate {
+            correlationStrategy {
+                it as InstanceApplicationMetricRuleTriggeredMessage
+                it.payload.applicationMetricRule.id
+            }
+            releaseStrategy {
+                false
+            }
+            outputProcessor {
+                ApplicationMetricRuleTriggeredMessage.from(it.messages as Collection<InstanceApplicationMetricRuleTriggeredMessage>)
+            }
+            groupTimeoutExpression("timestamp + 5000 - T(System).currentTimeMillis()")
+            expireGroupsUponTimeout(true)
+            expireGroupsUponCompletion(true)
+            sendPartialResultOnExpiry(true)
+        }
+        filter<ApplicationMetricRuleTriggeredMessage?> {
+            it != null
+        }
+        channel(applicationMetricRuleTriggerChannel())
+    }
+
 
     @Bean
     fun instanceHeapdumpDownloadProgressFlow() = integrationFlow(instanceHeapdumpDownloadProgressInputChannel()) {

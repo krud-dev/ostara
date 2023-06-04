@@ -16,3 +16,15 @@ class CacheDelegator(private val cacheManager: CacheManager) {
 }
 
 fun CacheManager.resolve() = CacheDelegator(this)
+
+inline fun <reified T> Cache.getTyped(key: Any): T? = get(key, T::class.java)
+
+inline fun <reified T> Cache.computeIfAbsent(key: Any, mappingFunction: (Any) -> T): T {
+    val value = getTyped<T>(key)
+    if (value != null) {
+        return value
+    }
+    val newValue = mappingFunction(key)
+    put(key, newValue)
+    return newValue
+}

@@ -16,11 +16,11 @@ class InstanceEventPersistentHooks(
     private val systemEventsChannel: PublishSubscribeChannel
 ) : CreateHooks<UUID, Instance>, UpdateHooks<UUID, Instance>, DeleteHooks<UUID, Instance> {
     override fun postCreate(entity: Instance) {
-        systemEventsChannel.send(InstanceCreatedEventMessage(InstanceCreatedEventMessage.Payload(entity.id)))
+        systemEventsChannel.send(InstanceCreatedEventMessage(InstanceCreatedEventMessage.Payload(entity.id, entity.parentApplicationId)))
     }
 
     override fun postUpdate(entity: Instance) {
-        systemEventsChannel.send(InstanceUpdatedEventMessage(InstanceUpdatedEventMessage.Payload(entity.id)))
+        systemEventsChannel.send(InstanceUpdatedEventMessage(InstanceUpdatedEventMessage.Payload(entity.id, entity.parentApplicationId)))
     }
 
     override fun postDelete(entity: Instance) {

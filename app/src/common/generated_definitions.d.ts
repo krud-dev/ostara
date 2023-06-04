@@ -394,6 +394,39 @@ export interface EventLogRO {
     message?: string;
 }
 
+export interface ApplicationMetricRuleCreateRequestRO {
+    name: string;
+    metricName: ParsedMetricName;
+    divisorMetricName?: ParsedMetricName;
+    operation: ApplicationMetricRuleOperation;
+    value1: number;
+    value2?: number;
+    enabled: boolean;
+    applicationId: string;
+    type: ApplicationMetricRule$Type;
+}
+
+export interface ApplicationMetricRuleModifyRequestRO {
+    name: string;
+    operation: ApplicationMetricRuleOperation;
+    value1: number;
+    value2?: number;
+    enabled: boolean;
+}
+
+export interface ApplicationMetricRuleRO {
+    id: string;
+    applicationId: string;
+    name: string;
+    metricName: ParsedMetricName;
+    divisorMetricName?: ParsedMetricName;
+    operation?: ApplicationMetricRuleOperation;
+    value1: number;
+    value2?: number;
+    enabled: boolean;
+    type: ApplicationMetricRule$Type;
+}
+
 export interface ThreadProfilingLogRO {
     id: string;
     creationTime: DateAsNumber;
@@ -460,11 +493,27 @@ export interface InstanceHostnameUpdatedEventMessage$Payload {
     hostname?: string;
 }
 
+export interface ApplicationMetricRuleTriggeredMessage$InstanceIdAndValue {
+    instanceId: string;
+    value: number;
+}
+
+export interface ApplicationMetricRuleTriggeredMessage$Payload {
+    applicationMetricRule: ApplicationMetricRuleRO;
+    instanceIdsAndValues: ApplicationMetricRuleTriggeredMessage$InstanceIdAndValue[];
+}
+
 export interface ThreadProfilingProgressMessage$Payload {
     requestId: string;
     instanceId: string;
     secondsRemaining: number;
     status: ThreadProfilingStatus;
+}
+
+export interface ParsedMetricName {
+    name: string;
+    statistic: string;
+    tags: { [index: string]: string };
 }
 
 export interface ResultAggregationSummary<T> {
@@ -1003,6 +1052,10 @@ export type InstanceSystemPropertiesRO$RedactionLevel = "NONE" | "PARTIAL" | "FU
 export type EventLogType = "INSTANCE_HEALTH_CHANGED";
 
 export type EventLogSeverity = "INFO" | "WARN" | "ERROR";
+
+export type ApplicationMetricRuleOperation = "GREATER_THAN" | "LOWER_THAN" | "BETWEEN";
+
+export type ApplicationMetricRule$Type = "SIMPLE" | "RELATIVE";
 
 export type ThreadProfilingStatus = "RUNNING" | "FINISHED";
 
