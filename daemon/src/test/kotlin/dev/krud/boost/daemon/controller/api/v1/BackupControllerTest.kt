@@ -38,7 +38,7 @@ class BackupControllerTest {
         whenever(backupService.exportAll()).thenReturn(backupDto)
         val baseUrl = baseUrlProvider() + "exportAll"
         mockMvc.perform(
-            MockMvcRequestBuilders.post(baseUrl)
+            MockMvcRequestBuilders.get(baseUrl)
         )
             .andExpect(status().isOk)
             .andExpect(content().contentType("application/json"))
