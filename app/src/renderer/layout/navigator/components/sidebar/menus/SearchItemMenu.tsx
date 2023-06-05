@@ -6,9 +6,15 @@ import { FormattedMessage } from 'react-intl';
 import { useNavigatorTree } from 'renderer/contexts/NavigatorTreeContext';
 import { bindMenu, usePopupState } from 'material-ui-popup-state/hooks';
 import CustomMenuItem from 'renderer/components/menu/item/CustomMenuItem';
+import { useAnalytics } from '../../../../../contexts/AnalyticsContext';
+import MenuDivider from '../../../../../components/menu/item/MenuDivider';
+import NiceModal from '@ebay/nice-modal-react';
+import ExportConfigurationDialog from '../dialogs/ExportConfigurationDialog';
+import ImportConfigurationDialog from '../dialogs/ImportConfigurationDialog';
 
 export default function SearchItemMenu() {
   const { performAction } = useNavigatorTree();
+  const { track } = useAnalytics();
 
   const menuState = usePopupState({ variant: 'popover' });
 
@@ -26,6 +32,20 @@ export default function SearchItemMenu() {
     menuState.close();
   }, [performAction, menuState]);
 
+  const exportHandler = useCallback((): void => {
+    track({ name: 'export_all_menu_click' });
+    menuState.close();
+
+    NiceModal.show<boolean>(ExportConfigurationDialog, {});
+  }, [track, menuState]);
+
+  const importHandler = useCallback((): void => {
+    track({ name: 'import_all_menu_click' });
+    menuState.close();
+
+    NiceModal.show<boolean>(ImportConfigurationDialog, {});
+  }, [track, menuState]);
+
   return (
     <>
       <IconButton size={'small'} ref={menuState.setAnchorEl} onClick={openHandler}>
@@ -42,6 +62,17 @@ export default function SearchItemMenu() {
           icon={'UnfoldMoreDoubleOutlined'}
           text={<FormattedMessage id={'expandAll'} />}
           onClick={expandAllHandler}
+        />
+        <MenuDivider />
+        <CustomMenuItem
+          icon={'FileUploadOutlined'}
+          text={<FormattedMessage id={'exportConfiguration'} />}
+          onClick={exportHandler}
+        />
+        <CustomMenuItem
+          icon={'FileDownloadOutlined'}
+          text={<FormattedMessage id={'importConfiguration'} />}
+          onClick={importHandler}
         />
       </MenuPopover>
     </>
