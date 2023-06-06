@@ -67,6 +67,16 @@ const MetricRuleDetailsForm: FunctionComponent<MetricRuleDetailsFormProps> = ({
   const formValues = watch();
   const type = watch('type');
   const operation = watch('operation');
+  const value1 = watch('value1');
+  const value2 = watch('value2');
+
+  const getPercentValue = useCallback((value: string): string => {
+    return value && parseFloat(value) ? `${Math.round(parseFloat(value) * 10000) / 100}%` : '';
+  }, []);
+
+  const showPercent = useMemo<boolean>(() => type === 'RELATIVE', [type]);
+  const value1Percent = useMemo<string>(() => (showPercent ? getPercentValue(value1) : ''), [value1, showPercent]);
+  const value2Percent = useMemo<string>(() => (showPercent ? getPercentValue(value2) : ''), [value2, showPercent]);
 
   const submitHandler = handleSubmit(async (data): Promise<void> => {
     await onSubmit?.(data);
@@ -217,7 +227,7 @@ const MetricRuleDetailsForm: FunctionComponent<MetricRuleDetailsFormProps> = ({
                     type="number"
                     autoComplete="off"
                     error={invalid}
-                    helperText={error?.message}
+                    helperText={error?.message || value1Percent}
                   />
                 );
               }}
@@ -243,7 +253,7 @@ const MetricRuleDetailsForm: FunctionComponent<MetricRuleDetailsFormProps> = ({
                       type="number"
                       autoComplete="off"
                       error={invalid}
-                      helperText={error?.message}
+                      helperText={error?.message || value2Percent}
                     />
                   );
                 }}

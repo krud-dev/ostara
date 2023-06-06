@@ -1,6 +1,5 @@
 import { crudKeys } from './requests/crud/crudKeys';
 import { instanceCrudEntity } from './requests/crud/entity/entities/instance.crudEntity';
-import { applicationCrudEntity } from './requests/crud/entity/entities/application.crudEntity';
 
 export const apiKeys = {
   theme: () => ['theme'],
@@ -94,8 +93,8 @@ export const apiKeys = {
     requestId,
   ],
   itemMetricRules: (id: string) => [...apiKeys.item(id), 'metricRules'],
+  itemMetricRulesByName: (id: string, name: string) => [...apiKeys.itemMetricRules(id), 'name', name],
 
-  itemApplications: (ids: string[]) => [...crudKeys.entity(applicationCrudEntity), 'item', ids],
   itemInstances: (id: string) => [...crudKeys.entity(instanceCrudEntity), 'item', id],
 
   applicationsHealth: () => ['applicationsHealth'],

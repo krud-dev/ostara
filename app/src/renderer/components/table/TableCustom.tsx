@@ -85,6 +85,7 @@ export default function TableCustom<EntityItem>({}: TableCustomProps<EntityItem>
               sx={{
                 width: 'auto',
                 minWidth: '100%',
+                minHeight: 200,
                 position: 'relative',
                 overflow: 'hidden',
                 display: 'inline-block',

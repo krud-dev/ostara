@@ -9,7 +9,7 @@ export const applicationMetricRuleEntity: Entity<ApplicationMetricRuleRO> = {
     {
       id: 'name',
       type: 'Text',
-      labelId: 'name',
+      labelId: 'notificationName',
     },
     {
       id: 'formula',
