@@ -1,7 +1,7 @@
 import { FormattedMessage, useIntl } from 'react-intl';
 import React, { FunctionComponent, useEffect, useMemo } from 'react';
 import { Controller, useFormContext } from 'react-hook-form';
-import { Box, CircularProgress, ListSubheader, MenuItem, TextField } from '@mui/material';
+import { Autocomplete, Box, CircularProgress, ListSubheader, MenuItem, TextField } from '@mui/material';
 import InputAdornment from '@mui/material/InputAdornment';
 import { useGetApplicationMetricsQuery } from '../../../../../apis/requests/application/metrics/getApplicationMetrics';
 import { useGetApplicationMetricDetailsQuery } from '../../../../../apis/requests/application/metrics/getApplicationMetricDetails';
@@ -37,6 +37,20 @@ const MetricSelectionForm: FunctionComponent<MetricSelectionFormProps> = ({
     { enabled: !!metricName }
   );
 
+  const metricOptions = useMemo<string[]>(
+    () => getMetricsState.data?.map((metric) => metric.name) || [],
+    [getMetricsState.data]
+  );
+
+  useEffect(() => {
+    if (disabled) {
+      return;
+    }
+
+    setValue(metricStatisticFieldName, '');
+    setValue(metricTagsFieldName, []);
+  }, [metricName]);
+
   useEffect(() => {
     if (disabled) {
       return;
@@ -64,37 +78,40 @@ const MetricSelectionForm: FunctionComponent<MetricSelectionFormProps> = ({
           required: intl.formatMessage({ id: 'requiredField' }),
         }}
         control={control}
-        render={({ field: { ref, ...field }, fieldState: { invalid, error } }) => {
+        render={({ field: { ref, value, onChange, ...field }, fieldState: { invalid, error } }) => {
           return (
-            <TextField
+            <Autocomplete
               {...field}
-              inputRef={ref}
-              margin="normal"
-              required
-              fullWidth
-              label={<FormattedMessage id={namePrefix} />}
-              select
-              error={invalid}
-              helperText={error?.message}
-              disabled={disabled || getMetricsState.isLoading}
-              InputProps={{
-                startAdornment: getMetricsState.isLoading ? (
-                  <InputAdornment position="start">
-                    <CircularProgress size={20} />
-                  </InputAdornment>
-                ) : undefined,
+              ref={ref}
+              value={value || null}
+              onChange={(event, newValue) => {
+                onChange(newValue);
               }}
-            >
-              {getMetricsState.data?.map((metric) => (
-                <MenuItem value={metric.name} key={metric.name}>
-                  {metric.name}
-                </MenuItem>
-              )) || (
-                <MenuItem value={''} disabled>
-                  <FormattedMessage id={'loading'} />
-                </MenuItem>
+              options={metricOptions}
+              getOptionLabel={(option) => option}
+              fullWidth
+              renderInput={(params) => (
+                <TextField
+                  {...params}
+                  margin="normal"
+                  required
+                  label={<FormattedMessage id={namePrefix} />}
+                  error={invalid}
+                  helperText={error?.message}
+                  disabled={disabled || getMetricsState.isLoading}
+                  InputProps={{
+                    ...params.InputProps,
+                    startAdornment: getMetricsState.isLoading ? (
+                      <InputAdornment position="start">
+                        <CircularProgress size={20} />
+                      </InputAdornment>
+                    ) : (
+                      params.InputProps?.startAdornment
+                    ),
+                  }}
+                />
               )}
-            </TextField>
+            />
           );
         }}
       />

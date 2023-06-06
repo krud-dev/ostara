@@ -13,11 +13,12 @@ import { useCreateApplicationMetricRule } from '../../../../../apis/requests/app
 
 export type CreateMetricRuleDialogProps = {
   applicationId: string;
+  defaultValues?: Partial<MetricRuleFormValues>;
   onCreated?: (metricRule: ApplicationMetricRuleRO) => void;
 };
 
 const CreateMetricRuleDialog: FunctionComponent<CreateMetricRuleDialogProps & NiceModalHocProps> = NiceModal.create(
-  ({ applicationId, onCreated }) => {
+  ({ applicationId, defaultValues, onCreated }) => {
     const modal = useModal();
     const { track } = useAnalytics();
 
@@ -82,22 +83,22 @@ const CreateMetricRuleDialog: FunctionComponent<CreateMetricRuleDialogProps & Ni
       modal.hide();
     }, [submitting, modal]);
 
-    const defaultValues = useMemo<MetricRuleFormValues>(
+    const aggregatedDefaultValues = useMemo<MetricRuleFormValues>(
       () => ({
-        name: '',
-        type: 'SIMPLE',
-        metricName: '',
-        metricStatistic: '',
-        metricTags: [],
-        divisorMetricName: '',
-        divisorMetricStatistic: '',
-        divisorMetricTags: [],
-        operation: 'GREATER_THAN',
-        enabled: true,
-        value1: '',
-        value2: '',
+        name: defaultValues?.name || '',
+        type: defaultValues?.type || 'SIMPLE',
+        metricName: defaultValues?.metricName || '',
+        metricStatistic: defaultValues?.metricStatistic || '',
+        metricTags: defaultValues?.metricTags || [],
+        divisorMetricName: defaultValues?.divisorMetricName || '',
+        divisorMetricStatistic: defaultValues?.divisorMetricStatistic || '',
+        divisorMetricTags: defaultValues?.divisorMetricTags || [],
+        operation: defaultValues?.operation || 'GREATER_THAN',
+        enabled: defaultValues?.enabled || true,
+        value1: defaultValues?.value1 || '',
+        value2: defaultValues?.value2 || '',
       }),
-      []
+      [defaultValues]
     );
 
     return (
@@ -115,7 +116,7 @@ const CreateMetricRuleDialog: FunctionComponent<CreateMetricRuleDialogProps & Ni
         </DialogTitleEnhanced>
         <MetricRuleDetailsForm
           applicationId={applicationId}
-          defaultValues={defaultValues}
+          defaultValues={aggregatedDefaultValues}
           onSubmit={submitHandler}
           onCancel={cancelHandler}
         />

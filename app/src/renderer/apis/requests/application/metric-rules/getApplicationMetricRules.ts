@@ -6,11 +6,12 @@ import {
 } from 'renderer/apis/requests/base/useBaseMutation';
 import { apiKeys } from 'renderer/apis/apiKeys';
 import { ApplicationMetricRuleRO } from '../../../../../common/generated_definitions';
-import { crudSearch } from '../../crud/crudSearch';
+import { crudSearch, CrudSearchVariables } from '../../crud/crudSearch';
 import { metricRuleCrudEntity } from '../../crud/entity/entities/metricRule.crudEntity';
 
 type Variables = {
   applicationId: string;
+  metricName?: string;
 };
 
 type Data = ApplicationMetricRuleRO[];
@@ -18,7 +19,20 @@ type Data = ApplicationMetricRuleRO[];
 export const getApplicationMetricRules = async (variables: Variables): Promise<Data> => {
   const result = await crudSearch<ApplicationMetricRuleRO>({
     entity: metricRuleCrudEntity,
-    filterFields: [{ fieldName: 'applicationId', operation: 'Equal', values: [variables.applicationId] }],
+    filterFields: [
+      { fieldName: 'applicationId', operation: 'Equal', values: [variables.applicationId] },
+      ...(variables.metricName
+        ? [
+            {
+              operation: 'Or',
+              children: [
+                { fieldName: 'metricName', operation: 'Contains', values: [`${variables.metricName}[`] },
+                { fieldName: 'divisorMetricName', operation: 'Contains', values: [`${variables.metricName}[`] },
+              ],
+            },
+          ]
+        : []),
+    ],
     orders: [{ by: 'creationTime', descending: true }],
     currentPage: 1,
     pageSize: 10000,
@@ -35,7 +49,9 @@ export const useGetApplicationMetricRulesQuery = (
   options?: BaseQueryOptions<Data, Variables>
 ): BaseUseQueryResult<Data> =>
   useBaseQuery<Data, Variables>(
-    apiKeys.itemMetricRules(variables.applicationId),
+    variables.metricName
+      ? apiKeys.itemMetricRulesByName(variables.applicationId, variables.metricName)
+      : apiKeys.itemMetricRules(variables.applicationId),
     getApplicationMetricRules,
     variables,
     options

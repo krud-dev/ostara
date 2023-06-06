@@ -1,11 +1,5 @@
 import { CrudQueryOptions, CrudUseQueryResult, useCrudQuery } from './base/useCrudQuery';
-import {
-  CrudMutationOptions,
-  CrudUseMutationResult,
-  CrudVariables,
-  useCrudMutation,
-  useCrudReadMutation,
-} from './base/useCrudMutation';
+import { CrudMutationOptions, CrudUseMutationResult, CrudVariables, useCrudReadMutation } from './base/useCrudMutation';
 import { getCrudMethods } from './types/crud';
 import { BaseRO } from './entity/entity';
 import { crudKeys } from './crudKeys';
