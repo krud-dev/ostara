@@ -23,7 +23,7 @@ class NotificationsService {
   }
 
   sendNotification(info: NotificationInfo): void {
-    const notification = new Notification({ title: info.title, body: info.body });
+    const notification = new Notification({ title: info.title, body: info.body, silent: info.silent });
     notification.show();
     notification.on('click', (event: Event) => {
       if (this.window?.isMinimized()) {

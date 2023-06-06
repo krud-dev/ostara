@@ -25,6 +25,7 @@ import { folderCrudEntity } from '../../../../apis/requests/crud/entity/entities
 import { showDeleteConfirmationDialog } from '../../../../utils/dialogUtils';
 import { isItemDeletable } from '../../../../utils/itemUtils';
 import { useCreateApplicationMetricRule } from '../../../../apis/requests/application/metric-rules/createApplicationMetricRule';
+import { useSettings } from '../../../../contexts/SettingsContext';
 
 type ApplicationToCreate = {
   folderName?: string;
@@ -37,6 +38,7 @@ type ApplicationToCreate = {
 type HomeDeveloperModeProps = {};
 
 export default function HomeDeveloperMode({}: HomeDeveloperModeProps) {
+  const { notificationsSoundActive } = useSettings();
   const { data, getNewItemOrder } = useNavigatorTree();
   const queryClient = useQueryClient();
 
@@ -237,8 +239,9 @@ export default function HomeDeveloperMode({}: HomeDeveloperModeProps) {
     await window.notifications.sendNotification({
       title: 'Test Notification Title',
       body: 'Test notification body text',
+      silent: !notificationsSoundActive,
     });
-  }, []);
+  }, [notificationsSoundActive]);
 
   return (
     <Card sx={{ flexGrow: 1, minHeight: 300 }}>
