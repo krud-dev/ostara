@@ -24,7 +24,7 @@ export default function InstanceActiveProfiles({ item }: InstanceActiveProfilesP
     }
   }, [instanceInactive, instanceLoading]);
 
-  const status = useMemo<'error' | 'success' | 'loading' | 'empty' | 'inactive'>(() => {
+  const uiStatus = useMemo<'error' | 'success' | 'loading' | 'empty' | 'inactive'>(() => {
     if (instanceInactive) {
       return 'inactive';
     }
@@ -50,27 +50,27 @@ export default function InstanceActiveProfiles({ item }: InstanceActiveProfilesP
       }}
     >
       <>
-        {status === 'inactive' && (
+        {uiStatus === 'inactive' && (
           <Typography variant={'caption'} sx={{ color: 'text.secondary', px: COMPONENTS_SPACING }}>
             <FormattedMessage id={'cannotConnectToInstance'} />
           </Typography>
         )}
-        {status === 'error' && (
+        {uiStatus === 'error' && (
           <Typography variant={'caption'} sx={{ color: 'error.main', px: COMPONENTS_SPACING }}>
             <FormattedMessage id={'errorLoadingActiveProfiles'} />
           </Typography>
         )}
-        {status === 'loading' && (
+        {uiStatus === 'loading' && (
           <Typography variant={'caption'} sx={{ color: 'text.secondary', px: COMPONENTS_SPACING }}>
             <FormattedMessage id={'loadingActiveProfiles'} />
           </Typography>
         )}
-        {status === 'empty' && (
+        {uiStatus === 'empty' && (
           <Typography variant={'caption'} sx={{ color: 'text.secondary', px: COMPONENTS_SPACING }}>
             <FormattedMessage id={'noActiveProfiles'} />
           </Typography>
         )}
-        {status === 'success' && (
+        {uiStatus === 'success' && (
           <Stack
             direction={'row'}
             spacing={1}

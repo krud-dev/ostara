@@ -12,3 +12,4 @@ export const DISABLE_ID = 'disable';
 export const SHUTDOWN_ID = 'shutdown';
 export const ADD_ID = 'add';
 export const UPDATE_ID = 'update';
+export const PREDEFINED_ID = 'predefined';

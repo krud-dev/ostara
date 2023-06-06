@@ -32,12 +32,10 @@ const ImportConfigurationDialog: FunctionComponent<ExportConfigurationDialogProp
 
       try {
         await importState.mutateAsync({ jsonData });
-      } catch (e) {
-        return;
-      }
 
-      modal.resolve(true);
-      modal.hide();
+        modal.resolve(true);
+        modal.hide();
+      } catch (e) {}
     }, [jsonData, track, importState, modal]);
 
     const cancelHandler = useCallback((): void => {

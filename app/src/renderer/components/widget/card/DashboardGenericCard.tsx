@@ -18,7 +18,7 @@ const DashboardGenericCard: FunctionComponent<DashboardGenericCardProps> = ({
   error,
   children,
 }) => {
-  const cardState = useMemo<'loading' | 'empty' | 'error' | 'content'>(() => {
+  const uiStatus = useMemo<'loading' | 'empty' | 'error' | 'content'>(() => {
     if (error) {
       return 'error';
     }
@@ -34,17 +34,17 @@ const DashboardGenericCard: FunctionComponent<DashboardGenericCardProps> = ({
   return (
     <Card sx={{ height: '100%', display: 'flex', flexDirection: 'column' }}>
       <CardHeader title={title} />
-      {cardState === 'loading' && (
+      {uiStatus === 'loading' && (
         <Box sx={{ minHeight: 180, flexGrow: 1, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
           <LogoLoader />
         </Box>
       )}
-      {cardState === 'empty' && (
+      {uiStatus === 'empty' && (
         <Box sx={{ flexGrow: 1 }}>
           <EmptyContent />
         </Box>
       )}
-      {cardState === 'error' && (
+      {uiStatus === 'error' && (
         <Box sx={{ flexGrow: 1 }}>
           <EmptyContent
             text={<FormattedMessage id={'widgetNotAvailable'} />}
@@ -53,7 +53,7 @@ const DashboardGenericCard: FunctionComponent<DashboardGenericCardProps> = ({
           />
         </Box>
       )}
-      {cardState === 'content' && children}
+      {uiStatus === 'content' && children}
     </Card>
   );
 };
