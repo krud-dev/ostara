@@ -84,6 +84,7 @@ class BackupExporter(
         } else {
             Application::parentFolderId Equal parentFolderId
         }
+        Application::demo Equal false
     }
 
     private fun Application.getInstances(): Sequence<Instance> = instanceKrud.searchSequence {
