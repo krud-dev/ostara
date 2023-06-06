@@ -18,11 +18,14 @@ import { urls } from '../../routes/urls';
 import { useIntl } from 'react-intl';
 import { getItemDisplayName } from '../../utils/itemUtils';
 import { getStringMetricName } from '../../utils/metricUtils';
+import { isNil } from 'lodash';
+import { useSettings } from '../../contexts/SettingsContext';
 
 interface NotificationsManagerProps {}
 
 const NotificationsManager: FunctionComponent<NotificationsManagerProps> = () => {
   const navigate = useNavigate();
+  const { notificationsActive } = useSettings();
 
   const subscribeToNotificationClickedState = useSubscribeToEvent();
 
@@ -43,6 +46,10 @@ const NotificationsManager: FunctionComponent<NotificationsManagerProps> = () =>
     };
   }, []);
 
+  if (!notificationsActive) {
+    return null;
+  }
+
   return <NotificationsSender />;
 };
 
@@ -51,9 +58,23 @@ export default NotificationsManager;
 interface NotificationsSenderProps {}
 
 const NotificationsSender: FunctionComponent<NotificationsSenderProps> = () => {
+  const { notificationsActive, notificationsSoundActive } = useSettings();
   const { applications, instances } = useItems();
   const { subscribe } = useStomp();
   const intl = useIntl();
+
+  const sendNotification = useCallback(
+    async (notificationInfo: NotificationInfo): Promise<void> => {
+      if (!notificationsActive) {
+        return;
+      }
+      await window.notifications.sendNotification({
+        ...notificationInfo,
+        silent: isNil(notificationInfo.silent) ? !notificationsSoundActive : notificationInfo.silent,
+      });
+    },
+    [notificationsActive, notificationsSoundActive]
+  );
 
   const previousApplications = usePrevious(applications);
 
@@ -126,7 +147,7 @@ const NotificationsSender: FunctionComponent<NotificationsSenderProps> = () => {
     ) {
       const notificationInfo = getApplicationHealthNotificationInfo(application, healthUpdatedEvent.newHealth);
       if (notificationInfo) {
-        window.notifications.sendNotification(notificationInfo);
+        sendNotification(notificationInfo);
       }
     }
   }, [healthUpdatedEvent]);
@@ -220,7 +241,7 @@ const NotificationsSender: FunctionComponent<NotificationsSenderProps> = () => {
 
     const notificationInfo = getMetricRuleNotificationInfo(application, metricRuleEvent);
     if (notificationInfo) {
-      window.notifications.sendNotification(notificationInfo);
+      sendNotification(notificationInfo);
     }
   }, [metricRuleEvent]);
 

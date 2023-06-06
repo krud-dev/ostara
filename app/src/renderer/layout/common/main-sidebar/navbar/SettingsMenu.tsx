@@ -2,7 +2,7 @@ import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import { Alert, Box, Divider, Drawer, IconButton, Link, MenuItem, Stack, TextField, Typography } from '@mui/material';
 import { useSettings } from 'renderer/contexts/SettingsContext';
 import { FormattedMessage } from 'react-intl';
-import { CloseOutlined, SettingsOutlined } from '@mui/icons-material';
+import { CloseOutlined } from '@mui/icons-material';
 import { alpha } from '@mui/material/styles';
 import PerfectScrollbar from 'react-perfect-scrollbar';
 import { COMPONENTS_SPACING, NAVBAR_HEIGHT } from '../../../../constants/ui';
@@ -20,6 +20,10 @@ export default function SettingsMenu() {
   const {
     themeSource,
     setThemeSource,
+    notificationsActive,
+    setNotificationsActive,
+    notificationsSoundActive,
+    setNotificationsSoundActive,
     analyticsEnabled,
     setAnalyticsEnabled,
     errorReportingEnabled,
@@ -187,6 +191,44 @@ export default function SettingsMenu() {
                   </MenuItem>
                   <MenuItem value={'light'}>
                     <FormattedMessage id="light" />
+                  </MenuItem>
+                </TextField>
+
+                <TextField
+                  fullWidth
+                  label={<FormattedMessage id="notifications" />}
+                  margin="normal"
+                  select
+                  value={notificationsActive}
+                  onChange={(e) => setNotificationsActive(e.target.value === 'true')}
+                >
+                  <MenuItem value={'true'}>
+                    <FormattedMessage id="yes" />
+                  </MenuItem>
+                  <MenuItem value={'false'}>
+                    <FormattedMessage id="no" />
+                  </MenuItem>
+                </TextField>
+
+                {notificationsActive && (
+                  <Alert severity={'info'} variant={'outlined'}>
+                    <FormattedMessage id="notReceivingNotifications" />
+                  </Alert>
+                )}
+
+                <TextField
+                  fullWidth
+                  label={<FormattedMessage id="notificationsSound" />}
+                  margin="normal"
+                  select
+                  value={notificationsSoundActive}
+                  onChange={(e) => setNotificationsSoundActive(e.target.value === 'true')}
+                >
+                  <MenuItem value={'true'}>
+                    <FormattedMessage id="yes" />
+                  </MenuItem>
+                  <MenuItem value={'false'}>
+                    <FormattedMessage id="no" />
                   </MenuItem>
                 </TextField>
 

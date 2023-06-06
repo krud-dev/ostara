@@ -193,6 +193,10 @@ export default {
   metricNotificationsExplanation:
     'Add metric notifications to monitor your applications and receive alerts when a metric value is above, below or within a threshold.',
   notificationName: 'Notification Name',
+  notifications: 'Notifications',
+  notificationsSound: 'Notifications Sound',
+  notReceivingNotifications:
+    'If you are not receiving notifications make sure that your operating system allows notifications from this app.',
   greaterThan: 'Greater Than',
   lowerThan: 'Lower Than',
   between: 'Between',

@@ -30,6 +30,10 @@ export type SettingsContextProps = {
   localeInfo: LocaleInfo;
   setLocale: (locale: string) => void;
   isRtl: boolean;
+  notificationsActive: boolean;
+  setNotificationsActive: (notificationsActive: boolean) => void;
+  notificationsSoundActive: boolean;
+  setNotificationsSoundActive: (notificationsSoundActive: boolean) => void;
   analyticsEnabled: boolean;
   setAnalyticsEnabled: (analyticsEnabled: boolean) => void;
   errorReportingEnabled: boolean;
@@ -59,6 +63,12 @@ const SettingsProvider: FunctionComponent<SettingsProviderProps> = ({ children }
   const localeInfo = useMemo<LocaleInfo>(() => locales[locale], [locale]);
 
   const isRtl = useMemo<boolean>(() => localeInfo.direction === 'rtl', [localeInfo]);
+
+  const [notificationsActive, setNotificationsActive] = useLocalStorageState<boolean>('notificationsActive', true);
+  const [notificationsSoundActive, setNotificationsSoundActive] = useLocalStorageState<boolean>(
+    'notificationsSoundActive',
+    true
+  );
 
   const [analyticsEnabled, setAnalyticsEnabled] = useLocalStorageState<boolean>('analyticsEnabled', true);
 
@@ -184,6 +194,10 @@ const SettingsProvider: FunctionComponent<SettingsProviderProps> = ({ children }
         localeInfo,
         setLocale,
         isRtl,
+        notificationsActive,
+        setNotificationsActive,
+        notificationsSoundActive,
+        setNotificationsSoundActive,
         analyticsEnabled,
         setAnalyticsEnabled,
         errorReportingEnabled,
