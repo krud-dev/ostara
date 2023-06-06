@@ -83,4 +83,22 @@ class BackupExporterTest {
             that(metricRule.value2).isEqualTo(savedMetricRule.value2)
         }
     }
+
+    @Test
+    fun `exporter should not export demo instances`() {
+        applicationKrud.create(stubApplication(alias = "Application1", authentication = Authentication.Basic("test", "test"))).apply {
+            instanceKrud.create(stubInstance(alias = "Application1Instance1", parentApplicationId = this.id))
+        }
+        applicationKrud.create(stubApplication(alias = "Application2", authentication = Authentication.Basic("test", "test"), demo = true)).apply {
+            instanceKrud.create(stubInstance(alias = "Application2Instance1", parentApplicationId = this.id))
+        }
+
+        val dto = backupExporter.exportAll()
+        expect {
+            that(dto.tree).hasSize(1)
+            that(dto.tree[0].type).isEqualTo("application")
+            val application = dto.tree[0] as BackupDTO.TreeElement.Application
+            that(application.model.alias).isEqualTo("Application1")
+        }
+    }
 }
