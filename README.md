@@ -19,7 +19,7 @@
     <a href="https://github.com/krud-dev/ostara/releases/latest">LATEST RELEASE</a>
 </p>
 
-![Ostara Overview](./.github/assets/gifs/overview.gif)
+![Ostara Overview](./.github/assets/gifs/overview1.gif)
 
 ## Key Features
 * **Effortless Setup** - Download the Ostara application and connect it directly to your Spring Boot Actuator, requiring no additional dependencies or code changes.
@@ -41,19 +41,19 @@ Just download the app [latest release](https://github.com/krud-dev/ostara/releas
 
 If you do not have an active service with the Actuator API, no worries! A fully functioning demo service is available in the app.
 
-![Start Demo and Create Instance](./.github/assets/gifs/create-instance.gif)
+![Start Demo and Create Instance](./.github/assets/gifs/create-instance1.gif)
 
 ## System Overview
 
 ### Useful Dashboards
 View all the important info with the global dashboard, or at specific levels with the instance dashboard, application dashboard and folder dashboard.
 
-![Dashboards](./.github/assets/gifs/dashboards.gif)
+![Dashboards](./.github/assets/gifs/dashboards1.gif)
 
 ### Loggers and Caches
 Change log levels and evict cache directly in the UI.
 
-![Loggers and Caches](./.github/assets/gifs/loggers-and-caches.gif)
+![Loggers and Caches](./.github/assets/gifs/loggers-and-caches1.gif)
 
 ### Demo
 Check out this [short demo video](https://www.youtube.com/embed/5KoHNPjBnUk) to see more.
