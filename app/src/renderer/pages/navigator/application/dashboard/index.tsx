@@ -2,19 +2,19 @@ import React, { FunctionComponent, useCallback, useMemo } from 'react';
 import Page from 'renderer/components/layout/Page';
 import { useNavigatorTree } from 'renderer/contexts/NavigatorTreeContext';
 import { Box, Button, Card, CardContent, CardHeader, Stack } from '@mui/material';
-import { ApplicationRO, InstanceHealthStatus, InstanceRO } from '../../../../../common/generated_definitions';
-import EmptyContent from '../../../../components/help/EmptyContent';
+import { ApplicationRO, InstanceHealthStatus, InstanceRO } from 'common/generated_definitions';
+import EmptyContent from 'renderer/components/help/EmptyContent';
 import { FormattedMessage } from 'react-intl';
-import { COMPONENTS_SPACING } from '../../../../constants/ui';
+import { COMPONENTS_SPACING } from 'renderer/constants/ui';
 import Grid2 from '@mui/material/Unstable_Grid2';
 import ApplicationInstancesHealthStatusWidget from './components/ApplicationInstancesHealthStatusWidget';
 import ApplicationInstanceWidget from './components/ApplicationInstanceWidget';
 import { isEmpty } from 'lodash';
 import NiceModal from '@ebay/nice-modal-react';
-import CreateInstanceDialog from '../../../../components/item/dialogs/create/CreateInstanceDialog';
-import { useItems } from '../../../../contexts/ItemsContext';
-import { getNewItemSort, getSubTreeRoot } from '../../../../utils/treeUtils';
-import LogoLoaderCenter from '../../../../components/common/LogoLoaderCenter';
+import CreateInstanceDialog from 'renderer/components/item/dialogs/create/CreateInstanceDialog';
+import { useItems } from 'renderer/contexts/ItemsContext';
+import { getNewItemSort, getSubTreeRoot } from 'renderer/utils/treeUtils';
+import LogoLoaderCenter from 'renderer/components/common/LogoLoaderCenter';
 
 const ApplicationDashboard: FunctionComponent = () => {
   const { instances } = useItems();

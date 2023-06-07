@@ -4,13 +4,12 @@ import { getItemTypeIcon } from 'renderer/utils/itemUtils';
 import NiceModal from '@ebay/nice-modal-react';
 import CreateFolderDialog from 'renderer/components/item/dialogs/create/CreateFolderDialog';
 import { useNavigatorTree } from 'renderer/contexts/NavigatorTreeContext';
-import { chain } from 'lodash';
 import CreateApplicationDialog from 'renderer/components/item/dialogs/create/CreateApplicationDialog';
 import CreateInstanceDialog from 'renderer/components/item/dialogs/create/CreateInstanceDialog';
 import { PopupState } from 'material-ui-popup-state/hooks';
 import CustomMenuItem from 'renderer/components/menu/item/CustomMenuItem';
 import { MUIconType } from 'renderer/components/common/IconViewer';
-import { ApplicationRO, FolderRO, InstanceRO } from '../../../../../../common/generated_definitions';
+import { ApplicationRO, FolderRO, InstanceRO } from 'common/generated_definitions';
 
 type CreateItemMenuItemsProps = {
   menuState: PopupState;
@@ -19,26 +18,26 @@ type CreateItemMenuItemsProps = {
 export default function CreateItemMenuItems({ menuState }: CreateItemMenuItemsProps) {
   const { getNewItemOrder } = useNavigatorTree();
 
-  const createFolderHandler = useCallback((): void => {
+  const createFolderHandler = useCallback(async (): Promise<void> => {
     menuState.close();
 
-    NiceModal.show<FolderRO | undefined>(CreateFolderDialog, {
+    await NiceModal.show<FolderRO | undefined>(CreateFolderDialog, {
       sort: getNewItemOrder(),
     });
   }, [menuState, getNewItemOrder]);
 
-  const createApplicationHandler = useCallback((): void => {
+  const createApplicationHandler = useCallback(async (): Promise<void> => {
     menuState.close();
 
-    NiceModal.show<ApplicationRO | undefined>(CreateApplicationDialog, {
+    await NiceModal.show<ApplicationRO | undefined>(CreateApplicationDialog, {
       sort: getNewItemOrder(),
     });
   }, [menuState, getNewItemOrder]);
 
-  const createInstanceHandler = useCallback((): void => {
+  const createInstanceHandler = useCallback(async (): Promise<void> => {
     menuState.close();
 
-    NiceModal.show<InstanceRO[] | undefined>(CreateInstanceDialog, {
+    await NiceModal.show<InstanceRO[] | undefined>(CreateInstanceDialog, {
       sort: getNewItemOrder(),
     });
   }, [menuState, getNewItemOrder]);

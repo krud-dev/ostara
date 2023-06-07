@@ -4,24 +4,26 @@ import { Box, Dialog } from '@mui/material';
 import NiceModal, { NiceModalHocProps, useModal } from '@ebay/nice-modal-react';
 import DialogTitleEnhanced from 'renderer/components/dialog/DialogTitleEnhanced';
 import InstanceDetailsForm, { InstanceFormValues } from 'renderer/components/item/dialogs/forms/InstanceDetailsForm';
-import { useCrudCreate } from '../../../../apis/requests/crud/crudCreate';
+import { useCrudCreate } from 'renderer/apis/requests/crud/crudCreate';
 import {
   ApplicationModifyRequestRO,
   ApplicationRO,
   InstanceModifyRequestRO,
   InstanceRO,
-} from '../../../../../common/generated_definitions';
-import { applicationCrudEntity } from '../../../../apis/requests/crud/entity/entities/application.crudEntity';
-import { instanceCrudEntity } from '../../../../apis/requests/crud/entity/entities/instance.crudEntity';
-import { INHERITED_COLOR_VALUE } from '../../../../hooks/useItemColor';
-import { getActuatorUrls } from '../../../../utils/itemUtils';
+} from 'common/generated_definitions';
+import { applicationCrudEntity } from 'renderer/apis/requests/crud/entity/entities/application.crudEntity';
+import { instanceCrudEntity } from 'renderer/apis/requests/crud/entity/entities/instance.crudEntity';
+import { INHERITED_COLOR_VALUE } from 'renderer/hooks/useItemColor';
+import { getActuatorUrls, getItemUrl } from 'renderer/utils/itemUtils';
 import { useQueryClient } from '@tanstack/react-query';
-import { crudKeys } from '../../../../apis/requests/crud/crudKeys';
-import { useCrudCreateBulk } from '../../../../apis/requests/crud/crudCreateBulk';
-import LogoLoader from '../../../common/LogoLoader';
+import { crudKeys } from 'renderer/apis/requests/crud/crudKeys';
+import { useCrudCreateBulk } from 'renderer/apis/requests/crud/crudCreateBulk';
+import LogoLoader from 'renderer/components/common/LogoLoader';
 import { every } from 'lodash';
-import { URL_REGEX } from '../../../../constants/regex';
-import { useAnalytics } from '../../../../contexts/AnalyticsContext';
+import { URL_REGEX } from 'renderer/constants/regex';
+import { useAnalytics } from 'renderer/contexts/AnalyticsContext';
+import { useNavigate } from 'react-router-dom';
+import { useItems } from 'renderer/contexts/ItemsContext';
 
 export type CreateInstanceDialogProps = {
   parentApplicationId?: string;
@@ -35,6 +37,8 @@ const CreateInstanceDialog: FunctionComponent<CreateInstanceDialogProps & NiceMo
     const modal = useModal();
     const queryClient = useQueryClient();
     const { track } = useAnalytics();
+    const { addItems } = useItems();
+    const navigate = useNavigate();
 
     const [defaultValues, setDefaultValues] = useState<Partial<InstanceFormValues> | undefined>(undefined);
     const [submitting, setSubmitting] = useState<boolean>(false);
@@ -59,6 +63,7 @@ const CreateInstanceDialog: FunctionComponent<CreateInstanceDialogProps & NiceMo
         setSubmitting(true);
 
         try {
+          let instanceParentApplication: ApplicationRO | undefined;
           let instanceParentApplicationId = parentApplicationId;
           let instanceSort = sort ?? 1;
 
@@ -73,12 +78,12 @@ const CreateInstanceDialog: FunctionComponent<CreateInstanceDialogProps & NiceMo
               authentication: data.authentication || { type: 'inherit' },
             };
 
-            const application = await createApplicationState.mutateAsync({
+            instanceParentApplication = await createApplicationState.mutateAsync({
               entity: applicationCrudEntity,
               item: applicationToCreate,
             });
 
-            instanceParentApplicationId = application.id;
+            instanceParentApplicationId = instanceParentApplication.id;
             instanceSort = 1;
           }
 
@@ -96,11 +101,14 @@ const CreateInstanceDialog: FunctionComponent<CreateInstanceDialogProps & NiceMo
             entity: instanceCrudEntity,
             items: instancesToCreate,
           });
-          if (result) {
+          if (result?.length) {
             queryClient.invalidateQueries(crudKeys.entity(applicationCrudEntity));
             queryClient.invalidateQueries(crudKeys.entity(instanceCrudEntity));
 
             track({ name: 'add_instance', properties: { count: instancesToCreate.length } });
+
+            addItems([...(instanceParentApplication ? [instanceParentApplication] : []), ...result]);
+            navigate(getItemUrl(result[0]));
 
             onCreated?.(result);
 

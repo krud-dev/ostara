@@ -8,8 +8,8 @@ import { getNewItemSort } from 'renderer/utils/treeUtils';
 import CreateApplicationDialog from 'renderer/components/item/dialogs/create/CreateApplicationDialog';
 import CustomMenuItem from 'renderer/components/menu/item/CustomMenuItem';
 import { MUIconType } from 'renderer/components/common/IconViewer';
-import { ItemRO } from '../../../../../../../definitions/daemon';
-import { ApplicationRO } from '../../../../../../../../common/generated_definitions';
+import { ItemRO } from 'renderer/definitions/daemon';
+import { ApplicationRO } from 'common/generated_definitions';
 
 type AddApplicationMenuItemProps = {
   node: NodeApi<TreeItem>;
@@ -20,14 +20,14 @@ type AddApplicationMenuItemProps = {
 export default function AddApplicationMenuItem({ node, onClose, onCreated }: AddApplicationMenuItemProps) {
   const disabled = useMemo<boolean>(() => !isItemUpdatable(node.data), [node.data]);
 
-  const createApplicationHandler = useCallback((): void => {
+  const createApplicationHandler = useCallback(async (): Promise<void> => {
     onClose?.();
 
     if (!isFolder(node.data)) {
       return;
     }
 
-    NiceModal.show<ApplicationRO | undefined>(CreateApplicationDialog, {
+    await NiceModal.show<ApplicationRO | undefined>(CreateApplicationDialog, {
       parentFolderId: node.data.id,
       sort: getNewItemSort(node.data),
       onCreated: onCreated,

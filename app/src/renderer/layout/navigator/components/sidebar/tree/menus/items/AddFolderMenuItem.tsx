@@ -8,8 +8,8 @@ import CreateFolderDialog from 'renderer/components/item/dialogs/create/CreateFo
 import { getNewItemSort } from 'renderer/utils/treeUtils';
 import CustomMenuItem from 'renderer/components/menu/item/CustomMenuItem';
 import { MUIconType } from 'renderer/components/common/IconViewer';
-import { ItemRO } from '../../../../../../../definitions/daemon';
-import { FolderRO } from '../../../../../../../../common/generated_definitions';
+import { ItemRO } from 'renderer/definitions/daemon';
+import { FolderRO } from 'common/generated_definitions';
 
 type AddFolderMenuItemProps = {
   node: NodeApi<TreeItem>;
@@ -20,14 +20,14 @@ type AddFolderMenuItemProps = {
 export default function AddFolderMenuItem({ node, onClose, onCreated }: AddFolderMenuItemProps) {
   const disabled = useMemo<boolean>(() => !isItemUpdatable(node.data), [node.data]);
 
-  const createFolderHandler = useCallback((): void => {
+  const createFolderHandler = useCallback(async (): Promise<void> => {
     onClose?.();
 
     if (!isFolder(node.data)) {
       return;
     }
 
-    NiceModal.show<FolderRO | undefined>(CreateFolderDialog, {
+    await NiceModal.show<FolderRO | undefined>(CreateFolderDialog, {
       parentFolderId: node.data.id,
       sort: getNewItemSort(node.data),
       onCreated: onCreated,

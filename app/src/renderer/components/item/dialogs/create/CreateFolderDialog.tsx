@@ -4,11 +4,14 @@ import { Dialog } from '@mui/material';
 import NiceModal, { NiceModalHocProps, useModal } from '@ebay/nice-modal-react';
 import DialogTitleEnhanced from 'renderer/components/dialog/DialogTitleEnhanced';
 import FolderDetailsForm, { FolderFormValues } from 'renderer/components/item/dialogs/forms/FolderDetailsForm';
-import { FolderModifyRequestRO, FolderRO } from '../../../../../common/generated_definitions';
-import { useCrudCreate } from '../../../../apis/requests/crud/crudCreate';
-import { folderCrudEntity } from '../../../../apis/requests/crud/entity/entities/folder.crudEntity';
-import { INHERITED_COLOR_VALUE } from '../../../../hooks/useItemColor';
-import { useAnalytics } from '../../../../contexts/AnalyticsContext';
+import { FolderModifyRequestRO, FolderRO } from 'common/generated_definitions';
+import { useCrudCreate } from 'renderer/apis/requests/crud/crudCreate';
+import { folderCrudEntity } from 'renderer/apis/requests/crud/entity/entities/folder.crudEntity';
+import { INHERITED_COLOR_VALUE } from 'renderer/hooks/useItemColor';
+import { useAnalytics } from 'renderer/contexts/AnalyticsContext';
+import { getItemUrl } from 'renderer/utils/itemUtils';
+import { useItems } from 'renderer/contexts/ItemsContext';
+import { useNavigate } from 'react-router-dom';
 
 export type CreateFolderDialogProps = {
   parentFolderId?: string;
@@ -20,6 +23,8 @@ const CreateFolderDialog: FunctionComponent<CreateFolderDialogProps & NiceModalH
   ({ parentFolderId, sort, onCreated }) => {
     const modal = useModal();
     const { track } = useAnalytics();
+    const { addItem } = useItems();
+    const navigate = useNavigate();
 
     const [submitting, setSubmitting] = useState<boolean>(false);
 
@@ -41,6 +46,9 @@ const CreateFolderDialog: FunctionComponent<CreateFolderDialogProps & NiceModalH
           const result = await createState.mutateAsync({ entity: folderCrudEntity, item: itemToCreate });
           if (result) {
             track({ name: 'add_folder' });
+
+            addItem(result);
+            navigate(getItemUrl(result));
 
             onCreated?.(result);
 

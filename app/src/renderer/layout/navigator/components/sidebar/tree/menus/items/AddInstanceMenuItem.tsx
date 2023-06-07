@@ -8,8 +8,8 @@ import { getNewItemSort } from 'renderer/utils/treeUtils';
 import { getItemTypeIcon, isApplication, isFolder, isItemUpdatable } from 'renderer/utils/itemUtils';
 import CustomMenuItem from 'renderer/components/menu/item/CustomMenuItem';
 import { MUIconType } from 'renderer/components/common/IconViewer';
-import { InstanceRO } from '../../../../../../../../common/generated_definitions';
-import { ItemRO } from '../../../../../../../definitions/daemon';
+import { InstanceRO } from 'common/generated_definitions';
+import { ItemRO } from 'renderer/definitions/daemon';
 
 type AddInstanceMenuItemProps = {
   node: NodeApi<TreeItem>;
@@ -20,7 +20,7 @@ type AddInstanceMenuItemProps = {
 export default function AddInstanceMenuItem({ node, onClose, onCreated }: AddInstanceMenuItemProps) {
   const disabled = useMemo<boolean>(() => !isItemUpdatable(node.data), [node.data]);
 
-  const createInstanceHandler = useCallback((): void => {
+  const createInstanceHandler = useCallback(async (): Promise<void> => {
     onClose?.();
 
     if (!isApplication(node.data) && !isFolder(node.data)) {
@@ -30,7 +30,7 @@ export default function AddInstanceMenuItem({ node, onClose, onCreated }: AddIns
     const parentApplicationId = isApplication(node.data) ? node.data.id : undefined;
     const parentFolderId = isFolder(node.data) ? node.data.id : undefined;
 
-    NiceModal.show<InstanceRO[] | undefined>(CreateInstanceDialog, {
+    await NiceModal.show<InstanceRO[] | undefined>(CreateInstanceDialog, {
       parentApplicationId: parentApplicationId,
       parentFolderId: parentFolderId,
       sort: getNewItemSort(node.data),
