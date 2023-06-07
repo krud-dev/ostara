@@ -19,7 +19,7 @@
     <a href="https://github.com/krud-dev/ostara/releases/latest">LATEST RELEASE</a>
 </p>
 
-![Ostara Overview](https://media.tenor.com/sQXkvagqfWYAAAAM/lol-funny-memes.gif)
+![Ostara Overview](./.github/assets/gifs/overview.gif)
 
 ## Key Features
 * **Effortless Setup** - Download the Ostara application and connect it directly to your Spring Boot Actuator, requiring no additional dependencies or code changes.
