@@ -1,11 +1,11 @@
 import { Button, Card, CardContent, Stack, Typography } from '@mui/material';
 import React, { useCallback } from 'react';
 import { FormattedMessage } from 'react-intl';
-import { InstanceRO } from '../../../../../common/generated_definitions';
+import { InstanceRO } from 'common/generated_definitions';
 import NiceModal from '@ebay/nice-modal-react';
-import CreateInstanceDialog from '../../../../components/item/dialogs/create/CreateInstanceDialog';
-import { useNavigatorTree } from '../../../../contexts/NavigatorTreeContext';
-import useStartDemo from '../../../../hooks/demo/useStartDemo';
+import CreateInstanceDialog from 'renderer/components/item/dialogs/create/CreateInstanceDialog';
+import { useNavigatorTree } from 'renderer/contexts/NavigatorTreeContext';
+import useStartDemo from 'renderer/hooks/demo/useStartDemo';
 import { LoadingButton } from '@mui/lab';
 
 type HomeGettingStartedProps = {};
@@ -13,8 +13,8 @@ type HomeGettingStartedProps = {};
 export default function HomeGettingStarted({}: HomeGettingStartedProps) {
   const { getNewItemOrder } = useNavigatorTree();
 
-  const createInstanceHandler = useCallback((): void => {
-    NiceModal.show<InstanceRO[] | undefined>(CreateInstanceDialog, {
+  const createInstanceHandler = useCallback(async (): Promise<void> => {
+    await NiceModal.show<InstanceRO[] | undefined>(CreateInstanceDialog, {
       sort: getNewItemOrder(),
     });
   }, [getNewItemOrder]);

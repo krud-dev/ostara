@@ -16,12 +16,12 @@ import {
   InstanceHealthChangedEventMessage$Payload,
   InstanceHostnameUpdatedEventMessage$Payload,
   InstanceRO,
-} from '../../common/generated_definitions';
-import { instanceCrudEntity } from '../apis/requests/crud/entity/entities/instance.crudEntity';
-import { folderCrudEntity } from '../apis/requests/crud/entity/entities/folder.crudEntity';
-import { applicationCrudEntity } from '../apis/requests/crud/entity/entities/application.crudEntity';
-import { useStomp } from '../apis/websockets/StompContext';
-import { isApplication, isFolder, isInstance } from '../utils/itemUtils';
+} from 'common/generated_definitions';
+import { instanceCrudEntity } from 'renderer/apis/requests/crud/entity/entities/instance.crudEntity';
+import { folderCrudEntity } from 'renderer/apis/requests/crud/entity/entities/folder.crudEntity';
+import { applicationCrudEntity } from 'renderer/apis/requests/crud/entity/entities/application.crudEntity';
+import { useStomp } from 'renderer/apis/websockets/StompContext';
+import { isApplication, isFolder, isInstance } from 'renderer/utils/itemUtils';
 import { QueryObserverResult } from '@tanstack/react-query';
 
 export type ItemsContextProps = {
@@ -33,6 +33,7 @@ export type ItemsContextProps = {
   refetchInstances: () => Promise<QueryObserverResult<CrudSearchData<InstanceRO>>>;
   items: ItemRO[] | undefined;
   addItem: (item: ItemRO) => void;
+  addItems: (items: ItemRO[]) => void;
   getItem: (id: string) => ItemRO | undefined;
 };
 
@@ -113,17 +114,26 @@ const ItemsProvider: FunctionComponent<ItemsProviderProps> = ({ children }) => {
     };
   }, []);
 
-  const addItem = useCallback((item: ItemRO): void => {
-    if (isInstance(item)) {
-      setInstances((prev) => [...(prev?.filter((i) => i.id !== item.id) ?? []), item]);
+  const addItem = useCallback((itemToAdd: ItemRO): void => {
+    if (isInstance(itemToAdd)) {
+      setInstances((prev) => [...(prev?.filter((i) => i.id !== itemToAdd.id) ?? []), itemToAdd]);
     }
-    if (isApplication(item)) {
-      setApplications((prev) => [...(prev?.filter((a) => a.id !== item.id) ?? []), item]);
+    if (isApplication(itemToAdd)) {
+      setApplications((prev) => [...(prev?.filter((a) => a.id !== itemToAdd.id) ?? []), itemToAdd]);
     }
-    if (isFolder(item)) {
-      setFolders((prev) => [...(prev?.filter((f) => f.id !== item.id) ?? []), item]);
+    if (isFolder(itemToAdd)) {
+      setFolders((prev) => [...(prev?.filter((f) => f.id !== itemToAdd.id) ?? []), itemToAdd]);
     }
   }, []);
+
+  const addItems = useCallback(
+    (itemsToAdd: ItemRO[]): void => {
+      for (const item of itemsToAdd) {
+        addItem(item);
+      }
+    },
+    [addItem]
+  );
 
   const getItem = useCallback(
     (id: string): ItemRO | undefined => {
@@ -143,6 +153,7 @@ const ItemsProvider: FunctionComponent<ItemsProviderProps> = ({ children }) => {
         refetchInstances: searchInstanceState.refetch,
         items,
         addItem,
+        addItems,
         getItem,
       }}
     >

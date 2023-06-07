@@ -2,20 +2,20 @@ import React, { FunctionComponent, useCallback, useMemo } from 'react';
 import Page from 'renderer/components/layout/Page';
 import { useNavigatorTree } from 'renderer/contexts/NavigatorTreeContext';
 import { Box, Button, Card, CardContent, CardHeader, Stack } from '@mui/material';
-import { ApplicationHealthStatus, ApplicationRO, InstanceRO } from '../../../../../common/generated_definitions';
-import EmptyContent from '../../../../components/help/EmptyContent';
+import { ApplicationHealthStatus, ApplicationRO, InstanceRO } from 'common/generated_definitions';
+import EmptyContent from 'renderer/components/help/EmptyContent';
 import { FormattedMessage } from 'react-intl';
-import { COMPONENTS_SPACING } from '../../../../constants/ui';
+import { COMPONENTS_SPACING } from 'renderer/constants/ui';
 import Grid2 from '@mui/material/Unstable_Grid2';
 import FolderApplicationsHealthStatusWidget from './components/FolderApplicationsHealthStatusWidget';
 import FolderApplicationWidget from './components/FolderApplicationWidget';
 import { chain, isEmpty } from 'lodash';
 import NiceModal from '@ebay/nice-modal-react';
-import { useItems } from '../../../../contexts/ItemsContext';
-import { findTreeItemPath, getNewItemSort, getSubTreeItemsForItem, getSubTreeRoot } from '../../../../utils/treeUtils';
-import { getItemDisplayName, isFolder } from '../../../../utils/itemUtils';
-import LogoLoaderCenter from '../../../../components/common/LogoLoaderCenter';
-import CreateInstanceDialog from '../../../../components/item/dialogs/create/CreateInstanceDialog';
+import { useItems } from 'renderer/contexts/ItemsContext';
+import { findTreeItemPath, getNewItemSort, getSubTreeItemsForItem, getSubTreeRoot } from 'renderer/utils/treeUtils';
+import { getItemDisplayName, isFolder } from 'renderer/utils/itemUtils';
+import LogoLoaderCenter from 'renderer/components/common/LogoLoaderCenter';
+import CreateInstanceDialog from 'renderer/components/item/dialogs/create/CreateInstanceDialog';
 
 type DashboardApplicationRO = ApplicationRO & {
   path: string;

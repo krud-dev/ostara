@@ -13,7 +13,7 @@ import { showDeleteConfirmationDialog } from 'renderer/utils/dialogUtils';
 import { useMoveItem } from 'renderer/apis/requests/item/moveItem';
 import NiceModal from '@ebay/nice-modal-react';
 import CreateInstanceDialog from 'renderer/components/item/dialogs/create/CreateInstanceDialog';
-import { matchPath, useLocation, useNavigate } from 'react-router-dom';
+import { matchPath, useLocation } from 'react-router-dom';
 import {
   getItemDisplayName,
   getItemParentId,
@@ -26,16 +26,16 @@ import {
   isItemUpdatable,
 } from 'renderer/utils/itemUtils';
 import { OpenMap } from 'react-arborist/src/state/open-slice';
-import { InstanceRO } from '../../../../../../common/generated_definitions';
-import { ItemRO, ItemType } from '../../../../../definitions/daemon';
+import { InstanceRO } from 'common/generated_definitions';
+import { ItemRO, ItemType } from 'renderer/definitions/daemon';
 import { NodeApi } from 'react-arborist/dist/interfaces/node-api';
 import { useUpdateEffect } from 'react-use';
-import { isWindows } from '../../../../../utils/platformUtils';
+import { isWindows } from 'renderer/utils/platformUtils';
 import LogoLoader from '../../../../../components/common/LogoLoader';
 import { LoadingButton } from '@mui/lab';
 import useStartDemo from '../../../../../hooks/demo/useStartDemo';
 import useDelayedEffect from '../../../../../hooks/useDelayedEffect';
-import { useItems } from '../../../../../contexts/ItemsContext';
+import { useItems } from 'renderer/contexts/ItemsContext';
 
 const TreeStyle = styled(Tree<TreeItem>)(({ theme }) => ({
   '& [role="treeitem"]': {
@@ -54,7 +54,6 @@ type NavigatorTreeProps = {
 export default function NavigatorTree({ width, height, search }: NavigatorTreeProps) {
   const { getItem } = useItems();
   const { data, selectedItem, isLoading, isEmpty, hasData, action } = useNavigatorTree();
-  const navigate = useNavigate();
   const { pathname } = useLocation();
   const { startDemo, loading: loadingDemo } = useStartDemo();
 
@@ -106,10 +105,7 @@ export default function NavigatorTree({ width, height, search }: NavigatorTreePr
   }, [data]);
 
   const createInstanceHandler = useCallback(async (): Promise<void> => {
-    const instances = await NiceModal.show<InstanceRO[] | undefined>(CreateInstanceDialog, {});
-    if (instances && !!instances.length) {
-      navigate(getItemUrl(instances[0]));
-    }
+    await NiceModal.show<InstanceRO[] | undefined>(CreateInstanceDialog, {});
   }, []);
 
   const onCreate: CreateHandler<TreeItem> = useCallback(({ parentId, index, parentNode, type }) => {
