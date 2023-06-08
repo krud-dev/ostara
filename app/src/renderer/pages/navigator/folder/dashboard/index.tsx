@@ -9,7 +9,7 @@ import { COMPONENTS_SPACING } from 'renderer/constants/ui';
 import Grid2 from '@mui/material/Unstable_Grid2';
 import FolderApplicationsHealthStatusWidget from './components/FolderApplicationsHealthStatusWidget';
 import FolderApplicationWidget from './components/FolderApplicationWidget';
-import { chain, isEmpty } from 'lodash';
+import { chain, isEmpty, sortBy } from 'lodash';
 import NiceModal from '@ebay/nice-modal-react';
 import { useItems } from 'renderer/contexts/ItemsContext';
 import { findTreeItemPath, getNewItemSort, getSubTreeItemsForItem, getSubTreeRoot } from 'renderer/utils/treeUtils';
@@ -24,6 +24,7 @@ const DISPLAY_PATH_SEPARATOR = ' / ';
 type DashboardApplicationRO = ApplicationRO & {
   path: string;
   displayPath: string;
+  sortPath: number[];
 };
 
 const FolderDashboard: FunctionComponent = () => {
@@ -62,15 +63,37 @@ const FolderDashboard: FunctionComponent = () => {
                 ...a,
                 path: path?.map((i) => i.id).join(PATH_SEPARATOR) || '',
                 displayPath: path?.map((i) => getItemDisplayName(i)).join(DISPLAY_PATH_SEPARATOR) || '',
+                sortPath: path?.map((i) => i.sort || 0) || [],
               };
             })
             .groupBy((a) => a.path)
             .map((groupApplications, path) => ({
               path,
-              applications: groupApplications,
+              applications: sortBy(groupApplications, 'sort'),
               displayPath: groupApplications[0].displayPath,
             }))
-            .sortBy((group) => group.displayPath)
+            .sort((groupA, groupB) => {
+              const sortPathA = groupA.applications[0].sortPath;
+              const sortPathB = groupB.applications[0].sortPath;
+
+              for (let i = 0; i < Math.min(sortPathA.length, sortPathB.length); i += 1) {
+                if (sortPathA[i] < sortPathB[i]) {
+                  return -1; // a should come before b
+                }
+                if (sortPathA[i] > sortPathB[i]) {
+                  return 1; // a should come after b
+                }
+              }
+
+              // If all corresponding numbers are equal, the item with fewer numbers should come first
+              if (sortPathA.length < sortPathB.length) {
+                return -1; // a should come before b
+              }
+              if (sortPathA.length > sortPathB.length) {
+                return 1; // a should come after b
+              }
+              return 0; // no change in order
+            })
             .value()
         : undefined,
     [data, rootPath]

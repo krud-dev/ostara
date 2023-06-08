@@ -9,7 +9,7 @@ import { COMPONENTS_SPACING } from 'renderer/constants/ui';
 import Grid2 from '@mui/material/Unstable_Grid2';
 import ApplicationInstancesHealthStatusWidget from './components/ApplicationInstancesHealthStatusWidget';
 import ApplicationInstanceWidget from './components/ApplicationInstanceWidget';
-import { isEmpty } from 'lodash';
+import { chain, isEmpty } from 'lodash';
 import NiceModal from '@ebay/nice-modal-react';
 import CreateInstanceDialog from 'renderer/components/item/dialogs/create/CreateInstanceDialog';
 import { useItems } from 'renderer/contexts/ItemsContext';
@@ -22,7 +22,13 @@ const ApplicationDashboard: FunctionComponent = () => {
 
   const item = useMemo<ApplicationRO>(() => selectedItem as ApplicationRO, [selectedItem]);
   const data = useMemo<InstanceRO[] | undefined>(
-    () => instances?.filter((i) => i.parentApplicationId === item.id),
+    () =>
+      instances
+        ? chain(instances)
+            .filter((i) => i.parentApplicationId === item.id)
+            .sortBy('sort')
+            .value()
+        : undefined,
     [instances, item.id]
   );
   const loading = useMemo<boolean>(() => !data, [data]);
