@@ -16,6 +16,10 @@ import { findTreeItemPath, getNewItemSort, getSubTreeItemsForItem, getSubTreeRoo
 import { getItemDisplayName, isFolder } from 'renderer/utils/itemUtils';
 import LogoLoaderCenter from 'renderer/components/common/LogoLoaderCenter';
 import CreateInstanceDialog from 'renderer/components/item/dialogs/create/CreateInstanceDialog';
+import { TreeItem } from 'renderer/layout/navigator/components/sidebar/tree/tree';
+
+const PATH_SEPARATOR = '/';
+const DISPLAY_PATH_SEPARATOR = ' / ';
 
 type DashboardApplicationRO = ApplicationRO & {
   path: string;
@@ -35,6 +39,10 @@ const FolderDashboard: FunctionComponent = () => {
         : undefined,
     [selectedItem, navigatorData]
   );
+  const rootPath = useMemo<TreeItem[]>(
+    () => (selectedItem ? findTreeItemPath(navigatorData || [], selectedItem.id, true) || [] : []),
+    [selectedItem, navigatorData]
+  );
   const data = useMemo<ApplicationRO[] | undefined>(
     () =>
       folderIds
@@ -49,11 +57,11 @@ const FolderDashboard: FunctionComponent = () => {
       data
         ? chain(data)
             .map<DashboardApplicationRO>((a) => {
-              const path = findTreeItemPath(navigatorData || [], a.id);
+              const path = findTreeItemPath(navigatorData || [], a.id)?.filter((i) => !rootPath.includes(i));
               return {
                 ...a,
-                path: path?.map((i) => i.id).join('/') || '',
-                displayPath: path?.map((i) => getItemDisplayName(i)).join(' / ') || '',
+                path: path?.map((i) => i.id).join(PATH_SEPARATOR) || '',
+                displayPath: path?.map((i) => getItemDisplayName(i)).join(DISPLAY_PATH_SEPARATOR) || '',
               };
             })
             .groupBy((a) => a.path)
@@ -65,7 +73,7 @@ const FolderDashboard: FunctionComponent = () => {
             .sortBy((group) => group.displayPath)
             .value()
         : undefined,
-    [data]
+    [data, rootPath]
   );
   const loading = useMemo<boolean>(() => !data || !groupedData, [data, groupedData]);
 
