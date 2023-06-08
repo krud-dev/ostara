@@ -211,26 +211,28 @@ export default function SettingsMenu() {
                 </TextField>
 
                 {notificationsActive && (
-                  <Alert severity={'info'} variant={'outlined'}>
-                    <FormattedMessage id="notReceivingNotifications" />
-                  </Alert>
-                )}
+                  <>
+                    <Alert severity={'info'} variant={'outlined'}>
+                      <FormattedMessage id="notReceivingNotifications" />
+                    </Alert>
 
-                <TextField
-                  fullWidth
-                  label={<FormattedMessage id="notificationsSound" />}
-                  margin="normal"
-                  select
-                  value={notificationsSoundActive}
-                  onChange={(e) => setNotificationsSoundActive(e.target.value === 'true')}
-                >
-                  <MenuItem value={'true'}>
-                    <FormattedMessage id="yes" />
-                  </MenuItem>
-                  <MenuItem value={'false'}>
-                    <FormattedMessage id="no" />
-                  </MenuItem>
-                </TextField>
+                    <TextField
+                      fullWidth
+                      label={<FormattedMessage id="notificationsSound" />}
+                      margin="normal"
+                      select
+                      value={notificationsSoundActive}
+                      onChange={(e) => setNotificationsSoundActive(e.target.value === 'true')}
+                    >
+                      <MenuItem value={'true'}>
+                        <FormattedMessage id="yes" />
+                      </MenuItem>
+                      <MenuItem value={'false'}>
+                        <FormattedMessage id="no" />
+                      </MenuItem>
+                    </TextField>
+                  </>
+                )}
 
                 <TextField
                   fullWidth
