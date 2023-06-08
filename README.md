@@ -56,7 +56,7 @@ Change log levels and evict cache directly in the UI.
 ![Loggers and Caches](./.github/assets/gifs/loggers-and-caches.gif)
 
 ### Demo
-Check out this [short demo video](https://www.youtube.com/embed/5KoHNPjBnUk) to see more.
+Check out this [short demo video](https://www.youtube.com/watch?v=5KoHNPjBnUk) to see more.
 
 ## Support
 
