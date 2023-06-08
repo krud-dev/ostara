@@ -2,17 +2,17 @@ import React, { FunctionComponent, useCallback, useMemo } from 'react';
 import TableComponent from 'renderer/components/table/TableComponent';
 import { Entity } from 'renderer/entity/entity';
 import { FormattedMessage } from 'react-intl';
-import { ADD_ID, DELETE_ID, PREDEFINED_ID, UPDATE_ID } from 'renderer/entity/actions';
+import { ADD_ID, DELETE_ID, UPDATE_ID } from 'renderer/entity/actions';
 import { Box, Button, Typography } from '@mui/material';
-import { ApplicationMetricRuleRO } from '../../../../../../common/generated_definitions';
-import { useGetApplicationMetricRulesQuery } from '../../../../../apis/requests/application/metric-rules/getApplicationMetricRules';
-import { useDeleteApplicationMetricRule } from '../../../../../apis/requests/application/metric-rules/deleteApplicationMetricRule';
-import { applicationMetricRuleEntity } from '../../../../../entity/entities/applicationMetricRule.entity';
-import { IconViewer } from '../../../../../components/common/IconViewer';
+import { ApplicationMetricRuleRO } from 'common/generated_definitions';
+import { useGetApplicationMetricRulesQuery } from 'renderer/apis/requests/application/metric-rules/getApplicationMetricRules';
+import { useDeleteApplicationMetricRule } from 'renderer/apis/requests/application/metric-rules/deleteApplicationMetricRule';
+import { applicationMetricRuleEntity } from 'renderer/entity/entities/applicationMetricRule.entity';
+import { IconViewer } from 'renderer/components/common/IconViewer';
 import NiceModal from '@ebay/nice-modal-react';
 import UpdateMetricRuleDialog from './UpdateMetricRuleDialog';
 import CreateMetricRuleDialog from './CreateMetricRuleDialog';
-import PredefinedMetricRulesDialog from './PredefinedMetricRulesDialog';
+import PredefinedMetricRulesButton from 'renderer/pages/navigator/application/metric-rules/components/PredefinedMetricRulesButton';
 
 type ApplicationMetricRulesTableProps = {
   applicationId: string;
@@ -65,27 +65,17 @@ const ApplicationMetricRulesTable: FunctionComponent<ApplicationMetricRulesTable
     });
   }, [applicationId, metricName]);
 
-  const addPredefinedRulesHandler = useCallback(async (): Promise<void> => {
-    await NiceModal.show<ApplicationMetricRuleRO[] | undefined>(PredefinedMetricRulesDialog, {
-      applicationId: applicationId,
-      metricName: metricName,
-    });
-  }, [applicationId, metricName]);
-
   const globalActionsHandler = useCallback(
     async (actionId: string): Promise<void> => {
       switch (actionId) {
         case ADD_ID:
           await addRuleHandler();
           break;
-        case PREDEFINED_ID:
-          await addPredefinedRulesHandler();
-          break;
         default:
           break;
       }
     },
-    [addRuleHandler, addPredefinedRulesHandler]
+    [addRuleHandler]
   );
 
   return (
@@ -112,14 +102,7 @@ const ApplicationMetricRulesTable: FunctionComponent<ApplicationMetricRulesTable
               <FormattedMessage id="or" />
             </Typography>
 
-            <Button
-              variant={'outlined'}
-              color={'info'}
-              startIcon={<IconViewer icon={'EditNotificationsOutlined'} />}
-              onClick={addPredefinedRulesHandler}
-            >
-              <FormattedMessage id={'addPredefinedNotifications'} />
-            </Button>
+            <PredefinedMetricRulesButton applicationId={applicationId} metricName={metricName} />
           </Box>
         </>
       }

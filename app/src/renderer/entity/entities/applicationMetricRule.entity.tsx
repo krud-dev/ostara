@@ -1,7 +1,7 @@
 import { Entity } from 'renderer/entity/entity';
-import { ADD_ID, DELETE_ID, PREDEFINED_ID, UPDATE_ID } from 'renderer/entity/actions';
-import { ApplicationMetricRuleRO } from '../../../common/generated_definitions';
-import { getMetricRuleFormValues, getMetricRuleFormValuesFormula } from '../../utils/metricUtils';
+import { ADD_ID, DELETE_ID, UPDATE_ID } from 'renderer/entity/actions';
+import { ApplicationMetricRuleRO } from 'common/generated_definitions';
+import { getMetricRuleFormValues, getMetricRuleFormValuesFormula } from 'renderer/utils/metricUtils';
 
 export const applicationMetricRuleEntity: Entity<ApplicationMetricRuleRO> = {
   id: 'applicationMetricRule',
@@ -37,11 +37,6 @@ export const applicationMetricRuleEntity: Entity<ApplicationMetricRuleRO> = {
       id: ADD_ID,
       labelId: 'addMetricNotification',
       icon: 'NotificationAddOutlined',
-    },
-    {
-      id: PREDEFINED_ID,
-      labelId: 'addPredefinedNotifications',
-      icon: 'EditNotificationsOutlined',
     },
   ],
   defaultOrder: [
