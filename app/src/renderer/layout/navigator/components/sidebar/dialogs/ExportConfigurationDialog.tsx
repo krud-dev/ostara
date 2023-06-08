@@ -20,12 +20,10 @@ const ExportConfigurationDialog: FunctionComponent<ExportConfigurationDialogProp
 
       try {
         await exportState.mutateAsync({});
-      } catch (e) {
-        return;
-      }
 
-      modal.resolve(true);
-      modal.hide();
+        modal.resolve(true);
+        modal.hide();
+      } catch (e) {}
     }, [track, exportState, modal]);
 
     const cancelHandler = useCallback((): void => {

@@ -1,4 +1,8 @@
-import { ApplicationMetricRuleRO, ParsedMetricName } from '../../common/generated_definitions';
+import {
+  ApplicationMetricRuleCreateRequestRO,
+  ApplicationMetricRuleRO,
+  ParsedMetricName,
+} from '../../common/generated_definitions';
 import { isEmpty, map } from 'lodash';
 import { MetricRuleFormValues } from '../pages/navigator/application/metric-rules/components/MetricRuleDetailsForm';
 
@@ -8,7 +12,9 @@ export const getStringMetricName = (metric: ParsedMetricName): string => {
   }`;
 };
 
-export const getMetricRuleFormValues = (metricRule: ApplicationMetricRuleRO): MetricRuleFormValues => ({
+export const getMetricRuleFormValues = (
+  metricRule: ApplicationMetricRuleRO | ApplicationMetricRuleCreateRequestRO
+): MetricRuleFormValues => ({
   name: metricRule.name,
   type: metricRule.type,
   metricName: metricRule.metricName.name,
