@@ -48,6 +48,7 @@ export const urls = asUrlInfos({
   folderDashboard: {
     url: '/navigator/folder/:id/dashboard',
     path: 'dashboard',
+    helpUrl: 'https://docs.ostara.dev/features/folder-features/overview/dashboard',
   },
   folderApplications: {
     url: '/navigator/folder/:id/applications',
@@ -63,6 +64,7 @@ export const urls = asUrlInfos({
   applicationDashboard: {
     url: '/navigator/application/:id/dashboard',
     path: 'dashboard',
+    helpUrl: 'https://docs.ostara.dev/features/application-features/overview/dashboard',
   },
   applicationInstances: {
     url: '/navigator/application/:id/instances',
@@ -82,7 +84,7 @@ export const urls = asUrlInfos({
   applicationMetricRules: {
     url: '/navigator/application/:id/metric-rules',
     path: 'metric-rules',
-    helpUrl: 'https://docs.ostara.dev/features/application-features/monitor/metric-rules',
+    helpUrl: 'https://docs.ostara.dev/features/application-features/monitor/metric-notifications',
   },
   // Instance Root
   instance: {
