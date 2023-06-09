@@ -13,15 +13,12 @@ import {
   Typography,
 } from '@mui/material';
 import { LoadingButton } from '@mui/lab';
-import {
-  ApplicationMetricRule$Type,
-  ApplicationMetricRuleOperation,
-} from '../../../../../../common/generated_definitions';
+import { ApplicationMetricRule$Type, ApplicationMetricRuleOperation } from 'common/generated_definitions';
 import { toString } from 'lodash';
-import { FLOAT_REGEX } from '../../../../../constants/regex';
+import { FLOAT_REGEX } from 'renderer/constants/regex';
 import MetricSelectionForm from './MetricSelectionForm';
 import { useUpdateEffect } from 'react-use';
-import { getMetricRuleFormValuesFormula } from '../../../../../utils/metricUtils';
+import MetricRuleFormula from 'renderer/pages/navigator/application/metric-rules/components/MetricRuleFormula';
 
 export type MetricRuleDetailsFormProps = {
   applicationId: string;
@@ -86,7 +83,6 @@ const MetricRuleDetailsForm: FunctionComponent<MetricRuleDetailsFormProps> = ({
     onCancel();
   }, [onCancel]);
 
-  const formula = useMemo<string>(() => getMetricRuleFormValuesFormula(formValues), [formValues]);
   const typeExplanationId = useMemo<string>(() => {
     switch (type) {
       case 'SIMPLE':
@@ -266,7 +262,7 @@ const MetricRuleDetailsForm: FunctionComponent<MetricRuleDetailsFormProps> = ({
           <Typography variant={'body1'}>
             <FormattedMessage id={'formula'} />
             {': '}
-            {formula}
+            <MetricRuleFormula metricRule={formValues} />
           </Typography>
         </DialogContent>
         <DialogActions>

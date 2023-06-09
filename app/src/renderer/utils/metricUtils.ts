@@ -1,15 +1,26 @@
-import {
-  ApplicationMetricRuleCreateRequestRO,
-  ApplicationMetricRuleRO,
-  ParsedMetricName,
-} from '../../common/generated_definitions';
-import { isEmpty, map } from 'lodash';
-import { MetricRuleFormValues } from '../pages/navigator/application/metric-rules/components/MetricRuleDetailsForm';
+import { ApplicationMetricRuleCreateRequestRO, ApplicationMetricRuleRO } from 'common/generated_definitions';
+import { isArray, isEmpty, map } from 'lodash';
+import { MetricRuleFormValues } from 'renderer/pages/navigator/application/metric-rules/components/MetricRuleDetailsForm';
 
-export const getStringMetricName = (metric: ParsedMetricName): string => {
-  return `${metric.name}[${metric.statistic}]${
-    metric.tags && !isEmpty(metric.tags) ? `?${map(metric.tags, (value, key) => `${key}=${value}`).join('&')}` : ''
+export const getMetricFullName = (
+  metric: { name: string; statistic: string; tags: string[] | { [index: string]: string } },
+  options?: { hideTags?: boolean }
+): string => {
+  if (!metric.name) {
+    return '?';
+  }
+  const tags = isArray(metric.tags) ? metric.tags : map(metric.tags, (value, key) => getMetricTagFullName(key, value));
+  return `${metric.name}${metric.statistic ? `[${metric.statistic}]` : ''}${
+    !isEmpty(tags) ? `?${options?.hideTags ? 'Tags' : tags.join('&')}` : ''
   }`;
+};
+
+export const getMetricTagFullName = (key: string, value: string): string => `${key}=${value}`;
+
+export const isMetricRuleFormValues = (
+  metricRule: ApplicationMetricRuleRO | ApplicationMetricRuleCreateRequestRO | MetricRuleFormValues
+): metricRule is MetricRuleFormValues => {
+  return 'metricStatistic' in metricRule;
 };
 
 export const getMetricRuleFormValues = (
@@ -19,24 +30,15 @@ export const getMetricRuleFormValues = (
   type: metricRule.type,
   metricName: metricRule.metricName.name,
   metricStatistic: metricRule.metricName.statistic,
-  metricTags: map(metricRule.metricName.tags, (value, key) => `${key}=${value}`),
+  metricTags: map(metricRule.metricName.tags, (value, key) => getMetricTagFullName(key, value)),
   divisorMetricName: metricRule.divisorMetricName?.name || '',
   divisorMetricStatistic: metricRule.divisorMetricName?.statistic || '',
-  divisorMetricTags: map(metricRule.divisorMetricName?.tags, (value, key) => `${key}=${value}`),
+  divisorMetricTags: map(metricRule.divisorMetricName?.tags, (value, key) => getMetricTagFullName(key, value)),
   operation: metricRule.operation || 'GREATER_THAN',
   enabled: metricRule.enabled,
   value1: metricRule.value1.toString(),
   value2: metricRule.value2?.toString() || '',
 });
-
-const getMetricFullName = (metricName: string, metricStatistic: string, metricTags: string[]): string => {
-  if (!metricName) {
-    return '?';
-  }
-  return `${metricName}${metricStatistic ? `[${metricStatistic}]` : ''}${
-    metricTags && !isEmpty(metricTags) ? `?${metricTags.join('&')}` : ''
-  }`;
-};
 
 export const getMetricRuleFormValuesFormula = (formValues: MetricRuleFormValues): string => {
   const {
@@ -52,10 +54,14 @@ export const getMetricRuleFormValuesFormula = (formValues: MetricRuleFormValues)
     value2,
   } = formValues;
 
-  let variable = getMetricFullName(metricName, metricStatistic, metricTags);
+  let variable = getMetricFullName({ name: metricName, statistic: metricStatistic, tags: metricTags });
 
   if (type === 'RELATIVE') {
-    variable += ` / ${getMetricFullName(divisorMetricName, divisorMetricStatistic, divisorMetricTags)}`;
+    variable += ` / ${getMetricFullName({
+      name: divisorMetricName,
+      statistic: divisorMetricStatistic,
+      tags: divisorMetricTags,
+    })}`;
   }
 
   switch (operation) {

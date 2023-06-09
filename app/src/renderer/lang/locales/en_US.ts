@@ -460,6 +460,7 @@ export default {
   folderIsEmpty: 'Folder is empty',
   dashboardIsEmpty: 'Dashboard is empty',
   addNewInstanceByClicking: 'Add a new instance by clicking the button below.',
+  currentValue: 'Current Value',
   notificationTitleApplicationAllUp: '{application} is UP',
   notificationBodyApplicationAllUp: 'All instances of {application} are UP.',
   notificationTitleApplicationAllDown: '{application} is DOWN',

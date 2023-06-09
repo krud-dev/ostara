@@ -3,16 +3,22 @@ import DetailsLabelValueVertical from 'renderer/components/table/details/Details
 import { FormattedMessage } from 'react-intl';
 import { Box, Card, CardContent, CardHeader, Chip } from '@mui/material';
 import { isNil } from 'lodash';
-import { MetricActuatorResponse } from '../../../../../../common/generated_definitions';
+import { MetricActuatorResponse$Tag } from 'common/generated_definitions';
 
 type MetricDetailsTagsProps = {
-  metricDetails: MetricActuatorResponse;
+  allTags: MetricActuatorResponse$Tag[];
+  availableTags: MetricActuatorResponse$Tag[];
   selectedTags: { [key: string]: string };
   onToggleTag: (tag: string, value: string) => void;
 };
 
-export default function MetricDetailsTags({ metricDetails, selectedTags, onToggleTag }: MetricDetailsTagsProps) {
-  const show = useMemo<boolean>(() => !!metricDetails?.availableTags?.length, [metricDetails]);
+export default function MetricDetailsTags({
+  allTags,
+  availableTags,
+  selectedTags,
+  onToggleTag,
+}: MetricDetailsTagsProps) {
+  const show = useMemo<boolean>(() => !!allTags.length, [allTags]);
 
   if (!show) {
     return null;
@@ -22,7 +28,7 @@ export default function MetricDetailsTags({ metricDetails, selectedTags, onToggl
     <Card variant={'outlined'}>
       <CardHeader title={<FormattedMessage id={'tags'} />} />
       <CardContent>
-        {metricDetails.availableTags.map((tagDetails) => (
+        {allTags.map((tagDetails) => (
           <DetailsLabelValueVertical
             label={tagDetails.tag}
             value={
@@ -33,7 +39,7 @@ export default function MetricDetailsTags({ metricDetails, selectedTags, onToggl
                   const disabled =
                     !selected &&
                     ((!isNil(tagValue) && tagValue !== value) ||
-                      !metricDetails.availableTags?.find((tag) => tag.tag === tagDetails.tag)?.values.includes(value));
+                      !availableTags.find((tag) => tag.tag === tagDetails.tag)?.values.includes(value));
                   return (
                     <Chip
                       label={value}

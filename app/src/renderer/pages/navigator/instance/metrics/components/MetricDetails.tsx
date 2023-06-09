@@ -3,9 +3,9 @@ import DetailsLabelValueVertical from 'renderer/components/table/details/Details
 import { FormattedMessage } from 'react-intl';
 import { Box, Card, CardContent, CardHeader, Stack } from '@mui/material';
 import { COMPONENTS_SPACING, DEFAULT_TABLE_COLUMN_WIDTH } from 'renderer/constants/ui';
-import { EnrichedInstanceMetric } from '../../../../../apis/requests/instance/metrics/getInstanceMetrics';
-import { useGetInstanceMetricDetailsQuery } from '../../../../../apis/requests/instance/metrics/getInstanceMetricDetails';
-import { MetricActuatorResponse } from '../../../../../../common/generated_definitions';
+import { EnrichedInstanceMetric } from 'renderer/apis/requests/instance/metrics/getInstanceMetrics';
+import { useGetInstanceMetricDetailsQuery } from 'renderer/apis/requests/instance/metrics/getInstanceMetricDetails';
+import { MetricActuatorResponse } from 'common/generated_definitions';
 import LogoLoader from '../../../../../components/common/LogoLoader';
 import MetricDetailsMeasurements from './MetricDetailsMeasurements';
 import MetricDetailsTags from './MetricDetailsTags';
@@ -17,6 +17,7 @@ type MetricDetailsProps = {
 
 export default function MetricDetails({ row }: MetricDetailsProps) {
   const [metricDetails, setMetricDetails] = useState<MetricActuatorResponse | undefined>(undefined);
+  const [metricDetailsValue, setMetricDetailsValue] = useState<MetricActuatorResponse | undefined>(undefined);
   const [selectedTags, setSelectedTags] = useState<{ [key: string]: string }>({});
 
   const detailsState = useGetInstanceMetricDetailsQuery({
@@ -26,11 +27,12 @@ export default function MetricDetails({ row }: MetricDetailsProps) {
   });
 
   useEffect(() => {
-    if (!metricDetails) {
-      const result = detailsState.data;
-      if (result) {
+    const result = detailsState.data;
+    if (result) {
+      if (!metricDetails) {
         setMetricDetails(result);
       }
+      setMetricDetailsValue(result);
     }
   }, [detailsState.data]);
 
@@ -51,7 +53,7 @@ export default function MetricDetails({ row }: MetricDetailsProps) {
 
   return (
     <Box sx={{ my: 2 }}>
-      {!metricDetails ? (
+      {!metricDetails || !metricDetailsValue ? (
         <Box sx={{ textAlign: 'center' }}>
           <LogoLoader />
         </Box>
@@ -74,9 +76,14 @@ export default function MetricDetails({ row }: MetricDetailsProps) {
             </CardContent>
           </Card>
 
-          <MetricDetailsMeasurements metricDetails={metricDetails} />
+          <MetricDetailsMeasurements metricDetails={metricDetailsValue} />
 
-          <MetricDetailsTags metricDetails={metricDetails} selectedTags={selectedTags} onToggleTag={toggleTagHandler} />
+          <MetricDetailsTags
+            allTags={metricDetails.availableTags}
+            availableTags={metricDetailsValue.availableTags}
+            selectedTags={selectedTags}
+            onToggleTag={toggleTagHandler}
+          />
 
           <MetricDetailsRules metricDetails={metricDetails} />
         </Stack>
