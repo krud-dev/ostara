@@ -1,7 +1,7 @@
 import React, { FunctionComponent, useCallback, useEffect, useState } from 'react';
-import { useSubscribeToEvent } from '../../apis/requests/subscriptions/subscribeToEvent';
+import { useSubscribeToEvent } from 'renderer/apis/requests/subscriptions/subscribeToEvent';
 import { IpcRendererEvent } from 'electron';
-import { NotificationInfo } from '../../../infra/notifications/models/notificationInfo';
+import { NotificationInfo } from 'infra/notifications/models/notificationInfo';
 import { generatePath, useNavigate } from 'react-router-dom';
 import {
   ApplicationHealthRO,
@@ -10,14 +10,14 @@ import {
   ApplicationMetricRuleOperation,
   ApplicationMetricRuleTriggeredMessage$Payload,
   ApplicationRO,
-} from '../../../common/generated_definitions';
+} from 'common/generated_definitions';
 import { useStomp } from '../../apis/websockets/StompContext';
 import { useItems } from '../../contexts/ItemsContext';
 import { usePrevious } from 'react-use';
 import { urls } from '../../routes/urls';
 import { useIntl } from 'react-intl';
 import { getItemDisplayName } from '../../utils/itemUtils';
-import { getStringMetricName } from '../../utils/metricUtils';
+import { getMetricFullName } from '../../utils/metricUtils';
 import { isNil } from 'lodash';
 import { useSettings } from '../../contexts/SettingsContext';
 
@@ -198,8 +198,16 @@ const NotificationsSender: FunctionComponent<NotificationsSenderProps> = () => {
         .map((instance) => (instance ? getItemDisplayName(instance) : intl.formatMessage({ id: 'unknownInstance' })))
         .join(', ');
       const metricRuleName = metricRuleTriggered.applicationMetricRule.name;
-      const values = metricRuleTriggered.instanceIdsAndValues.map((i) => i.value).join(', ');
-      const metricName = getStringMetricName(metricRuleTriggered.applicationMetricRule.metricName);
+      const values = metricRuleTriggered.instanceIdsAndValues.map((i) => Math.round(i.value * 100) / 100).join(', ');
+      let metricName = getMetricFullName(metricRuleTriggered.applicationMetricRule.metricName, { hideTags: true });
+      if (
+        metricRuleTriggered.applicationMetricRule.type === 'RELATIVE' &&
+        metricRuleTriggered.applicationMetricRule.divisorMetricName
+      ) {
+        metricName += ` / ${getMetricFullName(metricRuleTriggered.applicationMetricRule.divisorMetricName, {
+          hideTags: true,
+        })}`;
+      }
       const value = metricRuleTriggered.applicationMetricRule.value1.toString();
       const value2 = metricRuleTriggered.applicationMetricRule.value2?.toString() || '';
 

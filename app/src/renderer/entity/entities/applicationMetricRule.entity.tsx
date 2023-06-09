@@ -2,6 +2,7 @@ import { Entity } from 'renderer/entity/entity';
 import { ADD_ID, DELETE_ID, UPDATE_ID } from 'renderer/entity/actions';
 import { ApplicationMetricRuleRO } from 'common/generated_definitions';
 import { getMetricRuleFormValues, getMetricRuleFormValuesFormula } from 'renderer/utils/metricUtils';
+import MetricRuleFormula from 'renderer/pages/navigator/application/metric-rules/components/MetricRuleFormula';
 
 export const applicationMetricRuleEntity: Entity<ApplicationMetricRuleRO> = {
   id: 'applicationMetricRule',
@@ -15,7 +16,7 @@ export const applicationMetricRuleEntity: Entity<ApplicationMetricRuleRO> = {
       id: 'formula',
       type: 'CustomText',
       labelId: 'formula',
-      getText: (item) => getMetricRuleFormValuesFormula(getMetricRuleFormValues(item)),
+      getText: (item) => <MetricRuleFormula metricRule={item} />,
       width: 300,
     },
   ],
