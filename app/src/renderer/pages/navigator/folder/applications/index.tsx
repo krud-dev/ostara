@@ -3,12 +3,15 @@ import Page from 'renderer/components/layout/Page';
 import { useNavigatorTree } from 'renderer/contexts/NavigatorTreeContext';
 import TableComponent from 'renderer/components/table/TableComponent';
 import { Entity } from 'renderer/entity/entity';
-import { Card } from '@mui/material';
-import { ApplicationRO, FolderRO } from '../../../../../common/generated_definitions';
-import { folderApplicationEntity } from '../../../../entity/entities/folderApplication.entity';
-import { getSubTreeItemsForItem } from '../../../../utils/treeUtils';
-import { isFolder } from '../../../../utils/itemUtils';
-import { useItems } from '../../../../contexts/ItemsContext';
+import { Box, Button, Card } from '@mui/material';
+import { ApplicationRO, FolderRO, InstanceRO } from 'common/generated_definitions';
+import { folderApplicationEntity } from 'renderer/entity/entities/folderApplication.entity';
+import { getNewItemSort, getSubTreeItemsForItem, getSubTreeRoot } from 'renderer/utils/treeUtils';
+import { isFolder } from 'renderer/utils/itemUtils';
+import { useItems } from 'renderer/contexts/ItemsContext';
+import { FormattedMessage } from 'react-intl';
+import NiceModal from '@ebay/nice-modal-react';
+import CreateInstanceDialog from 'renderer/components/item/dialogs/create/CreateInstanceDialog';
 
 const FolderApplications: FunctionComponent = () => {
   const { applications, refetchApplications } = useItems();
@@ -38,6 +41,20 @@ const FolderApplications: FunctionComponent = () => {
 
   const globalActionsHandler = useCallback(async (actionId: string): Promise<void> => {}, []);
 
+  const createInstanceHandler = useCallback(async (): Promise<void> => {
+    const treeItem = getSubTreeRoot(navigatorData || [], item.id);
+    if (!treeItem) {
+      return;
+    }
+
+    const sort = getNewItemSort(treeItem);
+
+    await NiceModal.show<InstanceRO[] | undefined>(CreateInstanceDialog, {
+      parentFolderId: item.id,
+      sort: sort,
+    });
+  }, [item, navigatorData]);
+
   return (
     <Page>
       <Card>
@@ -45,6 +62,18 @@ const FolderApplications: FunctionComponent = () => {
           entity={entity}
           data={data}
           loading={loading}
+          emptyContent={
+            <>
+              <Box>
+                <FormattedMessage id={'addNewInstanceByClicking'} />
+              </Box>
+              <Box sx={{ mt: 2 }}>
+                <Button variant={'outlined'} color={'primary'} onClick={createInstanceHandler}>
+                  <FormattedMessage id={'createInstance'} />
+                </Button>
+              </Box>
+            </>
+          }
           refetchHandler={refetchApplications}
           actionsHandler={actionsHandler}
           massActionsHandler={massActionsHandler}
