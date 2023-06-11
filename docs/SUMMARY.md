@@ -2,7 +2,7 @@
 
 ## 🚀 Getting Started
 
-* [Ostara 101](README.md)
+* [Ostara 102](README.md)
 * [Why Ostara](getting-started/why-ostara.md)
 * [Quick Start](getting-started/quick-start.md)
 * [Privacy](getting-started/privacy.md)
