@@ -4,7 +4,7 @@ enum class InstanceHealthStatus(
     /**
      * Whether the instance is up, running and accessible, even if it's in a downed state
      */
-    val running: Boolean
+    val running: Boolean,
 ) {
     UP(true),
     DOWN(true),

@@ -24,6 +24,8 @@ enum class InstanceAbility {
     SCHEDULEDTASKS,
     HEALTH,
     INFO,
+    INFO_BUILD,
+    INFO_GIT,
     SYSTEM_PROPERTIES,
     SYSTEM_ENVIRONMENT,
     TOGGLZ
