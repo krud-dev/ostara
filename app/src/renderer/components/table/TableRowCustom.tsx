@@ -129,10 +129,12 @@ export default function TableRowCustom<EntityItem>({ row }: TableRowCustomProps<
             {entity.actions.map((action) => {
               const disabled = action.isDisabled?.(row);
               const loading = loadingActionIds.includes(action.id);
-              const tooltip = !disabled || isBoolean(disabled) ? <FormattedMessage id={action.labelId} /> : disabled;
+              const showActionTooltip = !disabled || isBoolean(disabled);
+              const tooltip = showActionTooltip ? <FormattedMessage id={action.labelId} /> : disabled;
               return (
                 <ToolbarButton
                   tooltip={tooltip}
+                  tooltipDisableInteractive={showActionTooltip}
                   icon={action.icon}
                   disabled={!!disabled || loading}
                   stopPropagation
