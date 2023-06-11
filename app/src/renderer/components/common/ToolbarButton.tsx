@@ -7,6 +7,7 @@ import { ColorSchema } from '../../theme/config/palette';
 
 export type ToolbarButtonProps = {
   tooltip?: ReactNode;
+  tooltipDisableInteractive?: boolean;
   icon: MUIconType;
   color?: ColorSchema;
   size?: 'small' | 'medium' | 'large';
@@ -18,6 +19,7 @@ export type ToolbarButtonProps = {
 
 export default function ToolbarButton({
   tooltip,
+  tooltipDisableInteractive,
   icon,
   color,
   size,
@@ -38,7 +40,7 @@ export default function ToolbarButton({
 
   return (
     <Box sx={{ display: 'inline-block', ...sx }}>
-      <Tooltip title={tooltip}>
+      <Tooltip title={tooltip} disableInteractive={tooltipDisableInteractive}>
         <Box component={'span'} onClick={wrapperClickHandler}>
           <IconButton disabled={disabled} color={color} size={size} onClick={onClick}>
             <IconViewer icon={icon} fontSize={'small'} />
