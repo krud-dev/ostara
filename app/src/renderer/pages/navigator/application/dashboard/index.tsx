@@ -39,7 +39,11 @@ const ApplicationDashboard: FunctionComponent = () => {
 
   const createInstanceHandler = useCallback(async (): Promise<void> => {
     const treeItem = getSubTreeRoot(navigatorData || [], item.id);
-    const sort = treeItem ? getNewItemSort(treeItem) : 1;
+    if (!treeItem) {
+      return;
+    }
+
+    const sort = getNewItemSort(treeItem);
 
     await NiceModal.show<InstanceRO[] | undefined>(CreateInstanceDialog, {
       parentApplicationId: item.id,
