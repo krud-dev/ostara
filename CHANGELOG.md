@@ -1,5 +1,37 @@
 # @krud-dev/ostara-main
 
+## 0.10.0
+
+### Minor Changes
+
+- 39de2121: Added application dashboard
+- 1097b051: Added join discord buttons to home screen
+- b56c2f46: Added notifications settings
+- 230be293: Added ability to shutdown instances
+- 421a4271: Added ability to cancel heapdump downloads
+- 72697846: Added application health notifications
+- 02d736a4: Added methods to send direct feedback
+- a1218544: Added folder dashboard
+- 26d11967: Added ability to configure notifications for metric changes
+- bc717019: Added option to export / import configurations
+- 52be8657: Added tooltips to navbar buttons
+- fb235a9c: Updated start demo design to be more prominent
+- 9fa6cf20: Added global dashboard
+- 9188bc31: Added automatic selection of instance/application/folder on creation
+
+### Patch Changes
+
+- c4ea9924: Fixed application health not updating after cache eviction
+- 8b3732f8: Fixed instance active profiles overflow ui
+- 5a4e450d: Change app updater to run once on app start if enabled
+- b1877064: Fixed analytics not sending heartbeat event
+- 8e8dc99d: Removed ability to move instances between applications
+- 94527477: Fixed dashboard loading ui bug
+- 58d20a08: Fixed demo created multiple times
+- 216ec437: Fixed dashboard widget not available state
+- c521002b: Fixed beans table dependency click not working when filtered
+- 16e1599d: Fixed table action tooltip for disabled actions not interactable
+
 ## 0.9.0
 
 ### Minor Changes
