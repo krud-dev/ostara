@@ -346,7 +346,7 @@
     "publish": {
       "provider": "github",
       "owner": "krud-dev",
-      "repo": "ostara-staging"
+      "repo": "ostara"
     }
   },
   "devEngines": {
