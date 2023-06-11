@@ -36,7 +36,7 @@ export default function HomeGettingStarted({}: HomeGettingStartedProps) {
           <FormattedMessage id={'gettingStartedSteps'} />
         </Typography>
 
-        <Stack direction={{ xs: 'column', sm: 'row' }} spacing={2} sx={{ mt: 3 }}>
+        <Stack direction={{ xs: 'column', sm: 'row' }} spacing={2} sx={{ mt: 2 }}>
           <Button variant="outlined" color="primary" onClick={createInstanceHandler}>
             <FormattedMessage id={'createInstance'} />
           </Button>
