@@ -79,7 +79,8 @@ export class AppUpdater {
   }
 
   private async checkForUpdatesJob(runAnyways = false) {
-    if (configurationStore.get('lastUpdateCheckTime') < Date.now() - 1000 * 60 * 60 || runAnyways) {
+    const lastUpdateCheckTimeAfterOneHour = configurationStore.get('lastUpdateCheckTime') < Date.now() - 1000 * 60 * 60;
+    if (lastUpdateCheckTimeAfterOneHour || runAnyways) {
       configurationStore.set('lastUpdateCheckTime', Date.now());
       await this.checkForUpdates();
     }
