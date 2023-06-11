@@ -52,8 +52,8 @@ export class AppUpdater {
       systemEvents.emit('update-cancelled', info);
     });
 
-    scheduleJob('0 */5 * * * *', this.checkForUpdatesJob.bind(this));
-    this.checkForUpdatesJob();
+    scheduleJob('0 */5 * * * *', this.checkForUpdatesJob.bind(this, false));
+    this.checkForUpdatesJob(true);
   }
 
   updateAutoUpdate(autoUpdate: boolean) {
@@ -78,8 +78,9 @@ export class AppUpdater {
     autoUpdater.quitAndInstall();
   }
 
-  private async checkForUpdatesJob() {
-    if (configurationStore.get('lastUpdateCheckTime') < Date.now() - 1000 * 60 * 60) {
+  private async checkForUpdatesJob(runAnyways = false) {
+    const lastUpdateCheckTimeAfterOneHour = configurationStore.get('lastUpdateCheckTime') < Date.now() - 1000 * 60 * 60;
+    if (lastUpdateCheckTimeAfterOneHour || runAnyways) {
       configurationStore.set('lastUpdateCheckTime', Date.now());
       await this.checkForUpdates();
     }
