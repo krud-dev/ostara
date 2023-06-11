@@ -1,0 +1,73 @@
+# Table of contents
+
+## 🚀 Getting Started
+
+* [Ostara 101](README.md)
+* [Why Ostara](getting-started/why-ostara.md)
+* [Quick Start](getting-started/quick-start.md)
+* [Privacy](getting-started/privacy.md)
+* [Changelog](getting-started/changelog.md)
+
+## 📖 Documentation
+
+* [Folders](documentation/folders/README.md)
+  * [Creating / Updating Folders](documentation/folders/creating-updating-folders.md)
+* [Applications](documentation/applications/README.md)
+  * [Creating / Updating Applications](documentation/applications/creating-updating-applications.md)
+* [Instances](documentation/instances/README.md)
+  * [Creating / Updating Instances](documentation/instances/creating-updating-instances.md)
+* [Authentication Settings](documentation/authentication-settings/README.md)
+  * [Types](documentation/authentication-settings/types/README.md)
+    * [None](documentation/authentication-settings/types/none.md)
+    * [Inherit](documentation/authentication-settings/types/inherit.md)
+    * [Basic](documentation/authentication-settings/types/basic.md)
+    * [Bearer Token](documentation/authentication-settings/types/bearer-token.md)
+    * [Header](documentation/authentication-settings/types/header.md)
+    * [Query String](documentation/authentication-settings/types/query-string.md)
+
+## 📗 Features
+
+* [Abilities](features/abilities.md)
+* [Folder Features](features/folder-features/README.md)
+  * [Overview](features/folder-features/overview/README.md)
+    * [Dashboard](features/folder-features/overview/dashboard.md)
+* [Application Features](features/application-features/README.md)
+  * [Overview](features/application-features/overview/README.md)
+    * [Dashboard](features/application-features/overview/dashboard.md)
+    * [Instances](features/application-features/overview/instances.md)
+  * [Manage](features/application-features/manage/README.md)
+    * [Loggers](features/application-features/manage/loggers.md)
+    * [Caches](features/application-features/manage/caches.md)
+  * [Monitor](features/application-features/monitor/README.md)
+    * [Metric Notifications](features/application-features/monitor/metric-notifications.md)
+* [Instance Features](features/instance-features/README.md)
+  * [Insights](features/instance-features/insights/README.md)
+    * [Dashboard](features/instance-features/insights/dashboard.md)
+    * [Metrics](features/instance-features/insights/metrics.md)
+    * [System Environment](features/instance-features/insights/system-environment.md)
+    * [System Properties](features/instance-features/insights/system-properties.md)
+    * [App Properties](features/instance-features/insights/app-properties.md)
+    * [Beans](features/instance-features/insights/beans.md)
+    * [HTTP Requests](features/instance-features/insights/http-requests.md)
+    * [Quartz](features/instance-features/insights/quartz.md)
+    * [Scheduled Tasks](features/instance-features/insights/scheduled-tasks.md)
+    * [Mappings](features/instance-features/insights/mappings.md)
+    * [Flyway](features/instance-features/insights/flyway.md)
+    * [Liquibase](features/instance-features/insights/liquibase.md)
+    * [Integration Graph](features/instance-features/insights/integration-graph.md)
+  * [Manage](features/instance-features/manage/README.md)
+    * [Loggers](features/instance-features/manage/loggers.md)
+    * [Caches](features/instance-features/manage/caches.md)
+    * [Togglz](features/instance-features/manage/togglz.md)
+  * [JVM](features/instance-features/jvm/README.md)
+    * [Thread Profiling](features/instance-features/jvm/thread-profiling.md)
+    * [Heap Dump](features/instance-features/jvm/heap-dump.md)
+  * [Misc](features/instance-features/misc/README.md)
+    * [Shutdown](features/instance-features/misc/shutdown.md)
+* [In-App Demo](features/in-app-demo.md)
+
+## ⚠ Troubleshooting
+
+* [Environment variables / System properties / App properties are partially or fully masked](troubleshooting/environment-variables-system-properties-app-properties-are-partially-or-fully-masked.md)
+* [Not all requests appear in HTTP Requests](troubleshooting/not-all-requests-appear-in-http-requests.md)
+* [Known Issues for Spring Boot 2](troubleshooting/known-issues-for-spring-boot-2.md)
