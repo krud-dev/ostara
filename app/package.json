@@ -1,6 +1,6 @@
 {
   "name": "@krud-dev/boost",
-  "version": "0.9.0",
+  "version": "0.9.0-snapshot",
   "description": "A visual tool to monitor and interact with Spring Boot applications via Actuator",
   "private": "true",
   "keywords": [
@@ -346,7 +346,7 @@
     "publish": {
       "provider": "github",
       "owner": "krud-dev",
-      "repo": "ostara"
+      "repo": "ostara-staging"
     }
   },
   "devEngines": {
