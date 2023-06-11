@@ -22,12 +22,12 @@ const Home: FunctionComponent = () => {
             <Stack direction={'column'} spacing={COMPONENTS_SPACING}>
               <HomeWelcome />
               <HomeGettingStarted />
-              <HomeDocumentation />
+              <HomeRepository />
             </Stack>
           </Grid2>
           <Grid2 xs={12} lg={6}>
             <Stack direction={'column'} spacing={COMPONENTS_SPACING} sx={{ height: '100%' }}>
-              <HomeRepository />
+              <HomeDocumentation />
               <HomeFeedback />
               <HomeWhatsNew />
             </Stack>

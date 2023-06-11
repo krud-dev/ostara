@@ -395,7 +395,7 @@ export default {
   appIsOpenSource: 'Ostara is Open Source',
   checkOutTheSourceCode:
     'Check out the source code on GitHub. Feel free to contribute, comment, open issues or ask questions.',
-  considerStarringTheRepository: 'If you find Ostara useful, please consider starring the repository. Thank you!',
+  considerStarringTheRepository: 'If you find Ostara useful, please support it by starring the repository. Thank you!',
   documentation: 'Documentation',
   documentationSideGetStarted:
     'We have created a documentation site to help you get started with Ostara. If you have any questions, we are also available on Discord.',
@@ -415,7 +415,8 @@ export default {
   star: 'Star',
   feedback: 'Feedback',
   feedbackHelpImprove:
-    'We would love to hear your feedback. Any feature request, recommendation or bug report is more than welcome. Please let us know what you think and help us improve.',
+    'We would love to hear your feedback. Any feature request, recommendation or bug report is more than welcome. We will make your dreams come true.',
+  feedbackContactServices: 'You can also receive support and consulting here:',
   openIssue: 'Open Issue',
   sendEmail: 'Send Email',
   startDemo: 'Start Demo',

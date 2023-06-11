@@ -8,24 +8,24 @@ import {
   FolderRO,
   InstanceModifyRequestRO,
   InstanceRO,
-} from '../../../../../common/generated_definitions';
-import { useNavigatorTree } from '../../../../contexts/NavigatorTreeContext';
-import { INHERITED_COLOR_VALUE } from '../../../../hooks/useItemColor';
-import { applicationCrudEntity } from '../../../../apis/requests/crud/entity/entities/application.crudEntity';
-import { instanceCrudEntity } from '../../../../apis/requests/crud/entity/entities/instance.crudEntity';
-import { crudKeys } from '../../../../apis/requests/crud/crudKeys';
-import { useCrudCreate } from '../../../../apis/requests/crud/crudCreate';
-import { useCrudCreateBulk } from '../../../../apis/requests/crud/crudCreateBulk';
+} from 'common/generated_definitions';
+import { useNavigatorTree } from 'renderer/contexts/NavigatorTreeContext';
+import { INHERITED_COLOR_VALUE } from 'renderer/hooks/useItemColor';
+import { applicationCrudEntity } from 'renderer/apis/requests/crud/entity/entities/application.crudEntity';
+import { instanceCrudEntity } from 'renderer/apis/requests/crud/entity/entities/instance.crudEntity';
+import { crudKeys } from 'renderer/apis/requests/crud/crudKeys';
+import { useCrudCreate } from 'renderer/apis/requests/crud/crudCreate';
+import { useCrudCreateBulk } from 'renderer/apis/requests/crud/crudCreateBulk';
 import { useQueryClient } from '@tanstack/react-query';
 import { LoadingButton } from '@mui/lab';
-import { Authentication$Typed } from '../../../../../common/manual_definitions';
-import { useGetApplicationsHealth } from '../../../../apis/requests/application/health/getApplicationsHealth';
-import { useDeleteItem } from '../../../../apis/requests/item/deleteItem';
-import { folderCrudEntity } from '../../../../apis/requests/crud/entity/entities/folder.crudEntity';
-import { showDeleteConfirmationDialog } from '../../../../utils/dialogUtils';
-import { isItemDeletable } from '../../../../utils/itemUtils';
-import { useCreateApplicationMetricRule } from '../../../../apis/requests/application/metric-rules/createApplicationMetricRule';
-import { useSettings } from '../../../../contexts/SettingsContext';
+import { Authentication$Typed } from 'common/manual_definitions';
+import { useGetApplicationsHealth } from 'renderer/apis/requests/application/health/getApplicationsHealth';
+import { useDeleteItem } from 'renderer/apis/requests/item/deleteItem';
+import { folderCrudEntity } from 'renderer/apis/requests/crud/entity/entities/folder.crudEntity';
+import { showDeleteConfirmationDialog } from 'renderer/utils/dialogUtils';
+import { isItemDeletable } from 'renderer/utils/itemUtils';
+import { useCreateApplicationMetricRule } from 'renderer/apis/requests/application/metric-rules/createApplicationMetricRule';
+import { useSettings } from 'renderer/contexts/SettingsContext';
 
 type ApplicationToCreate = {
   folderName?: string;
@@ -274,7 +274,7 @@ export default function HomeDeveloperMode({}: HomeDeveloperModeProps) {
           http://localhost:12222/swagger-ui/index.html
         </Typography>
 
-        <Stack direction={{ xs: 'column', sm: 'row' }} spacing={2} sx={{ mt: 3 }}>
+        <Stack direction={{ xs: 'column', sm: 'row' }} spacing={2} sx={{ mt: 2 }}>
           <LoadingButton variant="outlined" color="primary" loading={loading} onClick={createTestInstancesHandler}>
             Create Test Instances
           </LoadingButton>

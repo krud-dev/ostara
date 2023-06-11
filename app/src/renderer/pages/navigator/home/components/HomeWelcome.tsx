@@ -31,7 +31,7 @@ export default function HomeWelcome({}: HomeWelcomeProps) {
           <FormattedMessage id={'getStartedAddFirstInstance'} />
         </Typography>
 
-        <Stack direction={{ xs: 'column', sm: 'row' }} spacing={2} sx={{ mt: 3 }}>
+        <Stack direction={{ xs: 'column', sm: 'row' }} spacing={2} sx={{ mt: 2 }}>
           <Button variant="outlined" color="primary" onClick={createInstanceHandler}>
             <FormattedMessage id={'createInstance'} />
           </Button>
