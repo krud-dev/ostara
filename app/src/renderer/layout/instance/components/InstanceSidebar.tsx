@@ -7,6 +7,7 @@ import {
   ClassOutlined,
   DataUsageOutlined,
   DeviceHubOutlined,
+  DvrOutlined,
   EggOutlined,
   EventRepeatOutlined,
   HttpOutlined,
@@ -24,9 +25,9 @@ import { useCallback, useMemo } from 'react';
 import { FormattedMessage } from 'react-intl';
 import { generatePath } from 'react-router-dom';
 import ItemHeader from 'renderer/components/item/ItemHeader';
-import { InstanceAbility, InstanceRO } from '../../../../common/generated_definitions';
-import InstanceActiveProfiles from './InstanceActiveProfiles';
-import { isInstanceInactive } from '../../../utils/itemUtils';
+import { InstanceAbility, InstanceRO } from 'common/generated_definitions';
+import InstanceActiveProfiles from 'renderer/layout/instance/components/InstanceActiveProfiles';
+import { isInstanceInactive } from 'renderer/utils/itemUtils';
 
 type InstanceSidebarProps = { item: InstanceRO; itemAbilities?: InstanceAbility[]; disabled: boolean; width: number };
 
@@ -54,6 +55,13 @@ export default function InstanceSidebar({ item, itemAbilities, disabled, width }
                   label: <FormattedMessage id={'dashboard'} />,
                   to: generatePath(urls.instanceDashboard.url, { id: item.id }),
                   disabled: disabled,
+                },
+                {
+                  id: 'info',
+                  icon: <DvrOutlined />,
+                  label: <FormattedMessage id={'info'} />,
+                  to: generatePath(urls.instanceInfo.url, { id: item.id }),
+                  disabled: disabled || isServiceInactive('INFO'),
                 },
                 {
                   id: 'metrics',
