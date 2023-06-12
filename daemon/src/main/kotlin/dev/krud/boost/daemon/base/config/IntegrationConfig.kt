@@ -89,7 +89,6 @@ class IntegrationConfig {
         channel(applicationMetricRuleTriggerChannel())
     }
 
-
     @Bean
     fun instanceHeapdumpDownloadProgressFlow() = integrationFlow(instanceHeapdumpDownloadProgressInputChannel()) {
         aggregate {
@@ -117,6 +116,16 @@ class IntegrationConfig {
 
     @Bean
     fun instanceThreadProfilingProgressChannel(): PublishSubscribeChannel {
+        return MessageChannels.publishSubscribe().get()
+    }
+
+    @Bean
+    fun instanceMetadataRefreshRequestChannel(): QueueChannel {
+        return MessageChannels.queue().get()
+    }
+
+    @Bean
+    fun instanceMetadataRefreshChannel(): PublishSubscribeChannel {
         return MessageChannels.publishSubscribe().get()
     }
 

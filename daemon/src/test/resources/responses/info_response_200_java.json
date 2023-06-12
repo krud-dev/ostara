@@ -1,0 +1,18 @@
+{
+    "java": {
+        "version": "17.0.5",
+        "vendor": {
+            "name": "Azul Systems, Inc.",
+            "version": "Zulu17.38+21-CA"
+        },
+        "runtime": {
+            "name": "OpenJDK Runtime Environment",
+            "version": "17.0.5+8-LTS"
+        },
+        "jvm": {
+            "name": "OpenJDK 64-Bit Server VM",
+            "vendor": "Azul Systems, Inc.",
+            "version": "17.0.5+8-LTS"
+        }
+    }
+}

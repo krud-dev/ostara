@@ -6,6 +6,7 @@ import com.fasterxml.jackson.databind.DeserializationContext
 import com.fasterxml.jackson.databind.JsonNode
 import com.fasterxml.jackson.databind.deser.std.StdDeserializer
 import dev.krud.boost.daemon.utils.toDate
+import io.github.oshai.KotlinLogging
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 import java.time.format.DateTimeFormatterBuilder
@@ -30,17 +31,22 @@ class MultiDateDeserializer : StdDeserializer<ParsedDate?> {
             return null
         }
         val type = determineType(node)
-        val date = when (type) {
-            ValueType.STRING -> {
-                LocalDateTime.parse(node.asText(), formatter.get())
-                    .toDate()
-            }
+        val date = try {
+            when (type) {
+                ValueType.STRING -> {
+                    LocalDateTime.parse(node.asText(), formatter.get())
+                        .toDate()
+                }
 
-            ValueType.MILLIS_NUMBER -> Date(node.asLong())
-            ValueType.SECONDS_NUMBER -> Date(node.asLong() * 1000)
-            ValueType.UNKNOWN -> {
-                null
+                ValueType.MILLIS_NUMBER -> Date(node.asLong())
+                ValueType.SECONDS_NUMBER -> Date(node.asLong() * 1000)
+                ValueType.UNKNOWN -> {
+                    null
+                }
             }
+        } catch (e: Exception) {
+            log.debug(e) { "Unable to parse date" }
+            null
         }
         return ParsedDate(
             date,
@@ -86,6 +92,7 @@ class MultiDateDeserializer : StdDeserializer<ParsedDate?> {
     }
 
     companion object {
+        private val log = KotlinLogging.logger { }
         private val PARSER = DateTimeParser()
     }
 }

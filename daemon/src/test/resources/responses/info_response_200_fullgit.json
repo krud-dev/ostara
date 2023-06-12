@@ -1,0 +1,49 @@
+{
+    "git": {
+        "branch": "master",
+        "commit": {
+            "time": 1672061382,
+            "message": {
+                "full": "Add resolver tests\n",
+                "short": "Add resolver tests"
+            },
+            "id": {
+                "describe": "v0.9.0-64-g545b6f6-dirty",
+                "abbrev": "545b6f6",
+                "full": "545b6f68d67937fd6ddc87017439cae0a9430262"
+            },
+            "user": {
+                "email": "some@user.com",
+                "name": "Some User"
+            }
+        },
+        "build": {
+            "version": "0.0.1-SNAPSHOT",
+            "user": {
+                "name": "Some User",
+                "email": "some@user.com"
+            },
+            "host": "some-host"
+        },
+        "dirty": "true",
+        "tags": "",
+        "total": {
+            "commit": {
+                "count": "820"
+            }
+        },
+        "closest": {
+            "tag": {
+                "commit": {
+                    "count": "64"
+                },
+                "name": "v0.9.0"
+            }
+        },
+        "remote": {
+            "origin": {
+                "url": "git@github.com:krud-dev/ostara.git"
+            }
+        }
+    }
+}

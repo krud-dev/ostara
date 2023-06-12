@@ -6,6 +6,7 @@ import dev.krud.boost.daemon.configuration.instance.metric.InstanceMetricWebsock
 import dev.krud.boost.daemon.configuration.instance.websocket.InstanceAbilityWebsocketDispatcher
 import dev.krud.boost.daemon.configuration.instance.websocket.InstanceHealthWebsocketDispatcher
 import dev.krud.boost.daemon.configuration.instance.websocket.InstanceHostnameWebsocketDispatcher
+import dev.krud.boost.daemon.configuration.instance.websocket.InstanceMetadataWebsocketDispatcher
 import dev.krud.boost.daemon.metricmonitor.websocket.MetricRuleWebsocketDispatcher
 import dev.krud.boost.daemon.threadprofiling.websocket.ThreadProfilingWebsocketDispatcher
 import dev.krud.boost.daemon.websocket.SubscriptionInterceptor
@@ -96,6 +97,14 @@ class WebSocketConfig : WebSocketMessageBrokerConfigurer {
             destination = MetricRuleWebsocketDispatcher.APPLICATION_METRIC_RULE_TRIGGERS_TOPIC,
             callback = { _, headerAccessor ->
                 metricRuleWebsocketDispatcher.replay(headerAccessor.sessionId!!)
+            }
+        )
+
+        @Bean
+        fun instanceMetadataReplayingInterceptor(instanceMetadataWebsocketDispatcher: InstanceMetadataWebsocketDispatcher) = SubscriptionInterceptor(
+            destination = InstanceMetadataWebsocketDispatcher.INSTANCE_METADATA_TOPIC,
+            callback = { _, headerAccessor ->
+                instanceMetadataWebsocketDispatcher.replay(headerAccessor.sessionId!!)
             }
         )
     }

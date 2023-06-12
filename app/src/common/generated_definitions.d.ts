@@ -65,6 +65,9 @@ export interface HealthActuatorResponse {
 export interface InfoActuatorResponse {
     build?: InfoActuatorResponse$Build;
     git?: InfoActuatorResponse$Git;
+    os?: InfoActuatorResponse$Os;
+    java?: InfoActuatorResponse$Java;
+    extras: { [index: string]: any };
 }
 
 export interface IntegrationGraphActuatorResponse {
@@ -373,6 +376,7 @@ export interface InstanceRO {
     sort?: number;
     health: InstanceHealthRO;
     demo: boolean;
+    metadata: InstanceMetadataDTO;
 }
 
 export interface InstanceSystemEnvironmentRO {
@@ -448,6 +452,28 @@ export interface ThreadProfilingRequestRO {
     status: ThreadProfilingStatus;
 }
 
+export interface InfoActuatorResponse$Git$Full extends InfoActuatorResponse$Git {
+    branch: string;
+    commit: InfoActuatorResponse$Git$Full$Commit;
+    build: InfoActuatorResponse$Git$Full$Build;
+    dirty: boolean;
+    tags: string;
+    total: InfoActuatorResponse$Git$Full$Total;
+    closest: InfoActuatorResponse$Git$Full$Closest;
+    remote: InfoActuatorResponse$Git$Full$Remote;
+    type: string;
+}
+
+export interface InfoActuatorResponse$Git$Simple extends InfoActuatorResponse$Git {
+    branch: string;
+    commit: InfoActuatorResponse$Git$Simple$Commit;
+    type: string;
+}
+
+export interface InfoActuatorResponse$Git$Unknown extends InfoActuatorResponse$Git {
+    type: string;
+}
+
 export interface ApplicationHealthUpdatedEventMessage$Payload {
     applicationId: string;
     newHealth: ApplicationHealthRO;
@@ -491,6 +517,11 @@ export interface InstanceHealthCheckPerformedEventMessage$Payload {
 export interface InstanceHostnameUpdatedEventMessage$Payload {
     instanceId: string;
     hostname?: string;
+}
+
+export interface InstanceMetadataRefreshedMessage$Payload {
+    instanceId: string;
+    metadata: InstanceMetadataDTO;
 }
 
 export interface ApplicationMetricRuleTriggeredMessage$InstanceIdAndValue {
@@ -596,8 +627,20 @@ export interface InfoActuatorResponse$Build {
 }
 
 export interface InfoActuatorResponse$Git {
-    branch: string;
-    commit: InfoActuatorResponse$Git$Commit;
+    type?: string;
+}
+
+export interface InfoActuatorResponse$Os {
+    name: string;
+    arch: string;
+    version: string;
+}
+
+export interface InfoActuatorResponse$Java {
+    version: string;
+    vendor: InfoActuatorResponse$Java$Vendor;
+    runtime: InfoActuatorResponse$Java$Runtime;
+    jvm: InfoActuatorResponse$Java$Jvm;
 }
 
 export interface IntegrationGraphActuatorResponse$ContentDescriptor {
@@ -779,6 +822,43 @@ export interface Unit {
 export interface Authentication {
 }
 
+export interface InstanceMetadataDTO {
+    version?: string;
+    buildTime?: DateAsNumber;
+    gitCommitId?: string;
+    gitBranch?: string;
+}
+
+export interface InfoActuatorResponse$Git$Full$Commit {
+    time: ParsedDate;
+    message: InfoActuatorResponse$Git$Full$Commit$Message;
+    id: InfoActuatorResponse$Git$Full$Commit$Id;
+    user: InfoActuatorResponse$Git$Full$Commit$User;
+}
+
+export interface InfoActuatorResponse$Git$Full$Build {
+    version: string;
+    user: InfoActuatorResponse$Git$Full$Build$User;
+    host: string;
+}
+
+export interface InfoActuatorResponse$Git$Full$Total {
+    commit: InfoActuatorResponse$Git$Full$Total$Commit;
+}
+
+export interface InfoActuatorResponse$Git$Full$Closest {
+    tag: InfoActuatorResponse$Git$Full$Closest$Tag;
+}
+
+export interface InfoActuatorResponse$Git$Full$Remote {
+    origin: InfoActuatorResponse$Git$Full$Remote$Origin;
+}
+
+export interface InfoActuatorResponse$Git$Simple$Commit {
+    id: string;
+    time?: ParsedDate;
+}
+
 export interface Iterable<T> {
 }
 
@@ -814,9 +894,20 @@ export interface FlywayActuatorResponse$Context$FlywayBean {
     migrations: FlywayActuatorResponse$Context$FlywayBean$Migration[];
 }
 
-export interface InfoActuatorResponse$Git$Commit {
-    id: string;
-    time?: ParsedDate;
+export interface InfoActuatorResponse$Java$Vendor {
+    name: string;
+    version: string;
+}
+
+export interface InfoActuatorResponse$Java$Runtime {
+    name: string;
+    version: string;
+}
+
+export interface InfoActuatorResponse$Java$Jvm {
+    name: string;
+    version: string;
+    vendor: string;
 }
 
 export interface IntegrationGraphActuatorResponse$Node$SendTimer {
@@ -939,6 +1030,40 @@ export interface Authentication$BearerToken extends Authentication {
     type: string;
 }
 
+export interface InfoActuatorResponse$Git$Full$Commit$Message {
+    full: string;
+    short: string;
+}
+
+export interface InfoActuatorResponse$Git$Full$Commit$Id {
+    describe: string;
+    abbrev: string;
+    full: string;
+}
+
+export interface InfoActuatorResponse$Git$Full$Commit$User {
+    name: string;
+    email: string;
+}
+
+export interface InfoActuatorResponse$Git$Full$Build$User {
+    name: string;
+    email: string;
+}
+
+export interface InfoActuatorResponse$Git$Full$Total$Commit {
+    count: string;
+}
+
+export interface InfoActuatorResponse$Git$Full$Closest$Tag {
+    commit: InfoActuatorResponse$Git$Full$Closest$Tag$Commit;
+    name: string;
+}
+
+export interface InfoActuatorResponse$Git$Full$Remote$Origin {
+    url: string;
+}
+
 export interface FlywayActuatorResponse$Context$FlywayBean$Migration {
     type: string;
     checksum: number;
@@ -987,6 +1112,10 @@ export interface MappingsActuatorResponse$Context$Mappings$Servlet {
     className: string;
 }
 
+export interface InfoActuatorResponse$Git$Full$Closest$Tag$Commit {
+    count: string;
+}
+
 export interface MappingsActuatorResponse$Context$Mappings$DispatcherServletOrHandler$Details {
     handlerMethod?: MappingsActuatorResponse$Context$Mappings$DispatcherServletOrHandler$Details$HandlerMethod;
     handlerFunction?: MappingsActuatorResponse$Context$Mappings$DispatcherServletOrHandler$Details$HandlerFunction;
@@ -1029,7 +1158,7 @@ export interface MappingsActuatorResponse$Context$Mappings$DispatcherServletOrHa
 
 export type DateAsNumber = number;
 
-export type InstanceAbility = "METRICS" | "ENV" | "BEANS" | "QUARTZ" | "FLYWAY" | "LIQUIBASE" | "LOGGERS" | "CACHES" | "THREADDUMP" | "HEAPDUMP" | "CACHE_STATISTICS" | "SHUTDOWN" | "REFRESH" | "HTTP_REQUEST_STATISTICS" | "INTEGRATIONGRAPH" | "PROPERTIES" | "MAPPINGS" | "SCHEDULEDTASKS" | "HEALTH" | "INFO" | "SYSTEM_PROPERTIES" | "SYSTEM_ENVIRONMENT" | "TOGGLZ";
+export type InstanceAbility = "METRICS" | "ENV" | "BEANS" | "QUARTZ" | "FLYWAY" | "LIQUIBASE" | "LOGGERS" | "CACHES" | "THREADDUMP" | "HEAPDUMP" | "CACHE_STATISTICS" | "SHUTDOWN" | "REFRESH" | "HTTP_REQUEST_STATISTICS" | "INTEGRATIONGRAPH" | "PROPERTIES" | "MAPPINGS" | "SCHEDULEDTASKS" | "HEALTH" | "INFO" | "INFO_BUILD" | "INFO_GIT" | "SYSTEM_PROPERTIES" | "SYSTEM_ENVIRONMENT" | "TOGGLZ";
 
 export type HealthActuatorResponse$Status = "UP" | "DOWN" | "OUT_OF_SERVICE" | "UNKNOWN";
 

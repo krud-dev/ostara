@@ -1,8 +1,8 @@
 package dev.krud.boost.daemon.actuator
 
-import com.fasterxml.jackson.databind.DeserializationFeature
 import dev.krud.boost.daemon.actuator.model.CacheActuatorResponse
 import dev.krud.boost.daemon.actuator.model.HealthActuatorResponse
+import dev.krud.boost.daemon.actuator.model.InfoActuatorResponse
 import okhttp3.mockwebserver.MockResponse
 import okhttp3.mockwebserver.MockWebServer
 import org.junit.jupiter.api.AfterEach
@@ -10,12 +10,13 @@ import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import strikt.api.expect
 import strikt.api.expectThat
+import strikt.assertions.containsKey
+import strikt.assertions.isA
 import strikt.assertions.isEqualTo
 import strikt.assertions.isFalse
 import strikt.assertions.isNotEmpty
 import strikt.assertions.isNotNull
 import strikt.assertions.isTrue
-import javax.net.ssl.SSLHandshakeException
 
 class ActuatorHttpClientTest {
     private val server = MockWebServer()
@@ -138,8 +139,113 @@ class ActuatorHttpClientTest {
         val info = client.info().getOrThrow()
         expectThat(info.build?.artifact)
             .isEqualTo("test")
-        expectThat(info.git?.branch)
-            .isEqualTo("develop")
+        expectThat(info.git).isA<InfoActuatorResponse.Git.Simple>()
+            .and {
+                get { branch }.isEqualTo("develop")
+            }
+    }
+
+    @Test
+    internal fun `info with full git should return correct response type`() {
+        server.enqueue(okJsonResponse("responses/info_response_200_fullgit.json"))
+        val baseUrl = server.url("/actuator").toString()
+        val client = getClient(baseUrl)
+        val info = client.info().getOrThrow()
+        info.git.runFullAssertions()
+    }
+
+    @Test
+    internal fun `info with simple git should return correct response type`() {
+        server.enqueue(okJsonResponse("responses/info_response_200_simplegit.json"))
+        val baseUrl = server.url("/actuator").toString()
+        val client = getClient(baseUrl)
+        val info = client.info().getOrThrow()
+        expect {
+            that(info.git).isA<InfoActuatorResponse.Git.Simple>()
+                .and {
+                    get { branch }.isEqualTo("develop")
+                    get { commit.id }.isEqualTo("123456")
+                    get { commit.time?.date?.time }.isEqualTo(1672061382000)
+                }
+        }
+    }
+
+    @Test
+    internal fun `info with unknown git payload should return unknown response type`() {
+        server.enqueue(okJsonResponse("responses/info_response_200_badgit.json"))
+        val baseUrl = server.url("/actuator").toString()
+        val client = getClient(baseUrl)
+        val info = client.info().getOrThrow()
+        expect {
+            that(info.git).isA<InfoActuatorResponse.Git.Unknown>()
+        }
+    }
+
+    @Test
+    internal fun `info with java should return correct response type`() {
+        server.enqueue(okJsonResponse("responses/info_response_200_java.json"))
+        val baseUrl = server.url("/actuator").toString()
+        val client = getClient(baseUrl)
+        val info = client.info().getOrThrow()
+        expect {
+            that(info.java).isA<InfoActuatorResponse.Java>()
+                .and {
+                    get { version }.isEqualTo("17.0.5")
+                    get { vendor }.isA<InfoActuatorResponse.Java.Vendor>()
+                        .and {
+                            get { name }.isEqualTo("Azul Systems, Inc.")
+                            get { version }.isEqualTo("Zulu17.38+21-CA")
+                        }
+                    get { runtime }.isA<InfoActuatorResponse.Java.Runtime>()
+                        .and {
+                            get { name }.isEqualTo("OpenJDK Runtime Environment")
+                            get { version }.isEqualTo("17.0.5+8-LTS")
+                        }
+                    get { jvm }.isA<InfoActuatorResponse.Java.Jvm>()
+                        .and {
+                            get { name }.isEqualTo("OpenJDK 64-Bit Server VM")
+                            get { vendor }.isEqualTo("Azul Systems, Inc.")
+                            get { version }.isEqualTo("17.0.5+8-LTS")
+                        }
+                }
+        }
+    }
+    
+    @Test
+    internal fun `info with os should return correct response type`() {
+        server.enqueue(okJsonResponse("responses/info_response_200_os.json"))
+        val baseUrl = server.url("/actuator").toString()
+        val client = getClient(baseUrl)
+        val info = client.info().getOrThrow()
+        expect {
+            that(info.os).isA<InfoActuatorResponse.Os>()
+                .and {
+                    get { name }.isEqualTo("Mac OS X")
+                    get { version }.isEqualTo("12.2.1")
+                    get { arch }.isEqualTo("x86_64")
+                }
+        }
+    }
+
+    @Test
+    internal fun `info with extra fields should populate extra fields`() {
+        server.enqueue(okJsonResponse("responses/info_response_200_withextras.json"))
+        val baseUrl = server.url("/actuator").toString()
+        val client = getClient(baseUrl)
+        val info = client.info().getOrThrow()
+        expect {
+            that(info.extras["someField"]).isEqualTo("someValue")
+            that(info.extras["someObject"]).isEqualTo(
+                mapOf(
+                    "someNestedField" to "someNestedValue"
+                )
+            )
+            that(info.extras["someInt"]).isEqualTo(1)
+            that(info.extras["someBoolean"]).isEqualTo(true)
+            that(info.extras["someDouble"]).isEqualTo(1.0)
+            that(info.extras["someArray"]).isEqualTo(listOf("someArrayValue1", "someArrayValue2"))
+            that(info.extras["someNull"]).isEqualTo(null)
+        }
     }
 
     @Test
@@ -515,7 +621,31 @@ class ActuatorHttpClientTest {
 
     private fun getClient(baseUrl: String, disableSslVerification: Boolean = false): ActuatorHttpClient {
         val client = ActuatorHttpClientImpl(baseUrl, disableSslVerification = disableSslVerification)
-        client.objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, true)
         return client
+    }
+
+    private fun InfoActuatorResponse.Git?.runFullAssertions() {
+        expectThat(this).isA<InfoActuatorResponse.Git.Full>()
+            .and {
+                get { branch }.isEqualTo("master")
+                get { commit.id.describe }.isEqualTo("v0.9.0-64-g545b6f6-dirty")
+                get { commit.id.abbrev }.isEqualTo("545b6f6")
+                get { commit.id.full }.isEqualTo("545b6f68d67937fd6ddc87017439cae0a9430262")
+                get { commit.time.date?.time }.isEqualTo(1672061382000)
+                get { commit.message.full }.isEqualTo("Add resolver tests\n")
+                get { commit.message.short }.isEqualTo("Add resolver tests")
+                get { commit.user.email }.isEqualTo("some@user.com")
+                get { commit.user.name }.isEqualTo("Some User")
+                get { build.version }.isEqualTo("0.0.1-SNAPSHOT")
+                get { build.user.name }.isEqualTo("Some User")
+                get { build.user.email }.isEqualTo("some@user.com")
+                get { build.host }.isEqualTo("some-host")
+                get { dirty }.isEqualTo(true)
+                get { tags }.isEqualTo("")
+                get { total.commit.count }.isEqualTo("820")
+                get { closest.tag.commit.count }.isEqualTo("64")
+                get { closest.tag.name }.isEqualTo("v0.9.0")
+                get { remote.origin.url }.isEqualTo("git@github.com:krud-dev/ostara.git")
+            }
     }
 }

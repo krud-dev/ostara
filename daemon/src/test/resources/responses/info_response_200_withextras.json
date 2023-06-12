@@ -1,0 +1,14 @@
+{
+    "someField": "someValue",
+    "someInt": 1,
+    "someDouble": 1.0,
+    "someBoolean": true,
+    "someArray": [
+        "someArrayValue1",
+        "someArrayValue2"
+    ],
+    "someObject": {
+        "someNestedField": "someNestedValue"
+    },
+    "someNull": null
+}
