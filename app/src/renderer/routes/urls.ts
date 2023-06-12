@@ -97,6 +97,11 @@ export const urls = asUrlInfos({
     path: 'dashboard',
     helpUrl: 'https://docs.ostara.dev/features/instance-features/insights/dashboard',
   },
+  instanceInfo: {
+    url: '/navigator/instance/:id/info',
+    path: 'info',
+    helpUrl: 'https://docs.ostara.dev/features/instance-features/insights/info',
+  },
   instanceMetrics: {
     url: '/navigator/instance/:id/metrics',
     path: 'metrics',

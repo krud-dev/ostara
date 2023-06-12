@@ -5,6 +5,10 @@ import {
   Authentication$Inherit,
   Authentication$None,
   Authentication$QueryString,
+  InfoActuatorResponse,
+  InfoActuatorResponse$Git$Full,
+  InfoActuatorResponse$Git$Simple,
+  InfoActuatorResponse$Git$Unknown,
 } from './generated_definitions';
 
 declare module './generated_definitions' {
@@ -43,4 +47,22 @@ export interface Authentication$QueryString$Typed extends Authentication$QuerySt
 
 export interface Authentication$BearerToken$Typed extends Authentication$BearerToken {
   type: 'bearer-token';
+}
+
+export type InfoActuatorResponse$Git$Typed =
+  | InfoActuatorResponse$Git$Simple$Typed
+  | InfoActuatorResponse$Git$Full$Typed
+  | InfoActuatorResponse$Git$Unknown$Typed;
+
+export interface InfoActuatorResponse$Git$Simple$Typed extends InfoActuatorResponse$Git$Simple {
+  type: 'simple';
+}
+
+export interface InfoActuatorResponse$Git$Full$Typed extends InfoActuatorResponse$Git$Full {
+  type: 'full';
+}
+
+export interface InfoActuatorResponse$Git$Unknown$Typed extends InfoActuatorResponse$Git$Unknown {
+  type: 'unknown';
+  [key: string]: any;
 }

@@ -20,6 +20,7 @@ export const apiKeys = {
   itemLoggers: (id: string) => [...apiKeys.item(id), 'loggers'],
   itemTogglz: (id: string) => [...apiKeys.item(id), 'togglz'],
   itemTogglzByGroup: (id: string, group: string) => [...apiKeys.itemTogglz(id), 'group', group],
+  itemInfo: (id: string) => [...apiKeys.item(id), 'info'],
   itemEnv: (id: string) => [...apiKeys.item(id), 'env'],
   itemEnvProperties: (id: string) => [...apiKeys.item(id), 'envProperties'],
   itemSystemEnvironment: (id: string) => [...apiKeys.item(id), 'systemEnvironment'],

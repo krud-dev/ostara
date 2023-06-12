@@ -40,6 +40,7 @@ import { ErrorBoundary } from 'react-error-boundary';
 import InstanceTogglz from '../pages/navigator/instance/togglz';
 import ApplicationMetricRules from '../pages/navigator/application/metric-rules';
 import FolderDashboard from '../pages/navigator/folder/dashboard';
+import InstanceInfo from 'renderer/pages/navigator/instance/info';
 
 export default function Router() {
   return useRoutes([
@@ -132,6 +133,14 @@ export default function Router() {
                     <InstanceAbilityErrorGuard ability={'METRICS'}>
                       <InstanceDashboard />
                     </InstanceAbilityErrorGuard>
+                  ),
+                },
+                {
+                  path: urls.instanceInfo.path,
+                  element: (
+                    <AbilityRedirectGuard ability={'INFO'}>
+                      <InstanceInfo />
+                    </AbilityRedirectGuard>
                   ),
                 },
                 {
