@@ -5,4 +5,10 @@ export const notificationsServiceBridge: NotificationsServiceBridge = {
   sendNotification(info: NotificationInfo): Promise<void> {
     return ipcRenderer.invoke('notificationsService:sendNotification', info);
   },
+  canOpenOsSettings(): boolean {
+    return ipcRenderer.sendSync('notificationsService:canOpenOsSettings');
+  },
+  openOsSettings() {
+    ipcRenderer.send('notificationsService:openOsSettings');
+  },
 };
