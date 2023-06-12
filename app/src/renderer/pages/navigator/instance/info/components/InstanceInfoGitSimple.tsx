@@ -1,13 +1,13 @@
 import React, { useMemo } from 'react';
 import { FormattedMessage } from 'react-intl';
-import { InfoActuatorResponse$Git$Simple } from 'common/generated_definitions';
 import InstanceInfoValuesCard, {
   InstanceInfoCardValue,
 } from 'renderer/pages/navigator/instance/info/components/InstanceInfoValuesCard';
 import FormattedDateAndRelativeTime from 'renderer/components/format/FormattedDateAndRelativeTime';
+import { InfoActuatorResponse$Git$Simple$Typed } from 'common/manual_definitions';
 
 type InstanceInfoGitSimpleProps = {
-  git: InfoActuatorResponse$Git$Simple;
+  git: InfoActuatorResponse$Git$Simple$Typed;
 };
 
 export default function InstanceInfoGitSimple({ git }: InstanceInfoGitSimpleProps) {

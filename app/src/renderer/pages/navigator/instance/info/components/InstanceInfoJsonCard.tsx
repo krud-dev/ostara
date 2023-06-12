@@ -1,9 +1,9 @@
 import { Card, CardContent, CardHeader } from '@mui/material';
-import React, { useMemo } from 'react';
+import React, { ReactNode, useMemo } from 'react';
 import CodeEditor from 'renderer/components/code/CodeEditor';
 
 type InstanceInfoJsonCardProps = {
-  title: string;
+  title: ReactNode;
   object: any;
 };
 
