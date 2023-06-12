@@ -4,6 +4,14 @@ on:
   push:
     branches:
       - master
+    paths:
+      - daemon/**
+      - app/**
+      - demo/**
+      - package.json
+      - package-lock.json
+      - .github/workflows/publish.yml
+      - .github/workflows/test-daemon.yml
 jobs:
   publish:
     runs-on: macos-latest
