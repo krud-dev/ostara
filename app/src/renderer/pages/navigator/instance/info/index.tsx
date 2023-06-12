@@ -75,10 +75,10 @@ const InstanceInfo: FunctionComponent = () => {
             {info?.build && <InstanceInfoBuild build={info.build} />}
             {info?.git && <InstanceInfoGit git={info.git} />}
             {info?.java && <InstanceInfoJava java={info.java} />}
+            {showExtraValues && <InstanceInfoExtraValues extraValues={extraValues} />}
             {map(extraCards, (object, key) => (
               <InstanceInfoJsonCard title={key} object={object} key={key} />
             ))}
-            {showExtraValues && <InstanceInfoExtraValues extraValues={extraValues} />}
           </Masonry>
         </Container>
       )}
