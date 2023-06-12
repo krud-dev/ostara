@@ -31,7 +31,8 @@ class BackupExporter(
             }
         return BackupDTO(
             version = backupMigrations.getLatestVersion(),
-            tree = (rootFolders + rootApplications).toList()
+            tree = (rootFolders + rootApplications).toList(),
+            date = Date()
         )
 
     }

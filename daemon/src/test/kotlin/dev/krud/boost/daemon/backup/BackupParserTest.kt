@@ -13,6 +13,7 @@ import strikt.api.expectThrows
 import strikt.assertions.hasSize
 import strikt.assertions.isEmpty
 import strikt.assertions.isEqualTo
+import strikt.assertions.isFalse
 import strikt.assertions.isNull
 
 class BackupParserTest {
@@ -293,6 +294,11 @@ class BackupParserTest {
                 )
                 // endregion
             }
+        }
+
+        @Test
+        fun `version 2 backup should be parsed and migrated successfully`() {
+            expectThat(true).isFalse()
         }
 
         fun BackupDTO.TreeElement.Application.validate(

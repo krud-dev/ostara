@@ -17,6 +17,7 @@ import java.util.*
 
 class BackupDTO(
     val version: Int? = null,
+    val date: Date? = null,
     val tree: List<TreeElement>
 ) : Serializable {
     @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.EXISTING_PROPERTY, property = "type")
