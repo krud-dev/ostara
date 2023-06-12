@@ -490,6 +490,7 @@ export default {
   closestTagName: 'Closest Tag Name',
   closestTagCommitCount: 'Closest Tag Commit Count',
   remoteOriginUrl: 'Remote Origin URL',
+  other: 'Other',
   notificationTitleApplicationAllUp: '{application} is UP',
   notificationBodyApplicationAllUp: 'All instances of {application} are UP.',
   notificationTitleApplicationAllDown: '{application} is DOWN',

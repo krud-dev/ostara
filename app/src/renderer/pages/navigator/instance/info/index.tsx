@@ -2,7 +2,7 @@ import React, { FunctionComponent, useMemo } from 'react';
 import Page from 'renderer/components/layout/Page';
 import { useNavigatorTree } from 'renderer/contexts/NavigatorTreeContext';
 import { Container } from '@mui/material';
-import { chain, map } from 'lodash';
+import { chain, filter, isString, map } from 'lodash';
 import EmptyContent from 'renderer/components/help/EmptyContent';
 import { InfoActuatorResponse, InstanceRO } from 'common/generated_definitions';
 import LogoLoaderCenter from 'renderer/components/common/LogoLoaderCenter';
@@ -14,6 +14,7 @@ import { Masonry } from '@mui/lab';
 import InstanceInfoJsonCard from 'renderer/pages/navigator/instance/info/components/InstanceInfoJsonCard';
 import InstanceInfoJava from 'renderer/pages/navigator/instance/info/components/InstanceInfoJava';
 import InstanceInfoOs from 'renderer/pages/navigator/instance/info/components/InstanceInfoOs';
+import InstanceInfoExtraValues from 'renderer/pages/navigator/instance/info/components/InstanceInfoExtraValues';
 
 const InstanceInfo: FunctionComponent = () => {
   const { selectedItem } = useNavigatorTree();
@@ -42,6 +43,26 @@ const InstanceInfo: FunctionComponent = () => {
     return 'content';
   }, [info]);
 
+  const extraCards = useMemo<{ [key: string]: any }>(
+    () =>
+      chain(info?.extras)
+        .map((value, key) => ({ key, value }))
+        .filter((object) => !isString(object.value))
+        .reduce((result, object) => ({ ...result, [object.key]: object.value }), {})
+        .value(),
+    [info]
+  );
+  const extraValues = useMemo<{ [key: string]: string }>(
+    () =>
+      chain(info?.extras)
+        .map((value, key) => ({ key, value }))
+        .filter((object) => isString(object.value))
+        .reduce((result, object) => ({ ...result, [object.key]: object.value }), {})
+        .value(),
+    [info]
+  );
+  const showExtraValues = useMemo<boolean>(() => !!chain(extraValues).keys().size().value(), [extraValues]);
+
   return (
     <Page sx={{ height: '100%' }}>
       {uiStatus === 'loading' && <LogoLoaderCenter />}
@@ -54,9 +75,10 @@ const InstanceInfo: FunctionComponent = () => {
             {info?.build && <InstanceInfoBuild build={info.build} />}
             {info?.git && <InstanceInfoGit git={info.git} />}
             {info?.java && <InstanceInfoJava java={info.java} />}
-            {map(info?.extras, (object, key) => (
+            {map(extraCards, (object, key) => (
               <InstanceInfoJsonCard title={key} object={object} key={key} />
             ))}
+            {showExtraValues && <InstanceInfoExtraValues extraValues={extraValues} />}
           </Masonry>
         </Container>
       )}

@@ -1,4 +1,4 @@
-import { Card, CardContent, CardHeader, Collapse } from '@mui/material';
+import { Card, CardContent, CardHeader, Collapse, Stack } from '@mui/material';
 import React, { ReactNode, useCallback, useMemo, useState } from 'react';
 import { FormattedMessage } from 'react-intl';
 import DetailsLabelValueHorizontal from 'renderer/components/table/details/DetailsLabelValueHorizontal';
@@ -51,16 +51,20 @@ export default function InstanceInfoValuesCard({ title, values }: InstanceInfoVa
         }
       />
       <CardContent>
-        {regularValues.map((value) => (
-          <DetailsLabelValueHorizontal label={value.label} value={value.value} key={value.id} />
-        ))}
-        {hasShowMore && (
-          <Collapse in={showMore} timeout="auto" unmountOnExit>
-            {advancedValues.map((value) => (
-              <DetailsLabelValueHorizontal label={value.label} value={value.value} key={value.id} />
-            ))}
-          </Collapse>
-        )}
+        <Stack direction={'column'} spacing={1}>
+          {regularValues.map((value) => (
+            <DetailsLabelValueHorizontal label={value.label} value={value.value} key={value.id} />
+          ))}
+          {hasShowMore && (
+            <Collapse in={showMore} timeout="auto" unmountOnExit>
+              <Stack direction={'column'} spacing={1}>
+                {advancedValues.map((value) => (
+                  <DetailsLabelValueHorizontal label={value.label} value={value.value} key={value.id} />
+                ))}
+              </Stack>
+            </Collapse>
+          )}
+        </Stack>
       </CardContent>
     </Card>
   );
