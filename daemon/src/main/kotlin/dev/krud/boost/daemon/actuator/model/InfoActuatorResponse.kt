@@ -1,6 +1,5 @@
 package dev.krud.boost.daemon.actuator.model
 
-import com.fasterxml.jackson.annotation.JsonAnyGetter
 import com.fasterxml.jackson.annotation.JsonAnySetter
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize
 import dev.krud.boost.daemon.actuator.jackson.GitDeserializer
@@ -14,7 +13,6 @@ data class InfoActuatorResponse(
     val git: Git? = null,
     val os: Os? = null,
     val java: Java? = null,
-    @get:JsonAnyGetter
     @JsonAnySetter
     var extras: MutableMap<String, Any> = mutableMapOf()
 ) {
