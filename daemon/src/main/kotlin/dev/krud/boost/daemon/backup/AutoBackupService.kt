@@ -39,6 +39,30 @@ class AutoBackupService(
      * @param fileName the name of the backup file
      */
     fun restoreBackup(fileName: String) {
+        val backupDTO = getBackup(fileName)
+        backupService.importAll(backupDTO)
+    }
+
+    fun listBackups(includeFailures: Boolean): Map<String, Result<BackupDTO>> {
+        return appMainProperties.backupDirectory
+            .toFile()
+            .listFiles()
+            .filter { file ->
+                file.extension == "gz"
+            }
+            .map { file ->
+                file.name
+            }.associateWith { fileName ->
+                runCatching {
+                    getBackup(fileName)
+                }
+            }
+            .filter { (_, result) ->
+                includeFailures || result.isSuccess
+            }
+    }
+
+    private fun getBackup(fileName: String): BackupDTO {
         val file = appMainProperties.backupDirectory
             .resolve(fileName)
             .toFile()
@@ -50,7 +74,6 @@ class AutoBackupService(
                 gzipSource.readUtf8()
             }
         }
-        val backupDTO = backupJwtService.verify(content)
-        backupService.importAll(backupDTO)
+        return backupJwtService.verify(content)
     }
 }

@@ -1,5 +1,6 @@
 package dev.krud.boost.daemon.backup
 
+import com.auth0.jwt.exceptions.JWTDecodeException
 import dev.krud.boost.daemon.base.config.AppMainProperties
 import okio.GzipSink
 import okio.GzipSource
@@ -15,7 +16,11 @@ import org.mockito.kotlin.verify
 import org.mockito.kotlin.whenever
 import strikt.api.expect
 import strikt.api.expectThrows
+import strikt.assertions.containsKey
 import strikt.assertions.isEqualTo
+import strikt.assertions.isFalse
+import strikt.assertions.isNotNull
+import strikt.assertions.isTrue
 import strikt.assertions.startsWith
 import java.nio.file.Files
 import java.nio.file.Path
@@ -79,14 +84,7 @@ class AutoBackupServiceTest {
         val token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpYXQiOjE2ODY2NDA4MzAsImJhY2t1cCI6IntcInZlcnNpb25cIjowLFwiZGF0ZVwiOjAsXCJ0cmVlXCI6W119In0.nKc-Yzg4wG4USRb9-vQufrLpYiuhAUzzJhnBmiOttYA"
         whenever(backupJwtService.verify(token)).thenReturn(dto)
         val backupFileName = temporaryDirectory.resolve("some-backup.jwt.gz")
-        backupFileName
-            .sink()
-            .buffer()
-            .use { fileSink ->
-                GzipSink(fileSink).buffer().use { gzipZink ->
-                    gzipZink.writeString(token, Charsets.UTF_8)
-                }
-            }
+        backupFileName.createGzippedFile(token)
         autoBackupService.restoreBackup("some-backup.jwt.gz")
         verify(backupService, times(1)).importAll(dto)
 
@@ -99,10 +97,80 @@ class AutoBackupServiceTest {
         }
     }
 
+    @Test
+    fun `listBackups should list all valid backups when includeFailures is false`() {
+        setupListBackups()
+        val backups = autoBackupService.listBackups(false)
+        expect {
+            that(backups.size).isEqualTo(1)
+            that(backups).containsKey("first.gz")
+            that(backups["first.gz"]!!.isSuccess).isTrue()
+            that(backups["first.gz"]!!.getOrThrow()).apply {
+                get { version }.isEqualTo(1)
+                get { date }.isEqualTo(Date(0))
+                get { tree }.isEqualTo(emptyList())
+            }
+        }
+    }
+
+    @Test
+    fun `listBackups should list all valid backups when includeFailures is true`() {
+        setupListBackups()
+        val backups = autoBackupService.listBackups(true)
+        expect {
+            that(backups.size).isEqualTo(2)
+            that(backups).containsKey("first.gz")
+            that(backups).containsKey("second.gz")
+            that(backups["first.gz"]!!.isSuccess).isTrue()
+            that(backups["first.gz"]!!.getOrThrow()).apply {
+                get { version }.isEqualTo(1)
+                get { date }.isEqualTo(Date(0))
+                get { tree }.isEqualTo(emptyList())
+            }
+            that(backups["second.gz"]!!.isFailure).isTrue()
+        }
+    }
+
+    private fun setupListBackups() {
+        val token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpYXQiOjE2ODY2NDA4MzAsImJhY2t1cCI6IntcInZlcnNpb25cIjowLFwiZGF0ZVwiOjAsXCJ0cmVlXCI6W119In0.nKc-Yzg4wG4USRb9-vQufrLpYiuhAUzzJhnBmiOttYA"
+        val invalidToken = "this is invalid"
+        whenever(
+            backupJwtService.verify(token)
+        )
+            .thenReturn(
+                BackupDTO(
+                    version = 1,
+                    date = Date(0),
+                    tree = emptyList()
+                )
+            )
+        whenever(
+            backupJwtService.verify(invalidToken)
+        )
+            .thenThrow(JWTDecodeException("invalid token"))
+
+        temporaryDirectory.resolve(
+            "first.gz"
+        )
+            .createGzippedFile(token)
+        temporaryDirectory.resolve(
+            "second.gz"
+        )
+            .createGzippedFile(invalidToken)
+    }
+
     private fun Path.gzippedContent(): String {
         return source().buffer().use { fileSource ->
             GzipSource(fileSource).buffer().use { gzipSource ->
                 gzipSource.readUtf8()
+            }
+        }
+    }
+
+    private fun Path.createGzippedFile(content: String) {
+        sink().buffer().use { fileSink ->
+            GzipSink(fileSink).buffer().use { gzipSink ->
+                gzipSink.writeString(content, Charsets.UTF_8)
             }
         }
     }
