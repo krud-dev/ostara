@@ -104,7 +104,7 @@ dependencies {
     implementation("net.pearx.kasechange:kasechange-jvm:1.3.0")
     implementation("io.hypersistence:hypersistence-utils-hibernate-60:3.2.0")
     implementation("com.cobber.fta:fta-core:12.10.2")
-    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.7.0-Beta")
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.7.1")
     implementation("io.github.oshai:kotlin-logging-jvm:4.0.0-beta-22")
 
     // Added separately from springdoc for production builds
