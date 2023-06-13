@@ -25,7 +25,7 @@ class BackupDTO(
         JsonSubTypes.Type(value = TreeElement.Folder::class, name = "folder"),
         JsonSubTypes.Type(value = TreeElement.Application::class, name = "application")
     )
-    sealed interface TreeElement {
+    sealed interface TreeElement    {
         val type: String
 
         class Folder(
