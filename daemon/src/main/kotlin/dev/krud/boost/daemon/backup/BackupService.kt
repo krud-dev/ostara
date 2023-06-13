@@ -17,8 +17,4 @@ class BackupService(
     fun exportAll(): BackupDTO {
         return backupExporter.exportAll()
     }
-
-    fun saveBackup(backupDTO: BackupDTO) {
-
-    }
 }

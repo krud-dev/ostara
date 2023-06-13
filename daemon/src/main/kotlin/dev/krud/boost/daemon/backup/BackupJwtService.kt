@@ -3,8 +3,10 @@ package dev.krud.boost.daemon.backup
 import com.auth0.jwt.JWT
 import com.auth0.jwt.algorithms.Algorithm
 import com.fasterxml.jackson.databind.ObjectMapper
+import org.springframework.stereotype.Service
 import java.util.*
 
+@Service
 class BackupJwtService(
     private val objectMapper: ObjectMapper
 ) {
