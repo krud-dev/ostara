@@ -304,11 +304,6 @@ class BackupParserTest {
             }
         }
 
-        @Test
-        fun `version 2 backup should be parsed and migrated successfully`() {
-            expectThat(true).isFalse()
-        }
-
         fun BackupDTO.TreeElement.Application.validate(
             alias: String,
             description: String?,

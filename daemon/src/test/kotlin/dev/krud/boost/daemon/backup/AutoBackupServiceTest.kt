@@ -14,10 +14,14 @@ import org.mockito.kotlin.mock
 import org.mockito.kotlin.times
 import org.mockito.kotlin.verify
 import org.mockito.kotlin.whenever
+import org.springframework.http.HttpStatus
+import org.springframework.web.server.ResponseStatusException
 import strikt.api.expect
 import strikt.api.expectThrows
 import strikt.assertions.containsKey
+import strikt.assertions.isA
 import strikt.assertions.isEqualTo
+import strikt.assertions.isFailure
 import strikt.assertions.isTrue
 import strikt.assertions.startsWith
 import java.nio.file.Files
@@ -90,8 +94,13 @@ class AutoBackupServiceTest {
 
     @Test
     fun `restoreBackup should throw if file does not exist`() {
-        expectThrows<IllegalStateException> {
-            autoBackupService.restoreBackup("some-backup.jwt.gz")
+        val result = autoBackupService.restoreBackup("some-backup.jwt.gz")
+        expect {
+            that(result).isFailure()
+            that(result.exceptionOrNull()!!).isA<ResponseStatusException>()
+                .and {
+                    get { statusCode }.isEqualTo(HttpStatus.BAD_REQUEST)
+                }
         }
     }
 
@@ -103,8 +112,10 @@ class AutoBackupServiceTest {
         whenever(backupJwtService.verify(token)).thenThrow(
             JWTDecodeException("Invalid token")
         )
-        expectThrows<JWTDecodeException> {
-            autoBackupService.restoreBackup("some-backup.jwt.gz")
+        val result = autoBackupService.restoreBackup("some-backup.jwt.gz")
+        expect {
+            that(result).isFailure()
+            that(result.exceptionOrNull()!!).isA<JWTDecodeException>()
         }
     }
 

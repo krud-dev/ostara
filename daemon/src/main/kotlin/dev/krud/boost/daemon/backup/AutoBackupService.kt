@@ -1,6 +1,7 @@
 package dev.krud.boost.daemon.backup
 
 import dev.krud.boost.daemon.base.config.AppMainProperties
+import dev.krud.boost.daemon.exception.throwBadRequest
 import okio.GzipSink
 import okio.GzipSource
 import okio.buffer
@@ -67,7 +68,7 @@ class AutoBackupService(
             .resolve(fileName)
             .toFile()
         if (!file.exists()) {
-            error("File does not exist: $fileName")
+            throwBadRequest("File does not exist: $fileName")
         }
         val content = file.source().buffer().use { source ->
             GzipSource(source).buffer().use { gzipSource ->
