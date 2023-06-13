@@ -4,12 +4,14 @@ import {
   InstanceHealthChangedEventMessage$Payload,
   InstanceHeapdumpDownloadProgressMessage$Payload,
   InstanceHostnameUpdatedEventMessage$Payload,
+  InstanceMetadataRefreshedMessage$Payload,
   InstanceMetricRO,
   ThreadProfilingProgressMessage$Payload,
-} from '../../../common/generated_definitions';
+} from 'common/generated_definitions';
 
 export type StompTopics = {
   '/topic/instanceHealth': InstanceHealthChangedEventMessage$Payload;
+  '/topic/instanceMetadata': InstanceMetadataRefreshedMessage$Payload;
   '/topic/applicationHealth': ApplicationHealthUpdatedEventMessage$Payload;
   '/topic/metric/:instanceId/:metricName': InstanceMetricRO;
   '/topic/instanceHostname': InstanceHostnameUpdatedEventMessage$Payload;

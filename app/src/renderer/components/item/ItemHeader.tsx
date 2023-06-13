@@ -6,6 +6,8 @@ import {
   getItemHealthStatusComponent,
   getItemHealthStatusTextId,
   getItemNameTooltip,
+  getItemVersion,
+  getItemVersionTooltip,
 } from 'renderer/utils/itemUtils';
 import { COMPONENTS_SPACING, EMPTY_STRING, SIDEBAR_HEADER_HEIGHT } from 'renderer/constants/ui';
 import useItemColor from 'renderer/hooks/useItemColor';
@@ -28,6 +30,8 @@ export default function ItemHeader({ item }: ItemHeaderProps) {
   const healthStatusComponent = useMemo<ReactNode | undefined>(() => getItemHealthStatusComponent(item), [item]);
   const healthTextId = useMemo<string | undefined>(() => getItemHealthStatusTextId(item), [item]);
   const itemIcon = useItemIcon(item);
+  const version = useMemo<string | undefined>(() => getItemVersion(item), [item]);
+  const versionTooltip = useMemo<ReactNode | undefined>(() => getItemVersionTooltip(item), [item]);
 
   const openMenuHandler = useCallback(
     (event: React.MouseEvent): void => {
@@ -82,8 +86,17 @@ export default function ItemHeader({ item }: ItemHeaderProps) {
             </Typography>
           </Tooltip>
 
-          <Typography variant="body2" sx={{ color: healthStatusColor || 'text.secondary' }} noWrap>
-            {healthTextId ? <FormattedMessage id={healthTextId} /> : EMPTY_STRING}
+          <Typography variant="body2" sx={{ color: 'text.secondary' }} noWrap>
+            <Typography variant="inherit" component={'span'} sx={{ color: healthStatusColor }}>
+              {healthTextId ? <FormattedMessage id={healthTextId} /> : EMPTY_STRING}
+            </Typography>
+            {version && (
+              <Tooltip title={versionTooltip}>
+                <Typography variant={'caption'} component={'span'}>
+                  {` (${version})`}
+                </Typography>
+              </Tooltip>
+            )}
           </Typography>
         </Box>
       </Box>

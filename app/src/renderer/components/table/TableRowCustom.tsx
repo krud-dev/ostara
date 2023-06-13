@@ -19,6 +19,7 @@ type TableRowCustomProps<EntityItem> = {
 export default function TableRowCustom<EntityItem>({ row }: TableRowCustomProps<EntityItem>) {
   const {
     entity,
+    visibleColumns,
     selectedRows,
     selectRowHandler,
     isRowSelected,
@@ -111,7 +112,7 @@ export default function TableRowCustom<EntityItem>({ row }: TableRowCustomProps<
           </TableCell>
         )}
 
-        {entity.columns.map((column: EntityColumn<EntityItem>) => {
+        {visibleColumns.map((column: EntityColumn<EntityItem>) => {
           const tooltip = column.getTooltip?.(row);
           return (
             <TableCell align={column.align || 'left'} sx={{ wordBreak: 'break-word' }} key={column.id}>

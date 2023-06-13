@@ -8,6 +8,7 @@ import {
   getInstanceHealthStatusTextId,
   getItemDisplayName,
   getItemUrl,
+  getItemVersion,
 } from '../../../../../utils/itemUtils';
 import { IconViewer, MUIconType } from '../../../../../components/common/IconViewer';
 import FormattedRelativeTimeNow from '../../../../../components/format/FormattedRelativeTimeNow';
@@ -39,6 +40,8 @@ const ApplicationInstanceWidget: FunctionComponent<ApplicationInstanceWidgetProp
     navigate(getItemUrl(instance));
   }, [instance]);
 
+  const version = useMemo<string | undefined>(() => getItemVersion(instance), [instance]);
+
   return (
     <Card
       variant={'outlined'}
@@ -53,8 +56,18 @@ const ApplicationInstanceWidget: FunctionComponent<ApplicationInstanceWidgetProp
       <CardContent sx={{ overflow: 'hidden' }}>
         <Stack direction={'row'} spacing={0.5} alignItems={'center'}>
           <IconViewer icon={healthStatusIcon} fontSize={'small'} sx={{ color: healthStatusColor }} />
-          <Typography variant={'subtitle2'} component={'div'} sx={{ color: healthStatusColor }}>
-            <FormattedMessage id={healthStatusTextId} />
+          <Typography variant={'subtitle2'} noWrap sx={{ color: 'text.secondary' }}>
+            <Typography variant={'inherit'} component={'span'} sx={{ color: healthStatusColor }}>
+              <FormattedMessage id={healthStatusTextId} />
+            </Typography>
+
+            {version && (
+              <Tooltip title={<FormattedMessage id={'version'} />}>
+                <Typography variant={'body2'} component={'span'}>
+                  {` (${version})`}
+                </Typography>
+              </Tooltip>
+            )}
           </Typography>
         </Stack>
 

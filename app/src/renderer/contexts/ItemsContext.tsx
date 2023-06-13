@@ -15,6 +15,7 @@ import {
   FolderRO,
   InstanceHealthChangedEventMessage$Payload,
   InstanceHostnameUpdatedEventMessage$Payload,
+  InstanceMetadataRefreshedMessage$Payload,
   InstanceRO,
 } from 'common/generated_definitions';
 import { instanceCrudEntity } from 'renderer/apis/requests/crud/entity/entities/instance.crudEntity';
@@ -106,6 +107,21 @@ const ItemsProvider: FunctionComponent<ItemsProviderProps> = ({ children }) => {
       (hostnameUpdated: InstanceHostnameUpdatedEventMessage$Payload): void => {
         setInstances((prev) =>
           prev?.map((i) => (i.id === hostnameUpdated.instanceId ? { ...i, hostname: hostnameUpdated.hostname } : i))
+        );
+      }
+    );
+    return () => {
+      unsubscribe();
+    };
+  }, []);
+
+  useEffect(() => {
+    const unsubscribe = subscribe(
+      '/topic/instanceMetadata',
+      {},
+      (metadataRefreshed: InstanceMetadataRefreshedMessage$Payload): void => {
+        setInstances((prev) =>
+          prev?.map((i) => (i.id === metadataRefreshed.instanceId ? { ...i, metadata: metadataRefreshed.metadata } : i))
         );
       }
     );
