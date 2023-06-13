@@ -92,7 +92,7 @@ dependencies {
     implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
     implementation("org.hibernate.orm:hibernate-community-dialects")
     implementation("org.jetbrains.kotlin:kotlin-stdlib")
-    implementation("com.squareup.okhttp3:okhttp:4.10.0")
+    implementation("com.squareup.okhttp3:okhttp:4.11.0")
     implementation("org.flywaydb:flyway-core:9.12.0")
     implementation("dev.krud:crud-framework-core:$crudFrameworkVersion")
     implementation("dev.krud:crud-framework-hibernate5-connector:$crudFrameworkVersion")
