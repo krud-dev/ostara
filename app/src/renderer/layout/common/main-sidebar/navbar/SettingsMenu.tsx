@@ -5,14 +5,14 @@ import { FormattedMessage } from 'react-intl';
 import { CloseOutlined } from '@mui/icons-material';
 import { alpha } from '@mui/material/styles';
 import PerfectScrollbar from 'react-perfect-scrollbar';
-import { COMPONENTS_SPACING, NAVBAR_HEIGHT } from '../../../../constants/ui';
-import { ThemeSource } from '../../../../../infra/ui/models/electronTheme';
-import { useSubscribeToEvent } from '../../../../apis/requests/subscriptions/subscribeToEvent';
+import { COMPONENTS_SPACING, NAVBAR_HEIGHT } from 'renderer/constants/ui';
+import { ThemeSource } from 'infra/ui/models/electronTheme';
+import { useSubscribeToEvent } from 'renderer/apis/requests/subscriptions/subscribeToEvent';
 import { IpcRendererEvent } from 'electron';
-import { useRestartApp } from '../../../../apis/requests/ui/restartApp';
-import { useAppUpdates } from '../../../../contexts/AppUpdatesContext';
+import { useRestartApp } from 'renderer/apis/requests/ui/restartApp';
+import { useAppUpdates } from 'renderer/contexts/AppUpdatesContext';
 import { useSnackbar } from 'notistack';
-import { useAnalytics } from '../../../../contexts/AnalyticsContext';
+import { useAnalytics } from 'renderer/contexts/AnalyticsContext';
 import semverGt from 'semver/functions/gt';
 import NavbarIconButton from './NavbarIconButton';
 
@@ -137,6 +137,13 @@ export default function SettingsMenu() {
     [installUpdate]
   );
 
+  const canOpenOsSettings = useMemo<boolean>(() => window.notifications.canOpenOsSettings(), []);
+
+  const openOsSettingsHandler = useCallback((event: React.MouseEvent): void => {
+    event.preventDefault();
+    window.notifications.openOsSettings();
+  }, []);
+
   return (
     <>
       <NavbarIconButton titleId={'settings'} icon={'SettingsOutlined'} onClick={toggleOpenHandler} />
@@ -213,7 +220,18 @@ export default function SettingsMenu() {
                 {notificationsActive && (
                   <>
                     <Alert severity={'info'} variant={'outlined'}>
-                      <FormattedMessage id="notReceivingNotifications" />
+                      <FormattedMessage
+                        id="notReceivingNotifications"
+                        values={{
+                          settings: canOpenOsSettings ? (
+                            <Link href={`#`} onClick={openOsSettingsHandler} sx={{ color: 'info.main' }}>
+                              <FormattedMessage id={'operatingSystemSettings'} />
+                            </Link>
+                          ) : (
+                            <FormattedMessage id={'operatingSystemSettings'} />
+                          ),
+                        }}
+                      />
                     </Alert>
 
                     <TextField
