@@ -76,7 +76,7 @@ dependencies {
     kapt("org.springframework.boot:spring-boot-configuration-processor")
 
     implementationDev("org.springdoc:springdoc-openapi-starter-webmvc-ui:2.1.0")
-    implementationDev("org.xerial:sqlite-jdbc:3.40.0.0")
+    implementationDev("org.xerial:sqlite-jdbc:3.42.0.0")
 
     implementationProd(files("lib/sqlite-jdbc-3.40.0.0.jar"))
 
