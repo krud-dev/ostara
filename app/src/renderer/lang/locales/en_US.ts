@@ -196,7 +196,8 @@ export default {
   notifications: 'Notifications',
   notificationsSound: 'Notifications Sound',
   notReceivingNotifications:
-    'If you are not receiving notifications make sure that your operating system allows notifications from this app.',
+    'If you are not receiving notifications, please check the notification permissions for this app in your {settings}.',
+  operatingSystemSettings: 'Operating System Settings',
   noRelevantPredefinedNotificationsFound: 'No relevant predefined notifications found',
   addSelectedNotifications: 'Add Selected Notifications',
   addPredefinedNotifications: 'Add Predefined Notifications',
