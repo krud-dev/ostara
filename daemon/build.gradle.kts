@@ -102,7 +102,7 @@ dependencies {
     implementation("com.github.ben-manes.caffeine:caffeine:3.1.3")
     implementation("com.github.wnameless.json:json-flattener:0.16.4")
     implementation("net.pearx.kasechange:kasechange-jvm:1.3.0")
-    implementation("io.hypersistence:hypersistence-utils-hibernate-60:3.2.0")
+    implementation("io.hypersistence:hypersistence-utils-hibernate-60:3.4.3")
     implementation("com.cobber.fta:fta-core:12.10.2")
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.7.0-Beta")
     implementation("io.github.oshai:kotlin-logging-jvm:4.0.0-beta-22")
