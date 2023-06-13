@@ -113,7 +113,7 @@ dependencies {
     implementation("io.sentry:sentry-spring-boot-starter-jakarta:6.16.0")
 
 
-    testImplementation("com.squareup.okhttp3:mockwebserver:4.10.0")
+    testImplementation("com.squareup.okhttp3:mockwebserver:4.11.0")
     testImplementation("io.strikt:strikt-core:0.34.1")
     testImplementation("org.springframework.boot:spring-boot-starter-test")
     testImplementation("org.mockito.kotlin:mockito-kotlin:4.1.0")
