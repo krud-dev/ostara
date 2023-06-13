@@ -7,7 +7,7 @@ import dev.krud.boost.daemon.configuration.application.authentication.Applicatio
 import dev.krud.boost.daemon.configuration.authentication.Authentication
 import dev.krud.boost.daemon.configuration.instance.entity.Instance
 import dev.krud.boost.daemon.exception.throwBadRequest
-import io.github.oshai.KotlinLogging
+import io.github.oshai.kotlinlogging.KotlinLogging
 import org.springframework.context.annotation.Lazy
 import org.springframework.stereotype.Component
 

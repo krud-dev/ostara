@@ -8,7 +8,7 @@ import com.fasterxml.jackson.module.kotlin.kotlinModule
 import dev.krud.boost.daemon.backup.migration.BackupMigration
 import dev.krud.boost.daemon.backup.migration.BackupMigration.Companion.getForVersion
 import dev.krud.boost.daemon.backup.migration.BackupMigration.Companion.getLatestVersion
-import io.github.oshai.KotlinLogging
+import io.github.oshai.kotlinlogging.KotlinLogging
 import org.springframework.stereotype.Component
 
 @Component

@@ -10,7 +10,7 @@ import dev.krud.boost.daemon.configuration.instance.ability.InstanceAbilityServi
 import dev.krud.boost.daemon.configuration.instance.enums.InstanceAbility
 import dev.krud.boost.daemon.configuration.instance.property.ro.InstancePropertyRO
 import dev.krud.boost.daemon.utils.ACTUATOR_REDACTED_STRING
-import io.github.oshai.KotlinLogging
+import io.github.oshai.kotlinlogging.KotlinLogging
 import net.pearx.kasechange.toKebabCase
 import org.springframework.cache.annotation.Cacheable
 import org.springframework.stereotype.Service

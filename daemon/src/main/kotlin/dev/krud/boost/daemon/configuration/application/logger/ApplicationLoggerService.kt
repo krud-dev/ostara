@@ -5,7 +5,7 @@ import dev.krud.boost.daemon.configuration.application.logger.ro.ApplicationLogg
 import dev.krud.boost.daemon.configuration.instance.enums.InstanceAbility
 import dev.krud.boost.daemon.configuration.instance.logger.InstanceLoggerService
 import dev.krud.boost.daemon.exception.throwBadRequest
-import io.github.oshai.KotlinLogging
+import io.github.oshai.kotlinlogging.KotlinLogging
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll

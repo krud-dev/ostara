@@ -9,7 +9,7 @@ import dev.krud.boost.daemon.configuration.authentication.Authentication
 import dev.krud.boost.daemon.configuration.folder.messaging.FolderAuthenticationChangedMessage
 import dev.krud.boost.daemon.utils.resolve
 import dev.krud.crudframework.crud.handler.krud.Krud
-import io.github.oshai.KotlinLogging
+import io.github.oshai.kotlinlogging.KotlinLogging
 import org.springframework.cache.CacheManager
 import org.springframework.integration.annotation.ServiceActivator
 import org.springframework.integration.channel.QueueChannel

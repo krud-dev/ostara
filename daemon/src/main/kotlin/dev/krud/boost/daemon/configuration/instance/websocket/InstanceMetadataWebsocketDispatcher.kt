@@ -2,7 +2,7 @@ package dev.krud.boost.daemon.configuration.instance.websocket
 
 import dev.krud.boost.daemon.configuration.instance.metadata.messaing.InstanceMetadataRefreshedMessage
 import dev.krud.boost.daemon.utils.addOrReplaceIf
-import io.github.oshai.KotlinLogging
+import io.github.oshai.kotlinlogging.KotlinLogging
 import org.springframework.context.annotation.Lazy
 import org.springframework.integration.annotation.ServiceActivator
 import org.springframework.messaging.Message

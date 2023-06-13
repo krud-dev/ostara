@@ -16,7 +16,7 @@ import dev.krud.boost.daemon.okhttp.ProgressListener
 import dev.krud.boost.daemon.utils.emptyResult
 import dev.krud.crudframework.crud.handler.krud.Krud
 import dev.krud.shapeshift.ShapeShift
-import io.github.oshai.KotlinLogging
+import io.github.oshai.kotlinlogging.KotlinLogging
 import org.springframework.beans.factory.InitializingBean
 import org.springframework.integration.annotation.ServiceActivator
 import org.springframework.integration.channel.PublishSubscribeChannel

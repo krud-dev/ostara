@@ -8,7 +8,7 @@ import dev.krud.boost.daemon.configuration.instance.cache.InstanceCacheService
 import dev.krud.boost.daemon.configuration.instance.cache.ro.EvictCachesRequestRO
 import dev.krud.boost.daemon.configuration.instance.cache.ro.InstanceCacheStatisticsRO.Companion.toApplicationRO
 import dev.krud.boost.daemon.configuration.instance.enums.InstanceAbility
-import io.github.oshai.KotlinLogging
+import io.github.oshai.kotlinlogging.KotlinLogging
 import org.springframework.stereotype.Service
 import java.util.*
 

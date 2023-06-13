@@ -8,7 +8,7 @@ import dev.krud.boost.daemon.configuration.instance.metric.ro.InstanceMetricRO
 import dev.krud.boost.daemon.configuration.instance.metric.ro.InstanceMetricValueRO
 import dev.krud.boost.daemon.exception.throwNotFound
 import dev.krud.boost.daemon.utils.ParsedMetricName
-import io.github.oshai.KotlinLogging
+import io.github.oshai.kotlinlogging.KotlinLogging
 import org.springframework.stereotype.Service
 import java.util.*
 
