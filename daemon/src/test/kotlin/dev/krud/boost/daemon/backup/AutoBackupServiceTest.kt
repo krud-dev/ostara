@@ -18,8 +18,6 @@ import strikt.api.expect
 import strikt.api.expectThrows
 import strikt.assertions.containsKey
 import strikt.assertions.isEqualTo
-import strikt.assertions.isFalse
-import strikt.assertions.isNotNull
 import strikt.assertions.isTrue
 import strikt.assertions.startsWith
 import java.nio.file.Files
@@ -58,8 +56,8 @@ class AutoBackupServiceTest {
         val token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpYXQiOjE2ODY2NDA4MzAsImJhY2t1cCI6IntcInZlcnNpb25cIjowLFwiZGF0ZVwiOjAsXCJ0cmVlXCI6W119In0.nKc-Yzg4wG4USRb9-vQufrLpYiuhAUzzJhnBmiOttYA"
         whenever(backupService.exportAll()).thenReturn(dto)
         whenever(backupJwtService.sign(dto)).thenReturn(token)
-        val manualFileName = autoBackupService.createBackup(false)
-        val autoFileName = autoBackupService.createBackup(true)
+        val manualFileName = autoBackupService.createBackup(false).getOrThrow()
+        val autoFileName = autoBackupService.createBackup(true).getOrThrow()
         val backupFiles = Files.list(temporaryDirectory).toList()
         expect {
             that(manualFileName).startsWith("backup-manual")
@@ -116,6 +114,7 @@ class AutoBackupServiceTest {
     fun `listBackups should list all valid backups when includeFailures is false`() {
         setupListBackups()
         val backups = autoBackupService.listBackups(false)
+            .getOrThrow()
         expect {
             that(backups.size).isEqualTo(1)
             that(backups).containsKey("first.gz")
@@ -132,6 +131,7 @@ class AutoBackupServiceTest {
     fun `listBackups should list all valid backups when includeFailures is true`() {
         setupListBackups()
         val backups = autoBackupService.listBackups(true)
+            .getOrThrow()
         expect {
             that(backups.size).isEqualTo(2)
             that(backups).containsKey("first.gz")

@@ -18,7 +18,7 @@ class AutoBackupService(
      * Create a new backup and save it to the backup directory.
      * @param auto whether this backup was created automatically or manually, used in the file name
      */
-    fun createBackup(auto: Boolean): String {
+    fun createBackup(auto: Boolean): Result<String> = runCatching {
         val type = if (auto) "auto" else "manual"
         val fileName = "backup-${type}-${System.currentTimeMillis()}.jwt.gz"
         val backupDTO = backupService.exportAll()
@@ -31,20 +31,20 @@ class AutoBackupService(
                 gzipSink.writeString(signed, Charsets.UTF_8)
             }
         }
-        return fileName
+        fileName
     }
 
     /**
      * Restore a backup from the backup directory.
      * @param fileName the name of the backup file
      */
-    fun restoreBackup(fileName: String) {
+    fun restoreBackup(fileName: String): Result<Unit> = runCatching {
         val backupDTO = getBackup(fileName)
         backupService.importAll(backupDTO)
     }
 
-    fun listBackups(includeFailures: Boolean): Map<String, Result<BackupDTO>> {
-        return appMainProperties.backupDirectory
+    fun listBackups(includeFailures: Boolean): Result<Map<String, Result<BackupDTO>>> = runCatching {
+        appMainProperties.backupDirectory
             .toFile()
             .listFiles()
             .filter { file ->
