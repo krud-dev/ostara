@@ -75,7 +75,7 @@ if (!project.hasProperty("prod")) {
 dependencies {
     kapt("org.springframework.boot:spring-boot-configuration-processor")
 
-    implementationDev("org.springdoc:springdoc-openapi-starter-webmvc-ui:2.0.2")
+    implementationDev("org.springdoc:springdoc-openapi-starter-webmvc-ui:2.1.0")
     implementationDev("org.xerial:sqlite-jdbc:3.40.0.0")
 
     implementationProd(files("lib/sqlite-jdbc-3.40.0.0.jar"))
