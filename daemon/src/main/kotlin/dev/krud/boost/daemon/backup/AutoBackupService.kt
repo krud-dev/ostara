@@ -2,8 +2,10 @@ package dev.krud.boost.daemon.backup
 
 import dev.krud.boost.daemon.base.config.AppMainProperties
 import okio.GzipSink
+import okio.GzipSource
 import okio.buffer
 import okio.sink
+import okio.source
 import org.springframework.stereotype.Service
 
 @Service
@@ -30,5 +32,22 @@ class AutoBackupService(
             }
         }
         return fileName
+    }
+
+    /**
+     * Restore a backup from the backup directory.
+     * @param fileName the name of the backup file
+     */
+    fun restoreBackup(fileName: String) {
+        val file = appMainProperties.backupDirectory
+            .resolve(fileName)
+            .toFile()
+        val signed = file.source().buffer().use { source ->
+            GzipSource(source).buffer().use { gzipSource ->
+                gzipSource.readUtf8()
+            }
+        }
+        val backupDTO = backupJwtService.verify(signed)
+        backupService.importAll(backupDTO)
     }
 }

@@ -10,8 +10,12 @@ class BackupService(
     private val backupImporter: BackupImporter
 ) {
     fun importAll(json: JsonNode) {
-        val backupDTO = backupParser.parse(json)
-        backupImporter.import(backupDTO)
+        val dto = backupParser.parse(json)
+        importAll(dto)
+    }
+
+    fun importAll(dto: BackupDTO) {
+        backupImporter.import(dto)
     }
 
     fun exportAll(): BackupDTO {
