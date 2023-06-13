@@ -101,7 +101,7 @@ dependencies {
     implementation("com.fasterxml.jackson.datatype:jackson-datatype-jsr310:2.15.2")
     implementation("com.github.ben-manes.caffeine:caffeine:3.1.6")
     implementation("com.github.wnameless.json:json-flattener:0.16.4")
-    implementation("net.pearx.kasechange:kasechange-jvm:1.3.0")
+    implementation("net.pearx.kasechange:kasechange-jvm:1.4.1")
     implementation("io.hypersistence:hypersistence-utils-hibernate-60:3.4.3")
     implementation("com.cobber.fta:fta-core:12.10.3")
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.7.1")
