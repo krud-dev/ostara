@@ -108,7 +108,7 @@ dependencies {
     implementation("io.github.oshai:kotlin-logging-jvm:4.0.0-beta-29")
 
     // Added separately from springdoc for production builds
-    implementation("io.swagger.core.v3:swagger-annotations-jakarta:2.2.11")
+    implementation("io.swagger.core.v3:swagger-annotations-jakarta:2.2.12")
 
     implementation("io.sentry:sentry-spring-boot-starter-jakarta:6.22.0")
 
