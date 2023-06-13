@@ -98,6 +98,21 @@ class AutoBackupServiceTest {
     }
 
     @Test
+    fun `restoreBackup should throw if verification fails`() {
+        val token = "this is invalid"
+        val backupFileName = temporaryDirectory.resolve("some-backup.jwt.gz")
+        backupFileName.createGzippedFile(token)
+        whenever(backupJwtService.verify(token)).thenThrow(
+            JWTDecodeException("Invalid token")
+        )
+        expectThrows<JWTDecodeException> {
+            autoBackupService.restoreBackup("some-backup.jwt.gz")
+        }
+    }
+
+
+
+    @Test
     fun `listBackups should list all valid backups when includeFailures is false`() {
         setupListBackups()
         val backups = autoBackupService.listBackups(false)
