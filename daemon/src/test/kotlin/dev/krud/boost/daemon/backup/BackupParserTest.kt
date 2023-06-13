@@ -4,7 +4,9 @@ import com.fasterxml.jackson.databind.node.ObjectNode
 import dev.krud.boost.daemon.backup.migration.BackupMigration
 import dev.krud.boost.daemon.backup.migration.BackupMigration.Companion.getLatestVersion
 import dev.krud.boost.daemon.util.FileUtils
+import org.junit.jupiter.api.DynamicTest.dynamicTest
 import org.junit.jupiter.api.Test
+import org.junit.jupiter.api.TestFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
 import strikt.api.expect
@@ -162,11 +164,17 @@ class BackupParserTest {
         @Autowired
         private lateinit var backupMigrations: List<BackupMigration>
 
-        @Test
-        fun `version 1 backup should be parsed and migrated successfully`() {
-            val latestVersion = backupMigrations.getLatestVersion()
-            val json = FileUtils.loadJson("backup_snapshots/v1.json") ?: error("v1.json not found")
+        @TestFactory
+        fun `version backups should be parsed and migrated successfully`() = (1..2).map { version ->
+            dynamicTest("version $version backup should be parsed and migrated successfully") {
+                runAssertions(version)
+            }
+        }
+
+        private fun runAssertions(fromVersion: Int) {
+            val json = FileUtils.loadJson("backup_snapshots/v$fromVersion.json") ?: error("v$fromVersion.json not found")
             val parsedBackup = backupParser.parse(json)
+            val latestVersion = backupMigrations.getLatestVersion()
             expect {
                 that(parsedBackup.version).isEqualTo(latestVersion)
                 val flywayFolder = parsedBackup.tree.first() as BackupDTO.TreeElement.Folder
