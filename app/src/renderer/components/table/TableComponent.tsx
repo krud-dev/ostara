@@ -5,6 +5,7 @@ import TableCustom from 'renderer/components/table/TableCustom';
 
 type TableComponentProps<EntityItem, CustomFilters> = {
   entity: Entity<EntityItem, CustomFilters>;
+  hiddenColumnIds?: string[];
   data?: EntityItem[];
   loading: boolean;
   emptyContent?: ReactNode;
@@ -16,6 +17,7 @@ type TableComponentProps<EntityItem, CustomFilters> = {
 
 export default function TableComponent<EntityItem, CustomFilters>({
   entity,
+  hiddenColumnIds,
   data,
   loading,
   emptyContent,
@@ -27,6 +29,7 @@ export default function TableComponent<EntityItem, CustomFilters>({
   return (
     <TableProvider
       entity={entity}
+      hiddenColumnIds={hiddenColumnIds}
       data={data}
       loading={loading}
       emptyContent={emptyContent}

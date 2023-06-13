@@ -29,6 +29,15 @@ const ApplicationInstances: FunctionComponent = () => {
     [instances, selectedItemAbilities]
   );
   const loading = useMemo<boolean>(() => !data, [data]);
+  const hiddenColumnIds = useMemo<string[]>(
+    () => [
+      ...(!data?.find((i) => i.metadata?.version) ? ['metadata.version'] : []),
+      ...(!data?.find((i) => i.metadata?.buildTime) ? ['metadata.buildTime'] : []),
+      ...(!data?.find((i) => i.metadata?.gitBranch) ? ['metadata.gitBranch'] : []),
+      ...(!data?.find((i) => i.metadata?.gitCommitId) ? ['metadata.gitCommitId'] : []),
+    ],
+    [data]
+  );
 
   const { itemShutdown } = useItemShutdown();
 
@@ -71,6 +80,7 @@ const ApplicationInstances: FunctionComponent = () => {
       <Card>
         <TableComponent
           entity={entity}
+          hiddenColumnIds={hiddenColumnIds}
           data={data}
           loading={loading}
           emptyContent={

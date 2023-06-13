@@ -16,7 +16,9 @@ import { applicationCrudEntity } from '../apis/requests/crud/entity/entities/app
 import { instanceCrudEntity } from '../apis/requests/crud/entity/entities/instance.crudEntity';
 import { folderCrudEntity } from '../apis/requests/crud/entity/entities/folder.crudEntity';
 import React, { ReactNode } from 'react';
-import { CircularProgress } from '@mui/material';
+import { Box, CircularProgress } from '@mui/material';
+import { FormattedMessage } from 'react-intl';
+import FormattedRelativeTimeNow from 'renderer/components/format/FormattedRelativeTimeNow';
 
 export function isApplication(item: ItemRO): item is ApplicationRO {
   return 'type' in item;
@@ -135,6 +137,61 @@ export const getItemUrl = (item: ItemRO): string => {
 export const getItemNameTooltip = (item: ItemRO): ReactNode | undefined => {
   if (isInstance(item)) {
     return item.actuatorUrl;
+  }
+  return undefined;
+};
+
+export const getItemVersion = (item: ItemRO): string | undefined => {
+  if (isInstance(item)) {
+    if (item.metadata?.version) {
+      return item.metadata.version;
+    }
+    if (item.metadata.gitBranch && item.metadata.gitCommitId) {
+      return `${item.metadata.gitBranch} (${item.metadata.gitCommitId})`;
+    }
+    return undefined;
+  }
+  return undefined;
+};
+
+export const getItemVersionTooltip = (item: ItemRO): ReactNode | undefined => {
+  if (isInstance(item)) {
+    return (
+      <>
+        {item.metadata.version && (
+          <Box>
+            <Box component={'span'} sx={{ color: 'text.secondary' }}>
+              <FormattedMessage id={'version'} />:
+            </Box>{' '}
+            {item.metadata.version}
+          </Box>
+        )}
+        {item.metadata.buildTime && (
+          <Box>
+            <Box component={'span'} sx={{ color: 'text.secondary' }}>
+              <FormattedMessage id={'buildTime'} />:
+            </Box>{' '}
+            <FormattedRelativeTimeNow value={item.metadata.buildTime} />
+          </Box>
+        )}
+        {item.metadata.gitBranch && (
+          <Box>
+            <Box component={'span'} sx={{ color: 'text.secondary' }}>
+              <FormattedMessage id={'gitBranch'} />:
+            </Box>{' '}
+            {item.metadata.gitBranch}
+          </Box>
+        )}
+        {item.metadata.gitCommitId && (
+          <Box>
+            <Box component={'span'} sx={{ color: 'text.secondary' }}>
+              <FormattedMessage id={'gitCommit'} />:
+            </Box>{' '}
+            {item.metadata.gitCommitId}
+          </Box>
+        )}
+      </>
+    );
   }
   return undefined;
 };

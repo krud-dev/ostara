@@ -1,5 +1,5 @@
 import React, { PropsWithChildren, ReactNode, useCallback, useContext, useMemo, useState } from 'react';
-import { Entity } from 'renderer/entity/entity';
+import { Entity, EntityColumn } from 'renderer/entity/entity';
 import { isEmpty, orderBy } from 'lodash';
 import { DEFAULT_ROWS_PER_PAGE, TABLE_SCROLL_CONTAINER_ID } from 'renderer/constants/ui';
 import { notEmpty } from 'renderer/utils/objectUtils';
@@ -13,6 +13,7 @@ import useDelayedEffect from '../../hooks/useDelayedEffect';
 
 export type TableContextProps<EntityItem, CustomFilters> = {
   entity: Entity<EntityItem, CustomFilters>;
+  visibleColumns: EntityColumn<EntityItem>[];
   rows: EntityItem[];
   displayRows: EntityItem[];
   refreshHandler: () => void;
@@ -55,6 +56,7 @@ const TableContext = React.createContext<TableContextProps<any, any>>(undefined!
 
 interface TableProviderProps<EntityItem, CustomFilters> extends PropsWithChildren<any> {
   entity: Entity<EntityItem, CustomFilters>;
+  hiddenColumnIds?: string[];
   data?: EntityItem[];
   loading: boolean;
   emptyContent?: ReactNode;
@@ -66,6 +68,7 @@ interface TableProviderProps<EntityItem, CustomFilters> extends PropsWithChildre
 
 function TableProvider<EntityItem, CustomFilters>({
   entity,
+  hiddenColumnIds,
   data,
   loading,
   emptyContent,
@@ -90,6 +93,10 @@ function TableProvider<EntityItem, CustomFilters>({
     setSelected((prev) => prev.filter((id) => data?.some((row) => entity.getId(row) === id) ?? false));
   }, [data]);
 
+  const visibleColumns = useMemo<EntityColumn<EntityItem>[]>(
+    () => entity.columns.filter((c) => !hiddenColumnIds?.includes(c.id)),
+    [entity, hiddenColumnIds]
+  );
   const tableData = useMemo<EntityItem[]>(() => data ?? [], [data]);
   const filteredTableData = useMemo<EntityItem[]>(
     () =>
@@ -296,6 +303,7 @@ function TableProvider<EntityItem, CustomFilters>({
     <TableContext.Provider
       value={{
         entity,
+        visibleColumns,
         rows: filteredTableData,
         displayRows: displayTableData,
         refreshHandler,

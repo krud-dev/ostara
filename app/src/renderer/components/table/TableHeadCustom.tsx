@@ -25,6 +25,7 @@ type TableHeadCustomProps = {
 export default function TableHeadCustom({ sx }: TableHeadCustomProps) {
   const {
     entity,
+    visibleColumns,
     selectAllIndeterminate,
     selectAllChecked,
     selectAllRowsHandler,
@@ -62,7 +63,7 @@ export default function TableHeadCustom({ sx }: TableHeadCustomProps) {
           </TableCell>
         )}
 
-        {entity.columns.map((column) => (
+        {visibleColumns.map((column) => (
           <TableCell
             key={column.id}
             align={column.align || 'left'}

@@ -2,7 +2,7 @@ import { Entity } from 'renderer/entity/entity';
 import TableCellDataHealthStatus from 'renderer/components/table/data/custom/TableCellDataHealthStatus';
 import { generatePath } from 'react-router-dom';
 import { urls } from 'renderer/routes/urls';
-import { InstanceAbility, InstanceRO } from '../../../common/generated_definitions';
+import { InstanceAbility, InstanceRO } from 'common/generated_definitions';
 import { getItemDisplayName } from '../../utils/itemUtils';
 import { SHUTDOWN_ID } from '../actions';
 import { FormattedMessage } from 'react-intl';
@@ -22,9 +22,32 @@ export const applicationInstanceEntity: Entity<EnrichedInstanceRO> = {
       getTooltip: (item) => item.actuatorUrl,
     },
     {
+      id: 'metadata.version',
+      type: 'Text',
+      labelId: 'version',
+    },
+    {
+      id: 'metadata.buildTime',
+      type: 'Date',
+      labelId: 'buildTime',
+    },
+    {
+      id: 'metadata.gitBranch',
+      type: 'Text',
+      labelId: 'gitBranch',
+      width: 150,
+    },
+    {
+      id: 'metadata.gitCommitId',
+      type: 'Text',
+      labelId: 'gitCommit',
+      width: 150,
+    },
+    {
       id: 'health.status',
       type: 'Custom',
       labelId: 'healthStatus',
+      width: 150,
       getTooltip: (item) => item.health?.statusText,
       Component: TableCellDataHealthStatus,
     },
@@ -66,5 +89,12 @@ export const applicationInstanceEntity: Entity<EnrichedInstanceRO> = {
   ],
   paging: true,
   getId: (item) => item.id,
-  filterData: (data, filter) => data.filter((item) => item.alias?.toLowerCase().includes(filter.toLowerCase())),
+  filterData: (data, filter) =>
+    data.filter(
+      (item) =>
+        item.alias?.toLowerCase().includes(filter.toLowerCase()) ||
+        item.metadata?.version?.toLowerCase().includes(filter.toLowerCase()) ||
+        item.metadata?.gitBranch?.toLowerCase().includes(filter.toLowerCase()) ||
+        item.metadata?.gitCommitId?.toLowerCase().includes(filter.toLowerCase())
+    ),
 };
