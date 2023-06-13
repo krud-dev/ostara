@@ -7,7 +7,7 @@ plugins {
     kotlin("jvm") version "1.8.10"
     kotlin("plugin.spring") version "1.8.10"
     kotlin("plugin.jpa") version "1.8.10"
-    kotlin("kapt") version "1.8.10"
+    kotlin("kapt") version "1.8.22"
     id("cz.habarta.typescript-generator") version "3.1.1185"
     jacoco
     id("org.sonarqube") version "3.5.0.2730"
