@@ -98,7 +98,7 @@ dependencies {
     implementation("dev.krud:crud-framework-hibernate5-connector:$crudFrameworkVersion")
     implementation("dev.krud:shapeshift:$shapeShiftVersion")
     implementation("dev.krud:spring-boot-starter-shapeshift:$shapeShiftVersion")
-    implementation("com.fasterxml.jackson.datatype:jackson-datatype-jsr310:2.14.2")
+    implementation("com.fasterxml.jackson.datatype:jackson-datatype-jsr310:2.15.2")
     implementation("com.github.ben-manes.caffeine:caffeine:3.1.3")
     implementation("com.github.wnameless.json:json-flattener:0.16.4")
     implementation("net.pearx.kasechange:kasechange-jvm:1.3.0")
