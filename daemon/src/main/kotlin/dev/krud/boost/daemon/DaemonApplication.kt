@@ -1,7 +1,7 @@
 package dev.krud.boost.daemon
 
 import dev.krud.boost.daemon.exitcode.ExitCodeSupplier
-import io.github.oshai.KotlinLogging
+import io.github.oshai.kotlinlogging.KotlinLogging
 import io.sentry.Sentry
 import org.springframework.boot.autoconfigure.SpringBootApplication
 import org.springframework.boot.runApplication
@@ -11,6 +11,7 @@ import kotlin.system.exitProcess
 class DaemonApplication
 
 val log = KotlinLogging.logger {}
+val x = KotlinLogging
 
 fun main(args: Array<String>) {
     try {

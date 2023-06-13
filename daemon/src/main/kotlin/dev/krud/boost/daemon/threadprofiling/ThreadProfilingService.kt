@@ -10,7 +10,7 @@ import dev.krud.boost.daemon.threadprofiling.model.ThreadProfilingRequest
 import dev.krud.crudframework.crud.handler.krud.Krud
 import dev.krud.crudframework.modelfilter.dsl.where
 import dev.krud.crudframework.ro.PagedResult
-import io.github.oshai.KotlinLogging
+import io.github.oshai.kotlinlogging.KotlinLogging
 import org.springframework.integration.channel.PublishSubscribeChannel
 import org.springframework.scheduling.annotation.Scheduled
 import org.springframework.stereotype.Service

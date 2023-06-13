@@ -2,7 +2,7 @@ package dev.krud.boost.daemon.configuration.instance.heapdump.websocket
 
 import dev.krud.boost.daemon.configuration.instance.heapdump.messaging.InstanceHeapdumpDownloadProgressMessage
 import dev.krud.boost.daemon.utils.addOrReplaceIf
-import io.github.oshai.KotlinLogging
+import io.github.oshai.kotlinlogging.KotlinLogging
 import org.springframework.context.annotation.Lazy
 import org.springframework.integration.annotation.ServiceActivator
 import org.springframework.messaging.Message

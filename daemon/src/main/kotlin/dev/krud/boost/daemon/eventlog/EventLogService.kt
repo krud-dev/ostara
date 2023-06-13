@@ -4,7 +4,7 @@ import dev.krud.boost.daemon.eventlog.enums.EventLogSeverity
 import dev.krud.boost.daemon.eventlog.enums.EventLogType
 import dev.krud.boost.daemon.eventlog.model.EventLog
 import dev.krud.crudframework.crud.handler.krud.Krud
-import io.github.oshai.KotlinLogging
+import io.github.oshai.kotlinlogging.KotlinLogging
 import org.springframework.stereotype.Service
 import java.util.*
 

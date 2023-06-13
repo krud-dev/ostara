@@ -11,7 +11,7 @@ import dev.krud.boost.daemon.configuration.instance.systemproperties.ro.Instance
 import dev.krud.boost.daemon.exception.throwInternalServerError
 import dev.krud.boost.daemon.utils.ACTUATOR_REDACTED_STRING
 import dev.krud.boost.daemon.utils.resolve
-import io.github.oshai.KotlinLogging
+import io.github.oshai.kotlinlogging.KotlinLogging
 import org.springframework.cache.CacheManager
 import org.springframework.cache.annotation.Cacheable
 import org.springframework.integration.annotation.ServiceActivator

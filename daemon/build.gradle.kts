@@ -105,7 +105,7 @@ dependencies {
     implementation("io.hypersistence:hypersistence-utils-hibernate-60:3.4.3")
     implementation("com.cobber.fta:fta-core:12.10.3")
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.7.1")
-    implementation("io.github.oshai:kotlin-logging-jvm:4.0.0-beta-22")
+    implementation("io.github.oshai:kotlin-logging-jvm:4.0.0-beta-29")
 
     // Added separately from springdoc for production builds
     implementation("io.swagger.core.v3:swagger-annotations-jakarta:2.2.11")

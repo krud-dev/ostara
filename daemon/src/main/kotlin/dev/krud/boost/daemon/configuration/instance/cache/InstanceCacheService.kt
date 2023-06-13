@@ -11,7 +11,7 @@ import dev.krud.boost.daemon.configuration.instance.cache.ro.InstanceCacheStatis
 import dev.krud.boost.daemon.configuration.instance.enums.InstanceAbility
 import dev.krud.boost.daemon.utils.ResultAggregationSummary
 import dev.krud.boost.daemon.utils.ResultAggregationSummary.Companion.aggregate
-import io.github.oshai.KotlinLogging
+import io.github.oshai.kotlinlogging.KotlinLogging
 import org.springframework.beans.factory.DisposableBean
 import org.springframework.stereotype.Service
 import java.util.*

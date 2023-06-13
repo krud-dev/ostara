@@ -24,7 +24,7 @@ import dev.krud.boost.daemon.utils.getTyped
 import dev.krud.boost.daemon.utils.resolve
 import dev.krud.crudframework.crud.handler.krud.Krud
 import dev.krud.shapeshift.ShapeShift
-import io.github.oshai.KotlinLogging
+import io.github.oshai.kotlinlogging.KotlinLogging
 import jakarta.annotation.PostConstruct
 import org.springframework.cache.Cache
 import org.springframework.cache.CacheManager
