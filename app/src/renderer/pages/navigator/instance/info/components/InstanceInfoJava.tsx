@@ -1,7 +1,6 @@
 import React, { useMemo } from 'react';
 import { FormattedMessage } from 'react-intl';
 import { InfoActuatorResponse$Java } from 'common/generated_definitions';
-import FormattedDateAndRelativeTime from 'renderer/components/format/FormattedDateAndRelativeTime';
 import InstanceInfoValuesCard, {
   InstanceInfoCardValue,
 } from 'renderer/pages/navigator/instance/info/components/InstanceInfoValuesCard';
