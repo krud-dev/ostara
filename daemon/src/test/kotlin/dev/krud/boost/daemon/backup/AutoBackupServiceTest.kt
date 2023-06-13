@@ -14,6 +14,7 @@ import org.mockito.kotlin.times
 import org.mockito.kotlin.verify
 import org.mockito.kotlin.whenever
 import strikt.api.expect
+import strikt.api.expectThrows
 import strikt.assertions.isEqualTo
 import strikt.assertions.startsWith
 import java.nio.file.Files
@@ -89,6 +90,13 @@ class AutoBackupServiceTest {
         autoBackupService.restoreBackup("some-backup.jwt.gz")
         verify(backupService, times(1)).importAll(dto)
 
+    }
+
+    @Test
+    fun `restoreBackup should throw if file does not exist`() {
+        expectThrows<IllegalStateException> {
+            autoBackupService.restoreBackup("some-backup.jwt.gz")
+        }
     }
 
     private fun Path.gzippedContent(): String {

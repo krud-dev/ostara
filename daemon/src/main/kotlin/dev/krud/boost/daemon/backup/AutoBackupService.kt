@@ -42,12 +42,15 @@ class AutoBackupService(
         val file = appMainProperties.backupDirectory
             .resolve(fileName)
             .toFile()
-        val signed = file.source().buffer().use { source ->
+        if (!file.exists()) {
+            error("File does not exist: $fileName")
+        }
+        val content = file.source().buffer().use { source ->
             GzipSource(source).buffer().use { gzipSource ->
                 gzipSource.readUtf8()
             }
         }
-        val backupDTO = backupJwtService.verify(signed)
+        val backupDTO = backupJwtService.verify(content)
         backupService.importAll(backupDTO)
     }
 }
