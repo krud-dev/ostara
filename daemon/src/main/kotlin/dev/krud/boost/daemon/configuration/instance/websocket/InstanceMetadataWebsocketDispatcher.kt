@@ -17,7 +17,7 @@ class InstanceMetadataWebsocketDispatcher(
 ) {
     private val history = CopyOnWriteArrayList<InstanceMetadataRefreshedMessage>()
 
-    @ServiceActivator(inputChannel = "systemEventsChannel")
+    @ServiceActivator(inputChannel = "instanceMetadataRefreshChannel")
     internal fun onInstanceEvent(event: Message<*>) {
         when (event) {
             is InstanceMetadataRefreshedMessage -> sendToWebSocket(event)
