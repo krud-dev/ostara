@@ -1,17 +1,60 @@
 package dev.krud.boost.daemon.configuration.instance.websocket
 
+import dev.krud.boost.daemon.configuration.instance.entity.Instance
 import dev.krud.boost.daemon.configuration.instance.metadata.messaing.InstanceMetadataRefreshedMessage
 import dev.krud.boost.daemon.configuration.instance.metadata.ro.InstanceMetadataDTO
 import dev.krud.boost.daemon.configuration.instance.stubInstance
+import dev.krud.crudframework.crud.handler.krud.Krud
 import org.junit.jupiter.api.Test
 import org.mockito.kotlin.mock
 import org.mockito.kotlin.times
 import org.mockito.kotlin.verify
+import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.boot.test.context.SpringBootTest
+import org.springframework.boot.test.mock.mockito.MockBean
+import org.springframework.integration.channel.PublishSubscribeChannel
 import org.springframework.messaging.simp.SimpMessagingTemplate
+import java.util.*
+import java.util.concurrent.CountDownLatch
+import java.util.concurrent.TimeUnit
 
 class InstanceMetadataWebsocketDispatcherTest {
     private val messagingTemplate: SimpMessagingTemplate = mock()
     private val instanceMetadataWebsocketDispatcher = InstanceMetadataWebsocketDispatcher(messagingTemplate)
+
+    @SpringBootTest
+    class SpringTest {
+        @MockBean
+        private lateinit var messagingTemplate: SimpMessagingTemplate
+
+        @Autowired
+        private lateinit var instanceMetadataRefreshChannel: PublishSubscribeChannel
+
+        @Autowired
+        private lateinit var instanceKrud: Krud<Instance, UUID>
+
+        @Test
+        fun `on event received should send to websocket`() {
+            val instance = instanceKrud.create(stubInstance())
+            val message = InstanceMetadataRefreshedMessage(
+                InstanceMetadataRefreshedMessage.Payload(
+                    instance.id,
+                    InstanceMetadataDTO.EMPTY
+                )
+            )
+            val latch = CountDownLatch(1)
+            instanceMetadataRefreshChannel.send(message)
+            instanceMetadataRefreshChannel.subscribe {
+                latch.countDown()
+            }
+            latch.await(1000, TimeUnit.MILLISECONDS)
+            verify(messagingTemplate, times(1)).convertAndSend(
+                InstanceMetadataWebsocketDispatcher.INSTANCE_METADATA_TOPIC,
+                message.payload
+            )
+        }
+
+    }
 
     @Test
     fun `on event received should send to websocket`() {
