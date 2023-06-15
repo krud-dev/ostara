@@ -20,6 +20,7 @@ export const apiKeys = {
   itemLoggers: (id: string) => [...apiKeys.item(id), 'loggers'],
   itemTogglz: (id: string) => [...apiKeys.item(id), 'togglz'],
   itemTogglzByGroup: (id: string, group: string) => [...apiKeys.itemTogglz(id), 'group', group],
+  itemHealth: (id: string) => [...apiKeys.item(id), 'health'],
   itemInfo: (id: string) => [...apiKeys.item(id), 'info'],
   itemEnv: (id: string) => [...apiKeys.item(id), 'env'],
   itemEnvProperties: (id: string) => [...apiKeys.item(id), 'envProperties'],
@@ -99,7 +100,7 @@ export const apiKeys = {
   itemInstances: (id: string) => [...crudKeys.entity(instanceCrudEntity), 'item', id],
 
   applicationsHealth: () => ['applicationsHealth'],
-  instancesHealth: () => ['instancesHealth'],
+  instanceHealth: (id: string) => ['instanceHealth'],
 
   actuator: () => ['actuator'],
   actuatorConnection: (url: string) => [...apiKeys.actuator(), 'connection', url],

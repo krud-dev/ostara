@@ -9,6 +9,10 @@ export const roundNumber = (number: number, decimals: number): number => {
 
 export const padValue = (value: number): string => (value < 10 ? `0${value}` : `${value}`);
 
+export const splitCamelCase = (value: string): string => {
+  return value.replace(/([^A-Z])([A-Z])/g, '$1 $2');
+};
+
 export const formatWidgetValue = (value: unknown, valueType: WidgetValueType, intl: IntlShape): string => {
   if (isNil(value)) {
     return EMPTY_STRING;

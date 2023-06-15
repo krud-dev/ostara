@@ -13,6 +13,7 @@ import {
   HttpOutlined,
   LanOutlined,
   ListAltOutlined,
+  LocalHospitalOutlined,
   StorageOutlined,
   SyncAltOutlined,
   TextSnippetOutlined,
@@ -55,6 +56,13 @@ export default function InstanceSidebar({ item, itemAbilities, disabled, width }
                   label: <FormattedMessage id={'dashboard'} />,
                   to: generatePath(urls.instanceDashboard.url, { id: item.id }),
                   disabled: disabled,
+                },
+                {
+                  id: 'health',
+                  icon: <LocalHospitalOutlined />,
+                  label: <FormattedMessage id={'health'} />,
+                  to: generatePath(urls.instanceHealth.url, { id: item.id }),
+                  disabled: disabled || isServiceInactive('HEALTH'),
                 },
                 {
                   id: 'info',
