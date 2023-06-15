@@ -74,6 +74,11 @@ class SystemBackupService(
     fun listSystemBackups(includeFailures: Boolean): Result<List<SystemBackupRO>> = runCatching {
         appMainProperties.backupDirectory
             .toFile()
+            .apply {
+                if (!exists()) {
+                    throwNotFound("Backup directory does not exist: $this")
+                }
+            }
             .listFiles()
             .filter { file ->
                 file.extension == "gz"
