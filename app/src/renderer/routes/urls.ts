@@ -97,6 +97,11 @@ export const urls = asUrlInfos({
     path: 'dashboard',
     helpUrl: 'https://docs.ostara.dev/features/instance-features/insights/dashboard',
   },
+  instanceHealth: {
+    url: '/navigator/instance/:id/health',
+    path: 'health',
+    helpUrl: 'https://docs.ostara.dev/features/instance-features/insights/health',
+  },
   instanceInfo: {
     url: '/navigator/instance/:id/info',
     path: 'info',
@@ -195,5 +200,23 @@ export const urls = asUrlInfos({
     url: '/navigator/instance/:id/heap-dump',
     path: 'heap-dump',
     helpUrl: 'https://docs.ostara.dev/features/instance-features/jvm/heap-dump',
+  },
+  // Settings Root
+  settings: {
+    url: '/settings',
+    path: 'settings',
+    redirect: true,
+  },
+  settingsGeneral: {
+    url: '/settings/general',
+    path: 'general',
+  },
+  settingsNotifications: {
+    url: '/settings/notifications',
+    path: 'notifications',
+  },
+  settingsPrivacy: {
+    url: '/settings/privacy',
+    path: 'privacy',
   },
 });

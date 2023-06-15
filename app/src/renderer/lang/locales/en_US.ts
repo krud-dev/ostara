@@ -194,6 +194,7 @@ export default {
     'Add metric notifications to monitor your applications and receive alerts when a metric value is above, below or within a threshold.',
   notificationName: 'Notification Name',
   notifications: 'Notifications',
+  enableNotifications: 'Enable Notifications',
   notificationsSound: 'Notifications Sound',
   notReceivingNotifications:
     'If you are not receiving notifications, please check the notification permissions for this app in your {settings}.',
@@ -495,6 +496,8 @@ export default {
   buildTime: 'Build Time',
   gitBranch: 'Git Branch',
   gitCommit: 'Git Commit',
+  health: 'Health',
+  privacy: 'Privacy',
   notificationTitleApplicationAllUp: '{application} is UP',
   notificationBodyApplicationAllUp: 'All instances of {application} are UP.',
   notificationTitleApplicationAllDown: '{application} is DOWN',

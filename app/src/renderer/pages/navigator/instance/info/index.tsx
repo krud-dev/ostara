@@ -15,6 +15,7 @@ import InstanceInfoJsonCard from 'renderer/pages/navigator/instance/info/compone
 import InstanceInfoJava from 'renderer/pages/navigator/instance/info/components/InstanceInfoJava';
 import InstanceInfoOs from 'renderer/pages/navigator/instance/info/components/InstanceInfoOs';
 import InstanceInfoExtraValues from 'renderer/pages/navigator/instance/info/components/InstanceInfoExtraValues';
+import { splitCamelCase } from 'renderer/utils/formatUtils';
 
 const InstanceInfo: FunctionComponent = () => {
   const { selectedItem } = useNavigatorTree();
@@ -76,9 +77,10 @@ const InstanceInfo: FunctionComponent = () => {
             {info?.git && <InstanceInfoGit git={info.git} />}
             {info?.java && <InstanceInfoJava java={info.java} />}
             {showExtraValues && <InstanceInfoExtraValues extraValues={extraValues} />}
-            {map(extraCards, (object, key) => (
-              <InstanceInfoJsonCard title={key} object={object} key={key} />
-            ))}
+            {map(extraCards, (object, key) => {
+              const title = splitCamelCase(key);
+              return <InstanceInfoJsonCard title={title} object={object} key={key} />;
+            })}
           </Masonry>
         </Container>
       )}

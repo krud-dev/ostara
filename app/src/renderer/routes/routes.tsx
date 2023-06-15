@@ -41,6 +41,11 @@ import InstanceTogglz from '../pages/navigator/instance/togglz';
 import ApplicationMetricRules from '../pages/navigator/application/metric-rules';
 import FolderDashboard from '../pages/navigator/folder/dashboard';
 import InstanceInfo from 'renderer/pages/navigator/instance/info';
+import InstanceHealth from 'renderer/pages/navigator/instance/health';
+import SettingsLayout from 'renderer/layout/settings/SettingsLayout';
+import SettingsGeneral from 'renderer/pages/settings/general';
+import SettingsNotifications from 'renderer/pages/settings/notifications';
+import SettingsPrivacy from 'renderer/pages/settings/privacy';
 
 export default function Router() {
   return useRoutes([
@@ -133,6 +138,14 @@ export default function Router() {
                     <InstanceAbilityErrorGuard ability={'METRICS'}>
                       <InstanceDashboard />
                     </InstanceAbilityErrorGuard>
+                  ),
+                },
+                {
+                  path: urls.instanceHealth.path,
+                  element: (
+                    <AbilityRedirectGuard ability={'HEALTH'}>
+                      <InstanceHealth />
+                    </AbilityRedirectGuard>
                   ),
                 },
                 {
@@ -298,6 +311,27 @@ export default function Router() {
               ],
             },
             { path: '*', element: <Navigate to={urls.error.url} replace /> },
+          ],
+        },
+
+        // Settings Routes
+        {
+          path: urls.settings.path,
+          element: <SettingsLayout />,
+          children: [
+            { path: '', element: <Navigate to={urls.settingsGeneral.url} replace /> },
+            {
+              path: urls.settingsGeneral.path,
+              element: <SettingsGeneral />,
+            },
+            {
+              path: urls.settingsNotifications.path,
+              element: <SettingsNotifications />,
+            },
+            {
+              path: urls.settingsPrivacy.path,
+              element: <SettingsPrivacy />,
+            },
           ],
         },
 
