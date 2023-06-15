@@ -201,4 +201,22 @@ export const urls = asUrlInfos({
     path: 'heap-dump',
     helpUrl: 'https://docs.ostara.dev/features/instance-features/jvm/heap-dump',
   },
+  // Settings Root
+  settings: {
+    url: '/settings',
+    path: 'settings',
+    redirect: true,
+  },
+  settingsGeneral: {
+    url: '/settings/general',
+    path: 'general',
+  },
+  settingsNotifications: {
+    url: '/settings/notifications',
+    path: 'notifications',
+  },
+  settingsPrivacy: {
+    url: '/settings/privacy',
+    path: 'privacy',
+  },
 });
