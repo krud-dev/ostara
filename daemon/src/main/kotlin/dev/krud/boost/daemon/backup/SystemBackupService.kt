@@ -3,12 +3,14 @@ package dev.krud.boost.daemon.backup
 import dev.krud.boost.daemon.backup.ro.BackupDTO
 import dev.krud.boost.daemon.backup.ro.SystemBackupRO
 import dev.krud.boost.daemon.base.config.AppMainProperties
+import dev.krud.boost.daemon.exception.throwInternalServerError
 import dev.krud.boost.daemon.exception.throwNotFound
 import okio.GzipSink
 import okio.GzipSource
 import okio.buffer
 import okio.sink
 import okio.source
+import org.springframework.http.HttpStatus
 import org.springframework.stereotype.Service
 import java.util.*
 
@@ -62,7 +64,10 @@ class SystemBackupService(
         if (!file.exists()) {
             throwNotFound("File does not exist: $fileName")
         }
-        file.delete()
+        val result = file.delete()
+        if (!result) {
+            throwInternalServerError("Could not delete file: $fileName")
+        }
     }
 
     // todo:, add method to validate and migrate backup

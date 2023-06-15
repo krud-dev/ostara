@@ -19,10 +19,6 @@ class BackupService(
         backupImporter.import(dto)
     }
 
-    fun deleteAndImportAll(dto: BackupDTO) {
-        backupImporter.deleteAndImport(dto)
-    }
-
     fun exportAll(): BackupDTO {
         return backupExporter.exportAll()
     }
