@@ -219,4 +219,8 @@ export const urls = asUrlInfos({
     url: '/settings/privacy',
     path: 'privacy',
   },
+  settingsBackups: {
+    url: '/settings/backups',
+    path: 'backups',
+  },
 });

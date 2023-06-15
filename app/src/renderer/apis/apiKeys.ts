@@ -107,4 +107,6 @@ export const apiKeys = {
 
   metrics: () => ['metrics'],
   metricLatest: (instanceId: string, metricName: string) => [...apiKeys.metrics(), 'latest', instanceId, metricName],
+
+  systemBackups: () => ['systemBackups'],
 };
