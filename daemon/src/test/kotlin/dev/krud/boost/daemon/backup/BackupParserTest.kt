@@ -3,6 +3,7 @@ package dev.krud.boost.daemon.backup
 import com.fasterxml.jackson.databind.node.ObjectNode
 import dev.krud.boost.daemon.backup.migration.BackupMigration
 import dev.krud.boost.daemon.backup.migration.BackupMigration.Companion.getLatestVersion
+import dev.krud.boost.daemon.backup.ro.BackupDTO
 import dev.krud.boost.daemon.util.FileUtils
 import org.junit.jupiter.api.DynamicTest.dynamicTest
 import org.junit.jupiter.api.Test
@@ -15,7 +16,6 @@ import strikt.api.expectThrows
 import strikt.assertions.hasSize
 import strikt.assertions.isEmpty
 import strikt.assertions.isEqualTo
-import strikt.assertions.isFalse
 import strikt.assertions.isNull
 
 class BackupParserTest {

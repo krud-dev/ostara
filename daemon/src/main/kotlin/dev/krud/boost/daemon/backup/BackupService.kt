@@ -1,6 +1,7 @@
 package dev.krud.boost.daemon.backup
 
 import com.fasterxml.jackson.databind.JsonNode
+import dev.krud.boost.daemon.backup.ro.BackupDTO
 import org.springframework.stereotype.Service
 
 @Service
@@ -18,7 +19,15 @@ class BackupService(
         backupImporter.import(dto)
     }
 
+    fun deleteAndImportAll(dto: BackupDTO) {
+        backupImporter.deleteAndImport(dto)
+    }
+
     fun exportAll(): BackupDTO {
         return backupExporter.exportAll()
+    }
+
+    fun validateAndMigrate(backup: JsonNode): BackupDTO {
+        return backupParser.parse(backup)
     }
 }

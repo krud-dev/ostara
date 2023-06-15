@@ -5,6 +5,7 @@ import com.auth0.jwt.algorithms.Algorithm
 import com.auth0.jwt.exceptions.SignatureVerificationException
 import com.fasterxml.jackson.core.JsonParseException
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
+import dev.krud.boost.daemon.backup.ro.BackupDTO
 import org.junit.jupiter.api.Test
 import strikt.api.expect
 import strikt.api.expectThrows

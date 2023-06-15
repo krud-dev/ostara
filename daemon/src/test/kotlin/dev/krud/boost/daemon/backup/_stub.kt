@@ -1,5 +1,6 @@
 package dev.krud.boost.daemon.backup
 
+import dev.krud.boost.daemon.backup.ro.BackupDTO
 import dev.krud.boost.daemon.utils.DEFAULT_COLOR
 import java.util.*
 

@@ -1,6 +1,7 @@
 package dev.krud.boost.daemon.backup
 
 import com.auth0.jwt.exceptions.JWTDecodeException
+import dev.krud.boost.daemon.backup.ro.BackupDTO
 import dev.krud.boost.daemon.base.config.AppMainProperties
 import okio.GzipSink
 import okio.GzipSource
@@ -17,25 +18,25 @@ import org.mockito.kotlin.whenever
 import org.springframework.http.HttpStatus
 import org.springframework.web.server.ResponseStatusException
 import strikt.api.expect
-import strikt.api.expectThrows
-import strikt.assertions.containsKey
 import strikt.assertions.isA
 import strikt.assertions.isEqualTo
 import strikt.assertions.isFailure
+import strikt.assertions.isFalse
 import strikt.assertions.isTrue
 import strikt.assertions.startsWith
 import java.nio.file.Files
 import java.nio.file.Path
 import java.util.*
 
-class AutoBackupServiceTest {
+class SystemBackupServiceTest {
     @TempDir
     lateinit var temporaryDirectory: Path
 
-    private val backupService = mock<BackupService>()
+    private val backupImporter = mock<BackupImporter>()
+    private val backupExporter = mock<BackupExporter>()
     private val backupJwtService = mock<BackupJwtService>()
     private lateinit var appMainProperties: AppMainProperties
-    private lateinit var autoBackupService: AutoBackupService
+    private lateinit var systemBackupService: SystemBackupService
 
     @BeforeEach
     fun setUp() {
@@ -43,8 +44,9 @@ class AutoBackupServiceTest {
             .apply {
                 backupDirectory = temporaryDirectory
             }
-        autoBackupService = AutoBackupService(
-            backupService,
+        systemBackupService = SystemBackupService(
+            backupImporter,
+            backupExporter,
             backupJwtService,
             appMainProperties
         )
@@ -58,14 +60,22 @@ class AutoBackupServiceTest {
             tree = emptyList()
         )
         val token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpYXQiOjE2ODY2NDA4MzAsImJhY2t1cCI6IntcInZlcnNpb25cIjowLFwiZGF0ZVwiOjAsXCJ0cmVlXCI6W119In0.nKc-Yzg4wG4USRb9-vQufrLpYiuhAUzzJhnBmiOttYA"
-        whenever(backupService.exportAll()).thenReturn(dto)
+        whenever(backupExporter.exportAll()).thenReturn(dto)
         whenever(backupJwtService.sign(dto)).thenReturn(token)
-        val manualFileName = autoBackupService.createBackup(false).getOrThrow()
-        val autoFileName = autoBackupService.createBackup(true).getOrThrow()
+        val manualBackup = systemBackupService.createSystemBackup(false).getOrThrow()
+        val autoBackup = systemBackupService.createSystemBackup(true).getOrThrow()
         val backupFiles = Files.list(temporaryDirectory).toList()
         expect {
-            that(manualFileName).startsWith("backup-manual")
-            that(autoFileName).startsWith("backup-auto")
+            that(manualBackup).apply {
+                get { fileName } startsWith "backup-manual"
+                get { valid }.isTrue()
+                get { auto }.isFalse()
+            }
+            that(autoBackup).apply {
+                get { fileName } startsWith "backup-auto"
+                get { valid }.isTrue()
+                get { auto }.isTrue()
+            }
             that(backupFiles.size).isEqualTo(2)
             val manualFile = backupFiles[0]
             val autoFile = backupFiles[1]
@@ -87,19 +97,19 @@ class AutoBackupServiceTest {
         whenever(backupJwtService.verify(token)).thenReturn(dto)
         val backupFileName = temporaryDirectory.resolve("some-backup.jwt.gz")
         backupFileName.createGzippedFile(token)
-        autoBackupService.restoreBackup("some-backup.jwt.gz")
-        verify(backupService, times(1)).importAll(dto)
+        systemBackupService.restoreSystemBackup("some-backup.jwt.gz")
+        verify(backupImporter, times(1)).deleteAndImport(dto)
 
     }
 
     @Test
     fun `restoreBackup should throw if file does not exist`() {
-        val result = autoBackupService.restoreBackup("some-backup.jwt.gz")
+        val result = systemBackupService.restoreSystemBackup("some-backup.jwt.gz")
         expect {
             that(result).isFailure()
             that(result.exceptionOrNull()!!).isA<ResponseStatusException>()
                 .and {
-                    get { statusCode }.isEqualTo(HttpStatus.BAD_REQUEST)
+                    get { statusCode }.isEqualTo(HttpStatus.NOT_FOUND)
                 }
         }
     }
@@ -112,7 +122,7 @@ class AutoBackupServiceTest {
         whenever(backupJwtService.verify(token)).thenThrow(
             JWTDecodeException("Invalid token")
         )
-        val result = autoBackupService.restoreBackup("some-backup.jwt.gz")
+        val result = systemBackupService.restoreSystemBackup("some-backup.jwt.gz")
         expect {
             that(result).isFailure()
             that(result.exceptionOrNull()!!).isA<JWTDecodeException>()
@@ -124,36 +134,26 @@ class AutoBackupServiceTest {
     @Test
     fun `listBackups should list all valid backups when includeFailures is false`() {
         setupListBackups()
-        val backups = autoBackupService.listBackups(false)
+        val backups = systemBackupService.listSystemBackups(false)
             .getOrThrow()
         expect {
             that(backups.size).isEqualTo(1)
-            that(backups).containsKey("first.gz")
-            that(backups["first.gz"]!!.isSuccess).isTrue()
-            that(backups["first.gz"]!!.getOrThrow()).apply {
-                get { version }.isEqualTo(1)
-                get { date }.isEqualTo(Date(0))
-                get { tree }.isEqualTo(emptyList())
-            }
+            val firstBackup = backups.find { it.fileName == "first.gz" }!!
+            that(firstBackup.valid).isTrue()
         }
     }
 
     @Test
     fun `listBackups should list all valid backups when includeFailures is true`() {
         setupListBackups()
-        val backups = autoBackupService.listBackups(true)
+        val backups = systemBackupService.listSystemBackups(true)
             .getOrThrow()
         expect {
             that(backups.size).isEqualTo(2)
-            that(backups).containsKey("first.gz")
-            that(backups).containsKey("second.gz")
-            that(backups["first.gz"]!!.isSuccess).isTrue()
-            that(backups["first.gz"]!!.getOrThrow()).apply {
-                get { version }.isEqualTo(1)
-                get { date }.isEqualTo(Date(0))
-                get { tree }.isEqualTo(emptyList())
-            }
-            that(backups["second.gz"]!!.isFailure).isTrue()
+            val firstBackup = backups.find { it.fileName == "first.gz" }!!
+            val secondBackup = backups.find { it.fileName == "second.gz" }!!
+            that(firstBackup.valid).isTrue()
+            that(secondBackup.valid).isFalse()
         }
     }
 

@@ -1,4 +1,4 @@
-package dev.krud.boost.daemon.backup
+package dev.krud.boost.daemon.backup.ro
 
 import com.fasterxml.jackson.annotation.JsonSubTypes
 import com.fasterxml.jackson.annotation.JsonTypeInfo
