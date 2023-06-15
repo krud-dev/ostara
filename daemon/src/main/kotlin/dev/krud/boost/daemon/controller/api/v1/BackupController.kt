@@ -1,7 +1,7 @@
 package dev.krud.boost.daemon.controller.api.v1
 
 import com.fasterxml.jackson.databind.JsonNode
-import dev.krud.boost.daemon.backup.BackupDTO
+import dev.krud.boost.daemon.backup.ro.BackupDTO
 import dev.krud.boost.daemon.backup.BackupService
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.responses.ApiResponse
@@ -39,5 +39,16 @@ class BackupController(
     @ApiResponse(responseCode = "201", description = "Imported configurations")
     fun importAll(@RequestBody jsonNode: JsonNode) {
         backupService.importAll(jsonNode)
+    }
+
+    @PostMapping("/validateAndMigrate")
+    @ResponseStatus(HttpStatus.OK)
+    @Operation(
+        summary = "Validate and migrate backup"
+    )
+    @ApiResponse(responseCode = "200", description = "Validated and migrated backup")
+    @ApiResponse(responseCode = "400", description = "Invalid backup")
+    fun validateAndMigrateBackup(@RequestBody json: JsonNode): BackupDTO {
+        return backupService.validateAndMigrate(json)
     }
 }

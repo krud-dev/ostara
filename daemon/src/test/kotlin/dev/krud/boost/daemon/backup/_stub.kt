@@ -1,10 +1,13 @@
 package dev.krud.boost.daemon.backup
 
+import dev.krud.boost.daemon.backup.ro.BackupDTO
 import dev.krud.boost.daemon.utils.DEFAULT_COLOR
+import java.util.*
 
 fun stubBackupDTO(): BackupDTO {
     return BackupDTO(
         1,
+        Date(),
         listOf(
             BackupDTO.TreeElement.Folder(
                 model = BackupDTO.TreeElement.Folder.Model(

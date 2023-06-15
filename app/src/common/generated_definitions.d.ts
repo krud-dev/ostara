@@ -199,6 +199,14 @@ export interface TogglzFeatureUpdateRequest {
     enabled: boolean;
 }
 
+export interface SystemBackupRO {
+    fileName: string;
+    date: DateAsNumber;
+    valid: boolean;
+    error?: string;
+    auto: boolean;
+}
+
 export interface CountResultRO {
     total: number;
 }

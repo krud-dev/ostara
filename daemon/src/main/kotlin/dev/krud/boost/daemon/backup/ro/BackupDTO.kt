@@ -1,4 +1,4 @@
-package dev.krud.boost.daemon.backup
+package dev.krud.boost.daemon.backup.ro
 
 import com.fasterxml.jackson.annotation.JsonSubTypes
 import com.fasterxml.jackson.annotation.JsonTypeInfo
@@ -17,6 +17,7 @@ import java.util.*
 
 class BackupDTO(
     val version: Int? = null,
+    val date: Date? = null,
     val tree: List<TreeElement>
 ) : Serializable {
     @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.EXISTING_PROPERTY, property = "type")
@@ -24,7 +25,7 @@ class BackupDTO(
         JsonSubTypes.Type(value = TreeElement.Folder::class, name = "folder"),
         JsonSubTypes.Type(value = TreeElement.Application::class, name = "application")
     )
-    sealed interface TreeElement {
+    sealed interface TreeElement    {
         val type: String
 
         class Folder(

@@ -28,6 +28,18 @@ class BackupMigrationTest {
         expectThat(input.get("version").asInt()).isEqualTo(1)
     }
 
+    @Test
+    fun `version 2 migrator should add a 0 date to the backup`() {
+        val input = objectMapper.readTree("""
+            {
+                "version": 1,
+                "tree": []
+            }
+        """.trimIndent())
+        Version2BackupMigration().migrate(input as ObjectNode)
+        expectThat(input.get("date").asInt()).isEqualTo(0)
+    }
+
     @SpringBootTest
     class BackupMigrationSpringTest {
         @Autowired

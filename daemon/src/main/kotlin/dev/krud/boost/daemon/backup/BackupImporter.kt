@@ -1,9 +1,10 @@
 package dev.krud.boost.daemon.backup
 
-import dev.krud.boost.daemon.backup.BackupDTO.Companion.toApplication
-import dev.krud.boost.daemon.backup.BackupDTO.Companion.toApplicationMetricRule
-import dev.krud.boost.daemon.backup.BackupDTO.Companion.toFolder
-import dev.krud.boost.daemon.backup.BackupDTO.Companion.toInstance
+import dev.krud.boost.daemon.backup.ro.BackupDTO
+import dev.krud.boost.daemon.backup.ro.BackupDTO.Companion.toApplication
+import dev.krud.boost.daemon.backup.ro.BackupDTO.Companion.toApplicationMetricRule
+import dev.krud.boost.daemon.backup.ro.BackupDTO.Companion.toFolder
+import dev.krud.boost.daemon.backup.ro.BackupDTO.Companion.toInstance
 import dev.krud.boost.daemon.configuration.application.entity.Application
 import dev.krud.boost.daemon.configuration.folder.entity.Folder
 import dev.krud.boost.daemon.configuration.instance.entity.Instance
@@ -28,6 +29,22 @@ class BackupImporter(
                 is BackupDTO.TreeElement.Application -> importApplication(it)
             }
         }
+    }
+
+    @Transactional(readOnly = false)
+    fun deleteAndImport(dto: BackupDTO) {
+        folderKrud.deleteByFilter {
+            where {
+                Folder::parentFolderId.isNull()
+            }
+        }
+        applicationKrud.deleteByFilter {
+            where {
+                Application::parentFolderId.isNull()
+            }
+        }
+        // Not deleting instances and metric rules because they are deleted by cascade
+        import(dto)
     }
 
     private fun importFolder(element: BackupDTO.TreeElement.Folder, parentFolderId: UUID? = null): Folder {

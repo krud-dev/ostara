@@ -1,14 +1,16 @@
 package dev.krud.boost.daemon.backup
 
+import dev.krud.boost.daemon.backup.ro.BackupDTO
 import dev.krud.boost.daemon.configuration.application.entity.Application
 import dev.krud.boost.daemon.configuration.application.enums.ApplicationType
+import dev.krud.boost.daemon.configuration.application.stubApplication
 import dev.krud.boost.daemon.configuration.folder.entity.Folder
+import dev.krud.boost.daemon.configuration.folder.stubFolder
 import dev.krud.boost.daemon.configuration.instance.entity.Instance
 import dev.krud.boost.daemon.metricmonitor.rule.enums.ApplicationMetricRuleOperation
 import dev.krud.boost.daemon.metricmonitor.rule.model.ApplicationMetricRule
 import dev.krud.boost.daemon.test.TestKrud
 import dev.krud.boost.daemon.utils.DEFAULT_COLOR
-import dev.krud.crudframework.crud.handler.krud.Krud
 import org.junit.jupiter.api.Test
 import strikt.api.expect
 import strikt.assertions.hasSize
@@ -21,63 +23,75 @@ class BackupImporterTest {
     private val instanceKrud = TestKrud(Instance::class.java) { UUID.randomUUID() }
     private val applicationMetricRuleKrud = TestKrud(ApplicationMetricRule::class.java) { UUID.randomUUID() }
     private val backupImporter = BackupImporter(folderKrud, applicationKrud, instanceKrud, applicationMetricRuleKrud)
-
-    @Test
-    fun `importBackup should recursively import a backupDTO`() {
-        // region val dto = ...
-        val dto = BackupDTO(
-            version = 1,
-            tree = listOf(
-                BackupDTO.TreeElement.Folder(
-                    model = BackupDTO.TreeElement.Folder.Model(
-                        "rootFolder1",
-                        null,
-                        "red",
-                        "folder",
-                        1.0,
-                        null
-                    ),
-                    children = listOf(
-                        BackupDTO.TreeElement.Application(
-                            model = BackupDTO.TreeElement.Application.Model(
-                                "rootFolder1Application1",
-                                "some app description",
-                                "SPRING_BOOT",
-                                DEFAULT_COLOR,
-                                "cloud",
-                                1.0
-                            ),
-                            children = listOf(
-                                BackupDTO.TreeElement.Application.Instance(
-                                    model = BackupDTO.TreeElement.Application.Instance.Model(
-                                        "rootFolder1ApplicationInstance1",
-                                        "http://localhost:8080",
-                                        "some instance description",
-                                        DEFAULT_COLOR,
-                                        "gear",
-                                        1.0
-                                    )
+    // region private val dto = ...
+    private val dto = BackupDTO(
+        version = 1,
+        tree = listOf(
+            BackupDTO.TreeElement.Folder(
+                model = BackupDTO.TreeElement.Folder.Model(
+                    "rootFolder1",
+                    null,
+                    "red",
+                    "folder",
+                    1.0,
+                    null
+                ),
+                children = listOf(
+                    BackupDTO.TreeElement.Application(
+                        model = BackupDTO.TreeElement.Application.Model(
+                            "rootFolder1Application1",
+                            "some app description",
+                            "SPRING_BOOT",
+                            DEFAULT_COLOR,
+                            "cloud",
+                            1.0
+                        ),
+                        children = listOf(
+                            BackupDTO.TreeElement.Application.Instance(
+                                model = BackupDTO.TreeElement.Application.Instance.Model(
+                                    "rootFolder1ApplicationInstance1",
+                                    "http://localhost:8080",
+                                    "some instance description",
+                                    DEFAULT_COLOR,
+                                    "gear",
+                                    1.0
                                 )
-                            ),
-                            metricRules = listOf(
-                                BackupDTO.TreeElement.Application.MetricRule(
-                                    name = "rootFolder1Application1MetricRule1",
-                                    metricName = "test[VALUE]",
-                                    divisorMetricName = null,
-                                    operation = "GREATER_THAN",
-                                    value1 = 1.0,
-                                    value2 = null,
-                                    enabled = true,
-                                    type = "SIMPLE"
-                                )
+                            )
+                        ),
+                        metricRules = listOf(
+                            BackupDTO.TreeElement.Application.MetricRule(
+                                name = "rootFolder1Application1MetricRule1",
+                                metricName = "test[VALUE]",
+                                divisorMetricName = null,
+                                operation = "GREATER_THAN",
+                                value1 = 1.0,
+                                value2 = null,
+                                enabled = true,
+                                type = "SIMPLE"
                             )
                         )
                     )
                 )
-            ),
-        )
-        // endregion
+            )
+        ),
+    )
+    // endregion
+
+    @Test
+    fun `importBackup should recursively import a backupDTO`() {
         backupImporter.import(dto)
+        validateDto()
+    }
+
+    @Test
+    fun `deleteAndImport should delete all orphan folders, applications`() {
+        folderKrud.create(stubFolder())
+        applicationKrud.create(stubApplication())
+        backupImporter.deleteAndImport(dto)
+        validateDto()
+    }
+
+    private fun validateDto() {
         expect {
             that(folderKrud.entities).hasSize(1)
             that(applicationKrud.entities).hasSize(1)
