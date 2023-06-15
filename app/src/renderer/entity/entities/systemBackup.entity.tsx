@@ -19,11 +19,13 @@ export const systemBackupEntity: Entity<SystemBackupRO> = {
       id: 'auto',
       type: 'Boolean',
       labelId: 'auto',
+      width: 100,
     },
     {
       id: 'valid',
       type: 'Boolean',
       labelId: 'valid',
+      width: 100,
       getTooltip: (item) => (item.valid ? undefined : item.error),
     },
   ],
