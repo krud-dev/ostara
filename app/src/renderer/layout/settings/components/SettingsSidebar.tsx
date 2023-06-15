@@ -1,6 +1,12 @@
 import Sidebar from 'renderer/components/menu/sidebar/Sidebar';
 import { SidebarConfig } from 'renderer/components/menu/sidebar/SidebarSection';
-import { NotificationsNoneOutlined, SettingsApplicationsOutlined, ShieldOutlined } from '@mui/icons-material';
+import {
+  ManageHistoryOutlined,
+  NotificationsNoneOutlined,
+  SettingsApplicationsOutlined,
+  SettingsBackupRestoreOutlined,
+  ShieldOutlined,
+} from '@mui/icons-material';
 import { urls } from 'renderer/routes/urls';
 import { useMemo } from 'react';
 import { FormattedMessage } from 'react-intl';
@@ -31,6 +37,12 @@ export default function SettingsSidebar({ width }: SettingsSidebarProps) {
             icon: <ShieldOutlined />,
             label: <FormattedMessage id={'privacy'} />,
             to: urls.settingsPrivacy.url,
+          },
+          {
+            id: 'backups',
+            icon: <ManageHistoryOutlined />,
+            label: <FormattedMessage id={'localBackups'} />,
+            to: urls.settingsBackups.url,
           },
         ],
       },

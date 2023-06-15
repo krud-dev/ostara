@@ -11,6 +11,7 @@ import TableCellDataCountdown from './TableCellDataCountdown';
 import TableCellDataInterval from './TableCellDataInterval';
 import TableCellDataParsedDate from './TableCellDataParsedDate';
 import TableCellDataCustomText from './TableCellDataCustomText';
+import TableCellDataBoolean from 'renderer/components/table/data/TableCellDataBoolean';
 
 type TableCellDataProps<EntityItem> = {
   row: EntityItem;
@@ -28,6 +29,8 @@ export default function TableCellData<EntityItem>({ row, column }: TableCellData
         return <TableCellDataCron row={row} column={column} />;
       case 'Date':
         return <TableCellDataDate row={row} column={column} />;
+      case 'Boolean':
+        return <TableCellDataBoolean row={row} column={column} />;
       case 'ParsedDate':
         return <TableCellDataParsedDate row={row} column={column} />;
       case 'Bytes':

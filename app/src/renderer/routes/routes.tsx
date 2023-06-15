@@ -46,6 +46,7 @@ import SettingsLayout from 'renderer/layout/settings/SettingsLayout';
 import SettingsGeneral from 'renderer/pages/settings/general';
 import SettingsNotifications from 'renderer/pages/settings/notifications';
 import SettingsPrivacy from 'renderer/pages/settings/privacy';
+import SettingsBackups from 'renderer/pages/settings/backups';
 
 export default function Router() {
   return useRoutes([
@@ -331,6 +332,10 @@ export default function Router() {
             {
               path: urls.settingsPrivacy.path,
               element: <SettingsPrivacy />,
+            },
+            {
+              path: urls.settingsBackups.path,
+              element: <SettingsBackups />,
             },
           ],
         },

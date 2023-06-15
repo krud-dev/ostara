@@ -42,3 +42,6 @@ out/
 
 ### Heapdumps ###
 heapdumps/
+
+### Backups ###
+backups/

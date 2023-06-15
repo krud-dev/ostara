@@ -12,3 +12,5 @@ export const DISABLE_ID = 'disable';
 export const SHUTDOWN_ID = 'shutdown';
 export const ADD_ID = 'add';
 export const UPDATE_ID = 'update';
+export const RESTORE_ID = 'restore';
+export const BACKUP_ID = 'backup';

@@ -2,12 +2,13 @@ import { FormattedMessage } from 'react-intl';
 import React, { FunctionComponent, useCallback, useEffect, useState } from 'react';
 import { Button, Dialog, DialogActions, DialogContent, DialogContentText } from '@mui/material';
 import NiceModal, { NiceModalHocProps, useModal } from '@ebay/nice-modal-react';
-import DialogTitleEnhanced from '../../../../../components/dialog/DialogTitleEnhanced';
-import { useAnalytics } from '../../../../../contexts/AnalyticsContext';
-import { useImportAll } from '../../../../../apis/requests/backup/importAll';
-import UploadSingleFile from '../../../../../components/upload/UploadSingleFile';
+import DialogTitleEnhanced from 'renderer/components/dialog/DialogTitleEnhanced';
+import { useAnalytics } from 'renderer/contexts/AnalyticsContext';
+import { useImportAll } from 'renderer/apis/requests/backup/importAll';
+import UploadSingleFile from 'renderer/components/upload/UploadSingleFile';
 import { isEmpty } from 'lodash';
 import { useSnackbar } from 'notistack';
+import { LoadingButton } from '@mui/lab';
 
 export type ExportConfigurationDialogProps = {};
 
@@ -87,7 +88,7 @@ const ImportConfigurationDialog: FunctionComponent<ExportConfigurationDialogProp
           fullWidth
           maxWidth={'xs'}
         >
-          <DialogTitleEnhanced onClose={cancelHandler}>
+          <DialogTitleEnhanced onClose={cancelHandler} disabled={importState.isLoading}>
             <FormattedMessage id={'importConfiguration'} />
           </DialogTitleEnhanced>
           <DialogContent>
@@ -105,12 +106,17 @@ const ImportConfigurationDialog: FunctionComponent<ExportConfigurationDialogProp
             />
           </DialogContent>
           <DialogActions>
-            <Button variant="outlined" color="inherit" onClick={cancelHandler}>
+            <Button variant="outlined" color="inherit" onClick={cancelHandler} disabled={importState.isLoading}>
               <FormattedMessage id={'cancel'} />
             </Button>
-            <Button variant="contained" color={'primary'} onClick={submitHandler}>
+            <LoadingButton
+              variant="contained"
+              color={'primary'}
+              onClick={submitHandler}
+              loading={importState.isLoading}
+            >
               <FormattedMessage id={'import'} />
-            </Button>
+            </LoadingButton>
           </DialogActions>
         </Dialog>
       </>

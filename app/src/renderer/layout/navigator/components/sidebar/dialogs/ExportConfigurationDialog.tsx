@@ -2,9 +2,10 @@ import { FormattedMessage } from 'react-intl';
 import React, { FunctionComponent, useCallback } from 'react';
 import { Alert, Button, Dialog, DialogActions, DialogContent, DialogContentText } from '@mui/material';
 import NiceModal, { NiceModalHocProps, useModal } from '@ebay/nice-modal-react';
-import DialogTitleEnhanced from '../../../../../components/dialog/DialogTitleEnhanced';
-import { useExportAll } from '../../../../../apis/requests/backup/exportAll';
-import { useAnalytics } from '../../../../../contexts/AnalyticsContext';
+import DialogTitleEnhanced from 'renderer/components/dialog/DialogTitleEnhanced';
+import { useExportAll } from 'renderer/apis/requests/backup/exportAll';
+import { useAnalytics } from 'renderer/contexts/AnalyticsContext';
+import { LoadingButton } from '@mui/lab';
 
 export type ExportConfigurationDialogProps = {};
 
@@ -42,7 +43,7 @@ const ExportConfigurationDialog: FunctionComponent<ExportConfigurationDialogProp
           fullWidth
           maxWidth={'xs'}
         >
-          <DialogTitleEnhanced onClose={cancelHandler}>
+          <DialogTitleEnhanced onClose={cancelHandler} disabled={exportState.isLoading}>
             <FormattedMessage id={'exportConfiguration'} />
           </DialogTitleEnhanced>
           <DialogContent>
@@ -54,12 +55,17 @@ const ExportConfigurationDialog: FunctionComponent<ExportConfigurationDialogProp
             </Alert>
           </DialogContent>
           <DialogActions>
-            <Button variant="outlined" color="inherit" onClick={cancelHandler}>
+            <Button variant="outlined" color="inherit" onClick={cancelHandler} disabled={exportState.isLoading}>
               <FormattedMessage id={'cancel'} />
             </Button>
-            <Button variant="contained" color={'primary'} onClick={submitHandler}>
+            <LoadingButton
+              variant="contained"
+              color={'primary'}
+              onClick={submitHandler}
+              loading={exportState.isLoading}
+            >
               <FormattedMessage id={'export'} />
-            </Button>
+            </LoadingButton>
           </DialogActions>
         </Dialog>
       </>
