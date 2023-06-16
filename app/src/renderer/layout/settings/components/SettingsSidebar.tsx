@@ -4,7 +4,6 @@ import {
   ManageHistoryOutlined,
   NotificationsNoneOutlined,
   SettingsApplicationsOutlined,
-  SettingsBackupRestoreOutlined,
   ShieldOutlined,
 } from '@mui/icons-material';
 import { urls } from 'renderer/routes/urls';
