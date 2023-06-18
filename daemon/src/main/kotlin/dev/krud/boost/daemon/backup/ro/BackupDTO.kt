@@ -2,6 +2,7 @@ package dev.krud.boost.daemon.backup.ro
 
 import com.fasterxml.jackson.annotation.JsonSubTypes
 import com.fasterxml.jackson.annotation.JsonTypeInfo
+import dev.krud.boost.daemon.base.annotations.GenerateTypescript
 import dev.krud.boost.daemon.configuration.application.entity.Application
 import dev.krud.boost.daemon.configuration.application.enums.ApplicationType
 import dev.krud.boost.daemon.configuration.authentication.Authentication
@@ -15,6 +16,7 @@ import java.io.Serializable
 import java.util.*
 
 
+@GenerateTypescript
 class BackupDTO(
     val version: Int? = null,
     val date: Date? = null,
