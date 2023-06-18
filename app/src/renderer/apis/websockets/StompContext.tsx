@@ -10,7 +10,7 @@ export type StompContextProps = {
     topic: SubscribeTopic,
     params: { [key in PathParam<SubscribeTopic>]: string },
     callback: (message: StompTopics[SubscribeTopic]) => void
-  ) => () => void;
+  ) => () => Promise<void>;
 };
 
 const StompContext = React.createContext<StompContextProps>(undefined!);
@@ -66,7 +66,7 @@ const StompProvider: FunctionComponent<StompProviderProps> = ({ children }) => {
       topic: SubscribeTopic,
       params: { [key in PathParam<SubscribeTopic>]: string },
       callback: (message: StompTopics[SubscribeTopic]) => void
-    ): (() => void) => {
+    ): (() => Promise<void>) => {
       const generatedTopic = generatePath(topic, params as any);
 
       const topicCallbacks = subscriptions.current[generatedTopic] || [];
@@ -75,7 +75,7 @@ const StompProvider: FunctionComponent<StompProviderProps> = ({ children }) => {
       }
       subscriptions.current[generatedTopic] = [...topicCallbacks, callback as any];
 
-      return () => {
+      return async (): Promise<void> => {
         subscriptions.current[generatedTopic] = subscriptions.current[generatedTopic].filter((cb) => cb !== callback);
         if (subscriptions.current[generatedTopic].length === 0) {
           delete subscriptions.current[generatedTopic];
