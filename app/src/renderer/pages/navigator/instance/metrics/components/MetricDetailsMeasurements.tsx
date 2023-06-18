@@ -1,15 +1,18 @@
 import React, { useMemo } from 'react';
 import DetailsLabelValueVertical from 'renderer/components/table/details/DetailsLabelValueVertical';
-import { FormattedMessage } from 'react-intl';
-import { Card, CardContent, CardHeader } from '@mui/material';
+import { FormattedMessage, useIntl } from 'react-intl';
+import { Box, Card, CardContent, CardHeader, Tooltip } from '@mui/material';
 import { DEFAULT_TABLE_COLUMN_WIDTH } from 'renderer/constants/ui';
-import { MetricActuatorResponse } from '../../../../../../common/generated_definitions';
+import { MetricActuatorResponse } from 'common/generated_definitions';
+import { formatWidgetValue } from 'renderer/utils/formatUtils';
 
 type MetricDetailsMeasurementsProps = {
   metricDetails: MetricActuatorResponse;
 };
 
 export default function MetricDetailsMeasurements({ metricDetails }: MetricDetailsMeasurementsProps) {
+  const intl = useIntl();
+
   const show = useMemo<boolean>(() => !!metricDetails?.measurements?.length, [metricDetails]);
 
   if (!show) {
@@ -26,13 +29,21 @@ export default function MetricDetailsMeasurements({ metricDetails }: MetricDetai
           gridGap: (theme) => theme.spacing(1),
         }}
       >
-        {metricDetails.measurements.map((measurement) => (
-          <DetailsLabelValueVertical
-            label={measurement.statistic}
-            value={metricDetails.measurements.find((m) => m.statistic === measurement.statistic)?.value}
-            key={measurement.statistic}
-          />
-        ))}
+        {metricDetails.measurements.map((measurement) => {
+          const value = metricDetails.measurements.find((m) => m.statistic === measurement.statistic)?.value;
+          const formattedValue = formatWidgetValue(value, metricDetails.baseUnit, intl);
+          return (
+            <DetailsLabelValueVertical
+              label={measurement.statistic}
+              value={
+                <Tooltip title={value}>
+                  <Box component={'span'}>{formattedValue}</Box>
+                </Tooltip>
+              }
+              key={measurement.statistic}
+            />
+          );
+        })}
       </CardContent>
     </Card>
   );
