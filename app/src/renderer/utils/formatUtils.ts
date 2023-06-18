@@ -13,7 +13,11 @@ export const splitCamelCase = (value: string): string => {
   return value.replace(/([^A-Z])([A-Z])/g, '$1 $2');
 };
 
-export const formatWidgetValue = (value: unknown, valueType: WidgetValueType, intl: IntlShape): string => {
+export const formatWidgetValue = (
+  value: unknown,
+  valueType: WidgetValueType | string | undefined,
+  intl: IntlShape
+): string => {
   if (isNil(value)) {
     return EMPTY_STRING;
   }
@@ -43,9 +47,8 @@ export const formatWidgetValue = (value: unknown, valueType: WidgetValueType, in
     case 'string':
     case 'undefined':
     case 'null':
-      return toString(value);
     default:
-      return EMPTY_STRING;
+      return toString(value);
   }
 };
 
