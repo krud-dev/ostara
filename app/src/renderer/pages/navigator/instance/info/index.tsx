@@ -16,6 +16,8 @@ import InstanceInfoJava from 'renderer/pages/navigator/instance/info/components/
 import InstanceInfoOs from 'renderer/pages/navigator/instance/info/components/InstanceInfoOs';
 import InstanceInfoExtraValues from 'renderer/pages/navigator/instance/info/components/InstanceInfoExtraValues';
 import { splitCamelCase } from 'renderer/utils/formatUtils';
+import { FormattedMessage } from 'react-intl';
+import { InlineCodeLabel } from 'renderer/components/code/InlineCodeLabel';
 
 const InstanceInfo: FunctionComponent = () => {
   const { selectedItem } = useNavigatorTree();
@@ -67,7 +69,16 @@ const InstanceInfo: FunctionComponent = () => {
   return (
     <Page sx={{ height: '100%' }}>
       {uiStatus === 'loading' && <LogoLoaderCenter />}
-      {uiStatus === 'empty' && <EmptyContent />}
+      {uiStatus === 'empty' && (
+        <EmptyContent
+          description={
+            <FormattedMessage
+              id={'instanceInfoEmpty'}
+              values={{ class: <InlineCodeLabel code={'InfoContributor'} sx={{ verticalAlign: 'middle' }} /> }}
+            />
+          }
+        />
+      )}
 
       {uiStatus === 'content' && (
         <Container disableGutters maxWidth={'md'} sx={{ m: 'auto' }}>
