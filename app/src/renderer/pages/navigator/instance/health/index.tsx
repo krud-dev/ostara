@@ -1,14 +1,15 @@
 import React, { FunctionComponent, useCallback, useMemo } from 'react';
 import Page from 'renderer/components/layout/Page';
 import { useNavigatorLayout } from 'renderer/contexts/NavigatorLayoutContext';
-import { Container, Stack } from '@mui/material';
+import { Box, Container, Grow, Stack } from '@mui/material';
 import EmptyContent from 'renderer/components/help/EmptyContent';
 import { HealthActuatorResponse, HealthActuatorResponse$Component, InstanceRO } from 'common/generated_definitions';
 import LogoLoaderCenter from 'renderer/components/common/LogoLoaderCenter';
 import { useGetInstanceHealthQuery } from 'renderer/apis/requests/instance/health/getInstanceHealth';
 import { useIntl } from 'react-intl';
 import InstanceHealthComponentCard from 'renderer/pages/navigator/instance/health/components/InstanceHealthComponentCard';
-import { COMPONENTS_SPACING } from 'renderer/constants/ui';
+import { ANIMATION_TIMEOUT_LONG, COMPONENTS_SPACING } from 'renderer/constants/ui';
+import { TransitionGroup } from 'react-transition-group';
 
 export type EnrichedHealthActuatorResponse$Component = {
   name: string;
@@ -83,9 +84,15 @@ const InstanceHealth: FunctionComponent = () => {
       {uiStatus === 'content' && (
         <Container disableGutters maxWidth={'md'} sx={{ m: 'auto' }}>
           <Stack direction={'column'} spacing={COMPONENTS_SPACING}>
-            {components?.map((component) => (
-              <InstanceHealthComponentCard component={component} key={component.path} />
-            ))}
+            <TransitionGroup component={null}>
+              {components?.map((component, index) => (
+                <Grow timeout={(index + 1) * ANIMATION_TIMEOUT_LONG}>
+                  <Box>
+                    <InstanceHealthComponentCard component={component} key={component.path} />
+                  </Box>
+                </Grow>
+              ))}
+            </TransitionGroup>
           </Stack>
         </Container>
       )}
