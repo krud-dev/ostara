@@ -3,6 +3,9 @@ package dev.krud.boost.daemon.backup
 import com.auth0.jwt.exceptions.JWTDecodeException
 import dev.krud.boost.daemon.backup.ro.BackupDTO
 import dev.krud.boost.daemon.base.config.AppMainProperties
+import dev.krud.boost.daemon.time.TimeService
+import dev.krud.boost.daemon.utils.ONE_HOUR
+import dev.krud.boost.daemon.utils.ONE_YEAR
 import okio.GzipSink
 import okio.GzipSource
 import okio.buffer
@@ -35,6 +38,7 @@ class SystemBackupServiceTest {
     private val backupImporter = mock<BackupImporter>()
     private val backupExporter = mock<BackupExporter>()
     private val backupJwtService = mock<BackupJwtService>()
+    private val timeService = mock<TimeService>()
     private lateinit var appMainProperties: AppMainProperties
     private lateinit var systemBackupService: SystemBackupService
 
@@ -48,20 +52,33 @@ class SystemBackupServiceTest {
             backupImporter,
             backupExporter,
             backupJwtService,
-            appMainProperties
+            appMainProperties,
+            timeService
         )
     }
 
     @Test
+    fun `createAutoSystemBackup should create a single backup an hour`() {
+        val token = prepareExportScenario()
+        whenever(timeService.nowMillis()).thenReturn(ONE_YEAR)
+        systemBackupService.createAutoSystemBackup()
+        whenever(timeService.nowMillis()).thenReturn(ONE_YEAR + ONE_HOUR)
+        systemBackupService.createAutoSystemBackup()
+        whenever(timeService.nowMillis()).thenReturn(ONE_YEAR + (ONE_HOUR * 2))
+        systemBackupService.createAutoSystemBackup()
+        systemBackupService.createAutoSystemBackup()
+        val backupFiles = Files.list(temporaryDirectory).toList()
+        expect {
+            that(backupFiles.size).isEqualTo(3)
+            val file = backupFiles[0]
+            val content = file.gzippedContent()
+            that(content).isEqualTo(token)
+        }
+    }
+
+    @Test
     fun `createBackup should save a gzipped backup to the backup directory`() {
-        val dto = BackupDTO(
-            version = 0,
-            date = Date(0),
-            tree = emptyList()
-        )
-        val token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpYXQiOjE2ODY2NDA4MzAsImJhY2t1cCI6IntcInZlcnNpb25cIjowLFwiZGF0ZVwiOjAsXCJ0cmVlXCI6W119In0.nKc-Yzg4wG4USRb9-vQufrLpYiuhAUzzJhnBmiOttYA"
-        whenever(backupExporter.exportAll()).thenReturn(dto)
-        whenever(backupJwtService.sign(dto)).thenReturn(token)
+        val token = prepareExportScenario()
         val manualBackup = systemBackupService.createSystemBackup(false).getOrThrow()
         val autoBackup = systemBackupService.createSystemBackup(true).getOrThrow()
         val backupFiles = Files.list(temporaryDirectory).toList()
@@ -199,5 +216,17 @@ class SystemBackupServiceTest {
                 gzipSink.writeString(content, Charsets.UTF_8)
             }
         }
+    }
+
+    private fun prepareExportScenario(): String {
+        val dto = BackupDTO(
+            version = 0,
+            date = Date(0),
+            tree = emptyList()
+        )
+        val token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpYXQiOjE2ODY2NDA4MzAsImJhY2t1cCI6IntcInZlcnNpb25cIjowLFwiZGF0ZVwiOjAsXCJ0cmVlXCI6W119In0.nKc-Yzg4wG4USRb9-vQufrLpYiuhAUzzJhnBmiOttYA"
+        whenever(backupExporter.exportAll()).thenReturn(dto)
+        whenever(backupJwtService.sign(dto)).thenReturn(token)
+        return token
     }
 }
