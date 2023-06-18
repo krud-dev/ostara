@@ -1,11 +1,10 @@
 import React, { FunctionComponent, useMemo } from 'react';
 import { DashboardWidgetCardProps, HealthStatusWidget } from 'renderer/components/widget/widget';
 import DashboardGenericCard from 'renderer/components/widget/card/DashboardGenericCard';
-import { isNil } from 'lodash';
 import { CardContent, Typography } from '@mui/material';
-import { EMPTY_STRING } from '../../../constants/ui';
+import { EMPTY_STRING } from 'renderer/constants/ui';
 import { FormattedMessage } from 'react-intl';
-import { getItemHealthStatusColor, getItemHealthStatusTextId } from '../../../utils/itemUtils';
+import { getItemHealthStatusColor, getItemHealthStatusTextId } from 'renderer/utils/itemUtils';
 
 const HealthStatusDashboardWidget: FunctionComponent<DashboardWidgetCardProps<HealthStatusWidget>> = ({
   widget,
@@ -20,7 +19,7 @@ const HealthStatusDashboardWidget: FunctionComponent<DashboardWidgetCardProps<He
     <DashboardGenericCard title={<FormattedMessage id={widget.titleId} />} loading={loading}>
       <CardContent>
         <Typography variant={'h3'} noWrap sx={{ textAlign: 'center', color: healthStatusColor }}>
-          {!isNil(healthTextId) ? <FormattedMessage id={healthTextId} /> : EMPTY_STRING}
+          {healthTextId ? <FormattedMessage id={healthTextId} /> : EMPTY_STRING}
         </Typography>
       </CardContent>
     </DashboardGenericCard>
