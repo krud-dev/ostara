@@ -59,7 +59,13 @@ export default function NavigatorTreeNode(props: NavigatorTreeNodeProps) {
         onContextMenuChange={onContextMenuChange}
       />
 
-      <NavigatorTreeNodeBase {...props} isSelected={isSelected} menuState={menuState} onClick={itemClickHandler} />
+      <NavigatorTreeNodeBase
+        {...props}
+        isSelected={isSelected}
+        menuState={menuState}
+        contextMenuRef={contextMenuRef}
+        onClick={itemClickHandler}
+      />
     </>
   );
 }

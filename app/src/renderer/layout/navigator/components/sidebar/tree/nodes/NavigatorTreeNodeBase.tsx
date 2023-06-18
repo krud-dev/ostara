@@ -1,7 +1,7 @@
 import { NodeRendererProps } from 'react-arborist';
 import { Badge, Box, IconButton, ListItem, ListItemIcon, ListItemText, TextField, Tooltip } from '@mui/material';
 import { alpha, experimentalStyled as styled, Theme, useTheme } from '@mui/material/styles';
-import React, { ReactNode, useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import React, { ReactNode, useCallback, useEffect, useMemo, useState } from 'react';
 import { TreeItem } from 'renderer/layout/navigator/components/sidebar/tree/tree';
 import typography from 'renderer/theme/config/typography';
 import { KeyboardArrowDown, KeyboardArrowRight, MoreVert, SvgIconComponent } from '@mui/icons-material';
@@ -18,16 +18,14 @@ import { SxProps } from '@mui/system';
 import useItemColor from 'renderer/hooks/useItemColor';
 import { IconViewer } from 'renderer/components/common/IconViewer';
 import useItemIcon from 'renderer/hooks/useItemIcon';
-import ItemMenu from 'renderer/layout/navigator/components/sidebar/tree/menus/ItemMenu';
-import { PopupState, usePopupState } from 'material-ui-popup-state/hooks';
-import ItemContextMenu from 'renderer/layout/navigator/components/sidebar/tree/menus/ItemContextMenu';
-import { ItemRO } from 'renderer/definitions/daemon';
+import { PopupState } from 'material-ui-popup-state/hooks';
 import useItemDisplayName from 'renderer/hooks/useItemDisplayName';
 import { useNavigatorTree } from 'renderer/contexts/NavigatorTreeContext';
 
 type NavigatorTreeNodeBaseProps = NodeRendererProps<TreeItem> & {
   isSelected?: boolean;
   menuState?: PopupState;
+  contextMenuRef?: React.MutableRefObject<HTMLElement | null>;
   onClick?: (event: React.MouseEvent) => void;
 };
 
@@ -78,6 +76,7 @@ export default function NavigatorTreeNodeBase({
   preview,
   isSelected,
   menuState,
+  contextMenuRef,
   onClick,
 }: NavigatorTreeNodeBaseProps) {
   const theme = useTheme();
@@ -91,17 +90,6 @@ export default function NavigatorTreeNodeBase({
       menuState?.open();
     },
     [menuState]
-  );
-
-  const contextMenuRef = useRef<HTMLElement | null>(null);
-
-  const onContextMenuChange = useCallback(
-    (open: boolean): void => {
-      if (open) {
-        node.focus();
-      }
-    },
-    [node]
   );
 
   const itemClickHandler = useCallback(
@@ -123,13 +111,6 @@ export default function NavigatorTreeNodeBase({
     (event: React.MouseEvent): void => {
       event.stopPropagation();
       node.toggle();
-    },
-    [node]
-  );
-
-  const childItemCreatedHandler = useCallback(
-    (item: ItemRO): void => {
-      node.open();
     },
     [node]
   );
@@ -207,7 +188,9 @@ export default function NavigatorTreeNodeBase({
     <ListItemStyle
       ref={(el) => {
         dragHandle?.(el);
-        contextMenuRef.current = el;
+        if (contextMenuRef) {
+          contextMenuRef.current = el;
+        }
       }}
       component="div"
       // @ts-ignore
