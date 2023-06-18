@@ -14,7 +14,7 @@ plugins {
 }
 
 group = "dev.krud.boost"
-version = "0.0.1-SNAPSHOT"
+version = "0.11.0-SNAPSHOT"
 
 val crudFrameworkVersion = "0.25.0"
 val shapeShiftVersion = "0.8.0"
@@ -152,6 +152,9 @@ tasks.jacocoTestReport {
     }
 }
 
+springBoot {
+    buildInfo()
+}
 
 sonar {
     properties {
