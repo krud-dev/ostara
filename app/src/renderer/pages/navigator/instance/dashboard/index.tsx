@@ -1,6 +1,6 @@
 import React, { FunctionComponent, useMemo } from 'react';
 import Page from 'renderer/components/layout/Page';
-import { useNavigatorTree } from 'renderer/contexts/NavigatorTreeContext';
+import { useNavigatorLayout } from 'renderer/contexts/NavigatorLayoutContext';
 import DashboardWidget from 'renderer/components/widget/DashboardWidget';
 import { COMPONENTS_SPACING } from 'renderer/constants/ui';
 import { InstanceRO } from '../../../../../common/generated_definitions';
@@ -8,7 +8,7 @@ import useDashboardWidgets from './hooks/useDashboardWidgets';
 import Grid2 from '@mui/material/Unstable_Grid2';
 
 const InstanceDashboard: FunctionComponent = () => {
-  const { selectedItem } = useNavigatorTree();
+  const { selectedItem } = useNavigatorLayout();
 
   const item = useMemo<InstanceRO>(() => selectedItem as InstanceRO, [selectedItem]);
 

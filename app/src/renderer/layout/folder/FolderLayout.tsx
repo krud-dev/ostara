@@ -1,11 +1,11 @@
 import React, { FunctionComponent, useMemo } from 'react';
-import { useNavigatorTree } from 'renderer/contexts/NavigatorTreeContext';
 import SecondarySidebarLayout from 'renderer/layout/common/secondary-sidebar/SecondarySidebarLayout';
-import { FolderRO } from '../../../common/generated_definitions';
-import FolderSidebar from './components/FolderSidebar';
+import { FolderRO } from 'common/generated_definitions';
+import FolderSidebar from 'renderer/layout/folder/components/FolderSidebar';
+import { useNavigatorLayout } from 'renderer/contexts/NavigatorLayoutContext';
 
 const FolderLayout: FunctionComponent = () => {
-  const { selectedItem } = useNavigatorTree();
+  const { selectedItem } = useNavigatorLayout();
 
   const item = useMemo<FolderRO | undefined>(() => selectedItem as FolderRO | undefined, [selectedItem]);
 

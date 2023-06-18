@@ -1,6 +1,6 @@
 import React, { FunctionComponent, useCallback, useMemo } from 'react';
 import Page from 'renderer/components/layout/Page';
-import { useNavigatorTree } from 'renderer/contexts/NavigatorTreeContext';
+import { useNavigatorLayout } from 'renderer/contexts/NavigatorLayoutContext';
 import TableComponent from 'renderer/components/table/TableComponent';
 import { useSnackbar } from 'notistack';
 import { Entity } from 'renderer/entity/entity';
@@ -20,7 +20,7 @@ import NiceModal from '@ebay/nice-modal-react';
 import InstanceCacheStatisticsDialog from './components/InstanceCacheStatisticsDialog';
 
 const InstanceCaches: FunctionComponent = () => {
-  const { selectedItem, selectedItemAbilities } = useNavigatorTree();
+  const { selectedItem, selectedItemAbilities } = useNavigatorLayout();
   const { enqueueSnackbar } = useSnackbar();
 
   const item = useMemo<InstanceRO>(() => selectedItem as InstanceRO, [selectedItem]);

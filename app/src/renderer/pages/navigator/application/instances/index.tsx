@@ -1,6 +1,5 @@
 import React, { FunctionComponent, useCallback, useMemo } from 'react';
 import Page from 'renderer/components/layout/Page';
-import { useNavigatorTree } from 'renderer/contexts/NavigatorTreeContext';
 import TableComponent from 'renderer/components/table/TableComponent';
 import { Entity } from 'renderer/entity/entity';
 import { applicationInstanceEntity, EnrichedInstanceRO } from 'renderer/entity/entities/applicationInstance.entity';
@@ -13,10 +12,11 @@ import { FormattedMessage } from 'react-intl';
 import { getNewItemSort, getSubTreeRoot } from 'renderer/utils/treeUtils';
 import NiceModal from '@ebay/nice-modal-react';
 import CreateInstanceDialog from 'renderer/components/item/dialogs/create/CreateInstanceDialog';
+import { useNavigatorLayout } from 'renderer/contexts/NavigatorLayoutContext';
 
 const ApplicationInstances: FunctionComponent = () => {
   const { instances, refetchInstances } = useItems();
-  const { selectedItem, selectedItemAbilities, data: navigatorData } = useNavigatorTree();
+  const { selectedItem, selectedItemAbilities, data: navigatorData } = useNavigatorLayout();
 
   const item = useMemo<ApplicationRO>(() => selectedItem as ApplicationRO, [selectedItem]);
 

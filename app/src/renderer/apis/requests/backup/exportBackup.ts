@@ -9,7 +9,7 @@ type Variables = {};
 
 type Data = void;
 
-export const exportAll = async (variables: Variables): Promise<Data> => {
+export const exportBackup = async (variables: Variables): Promise<Data> => {
   const now = new Date().getTime();
   await window.ui.downloadFile(`${baseUrl}/backup/exportAll`, {
     filename: `ostara_export_${now}.json`,
@@ -18,5 +18,6 @@ export const exportAll = async (variables: Variables): Promise<Data> => {
   });
 };
 
-export const useExportAll = (options?: BaseMutationOptions<Data, Variables>): BaseUseMutationResult<Data, Variables> =>
-  useBaseMutation<Data, Variables>(exportAll, options);
+export const useExportBackup = (
+  options?: BaseMutationOptions<Data, Variables>
+): BaseUseMutationResult<Data, Variables> => useBaseMutation<Data, Variables>(exportBackup, options);

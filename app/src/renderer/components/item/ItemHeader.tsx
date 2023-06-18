@@ -17,13 +17,15 @@ import { IconViewer } from 'renderer/components/common/IconViewer';
 import useItemIcon from 'renderer/hooks/useItemIcon';
 import ItemMenu from 'renderer/layout/navigator/components/sidebar/tree/menus/ItemMenu';
 import { ItemRO } from '../../definitions/daemon';
+import { useNavigatorLayout } from 'renderer/contexts/NavigatorLayoutContext';
 
 type ItemHeaderProps = { item: ItemRO };
 
 export default function ItemHeader({ item }: ItemHeaderProps) {
   const menuState = usePopupState({ variant: 'popover' });
+  const { data } = useNavigatorLayout();
 
-  const color = useItemColor(item);
+  const color = useItemColor(item, data);
   const displayName = useMemo<string>(() => getItemDisplayName(item), [item]);
   const displayNameTooltip = useMemo<ReactNode | undefined>(() => getItemNameTooltip(item), [item]);
   const healthStatusColor = useMemo<string | undefined>(() => getItemHealthStatusColor(item), [item]);

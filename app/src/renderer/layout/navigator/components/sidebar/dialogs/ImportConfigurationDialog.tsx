@@ -1,14 +1,20 @@
 import { FormattedMessage } from 'react-intl';
 import React, { FunctionComponent, useCallback, useEffect, useState } from 'react';
-import { Button, Dialog, DialogActions, DialogContent, DialogContentText } from '@mui/material';
+import { Button, Card, Dialog, DialogActions, DialogContent, DialogContentText } from '@mui/material';
 import NiceModal, { NiceModalHocProps, useModal } from '@ebay/nice-modal-react';
 import DialogTitleEnhanced from 'renderer/components/dialog/DialogTitleEnhanced';
 import { useAnalytics } from 'renderer/contexts/AnalyticsContext';
-import { useImportAll } from 'renderer/apis/requests/backup/importAll';
+import { useImportBackup } from 'renderer/apis/requests/backup/importBackup';
 import UploadSingleFile from 'renderer/components/upload/UploadSingleFile';
 import { isEmpty } from 'lodash';
 import { useSnackbar } from 'notistack';
 import { LoadingButton } from '@mui/lab';
+import {
+  useValidateAndMigrateBackup,
+  useValidateAndMigrateBackupQuery,
+} from 'renderer/apis/requests/backup/validateAndMigrateBackup';
+import NavigatorTreePreview from 'renderer/layout/navigator/components/sidebar/tree/NavigatorTreePreview';
+import NavigatorTreePreviewCard from 'renderer/layout/navigator/components/sidebar/tree/cards/NavigatorTreePreviewCard';
 
 export type ExportConfigurationDialogProps = {};
 
@@ -21,7 +27,8 @@ const ImportConfigurationDialog: FunctionComponent<ExportConfigurationDialogProp
     const [file, setFile] = useState<File | undefined>(undefined);
     const [jsonData, setJsonData] = useState<string | undefined>(undefined);
 
-    const importState = useImportAll();
+    const importState = useImportBackup();
+    const previewState = useValidateAndMigrateBackupQuery({ jsonData: jsonData! }, { enabled: !!jsonData });
 
     const submitHandler = useCallback(async (): Promise<void> => {
       if (!jsonData) {
@@ -104,6 +111,8 @@ const ImportConfigurationDialog: FunctionComponent<ExportConfigurationDialogProp
               onDropAccepted={filesAcceptedHandler}
               onDropRejected={filesRejectedHandler}
             />
+
+            {jsonData && <NavigatorTreePreviewCard backup={previewState.data} sx={{ mt: 3 }} />}
           </DialogContent>
           <DialogActions>
             <Button variant="outlined" color="inherit" onClick={cancelHandler} disabled={importState.isLoading}>

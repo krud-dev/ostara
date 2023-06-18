@@ -1,15 +1,15 @@
 import React, { FunctionComponent, useMemo } from 'react';
 import Page from 'renderer/components/layout/Page';
-import { useNavigatorTree } from 'renderer/contexts/NavigatorTreeContext';
+import { useNavigatorLayout } from 'renderer/contexts/NavigatorLayoutContext';
 import { Card } from '@mui/material';
 import { FormattedMessage } from 'react-intl';
 import TabPanel, { TabInfo } from 'renderer/components/layout/TabPanel';
-import { InstanceRO } from '../../../../../common/generated_definitions';
+import { InstanceRO } from 'common/generated_definitions';
 import QuartzJobsTable from './components/QuartzJobsTable';
 import QuartzTriggersTable from './components/QuartzTriggersTable';
 
 const InstanceQuartz: FunctionComponent = () => {
-  const { selectedItem } = useNavigatorTree();
+  const { selectedItem } = useNavigatorLayout();
 
   const item = useMemo<InstanceRO>(() => selectedItem as InstanceRO, [selectedItem]);
 

@@ -3,18 +3,18 @@ import { urls } from 'renderer/routes/urls';
 import { green, grey, orange, pink, purple, red, yellow } from '@mui/material/colors';
 import blueGrey from '@mui/material/colors/blueGrey';
 import { MUIconType } from 'renderer/components/common/IconViewer';
-import { ItemRO, ItemType } from '../definitions/daemon';
+import { ItemRO, ItemType } from 'renderer/definitions/daemon';
 import {
   ApplicationHealthStatus,
   ApplicationRO,
   FolderRO,
   InstanceHealthStatus,
   InstanceRO,
-} from '../../common/generated_definitions';
-import { CrudEntity } from '../apis/requests/crud/entity/entity';
-import { applicationCrudEntity } from '../apis/requests/crud/entity/entities/application.crudEntity';
-import { instanceCrudEntity } from '../apis/requests/crud/entity/entities/instance.crudEntity';
-import { folderCrudEntity } from '../apis/requests/crud/entity/entities/folder.crudEntity';
+} from 'common/generated_definitions';
+import { CrudEntity } from 'renderer/apis/requests/crud/entity/entity';
+import { applicationCrudEntity } from 'renderer/apis/requests/crud/entity/entities/application.crudEntity';
+import { instanceCrudEntity } from 'renderer/apis/requests/crud/entity/entities/instance.crudEntity';
+import { folderCrudEntity } from 'renderer/apis/requests/crud/entity/entities/folder.crudEntity';
 import React, { ReactNode } from 'react';
 import { Box, CircularProgress } from '@mui/material';
 import { FormattedMessage } from 'react-intl';

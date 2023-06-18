@@ -1,6 +1,6 @@
 import React, { FunctionComponent, useMemo } from 'react';
 import Page from 'renderer/components/layout/Page';
-import { useNavigatorTree } from 'renderer/contexts/NavigatorTreeContext';
+import { useNavigatorLayout } from 'renderer/contexts/NavigatorLayoutContext';
 import { Container } from '@mui/material';
 import { chain, filter, isString, map } from 'lodash';
 import EmptyContent from 'renderer/components/help/EmptyContent';
@@ -20,7 +20,7 @@ import { FormattedMessage } from 'react-intl';
 import { InlineCodeLabel } from 'renderer/components/code/InlineCodeLabel';
 
 const InstanceInfo: FunctionComponent = () => {
-  const { selectedItem } = useNavigatorTree();
+  const { selectedItem } = useNavigatorLayout();
 
   const item = useMemo<InstanceRO>(() => selectedItem as InstanceRO, [selectedItem]);
 

@@ -1,6 +1,5 @@
 import React, { FunctionComponent, useCallback, useMemo } from 'react';
 import Page from 'renderer/components/layout/Page';
-import { useNavigatorTree } from 'renderer/contexts/NavigatorTreeContext';
 import TableComponent from 'renderer/components/table/TableComponent';
 import { useSnackbar } from 'notistack';
 import { Entity } from 'renderer/entity/entity';
@@ -14,13 +13,14 @@ import {
 import { useEvictApplicationCaches } from 'renderer/apis/requests/application/caches/evictApplicationCaches';
 import { useEvictAllApplicationCaches } from 'renderer/apis/requests/application/caches/evictAllApplicationCaches';
 import { Card } from '@mui/material';
-import { ApplicationRO } from '../../../../../common/generated_definitions';
-import { useEvictApplicationCache } from '../../../../apis/requests/application/caches/evictApplicationCache';
+import { ApplicationRO } from 'common/generated_definitions';
+import { useEvictApplicationCache } from 'renderer/apis/requests/application/caches/evictApplicationCache';
 import NiceModal from '@ebay/nice-modal-react';
-import ApplicationCacheStatisticsDialog from './components/ApplicationCacheStatisticsDialog';
+import ApplicationCacheStatisticsDialog from 'renderer/pages/navigator/application/caches/components/ApplicationCacheStatisticsDialog';
+import { useNavigatorLayout } from 'renderer/contexts/NavigatorLayoutContext';
 
 const ApplicationCaches: FunctionComponent = () => {
-  const { selectedItem, selectedItemAbilities } = useNavigatorTree();
+  const { selectedItem, selectedItemAbilities } = useNavigatorLayout();
   const { enqueueSnackbar } = useSnackbar();
 
   const item = useMemo<ApplicationRO>(() => selectedItem as ApplicationRO, [selectedItem]);

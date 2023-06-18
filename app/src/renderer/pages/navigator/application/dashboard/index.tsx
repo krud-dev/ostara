@@ -1,6 +1,5 @@
 import React, { FunctionComponent, useCallback, useMemo } from 'react';
 import Page from 'renderer/components/layout/Page';
-import { useNavigatorTree } from 'renderer/contexts/NavigatorTreeContext';
 import { Box, Button, Card, CardContent, CardHeader, Stack } from '@mui/material';
 import { ApplicationRO, InstanceHealthStatus, InstanceRO } from 'common/generated_definitions';
 import EmptyContent from 'renderer/components/help/EmptyContent';
@@ -15,10 +14,11 @@ import CreateInstanceDialog from 'renderer/components/item/dialogs/create/Create
 import { useItems } from 'renderer/contexts/ItemsContext';
 import { getNewItemSort, getSubTreeRoot } from 'renderer/utils/treeUtils';
 import LogoLoaderCenter from 'renderer/components/common/LogoLoaderCenter';
+import { useNavigatorLayout } from 'renderer/contexts/NavigatorLayoutContext';
 
 const ApplicationDashboard: FunctionComponent = () => {
   const { instances } = useItems();
-  const { selectedItem, data: navigatorData } = useNavigatorTree();
+  const { selectedItem, data: navigatorData } = useNavigatorLayout();
 
   const item = useMemo<ApplicationRO>(() => selectedItem as ApplicationRO, [selectedItem]);
   const data = useMemo<InstanceRO[] | undefined>(

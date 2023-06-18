@@ -3,7 +3,7 @@ import React, { FunctionComponent, useCallback } from 'react';
 import { Alert, Button, Dialog, DialogActions, DialogContent, DialogContentText } from '@mui/material';
 import NiceModal, { NiceModalHocProps, useModal } from '@ebay/nice-modal-react';
 import DialogTitleEnhanced from 'renderer/components/dialog/DialogTitleEnhanced';
-import { useExportAll } from 'renderer/apis/requests/backup/exportAll';
+import { useExportBackup } from 'renderer/apis/requests/backup/exportBackup';
 import { useAnalytics } from 'renderer/contexts/AnalyticsContext';
 import { LoadingButton } from '@mui/lab';
 
@@ -14,7 +14,7 @@ const ExportConfigurationDialog: FunctionComponent<ExportConfigurationDialogProp
     const modal = useModal();
     const { track } = useAnalytics();
 
-    const exportState = useExportAll();
+    const exportState = useExportBackup();
 
     const submitHandler = useCallback(async (): Promise<void> => {
       track({ name: 'export_all_submit' });

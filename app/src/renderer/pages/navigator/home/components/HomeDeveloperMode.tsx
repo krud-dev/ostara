@@ -9,7 +9,7 @@ import {
   InstanceModifyRequestRO,
   InstanceRO,
 } from 'common/generated_definitions';
-import { useNavigatorTree } from 'renderer/contexts/NavigatorTreeContext';
+import { useNavigatorLayout } from 'renderer/contexts/NavigatorLayoutContext';
 import { INHERITED_COLOR_VALUE } from 'renderer/hooks/useItemColor';
 import { applicationCrudEntity } from 'renderer/apis/requests/crud/entity/entities/application.crudEntity';
 import { instanceCrudEntity } from 'renderer/apis/requests/crud/entity/entities/instance.crudEntity';
@@ -39,7 +39,7 @@ type HomeDeveloperModeProps = {};
 
 export default function HomeDeveloperMode({}: HomeDeveloperModeProps) {
   const { notificationsSoundActive } = useSettings();
-  const { data, getNewItemOrder } = useNavigatorTree();
+  const { data, getNewItemOrder } = useNavigatorLayout();
   const queryClient = useQueryClient();
 
   const testApplications = useMemo<ApplicationToCreate[]>(

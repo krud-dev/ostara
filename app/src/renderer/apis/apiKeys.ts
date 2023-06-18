@@ -108,5 +108,8 @@ export const apiKeys = {
   metrics: () => ['metrics'],
   metricLatest: (instanceId: string, metricName: string) => [...apiKeys.metrics(), 'latest', instanceId, metricName],
 
+  backupsPreview: (json: string) => ['backups', 'preview', json],
+
   systemBackups: () => ['systemBackups'],
+  systemBackupByFileName: (fileName: string) => ['systemBackups', 'fileName', fileName],
 };

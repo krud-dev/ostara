@@ -1,6 +1,5 @@
 import { chain, forEach } from 'lodash';
 import { TreeItem } from 'renderer/layout/navigator/components/sidebar/tree/tree';
-import { NodeApi } from 'react-arborist';
 import { ItemRO } from '../definitions/daemon';
 import { isInstance } from './itemUtils';
 
@@ -78,7 +77,7 @@ export const getSubTreeItemsForItem = (tree: TreeItem[], itemId: string): TreeIt
   return getSubTreeItems(root).map((item) => item);
 };
 
-export const findTreeItemPath = (tree: TreeItem[], id: string, inclusive = false): TreeItem[] | null => {
+export const findTreeItemPath = (tree: readonly TreeItem[], id: string, inclusive = false): TreeItem[] | null => {
   for (const item of tree) {
     if (item.id === id) {
       // If the current item has the desired id, return it as a single-item path

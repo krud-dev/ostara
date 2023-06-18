@@ -1,7 +1,7 @@
 import React, { FunctionComponent, useCallback, useMemo } from 'react';
-import { Box, Card, CardContent, Stack, Tooltip, Typography } from '@mui/material';
+import { Card, CardContent, Stack, Tooltip, Typography } from '@mui/material';
 import { FormattedMessage } from 'react-intl';
-import { InstanceRO } from '../../../../../../common/generated_definitions';
+import { InstanceRO } from 'common/generated_definitions';
 import {
   getInstanceHealthStatusColor,
   getInstanceHealthStatusIcon,
@@ -9,18 +9,20 @@ import {
   getItemDisplayName,
   getItemUrl,
   getItemVersion,
-} from '../../../../../utils/itemUtils';
-import { IconViewer, MUIconType } from '../../../../../components/common/IconViewer';
-import FormattedRelativeTimeNow from '../../../../../components/format/FormattedRelativeTimeNow';
+} from 'renderer/utils/itemUtils';
+import { IconViewer, MUIconType } from 'renderer/components/common/IconViewer';
+import FormattedRelativeTimeNow from 'renderer/components/format/FormattedRelativeTimeNow';
 import { useNavigate } from 'react-router-dom';
-import useItemIcon from '../../../../../hooks/useItemIcon';
-import useItemColor from '../../../../../hooks/useItemColor';
+import useItemIcon from 'renderer/hooks/useItemIcon';
+import useItemColor from 'renderer/hooks/useItemColor';
+import { useNavigatorLayout } from 'renderer/contexts/NavigatorLayoutContext';
 
 type ApplicationInstanceWidgetProps = {
   instance: InstanceRO;
 };
 
 const ApplicationInstanceWidget: FunctionComponent<ApplicationInstanceWidgetProps> = ({ instance }) => {
+  const { data } = useNavigatorLayout();
   const navigate = useNavigate();
 
   const title = useMemo<string>(() => getItemDisplayName(instance), [instance]);
@@ -34,7 +36,7 @@ const ApplicationInstanceWidget: FunctionComponent<ApplicationInstanceWidgetProp
     [instance]
   );
   const icon = useItemIcon(instance);
-  const color = useItemColor(instance);
+  const color = useItemColor(instance, data);
 
   const cardClickHandler = useCallback((): void => {
     navigate(getItemUrl(instance));

@@ -1,12 +1,12 @@
 import React, { FunctionComponent, useMemo } from 'react';
-import { useNavigatorTree } from 'renderer/contexts/NavigatorTreeContext';
-import { InstanceRO, IntegrationGraphActuatorResponse } from '../../../../../common/generated_definitions';
-import { useGetInstanceIntegrationGraphQuery } from '../../../../apis/requests/instance/integration-graph/getInstanceIntegrationGraph';
+import { useNavigatorLayout } from 'renderer/contexts/NavigatorLayoutContext';
+import { InstanceRO, IntegrationGraphActuatorResponse } from 'common/generated_definitions';
+import { useGetInstanceIntegrationGraphQuery } from 'renderer/apis/requests/instance/integration-graph/getInstanceIntegrationGraph';
 import { Edge, Node } from 'reactflow';
-import GraphPage from '../../../general/graph';
+import GraphPage from 'renderer/pages/general/graph';
 
 const InstanceIntegrationGraph: FunctionComponent = () => {
-  const { selectedItem } = useNavigatorTree();
+  const { selectedItem } = useNavigatorLayout();
 
   const item = useMemo<InstanceRO>(() => selectedItem as InstanceRO, [selectedItem]);
 

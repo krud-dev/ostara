@@ -21,22 +21,16 @@ export default function BlockContent({ file }: BlockContentProps) {
       alignItems="center"
       justifyContent="center"
       direction={{ xs: 'column', md: 'row' }}
-      sx={{ width: 1, textAlign: { xs: 'center', md: 'left' } }}
+      sx={{ width: 1, textAlign: 'center' }}
     >
       <Box sx={{ p: 2 }}>
         <Typography gutterBottom variant="subtitle1">
           <FormattedMessage id="dropOrSelectFile" />
         </Typography>
 
-        {fileName ? (
-          <Typography variant="body2" sx={{ color: 'success.main', wordBreak: 'break-all' }}>
-            {fileName}
-          </Typography>
-        ) : (
-          <Typography variant="body2" sx={{ color: 'text.secondary' }}>
-            <FormattedMessage id="dropFilesHereOrClick" />
-          </Typography>
-        )}
+        <Typography variant="body2" sx={{ color: 'text.secondary', wordBreak: 'break-all' }}>
+          {fileName || <FormattedMessage id="dropFilesHereOrClick" />}
+        </Typography>
       </Box>
     </Stack>
   );
