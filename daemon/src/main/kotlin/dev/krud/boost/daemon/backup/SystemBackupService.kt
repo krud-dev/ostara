@@ -39,6 +39,7 @@ class SystemBackupService(
             return
         }
         createSystemBackup(true)
+        deleteOldestAutoBackupIfNecessary()
         lastBackupCreationTime.set(timeService.nowMillis())
     }
     /**
@@ -135,7 +136,30 @@ class SystemBackupService(
         backupJwtService.verify(content)
     }
 
+    private fun deleteOldestAutoBackupIfNecessary() {
+        val files = appMainProperties.backupDirectory
+            .toFile()
+            .listFiles()
+            .filter { file ->
+                file.extension == "gz" && file.name.startsWith("backup-auto")
+            }
+            .sortedBy { file ->
+                file.lastModified()
+            }
+        if (files.size <= MAX_AUTO_BACKUPS) {
+            return
+        }
+        val file = files.minByOrNull { file ->
+            file.lastModified()
+        } ?: return
+        val result = file.delete()
+        if (!result) {
+            log.warn { "Could not delete file: $file" }
+        }
+    }
+
     companion object {
         private val log = KotlinLogging.logger { }
+        private const val MAX_AUTO_BACKUPS = 10
     }
 }
