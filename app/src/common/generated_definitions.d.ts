@@ -482,6 +482,12 @@ export interface InfoActuatorResponse$Git$Unknown extends InfoActuatorResponse$G
     type: string;
 }
 
+export interface BackupDTO {
+    version?: number;
+    date?: DateAsNumber;
+    tree: BackupDTO$TreeElementUnion[];
+}
+
 export interface ApplicationHealthUpdatedEventMessage$Payload {
     applicationId: string;
     newHealth: ApplicationHealthRO;
@@ -867,6 +873,10 @@ export interface InfoActuatorResponse$Git$Simple$Commit {
     time?: ParsedDate;
 }
 
+export interface BackupDTO$TreeElement {
+    type: "folder" | "application";
+}
+
 export interface Iterable<T> {
 }
 
@@ -1072,6 +1082,19 @@ export interface InfoActuatorResponse$Git$Full$Remote$Origin {
     url: string;
 }
 
+export interface BackupDTO$TreeElement$Folder extends BackupDTO$TreeElement {
+    type: "folder";
+    model: BackupDTO$TreeElement$Folder$Model;
+    children: BackupDTO$TreeElementUnion[];
+}
+
+export interface BackupDTO$TreeElement$Application extends BackupDTO$TreeElement {
+    type: "application";
+    model: BackupDTO$TreeElement$Application$Model;
+    children: BackupDTO$TreeElement$Application$Instance[];
+    metricRules: BackupDTO$TreeElement$Application$MetricRule[];
+}
+
 export interface FlywayActuatorResponse$Context$FlywayBean$Migration {
     type: string;
     checksum: number;
@@ -1124,10 +1147,55 @@ export interface InfoActuatorResponse$Git$Full$Closest$Tag$Commit {
     count: string;
 }
 
+export interface BackupDTO$TreeElement$Folder$Model {
+    alias: string;
+    description?: string;
+    color: string;
+    icon?: string;
+    sort?: number;
+    authenticationProperties?: { [index: string]: string | undefined };
+}
+
+export interface BackupDTO$TreeElement$Application$Model {
+    alias: string;
+    description?: string;
+    type: string;
+    color: string;
+    icon?: string;
+    sort?: number;
+    authenticationProperties?: { [index: string]: string | undefined };
+    disableSslVerification: boolean;
+}
+
+export interface BackupDTO$TreeElement$Application$Instance {
+    model: BackupDTO$TreeElement$Application$Instance$Model;
+    type: string;
+}
+
+export interface BackupDTO$TreeElement$Application$MetricRule {
+    name: string;
+    metricName: string;
+    divisorMetricName?: string;
+    operation: string;
+    value1: number;
+    value2?: number;
+    enabled: boolean;
+    type: string;
+}
+
 export interface MappingsActuatorResponse$Context$Mappings$DispatcherServletOrHandler$Details {
     handlerMethod?: MappingsActuatorResponse$Context$Mappings$DispatcherServletOrHandler$Details$HandlerMethod;
     handlerFunction?: MappingsActuatorResponse$Context$Mappings$DispatcherServletOrHandler$Details$HandlerFunction;
     requestMappingConditions?: MappingsActuatorResponse$Context$Mappings$DispatcherServletOrHandler$Details$RequestMappingConditions;
+}
+
+export interface BackupDTO$TreeElement$Application$Instance$Model {
+    alias?: string;
+    actuatorUrl: string;
+    description?: string;
+    color: string;
+    icon?: string;
+    sort?: number;
 }
 
 export interface MappingsActuatorResponse$Context$Mappings$DispatcherServletOrHandler$Details$HandlerMethod {
@@ -1201,3 +1269,5 @@ export type EffectiveAuthentication$SourceType = "FOLDER" | "APPLICATION";
 export type FilterFieldOperation = "Equal" | "NotEqual" | "In" | "NotIn" | "GreaterThan" | "GreaterEqual" | "LowerThan" | "LowerEqual" | "Between" | "Contains" | "IsNull" | "IsNotNull" | "IsEmpty" | "IsNotEmpty" | "And" | "Or" | "Not" | "Noop";
 
 export type FilterFieldDataType = "String" | "Integer" | "Long" | "Double" | "Boolean" | "Date" | "Object" | "Enum" | "UUID" | "None";
+
+export type BackupDTO$TreeElementUnion = BackupDTO$TreeElement$Folder | BackupDTO$TreeElement$Application;
