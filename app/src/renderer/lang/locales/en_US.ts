@@ -465,6 +465,7 @@ export default {
   addNewInstanceByClicking: 'Add a new instance by clicking the button below.',
   currentValue: 'Current Value',
   info: 'Info',
+  instanceInfoEmpty: 'Define {class} beans in the application context to show application information.',
   git: 'Git',
   branch: 'Branch',
   commit: 'Commit',
