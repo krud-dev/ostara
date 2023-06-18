@@ -1,19 +1,19 @@
 import { useCallback } from 'react';
 import { IconButton } from '@mui/material';
 import MenuPopover from 'renderer/components/menu/popup/MenuPopover';
-import { MoreVertOutlined, UnfoldLessDoubleOutlined, UnfoldMoreDoubleOutlined } from '@mui/icons-material';
+import { MoreVertOutlined } from '@mui/icons-material';
 import { FormattedMessage } from 'react-intl';
-import { useNavigatorTree } from 'renderer/contexts/NavigatorTreeContext';
 import { bindMenu, usePopupState } from 'material-ui-popup-state/hooks';
 import CustomMenuItem from 'renderer/components/menu/item/CustomMenuItem';
-import { useAnalytics } from '../../../../../contexts/AnalyticsContext';
-import MenuDivider from '../../../../../components/menu/item/MenuDivider';
+import { useAnalytics } from 'renderer/contexts/AnalyticsContext';
+import MenuDivider from 'renderer/components/menu/item/MenuDivider';
 import NiceModal from '@ebay/nice-modal-react';
-import ExportConfigurationDialog from '../dialogs/ExportConfigurationDialog';
-import ImportConfigurationDialog from '../dialogs/ImportConfigurationDialog';
+import ExportConfigurationDialog from 'renderer/layout/navigator/components/sidebar/dialogs/ExportConfigurationDialog';
+import ImportConfigurationDialog from 'renderer/layout/navigator/components/sidebar/dialogs/ImportConfigurationDialog';
+import { useNavigatorLayout } from 'renderer/contexts/NavigatorLayoutContext';
 
 export default function SearchItemMenu() {
-  const { performAction } = useNavigatorTree();
+  const { performAction } = useNavigatorLayout();
   const { track } = useAnalytics();
 
   const menuState = usePopupState({ variant: 'popover' });

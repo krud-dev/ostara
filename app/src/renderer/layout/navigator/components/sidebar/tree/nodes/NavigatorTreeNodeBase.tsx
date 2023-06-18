@@ -7,26 +7,29 @@ import typography from 'renderer/theme/config/typography';
 import { KeyboardArrowDown, KeyboardArrowRight, MoreVert, SvgIconComponent } from '@mui/icons-material';
 import { NAVIGATOR_ITEM_HEIGHT } from 'renderer/constants/ui';
 import {
-  getItemDisplayName,
   getItemHealthStatusColor,
   getItemHealthStatusComponent,
   getItemNameTooltip,
-  getItemUrl,
   isApplication,
   isFolder,
   isItemUpdatable,
 } from 'renderer/utils/itemUtils';
 import { SxProps } from '@mui/system';
-import { matchPath, useLocation, useNavigate } from 'react-router-dom';
 import useItemColor from 'renderer/hooks/useItemColor';
 import { IconViewer } from 'renderer/components/common/IconViewer';
 import useItemIcon from 'renderer/hooks/useItemIcon';
 import ItemMenu from 'renderer/layout/navigator/components/sidebar/tree/menus/ItemMenu';
-import { usePopupState } from 'material-ui-popup-state/hooks';
+import { PopupState, usePopupState } from 'material-ui-popup-state/hooks';
 import ItemContextMenu from 'renderer/layout/navigator/components/sidebar/tree/menus/ItemContextMenu';
-import { ItemRO } from '../../../../../definitions/daemon';
+import { ItemRO } from 'renderer/definitions/daemon';
+import useItemDisplayName from 'renderer/hooks/useItemDisplayName';
+import { useNavigatorTree } from 'renderer/contexts/NavigatorTreeContext';
 
-type NavigatorTreeNodeProps = NodeRendererProps<TreeItem>;
+type NavigatorTreeNodeBaseProps = NodeRendererProps<TreeItem> & {
+  isSelected?: boolean;
+  menuState?: PopupState;
+  onClick?: (event: React.MouseEvent) => void;
+};
 
 const ListItemStyle = styled(ListItem<'div'>)(({ theme }) => ({
   ...typography.body2,
@@ -67,19 +70,25 @@ const ListItemIconStyle = styled(ListItemIcon)(({ theme }) => ({
   justifyContent: 'center',
 }));
 
-export default function NavigatorTreeNode({ style, node, tree, dragHandle, preview }: NavigatorTreeNodeProps) {
+export default function NavigatorTreeNodeBase({
+  style,
+  node,
+  tree,
+  dragHandle,
+  preview,
+  isSelected,
+  menuState,
+  onClick,
+}: NavigatorTreeNodeBaseProps) {
   const theme = useTheme();
-  const navigate = useNavigate();
-  const { pathname } = useLocation();
-
-  const menuState = usePopupState({ variant: 'popover' });
+  const { data } = useNavigatorTree();
 
   const openMenuHandler = useCallback(
     (event: React.MouseEvent): void => {
       event.stopPropagation();
       event.preventDefault();
 
-      menuState.open();
+      menuState?.open();
     },
     [menuState]
   );
@@ -98,7 +107,7 @@ export default function NavigatorTreeNode({ style, node, tree, dragHandle, previ
   const itemClickHandler = useCallback(
     (event: React.MouseEvent): void => {
       node.select();
-      navigate(getItemUrl(node.data));
+      onClick?.(event);
     },
     [node]
   );
@@ -127,8 +136,8 @@ export default function NavigatorTreeNode({ style, node, tree, dragHandle, previ
 
   const [tooltipOpen, setTooltipOpen] = useState<boolean>(false);
 
-  const color = useItemColor(node.data);
-  const displayName = useMemo<string>(() => getItemDisplayName(node.data), [node.data]);
+  const color = useItemColor(node.data, data);
+  const displayName = useItemDisplayName(node.data);
   const displayNameTooltip = useMemo<ReactNode | undefined>(() => getItemNameTooltip(node.data), [node.data]);
   const healthStatusColor = useMemo<string | undefined>(() => getItemHealthStatusColor(node.data), [node.data]);
   const healthStatusComponent = useMemo<ReactNode | undefined>(
@@ -141,10 +150,6 @@ export default function NavigatorTreeNode({ style, node, tree, dragHandle, previ
     [node.isOpen]
   );
   const showToggle = useMemo<boolean>(() => isFolder(node.data) || isApplication(node.data), [node.data]);
-  const isSelected = useMemo<boolean>(
-    () => matchPath({ path: getItemUrl(node.data), end: false }, pathname) !== null,
-    [node.data, pathname]
-  );
   const isFocused = useMemo<boolean>(
     () => node.isFocused && (!isSelected || !node.isOnlySelection),
     [isSelected, node.isFocused, node.isOnlySelection]
@@ -199,108 +204,99 @@ export default function NavigatorTreeNode({ style, node, tree, dragHandle, previ
   );
 
   return (
-    <>
-      <ItemMenu node={node} item={node.data} onCreated={childItemCreatedHandler} menuState={menuState} />
-      <ItemContextMenu
-        node={node}
-        item={node.data}
-        onCreated={childItemCreatedHandler}
-        contextMenuRef={contextMenuRef}
-        onContextMenuChange={onContextMenuChange}
-      />
-
-      <ListItemStyle
-        ref={(el) => {
-          dragHandle?.(el);
-          contextMenuRef.current = el;
+    <ListItemStyle
+      ref={(el) => {
+        dragHandle?.(el);
+        contextMenuRef.current = el;
+      }}
+      component="div"
+      // @ts-ignore
+      button
+      disableGutters
+      disablePadding
+      selected={isSelected}
+      sx={stateStyle}
+      style={style}
+      onClick={itemClickHandler}
+      onDoubleClick={itemDoubleClickHandler}
+    >
+      <IconButton
+        onClick={arrowIconClickHandler}
+        sx={{
+          p: 0.25,
+          mr: 0.5,
+          ml: 1,
+          color: 'text.primary',
+          ...(showToggle ? {} : { visibility: 'hidden' }),
         }}
-        component="div"
-        // @ts-ignore
-        button
-        disableGutters
-        disablePadding
-        selected={isSelected}
-        sx={stateStyle}
-        style={style}
-        onClick={itemClickHandler}
-        onDoubleClick={itemDoubleClickHandler}
       >
-        <IconButton
-          onClick={arrowIconClickHandler}
+        <ToggleIcon fontSize="small" />
+      </IconButton>
+      <ListItemIconStyle sx={{ color: color, mr: 1.5, ml: 0 }}>
+        <Badge
+          variant={healthStatusComponent ? 'standard' : 'dot'}
+          overlap={'circular'}
+          anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
           sx={{
-            p: 0.25,
-            mr: 0.5,
-            ml: 1,
-            color: 'text.primary',
-            ...(showToggle ? {} : { visibility: 'hidden' }),
+            '& .MuiBadge-badge': {
+              width: 8,
+              minWidth: 0,
+              height: 8,
+              p: 0,
+              backgroundColor: healthStatusColor,
+            },
           }}
+          invisible={!healthStatusColor}
+          badgeContent={healthStatusComponent}
         >
-          <ToggleIcon fontSize="small" />
-        </IconButton>
-        <ListItemIconStyle sx={{ color: color, mr: 1.5, ml: 0 }}>
-          <Badge
-            variant={healthStatusComponent ? 'standard' : 'dot'}
-            overlap={'circular'}
-            anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
-            sx={{
-              '& .MuiBadge-badge': {
-                width: 8,
-                minWidth: 0,
-                height: 8,
-                p: 0,
-                backgroundColor: healthStatusColor,
-              },
-            }}
-            invisible={!healthStatusColor}
-            badgeContent={healthStatusComponent}
-          >
-            <IconViewer icon={itemIcon} fontSize="small" />
-          </Badge>
-        </ListItemIconStyle>
-        {!node.isEditing ? (
-          <ListItemText
-            disableTypography
-            primary={
-              <Tooltip title={displayNameTooltip} open={tooltipOpen}>
-                <Box
-                  component={'span'}
-                  onMouseEnter={() => setTooltipOpen(true)}
-                  onMouseLeave={() => setTooltipOpen(false)}
-                  onMouseDown={() => setTooltipOpen(false)}
-                >
-                  {displayName}
-                </Box>
-              </Tooltip>
-            }
-            sx={{
-              whiteSpace: 'nowrap',
-              overflow: 'hidden',
-              textOverflow: 'ellipsis',
-            }}
-          />
-        ) : (
-          <TextField
-            autoFocus
-            type={'text'}
-            defaultValue={displayName}
-            size={'small'}
-            variant={'outlined'}
-            margin={'none'}
-            InputProps={{
-              onFocus: (e) => e.currentTarget.select(),
-              onBlur: () => node.reset(),
-              onKeyDown: (e) => {
-                if (e.key === 'Escape') node.reset();
-                if (e.key === 'Enter') node.submit(e.currentTarget.value);
-              },
-              sx: {
-                height: NAVIGATOR_ITEM_HEIGHT - 8,
-                fontSize: '12px',
-              },
-            }}
-          />
-        )}
+          <IconViewer icon={itemIcon} fontSize="small" />
+        </Badge>
+      </ListItemIconStyle>
+      {!node.isEditing ? (
+        <ListItemText
+          disableTypography
+          primary={
+            <Tooltip title={displayNameTooltip} open={tooltipOpen}>
+              <Box
+                component={'span'}
+                onMouseEnter={() => setTooltipOpen(true)}
+                onMouseLeave={() => setTooltipOpen(false)}
+                onMouseDown={() => setTooltipOpen(false)}
+              >
+                {displayName}
+              </Box>
+            </Tooltip>
+          }
+          sx={{
+            whiteSpace: 'nowrap',
+            overflow: 'hidden',
+            textOverflow: 'ellipsis',
+          }}
+        />
+      ) : (
+        <TextField
+          autoFocus
+          type={'text'}
+          defaultValue={displayName}
+          size={'small'}
+          variant={'outlined'}
+          margin={'none'}
+          InputProps={{
+            onFocus: (e) => e.currentTarget.select(),
+            onBlur: () => node.reset(),
+            onKeyDown: (e) => {
+              if (e.key === 'Escape') node.reset();
+              if (e.key === 'Enter') node.submit(e.currentTarget.value);
+            },
+            sx: {
+              height: NAVIGATOR_ITEM_HEIGHT - 8,
+              fontSize: '12px',
+            },
+          }}
+        />
+      )}
 
+      {menuState && (
         <IconButton
           sx={{
             p: 0.25,
@@ -314,7 +310,7 @@ export default function NavigatorTreeNode({ style, node, tree, dragHandle, previ
         >
           <MoreVert fontSize="small" />
         </IconButton>
-      </ListItemStyle>
-    </>
+      )}
+    </ListItemStyle>
   );
 }

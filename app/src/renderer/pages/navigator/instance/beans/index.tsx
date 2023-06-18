@@ -1,6 +1,6 @@
 import React, { FunctionComponent, useCallback, useMemo } from 'react';
 import Page from 'renderer/components/layout/Page';
-import { useNavigatorTree } from 'renderer/contexts/NavigatorTreeContext';
+import { useNavigatorLayout } from 'renderer/contexts/NavigatorLayoutContext';
 import TableComponent from 'renderer/components/table/TableComponent';
 import { Entity } from 'renderer/entity/entity';
 import { instanceBeanEntity } from 'renderer/entity/entities/instanceBean.entity';
@@ -12,7 +12,7 @@ import NiceModal from '@ebay/nice-modal-react';
 import BeansGraphDialog from './components/BeansGraphDialog';
 
 const InstanceBeans: FunctionComponent = () => {
-  const { selectedItem } = useNavigatorTree();
+  const { selectedItem } = useNavigatorLayout();
 
   const item = useMemo<InstanceRO>(() => selectedItem as InstanceRO, [selectedItem]);
 

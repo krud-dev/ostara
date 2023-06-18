@@ -1,13 +1,13 @@
 import NavigatorSidebar from 'renderer/layout/navigator/components/NavigatorSidebar';
 import MainSidebarLayout from 'renderer/layout/common/main-sidebar/MainSidebarLayout';
-import { NavigatorTreeProvider } from '../../contexts/NavigatorTreeContext';
+import { NavigatorLayoutProvider } from 'renderer/contexts/NavigatorLayoutContext';
 
 type NavigatorLayoutProps = {};
 
 export default function NavigatorLayout({}: NavigatorLayoutProps) {
   return (
-    <NavigatorTreeProvider>
+    <NavigatorLayoutProvider>
       <MainSidebarLayout Sidebar={NavigatorSidebar} />
-    </NavigatorTreeProvider>
+    </NavigatorLayoutProvider>
   );
 }

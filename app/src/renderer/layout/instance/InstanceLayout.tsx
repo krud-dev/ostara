@@ -1,16 +1,16 @@
 import React, { FunctionComponent, ReactNode, useMemo } from 'react';
-import { useNavigatorTree } from 'renderer/contexts/NavigatorTreeContext';
 import InstanceSidebar from 'renderer/layout/instance/components/InstanceSidebar';
 import SecondarySidebarLayout from 'renderer/layout/common/secondary-sidebar/SecondarySidebarLayout';
 import InstanceUnreachable from 'renderer/layout/instance/components/health/InstanceUnreachable';
 import InstanceInvalid from 'renderer/layout/instance/components/health/InstanceInvalid';
 import InstancePending from 'renderer/layout/instance/components/health/InstancePending';
-import { InstanceRO } from '../../../common/generated_definitions';
-import LoadingPage from '../../components/layout/LoadingPage';
-import DemoInstanceUnreachable from './components/health/DemoInstanceUnreachable';
+import { InstanceRO } from 'common/generated_definitions';
+import LoadingPage from 'renderer/components/layout/LoadingPage';
+import DemoInstanceUnreachable from 'renderer/layout/instance/components/health/DemoInstanceUnreachable';
+import { useNavigatorLayout } from 'renderer/contexts/NavigatorLayoutContext';
 
 const InstanceLayout: FunctionComponent = () => {
-  const { selectedItem, selectedItemAbilities } = useNavigatorTree();
+  const { selectedItem, selectedItemAbilities } = useNavigatorLayout();
 
   const item = useMemo<InstanceRO | undefined>(() => selectedItem as InstanceRO | undefined, [selectedItem]);
 

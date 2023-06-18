@@ -1,6 +1,6 @@
 import React, { FunctionComponent, useCallback, useEffect, useMemo, useState } from 'react';
 import Page from 'renderer/components/layout/Page';
-import { useNavigatorTree } from 'renderer/contexts/NavigatorTreeContext';
+import { useNavigatorLayout } from 'renderer/contexts/NavigatorLayoutContext';
 import TableComponent from 'renderer/components/table/TableComponent';
 import { Entity } from 'renderer/entity/entity';
 import { Box, Card } from '@mui/material';
@@ -24,7 +24,7 @@ import { LoadingButton } from '@mui/lab';
 import { IconViewer } from '../../../../components/common/IconViewer';
 
 const InstanceHeapdumpReferences: FunctionComponent = () => {
-  const { selectedItem } = useNavigatorTree();
+  const { selectedItem } = useNavigatorLayout();
   const { subscribe } = useStomp();
   const { enqueueSnackbar } = useSnackbar();
 

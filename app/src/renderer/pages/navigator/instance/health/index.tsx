@@ -1,6 +1,6 @@
 import React, { FunctionComponent, useCallback, useMemo } from 'react';
 import Page from 'renderer/components/layout/Page';
-import { useNavigatorTree } from 'renderer/contexts/NavigatorTreeContext';
+import { useNavigatorLayout } from 'renderer/contexts/NavigatorLayoutContext';
 import { Container, Stack } from '@mui/material';
 import EmptyContent from 'renderer/components/help/EmptyContent';
 import { HealthActuatorResponse, HealthActuatorResponse$Component, InstanceRO } from 'common/generated_definitions';
@@ -16,7 +16,7 @@ export type EnrichedHealthActuatorResponse$Component = {
 } & HealthActuatorResponse$Component;
 
 const InstanceHealth: FunctionComponent = () => {
-  const { selectedItem } = useNavigatorTree();
+  const { selectedItem } = useNavigatorLayout();
   const intl = useIntl();
 
   const item = useMemo<InstanceRO>(() => selectedItem as InstanceRO, [selectedItem]);

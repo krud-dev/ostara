@@ -1,12 +1,9 @@
-import { CreateHandler, DeleteHandler, MoveHandler, RenameHandler, Tree, TreeApi } from 'react-arborist';
+import { CreateHandler, DeleteHandler, MoveHandler, RenameHandler, TreeApi } from 'react-arborist';
 import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { Box, Button, Typography } from '@mui/material';
-import NavigatorTreeNode from 'renderer/layout/navigator/components/sidebar/tree/NavigatorTreeNode';
 import { TreeItem } from 'renderer/layout/navigator/components/sidebar/tree/tree';
-import { NAVIGATOR_ITEM_HEIGHT } from 'renderer/constants/ui';
-import { experimentalStyled as styled } from '@mui/material/styles';
 import { FormattedMessage } from 'react-intl';
-import { useNavigatorTree } from 'renderer/contexts/NavigatorTreeContext';
+import { useNavigatorLayout } from 'renderer/contexts/NavigatorLayoutContext';
 import { useUpdateItem } from 'renderer/apis/requests/item/updateItem';
 import { useDeleteItem } from 'renderer/apis/requests/item/deleteItem';
 import { showDeleteConfirmationDialog } from 'renderer/utils/dialogUtils';
@@ -15,7 +12,6 @@ import NiceModal from '@ebay/nice-modal-react';
 import CreateInstanceDialog from 'renderer/components/item/dialogs/create/CreateInstanceDialog';
 import { matchPath, useLocation } from 'react-router-dom';
 import {
-  getItemDisplayName,
   getItemParentId,
   getItemType,
   getItemUrl,
@@ -30,18 +26,13 @@ import { InstanceRO } from 'common/generated_definitions';
 import { ItemRO, ItemType } from 'renderer/definitions/daemon';
 import { NodeApi } from 'react-arborist/dist/interfaces/node-api';
 import { useUpdateEffect } from 'react-use';
-import { isWindows } from 'renderer/utils/platformUtils';
 import LogoLoader from '../../../../../components/common/LogoLoader';
 import { LoadingButton } from '@mui/lab';
 import useStartDemo from '../../../../../hooks/demo/useStartDemo';
 import useDelayedEffect from '../../../../../hooks/useDelayedEffect';
 import { useItems } from 'renderer/contexts/ItemsContext';
-
-const TreeStyle = styled(Tree<TreeItem>)(({ theme }) => ({
-  '& [role="treeitem"]': {
-    outline: 'none',
-  },
-}));
+import NavigatorTreeBase from 'renderer/layout/navigator/components/sidebar/tree/NavigatorTreeBase';
+import NavigatorTreeNode from 'renderer/layout/navigator/components/sidebar/tree/nodes/NavigatorTreeNode';
 
 const NAVIGATOR_TREE_PADDING_BOTTOM = 12;
 
@@ -53,11 +44,15 @@ type NavigatorTreeProps = {
 
 export default function NavigatorTree({ width, height, search }: NavigatorTreeProps) {
   const { getItem } = useItems();
-  const { data, selectedItem, isLoading, isEmpty, hasData, action } = useNavigatorTree();
+  const { data, selectedItem, action } = useNavigatorLayout();
   const { pathname } = useLocation();
   const { startDemo, loading: loadingDemo } = useStartDemo();
 
   const treeRef = useRef<TreeApi<TreeItem> | null>(null);
+
+  const isLoading = useMemo<boolean>(() => !data, [data]);
+  const isEmpty = useMemo<boolean>(() => !!data && data.length === 0, [data]);
+  const hasData = useMemo<boolean>(() => !!data && data.length > 0, [data]);
 
   useEffect(() => {
     if (!action) {
@@ -263,13 +258,6 @@ export default function NavigatorTree({ width, height, search }: NavigatorTreePr
     []
   );
 
-  const keyDownHandler = useCallback((event: React.KeyboardEvent): void => {
-    if ((isWindows && event.key === 'F2') || (!isWindows && event.key === 'Enter')) {
-      const node = treeRef.current?.focusedNode || treeRef.current?.selectedNodes[0];
-      node?.edit();
-    }
-  }, []);
-
   return (
     <>
       {isLoading && (
@@ -312,31 +300,25 @@ export default function NavigatorTree({ width, height, search }: NavigatorTreePr
       )}
 
       {hasData && (
-        <Box onKeyDown={keyDownHandler} tabIndex={0}>
-          <TreeStyle
-            ref={treeRef}
-            idAccessor={'id'}
-            data={data}
-            openByDefault={false}
-            initialOpenState={initialOpenState}
-            width={width}
-            height={height}
-            indent={12}
-            paddingBottom={NAVIGATOR_TREE_PADDING_BOTTOM}
-            rowHeight={NAVIGATOR_ITEM_HEIGHT}
-            searchTerm={search}
-            searchMatch={(node, term) => getItemDisplayName(node.data).toLowerCase().includes(term.toLowerCase())}
-            onCreate={onCreate}
-            onRename={onRename}
-            onMove={onMove}
-            onDelete={onDelete}
-            disableDrag={disableDragItem}
-            disableDrop={disableDropItems}
-            disableEdit={disableEditItem}
-          >
-            {NavigatorTreeNode}
-          </TreeStyle>
-        </Box>
+        <NavigatorTreeBase
+          treeRef={treeRef}
+          data={data}
+          openByDefault={false}
+          initialOpenState={initialOpenState}
+          width={width}
+          height={height}
+          paddingBottom={NAVIGATOR_TREE_PADDING_BOTTOM}
+          searchTerm={search}
+          onCreate={onCreate}
+          onRename={onRename}
+          onMove={onMove}
+          onDelete={onDelete}
+          disableDrag={disableDragItem}
+          disableDrop={disableDropItems}
+          disableEdit={disableEditItem}
+        >
+          {NavigatorTreeNode}
+        </NavigatorTreeBase>
       )}
     </>
   );

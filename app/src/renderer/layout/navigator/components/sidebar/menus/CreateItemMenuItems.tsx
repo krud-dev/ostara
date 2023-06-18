@@ -3,20 +3,20 @@ import { FormattedMessage } from 'react-intl';
 import { getItemTypeIcon } from 'renderer/utils/itemUtils';
 import NiceModal from '@ebay/nice-modal-react';
 import CreateFolderDialog from 'renderer/components/item/dialogs/create/CreateFolderDialog';
-import { useNavigatorTree } from 'renderer/contexts/NavigatorTreeContext';
 import CreateApplicationDialog from 'renderer/components/item/dialogs/create/CreateApplicationDialog';
 import CreateInstanceDialog from 'renderer/components/item/dialogs/create/CreateInstanceDialog';
 import { PopupState } from 'material-ui-popup-state/hooks';
 import CustomMenuItem from 'renderer/components/menu/item/CustomMenuItem';
 import { MUIconType } from 'renderer/components/common/IconViewer';
 import { ApplicationRO, FolderRO, InstanceRO } from 'common/generated_definitions';
+import { useNavigatorLayout } from 'renderer/contexts/NavigatorLayoutContext';
 
 type CreateItemMenuItemsProps = {
   menuState: PopupState;
 };
 
 export default function CreateItemMenuItems({ menuState }: CreateItemMenuItemsProps) {
-  const { getNewItemOrder } = useNavigatorTree();
+  const { getNewItemOrder } = useNavigatorLayout();
 
   const createFolderHandler = useCallback(async (): Promise<void> => {
     menuState.close();

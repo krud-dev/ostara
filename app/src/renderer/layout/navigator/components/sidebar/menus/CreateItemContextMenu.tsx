@@ -1,13 +1,13 @@
 import CreateItemMenuItems from 'renderer/layout/navigator/components/sidebar/menus/CreateItemMenuItems';
 import ContextMenuPopper, { ContextMenuPopperProps } from 'renderer/components/menu/popup/ContextMenuPopper';
 import React, { useMemo } from 'react';
-import { useNavigatorTree } from 'renderer/contexts/NavigatorTreeContext';
 import { ContextMenuContext } from 'renderer/components/menu/popup/ContextMenuContext';
+import { useNavigatorLayout } from 'renderer/contexts/NavigatorLayoutContext';
 
 type CreateItemContextMenuProps = ContextMenuPopperProps;
 
 export default function CreateItemContextMenu({ disabled, ...props }: CreateItemContextMenuProps) {
-  const { data } = useNavigatorTree();
+  const { data } = useNavigatorLayout();
 
   const disabledInternal = useMemo<boolean>(() => !data || disabled, [data, disabled]);
 

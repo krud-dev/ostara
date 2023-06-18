@@ -9,6 +9,8 @@ import DialogTitleEnhanced from 'renderer/components/dialog/DialogTitleEnhanced'
 import { useRestoreSystemBackup } from 'renderer/apis/requests/system-backup/restoreSystemBackup';
 import { LoadingButton } from '@mui/lab';
 import FormattedDateAndRelativeTime from 'renderer/components/format/FormattedDateAndRelativeTime';
+import NavigatorTreePreviewCard from 'renderer/layout/navigator/components/sidebar/tree/cards/NavigatorTreePreviewCard';
+import { useShowSystemBackupQuery } from 'renderer/apis/requests/system-backup/showSystemBackup';
 
 export type RestoreBackupDialogProps = {
   systemBackup: SystemBackupRO;
@@ -21,6 +23,7 @@ const RestoreBackupDialog: FunctionComponent<RestoreBackupDialogProps & NiceModa
     const { track } = useAnalytics();
 
     const restoreState = useRestoreSystemBackup();
+    const previewState = useShowSystemBackupQuery({ fileName: systemBackup.fileName });
 
     const submitHandler = useCallback(async (): Promise<void> => {
       track({ name: 'restore_backup_submit' });
@@ -55,7 +58,7 @@ const RestoreBackupDialog: FunctionComponent<RestoreBackupDialogProps & NiceModa
             <FormattedMessage id={'restoreBackup'} />
           </DialogTitleEnhanced>
           <DialogContent>
-            <DialogContentText sx={{ mb: 3 }}>
+            <DialogContentText>
               <FormattedMessage
                 id={'restoreBackupDescription'}
                 values={{
@@ -72,9 +75,12 @@ const RestoreBackupDialog: FunctionComponent<RestoreBackupDialogProps & NiceModa
                 }}
               />
             </DialogContentText>
-            <Alert severity={'error'} variant={'outlined'}>
+
+            <Alert severity={'error'} variant={'outlined'} sx={{ mt: 3 }}>
               <FormattedMessage id="restoreBackupDeleteWarning" />
             </Alert>
+
+            <NavigatorTreePreviewCard backup={previewState.data} sx={{ mt: 3 }} />
           </DialogContent>
           <DialogActions>
             <Button variant="outlined" color="inherit" onClick={cancelHandler} disabled={restoreState.isLoading}>

@@ -1,6 +1,5 @@
 import React, { FunctionComponent, useCallback, useMemo } from 'react';
 import Page from 'renderer/components/layout/Page';
-import { useNavigatorTree } from 'renderer/contexts/NavigatorTreeContext';
 import TableComponent from 'renderer/components/table/TableComponent';
 import { Entity } from 'renderer/entity/entity';
 import { Box, Button, Card } from '@mui/material';
@@ -12,10 +11,11 @@ import { useItems } from 'renderer/contexts/ItemsContext';
 import { FormattedMessage } from 'react-intl';
 import NiceModal from '@ebay/nice-modal-react';
 import CreateInstanceDialog from 'renderer/components/item/dialogs/create/CreateInstanceDialog';
+import { useNavigatorLayout } from 'renderer/contexts/NavigatorLayoutContext';
 
 const FolderApplications: FunctionComponent = () => {
   const { applications, refetchApplications } = useItems();
-  const { selectedItem, data: navigatorData } = useNavigatorTree();
+  const { selectedItem, data: navigatorData } = useNavigatorLayout();
 
   const item = useMemo<FolderRO>(() => selectedItem as FolderRO, [selectedItem]);
 

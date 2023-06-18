@@ -1,16 +1,16 @@
 import React, { ReactNode, useCallback, useMemo } from 'react';
-import { InstanceAbility, InstanceRO } from '../../../common/generated_definitions';
-import { useNavigatorTree } from '../../contexts/NavigatorTreeContext';
+import { InstanceAbility, InstanceRO } from 'common/generated_definitions';
 import { Button, Card, CardContent, CardHeader, Link, Stack, Typography } from '@mui/material';
 import { IconViewer } from '../../components/common/IconViewer';
 import { FormattedMessage } from 'react-intl';
-import DetailsLabelValueHorizontal from '../../components/table/details/DetailsLabelValueHorizontal';
+import DetailsLabelValueHorizontal from 'renderer/components/table/details/DetailsLabelValueHorizontal';
 import { LoadingButton } from '@mui/lab';
-import Page from '../../components/layout/Page';
-import { showUpdateItemDialog } from '../../utils/dialogUtils';
-import useItemDisplayName from '../../hooks/useItemDisplayName';
-import { useUpdateInstanceHealth } from '../../apis/requests/instance/health/updateInstanceHealth';
-import { ABILITIES_DOCUMENTATION_URL } from '../../constants/ui';
+import Page from 'renderer/components/layout/Page';
+import { showUpdateItemDialog } from 'renderer/utils/dialogUtils';
+import useItemDisplayName from 'renderer/hooks/useItemDisplayName';
+import { useUpdateInstanceHealth } from 'renderer/apis/requests/instance/health/updateInstanceHealth';
+import { ABILITIES_DOCUMENTATION_URL } from 'renderer/constants/ui';
+import { useNavigatorLayout } from 'renderer/contexts/NavigatorLayoutContext';
 
 type InstanceAbilityErrorGuardProps = {
   ability: InstanceAbility;
@@ -18,7 +18,7 @@ type InstanceAbilityErrorGuardProps = {
 };
 
 export default function InstanceAbilityErrorGuard({ ability, children }: InstanceAbilityErrorGuardProps) {
-  const { selectedItem, selectedItemAbilities } = useNavigatorTree();
+  const { selectedItem, selectedItemAbilities } = useNavigatorLayout();
   const item = useMemo<InstanceRO>(() => selectedItem as InstanceRO, [selectedItem]);
   const hasAbility = useMemo(() => !!selectedItemAbilities?.includes(ability), [selectedItemAbilities, ability]);
 

@@ -1,6 +1,6 @@
 import React, { FunctionComponent, useCallback, useMemo } from 'react';
 import Page from 'renderer/components/layout/Page';
-import { useNavigatorTree } from 'renderer/contexts/NavigatorTreeContext';
+import { useNavigatorLayout } from 'renderer/contexts/NavigatorLayoutContext';
 import { Box, Button, Card, CardContent, CardHeader, Stack } from '@mui/material';
 import { ApplicationHealthStatus, ApplicationRO, InstanceRO } from 'common/generated_definitions';
 import EmptyContent from 'renderer/components/help/EmptyContent';
@@ -29,7 +29,7 @@ type DashboardApplicationRO = ApplicationRO & {
 
 const FolderDashboard: FunctionComponent = () => {
   const { applications } = useItems();
-  const { selectedItem, data: navigatorData, getNewItemOrder } = useNavigatorTree();
+  const { selectedItem, data: navigatorData, getNewItemOrder } = useNavigatorLayout();
 
   const folderIds = useMemo<string[] | undefined>(
     () =>

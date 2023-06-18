@@ -1,20 +1,21 @@
 import React, { FunctionComponent, useCallback, useMemo } from 'react';
 import { Card, CardContent, Stack, Tooltip, Typography } from '@mui/material';
 import { FormattedMessage } from 'react-intl';
-import { ApplicationRO } from '../../../../../../common/generated_definitions';
+import { ApplicationRO } from 'common/generated_definitions';
 import {
   getApplicationHealthStatusColor,
   getApplicationHealthStatusIcon,
   getApplicationHealthStatusTextId,
   getItemDisplayName,
   getItemUrl,
-} from '../../../../../utils/itemUtils';
-import { IconViewer, MUIconType } from '../../../../../components/common/IconViewer';
-import FormattedRelativeTimeNow from '../../../../../components/format/FormattedRelativeTimeNow';
+} from 'renderer/utils/itemUtils';
+import { IconViewer, MUIconType } from 'renderer/components/common/IconViewer';
+import FormattedRelativeTimeNow from 'renderer/components/format/FormattedRelativeTimeNow';
 import { useNavigate } from 'react-router-dom';
-import useItemIcon from '../../../../../hooks/useItemIcon';
-import useItemColor from '../../../../../hooks/useItemColor';
-import { useItems } from '../../../../../contexts/ItemsContext';
+import useItemIcon from 'renderer/hooks/useItemIcon';
+import useItemColor from 'renderer/hooks/useItemColor';
+import { useItems } from 'renderer/contexts/ItemsContext';
+import { useNavigatorLayout } from 'renderer/contexts/NavigatorLayoutContext';
 
 type FolderApplicationWidgetProps = {
   application: ApplicationRO;
@@ -22,6 +23,7 @@ type FolderApplicationWidgetProps = {
 
 const FolderApplicationWidget: FunctionComponent<FolderApplicationWidgetProps> = ({ application }) => {
   const { instances } = useItems();
+  const { data } = useNavigatorLayout();
   const navigate = useNavigate();
 
   const title = useMemo<string>(() => getItemDisplayName(application), [application]);
@@ -38,7 +40,7 @@ const FolderApplicationWidget: FunctionComponent<FolderApplicationWidgetProps> =
     [application]
   );
   const icon = useItemIcon(application);
-  const color = useItemColor(application);
+  const color = useItemColor(application, data);
   const instancesCount = useMemo<number>(
     () => instances?.filter((instance) => instance.parentApplicationId === application.id).length || 0,
     [instances, application]

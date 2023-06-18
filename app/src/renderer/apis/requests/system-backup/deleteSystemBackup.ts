@@ -15,7 +15,9 @@ type Data = void;
 
 export const deleteSystemBackup = async (variables: Variables): Promise<Data> => {
   return (
-    await axiosInstance.delete<Data, AxiosResponse<Data>, null>(`systemBackup/delete?fileName=${variables.fileName}`)
+    await axiosInstance.delete<Data, AxiosResponse<Data>, null>(
+      `systemBackup/delete?fileName=${encodeURIComponent(variables.fileName)}`
+    )
   ).data;
 };
 

@@ -16,7 +16,7 @@ type Variables = {
 
 type Data = void;
 
-export const importAll = async (variables: Variables): Promise<Data> => {
+export const importBackup = async (variables: Variables): Promise<Data> => {
   return (
     await axiosInstance.post<Data, AxiosResponse<Data>, string>(`backup/importAll`, variables.jsonData, {
       headers: {
@@ -26,8 +26,10 @@ export const importAll = async (variables: Variables): Promise<Data> => {
   ).data;
 };
 
-export const useImportAll = (options?: BaseMutationOptions<Data, Variables>): BaseUseMutationResult<Data, Variables> =>
-  useBaseMutation<Data, Variables>(importAll, {
+export const useImportBackup = (
+  options?: BaseMutationOptions<Data, Variables>
+): BaseUseMutationResult<Data, Variables> =>
+  useBaseMutation<Data, Variables>(importBackup, {
     ...options,
     invalidateQueriesKeysFn: (data, variables) => [
       crudKeys.entity(instanceCrudEntity),

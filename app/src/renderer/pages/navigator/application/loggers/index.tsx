@@ -1,6 +1,5 @@
 import React, { FunctionComponent, useCallback, useMemo } from 'react';
 import Page from 'renderer/components/layout/Page';
-import { useNavigatorTree } from 'renderer/contexts/NavigatorTreeContext';
 import TableComponent from 'renderer/components/table/TableComponent';
 import { Entity } from 'renderer/entity/entity';
 import { Card } from '@mui/material';
@@ -12,10 +11,11 @@ import {
   useGetApplicationLoggersQuery,
 } from 'renderer/apis/requests/application/loggers/getApplicationLoggers';
 import { useSetApplicationLoggerLevel } from 'renderer/apis/requests/application/loggers/setApplicationLoggerLevel';
-import { ApplicationRO } from '../../../../../common/generated_definitions';
+import { ApplicationRO } from 'common/generated_definitions';
+import { useNavigatorLayout } from 'renderer/contexts/NavigatorLayoutContext';
 
 const ApplicationLoggers: FunctionComponent = () => {
-  const { selectedItem } = useNavigatorTree();
+  const { selectedItem } = useNavigatorLayout();
 
   const item = useMemo<ApplicationRO>(() => selectedItem as ApplicationRO, [selectedItem]);
 

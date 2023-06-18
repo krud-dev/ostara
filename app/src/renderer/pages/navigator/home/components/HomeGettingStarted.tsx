@@ -4,14 +4,14 @@ import { FormattedMessage } from 'react-intl';
 import { InstanceRO } from 'common/generated_definitions';
 import NiceModal from '@ebay/nice-modal-react';
 import CreateInstanceDialog from 'renderer/components/item/dialogs/create/CreateInstanceDialog';
-import { useNavigatorTree } from 'renderer/contexts/NavigatorTreeContext';
+import { useNavigatorLayout } from 'renderer/contexts/NavigatorLayoutContext';
 import useStartDemo from 'renderer/hooks/demo/useStartDemo';
 import { LoadingButton } from '@mui/lab';
 
 type HomeGettingStartedProps = {};
 
 export default function HomeGettingStarted({}: HomeGettingStartedProps) {
-  const { getNewItemOrder } = useNavigatorTree();
+  const { getNewItemOrder } = useNavigatorLayout();
 
   const createInstanceHandler = useCallback(async (): Promise<void> => {
     await NiceModal.show<InstanceRO[] | undefined>(CreateInstanceDialog, {

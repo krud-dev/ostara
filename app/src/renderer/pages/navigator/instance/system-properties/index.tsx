@@ -1,6 +1,6 @@
 import React, { FunctionComponent, useCallback, useMemo } from 'react';
 import Page from 'renderer/components/layout/Page';
-import { useNavigatorTree } from 'renderer/contexts/NavigatorTreeContext';
+import { useNavigatorLayout } from 'renderer/contexts/NavigatorLayoutContext';
 import { Entity } from 'renderer/entity/entity';
 import TableComponent from 'renderer/components/table/TableComponent';
 import useCopyToClipboard from 'renderer/hooks/useCopyToClipboard';
@@ -18,7 +18,7 @@ import { COMPONENTS_SPACING } from '../../../../constants/ui';
 import useRerenderKey from '../../../../hooks/useRerenderKey';
 
 const InstanceSystemProperties: FunctionComponent = () => {
-  const { selectedItem } = useNavigatorTree();
+  const { selectedItem } = useNavigatorLayout();
   const copyToClipboard = useCopyToClipboard();
 
   const item = useMemo<InstanceRO>(() => selectedItem as InstanceRO, [selectedItem]);
