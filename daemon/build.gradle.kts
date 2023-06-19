@@ -104,6 +104,9 @@ dependencies {
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.7.1")
     implementation("io.github.oshai:kotlin-logging-jvm:4.0.0")
     implementation("com.auth0:java-jwt:4.4.0")
+    implementation("io.github.openfeign:feign-core:12.3")
+    implementation("io.github.openfeign:feign-jackson:12.3")
+    implementation("io.github.openfeign:feign-okhttp:12.3")
 
     // Added separately from springdoc for production builds
     implementation("io.swagger.core.v3:swagger-annotations-jakarta:2.2.14")

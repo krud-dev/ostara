@@ -199,6 +199,19 @@ export interface TogglzFeatureUpdateRequest {
     enabled: boolean;
 }
 
+export interface AgentModifyRequestRO {
+    name: string;
+    url: string;
+    apiKey?: string;
+}
+
+export interface AgentRO {
+    id: string;
+    name: string;
+    url: string;
+    apiKey?: string;
+}
+
 export interface SystemBackupRO {
     fileName: string;
     date: DateAsNumber;
@@ -254,6 +267,8 @@ export interface ApplicationModifyRequestRO {
     sort?: number;
     parentFolderId?: string;
     disableSslVerification?: boolean;
+    agentId?: string;
+    agentDiscoveryParams?: { [index: string]: string | undefined };
 }
 
 export interface ApplicationRO {
@@ -270,6 +285,9 @@ export interface ApplicationRO {
     authentication: Authentication;
     demo: boolean;
     disableSslVerification: boolean;
+    agentId?: string;
+    agentDiscoveryType?: string;
+    agentDiscoveryParams?: { [index: string]: string | undefined };
 }
 
 export interface FolderModifyRequestRO {
@@ -385,6 +403,8 @@ export interface InstanceRO {
     health: InstanceHealthRO;
     demo: boolean;
     metadata: InstanceMetadataDTO;
+    agentDiscoveryId?: string;
+    discovered: boolean;
 }
 
 export interface InstanceSystemEnvironmentRO {
