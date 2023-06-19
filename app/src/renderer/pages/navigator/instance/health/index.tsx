@@ -8,7 +8,7 @@ import LogoLoaderCenter from 'renderer/components/common/LogoLoaderCenter';
 import { useGetInstanceHealthQuery } from 'renderer/apis/requests/instance/health/getInstanceHealth';
 import { useIntl } from 'react-intl';
 import InstanceHealthComponentCard from 'renderer/pages/navigator/instance/health/components/InstanceHealthComponentCard';
-import { ANIMATION_TIMEOUT_LONG, COMPONENTS_SPACING } from 'renderer/constants/ui';
+import { ANIMATION_GROW_TOP_STYLE, ANIMATION_TIMEOUT_LONG, COMPONENTS_SPACING } from 'renderer/constants/ui';
 import { TransitionGroup } from 'react-transition-group';
 
 export type EnrichedHealthActuatorResponse$Component = {
@@ -86,7 +86,7 @@ const InstanceHealth: FunctionComponent = () => {
           <Stack direction={'column'} spacing={COMPONENTS_SPACING}>
             <TransitionGroup component={null}>
               {components?.map((component, index) => (
-                <Grow timeout={(index + 1) * ANIMATION_TIMEOUT_LONG}>
+                <Grow timeout={(index + 1) * ANIMATION_TIMEOUT_LONG} style={ANIMATION_GROW_TOP_STYLE}>
                   <Box>
                     <InstanceHealthComponentCard component={component} key={component.path} />
                   </Box>

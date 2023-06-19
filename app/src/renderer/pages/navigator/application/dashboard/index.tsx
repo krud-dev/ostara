@@ -4,7 +4,12 @@ import { Box, Button, Card, CardContent, CardHeader, Grow, Stack } from '@mui/ma
 import { ApplicationRO, InstanceHealthStatus, InstanceRO } from 'common/generated_definitions';
 import EmptyContent from 'renderer/components/help/EmptyContent';
 import { FormattedMessage } from 'react-intl';
-import { COMPONENTS_SPACING, ANIMATION_TIMEOUT_SHORT } from 'renderer/constants/ui';
+import {
+  COMPONENTS_SPACING,
+  ANIMATION_TIMEOUT_SHORT,
+  ANIMATION_TIMEOUT_LONG,
+  ANIMATION_GROW_TOP_STYLE,
+} from 'renderer/constants/ui';
 import Grid2 from '@mui/material/Unstable_Grid2';
 import ApplicationInstancesHealthStatusWidget from './components/ApplicationInstancesHealthStatusWidget';
 import ApplicationInstanceWidget from './components/ApplicationInstanceWidget';
@@ -58,57 +63,59 @@ const ApplicationDashboard: FunctionComponent = () => {
         <LogoLoaderCenter />
       ) : (
         <Stack direction={'column'} spacing={COMPONENTS_SPACING}>
-          <Card>
-            <CardHeader title={<FormattedMessage id={'summary'} />} />
-            <CardContent>
-              <Grid2 container spacing={COMPONENTS_SPACING}>
-                <TransitionGroup component={null}>
-                  {healthStatuses.map((healthStatus, index) => (
-                    <Grow timeout={(index + 2) * ANIMATION_TIMEOUT_SHORT} key={healthStatus}>
-                      <Grid2 xs={12} md={6} lg={4} xl={3} xxl={2} key={healthStatus}>
-                        <ApplicationInstancesHealthStatusWidget instances={data!} healthStatus={healthStatus} />
-                      </Grid2>
-                    </Grow>
-                  ))}
-                </TransitionGroup>
-              </Grid2>
-            </CardContent>
-          </Card>
+          <TransitionGroup component={null}>
+            <Grow timeout={ANIMATION_TIMEOUT_LONG} style={ANIMATION_GROW_TOP_STYLE}>
+              <Card>
+                <CardHeader title={<FormattedMessage id={'summary'} />} />
+                <CardContent>
+                  <Grid2 container spacing={COMPONENTS_SPACING}>
+                    <TransitionGroup component={null}>
+                      {healthStatuses.map((healthStatus, index) => (
+                        <Grow timeout={(index + 2) * ANIMATION_TIMEOUT_SHORT} key={healthStatus}>
+                          <Grid2 xs={12} md={6} lg={4} xl={3} xxl={2} key={healthStatus}>
+                            <ApplicationInstancesHealthStatusWidget instances={data!} healthStatus={healthStatus} />
+                          </Grid2>
+                        </Grow>
+                      ))}
+                    </TransitionGroup>
+                  </Grid2>
+                </CardContent>
+              </Card>
+            </Grow>
 
-          <Card>
-            <CardHeader title={<FormattedMessage id={'instances'} />} />
-            <CardContent>
-              {isEmpty(data) ? (
-                <EmptyContent
-                  text={<FormattedMessage id={'applicationIsEmpty'} />}
-                  description={
-                    <>
-                      <Box>
-                        <FormattedMessage id={'addNewInstanceByClicking'} />
-                      </Box>
-                      <Box sx={{ mt: 2 }}>
-                        <Button variant={'outlined'} color={'primary'} onClick={createInstanceHandler}>
-                          <FormattedMessage id={'createInstance'} />
-                        </Button>
-                      </Box>
-                    </>
-                  }
-                />
-              ) : (
-                <Grid2 container spacing={COMPONENTS_SPACING}>
-                  <TransitionGroup component={null}>
-                    {data?.map((instance, index) => (
-                      <Grow timeout={(index + 2) * ANIMATION_TIMEOUT_SHORT} key={instance.id}>
-                        <Grid2 xs={12} md={6} lg={4} xl={3} xxl={2}>
+            <Grow timeout={ANIMATION_TIMEOUT_LONG * 2} style={ANIMATION_GROW_TOP_STYLE}>
+              <Card>
+                <CardHeader title={<FormattedMessage id={'instances'} />} />
+                <CardContent>
+                  {isEmpty(data) ? (
+                    <EmptyContent
+                      text={<FormattedMessage id={'applicationIsEmpty'} />}
+                      description={
+                        <>
+                          <Box>
+                            <FormattedMessage id={'addNewInstanceByClicking'} />
+                          </Box>
+                          <Box sx={{ mt: 2 }}>
+                            <Button variant={'outlined'} color={'primary'} onClick={createInstanceHandler}>
+                              <FormattedMessage id={'createInstance'} />
+                            </Button>
+                          </Box>
+                        </>
+                      }
+                    />
+                  ) : (
+                    <Grid2 container spacing={COMPONENTS_SPACING}>
+                      {data?.map((instance) => (
+                        <Grid2 xs={12} md={6} lg={4} xl={3} xxl={2} key={instance.id}>
                           <ApplicationInstanceWidget instance={instance} />
                         </Grid2>
-                      </Grow>
-                    ))}
-                  </TransitionGroup>
-                </Grid2>
-              )}
-            </CardContent>
-          </Card>
+                      ))}
+                    </Grid2>
+                  )}
+                </CardContent>
+              </Card>
+            </Grow>
+          </TransitionGroup>
         </Stack>
       )}
     </Page>

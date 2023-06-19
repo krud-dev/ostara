@@ -7,7 +7,7 @@ import EmptyContent from 'renderer/components/help/EmptyContent';
 import { InfoActuatorResponse, InstanceRO } from 'common/generated_definitions';
 import LogoLoaderCenter from 'renderer/components/common/LogoLoaderCenter';
 import { useGetInstanceInfoQuery } from 'renderer/apis/requests/instance/info/getInstanceInfo';
-import { ANIMATION_TIMEOUT_LONG, COMPONENTS_SPACING } from 'renderer/constants/ui';
+import { ANIMATION_GROW_TOP_STYLE, ANIMATION_TIMEOUT_LONG, COMPONENTS_SPACING } from 'renderer/constants/ui';
 import InstanceInfoGit from 'renderer/pages/navigator/instance/info/components/InstanceInfoGit';
 import InstanceInfoBuild from 'renderer/pages/navigator/instance/info/components/InstanceInfoBuild';
 import { Masonry } from '@mui/lab';
@@ -104,7 +104,11 @@ const InstanceInfo: FunctionComponent = () => {
           <Masonry columns={{ xs: 1, lg: componentsCount > 1 ? 2 : 1 }} spacing={COMPONENTS_SPACING} sx={{ mx: 0 }}>
             <TransitionGroup component={null}>
               {components.map((component, index) => (
-                <Grow timeout={(index + 1) * ANIMATION_TIMEOUT_LONG} key={component.key}>
+                <Grow
+                  timeout={(index + 1) * ANIMATION_TIMEOUT_LONG}
+                  style={ANIMATION_GROW_TOP_STYLE}
+                  key={component.key}
+                >
                   <Box>{component.component}</Box>
                 </Grow>
               ))}
