@@ -86,9 +86,13 @@ const InstanceHealth: FunctionComponent = () => {
           <Stack direction={'column'} spacing={COMPONENTS_SPACING}>
             <TransitionGroup component={null}>
               {components?.map((component, index) => (
-                <Grow timeout={(index + 1) * ANIMATION_TIMEOUT_LONG} style={ANIMATION_GROW_TOP_STYLE}>
+                <Grow
+                  timeout={(index + 1) * ANIMATION_TIMEOUT_LONG}
+                  style={ANIMATION_GROW_TOP_STYLE}
+                  key={component.path}
+                >
                   <Box>
-                    <InstanceHealthComponentCard component={component} key={component.path} />
+                    <InstanceHealthComponentCard component={component} />
                   </Box>
                 </Grow>
               ))}
