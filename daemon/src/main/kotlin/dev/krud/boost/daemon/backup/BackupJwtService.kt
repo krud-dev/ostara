@@ -9,7 +9,8 @@ import java.util.*
 
 @Service
 class BackupJwtService(
-    private val objectMapper: ObjectMapper
+    private val objectMapper: ObjectMapper,
+    private val backupParser: BackupParser
 ) {
     private val algorithm = Algorithm.HMAC256(BACKUP_JWT_SECRET)
 
@@ -18,10 +19,7 @@ class BackupJwtService(
 
     fun verify(token: String): BackupDTO {
         val decoded = verifier.verify(token)
-        return objectMapper.readValue(
-            decoded.getClaim("backup").asString(),
-            BackupDTO::class.java
-        )
+        return backupParser.parse(decoded.getClaim("backup").asString())
     }
 
     fun sign(backupDTO: BackupDTO): String {

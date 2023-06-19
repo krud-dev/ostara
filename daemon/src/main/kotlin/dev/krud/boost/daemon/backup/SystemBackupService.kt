@@ -5,22 +5,43 @@ import dev.krud.boost.daemon.backup.ro.SystemBackupRO
 import dev.krud.boost.daemon.base.config.AppMainProperties
 import dev.krud.boost.daemon.exception.throwInternalServerError
 import dev.krud.boost.daemon.exception.throwNotFound
+import dev.krud.boost.daemon.time.TimeService
+import dev.krud.boost.daemon.utils.ONE_HOUR
+import io.github.oshai.kotlinlogging.KotlinLogging
 import okio.GzipSink
 import okio.GzipSource
 import okio.buffer
 import okio.sink
 import okio.source
-import org.springframework.http.HttpStatus
+import org.springframework.scheduling.annotation.Scheduled
 import org.springframework.stereotype.Service
 import java.util.*
+import java.util.concurrent.atomic.AtomicLong
 
 @Service
 class SystemBackupService(
     private val backupImporter: BackupImporter,
     private val backupExporter: BackupExporter,
     private val backupJwtService: BackupJwtService,
-    private val appMainProperties: AppMainProperties
+    private val appMainProperties: AppMainProperties,
+    private val timeService: TimeService
 ) {
+    private val lastBackupCreationTime = AtomicLong(0)
+
+    /**
+     * Create an automatic backup every hour.
+     */
+    @Scheduled(fixedRate = 300_000)
+    fun createAutoSystemBackup() {
+        val now = timeService.nowMillis()
+        val last = lastBackupCreationTime.get()
+        if (now - last < ONE_HOUR) {
+            return
+        }
+        createSystemBackup(true)
+        deleteOldestAutoBackupIfNecessary()
+        lastBackupCreationTime.set(timeService.nowMillis())
+    }
     /**
      * Create a new backup and save it to the backup directory.
      * @param auto whether this backup was created automatically or manually, used in the file name
@@ -70,7 +91,6 @@ class SystemBackupService(
         }
     }
 
-    // todo:, add method to validate and migrate backup
     fun listSystemBackups(includeFailures: Boolean): Result<List<SystemBackupRO>> = runCatching {
         appMainProperties.backupDirectory
             .toFile()
@@ -114,5 +134,32 @@ class SystemBackupService(
             }
         }
         backupJwtService.verify(content)
+    }
+
+    private fun deleteOldestAutoBackupIfNecessary() {
+        val files = appMainProperties.backupDirectory
+            .toFile()
+            .listFiles()
+            .filter { file ->
+                file.extension == "gz" && file.name.startsWith("backup-auto")
+            }
+            .sortedBy { file ->
+                file.lastModified()
+            }
+        if (files.size <= MAX_AUTO_BACKUPS) {
+            return
+        }
+        val file = files.minByOrNull { file ->
+            file.lastModified()
+        } ?: return
+        val result = file.delete()
+        if (!result) {
+            log.warn { "Could not delete file: $file" }
+        }
+    }
+
+    companion object {
+        private val log = KotlinLogging.logger { }
+        private const val MAX_AUTO_BACKUPS = 10
     }
 }

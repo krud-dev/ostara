@@ -71,7 +71,7 @@ class SystemBackupController(
     )
     @ApiResponse(responseCode = "200", description = "System backup")
     @ApiResponse(responseCode = "404", description = "System backup not found")
-    fun getSystemBackup(fileName: String): BackupDTO {
+    fun getSystemBackup(@RequestParam fileName: String): BackupDTO {
         return systemBackupService.getSystemBackupDto(fileName).getOrThrow()
     }
 }
