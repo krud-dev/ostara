@@ -18,7 +18,6 @@ import { useScrollSync } from 'renderer/hooks/useScrollSync';
 import useElementDocumentHeight from 'renderer/hooks/useElementDocumentHeight';
 import { useUpdateEffect } from 'react-use';
 import LogoLoader from '../common/LogoLoader';
-import { TransitionGroup } from 'react-transition-group';
 
 type TableCustomProps<EntityItem> = {};
 
@@ -49,8 +48,6 @@ export default function TableCustom<EntityItem>({}: TableCustomProps<EntityItem>
       tableBodyScrollRef.current.scrollTop = 0;
     }
   }, [page]);
-
-  const transitionKey = useMemo<string>(() => displayRows.map((r) => entity.getId(r)).join(','), [displayRows]);
 
   return (
     <Box>
@@ -98,11 +95,9 @@ export default function TableCustom<EntityItem>({}: TableCustomProps<EntityItem>
                 <TableHeadCustom sx={{ height: '0px', maxHeight: '0px', overflow: 'hidden', visibility: 'collapse' }} />
                 <TableBody>
                   {empty && <TableNoData />}
-                  <TransitionGroup component={null} key={transitionKey}>
-                    {displayRows.map((row, index) => (
-                      <TableRowCustom row={row} index={index} key={entity.getId(row)} />
-                    ))}
-                  </TransitionGroup>
+                  {displayRows.map((row, index) => (
+                    <TableRowCustom row={row} index={index} key={entity.getId(row)} />
+                  ))}
                 </TableBody>
               </Table>
             </TableContainer>

@@ -1,4 +1,4 @@
-import { Box, Checkbox, Fade, Grow, TableCell, TableRow, Tooltip } from '@mui/material';
+import { Box, Checkbox, TableCell, TableRow, Tooltip } from '@mui/material';
 import { EntityColumn } from 'renderer/entity/entity';
 import { useTable } from 'renderer/components/table/TableContext';
 import React, { useCallback, useMemo } from 'react';
@@ -11,7 +11,6 @@ import { isBoolean } from 'lodash';
 import { useAnalytics } from '../../contexts/AnalyticsContext';
 import { useLocation } from 'react-router-dom';
 import { getUrlInfo } from '../../utils/urlUtils';
-import { ANIMATION_TIMEOUT_SHORTEST } from 'renderer/constants/ui';
 
 type TableRowCustomProps<EntityItem> = {
   row: EntityItem;
@@ -84,73 +83,71 @@ export default function TableRowCustom<EntityItem>({ row, index }: TableRowCusto
 
   return (
     <>
-      <Fade in timeout={(index + 2) * ANIMATION_TIMEOUT_SHORTEST}>
-        <TableRow
-          id={anchor}
-          hover
-          selected={selected}
-          onClick={rowClickHandler}
-          sx={{
-            ...(hasActiveRowAction ? { cursor: 'pointer' } : {}),
-            ...(open
-              ? {
-                  backgroundColor: (theme) => alpha(theme.palette.primary.main, 0.08),
-                  '&:hover': { backgroundColor: (theme) => `${alpha(theme.palette.primary.main, 0.16)}!important` },
-                }
-              : {}),
-          }}
-        >
-          {hasMassActions && (
-            <TableCell padding="checkbox">
-              <Checkbox checked={selected} onClick={checkboxClickHandler} />
-            </TableCell>
-          )}
-          {hasDetailsRowAction && (
-            <TableCell sx={{ pr: 0 }}>
-              <ToolbarButton
-                tooltip={<FormattedMessage id={open ? 'collapseDetails' : 'expandDetails'} />}
-                icon={open ? 'KeyboardArrowDown' : 'KeyboardArrowRight'}
-                disabled={!hasActiveRowAction}
-              />
-            </TableCell>
-          )}
+      <TableRow
+        id={anchor}
+        hover
+        selected={selected}
+        onClick={rowClickHandler}
+        sx={{
+          ...(hasActiveRowAction ? { cursor: 'pointer' } : {}),
+          ...(open
+            ? {
+                backgroundColor: (theme) => alpha(theme.palette.primary.main, 0.08),
+                '&:hover': { backgroundColor: (theme) => `${alpha(theme.palette.primary.main, 0.16)}!important` },
+              }
+            : {}),
+        }}
+      >
+        {hasMassActions && (
+          <TableCell padding="checkbox">
+            <Checkbox checked={selected} onClick={checkboxClickHandler} />
+          </TableCell>
+        )}
+        {hasDetailsRowAction && (
+          <TableCell sx={{ pr: 0 }}>
+            <ToolbarButton
+              tooltip={<FormattedMessage id={open ? 'collapseDetails' : 'expandDetails'} />}
+              icon={open ? 'KeyboardArrowDown' : 'KeyboardArrowRight'}
+              disabled={!hasActiveRowAction}
+            />
+          </TableCell>
+        )}
 
-          {visibleColumns.map((column: EntityColumn<EntityItem>) => {
-            const tooltip = column.getTooltip?.(row);
-            return (
-              <TableCell align={column.align || 'left'} sx={{ wordBreak: 'break-word' }} key={column.id}>
-                <Tooltip title={tooltip} disableInteractive={false}>
-                  <Box component={'span'}>
-                    <TableCellData row={row} column={column} />
-                  </Box>
-                </Tooltip>
-              </TableCell>
-            );
-          })}
-
-          {hasActions && (
-            <TableCell align="right" sx={{ whiteSpace: 'nowrap' }}>
-              {entity.actions.map((action) => {
-                const disabled = action.isDisabled?.(row);
-                const loading = loadingActionIds.includes(action.id);
-                const showActionTooltip = !disabled || isBoolean(disabled);
-                const tooltip = showActionTooltip ? <FormattedMessage id={action.labelId} /> : disabled;
-                return (
-                  <ToolbarButton
-                    tooltip={tooltip}
-                    tooltipDisableInteractive={showActionTooltip}
-                    icon={action.icon}
-                    disabled={!!disabled || loading}
-                    stopPropagation
-                    onClick={(event) => actionClickHandler(event, action.id)}
-                    key={action.id}
-                  />
-                );
-              })}
+        {visibleColumns.map((column: EntityColumn<EntityItem>) => {
+          const tooltip = column.getTooltip?.(row);
+          return (
+            <TableCell align={column.align || 'left'} sx={{ wordBreak: 'break-word' }} key={column.id}>
+              <Tooltip title={tooltip} disableInteractive={false}>
+                <Box component={'span'}>
+                  <TableCellData row={row} column={column} />
+                </Box>
+              </Tooltip>
             </TableCell>
-          )}
-        </TableRow>
-      </Fade>
+          );
+        })}
+
+        {hasActions && (
+          <TableCell align="right" sx={{ whiteSpace: 'nowrap' }}>
+            {entity.actions.map((action) => {
+              const disabled = action.isDisabled?.(row);
+              const loading = loadingActionIds.includes(action.id);
+              const showActionTooltip = !disabled || isBoolean(disabled);
+              const tooltip = showActionTooltip ? <FormattedMessage id={action.labelId} /> : disabled;
+              return (
+                <ToolbarButton
+                  tooltip={tooltip}
+                  tooltipDisableInteractive={showActionTooltip}
+                  icon={action.icon}
+                  disabled={!!disabled || loading}
+                  stopPropagation
+                  onClick={(event) => actionClickHandler(event, action.id)}
+                  key={action.id}
+                />
+              );
+            })}
+          </TableCell>
+        )}
+      </TableRow>
 
       {hasActiveRowAction && <TableRowAction row={row} action={entity.rowAction!} open={open} />}
     </>

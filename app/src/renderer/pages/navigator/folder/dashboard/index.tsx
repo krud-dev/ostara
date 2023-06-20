@@ -178,8 +178,8 @@ const FolderDashboard: FunctionComponent = () => {
             )}
 
             {groupedData?.map((group, index) => (
-              <Grow timeout={ANIMATION_TIMEOUT_LONG * (index + 2)} style={ANIMATION_GROW_TOP_STYLE}>
-                <Card key={group.path}>
+              <Grow timeout={ANIMATION_TIMEOUT_LONG * (index + 2)} style={ANIMATION_GROW_TOP_STYLE} key={group.path}>
+                <Card>
                   <CardHeader title={group.displayPath || <FormattedMessage id={'root'} />} />
                   <CardContent>
                     <Grid2 container spacing={COMPONENTS_SPACING}>

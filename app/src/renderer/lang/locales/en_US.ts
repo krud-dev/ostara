@@ -390,6 +390,7 @@ export default {
     'Allow the app to anonymously collect exceptions and crash reports. The data collected is used to improve the app and will not be shared with anyone.',
   restartAppChangesTakeAffect: '{restart} the app to apply changes.',
   restart: 'Restart',
+  updates: 'Updates',
   automaticUpdates: 'Automatic Updates',
   welcomeToApp: 'Welcome to Ostara!',
   getStartedAddFirstInstance:

@@ -1,5 +1,5 @@
 import React, { FunctionComponent, useCallback, useEffect, useMemo, useState } from 'react';
-import { Card, CardContent, CardHeader, Container, Grow, Link, MenuItem, TextField } from '@mui/material';
+import { Card, CardContent, CardHeader, Container, Grow, Link, MenuItem, Stack, TextField } from '@mui/material';
 import Page from 'renderer/components/layout/Page';
 import { ANIMATION_GROW_TOP_STYLE, ANIMATION_TIMEOUT_LONG, COMPONENTS_SPACING } from '../../../constants/ui';
 import { FormattedMessage } from 'react-intl';
@@ -93,89 +93,98 @@ const SettingsGeneral: FunctionComponent = () => {
   return (
     <Page sx={{ height: '100%', p: 0 }}>
       <Container disableGutters maxWidth={'md'} sx={{ m: 'auto', p: COMPONENTS_SPACING }}>
-        <TransitionGroup component={null}>
-          <Grow timeout={ANIMATION_TIMEOUT_LONG} style={ANIMATION_GROW_TOP_STYLE}>
-            <Card>
-              <CardHeader title={<FormattedMessage id={'general'} />} />
-              <CardContent>
-                <TextField
-                  fullWidth
-                  label={<FormattedMessage id="theme" />}
-                  margin="normal"
-                  select
-                  value={themeSource}
-                  onChange={(e) => setThemeSource(e.target.value as ThemeSource)}
-                >
-                  <MenuItem value={'system'}>
-                    <FormattedMessage id="system" />
-                  </MenuItem>
-                  <MenuItem value={'dark'}>
-                    <FormattedMessage id="dark" />
-                  </MenuItem>
-                  <MenuItem value={'light'}>
-                    <FormattedMessage id="light" />
-                  </MenuItem>
-                </TextField>
-
-                {autoUpdateSupported && (
+        <Stack direction={'column'} spacing={COMPONENTS_SPACING}>
+          <TransitionGroup component={null}>
+            <Grow timeout={ANIMATION_TIMEOUT_LONG} style={ANIMATION_GROW_TOP_STYLE}>
+              <Card>
+                <CardHeader title={<FormattedMessage id={'theme'} />} />
+                <CardContent>
                   <TextField
                     fullWidth
-                    label={<FormattedMessage id="automaticUpdates" />}
+                    label={<FormattedMessage id="theme" />}
                     margin="normal"
                     select
-                    value={autoUpdateEnabled}
-                    onChange={(e) => setAutoUpdateEnabled(e.target.value === 'true')}
+                    value={themeSource}
+                    onChange={(e) => setThemeSource(e.target.value as ThemeSource)}
                   >
-                    <MenuItem value={'true'}>
-                      <FormattedMessage id="yes" />
+                    <MenuItem value={'system'}>
+                      <FormattedMessage id="system" />
                     </MenuItem>
-                    <MenuItem value={'false'}>
-                      <FormattedMessage id="no" />
+                    <MenuItem value={'dark'}>
+                      <FormattedMessage id="dark" />
+                    </MenuItem>
+                    <MenuItem value={'light'}>
+                      <FormattedMessage id="light" />
                     </MenuItem>
                   </TextField>
-                )}
+                </CardContent>
+              </Card>
+            </Grow>
 
-                <TextField
-                  fullWidth
-                  label={<FormattedMessage id="appVersion" />}
-                  margin="normal"
-                  value={appVersion}
-                  inputProps={{ readOnly: true }}
-                  helperText={
-                    <>
-                      {appUpdatesView === 'check' && (
-                        <Link href={`#`} onClick={checkForUpdatesHandler} variant={'inherit'}>
-                          <FormattedMessage id={'checkForUpdates'} />
-                        </Link>
-                      )}
-                      {appUpdatesView === 'download' && (
-                        <>
-                          <FormattedMessage
-                            id="newVersionIsAvailableAndReady"
-                            values={{ version: newVersionInfo?.version }}
-                          />
-                          <br />
-                          <Link href={`#`} onClick={downloadUpdateHandler} variant={'inherit'}>
-                            <FormattedMessage id={'downloadUpdate'} />
+            <Grow timeout={ANIMATION_TIMEOUT_LONG * 2} style={ANIMATION_GROW_TOP_STYLE}>
+              <Card>
+                <CardHeader title={<FormattedMessage id={'updates'} />} />
+                <CardContent>
+                  {autoUpdateSupported && (
+                    <TextField
+                      fullWidth
+                      label={<FormattedMessage id="automaticUpdates" />}
+                      margin="normal"
+                      select
+                      value={autoUpdateEnabled}
+                      onChange={(e) => setAutoUpdateEnabled(e.target.value === 'true')}
+                    >
+                      <MenuItem value={'true'}>
+                        <FormattedMessage id="yes" />
+                      </MenuItem>
+                      <MenuItem value={'false'}>
+                        <FormattedMessage id="no" />
+                      </MenuItem>
+                    </TextField>
+                  )}
+
+                  <TextField
+                    fullWidth
+                    label={<FormattedMessage id="appVersion" />}
+                    margin="normal"
+                    value={appVersion}
+                    inputProps={{ readOnly: true }}
+                    helperText={
+                      <>
+                        {appUpdatesView === 'check' && (
+                          <Link href={`#`} onClick={checkForUpdatesHandler} variant={'inherit'}>
+                            <FormattedMessage id={'checkForUpdates'} />
                           </Link>
-                        </>
-                      )}
-                      {appUpdatesView === 'install' && (
-                        <>
-                          <FormattedMessage id="appUpdateDownloadedAndReady" />
-                          <br />
-                          <Link href={`#`} onClick={installUpdateHandler} variant={'inherit'}>
-                            <FormattedMessage id={'quitAndInstall'} />
-                          </Link>
-                        </>
-                      )}
-                    </>
-                  }
-                />
-              </CardContent>
-            </Card>
-          </Grow>
-        </TransitionGroup>
+                        )}
+                        {appUpdatesView === 'download' && (
+                          <>
+                            <FormattedMessage
+                              id="newVersionIsAvailableAndReady"
+                              values={{ version: newVersionInfo?.version }}
+                            />
+                            <br />
+                            <Link href={`#`} onClick={downloadUpdateHandler} variant={'inherit'}>
+                              <FormattedMessage id={'downloadUpdate'} />
+                            </Link>
+                          </>
+                        )}
+                        {appUpdatesView === 'install' && (
+                          <>
+                            <FormattedMessage id="appUpdateDownloadedAndReady" />
+                            <br />
+                            <Link href={`#`} onClick={installUpdateHandler} variant={'inherit'}>
+                              <FormattedMessage id={'quitAndInstall'} />
+                            </Link>
+                          </>
+                        )}
+                      </>
+                    }
+                  />
+                </CardContent>
+              </Card>
+            </Grow>
+          </TransitionGroup>
+        </Stack>
       </Container>
     </Page>
   );

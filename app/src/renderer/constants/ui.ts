@@ -7,9 +7,8 @@ export const SIDEBAR_HEADER_HEIGHT = NAVIGATOR_ITEM_HEIGHT * 1.5;
 export const COMPONENTS_SPACING = 2.5;
 export const DEFAULT_TABLE_COLUMN_WIDTH = 175;
 export const TABLE_PAGINATION_HEIGHT = 65;
-export const ANIMATION_TIMEOUT_SHORTEST = 75;
-export const ANIMATION_TIMEOUT_SHORT = 125;
-export const ANIMATION_TIMEOUT_LONG = 250;
+export const ANIMATION_TIMEOUT_SHORT = 100;
+export const ANIMATION_TIMEOUT_LONG = 175;
 export const ANIMATION_GROW_TOP_STYLE: CSSProperties = { transformOrigin: 'top center' };
 
 export const ROWS_PER_PAGE_OPTIONS = [10, 25, 50];
