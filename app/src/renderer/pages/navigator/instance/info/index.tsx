@@ -1,13 +1,13 @@
-import React, { FunctionComponent, useMemo } from 'react';
+import React, { FunctionComponent, ReactNode, useMemo } from 'react';
 import Page from 'renderer/components/layout/Page';
 import { useNavigatorLayout } from 'renderer/contexts/NavigatorLayoutContext';
-import { Container } from '@mui/material';
-import { chain, filter, isString, map } from 'lodash';
+import { Box, Container, Grow } from '@mui/material';
+import { chain, filter, isString, keys, map } from 'lodash';
 import EmptyContent from 'renderer/components/help/EmptyContent';
 import { InfoActuatorResponse, InstanceRO } from 'common/generated_definitions';
 import LogoLoaderCenter from 'renderer/components/common/LogoLoaderCenter';
 import { useGetInstanceInfoQuery } from 'renderer/apis/requests/instance/info/getInstanceInfo';
-import { COMPONENTS_SPACING } from 'renderer/constants/ui';
+import { ANIMATION_GROW_TOP_STYLE, ANIMATION_TIMEOUT_LONG, COMPONENTS_SPACING } from 'renderer/constants/ui';
 import InstanceInfoGit from 'renderer/pages/navigator/instance/info/components/InstanceInfoGit';
 import InstanceInfoBuild from 'renderer/pages/navigator/instance/info/components/InstanceInfoBuild';
 import { Masonry } from '@mui/lab';
@@ -18,6 +18,7 @@ import InstanceInfoExtraValues from 'renderer/pages/navigator/instance/info/comp
 import { splitCamelCase } from 'renderer/utils/formatUtils';
 import { FormattedMessage } from 'react-intl';
 import { InlineCodeLabel } from 'renderer/components/code/InlineCodeLabel';
+import { TransitionGroup } from 'react-transition-group';
 
 const InstanceInfo: FunctionComponent = () => {
   const { selectedItem } = useNavigatorLayout();
@@ -66,6 +67,24 @@ const InstanceInfo: FunctionComponent = () => {
   );
   const showExtraValues = useMemo<boolean>(() => !!chain(extraValues).keys().size().value(), [extraValues]);
 
+  const components = useMemo<{ component: ReactNode; key: string }[]>(
+    () => [
+      ...(info?.os ? [{ component: <InstanceInfoOs os={info.os} />, key: 'os' }] : []),
+      ...(info?.build ? [{ component: <InstanceInfoBuild build={info.build} />, key: 'build' }] : []),
+      ...(info?.git ? [{ component: <InstanceInfoGit git={info.git} />, key: 'git' }] : []),
+      ...(info?.java ? [{ component: <InstanceInfoJava java={info.java} />, key: 'java' }] : []),
+      ...(showExtraValues
+        ? [{ component: <InstanceInfoExtraValues extraValues={extraValues} />, key: 'extraValues' }]
+        : []),
+      ...map(extraCards, (object, key) => {
+        const title = splitCamelCase(key);
+        return { component: <InstanceInfoJsonCard title={title} object={object} />, key: `json_${key}` };
+      }),
+    ],
+    [info, showExtraValues, extraCards]
+  );
+  const componentsCount = useMemo<number>(() => components.length, [components]);
+
   return (
     <Page sx={{ height: '100%' }}>
       {uiStatus === 'loading' && <LogoLoaderCenter />}
@@ -82,16 +101,18 @@ const InstanceInfo: FunctionComponent = () => {
 
       {uiStatus === 'content' && (
         <Container disableGutters maxWidth={'md'} sx={{ m: 'auto' }}>
-          <Masonry columns={{ xs: 1, lg: 2 }} spacing={COMPONENTS_SPACING} sx={{ mx: 0 }}>
-            {info?.os && <InstanceInfoOs os={info.os} />}
-            {info?.build && <InstanceInfoBuild build={info.build} />}
-            {info?.git && <InstanceInfoGit git={info.git} />}
-            {info?.java && <InstanceInfoJava java={info.java} />}
-            {showExtraValues && <InstanceInfoExtraValues extraValues={extraValues} />}
-            {map(extraCards, (object, key) => {
-              const title = splitCamelCase(key);
-              return <InstanceInfoJsonCard title={title} object={object} key={key} />;
-            })}
+          <Masonry columns={{ xs: 1, lg: componentsCount > 1 ? 2 : 1 }} spacing={COMPONENTS_SPACING} sx={{ mx: 0 }}>
+            <TransitionGroup component={null}>
+              {components.map((component, index) => (
+                <Grow
+                  timeout={(index + 1) * ANIMATION_TIMEOUT_LONG}
+                  style={ANIMATION_GROW_TOP_STYLE}
+                  key={component.key}
+                >
+                  <Box>{component.component}</Box>
+                </Grow>
+              ))}
+            </TransitionGroup>
           </Masonry>
         </Container>
       )}

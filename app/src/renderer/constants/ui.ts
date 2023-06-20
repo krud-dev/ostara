@@ -1,3 +1,5 @@
+import { CSSProperties } from 'react';
+
 export const SIDEBAR_DEFAULT_WIDTH = 220;
 export const NAVBAR_HEIGHT = 40;
 export const NAVIGATOR_ITEM_HEIGHT = 40;
@@ -5,6 +7,9 @@ export const SIDEBAR_HEADER_HEIGHT = NAVIGATOR_ITEM_HEIGHT * 1.5;
 export const COMPONENTS_SPACING = 2.5;
 export const DEFAULT_TABLE_COLUMN_WIDTH = 175;
 export const TABLE_PAGINATION_HEIGHT = 65;
+export const ANIMATION_TIMEOUT_SHORT = 100;
+export const ANIMATION_TIMEOUT_LONG = 175;
+export const ANIMATION_GROW_TOP_STYLE: CSSProperties = { transformOrigin: 'top center' };
 
 export const ROWS_PER_PAGE_OPTIONS = [10, 25, 50];
 export const DEFAULT_ROWS_PER_PAGE = ROWS_PER_PAGE_OPTIONS[ROWS_PER_PAGE_OPTIONS.length - 1];

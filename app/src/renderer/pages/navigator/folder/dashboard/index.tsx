@@ -1,11 +1,16 @@
 import React, { FunctionComponent, useCallback, useMemo } from 'react';
 import Page from 'renderer/components/layout/Page';
 import { useNavigatorLayout } from 'renderer/contexts/NavigatorLayoutContext';
-import { Box, Button, Card, CardContent, CardHeader, Stack } from '@mui/material';
+import { Box, Button, Card, CardContent, CardHeader, Grow, Stack } from '@mui/material';
 import { ApplicationHealthStatus, ApplicationRO, InstanceRO } from 'common/generated_definitions';
 import EmptyContent from 'renderer/components/help/EmptyContent';
 import { FormattedMessage } from 'react-intl';
-import { COMPONENTS_SPACING } from 'renderer/constants/ui';
+import {
+  COMPONENTS_SPACING,
+  ANIMATION_TIMEOUT_SHORT,
+  ANIMATION_TIMEOUT_LONG,
+  ANIMATION_GROW_TOP_STYLE,
+} from 'renderer/constants/ui';
 import Grid2 from '@mui/material/Unstable_Grid2';
 import FolderApplicationsHealthStatusWidget from './components/FolderApplicationsHealthStatusWidget';
 import FolderApplicationWidget from './components/FolderApplicationWidget';
@@ -17,6 +22,7 @@ import { getItemDisplayName, isFolder } from 'renderer/utils/itemUtils';
 import LogoLoaderCenter from 'renderer/components/common/LogoLoaderCenter';
 import CreateInstanceDialog from 'renderer/components/item/dialogs/create/CreateInstanceDialog';
 import { TreeItem } from 'renderer/layout/navigator/components/sidebar/tree/tree';
+import { TransitionGroup } from 'react-transition-group';
 
 const PATH_SEPARATOR = '/';
 const DISPLAY_PATH_SEPARATOR = ' / ';
@@ -126,56 +132,68 @@ const FolderDashboard: FunctionComponent = () => {
         <LogoLoaderCenter />
       ) : (
         <Stack direction={'column'} spacing={COMPONENTS_SPACING}>
-          <Card>
-            <CardHeader title={<FormattedMessage id={'summary'} />} />
-            <CardContent>
-              <Grid2 container spacing={COMPONENTS_SPACING}>
-                {healthStatuses.map((healthStatus) => (
-                  <Grid2 xs={12} md={6} lg={4} xl={3} xxl={2} key={healthStatus}>
-                    <FolderApplicationsHealthStatusWidget applications={data!} healthStatus={healthStatus} />
+          <TransitionGroup component={null}>
+            <Grow timeout={ANIMATION_TIMEOUT_LONG} style={ANIMATION_GROW_TOP_STYLE}>
+              <Card>
+                <CardHeader title={<FormattedMessage id={'summary'} />} />
+                <CardContent>
+                  <Grid2 container spacing={COMPONENTS_SPACING}>
+                    <TransitionGroup component={null}>
+                      {healthStatuses.map((healthStatus, index) => (
+                        <Grow timeout={(index + 2) * ANIMATION_TIMEOUT_SHORT} key={healthStatus}>
+                          <Grid2 xs={12} md={6} lg={4} xl={3} xxl={2}>
+                            <FolderApplicationsHealthStatusWidget applications={data!} healthStatus={healthStatus} />
+                          </Grid2>
+                        </Grow>
+                      ))}
+                    </TransitionGroup>
                   </Grid2>
-                ))}
-              </Grid2>
-            </CardContent>
-          </Card>
+                </CardContent>
+              </Card>
+            </Grow>
 
-          {isEmpty(data) && (
-            <Card>
-              <CardHeader title={<FormattedMessage id={'applications'} />} />
-              <CardContent>
-                <EmptyContent
-                  text={<FormattedMessage id={selectedItem ? 'folderIsEmpty' : 'dashboardIsEmpty'} />}
-                  description={
-                    <>
-                      <Box>
-                        <FormattedMessage id={'addNewInstanceByClicking'} />
-                      </Box>
-                      <Box sx={{ mt: 2 }}>
-                        <Button variant={'outlined'} color={'primary'} onClick={createInstanceHandler}>
-                          <FormattedMessage id={'createInstance'} />
-                        </Button>
-                      </Box>
-                    </>
-                  }
-                />
-              </CardContent>
-            </Card>
-          )}
+            {isEmpty(data) && (
+              <Grow timeout={ANIMATION_TIMEOUT_LONG * 2} style={ANIMATION_GROW_TOP_STYLE}>
+                <Card>
+                  <CardHeader title={<FormattedMessage id={'applications'} />} />
+                  <CardContent>
+                    <EmptyContent
+                      text={<FormattedMessage id={selectedItem ? 'folderIsEmpty' : 'dashboardIsEmpty'} />}
+                      description={
+                        <>
+                          <Box>
+                            <FormattedMessage id={'addNewInstanceByClicking'} />
+                          </Box>
+                          <Box sx={{ mt: 2 }}>
+                            <Button variant={'outlined'} color={'primary'} onClick={createInstanceHandler}>
+                              <FormattedMessage id={'createInstance'} />
+                            </Button>
+                          </Box>
+                        </>
+                      }
+                    />
+                  </CardContent>
+                </Card>
+              </Grow>
+            )}
 
-          {groupedData?.map((group) => (
-            <Card key={group.path}>
-              <CardHeader title={group.displayPath || <FormattedMessage id={'root'} />} />
-              <CardContent>
-                <Grid2 container spacing={COMPONENTS_SPACING}>
-                  {group.applications.map((application) => (
-                    <Grid2 xs={12} md={6} lg={4} xl={3} xxl={2} key={application.id}>
-                      <FolderApplicationWidget application={application} />
+            {groupedData?.map((group, index) => (
+              <Grow timeout={ANIMATION_TIMEOUT_LONG * (index + 2)} style={ANIMATION_GROW_TOP_STYLE} key={group.path}>
+                <Card>
+                  <CardHeader title={group.displayPath || <FormattedMessage id={'root'} />} />
+                  <CardContent>
+                    <Grid2 container spacing={COMPONENTS_SPACING}>
+                      {group.applications.map((application) => (
+                        <Grid2 xs={12} md={6} lg={4} xl={3} xxl={2} key={application.id}>
+                          <FolderApplicationWidget application={application} />
+                        </Grid2>
+                      ))}
                     </Grid2>
-                  ))}
-                </Grid2>
-              </CardContent>
-            </Card>
-          ))}
+                  </CardContent>
+                </Card>
+              </Grow>
+            ))}
+          </TransitionGroup>
         </Stack>
       )}
     </Page>

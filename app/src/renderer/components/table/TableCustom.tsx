@@ -95,8 +95,8 @@ export default function TableCustom<EntityItem>({}: TableCustomProps<EntityItem>
                 <TableHeadCustom sx={{ height: '0px', maxHeight: '0px', overflow: 'hidden', visibility: 'collapse' }} />
                 <TableBody>
                   {empty && <TableNoData />}
-                  {displayRows.map((row) => (
-                    <TableRowCustom row={row} key={entity.getId(row)} />
+                  {displayRows.map((row, index) => (
+                    <TableRowCustom row={row} index={index} key={entity.getId(row)} />
                   ))}
                 </TableBody>
               </Table>

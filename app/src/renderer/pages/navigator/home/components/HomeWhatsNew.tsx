@@ -12,7 +12,7 @@ export default function HomeWhatsNew({}: HomeWhatsNewProps) {
   const markdown = useMemo<string>(() => changelog.split('\n').slice(2).join('\n'), []);
 
   return (
-    <Card sx={{ flexGrow: 1, minHeight: 300 }}>
+    <Card sx={{ height: '100%' }}>
       <CardContent sx={{ height: '100%', display: 'flex', flexDirection: 'column' }}>
         <Typography variant={'h6'} gutterBottom>
           <FormattedMessage id={'whatsNew'} /> &#x1F380;

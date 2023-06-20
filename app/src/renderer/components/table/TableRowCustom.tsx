@@ -14,9 +14,10 @@ import { getUrlInfo } from '../../utils/urlUtils';
 
 type TableRowCustomProps<EntityItem> = {
   row: EntityItem;
+  index: number;
 };
 
-export default function TableRowCustom<EntityItem>({ row }: TableRowCustomProps<EntityItem>) {
+export default function TableRowCustom<EntityItem>({ row, index }: TableRowCustomProps<EntityItem>) {
   const {
     entity,
     visibleColumns,
