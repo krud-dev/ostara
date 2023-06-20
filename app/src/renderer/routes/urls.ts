@@ -181,6 +181,11 @@ export const urls = asUrlInfos({
     path: 'loggers',
     helpUrl: 'https://docs.ostara.dev/features/instance-features/manage/loggers',
   },
+  instanceLogfile: {
+    url: '/navigator/instance/:id/logfile',
+    path: 'logfile',
+    helpUrl: 'https://docs.ostara.dev/features/instance-features/manage/logfile',
+  },
   instanceCaches: {
     url: '/navigator/instance/:id/caches',
     path: 'caches',

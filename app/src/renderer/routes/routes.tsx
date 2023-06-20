@@ -47,6 +47,7 @@ import SettingsGeneral from 'renderer/pages/settings/general';
 import SettingsNotifications from 'renderer/pages/settings/notifications';
 import SettingsPrivacy from 'renderer/pages/settings/privacy';
 import SettingsBackups from 'renderer/pages/settings/backups';
+import InstanceLogfile from 'renderer/pages/navigator/instance/logfile';
 
 export default function Router() {
   return useRoutes([
@@ -274,6 +275,14 @@ export default function Router() {
                   element: (
                     <AbilityRedirectGuard ability={'LOGGERS'}>
                       <InstanceLoggers />
+                    </AbilityRedirectGuard>
+                  ),
+                },
+                {
+                  path: urls.instanceLogfile.path,
+                  element: (
+                    <AbilityRedirectGuard ability={'LOGGERS'}>
+                      <InstanceLogfile />
                     </AbilityRedirectGuard>
                   ),
                 },

@@ -6,7 +6,9 @@ import {
   BarChartOutlined,
   ClassOutlined,
   DataUsageOutlined,
+  DescriptionOutlined,
   DeviceHubOutlined,
+  DifferenceOutlined,
   DvrOutlined,
   EggOutlined,
   EventRepeatOutlined,
@@ -177,10 +179,18 @@ export default function InstanceSidebar({ item, itemAbilities, disabled, width }
               items: [
                 {
                   id: 'loggers',
-                  icon: <TextSnippetOutlined />,
+                  icon: <DifferenceOutlined />,
                   label: <FormattedMessage id={'loggers'} />,
                   to: generatePath(urls.instanceLoggers.url, { id: item.id }),
                   disabled: disabled || isServiceInactive('LOGGERS'),
+                },
+                {
+                  id: 'logfile',
+                  icon: <DescriptionOutlined />,
+                  label: <FormattedMessage id={'logfile'} />,
+                  to: generatePath(urls.instanceLogfile.url, { id: item.id }),
+                  disabled: disabled,
+                  hidden: isServiceInactive('LOGGERS'), //LOGFILE
                 },
                 {
                   id: 'caches',

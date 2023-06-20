@@ -18,6 +18,7 @@ export const apiKeys = {
   itemCaches: (id: string) => [...apiKeys.item(id), 'caches'],
   itemCacheStatistics: (id: string, cacheName: string) => [...apiKeys.itemCaches(id), 'statistics', cacheName],
   itemLoggers: (id: string) => [...apiKeys.item(id), 'loggers'],
+  itemLogfile: (id: string, start?: number, end?: number) => [...apiKeys.item(id), 'logfile', start, end],
   itemTogglz: (id: string) => [...apiKeys.item(id), 'togglz'],
   itemTogglzByGroup: (id: string, group: string) => [...apiKeys.itemTogglz(id), 'group', group],
   itemHealth: (id: string) => [...apiKeys.item(id), 'health'],

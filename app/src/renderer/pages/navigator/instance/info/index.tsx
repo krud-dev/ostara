@@ -28,25 +28,6 @@ const InstanceInfo: FunctionComponent = () => {
   const infoState = useGetInstanceInfoQuery({ instanceId: item.id });
   const info = useMemo<InfoActuatorResponse | undefined>(() => infoState.data, [infoState.data]);
 
-  const uiStatus = useMemo<'loading' | 'empty' | 'content'>(() => {
-    if (!info) {
-      return 'loading';
-    }
-    if (
-      !info.os &&
-      !info.build &&
-      !info.git &&
-      !info.java &&
-      !chain(info.extras)
-        .keys()
-        .some((key) => !!info.extras[key])
-        .value()
-    ) {
-      return 'empty';
-    }
-    return 'content';
-  }, [info]);
-
   const extraCards = useMemo<{ [key: string]: any }>(
     () =>
       chain(info?.extras)
@@ -84,6 +65,16 @@ const InstanceInfo: FunctionComponent = () => {
     [info, showExtraValues, extraCards]
   );
   const componentsCount = useMemo<number>(() => components.length, [components]);
+
+  const uiStatus = useMemo<'loading' | 'empty' | 'content'>(() => {
+    if (!info) {
+      return 'loading';
+    }
+    if (componentsCount === 0) {
+      return 'empty';
+    }
+    return 'content';
+  }, [info, componentsCount]);
 
   return (
     <Page sx={{ height: '100%' }}>
