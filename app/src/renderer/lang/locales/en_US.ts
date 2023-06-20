@@ -513,6 +513,7 @@ export default {
   restoreBackup: 'Restore Backup',
   restoreBackupDescription: 'Are you sure you want to restore the backup "{fileName}" from {time}?',
   restoreBackupDeleteWarning: 'This will delete all existing configuration and restore the backup.',
+  fileName: 'File Name',
   notificationTitleApplicationAllUp: '{application} is UP',
   notificationBodyApplicationAllUp: 'All instances of {application} are UP.',
   notificationTitleApplicationAllDown: '{application} is DOWN',
