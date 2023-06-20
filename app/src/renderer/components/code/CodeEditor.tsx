@@ -6,10 +6,10 @@ import { Extension } from '@codemirror/state';
 import { useSettings } from 'renderer/contexts/SettingsContext';
 import { langs } from '@uiw/codemirror-extensions-langs';
 
-export type ProgrammingLanguage = 'yaml' | 'java' | 'json' | 'shell';
+export type ProgrammingLanguage = 'yaml' | 'java' | 'json';
 
 interface CodeEditorProps extends ReactCodeMirrorProps {
-  language: ProgrammingLanguage;
+  language?: ProgrammingLanguage;
 }
 
 export default function CodeEditor({ language, extensions, ...props }: CodeEditorProps) {
@@ -29,8 +29,6 @@ export default function CodeEditor({ language, extensions, ...props }: CodeEdito
         return [langs.java()];
       case 'json':
         return [langs.json()];
-      case 'shell':
-        return [langs.shell()];
       default:
         return [];
     }

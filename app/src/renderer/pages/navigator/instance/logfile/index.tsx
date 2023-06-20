@@ -1,12 +1,18 @@
 import React, { FunctionComponent, useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import Page from 'renderer/components/layout/Page';
 import { useNavigatorLayout } from 'renderer/contexts/NavigatorLayoutContext';
-import { Card } from '@mui/material';
+import { Card, CardHeader, Divider } from '@mui/material';
 import { isNil } from 'lodash';
-import EmptyContent from 'renderer/components/help/EmptyContent';
 import { InstanceRO } from 'common/generated_definitions';
 import LogoLoaderCenter from 'renderer/components/common/LogoLoaderCenter';
 import { useGetInstanceLogfile } from 'renderer/apis/requests/instance/logfile/getInstanceLogfile';
+import { useUpdateEffect } from 'react-use';
+import InstanceLogCode from 'renderer/pages/navigator/instance/logfile/components/InstanceLogCode';
+import { FormattedMessage } from 'react-intl';
+import ToolbarButton from 'renderer/components/common/ToolbarButton';
+
+const LOG_INTERVAL = 5000;
+const LOG_MAX_LENGTH = 1000000;
 
 const InstanceLogfile: FunctionComponent = () => {
   const { selectedItem } = useNavigatorLayout();
@@ -14,47 +20,86 @@ const InstanceLogfile: FunctionComponent = () => {
   const item = useMemo<InstanceRO>(() => selectedItem as InstanceRO, [selectedItem]);
 
   const [log, setLog] = useState<string | undefined>(undefined);
+  const [requestFlag, setRequestFlag] = useState<boolean>(false);
+  const [active, setActive] = useState<boolean>(true);
   const start = useRef<number>(new Date().getTime() - 1000 * 60 * 5);
 
   const logfileState = useGetInstanceLogfile();
 
-  const updateLog = useCallback(async (): Promise<void> => {
-    const now = new Date().getTime();
-    try {
-      const result = await logfileState.mutateAsync({ instanceId: item.id, start: start.current, end: now });
-      setLog((prev) => (prev ? prev + result : result));
+  useUpdateEffect(() => {
+    if (!active) {
+      return;
+    }
 
-      start.current = now;
-    } catch (e) {}
-  }, [item]);
+    if (logfileState.isLoading) {
+      return;
+    }
+
+    (async () => {
+      const now = new Date().getTime();
+      try {
+        const result = await logfileState.mutateAsync({ instanceId: item.id, start: start.current, end: now });
+        setLog((prev) => {
+          const newLog = prev ? prev + result : result;
+          const newLogLength = newLog.length;
+          if (newLogLength <= LOG_MAX_LENGTH) {
+            return newLog;
+          }
+          return newLog.substring(newLogLength - LOG_MAX_LENGTH);
+        });
+
+        start.current = now;
+      } catch (e) {
+        setActive(false);
+      }
+    })();
+  }, [requestFlag]);
 
   useEffect(() => {
-    updateLog();
-
-    const interval = setInterval(() => {
-      updateLog();
-    }, 5000);
+    let interval: NodeJS.Timeout;
+    if (active) {
+      setRequestFlag((prev) => !prev);
+      interval = setInterval(() => {
+        setRequestFlag((prev) => !prev);
+      }, LOG_INTERVAL);
+    }
 
     return () => {
       clearInterval(interval);
     };
-  }, []);
+  }, [active]);
 
-  const uiStatus = useMemo<'loading' | 'empty' | 'content'>(() => {
+  const uiStatus = useMemo<'loading' | 'content'>(() => {
     if (isNil(log)) {
       return 'loading';
-    }
-    if (!log) {
-      return 'empty';
     }
     return 'content';
   }, [log]);
 
+  const clearHandler = useCallback((): void => {
+    setLog('');
+  }, []);
+
   return (
     <Page sx={{ height: '100%' }}>
       {uiStatus === 'loading' && <LogoLoaderCenter />}
-      {uiStatus === 'empty' && <EmptyContent />}
-      {uiStatus === 'content' && <Card>{log}</Card>}
+      {uiStatus === 'content' && (
+        <Card>
+          <CardHeader
+            title={<FormattedMessage id={'logfile'} />}
+            action={
+              <ToolbarButton
+                tooltip={<FormattedMessage id={'clear'} />}
+                icon={'ClearOutlined'}
+                onClick={clearHandler}
+              />
+            }
+            sx={{ pb: 3 }}
+          />
+          <Divider />
+          <InstanceLogCode log={log!} />
+        </Card>
+      )}
     </Page>
   );
 };

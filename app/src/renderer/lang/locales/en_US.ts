@@ -444,6 +444,7 @@ export default {
   home: 'Home',
   back: 'Back',
   forward: 'Forward',
+  clear: 'Clear',
   clearFilters: 'Clear Filters',
   selectedItemIsFiltered: 'Selected item is filtered',
   relative: 'Relative',
