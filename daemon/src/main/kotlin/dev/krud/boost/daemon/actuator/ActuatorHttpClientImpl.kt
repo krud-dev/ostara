@@ -192,18 +192,33 @@ class ActuatorHttpClientImpl(
      */
 
     // TODO: Write tests
-    override fun logfile(start: Long?, end: Long?): Result<String> = doGet(asUrl("logfile")) {
-        // Both are optional, unless 1 is specified, throw.
-        start?.let {
-            requireNotNull(end) { "end must be specified if start is specified" }
-        }
-        end?.let {
-            requireNotNull(start) { "start must be specified if end is specified" }
-        }
+    override fun logfile(start: Long?, end: Long?): Result<String> = runCatching {
+        val request = Request.Builder()
+            .url(asUrl("logfile"))
+            .apply {
+                // Both are optional, unless 1 is specified, throw.
+                start?.let {
+                    if (end == null) {
+                        throwBadRequest("end must be specified if start is specified")
+                    }
+                }
+                end?.let {
+                    if (start == null) {
+                        throwBadRequest("start must be specified if end is specified")
+                    }
+                }
 
-        if (start != null && end != null) {
-            addHeader("Range", "bytes=$start-$end")
+                if (start != null && end != null) {
+                    addHeader("Range", "bytes=$start-$end")
+                }
+            }
+            .build()
+        val response = runRequest(request)
+            .getOrThrow()
+        if (!response.isSuccessful) {
+            throwInternalServerError(response.bodyAsStringAndClose())
         }
+        response.bodyAsStringAndClose() ?: ""
     }
 
     /**
