@@ -8,14 +8,17 @@ import okhttp3.mockwebserver.MockWebServer
 import org.junit.jupiter.api.AfterEach
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
+import org.springframework.http.HttpStatus
+import org.springframework.web.server.ResponseStatusException
 import strikt.api.expect
 import strikt.api.expectThat
-import strikt.assertions.containsKey
 import strikt.assertions.isA
 import strikt.assertions.isEqualTo
+import strikt.assertions.isFailure
 import strikt.assertions.isFalse
 import strikt.assertions.isNotEmpty
 import strikt.assertions.isNotNull
+import strikt.assertions.isSuccess
 import strikt.assertions.isTrue
 
 class ActuatorHttpClientTest {
@@ -600,6 +603,68 @@ class ActuatorHttpClientTest {
         }
     }
 
+    @Test
+    fun `logfile should throw if start is set but not end`() {
+        val url = server.url("/actuator").toString()
+        val client = getClient(url)
+        val result = client.logfile(1)
+        expectThat(result)
+            .isFailure()
+            .isA<ResponseStatusException>()
+            .and {
+                get { statusCode }
+                    .isEqualTo(HttpStatus.BAD_REQUEST)
+                get { reason }
+                    .isEqualTo("end must be specified if start is specified")
+            }
+    }
+
+    @Test
+    fun `logfile should throw if end is set but not start`() {
+        val url = server.url("/actuator").toString()
+        val client = getClient(url)
+        val result = client.logfile(end = 1)
+        expectThat(result)
+            .isFailure()
+            .isA<ResponseStatusException>()
+            .and {
+                get { statusCode }
+                    .isEqualTo(HttpStatus.BAD_REQUEST)
+                get { reason }
+                    .isEqualTo("start must be specified if end is specified")
+            }
+    }
+
+    @Test
+    fun `logfile should return if neither start nor end are set`() {
+        val logContent = loadFile("responses/logfile_response_200.txt")
+        server.enqueue(okFileResponse("responses/logfile_response_200.txt", "text/plain"))
+        val url = server.url("/actuator").toString()
+        val client = getClient(url)
+        val result = client.logfile()
+        expect {
+            that(result)
+                .isSuccess()
+            that(result.getOrThrow())
+                .isEqualTo(logContent)
+        }
+    }
+
+    @Test
+    fun `logfile should return if both start and end are set`() {
+        val logContent = loadFile("responses/logfile_response_200.txt")
+        server.enqueue(okFileResponse("responses/logfile_response_200.txt", "text/plain"))
+        val url = server.url("/actuator").toString()
+        val client = getClient(url)
+        val result = client.logfile(1, 2)
+        expect {
+            that(result)
+                .isSuccess()
+            that(result.getOrThrow())
+                .isEqualTo(logContent)
+        }
+    }
+
     private fun okResponse(code: Int = 200) = MockResponse()
         .setResponseCode(code)
 
@@ -609,9 +674,9 @@ class ActuatorHttpClientTest {
 
     private fun okFileResponse(filePath: String, contentType: String, code: Int = 200) = okResponse(code)
         .setHeader("Content-Type", contentType)
-        .setBody(loadJson(filePath))
+        .setBody(loadFile(filePath))
 
-    private fun loadJson(path: String): String {
+    private fun loadFile(path: String): String {
         return javaClass
             .classLoader
             .getResourceAsStream(path)
