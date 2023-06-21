@@ -100,6 +100,7 @@ class BackupDTO(
                     description = description,
                     color = color,
                     icon = icon,
+                    sort = sort,
                     authenticationProperties = authentication.asMap(),
                 ),
             )
