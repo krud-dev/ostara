@@ -514,6 +514,7 @@ export default {
   restoreBackupDescription: 'Are you sure you want to restore the configuration backup "{fileName}" from {time}?',
   restoreBackupDeleteWarning: 'This will delete all existing configuration and restore the backup.',
   fileName: 'File Name',
+  logfile: 'Logfile',
   selectedConfigurationIsEmpty: 'Selected configuration is empty',
   notificationTitleApplicationAllUp: '{application} is UP',
   notificationBodyApplicationAllUp: 'All instances of {application} are UP.',

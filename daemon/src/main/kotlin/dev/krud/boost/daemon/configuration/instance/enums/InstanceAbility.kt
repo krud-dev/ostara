@@ -28,7 +28,8 @@ enum class InstanceAbility {
     INFO_GIT,
     SYSTEM_PROPERTIES,
     SYSTEM_ENVIRONMENT,
-    TOGGLZ
+    TOGGLZ,
+    LOGFILE
     ;
 
     companion object {

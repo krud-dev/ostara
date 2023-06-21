@@ -9,7 +9,7 @@ import { langs } from '@uiw/codemirror-extensions-langs';
 export type ProgrammingLanguage = 'yaml' | 'java' | 'json';
 
 interface CodeEditorProps extends ReactCodeMirrorProps {
-  language: ProgrammingLanguage;
+  language?: ProgrammingLanguage;
 }
 
 export default function CodeEditor({ language, extensions, ...props }: CodeEditorProps) {

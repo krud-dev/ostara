@@ -66,63 +66,63 @@ declare module '@mui/material' {
 }
 
 // SETUP COLORS
-const PRIMARY = {
+export const PRIMARY = {
   lighter: '#C8FACD',
   light: '#5BE584',
   main: '#00AB55',
   dark: '#007B55',
   darker: '#005249',
 };
-const SECONDARY = {
+export const SECONDARY = {
   lighter: '#E65689',
   light: '#E12E6D',
   main: '#D6004C',
   dark: '#A9003C',
   darker: '#84002F',
 };
-const INFO = {
+export const INFO = {
   lighter: '#D0F2FF',
   light: '#74CAFF',
   main: '#1890FF',
   dark: '#0C53B7',
   darker: '#04297A',
 };
-const SUCCESS = {
+export const SUCCESS = {
   lighter: '#E9FCD4',
   light: '#AAF27F',
   main: '#54D62C',
   dark: '#229A16',
   darker: '#08660D',
 };
-const WARNING = {
+export const WARNING = {
   lighter: '#FFF7CD',
   light: '#FFE16A',
   main: '#FFC107',
   dark: '#e5ad06',
   darker: '#cc9a05',
 };
-const ERROR = {
+export const ERROR = {
   lighter: '#FFE7D9',
   light: '#FFA48D',
   main: '#FF4842',
   dark: '#B72136',
   darker: '#7A0C2E',
 };
-const FATAL = {
+export const FATAL = {
   lighter: '#f3e5f5',
   light: '#ce93d8',
   main: '#ab47bc',
   dark: '#8e24aa',
   darker: '#4a148c',
 };
-const LIGHT_GREY = {
+export const LIGHT_GREY = {
   lighter: '#FFFFFF',
   light: '#F9FAFB',
   main: '#F4F6F8',
   dark: '#DFE3E8',
   darker: '#C4CDD5',
 };
-const DARK_GREY = {
+export const DARK_GREY = {
   lighter: '#637381',
   light: '#454F5B',
   main: '#212B36',
@@ -130,7 +130,7 @@ const DARK_GREY = {
   darker: '#000000',
 };
 
-const GREY = {
+export const GREY = {
   0: '#FFFFFF',
   100: '#F9FAFB',
   200: '#F4F6F8',
