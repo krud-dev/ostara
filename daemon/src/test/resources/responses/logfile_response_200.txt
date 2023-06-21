@@ -1,0 +1,499 @@
+package responses;2023-06-21T00:04:39.328+03:00  WARN 23256 --- [HikariPool-1 housekeeper] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Thread starvation or clock leap detected (housekeeper delta=16m20s565ms).
+2023-06-21T00:21:02.370+03:00  WARN 23256 --- [HikariPool-1 housekeeper] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Thread starvation or clock leap detected (housekeeper delta=16m23s42ms).
+2023-06-21T00:33:31.058+03:00  WARN 23256 --- [HikariPool-1 housekeeper] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Thread starvation or clock leap detected (housekeeper delta=11m58s653ms).
+2023-06-21T01:55:39.041+03:00  WARN 23256 --- [HikariPool-1 housekeeper] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Thread starvation or clock leap detected (housekeeper delta=15m37s83ms).
+2023-06-21T02:13:13.036+03:00  WARN 23256 --- [HikariPool-1 housekeeper] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Thread starvation or clock leap detected (housekeeper delta=17m3s991ms).
+2023-06-21T02:30:37.247+03:00  WARN 23256 --- [HikariPool-1 housekeeper] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Thread starvation or clock leap detected (housekeeper delta=17m24s211ms).
+2023-06-21T02:46:51.320+03:00  WARN 23256 --- [HikariPool-1 housekeeper] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Thread starvation or clock leap detected (housekeeper delta=15m44s47ms).
+2023-06-21T03:03:10.401+03:00  WARN 23256 --- [HikariPool-1 housekeeper] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Thread starvation or clock leap detected (housekeeper delta=15m49s82ms).
+2023-06-21T03:35:12.961+03:00  WARN 23256 --- [HikariPool-1 housekeeper] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Thread starvation or clock leap detected (housekeeper delta=17m32s303ms).
+2023-06-21T03:51:57.610+03:00  WARN 23256 --- [HikariPool-1 housekeeper] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Thread starvation or clock leap detected (housekeeper delta=16m14s648ms).
+2023-06-21T04:10:07.536+03:00  WARN 23256 --- [HikariPool-1 housekeeper] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Thread starvation or clock leap detected (housekeeper delta=17m39s925ms).
+2023-06-21T04:27:03.590+03:00  WARN 23256 --- [HikariPool-1 housekeeper] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Thread starvation or clock leap detected (housekeeper delta=16m56s55ms).
+2023-06-21T04:43:36.225+03:00  WARN 23256 --- [HikariPool-1 housekeeper] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Thread starvation or clock leap detected (housekeeper delta=16m2s592ms).
+2023-06-21T05:01:06.892+03:00  WARN 23256 --- [HikariPool-1 housekeeper] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Thread starvation or clock leap detected (housekeeper delta=17m555ms).
+2023-06-21T05:18:12.798+03:00  WARN 23256 --- [HikariPool-1 housekeeper] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Thread starvation or clock leap detected (housekeeper delta=15m35s869ms).
+2023-06-21T05:36:29.857+03:00  WARN 23256 --- [HikariPool-1 housekeeper] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Thread starvation or clock leap detected (housekeeper delta=17m47s62ms).
+2023-06-21T05:53:06.884+03:00  WARN 23256 --- [HikariPool-1 housekeeper] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Thread starvation or clock leap detected (housekeeper delta=16m37s27ms).
+2023-06-21T06:05:37.049+03:00  WARN 23256 --- [HikariPool-1 housekeeper] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Thread starvation or clock leap detected (housekeeper delta=10m145ms).
+2023-06-21T06:22:00.051+03:00  WARN 23256 --- [HikariPool-1 housekeeper] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Thread starvation or clock leap detected (housekeeper delta=15m52s980ms).
+2023-06-21T06:39:24.091+03:00  WARN 23256 --- [HikariPool-1 housekeeper] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Thread starvation or clock leap detected (housekeeper delta=16m54s22ms).
+2023-06-21T06:57:44.647+03:00  WARN 23256 --- [HikariPool-1 housekeeper] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Thread starvation or clock leap detected (housekeeper delta=18m20s556ms).
+2023-06-21T07:13:56.481+03:00  WARN 23256 --- [HikariPool-1 housekeeper] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Thread starvation or clock leap detected (housekeeper delta=15m41s832ms).
+2023-06-21T07:30:12.561+03:00  WARN 23256 --- [HikariPool-1 housekeeper] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Thread starvation or clock leap detected (housekeeper delta=15m46s82ms).
+2023-06-21T07:46:23.631+03:00  WARN 23256 --- [HikariPool-1 housekeeper] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Thread starvation or clock leap detected (housekeeper delta=15m41s64ms).
+2023-06-21T08:03:33.754+03:00  WARN 23256 --- [HikariPool-1 housekeeper] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Thread starvation or clock leap detected (housekeeper delta=17m10s123ms).
+2023-06-21T08:20:06.775+03:00  WARN 23256 --- [HikariPool-1 housekeeper] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Thread starvation or clock leap detected (housekeeper delta=16m3s8ms).
+2023-06-21T08:36:05.210+03:00  WARN 23256 --- [HikariPool-1 housekeeper] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Thread starvation or clock leap detected (housekeeper delta=15m58s436ms).
+2023-06-21T08:53:50.843+03:00  WARN 23256 --- [HikariPool-1 housekeeper] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Thread starvation or clock leap detected (housekeeper delta=17m15s612ms).
+2023-06-21T09:11:00.669+03:00  WARN 23256 --- [HikariPool-1 housekeeper] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Thread starvation or clock leap detected (housekeeper delta=16m39s819ms).
+2023-06-21T09:23:21.542+03:00  WARN 23256 --- [HikariPool-1 housekeeper] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Thread starvation or clock leap detected (housekeeper delta=11m50s871ms).
+2023-06-21T09:25:17.453+03:00  INFO 23256 --- [SpringApplicationShutdownHook] org.quartz.core.QuartzScheduler          : Scheduler quartzScheduler_$_NON_CLUSTERED paused.
+2023-06-21T09:25:17.469+03:00  INFO 23256 --- [SpringApplicationShutdownHook] o.s.i.endpoint.EventDrivenConsumer       : Removing {bridge} as a subscriber to the 'slideEntranceChannel' channel
+2023-06-21T09:25:17.470+03:00  INFO 23256 --- [SpringApplicationShutdownHook] o.s.integration.channel.DirectChannel    : Channel 'application.slideEntranceChannel' has 0 subscriber(s).
+2023-06-21T09:25:17.470+03:00  INFO 23256 --- [SpringApplicationShutdownHook] o.s.i.endpoint.EventDrivenConsumer       : stopped bean 'waterparkFlow.org.springframework.integration.config.ConsumerEndpointFactoryBean#0'; defined in: 'class path resource [dev/krud/ostara/inappdemo/integrationgraph/WaterparkConfig.class]'; from source: 'bean method waterparkFlow'
+2023-06-21T09:25:17.470+03:00  INFO 23256 --- [SpringApplicationShutdownHook] o.s.i.endpoint.EventDrivenConsumer       : Removing {recipient-list-router} as a subscriber to the 'inspectionAreaChannel' channel
+2023-06-21T09:25:17.470+03:00  INFO 23256 --- [SpringApplicationShutdownHook] o.s.integration.channel.DirectChannel    : Channel 'application.inspectionAreaChannel' has 0 subscriber(s).
+2023-06-21T09:25:17.470+03:00  INFO 23256 --- [SpringApplicationShutdownHook] o.s.i.endpoint.EventDrivenConsumer       : stopped bean 'inspectionFlow.org.springframework.integration.config.ConsumerEndpointFactoryBean#0'; defined in: 'class path resource [dev/krud/ostara/inappdemo/integrationgraph/WaterparkConfig.class]'; from source: 'bean method inspectionFlow'
+2023-06-21T09:25:17.470+03:00  INFO 23256 --- [SpringApplicationShutdownHook] o.s.i.endpoint.EventDrivenConsumer       : Removing {bridge} as a subscriber to the 'failedInspectionChannel' channel
+2023-06-21T09:25:17.470+03:00  INFO 23256 --- [SpringApplicationShutdownHook] o.s.integration.channel.DirectChannel    : Channel 'application.failedInspectionChannel' has 0 subscriber(s).
+2023-06-21T09:25:17.470+03:00  INFO 23256 --- [SpringApplicationShutdownHook] o.s.i.endpoint.EventDrivenConsumer       : stopped bean 'failedInspectionFlow.org.springframework.integration.config.ConsumerEndpointFactoryBean#0'; defined in: 'class path resource [dev/krud/ostara/inappdemo/integrationgraph/WaterparkConfig.class]'; from source: 'bean method failedInspectionFlow'
+2023-06-21T09:25:17.470+03:00  INFO 23256 --- [SpringApplicationShutdownHook] o.s.i.endpoint.EventDrivenConsumer       : Removing {splitter} as a subscriber to the 'stagingAreaChannel' channel
+2023-06-21T09:25:17.470+03:00  INFO 23256 --- [SpringApplicationShutdownHook] o.s.integration.channel.DirectChannel    : Channel 'application.stagingAreaChannel' has 0 subscriber(s).
+2023-06-21T09:25:17.470+03:00  INFO 23256 --- [SpringApplicationShutdownHook] o.s.i.endpoint.EventDrivenConsumer       : stopped bean 'stagingFlow.org.springframework.integration.config.ConsumerEndpointFactoryBean#0'; defined in: 'class path resource [dev/krud/ostara/inappdemo/integrationgraph/WaterparkConfig.class]'; from source: 'bean method stagingFlow'
+2023-06-21T09:25:17.470+03:00  INFO 23256 --- [SpringApplicationShutdownHook] o.s.i.endpoint.EventDrivenConsumer       : Removing {aggregator} as a subscriber to the 'waterSlideChannel' channel
+2023-06-21T09:25:17.471+03:00  INFO 23256 --- [SpringApplicationShutdownHook] o.s.integration.channel.DirectChannel    : Channel 'application.waterSlideChannel' has 0 subscriber(s).
+2023-06-21T09:25:17.471+03:00  INFO 23256 --- [SpringApplicationShutdownHook] o.s.i.endpoint.EventDrivenConsumer       : stopped bean 'stagingFlow.org.springframework.integration.config.ConsumerEndpointFactoryBean#1'; defined in: 'class path resource [dev/krud/ostara/inappdemo/integrationgraph/WaterparkConfig.class]'; from source: 'bean method stagingFlow'
+2023-06-21T09:25:17.471+03:00  INFO 23256 --- [SpringApplicationShutdownHook] o.s.i.endpoint.EventDrivenConsumer       : Removing {logging-channel-adapter:_org.springframework.integration.errorLogger} as a subscriber to the 'errorChannel' channel
+2023-06-21T09:25:17.471+03:00  INFO 23256 --- [SpringApplicationShutdownHook] o.s.i.channel.PublishSubscribeChannel    : Channel 'application.errorChannel' has 0 subscriber(s).
+2023-06-21T09:25:17.471+03:00  INFO 23256 --- [SpringApplicationShutdownHook] o.s.i.endpoint.EventDrivenConsumer       : stopped bean '_org.springframework.integration.errorLogger'
+2023-06-21T09:25:17.473+03:00  INFO 23256 --- [SpringApplicationShutdownHook] o.s.s.quartz.SchedulerFactoryBean        : Shutting down Quartz Scheduler
+2023-06-21T09:25:17.473+03:00  INFO 23256 --- [SpringApplicationShutdownHook] org.quartz.core.QuartzScheduler          : Scheduler quartzScheduler_$_NON_CLUSTERED shutting down.
+2023-06-21T09:25:17.473+03:00  INFO 23256 --- [SpringApplicationShutdownHook] org.quartz.core.QuartzScheduler          : Scheduler quartzScheduler_$_NON_CLUSTERED paused.
+2023-06-21T09:25:17.474+03:00  INFO 23256 --- [SpringApplicationShutdownHook] org.quartz.core.QuartzScheduler          : Scheduler quartzScheduler_$_NON_CLUSTERED shutdown complete.
+2023-06-21T09:25:17.475+03:00  INFO 23256 --- [SpringApplicationShutdownHook] j.LocalContainerEntityManagerFactoryBean : Closing JPA EntityManagerFactory for persistence unit 'default'
+2023-06-21T09:25:17.477+03:00  INFO 23256 --- [SpringApplicationShutdownHook] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown initiated...
+2023-06-21T09:25:17.478+03:00  INFO 23256 --- [SpringApplicationShutdownHook] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown completed.
+2023-06-21T11:09:45.997+03:00  INFO 96109 --- [main] d.k.o.inappdemo.InAppDemoApplicationKt   : The following 3 profiles are active: "profile_1", "profile_2", "togglz"
+2023-06-21T11:09:47.016+03:00  INFO 96109 --- [main] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2023-06-21T11:09:47.037+03:00  INFO 96109 --- [main] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 11 ms. Found 0 JPA repository interfaces.
+2023-06-21T11:09:47.166+03:00  INFO 96109 --- [main] faultConfiguringBeanFactoryPostProcessor : No bean named 'errorChannel' has been explicitly defined. Therefore, a default PublishSubscribeChannel will be created.
+2023-06-21T11:09:47.172+03:00  INFO 96109 --- [main] faultConfiguringBeanFactoryPostProcessor : No bean named 'integrationHeaderChannelRegistry' has been explicitly defined. Therefore, a default DefaultHeaderChannelRegistry will be created.
+2023-06-21T11:09:47.695+03:00  INFO 96109 --- [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port(s): 13333 (http)
+2023-06-21T11:09:47.702+03:00  INFO 96109 --- [main] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2023-06-21T11:09:47.703+03:00  INFO 96109 --- [main] o.apache.catalina.core.StandardEngine    : Starting Servlet engine: [Apache Tomcat/10.1.8]
+2023-06-21T11:09:47.954+03:00  INFO 96109 --- [main] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+2023-06-21T11:09:47.955+03:00  INFO 96109 --- [main] w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 1904 ms
+2023-06-21T11:09:48.606+03:00  INFO 96109 --- [main] o.f.c.internal.license.VersionPrinter    : Flyway Community Edition 9.16.3 by Redgate
+2023-06-21T11:09:48.606+03:00  INFO 96109 --- [main] o.f.c.internal.license.VersionPrinter    : See release notes here: https://rd.gt/416ObMi
+2023-06-21T11:09:48.607+03:00  INFO 96109 --- [main] o.f.c.internal.license.VersionPrinter    : 
+2023-06-21T11:09:48.613+03:00  INFO 96109 --- [main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Starting...
+2023-06-21T11:09:48.966+03:00  INFO 96109 --- [main] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Added connection conn0: url=jdbc:h2:mem:b26f592a-84ef-4bc4-9da0-a33b1cfb3aec user=SA
+2023-06-21T11:09:48.973+03:00  INFO 96109 --- [main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Start completed.
+2023-06-21T11:09:48.979+03:00  INFO 96109 --- [main] o.f.c.i.database.base.BaseDatabaseType   : Database: jdbc:h2:mem:b26f592a-84ef-4bc4-9da0-a33b1cfb3aec (H2 2.1)
+2023-06-21T11:09:49.068+03:00  INFO 96109 --- [main] o.f.c.i.s.JdbcTableSchemaHistory         : Schema history table "PUBLIC"."flyway_schema_history" does not exist yet
+2023-06-21T11:09:49.091+03:00  INFO 96109 --- [main] o.f.core.internal.command.DbValidate     : Successfully validated 14 migrations (execution time 00:00.030s)
+2023-06-21T11:09:49.094+03:00  INFO 96109 --- [main] o.f.c.i.s.JdbcTableSchemaHistory         : Creating Schema History table "PUBLIC"."flyway_schema_history" ...
+2023-06-21T11:09:49.142+03:00  INFO 96109 --- [main] o.f.core.internal.command.DbMigrate      : Current version of schema "PUBLIC": << Empty Schema >>
+2023-06-21T11:09:49.169+03:00  INFO 96109 --- [main] o.f.core.internal.command.DbMigrate      : Migrating schema "PUBLIC" to version "20230509061201 - Create Users table"
+2023-06-21T11:09:49.175+03:00  INFO 96109 --- [main] o.f.core.internal.command.DbMigrate      : Migrating schema "PUBLIC" to version "20230509061222 - Create Transactions table"
+2023-06-21T11:09:49.189+03:00  INFO 96109 --- [main] o.f.core.internal.command.DbMigrate      : Migrating schema "PUBLIC" to version "20230509061240 - Create default user"
+2023-06-21T11:09:49.192+03:00  INFO 96109 --- [main] o.f.core.internal.command.DbMigrate      : Migrating schema "PUBLIC" to version "20230509061254 - Add country to Users table"
+2023-06-21T11:09:49.195+03:00  INFO 96109 --- [main] o.f.core.internal.command.DbMigrate      : Migrating schema "PUBLIC" to version "20230509061309 - Create Notes table"
+2023-06-21T11:09:49.197+03:00  INFO 96109 --- [main] o.f.core.internal.command.DbMigrate      : Migrating schema "PUBLIC" to version "20230509061337 - Migrate to new transaction recipient format"
+2023-06-21T11:09:49.200+03:00  INFO 96109 --- [main] o.f.core.internal.command.DbMigrate      : Migrating schema "PUBLIC" to version "20230509061556 - Migrate legacy user data new schema"
+2023-06-21T11:09:49.202+03:00  INFO 96109 --- [main] o.f.core.internal.command.DbMigrate      : Migrating schema "PUBLIC" to version "20230509061611 - Create Payments table"
+2023-06-21T11:09:49.203+03:00  INFO 96109 --- [main] o.f.core.internal.command.DbMigrate      : Migrating schema "PUBLIC" to version "20230509061643 - Add phone number column to Users table"
+2023-06-21T11:09:49.207+03:00  INFO 96109 --- [main] o.f.core.internal.command.DbMigrate      : Migrating schema "PUBLIC" to version "20230509061658 - Update Transaction table schema with additional fields"
+2023-06-21T11:09:49.209+03:00  INFO 96109 --- [main] o.f.core.internal.command.DbMigrate      : Migrating schema "PUBLIC" to version "20230509061732 - Create Products table"
+2023-06-21T11:09:49.211+03:00  INFO 96109 --- [main] o.f.core.internal.command.DbMigrate      : Migrating schema "PUBLIC" to version "20230509061744 - Migrate legacy customer data"
+2023-06-21T11:09:49.213+03:00  INFO 96109 --- [main] o.f.core.internal.command.DbMigrate      : Migrating schema "PUBLIC" to version "20230509061755 - Create Shipments table"
+2023-06-21T11:09:49.267+03:00  INFO 96109 --- [main] o.f.core.internal.command.DbMigrate      : Migrating schema "PUBLIC" to version "20230509061819 - Add description column to Products"
+2023-06-21T11:09:49.269+03:00  INFO 96109 --- [main] o.f.core.internal.command.DbMigrate      : Successfully applied 14 migrations to schema "PUBLIC", now at version v20230509061819 (execution time 00:00.127s)
+2023-06-21T11:09:49.357+03:00  INFO 96109 --- [main] o.hibernate.jpa.internal.util.LogHelper  : HHH000204: Processing PersistenceUnitInfo [name: default]
+2023-06-21T11:09:49.396+03:00  INFO 96109 --- [main] org.hibernate.Version                    : HHH000412: Hibernate ORM core version 6.2.2.Final
+2023-06-21T11:09:49.397+03:00  INFO 96109 --- [main] org.hibernate.cfg.Environment            : HHH000406: Using bytecode reflection optimizer
+2023-06-21T11:09:49.496+03:00  INFO 96109 --- [main] o.h.b.i.BytecodeProviderInitiator        : HHH000021: Bytecode provider name : bytebuddy
+2023-06-21T11:09:49.620+03:00  INFO 96109 --- [main] o.s.o.j.p.SpringPersistenceUnitInfo      : No LoadTimeWeaver setup: ignoring JPA class transformer
+2023-06-21T11:09:49.674+03:00  INFO 96109 --- [main] org.hibernate.orm.dialect                : HHH035001: Using dialect: org.hibernate.dialect.H2Dialect, version: 2.1.214
+2023-06-21T11:09:49.742+03:00  INFO 96109 --- [main] o.h.b.i.BytecodeProviderInitiator        : HHH000021: Bytecode provider name : bytebuddy
+2023-06-21T11:09:49.964+03:00  INFO 96109 --- [main] o.h.e.t.j.p.i.JtaPlatformInitiator       : HHH000490: Using JtaPlatform implementation: [org.hibernate.engine.transaction.jta.platform.internal.NoJtaPlatform]
+2023-06-21T11:09:49.972+03:00  INFO 96109 --- [main] j.LocalContainerEntityManagerFactoryBean : Initialized JPA EntityManagerFactory for persistence unit 'default'
+2023-06-21T11:09:50.244+03:00  WARN 96109 --- [main] JpaBaseConfiguration$JpaWebConfiguration : spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2023-06-21T11:09:50.489+03:00  WARN 96109 --- [main] ion$DefaultTemplateResolverConfiguration : Cannot find template location: classpath:/templates/ (please add some templates, check your Thymeleaf configuration, or set spring.thymeleaf.check-template-location=false)
+2023-06-21T11:09:50.660+03:00  INFO 96109 --- [main] org.quartz.impl.StdSchedulerFactory      : Using default implementation for ThreadExecutor
+2023-06-21T11:09:50.667+03:00  INFO 96109 --- [main] org.quartz.core.SchedulerSignalerImpl    : Initialized Scheduler Signaller of type: class org.quartz.core.SchedulerSignalerImpl
+2023-06-21T11:09:50.667+03:00  INFO 96109 --- [main] org.quartz.core.QuartzScheduler          : Quartz Scheduler v.2.3.2 created.
+2023-06-21T11:09:50.667+03:00  INFO 96109 --- [main] org.quartz.simpl.RAMJobStore             : RAMJobStore initialized.
+2023-06-21T11:09:50.668+03:00  INFO 96109 --- [main] org.quartz.core.QuartzScheduler          : Scheduler meta-data: Quartz Scheduler (v2.3.2) 'quartzScheduler' with instanceId 'NON_CLUSTERED'
+  Scheduler class: 'org.quartz.core.QuartzScheduler' - running locally.
+  NOT STARTED.
+  Currently in standby mode.
+  Number of jobs executed: 0
+  Using thread pool 'org.quartz.simpl.SimpleThreadPool' - with 10 threads.
+  Using job-store 'org.quartz.simpl.RAMJobStore' - which does not support persistence. and is not clustered.
+
+2023-06-21T11:09:50.668+03:00  INFO 96109 --- [main] org.quartz.impl.StdSchedulerFactory      : Quartz scheduler 'quartzScheduler' initialized from an externally provided properties instance.
+2023-06-21T11:09:50.668+03:00  INFO 96109 --- [main] org.quartz.impl.StdSchedulerFactory      : Quartz scheduler version: 2.3.2
+2023-06-21T11:09:50.668+03:00  INFO 96109 --- [main] org.quartz.core.QuartzScheduler          : JobFactory set to: org.springframework.scheduling.quartz.SpringBeanJobFactory@1e041848
+2023-06-21T11:09:50.836+03:00  INFO 96109 --- [main] o.s.b.a.e.web.EndpointLinksResolver      : Exposing 19 endpoint(s) beneath base path '/actuator'
+2023-06-21T11:09:50.909+03:00  INFO 96109 --- [main] o.s.i.endpoint.EventDrivenConsumer       : Adding {logging-channel-adapter:_org.springframework.integration.errorLogger} as a subscriber to the 'errorChannel' channel
+2023-06-21T11:09:50.910+03:00  INFO 96109 --- [main] o.s.i.channel.PublishSubscribeChannel    : Channel 'application.errorChannel' has 1 subscriber(s).
+2023-06-21T11:09:50.910+03:00  INFO 96109 --- [main] o.s.i.endpoint.EventDrivenConsumer       : started bean '_org.springframework.integration.errorLogger'
+2023-06-21T11:09:50.910+03:00  INFO 96109 --- [main] o.s.i.endpoint.EventDrivenConsumer       : Adding {bridge} as a subscriber to the 'slideEntranceChannel' channel
+2023-06-21T11:09:50.910+03:00  INFO 96109 --- [main] o.s.integration.channel.DirectChannel    : Channel 'application.slideEntranceChannel' has 1 subscriber(s).
+2023-06-21T11:09:50.910+03:00  INFO 96109 --- [main] o.s.i.endpoint.EventDrivenConsumer       : started bean 'waterparkFlow.org.springframework.integration.config.ConsumerEndpointFactoryBean#0'; defined in: 'class path resource [dev/krud/ostara/inappdemo/integrationgraph/WaterparkConfig.class]'; from source: 'bean method waterparkFlow'
+2023-06-21T11:09:50.910+03:00  INFO 96109 --- [main] o.s.i.endpoint.EventDrivenConsumer       : Adding {recipient-list-router} as a subscriber to the 'inspectionAreaChannel' channel
+2023-06-21T11:09:50.910+03:00  INFO 96109 --- [main] o.s.integration.channel.DirectChannel    : Channel 'application.inspectionAreaChannel' has 1 subscriber(s).
+2023-06-21T11:09:50.910+03:00  INFO 96109 --- [main] o.s.i.endpoint.EventDrivenConsumer       : started bean 'inspectionFlow.org.springframework.integration.config.ConsumerEndpointFactoryBean#0'; defined in: 'class path resource [dev/krud/ostara/inappdemo/integrationgraph/WaterparkConfig.class]'; from source: 'bean method inspectionFlow'
+2023-06-21T11:09:50.911+03:00  INFO 96109 --- [main] o.s.i.endpoint.EventDrivenConsumer       : Adding {bridge} as a subscriber to the 'failedInspectionChannel' channel
+2023-06-21T11:09:50.911+03:00  INFO 96109 --- [main] o.s.integration.channel.DirectChannel    : Channel 'application.failedInspectionChannel' has 1 subscriber(s).
+2023-06-21T11:09:50.911+03:00  INFO 96109 --- [main] o.s.i.endpoint.EventDrivenConsumer       : started bean 'failedInspectionFlow.org.springframework.integration.config.ConsumerEndpointFactoryBean#0'; defined in: 'class path resource [dev/krud/ostara/inappdemo/integrationgraph/WaterparkConfig.class]'; from source: 'bean method failedInspectionFlow'
+2023-06-21T11:09:50.911+03:00  INFO 96109 --- [main] o.s.i.endpoint.EventDrivenConsumer       : Adding {splitter} as a subscriber to the 'stagingAreaChannel' channel
+2023-06-21T11:09:50.911+03:00  INFO 96109 --- [main] o.s.integration.channel.DirectChannel    : Channel 'application.stagingAreaChannel' has 1 subscriber(s).
+2023-06-21T11:09:50.911+03:00  INFO 96109 --- [main] o.s.i.endpoint.EventDrivenConsumer       : started bean 'stagingFlow.org.springframework.integration.config.ConsumerEndpointFactoryBean#0'; defined in: 'class path resource [dev/krud/ostara/inappdemo/integrationgraph/WaterparkConfig.class]'; from source: 'bean method stagingFlow'
+2023-06-21T11:09:50.911+03:00  INFO 96109 --- [main] o.s.i.endpoint.EventDrivenConsumer       : Adding {aggregator} as a subscriber to the 'waterSlideChannel' channel
+2023-06-21T11:09:50.911+03:00  INFO 96109 --- [main] o.s.integration.channel.DirectChannel    : Channel 'application.waterSlideChannel' has 1 subscriber(s).
+2023-06-21T11:09:50.911+03:00  INFO 96109 --- [main] o.s.i.endpoint.EventDrivenConsumer       : started bean 'stagingFlow.org.springframework.integration.config.ConsumerEndpointFactoryBean#1'; defined in: 'class path resource [dev/krud/ostara/inappdemo/integrationgraph/WaterparkConfig.class]'; from source: 'bean method stagingFlow'
+2023-06-21T11:09:50.925+03:00  INFO 96109 --- [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port(s): 13333 (http) with context path ''
+2023-06-21T11:09:50.926+03:00  INFO 96109 --- [main] o.s.s.quartz.SchedulerFactoryBean        : Starting Quartz Scheduler now
+2023-06-21T11:09:50.926+03:00  INFO 96109 --- [main] org.quartz.core.QuartzScheduler          : Scheduler quartzScheduler_$_NON_CLUSTERED started.
+2023-06-21T11:09:50.943+03:00  INFO 96109 --- [main] d.k.o.inappdemo.InAppDemoApplicationKt   : Started InAppDemoApplicationKt in 5.266 seconds (process running for 5.501)
+2023-06-21T11:10:10.227+03:00  INFO 96109 --- [http-nio-13333-exec-2] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring DispatcherServlet 'dispatcherServlet'
+2023-06-21T11:10:10.227+03:00  INFO 96109 --- [http-nio-13333-exec-2] o.s.web.servlet.DispatcherServlet        : Initializing Servlet 'dispatcherServlet'
+2023-06-21T11:10:10.229+03:00  INFO 96109 --- [http-nio-13333-exec-2] o.s.web.servlet.DispatcherServlet        : Completed initialization in 1 ms
+2023-06-21T13:02:16.500+03:00  INFO 81083 --- [main] d.k.o.inappdemo.InAppDemoApplicationKt   : The following 3 profiles are active: "profile_1", "profile_2", "togglz"
+2023-06-21T13:02:18.434+03:00  INFO 81083 --- [main] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2023-06-21T13:02:18.459+03:00  INFO 81083 --- [main] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 19 ms. Found 0 JPA repository interfaces.
+2023-06-21T13:02:18.574+03:00  INFO 81083 --- [main] faultConfiguringBeanFactoryPostProcessor : No bean named 'errorChannel' has been explicitly defined. Therefore, a default PublishSubscribeChannel will be created.
+2023-06-21T13:02:18.581+03:00  INFO 81083 --- [main] faultConfiguringBeanFactoryPostProcessor : No bean named 'integrationHeaderChannelRegistry' has been explicitly defined. Therefore, a default DefaultHeaderChannelRegistry will be created.
+2023-06-21T13:02:19.477+03:00  INFO 81083 --- [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port(s): 13333 (http)
+2023-06-21T13:02:19.486+03:00  INFO 81083 --- [main] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2023-06-21T13:02:19.487+03:00  INFO 81083 --- [main] o.apache.catalina.core.StandardEngine    : Starting Servlet engine: [Apache Tomcat/10.1.8]
+2023-06-21T13:02:19.587+03:00  INFO 81083 --- [main] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+2023-06-21T13:02:19.587+03:00  INFO 81083 --- [main] w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 3007 ms
+2023-06-21T13:02:19.862+03:00  INFO 81083 --- [main] o.f.c.internal.license.VersionPrinter    : Flyway Community Edition 9.16.3 by Redgate
+2023-06-21T13:02:19.862+03:00  INFO 81083 --- [main] o.f.c.internal.license.VersionPrinter    : See release notes here: https://rd.gt/416ObMi
+2023-06-21T13:02:19.863+03:00  INFO 81083 --- [main] o.f.c.internal.license.VersionPrinter    : 
+2023-06-21T13:02:19.870+03:00  INFO 81083 --- [main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Starting...
+2023-06-21T13:02:20.052+03:00  INFO 81083 --- [main] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Added connection conn0: url=jdbc:h2:mem:72864d71-07ac-49c8-95a8-55a737890ee8 user=SA
+2023-06-21T13:02:20.056+03:00  INFO 81083 --- [main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Start completed.
+2023-06-21T13:02:20.074+03:00  INFO 81083 --- [main] o.f.c.i.database.base.BaseDatabaseType   : Database: jdbc:h2:mem:72864d71-07ac-49c8-95a8-55a737890ee8 (H2 2.1)
+2023-06-21T13:02:20.128+03:00  INFO 81083 --- [main] o.f.c.i.s.JdbcTableSchemaHistory         : Schema history table "PUBLIC"."flyway_schema_history" does not exist yet
+2023-06-21T13:02:20.133+03:00  INFO 81083 --- [main] o.f.core.internal.command.DbValidate     : Successfully validated 14 migrations (execution time 00:00.017s)
+2023-06-21T13:02:20.140+03:00  INFO 81083 --- [main] o.f.c.i.s.JdbcTableSchemaHistory         : Creating Schema History table "PUBLIC"."flyway_schema_history" ...
+2023-06-21T13:02:20.176+03:00  INFO 81083 --- [main] o.f.core.internal.command.DbMigrate      : Current version of schema "PUBLIC": << Empty Schema >>
+2023-06-21T13:02:20.188+03:00  INFO 81083 --- [main] o.f.core.internal.command.DbMigrate      : Migrating schema "PUBLIC" to version "20230509061201 - Create Users table"
+2023-06-21T13:02:20.197+03:00  INFO 81083 --- [main] o.f.core.internal.command.DbMigrate      : Migrating schema "PUBLIC" to version "20230509061222 - Create Transactions table"
+2023-06-21T13:02:20.203+03:00  INFO 81083 --- [main] o.f.core.internal.command.DbMigrate      : Migrating schema "PUBLIC" to version "20230509061240 - Create default user"
+2023-06-21T13:02:20.207+03:00  INFO 81083 --- [main] o.f.core.internal.command.DbMigrate      : Migrating schema "PUBLIC" to version "20230509061254 - Add country to Users table"
+2023-06-21T13:02:20.215+03:00  INFO 81083 --- [main] o.f.core.internal.command.DbMigrate      : Migrating schema "PUBLIC" to version "20230509061309 - Create Notes table"
+2023-06-21T13:02:20.223+03:00  INFO 81083 --- [main] o.f.core.internal.command.DbMigrate      : Migrating schema "PUBLIC" to version "20230509061337 - Migrate to new transaction recipient format"
+2023-06-21T13:02:20.231+03:00  INFO 81083 --- [main] o.f.core.internal.command.DbMigrate      : Migrating schema "PUBLIC" to version "20230509061556 - Migrate legacy user data new schema"
+2023-06-21T13:02:20.248+03:00  INFO 81083 --- [main] o.f.core.internal.command.DbMigrate      : Migrating schema "PUBLIC" to version "20230509061611 - Create Payments table"
+2023-06-21T13:02:20.257+03:00  INFO 81083 --- [main] o.f.core.internal.command.DbMigrate      : Migrating schema "PUBLIC" to version "20230509061643 - Add phone number column to Users table"
+2023-06-21T13:02:20.264+03:00  INFO 81083 --- [main] o.f.core.internal.command.DbMigrate      : Migrating schema "PUBLIC" to version "20230509061658 - Update Transaction table schema with additional fields"
+2023-06-21T13:02:20.280+03:00  INFO 81083 --- [main] o.f.core.internal.command.DbMigrate      : Migrating schema "PUBLIC" to version "20230509061732 - Create Products table"
+2023-06-21T13:02:20.286+03:00  INFO 81083 --- [main] o.f.core.internal.command.DbMigrate      : Migrating schema "PUBLIC" to version "20230509061744 - Migrate legacy customer data"
+2023-06-21T13:02:20.293+03:00  INFO 81083 --- [main] o.f.core.internal.command.DbMigrate      : Migrating schema "PUBLIC" to version "20230509061755 - Create Shipments table"
+2023-06-21T13:02:20.306+03:00  INFO 81083 --- [main] o.f.core.internal.command.DbMigrate      : Migrating schema "PUBLIC" to version "20230509061819 - Add description column to Products"
+2023-06-21T13:02:20.316+03:00  INFO 81083 --- [main] o.f.core.internal.command.DbMigrate      : Successfully applied 14 migrations to schema "PUBLIC", now at version v20230509061819 (execution time 00:00.142s)
+2023-06-21T13:02:20.458+03:00  INFO 81083 --- [main] o.hibernate.jpa.internal.util.LogHelper  : HHH000204: Processing PersistenceUnitInfo [name: default]
+2023-06-21T13:02:20.499+03:00  INFO 81083 --- [main] org.hibernate.Version                    : HHH000412: Hibernate ORM core version 6.2.2.Final
+2023-06-21T13:02:20.501+03:00  INFO 81083 --- [main] org.hibernate.cfg.Environment            : HHH000406: Using bytecode reflection optimizer
+2023-06-21T13:02:20.589+03:00  INFO 81083 --- [main] o.h.b.i.BytecodeProviderInitiator        : HHH000021: Bytecode provider name : bytebuddy
+2023-06-21T13:02:20.696+03:00  INFO 81083 --- [main] o.s.o.j.p.SpringPersistenceUnitInfo      : No LoadTimeWeaver setup: ignoring JPA class transformer
+2023-06-21T13:02:20.729+03:00  INFO 81083 --- [main] org.hibernate.orm.dialect                : HHH035001: Using dialect: org.hibernate.dialect.H2Dialect, version: 2.1.214
+2023-06-21T13:02:20.781+03:00  INFO 81083 --- [main] o.h.b.i.BytecodeProviderInitiator        : HHH000021: Bytecode provider name : bytebuddy
+2023-06-21T13:02:20.924+03:00  INFO 81083 --- [main] o.h.e.t.j.p.i.JtaPlatformInitiator       : HHH000490: Using JtaPlatform implementation: [org.hibernate.engine.transaction.jta.platform.internal.NoJtaPlatform]
+2023-06-21T13:02:20.928+03:00  INFO 81083 --- [main] j.LocalContainerEntityManagerFactoryBean : Initialized JPA EntityManagerFactory for persistence unit 'default'
+2023-06-21T13:02:21.330+03:00  WARN 81083 --- [main] JpaBaseConfiguration$JpaWebConfiguration : spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2023-06-21T13:02:21.665+03:00  WARN 81083 --- [main] ion$DefaultTemplateResolverConfiguration : Cannot find template location: classpath:/templates/ (please add some templates, check your Thymeleaf configuration, or set spring.thymeleaf.check-template-location=false)
+2023-06-21T13:02:21.845+03:00  INFO 81083 --- [main] org.quartz.impl.StdSchedulerFactory      : Using default implementation for ThreadExecutor
+2023-06-21T13:02:21.855+03:00  INFO 81083 --- [main] org.quartz.core.SchedulerSignalerImpl    : Initialized Scheduler Signaller of type: class org.quartz.core.SchedulerSignalerImpl
+2023-06-21T13:02:21.855+03:00  INFO 81083 --- [main] org.quartz.core.QuartzScheduler          : Quartz Scheduler v.2.3.2 created.
+2023-06-21T13:02:21.855+03:00  INFO 81083 --- [main] org.quartz.simpl.RAMJobStore             : RAMJobStore initialized.
+2023-06-21T13:02:21.856+03:00  INFO 81083 --- [main] org.quartz.core.QuartzScheduler          : Scheduler meta-data: Quartz Scheduler (v2.3.2) 'quartzScheduler' with instanceId 'NON_CLUSTERED'
+  Scheduler class: 'org.quartz.core.QuartzScheduler' - running locally.
+  NOT STARTED.
+  Currently in standby mode.
+  Number of jobs executed: 0
+  Using thread pool 'org.quartz.simpl.SimpleThreadPool' - with 10 threads.
+  Using job-store 'org.quartz.simpl.RAMJobStore' - which does not support persistence. and is not clustered.
+
+2023-06-21T13:02:21.856+03:00  INFO 81083 --- [main] org.quartz.impl.StdSchedulerFactory      : Quartz scheduler 'quartzScheduler' initialized from an externally provided properties instance.
+2023-06-21T13:02:21.856+03:00  INFO 81083 --- [main] org.quartz.impl.StdSchedulerFactory      : Quartz scheduler version: 2.3.2
+2023-06-21T13:02:21.856+03:00  INFO 81083 --- [main] org.quartz.core.QuartzScheduler          : JobFactory set to: org.springframework.scheduling.quartz.SpringBeanJobFactory@5e75cf7a
+2023-06-21T13:02:22.259+03:00  INFO 81083 --- [main] o.s.b.a.e.web.EndpointLinksResolver      : Exposing 19 endpoint(s) beneath base path '/actuator'
+2023-06-21T13:02:22.417+03:00  INFO 81083 --- [main] o.s.i.endpoint.EventDrivenConsumer       : Adding {logging-channel-adapter:_org.springframework.integration.errorLogger} as a subscriber to the 'errorChannel' channel
+2023-06-21T13:02:22.418+03:00  INFO 81083 --- [main] o.s.i.channel.PublishSubscribeChannel    : Channel 'application.errorChannel' has 1 subscriber(s).
+2023-06-21T13:02:22.419+03:00  INFO 81083 --- [main] o.s.i.endpoint.EventDrivenConsumer       : started bean '_org.springframework.integration.errorLogger'
+2023-06-21T13:02:22.419+03:00  INFO 81083 --- [main] o.s.i.endpoint.EventDrivenConsumer       : Adding {bridge} as a subscriber to the 'slideEntranceChannel' channel
+2023-06-21T13:02:22.420+03:00  INFO 81083 --- [main] o.s.integration.channel.DirectChannel    : Channel 'application.slideEntranceChannel' has 1 subscriber(s).
+2023-06-21T13:02:22.420+03:00  INFO 81083 --- [main] o.s.i.endpoint.EventDrivenConsumer       : started bean 'waterparkFlow.org.springframework.integration.config.ConsumerEndpointFactoryBean#0'; defined in: 'class path resource [dev/krud/ostara/inappdemo/integrationgraph/WaterparkConfig.class]'; from source: 'bean method waterparkFlow'
+2023-06-21T13:02:22.420+03:00  INFO 81083 --- [main] o.s.i.endpoint.EventDrivenConsumer       : Adding {recipient-list-router} as a subscriber to the 'inspectionAreaChannel' channel
+2023-06-21T13:02:22.420+03:00  INFO 81083 --- [main] o.s.integration.channel.DirectChannel    : Channel 'application.inspectionAreaChannel' has 1 subscriber(s).
+2023-06-21T13:02:22.420+03:00  INFO 81083 --- [main] o.s.i.endpoint.EventDrivenConsumer       : started bean 'inspectionFlow.org.springframework.integration.config.ConsumerEndpointFactoryBean#0'; defined in: 'class path resource [dev/krud/ostara/inappdemo/integrationgraph/WaterparkConfig.class]'; from source: 'bean method inspectionFlow'
+2023-06-21T13:02:22.420+03:00  INFO 81083 --- [main] o.s.i.endpoint.EventDrivenConsumer       : Adding {bridge} as a subscriber to the 'failedInspectionChannel' channel
+2023-06-21T13:02:22.421+03:00  INFO 81083 --- [main] o.s.integration.channel.DirectChannel    : Channel 'application.failedInspectionChannel' has 1 subscriber(s).
+2023-06-21T13:02:22.421+03:00  INFO 81083 --- [main] o.s.i.endpoint.EventDrivenConsumer       : started bean 'failedInspectionFlow.org.springframework.integration.config.ConsumerEndpointFactoryBean#0'; defined in: 'class path resource [dev/krud/ostara/inappdemo/integrationgraph/WaterparkConfig.class]'; from source: 'bean method failedInspectionFlow'
+2023-06-21T13:02:22.421+03:00  INFO 81083 --- [main] o.s.i.endpoint.EventDrivenConsumer       : Adding {splitter} as a subscriber to the 'stagingAreaChannel' channel
+2023-06-21T13:02:22.421+03:00  INFO 81083 --- [main] o.s.integration.channel.DirectChannel    : Channel 'application.stagingAreaChannel' has 1 subscriber(s).
+2023-06-21T13:02:22.421+03:00  INFO 81083 --- [main] o.s.i.endpoint.EventDrivenConsumer       : started bean 'stagingFlow.org.springframework.integration.config.ConsumerEndpointFactoryBean#0'; defined in: 'class path resource [dev/krud/ostara/inappdemo/integrationgraph/WaterparkConfig.class]'; from source: 'bean method stagingFlow'
+2023-06-21T13:02:22.421+03:00  INFO 81083 --- [main] o.s.i.endpoint.EventDrivenConsumer       : Adding {aggregator} as a subscriber to the 'waterSlideChannel' channel
+2023-06-21T13:02:22.421+03:00  INFO 81083 --- [main] o.s.integration.channel.DirectChannel    : Channel 'application.waterSlideChannel' has 1 subscriber(s).
+2023-06-21T13:02:22.421+03:00  INFO 81083 --- [main] o.s.i.endpoint.EventDrivenConsumer       : started bean 'stagingFlow.org.springframework.integration.config.ConsumerEndpointFactoryBean#1'; defined in: 'class path resource [dev/krud/ostara/inappdemo/integrationgraph/WaterparkConfig.class]'; from source: 'bean method stagingFlow'
+2023-06-21T13:02:22.434+03:00  INFO 81083 --- [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port(s): 13333 (http) with context path ''
+2023-06-21T13:02:22.438+03:00  INFO 81083 --- [main] o.s.s.quartz.SchedulerFactoryBean        : Starting Quartz Scheduler now
+2023-06-21T13:02:22.438+03:00  INFO 81083 --- [main] org.quartz.core.QuartzScheduler          : Scheduler quartzScheduler_$_NON_CLUSTERED started.
+2023-06-21T13:02:22.464+03:00 ERROR 81083 --- [scheduling-1] d.krud.ostara.inappdemo.log.LogRunner    : Fetching the User Data... (demo)
+2023-06-21T13:02:22.470+03:00  INFO 81083 --- [main] d.k.o.inappdemo.InAppDemoApplicationKt   : Started InAppDemoApplicationKt in 6.888 seconds (process running for 7.719)
+2023-06-21T13:02:23.047+03:00  INFO 81083 --- [RMI TCP Connection(2)-127.0.0.1] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring DispatcherServlet 'dispatcherServlet'
+2023-06-21T13:02:23.048+03:00  INFO 81083 --- [RMI TCP Connection(2)-127.0.0.1] o.s.web.servlet.DispatcherServlet        : Initializing Servlet 'dispatcherServlet'
+2023-06-21T13:02:23.053+03:00  INFO 81083 --- [RMI TCP Connection(2)-127.0.0.1] o.s.web.servlet.DispatcherServlet        : Completed initialization in 4 ms
+2023-06-21T13:02:37.468+03:00  WARN 81083 --- [scheduling-1] d.krud.ostara.inappdemo.log.LogRunner    : Fetching the Application Response... (demo)
+2023-06-21T13:02:51.507+03:00  INFO 81083 --- [SpringApplicationShutdownHook] org.quartz.core.QuartzScheduler          : Scheduler quartzScheduler_$_NON_CLUSTERED paused.
+2023-06-21T13:02:51.518+03:00  INFO 81083 --- [SpringApplicationShutdownHook] o.s.i.endpoint.EventDrivenConsumer       : Removing {bridge} as a subscriber to the 'slideEntranceChannel' channel
+2023-06-21T13:02:51.519+03:00  INFO 81083 --- [SpringApplicationShutdownHook] o.s.integration.channel.DirectChannel    : Channel 'application.slideEntranceChannel' has 0 subscriber(s).
+2023-06-21T13:02:51.521+03:00  INFO 81083 --- [SpringApplicationShutdownHook] o.s.i.endpoint.EventDrivenConsumer       : stopped bean 'waterparkFlow.org.springframework.integration.config.ConsumerEndpointFactoryBean#0'; defined in: 'class path resource [dev/krud/ostara/inappdemo/integrationgraph/WaterparkConfig.class]'; from source: 'bean method waterparkFlow'
+2023-06-21T13:02:51.521+03:00  INFO 81083 --- [SpringApplicationShutdownHook] o.s.i.endpoint.EventDrivenConsumer       : Removing {recipient-list-router} as a subscriber to the 'inspectionAreaChannel' channel
+2023-06-21T13:02:51.521+03:00  INFO 81083 --- [SpringApplicationShutdownHook] o.s.integration.channel.DirectChannel    : Channel 'application.inspectionAreaChannel' has 0 subscriber(s).
+2023-06-21T13:02:51.521+03:00  INFO 81083 --- [SpringApplicationShutdownHook] o.s.i.endpoint.EventDrivenConsumer       : stopped bean 'inspectionFlow.org.springframework.integration.config.ConsumerEndpointFactoryBean#0'; defined in: 'class path resource [dev/krud/ostara/inappdemo/integrationgraph/WaterparkConfig.class]'; from source: 'bean method inspectionFlow'
+2023-06-21T13:02:51.521+03:00  INFO 81083 --- [SpringApplicationShutdownHook] o.s.i.endpoint.EventDrivenConsumer       : Removing {bridge} as a subscriber to the 'failedInspectionChannel' channel
+2023-06-21T13:02:51.521+03:00  INFO 81083 --- [SpringApplicationShutdownHook] o.s.integration.channel.DirectChannel    : Channel 'application.failedInspectionChannel' has 0 subscriber(s).
+2023-06-21T13:02:51.521+03:00  INFO 81083 --- [SpringApplicationShutdownHook] o.s.i.endpoint.EventDrivenConsumer       : stopped bean 'failedInspectionFlow.org.springframework.integration.config.ConsumerEndpointFactoryBean#0'; defined in: 'class path resource [dev/krud/ostara/inappdemo/integrationgraph/WaterparkConfig.class]'; from source: 'bean method failedInspectionFlow'
+2023-06-21T13:02:51.522+03:00  INFO 81083 --- [SpringApplicationShutdownHook] o.s.i.endpoint.EventDrivenConsumer       : Removing {splitter} as a subscriber to the 'stagingAreaChannel' channel
+2023-06-21T13:02:51.522+03:00  INFO 81083 --- [SpringApplicationShutdownHook] o.s.integration.channel.DirectChannel    : Channel 'application.stagingAreaChannel' has 0 subscriber(s).
+2023-06-21T13:02:51.522+03:00  INFO 81083 --- [SpringApplicationShutdownHook] o.s.i.endpoint.EventDrivenConsumer       : stopped bean 'stagingFlow.org.springframework.integration.config.ConsumerEndpointFactoryBean#0'; defined in: 'class path resource [dev/krud/ostara/inappdemo/integrationgraph/WaterparkConfig.class]'; from source: 'bean method stagingFlow'
+2023-06-21T13:02:51.522+03:00  INFO 81083 --- [SpringApplicationShutdownHook] o.s.i.endpoint.EventDrivenConsumer       : Removing {aggregator} as a subscriber to the 'waterSlideChannel' channel
+2023-06-21T13:02:51.522+03:00  INFO 81083 --- [SpringApplicationShutdownHook] o.s.integration.channel.DirectChannel    : Channel 'application.waterSlideChannel' has 0 subscriber(s).
+2023-06-21T13:02:51.522+03:00  INFO 81083 --- [SpringApplicationShutdownHook] o.s.i.endpoint.EventDrivenConsumer       : stopped bean 'stagingFlow.org.springframework.integration.config.ConsumerEndpointFactoryBean#1'; defined in: 'class path resource [dev/krud/ostara/inappdemo/integrationgraph/WaterparkConfig.class]'; from source: 'bean method stagingFlow'
+2023-06-21T13:02:51.522+03:00  INFO 81083 --- [SpringApplicationShutdownHook] o.s.i.endpoint.EventDrivenConsumer       : Removing {logging-channel-adapter:_org.springframework.integration.errorLogger} as a subscriber to the 'errorChannel' channel
+2023-06-21T13:02:51.522+03:00  INFO 81083 --- [SpringApplicationShutdownHook] o.s.i.channel.PublishSubscribeChannel    : Channel 'application.errorChannel' has 0 subscriber(s).
+2023-06-21T13:02:51.522+03:00  INFO 81083 --- [SpringApplicationShutdownHook] o.s.i.endpoint.EventDrivenConsumer       : stopped bean '_org.springframework.integration.errorLogger'
+2023-06-21T13:02:51.527+03:00  INFO 81083 --- [SpringApplicationShutdownHook] o.s.s.quartz.SchedulerFactoryBean        : Shutting down Quartz Scheduler
+2023-06-21T13:02:51.527+03:00  INFO 81083 --- [SpringApplicationShutdownHook] org.quartz.core.QuartzScheduler          : Scheduler quartzScheduler_$_NON_CLUSTERED shutting down.
+2023-06-21T13:02:51.527+03:00  INFO 81083 --- [SpringApplicationShutdownHook] org.quartz.core.QuartzScheduler          : Scheduler quartzScheduler_$_NON_CLUSTERED paused.
+2023-06-21T13:02:51.527+03:00  INFO 81083 --- [SpringApplicationShutdownHook] org.quartz.core.QuartzScheduler          : Scheduler quartzScheduler_$_NON_CLUSTERED shutdown complete.
+2023-06-21T13:02:51.529+03:00  INFO 81083 --- [SpringApplicationShutdownHook] j.LocalContainerEntityManagerFactoryBean : Closing JPA EntityManagerFactory for persistence unit 'default'
+2023-06-21T13:02:51.531+03:00  INFO 81083 --- [SpringApplicationShutdownHook] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown initiated...
+2023-06-21T13:02:51.535+03:00  INFO 81083 --- [SpringApplicationShutdownHook] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown completed.
+2023-06-21T13:02:56.495+03:00  INFO 81149 --- [main] d.k.o.inappdemo.InAppDemoApplicationKt   : The following 3 profiles are active: "profile_1", "profile_2", "togglz"
+2023-06-21T13:02:58.283+03:00  INFO 81149 --- [main] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2023-06-21T13:02:58.311+03:00  INFO 81149 --- [main] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 21 ms. Found 0 JPA repository interfaces.
+2023-06-21T13:02:58.434+03:00  INFO 81149 --- [main] faultConfiguringBeanFactoryPostProcessor : No bean named 'errorChannel' has been explicitly defined. Therefore, a default PublishSubscribeChannel will be created.
+2023-06-21T13:02:58.441+03:00  INFO 81149 --- [main] faultConfiguringBeanFactoryPostProcessor : No bean named 'integrationHeaderChannelRegistry' has been explicitly defined. Therefore, a default DefaultHeaderChannelRegistry will be created.
+2023-06-21T13:02:59.439+03:00  INFO 81149 --- [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port(s): 13333 (http)
+2023-06-21T13:02:59.456+03:00  INFO 81149 --- [main] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2023-06-21T13:02:59.456+03:00  INFO 81149 --- [main] o.apache.catalina.core.StandardEngine    : Starting Servlet engine: [Apache Tomcat/10.1.8]
+2023-06-21T13:02:59.582+03:00  INFO 81149 --- [main] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+2023-06-21T13:02:59.583+03:00  INFO 81149 --- [main] w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 3009 ms
+2023-06-21T13:02:59.917+03:00  INFO 81149 --- [main] o.f.c.internal.license.VersionPrinter    : Flyway Community Edition 9.16.3 by Redgate
+2023-06-21T13:02:59.918+03:00  INFO 81149 --- [main] o.f.c.internal.license.VersionPrinter    : See release notes here: https://rd.gt/416ObMi
+2023-06-21T13:02:59.918+03:00  INFO 81149 --- [main] o.f.c.internal.license.VersionPrinter    : 
+2023-06-21T13:02:59.927+03:00  INFO 81149 --- [main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Starting...
+2023-06-21T13:03:00.083+03:00  INFO 81149 --- [main] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Added connection conn0: url=jdbc:h2:mem:57dfc7f8-78e9-4b67-8263-7d12ad5e2d70 user=SA
+2023-06-21T13:03:00.085+03:00  INFO 81149 --- [main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Start completed.
+2023-06-21T13:03:00.096+03:00  INFO 81149 --- [main] o.f.c.i.database.base.BaseDatabaseType   : Database: jdbc:h2:mem:57dfc7f8-78e9-4b67-8263-7d12ad5e2d70 (H2 2.1)
+2023-06-21T13:03:00.157+03:00  INFO 81149 --- [main] o.f.c.i.s.JdbcTableSchemaHistory         : Schema history table "PUBLIC"."flyway_schema_history" does not exist yet
+2023-06-21T13:03:00.163+03:00  INFO 81149 --- [main] o.f.core.internal.command.DbValidate     : Successfully validated 14 migrations (execution time 00:00.024s)
+2023-06-21T13:03:00.169+03:00  INFO 81149 --- [main] o.f.c.i.s.JdbcTableSchemaHistory         : Creating Schema History table "PUBLIC"."flyway_schema_history" ...
+2023-06-21T13:03:00.203+03:00  INFO 81149 --- [main] o.f.core.internal.command.DbMigrate      : Current version of schema "PUBLIC": << Empty Schema >>
+2023-06-21T13:03:00.215+03:00  INFO 81149 --- [main] o.f.core.internal.command.DbMigrate      : Migrating schema "PUBLIC" to version "20230509061201 - Create Users table"
+2023-06-21T13:03:00.226+03:00  INFO 81149 --- [main] o.f.core.internal.command.DbMigrate      : Migrating schema "PUBLIC" to version "20230509061222 - Create Transactions table"
+2023-06-21T13:03:00.231+03:00  INFO 81149 --- [main] o.f.core.internal.command.DbMigrate      : Migrating schema "PUBLIC" to version "20230509061240 - Create default user"
+2023-06-21T13:03:00.237+03:00  INFO 81149 --- [main] o.f.core.internal.command.DbMigrate      : Migrating schema "PUBLIC" to version "20230509061254 - Add country to Users table"
+2023-06-21T13:03:00.243+03:00  INFO 81149 --- [main] o.f.core.internal.command.DbMigrate      : Migrating schema "PUBLIC" to version "20230509061309 - Create Notes table"
+2023-06-21T13:03:00.257+03:00  INFO 81149 --- [main] o.f.core.internal.command.DbMigrate      : Migrating schema "PUBLIC" to version "20230509061337 - Migrate to new transaction recipient format"
+2023-06-21T13:03:00.274+03:00  INFO 81149 --- [main] o.f.core.internal.command.DbMigrate      : Migrating schema "PUBLIC" to version "20230509061556 - Migrate legacy user data new schema"
+2023-06-21T13:03:00.286+03:00  INFO 81149 --- [main] o.f.core.internal.command.DbMigrate      : Migrating schema "PUBLIC" to version "20230509061611 - Create Payments table"
+2023-06-21T13:03:00.295+03:00  INFO 81149 --- [main] o.f.core.internal.command.DbMigrate      : Migrating schema "PUBLIC" to version "20230509061643 - Add phone number column to Users table"
+2023-06-21T13:03:00.302+03:00  INFO 81149 --- [main] o.f.core.internal.command.DbMigrate      : Migrating schema "PUBLIC" to version "20230509061658 - Update Transaction table schema with additional fields"
+2023-06-21T13:03:00.317+03:00  INFO 81149 --- [main] o.f.core.internal.command.DbMigrate      : Migrating schema "PUBLIC" to version "20230509061732 - Create Products table"
+2023-06-21T13:03:00.322+03:00  INFO 81149 --- [main] o.f.core.internal.command.DbMigrate      : Migrating schema "PUBLIC" to version "20230509061744 - Migrate legacy customer data"
+2023-06-21T13:03:00.330+03:00  INFO 81149 --- [main] o.f.core.internal.command.DbMigrate      : Migrating schema "PUBLIC" to version "20230509061755 - Create Shipments table"
+2023-06-21T13:03:00.342+03:00  INFO 81149 --- [main] o.f.core.internal.command.DbMigrate      : Migrating schema "PUBLIC" to version "20230509061819 - Add description column to Products"
+2023-06-21T13:03:00.351+03:00  INFO 81149 --- [main] o.f.core.internal.command.DbMigrate      : Successfully applied 14 migrations to schema "PUBLIC", now at version v20230509061819 (execution time 00:00.150s)
+2023-06-21T13:03:00.471+03:00  INFO 81149 --- [main] o.hibernate.jpa.internal.util.LogHelper  : HHH000204: Processing PersistenceUnitInfo [name: default]
+2023-06-21T13:03:00.515+03:00  INFO 81149 --- [main] org.hibernate.Version                    : HHH000412: Hibernate ORM core version 6.2.2.Final
+2023-06-21T13:03:00.518+03:00  INFO 81149 --- [main] org.hibernate.cfg.Environment            : HHH000406: Using bytecode reflection optimizer
+2023-06-21T13:03:00.634+03:00  INFO 81149 --- [main] o.h.b.i.BytecodeProviderInitiator        : HHH000021: Bytecode provider name : bytebuddy
+2023-06-21T13:03:00.760+03:00  INFO 81149 --- [main] o.s.o.j.p.SpringPersistenceUnitInfo      : No LoadTimeWeaver setup: ignoring JPA class transformer
+2023-06-21T13:03:00.802+03:00  INFO 81149 --- [main] org.hibernate.orm.dialect                : HHH035001: Using dialect: org.hibernate.dialect.H2Dialect, version: 2.1.214
+2023-06-21T13:03:00.865+03:00  INFO 81149 --- [main] o.h.b.i.BytecodeProviderInitiator        : HHH000021: Bytecode provider name : bytebuddy
+2023-06-21T13:03:01.037+03:00  INFO 81149 --- [main] o.h.e.t.j.p.i.JtaPlatformInitiator       : HHH000490: Using JtaPlatform implementation: [org.hibernate.engine.transaction.jta.platform.internal.NoJtaPlatform]
+2023-06-21T13:03:01.042+03:00  INFO 81149 --- [main] j.LocalContainerEntityManagerFactoryBean : Initialized JPA EntityManagerFactory for persistence unit 'default'
+2023-06-21T13:03:01.487+03:00  WARN 81149 --- [main] JpaBaseConfiguration$JpaWebConfiguration : spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2023-06-21T13:03:01.844+03:00  WARN 81149 --- [main] ion$DefaultTemplateResolverConfiguration : Cannot find template location: classpath:/templates/ (please add some templates, check your Thymeleaf configuration, or set spring.thymeleaf.check-template-location=false)
+2023-06-21T13:03:02.022+03:00  INFO 81149 --- [main] org.quartz.impl.StdSchedulerFactory      : Using default implementation for ThreadExecutor
+2023-06-21T13:03:02.031+03:00  INFO 81149 --- [main] org.quartz.core.SchedulerSignalerImpl    : Initialized Scheduler Signaller of type: class org.quartz.core.SchedulerSignalerImpl
+2023-06-21T13:03:02.031+03:00  INFO 81149 --- [main] org.quartz.core.QuartzScheduler          : Quartz Scheduler v.2.3.2 created.
+2023-06-21T13:03:02.032+03:00  INFO 81149 --- [main] org.quartz.simpl.RAMJobStore             : RAMJobStore initialized.
+2023-06-21T13:03:02.033+03:00  INFO 81149 --- [main] org.quartz.core.QuartzScheduler          : Scheduler meta-data: Quartz Scheduler (v2.3.2) 'quartzScheduler' with instanceId 'NON_CLUSTERED'
+  Scheduler class: 'org.quartz.core.QuartzScheduler' - running locally.
+  NOT STARTED.
+  Currently in standby mode.
+  Number of jobs executed: 0
+  Using thread pool 'org.quartz.simpl.SimpleThreadPool' - with 10 threads.
+  Using job-store 'org.quartz.simpl.RAMJobStore' - which does not support persistence. and is not clustered.
+
+2023-06-21T13:03:02.033+03:00  INFO 81149 --- [main] org.quartz.impl.StdSchedulerFactory      : Quartz scheduler 'quartzScheduler' initialized from an externally provided properties instance.
+2023-06-21T13:03:02.033+03:00  INFO 81149 --- [main] org.quartz.impl.StdSchedulerFactory      : Quartz scheduler version: 2.3.2
+2023-06-21T13:03:02.033+03:00  INFO 81149 --- [main] org.quartz.core.QuartzScheduler          : JobFactory set to: org.springframework.scheduling.quartz.SpringBeanJobFactory@7a1878d
+2023-06-21T13:03:02.477+03:00  INFO 81149 --- [main] o.s.b.a.e.web.EndpointLinksResolver      : Exposing 19 endpoint(s) beneath base path '/actuator'
+2023-06-21T13:03:02.687+03:00  INFO 81149 --- [main] o.s.i.endpoint.EventDrivenConsumer       : Adding {logging-channel-adapter:_org.springframework.integration.errorLogger} as a subscriber to the 'errorChannel' channel
+2023-06-21T13:03:02.689+03:00  INFO 81149 --- [main] o.s.i.channel.PublishSubscribeChannel    : Channel 'application.errorChannel' has 1 subscriber(s).
+2023-06-21T13:03:02.690+03:00  INFO 81149 --- [main] o.s.i.endpoint.EventDrivenConsumer       : started bean '_org.springframework.integration.errorLogger'
+2023-06-21T13:03:02.690+03:00  INFO 81149 --- [main] o.s.i.endpoint.EventDrivenConsumer       : Adding {bridge} as a subscriber to the 'slideEntranceChannel' channel
+2023-06-21T13:03:02.690+03:00  INFO 81149 --- [main] o.s.integration.channel.DirectChannel    : Channel 'application.slideEntranceChannel' has 1 subscriber(s).
+2023-06-21T13:03:02.691+03:00  INFO 81149 --- [main] o.s.i.endpoint.EventDrivenConsumer       : started bean 'waterparkFlow.org.springframework.integration.config.ConsumerEndpointFactoryBean#0'; defined in: 'class path resource [dev/krud/ostara/inappdemo/integrationgraph/WaterparkConfig.class]'; from source: 'bean method waterparkFlow'
+2023-06-21T13:03:02.691+03:00  INFO 81149 --- [main] o.s.i.endpoint.EventDrivenConsumer       : Adding {recipient-list-router} as a subscriber to the 'inspectionAreaChannel' channel
+2023-06-21T13:03:02.691+03:00  INFO 81149 --- [main] o.s.integration.channel.DirectChannel    : Channel 'application.inspectionAreaChannel' has 1 subscriber(s).
+2023-06-21T13:03:02.691+03:00  INFO 81149 --- [main] o.s.i.endpoint.EventDrivenConsumer       : started bean 'inspectionFlow.org.springframework.integration.config.ConsumerEndpointFactoryBean#0'; defined in: 'class path resource [dev/krud/ostara/inappdemo/integrationgraph/WaterparkConfig.class]'; from source: 'bean method inspectionFlow'
+2023-06-21T13:03:02.691+03:00  INFO 81149 --- [main] o.s.i.endpoint.EventDrivenConsumer       : Adding {bridge} as a subscriber to the 'failedInspectionChannel' channel
+2023-06-21T13:03:02.691+03:00  INFO 81149 --- [main] o.s.integration.channel.DirectChannel    : Channel 'application.failedInspectionChannel' has 1 subscriber(s).
+2023-06-21T13:03:02.691+03:00  INFO 81149 --- [main] o.s.i.endpoint.EventDrivenConsumer       : started bean 'failedInspectionFlow.org.springframework.integration.config.ConsumerEndpointFactoryBean#0'; defined in: 'class path resource [dev/krud/ostara/inappdemo/integrationgraph/WaterparkConfig.class]'; from source: 'bean method failedInspectionFlow'
+2023-06-21T13:03:02.691+03:00  INFO 81149 --- [main] o.s.i.endpoint.EventDrivenConsumer       : Adding {splitter} as a subscriber to the 'stagingAreaChannel' channel
+2023-06-21T13:03:02.691+03:00  INFO 81149 --- [main] o.s.integration.channel.DirectChannel    : Channel 'application.stagingAreaChannel' has 1 subscriber(s).
+2023-06-21T13:03:02.692+03:00  INFO 81149 --- [main] o.s.i.endpoint.EventDrivenConsumer       : started bean 'stagingFlow.org.springframework.integration.config.ConsumerEndpointFactoryBean#0'; defined in: 'class path resource [dev/krud/ostara/inappdemo/integrationgraph/WaterparkConfig.class]'; from source: 'bean method stagingFlow'
+2023-06-21T13:03:02.692+03:00  INFO 81149 --- [main] o.s.i.endpoint.EventDrivenConsumer       : Adding {aggregator} as a subscriber to the 'waterSlideChannel' channel
+2023-06-21T13:03:02.692+03:00  INFO 81149 --- [main] o.s.integration.channel.DirectChannel    : Channel 'application.waterSlideChannel' has 1 subscriber(s).
+2023-06-21T13:03:02.692+03:00  INFO 81149 --- [main] o.s.i.endpoint.EventDrivenConsumer       : started bean 'stagingFlow.org.springframework.integration.config.ConsumerEndpointFactoryBean#1'; defined in: 'class path resource [dev/krud/ostara/inappdemo/integrationgraph/WaterparkConfig.class]'; from source: 'bean method stagingFlow'
+2023-06-21T13:03:02.723+03:00  INFO 81149 --- [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port(s): 13333 (http) with context path ''
+2023-06-21T13:03:02.736+03:00  INFO 81149 --- [main] o.s.s.quartz.SchedulerFactoryBean        : Starting Quartz Scheduler now
+2023-06-21T13:03:02.737+03:00  INFO 81149 --- [main] org.quartz.core.QuartzScheduler          : Scheduler quartzScheduler_$_NON_CLUSTERED started.
+2023-06-21T13:03:02.793+03:00  INFO 81149 --- [main] d.k.o.inappdemo.InAppDemoApplicationKt   : Started InAppDemoApplicationKt in 7.173 seconds (process running for 7.97)
+2023-06-21T13:03:03.282+03:00  INFO 81149 --- [RMI TCP Connection(2)-127.0.0.1] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring DispatcherServlet 'dispatcherServlet'
+2023-06-21T13:03:03.285+03:00  INFO 81149 --- [RMI TCP Connection(2)-127.0.0.1] o.s.web.servlet.DispatcherServlet        : Initializing Servlet 'dispatcherServlet'
+2023-06-21T13:03:03.294+03:00  INFO 81149 --- [RMI TCP Connection(2)-127.0.0.1] o.s.web.servlet.DispatcherServlet        : Completed initialization in 7 ms
+2023-06-21T13:03:17.474+03:00  INFO 81149 --- [SpringApplicationShutdownHook] org.quartz.core.QuartzScheduler          : Scheduler quartzScheduler_$_NON_CLUSTERED paused.
+2023-06-21T13:03:17.488+03:00  INFO 81149 --- [SpringApplicationShutdownHook] o.s.i.endpoint.EventDrivenConsumer       : Removing {bridge} as a subscriber to the 'slideEntranceChannel' channel
+2023-06-21T13:03:17.489+03:00  INFO 81149 --- [SpringApplicationShutdownHook] o.s.integration.channel.DirectChannel    : Channel 'application.slideEntranceChannel' has 0 subscriber(s).
+2023-06-21T13:03:17.490+03:00  INFO 81149 --- [SpringApplicationShutdownHook] o.s.i.endpoint.EventDrivenConsumer       : stopped bean 'waterparkFlow.org.springframework.integration.config.ConsumerEndpointFactoryBean#0'; defined in: 'class path resource [dev/krud/ostara/inappdemo/integrationgraph/WaterparkConfig.class]'; from source: 'bean method waterparkFlow'
+2023-06-21T13:03:17.490+03:00  INFO 81149 --- [SpringApplicationShutdownHook] o.s.i.endpoint.EventDrivenConsumer       : Removing {recipient-list-router} as a subscriber to the 'inspectionAreaChannel' channel
+2023-06-21T13:03:17.490+03:00  INFO 81149 --- [SpringApplicationShutdownHook] o.s.integration.channel.DirectChannel    : Channel 'application.inspectionAreaChannel' has 0 subscriber(s).
+2023-06-21T13:03:17.491+03:00  INFO 81149 --- [SpringApplicationShutdownHook] o.s.i.endpoint.EventDrivenConsumer       : stopped bean 'inspectionFlow.org.springframework.integration.config.ConsumerEndpointFactoryBean#0'; defined in: 'class path resource [dev/krud/ostara/inappdemo/integrationgraph/WaterparkConfig.class]'; from source: 'bean method inspectionFlow'
+2023-06-21T13:03:17.491+03:00  INFO 81149 --- [SpringApplicationShutdownHook] o.s.i.endpoint.EventDrivenConsumer       : Removing {bridge} as a subscriber to the 'failedInspectionChannel' channel
+2023-06-21T13:03:17.491+03:00  INFO 81149 --- [SpringApplicationShutdownHook] o.s.integration.channel.DirectChannel    : Channel 'application.failedInspectionChannel' has 0 subscriber(s).
+2023-06-21T13:03:17.491+03:00  INFO 81149 --- [SpringApplicationShutdownHook] o.s.i.endpoint.EventDrivenConsumer       : stopped bean 'failedInspectionFlow.org.springframework.integration.config.ConsumerEndpointFactoryBean#0'; defined in: 'class path resource [dev/krud/ostara/inappdemo/integrationgraph/WaterparkConfig.class]'; from source: 'bean method failedInspectionFlow'
+2023-06-21T13:03:17.491+03:00  INFO 81149 --- [SpringApplicationShutdownHook] o.s.i.endpoint.EventDrivenConsumer       : Removing {splitter} as a subscriber to the 'stagingAreaChannel' channel
+2023-06-21T13:03:17.491+03:00  INFO 81149 --- [SpringApplicationShutdownHook] o.s.integration.channel.DirectChannel    : Channel 'application.stagingAreaChannel' has 0 subscriber(s).
+2023-06-21T13:03:17.491+03:00  INFO 81149 --- [SpringApplicationShutdownHook] o.s.i.endpoint.EventDrivenConsumer       : stopped bean 'stagingFlow.org.springframework.integration.config.ConsumerEndpointFactoryBean#0'; defined in: 'class path resource [dev/krud/ostara/inappdemo/integrationgraph/WaterparkConfig.class]'; from source: 'bean method stagingFlow'
+2023-06-21T13:03:17.491+03:00  INFO 81149 --- [SpringApplicationShutdownHook] o.s.i.endpoint.EventDrivenConsumer       : Removing {aggregator} as a subscriber to the 'waterSlideChannel' channel
+2023-06-21T13:03:17.491+03:00  INFO 81149 --- [SpringApplicationShutdownHook] o.s.integration.channel.DirectChannel    : Channel 'application.waterSlideChannel' has 0 subscriber(s).
+2023-06-21T13:03:17.491+03:00  INFO 81149 --- [SpringApplicationShutdownHook] o.s.i.endpoint.EventDrivenConsumer       : stopped bean 'stagingFlow.org.springframework.integration.config.ConsumerEndpointFactoryBean#1'; defined in: 'class path resource [dev/krud/ostara/inappdemo/integrationgraph/WaterparkConfig.class]'; from source: 'bean method stagingFlow'
+2023-06-21T13:03:17.491+03:00  INFO 81149 --- [SpringApplicationShutdownHook] o.s.i.endpoint.EventDrivenConsumer       : Removing {logging-channel-adapter:_org.springframework.integration.errorLogger} as a subscriber to the 'errorChannel' channel
+2023-06-21T13:03:17.491+03:00  INFO 81149 --- [SpringApplicationShutdownHook] o.s.i.channel.PublishSubscribeChannel    : Channel 'application.errorChannel' has 0 subscriber(s).
+2023-06-21T13:03:17.491+03:00  INFO 81149 --- [SpringApplicationShutdownHook] o.s.i.endpoint.EventDrivenConsumer       : stopped bean '_org.springframework.integration.errorLogger'
+2023-06-21T13:03:17.496+03:00  INFO 81149 --- [SpringApplicationShutdownHook] o.s.s.quartz.SchedulerFactoryBean        : Shutting down Quartz Scheduler
+2023-06-21T13:03:17.497+03:00  INFO 81149 --- [SpringApplicationShutdownHook] org.quartz.core.QuartzScheduler          : Scheduler quartzScheduler_$_NON_CLUSTERED shutting down.
+2023-06-21T13:03:17.497+03:00  INFO 81149 --- [SpringApplicationShutdownHook] org.quartz.core.QuartzScheduler          : Scheduler quartzScheduler_$_NON_CLUSTERED paused.
+2023-06-21T13:03:17.497+03:00  INFO 81149 --- [SpringApplicationShutdownHook] org.quartz.core.QuartzScheduler          : Scheduler quartzScheduler_$_NON_CLUSTERED shutdown complete.
+2023-06-21T13:03:17.498+03:00  INFO 81149 --- [SpringApplicationShutdownHook] j.LocalContainerEntityManagerFactoryBean : Closing JPA EntityManagerFactory for persistence unit 'default'
+2023-06-21T13:03:17.500+03:00  INFO 81149 --- [SpringApplicationShutdownHook] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown initiated...
+2023-06-21T13:03:17.506+03:00  INFO 81149 --- [SpringApplicationShutdownHook] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown completed.
+2023-06-21T13:03:21.116+03:00  INFO 81567 --- [main] d.k.o.inappdemo.InAppDemoApplicationKt   : The following 3 profiles are active: "profile_1", "profile_2", "togglz"
+2023-06-21T13:03:22.796+03:00  INFO 81567 --- [main] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2023-06-21T13:03:22.821+03:00  INFO 81567 --- [main] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 18 ms. Found 0 JPA repository interfaces.
+2023-06-21T13:03:22.925+03:00  INFO 81567 --- [main] faultConfiguringBeanFactoryPostProcessor : No bean named 'errorChannel' has been explicitly defined. Therefore, a default PublishSubscribeChannel will be created.
+2023-06-21T13:03:22.933+03:00  INFO 81567 --- [main] faultConfiguringBeanFactoryPostProcessor : No bean named 'integrationHeaderChannelRegistry' has been explicitly defined. Therefore, a default DefaultHeaderChannelRegistry will be created.
+2023-06-21T13:03:23.889+03:00  INFO 81567 --- [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port(s): 13333 (http)
+2023-06-21T13:03:23.904+03:00  INFO 81567 --- [main] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2023-06-21T13:03:23.904+03:00  INFO 81567 --- [main] o.apache.catalina.core.StandardEngine    : Starting Servlet engine: [Apache Tomcat/10.1.8]
+2023-06-21T13:03:24.026+03:00  INFO 81567 --- [main] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+2023-06-21T13:03:24.027+03:00  INFO 81567 --- [main] w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 2850 ms
+2023-06-21T13:03:24.340+03:00  INFO 81567 --- [main] o.f.c.internal.license.VersionPrinter    : Flyway Community Edition 9.16.3 by Redgate
+2023-06-21T13:03:24.341+03:00  INFO 81567 --- [main] o.f.c.internal.license.VersionPrinter    : See release notes here: https://rd.gt/416ObMi
+2023-06-21T13:03:24.341+03:00  INFO 81567 --- [main] o.f.c.internal.license.VersionPrinter    : 
+2023-06-21T13:03:24.350+03:00  INFO 81567 --- [main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Starting...
+2023-06-21T13:03:24.508+03:00  INFO 81567 --- [main] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Added connection conn0: url=jdbc:h2:mem:9716e7fb-5d01-4a75-a5c1-c5a1cfb565ca user=SA
+2023-06-21T13:03:24.510+03:00  INFO 81567 --- [main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Start completed.
+2023-06-21T13:03:24.523+03:00  INFO 81567 --- [main] o.f.c.i.database.base.BaseDatabaseType   : Database: jdbc:h2:mem:9716e7fb-5d01-4a75-a5c1-c5a1cfb565ca (H2 2.1)
+2023-06-21T13:03:24.593+03:00  INFO 81567 --- [main] o.f.c.i.s.JdbcTableSchemaHistory         : Schema history table "PUBLIC"."flyway_schema_history" does not exist yet
+2023-06-21T13:03:24.598+03:00  INFO 81567 --- [main] o.f.core.internal.command.DbValidate     : Successfully validated 14 migrations (execution time 00:00.021s)
+2023-06-21T13:03:24.605+03:00  INFO 81567 --- [main] o.f.c.i.s.JdbcTableSchemaHistory         : Creating Schema History table "PUBLIC"."flyway_schema_history" ...
+2023-06-21T13:03:24.640+03:00  INFO 81567 --- [main] o.f.core.internal.command.DbMigrate      : Current version of schema "PUBLIC": << Empty Schema >>
+2023-06-21T13:03:24.653+03:00  INFO 81567 --- [main] o.f.core.internal.command.DbMigrate      : Migrating schema "PUBLIC" to version "20230509061201 - Create Users table"
+2023-06-21T13:03:24.661+03:00  INFO 81567 --- [main] o.f.core.internal.command.DbMigrate      : Migrating schema "PUBLIC" to version "20230509061222 - Create Transactions table"
+2023-06-21T13:03:24.668+03:00  INFO 81567 --- [main] o.f.core.internal.command.DbMigrate      : Migrating schema "PUBLIC" to version "20230509061240 - Create default user"
+2023-06-21T13:03:24.674+03:00  INFO 81567 --- [main] o.f.core.internal.command.DbMigrate      : Migrating schema "PUBLIC" to version "20230509061254 - Add country to Users table"
+2023-06-21T13:03:24.682+03:00  INFO 81567 --- [main] o.f.core.internal.command.DbMigrate      : Migrating schema "PUBLIC" to version "20230509061309 - Create Notes table"
+2023-06-21T13:03:24.689+03:00  INFO 81567 --- [main] o.f.core.internal.command.DbMigrate      : Migrating schema "PUBLIC" to version "20230509061337 - Migrate to new transaction recipient format"
+2023-06-21T13:03:24.704+03:00  INFO 81567 --- [main] o.f.core.internal.command.DbMigrate      : Migrating schema "PUBLIC" to version "20230509061556 - Migrate legacy user data new schema"
+2023-06-21T13:03:24.713+03:00  INFO 81567 --- [main] o.f.core.internal.command.DbMigrate      : Migrating schema "PUBLIC" to version "20230509061611 - Create Payments table"
+2023-06-21T13:03:24.720+03:00  INFO 81567 --- [main] o.f.core.internal.command.DbMigrate      : Migrating schema "PUBLIC" to version "20230509061643 - Add phone number column to Users table"
+2023-06-21T13:03:24.726+03:00  INFO 81567 --- [main] o.f.core.internal.command.DbMigrate      : Migrating schema "PUBLIC" to version "20230509061658 - Update Transaction table schema with additional fields"
+2023-06-21T13:03:24.740+03:00  INFO 81567 --- [main] o.f.core.internal.command.DbMigrate      : Migrating schema "PUBLIC" to version "20230509061732 - Create Products table"
+2023-06-21T13:03:24.745+03:00  INFO 81567 --- [main] o.f.core.internal.command.DbMigrate      : Migrating schema "PUBLIC" to version "20230509061744 - Migrate legacy customer data"
+2023-06-21T13:03:24.753+03:00  INFO 81567 --- [main] o.f.core.internal.command.DbMigrate      : Migrating schema "PUBLIC" to version "20230509061755 - Create Shipments table"
+2023-06-21T13:03:24.764+03:00  INFO 81567 --- [main] o.f.core.internal.command.DbMigrate      : Migrating schema "PUBLIC" to version "20230509061819 - Add description column to Products"
+2023-06-21T13:03:24.770+03:00  INFO 81567 --- [main] o.f.core.internal.command.DbMigrate      : Successfully applied 14 migrations to schema "PUBLIC", now at version v20230509061819 (execution time 00:00.134s)
+2023-06-21T13:03:24.885+03:00  INFO 81567 --- [main] o.hibernate.jpa.internal.util.LogHelper  : HHH000204: Processing PersistenceUnitInfo [name: default]
+2023-06-21T13:03:24.927+03:00  INFO 81567 --- [main] org.hibernate.Version                    : HHH000412: Hibernate ORM core version 6.2.2.Final
+2023-06-21T13:03:24.929+03:00  INFO 81567 --- [main] org.hibernate.cfg.Environment            : HHH000406: Using bytecode reflection optimizer
+2023-06-21T13:03:25.028+03:00  INFO 81567 --- [main] o.h.b.i.BytecodeProviderInitiator        : HHH000021: Bytecode provider name : bytebuddy
+2023-06-21T13:03:25.140+03:00  INFO 81567 --- [main] o.s.o.j.p.SpringPersistenceUnitInfo      : No LoadTimeWeaver setup: ignoring JPA class transformer
+2023-06-21T13:03:25.182+03:00  INFO 81567 --- [main] org.hibernate.orm.dialect                : HHH035001: Using dialect: org.hibernate.dialect.H2Dialect, version: 2.1.214
+2023-06-21T13:03:25.240+03:00  INFO 81567 --- [main] o.h.b.i.BytecodeProviderInitiator        : HHH000021: Bytecode provider name : bytebuddy
+2023-06-21T13:03:25.404+03:00  INFO 81567 --- [main] o.h.e.t.j.p.i.JtaPlatformInitiator       : HHH000490: Using JtaPlatform implementation: [org.hibernate.engine.transaction.jta.platform.internal.NoJtaPlatform]
+2023-06-21T13:03:25.409+03:00  INFO 81567 --- [main] j.LocalContainerEntityManagerFactoryBean : Initialized JPA EntityManagerFactory for persistence unit 'default'
+2023-06-21T13:03:25.846+03:00  WARN 81567 --- [main] JpaBaseConfiguration$JpaWebConfiguration : spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2023-06-21T13:03:26.208+03:00  WARN 81567 --- [main] ion$DefaultTemplateResolverConfiguration : Cannot find template location: classpath:/templates/ (please add some templates, check your Thymeleaf configuration, or set spring.thymeleaf.check-template-location=false)
+2023-06-21T13:03:26.389+03:00  INFO 81567 --- [main] org.quartz.impl.StdSchedulerFactory      : Using default implementation for ThreadExecutor
+2023-06-21T13:03:26.399+03:00  INFO 81567 --- [main] org.quartz.core.SchedulerSignalerImpl    : Initialized Scheduler Signaller of type: class org.quartz.core.SchedulerSignalerImpl
+2023-06-21T13:03:26.400+03:00  INFO 81567 --- [main] org.quartz.core.QuartzScheduler          : Quartz Scheduler v.2.3.2 created.
+2023-06-21T13:03:26.400+03:00  INFO 81567 --- [main] org.quartz.simpl.RAMJobStore             : RAMJobStore initialized.
+2023-06-21T13:03:26.401+03:00  INFO 81567 --- [main] org.quartz.core.QuartzScheduler          : Scheduler meta-data: Quartz Scheduler (v2.3.2) 'quartzScheduler' with instanceId 'NON_CLUSTERED'
+  Scheduler class: 'org.quartz.core.QuartzScheduler' - running locally.
+  NOT STARTED.
+  Currently in standby mode.
+  Number of jobs executed: 0
+  Using thread pool 'org.quartz.simpl.SimpleThreadPool' - with 10 threads.
+  Using job-store 'org.quartz.simpl.RAMJobStore' - which does not support persistence. and is not clustered.
+
+2023-06-21T13:03:26.401+03:00  INFO 81567 --- [main] org.quartz.impl.StdSchedulerFactory      : Quartz scheduler 'quartzScheduler' initialized from an externally provided properties instance.
+2023-06-21T13:03:26.401+03:00  INFO 81567 --- [main] org.quartz.impl.StdSchedulerFactory      : Quartz scheduler version: 2.3.2
+2023-06-21T13:03:26.401+03:00  INFO 81567 --- [main] org.quartz.core.QuartzScheduler          : JobFactory set to: org.springframework.scheduling.quartz.SpringBeanJobFactory@73839f22
+2023-06-21T13:03:26.959+03:00  INFO 81567 --- [main] o.s.b.a.e.web.EndpointLinksResolver      : Exposing 19 endpoint(s) beneath base path '/actuator'
+2023-06-21T13:03:27.187+03:00  INFO 81567 --- [main] o.s.i.endpoint.EventDrivenConsumer       : Adding {logging-channel-adapter:_org.springframework.integration.errorLogger} as a subscriber to the 'errorChannel' channel
+2023-06-21T13:03:27.189+03:00  INFO 81567 --- [main] o.s.i.channel.PublishSubscribeChannel    : Channel 'application.errorChannel' has 1 subscriber(s).
+2023-06-21T13:03:27.191+03:00  INFO 81567 --- [main] o.s.i.endpoint.EventDrivenConsumer       : started bean '_org.springframework.integration.errorLogger'
+2023-06-21T13:03:27.191+03:00  INFO 81567 --- [main] o.s.i.endpoint.EventDrivenConsumer       : Adding {bridge} as a subscriber to the 'slideEntranceChannel' channel
+2023-06-21T13:03:27.191+03:00  INFO 81567 --- [main] o.s.integration.channel.DirectChannel    : Channel 'application.slideEntranceChannel' has 1 subscriber(s).
+2023-06-21T13:03:27.191+03:00  INFO 81567 --- [main] o.s.i.endpoint.EventDrivenConsumer       : started bean 'waterparkFlow.org.springframework.integration.config.ConsumerEndpointFactoryBean#0'; defined in: 'class path resource [dev/krud/ostara/inappdemo/integrationgraph/WaterparkConfig.class]'; from source: 'bean method waterparkFlow'
+2023-06-21T13:03:27.191+03:00  INFO 81567 --- [main] o.s.i.endpoint.EventDrivenConsumer       : Adding {recipient-list-router} as a subscriber to the 'inspectionAreaChannel' channel
+2023-06-21T13:03:27.192+03:00  INFO 81567 --- [main] o.s.integration.channel.DirectChannel    : Channel 'application.inspectionAreaChannel' has 1 subscriber(s).
+2023-06-21T13:03:27.192+03:00  INFO 81567 --- [main] o.s.i.endpoint.EventDrivenConsumer       : started bean 'inspectionFlow.org.springframework.integration.config.ConsumerEndpointFactoryBean#0'; defined in: 'class path resource [dev/krud/ostara/inappdemo/integrationgraph/WaterparkConfig.class]'; from source: 'bean method inspectionFlow'
+2023-06-21T13:03:27.192+03:00  INFO 81567 --- [main] o.s.i.endpoint.EventDrivenConsumer       : Adding {bridge} as a subscriber to the 'failedInspectionChannel' channel
+2023-06-21T13:03:27.192+03:00  INFO 81567 --- [main] o.s.integration.channel.DirectChannel    : Channel 'application.failedInspectionChannel' has 1 subscriber(s).
+2023-06-21T13:03:27.192+03:00  INFO 81567 --- [main] o.s.i.endpoint.EventDrivenConsumer       : started bean 'failedInspectionFlow.org.springframework.integration.config.ConsumerEndpointFactoryBean#0'; defined in: 'class path resource [dev/krud/ostara/inappdemo/integrationgraph/WaterparkConfig.class]'; from source: 'bean method failedInspectionFlow'
+2023-06-21T13:03:27.192+03:00  INFO 81567 --- [main] o.s.i.endpoint.EventDrivenConsumer       : Adding {splitter} as a subscriber to the 'stagingAreaChannel' channel
+2023-06-21T13:03:27.192+03:00  INFO 81567 --- [main] o.s.integration.channel.DirectChannel    : Channel 'application.stagingAreaChannel' has 1 subscriber(s).
+2023-06-21T13:03:27.192+03:00  INFO 81567 --- [main] o.s.i.endpoint.EventDrivenConsumer       : started bean 'stagingFlow.org.springframework.integration.config.ConsumerEndpointFactoryBean#0'; defined in: 'class path resource [dev/krud/ostara/inappdemo/integrationgraph/WaterparkConfig.class]'; from source: 'bean method stagingFlow'
+2023-06-21T13:03:27.193+03:00  INFO 81567 --- [main] o.s.i.endpoint.EventDrivenConsumer       : Adding {aggregator} as a subscriber to the 'waterSlideChannel' channel
+2023-06-21T13:03:27.193+03:00  INFO 81567 --- [main] o.s.integration.channel.DirectChannel    : Channel 'application.waterSlideChannel' has 1 subscriber(s).
+2023-06-21T13:03:27.193+03:00  INFO 81567 --- [main] o.s.i.endpoint.EventDrivenConsumer       : started bean 'stagingFlow.org.springframework.integration.config.ConsumerEndpointFactoryBean#1'; defined in: 'class path resource [dev/krud/ostara/inappdemo/integrationgraph/WaterparkConfig.class]'; from source: 'bean method stagingFlow'
+2023-06-21T13:03:27.224+03:00  INFO 81567 --- [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port(s): 13333 (http) with context path ''
+2023-06-21T13:03:27.235+03:00  INFO 81567 --- [main] o.s.s.quartz.SchedulerFactoryBean        : Starting Quartz Scheduler now
+2023-06-21T13:03:27.236+03:00  INFO 81567 --- [main] org.quartz.core.QuartzScheduler          : Scheduler quartzScheduler_$_NON_CLUSTERED started.
+2023-06-21T13:03:27.280+03:00  INFO 81567 --- [scheduling-1] d.krud.ostara.inappdemo.log.LogRunner    : Getting the Application Payload... (demo)
+2023-06-21T13:03:27.288+03:00  INFO 81567 --- [main] d.k.o.inappdemo.InAppDemoApplicationKt   : Started InAppDemoApplicationKt in 6.954 seconds (process running for 7.712)
+2023-06-21T13:03:27.879+03:00  INFO 81567 --- [RMI TCP Connection(3)-127.0.0.1] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring DispatcherServlet 'dispatcherServlet'
+2023-06-21T13:03:27.882+03:00  INFO 81567 --- [RMI TCP Connection(3)-127.0.0.1] o.s.web.servlet.DispatcherServlet        : Initializing Servlet 'dispatcherServlet'
+2023-06-21T13:03:27.891+03:00  INFO 81567 --- [RMI TCP Connection(3)-127.0.0.1] o.s.web.servlet.DispatcherServlet        : Completed initialization in 7 ms
+2023-06-21T13:03:42.276+03:00  INFO 81567 --- [scheduling-1] d.krud.ostara.inappdemo.log.LogRunner    : Processing the Application Request... (demo)
+2023-06-21T13:03:57.279+03:00  INFO 81567 --- [scheduling-1] d.krud.ostara.inappdemo.log.LogRunner    : Loading the User Message... (demo)
+2023-06-21T13:04:12.284+03:00  INFO 81567 --- [scheduling-1] d.krud.ostara.inappdemo.log.LogRunner    : Receiving the Instance Message... (demo)
+2023-06-21T13:04:27.290+03:00  INFO 81567 --- [scheduling-1] d.krud.ostara.inappdemo.log.LogRunner    : Loading the Instance Message... (demo)
+2023-06-21T13:04:42.294+03:00  INFO 81567 --- [scheduling-1] d.krud.ostara.inappdemo.log.LogRunner    : Getting the Instance Message... (demo)
+2023-06-21T13:04:57.298+03:00  INFO 81567 --- [scheduling-1] d.krud.ostara.inappdemo.log.LogRunner    : Getting the User Response... (demo)
+2023-06-21T13:05:12.306+03:00  INFO 81567 --- [scheduling-1] d.krud.ostara.inappdemo.log.LogRunner    : Executing the Application Payload... (demo)
+2023-06-21T13:05:27.316+03:00  INFO 81567 --- [scheduling-1] d.krud.ostara.inappdemo.log.LogRunner    : Processing the Instance Request... (demo)
+2023-06-21T13:05:42.327+03:00  INFO 81567 --- [scheduling-1] d.krud.ostara.inappdemo.log.LogRunner    : Executing the User Message... (demo)
+2023-06-21T13:05:57.334+03:00  INFO 81567 --- [scheduling-1] d.krud.ostara.inappdemo.log.LogRunner    : Loading the User Payload... (demo)
+2023-06-21T13:06:02.460+03:00  INFO 81567 --- [SpringApplicationShutdownHook] org.quartz.core.QuartzScheduler          : Scheduler quartzScheduler_$_NON_CLUSTERED paused.
+2023-06-21T13:06:02.477+03:00  INFO 81567 --- [SpringApplicationShutdownHook] o.s.i.endpoint.EventDrivenConsumer       : Removing {bridge} as a subscriber to the 'slideEntranceChannel' channel
+2023-06-21T13:06:02.477+03:00  INFO 81567 --- [SpringApplicationShutdownHook] o.s.integration.channel.DirectChannel    : Channel 'application.slideEntranceChannel' has 0 subscriber(s).
+2023-06-21T13:06:02.478+03:00  INFO 81567 --- [SpringApplicationShutdownHook] o.s.i.endpoint.EventDrivenConsumer       : stopped bean 'waterparkFlow.org.springframework.integration.config.ConsumerEndpointFactoryBean#0'; defined in: 'class path resource [dev/krud/ostara/inappdemo/integrationgraph/WaterparkConfig.class]'; from source: 'bean method waterparkFlow'
+2023-06-21T13:06:02.478+03:00  INFO 81567 --- [SpringApplicationShutdownHook] o.s.i.endpoint.EventDrivenConsumer       : Removing {recipient-list-router} as a subscriber to the 'inspectionAreaChannel' channel
+2023-06-21T13:06:02.478+03:00  INFO 81567 --- [SpringApplicationShutdownHook] o.s.integration.channel.DirectChannel    : Channel 'application.inspectionAreaChannel' has 0 subscriber(s).
+2023-06-21T13:06:02.478+03:00  INFO 81567 --- [SpringApplicationShutdownHook] o.s.i.endpoint.EventDrivenConsumer       : stopped bean 'inspectionFlow.org.springframework.integration.config.ConsumerEndpointFactoryBean#0'; defined in: 'class path resource [dev/krud/ostara/inappdemo/integrationgraph/WaterparkConfig.class]'; from source: 'bean method inspectionFlow'
+2023-06-21T13:06:02.478+03:00  INFO 81567 --- [SpringApplicationShutdownHook] o.s.i.endpoint.EventDrivenConsumer       : Removing {bridge} as a subscriber to the 'failedInspectionChannel' channel
+2023-06-21T13:06:02.478+03:00  INFO 81567 --- [SpringApplicationShutdownHook] o.s.integration.channel.DirectChannel    : Channel 'application.failedInspectionChannel' has 0 subscriber(s).
+2023-06-21T13:06:02.478+03:00  INFO 81567 --- [SpringApplicationShutdownHook] o.s.i.endpoint.EventDrivenConsumer       : stopped bean 'failedInspectionFlow.org.springframework.integration.config.ConsumerEndpointFactoryBean#0'; defined in: 'class path resource [dev/krud/ostara/inappdemo/integrationgraph/WaterparkConfig.class]'; from source: 'bean method failedInspectionFlow'
+2023-06-21T13:06:02.478+03:00  INFO 81567 --- [SpringApplicationShutdownHook] o.s.i.endpoint.EventDrivenConsumer       : Removing {splitter} as a subscriber to the 'stagingAreaChannel' channel
+2023-06-21T13:06:02.478+03:00  INFO 81567 --- [SpringApplicationShutdownHook] o.s.integration.channel.DirectChannel    : Channel 'application.stagingAreaChannel' has 0 subscriber(s).
+2023-06-21T13:06:02.478+03:00  INFO 81567 --- [SpringApplicationShutdownHook] o.s.i.endpoint.EventDrivenConsumer       : stopped bean 'stagingFlow.org.springframework.integration.config.ConsumerEndpointFactoryBean#0'; defined in: 'class path resource [dev/krud/ostara/inappdemo/integrationgraph/WaterparkConfig.class]'; from source: 'bean method stagingFlow'
+2023-06-21T13:06:02.478+03:00  INFO 81567 --- [SpringApplicationShutdownHook] o.s.i.endpoint.EventDrivenConsumer       : Removing {aggregator} as a subscriber to the 'waterSlideChannel' channel
+2023-06-21T13:06:02.479+03:00  INFO 81567 --- [SpringApplicationShutdownHook] o.s.integration.channel.DirectChannel    : Channel 'application.waterSlideChannel' has 0 subscriber(s).
+2023-06-21T13:06:02.479+03:00  INFO 81567 --- [SpringApplicationShutdownHook] o.s.i.endpoint.EventDrivenConsumer       : stopped bean 'stagingFlow.org.springframework.integration.config.ConsumerEndpointFactoryBean#1'; defined in: 'class path resource [dev/krud/ostara/inappdemo/integrationgraph/WaterparkConfig.class]'; from source: 'bean method stagingFlow'
+2023-06-21T13:06:02.479+03:00  INFO 81567 --- [SpringApplicationShutdownHook] o.s.i.endpoint.EventDrivenConsumer       : Removing {logging-channel-adapter:_org.springframework.integration.errorLogger} as a subscriber to the 'errorChannel' channel
+2023-06-21T13:06:02.479+03:00  INFO 81567 --- [SpringApplicationShutdownHook] o.s.i.channel.PublishSubscribeChannel    : Channel 'application.errorChannel' has 0 subscriber(s).
+2023-06-21T13:06:02.479+03:00  INFO 81567 --- [SpringApplicationShutdownHook] o.s.i.endpoint.EventDrivenConsumer       : stopped bean '_org.springframework.integration.errorLogger'
+2023-06-21T13:06:02.484+03:00  INFO 81567 --- [SpringApplicationShutdownHook] o.s.s.quartz.SchedulerFactoryBean        : Shutting down Quartz Scheduler
+2023-06-21T13:06:02.484+03:00  INFO 81567 --- [SpringApplicationShutdownHook] org.quartz.core.QuartzScheduler          : Scheduler quartzScheduler_$_NON_CLUSTERED shutting down.
+2023-06-21T13:06:02.484+03:00  INFO 81567 --- [SpringApplicationShutdownHook] org.quartz.core.QuartzScheduler          : Scheduler quartzScheduler_$_NON_CLUSTERED paused.
+2023-06-21T13:06:02.484+03:00  INFO 81567 --- [SpringApplicationShutdownHook] org.quartz.core.QuartzScheduler          : Scheduler quartzScheduler_$_NON_CLUSTERED shutdown complete.
+2023-06-21T13:06:02.485+03:00  INFO 81567 --- [SpringApplicationShutdownHook] j.LocalContainerEntityManagerFactoryBean : Closing JPA EntityManagerFactory for persistence unit 'default'
+2023-06-21T13:06:02.487+03:00  INFO 81567 --- [SpringApplicationShutdownHook] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown initiated...
+2023-06-21T13:06:02.492+03:00  INFO 81567 --- [SpringApplicationShutdownHook] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown completed.
