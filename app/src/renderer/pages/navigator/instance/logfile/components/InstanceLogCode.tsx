@@ -23,8 +23,12 @@ export default function InstanceLogCode({ log }: InstanceLogCodeProps) {
   const smoothScrollInnerToBottom = useCallback((element: HTMLElement): void => {
     if (element) {
       const start = element.scrollTop;
-      const end = element.scrollHeight - element.clientHeight;
-      const duration = 300; // Adjust the duration as needed
+      const end = element.scrollHeight - element.clientHeight - 1;
+      if (start >= end) {
+        return;
+      }
+
+      const duration = 25;
       let startTime: number;
 
       const scroll = (timestamp: number) => {
@@ -51,10 +55,10 @@ export default function InstanceLogCode({ log }: InstanceLogCodeProps) {
 
   const scrollUpHandler = useCallback(
     (container: HTMLElement): void => {
-      if (!log) {
-        return;
+      const { scrollHeight, scrollTop, clientHeight } = container;
+      if (scrollTop + clientHeight < scrollHeight - 1) {
+        setIsScrolledToBottom(false);
       }
-      setIsScrolledToBottom(false);
     },
     [log]
   );

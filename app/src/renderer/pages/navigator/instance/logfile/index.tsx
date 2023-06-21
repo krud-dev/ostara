@@ -41,7 +41,14 @@ const InstanceLogfile: FunctionComponent = () => {
         const result = await logfileState.mutateAsync({
           instanceId: item.id,
         });
-        setLog(result.slice(-LOG_MAX_LENGTH));
+        let newLog = result.slice(-LOG_MAX_LENGTH);
+        if (newLog.length === LOG_MAX_LENGTH) {
+          const lineBreakIndex = newLog.indexOf('\n');
+          if (lineBreakIndex !== -1) {
+            newLog = newLog.slice(lineBreakIndex + 1);
+          }
+        }
+        setLog(newLog);
       } catch (e) {
         setActive(false);
       }
