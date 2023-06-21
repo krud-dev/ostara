@@ -145,7 +145,7 @@ export default function NavigatorTree({ width, height, search }: NavigatorTreePr
       }
       return undefined;
     },
-    [moveItemState]
+    [getItem, moveItemState]
   );
 
   const deleteItemState = useDeleteItem();
@@ -160,7 +160,7 @@ export default function NavigatorTree({ width, height, search }: NavigatorTreePr
   );
 
   const onRename: RenameHandler<TreeItem> = useCallback(
-    ({ id, name, node }) => {
+    async ({ id, name, node }): Promise<void> => {
       const item = getItem(id);
       if (!item) {
         return;
@@ -168,18 +168,18 @@ export default function NavigatorTree({ width, height, search }: NavigatorTreePr
       if (item.alias === name) {
         return;
       }
-      updateItem({ ...item, alias: name });
+      await updateItem({ ...item, alias: name });
     },
-    [getItem]
+    [getItem, updateItem]
   );
 
   const onMove: MoveHandler<TreeItem> = useCallback(
-    ({ parentId, index, parentNode, dragNodes, dragIds }) => {
+    async ({ parentId, index, parentNode, dragNodes, dragIds }): Promise<void> => {
       const children = parentNode?.children?.map((c) => c.data) ?? data;
-      const beforeSort = children?.[index - 1]?.sort;
-      const afterSort = children?.[index]?.sort;
+      const beforeSort = children?.[index - 1]?.sort ?? 0;
+      const afterSort = children?.[index]?.sort ?? 0;
 
-      dragNodes.forEach((node, nodeIndex, array) => {
+      const promises = dragNodes.map((node, nodeIndex, array) => {
         const item = node.data;
 
         let newSort: number;
@@ -193,8 +193,9 @@ export default function NavigatorTree({ width, height, search }: NavigatorTreePr
           newSort = nodeIndex + 1;
         }
 
-        moveItem(item.id, getItemType(item), parentId || undefined, newSort);
+        return moveItem(item.id, getItemType(item), parentId || undefined, newSort);
       });
+      await Promise.all(promises);
     },
     [data]
   );
@@ -209,7 +210,9 @@ export default function NavigatorTree({ width, height, search }: NavigatorTreePr
     if (!confirm) {
       return;
     }
-    items.forEach((item) => deleteItem(item));
+
+    const promises = items.map((item) => deleteItem(item));
+    await Promise.all(promises);
   }, []);
 
   const disableEditItem = useCallback((treeItem: TreeItem): boolean => {
