@@ -27,7 +27,7 @@ dependencies {
   implementation("org.flywaydb:flyway-core")
   implementation("org.jetbrains.kotlin:kotlin-reflect")
   implementation("org.togglz:togglz-spring-boot-starter:4.0.1")
-  implementation("io.github.oshai:kotlin-logging-jvm:4.0.0-beta-29")
+  implementation("io.github.oshai:kotlin-logging-jvm:4.0.0")
   runtimeOnly("com.h2database:h2")
   testImplementation("org.springframework.boot:spring-boot-starter-test")
   testImplementation("org.springframework.integration:spring-integration-test")
