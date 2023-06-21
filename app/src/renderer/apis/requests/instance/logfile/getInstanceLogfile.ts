@@ -7,6 +7,7 @@ import {
 import { apiKeys } from 'renderer/apis/apiKeys';
 import { axiosInstance } from 'renderer/apis/axiosInstance';
 import { AxiosResponse } from 'axios';
+import { isNil } from 'lodash';
 
 type Variables = {
   instanceId: string;
@@ -19,9 +20,9 @@ type Data = string;
 export const getInstanceLogfile = async (variables: Variables): Promise<Data> => {
   return (
     await axiosInstance.get<Data, AxiosResponse<Data>>(
-      `actuator/logfile?instanceId=${variables.instanceId}${variables.start ? `&start=${variables.start}` : ''}${
-        variables.end ? `&end=${variables.end}` : ''
-      }`
+      `actuator/logfile?instanceId=${variables.instanceId}${
+        !isNil(variables.start) ? `&start=${variables.start}` : ''
+      }${!isNil(variables.end) ? `&end=${variables.end}` : ''}`
     )
   ).data;
 };

@@ -10,9 +10,11 @@ import { useUpdateEffect } from 'react-use';
 import InstanceLogCode from 'renderer/pages/navigator/instance/logfile/components/InstanceLogCode';
 import { FormattedMessage } from 'react-intl';
 import ToolbarButton from 'renderer/components/common/ToolbarButton';
+import { useDownloadInstanceLogfile } from 'renderer/apis/requests/instance/logfile/downloadInstanceLogfile';
+import { getItemDisplayName } from 'renderer/utils/itemUtils';
 
-const LOG_INTERVAL = 5000;
-const LOG_MAX_LENGTH = 1000000;
+const LOG_INTERVAL = 3_000;
+const LOG_MAX_LENGTH = 131_072;
 
 const InstanceLogfile: FunctionComponent = () => {
   const { selectedItem } = useNavigatorLayout();
@@ -22,9 +24,8 @@ const InstanceLogfile: FunctionComponent = () => {
   const [log, setLog] = useState<string | undefined>(undefined);
   const [requestFlag, setRequestFlag] = useState<boolean>(false);
   const [active, setActive] = useState<boolean>(true);
-  const start = useRef<number>(new Date().getTime() - 1000 * 60 * 5);
 
-  const logfileState = useGetInstanceLogfile();
+  const logfileState = useGetInstanceLogfile({ disableGlobalError: true, cacheTime: 0 });
 
   useUpdateEffect(() => {
     if (!active) {
@@ -36,19 +37,11 @@ const InstanceLogfile: FunctionComponent = () => {
     }
 
     (async () => {
-      const now = new Date().getTime();
       try {
-        const result = await logfileState.mutateAsync({ instanceId: item.id, start: start.current, end: now });
-        setLog((prev) => {
-          const newLog = prev ? prev + result : result;
-          const newLogLength = newLog.length;
-          if (newLogLength <= LOG_MAX_LENGTH) {
-            return newLog;
-          }
-          return newLog.substring(newLogLength - LOG_MAX_LENGTH);
+        const result = await logfileState.mutateAsync({
+          instanceId: item.id,
         });
-
-        start.current = now;
+        setLog(result.slice(-LOG_MAX_LENGTH));
       } catch (e) {
         setActive(false);
       }
@@ -76,9 +69,11 @@ const InstanceLogfile: FunctionComponent = () => {
     return 'content';
   }, [log]);
 
-  const clearHandler = useCallback((): void => {
-    setLog('');
-  }, []);
+  const downloadState = useDownloadInstanceLogfile();
+
+  const downloadHandler = useCallback(async (): Promise<void> => {
+    await downloadState.mutateAsync({ instanceId: item.id, instanceName: getItemDisplayName(item) });
+  }, [downloadState, item]);
 
   return (
     <Page sx={{ height: '100%' }}>
@@ -89,9 +84,9 @@ const InstanceLogfile: FunctionComponent = () => {
             title={<FormattedMessage id={'logfile'} />}
             action={
               <ToolbarButton
-                tooltip={<FormattedMessage id={'clear'} />}
-                icon={'ClearOutlined'}
-                onClick={clearHandler}
+                tooltip={<FormattedMessage id={'download'} />}
+                icon={'DownloadOutlined'}
+                onClick={downloadHandler}
               />
             }
             sx={{ pb: 3 }}

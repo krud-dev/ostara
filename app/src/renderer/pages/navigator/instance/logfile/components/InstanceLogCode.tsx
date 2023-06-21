@@ -78,7 +78,12 @@ export default function InstanceLogCode({ log }: InstanceLogCodeProps) {
         onScrollDown={scrollDownHandler}
         options={{ wheelPropagation: true }}
       >
-        <CodeEditor value={log} readOnly extensions={[searchExtension, logLanguageExtension]} />
+        <CodeEditor
+          value={log}
+          readOnly
+          basicSetup={{ lineNumbers: false }}
+          extensions={[searchExtension, logLanguageExtension]}
+        />
       </PerfectScrollbar>
     </Box>
   );

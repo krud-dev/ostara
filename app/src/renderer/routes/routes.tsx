@@ -281,7 +281,7 @@ export default function Router() {
                 {
                   path: urls.instanceLogfile.path,
                   element: (
-                    <AbilityRedirectGuard ability={'LOGGERS'}>
+                    <AbilityRedirectGuard ability={'LOGFILE'}>
                       <InstanceLogfile />
                     </AbilityRedirectGuard>
                   ),

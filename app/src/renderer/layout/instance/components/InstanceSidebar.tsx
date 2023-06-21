@@ -190,7 +190,7 @@ export default function InstanceSidebar({ item, itemAbilities, disabled, width }
                   label: <FormattedMessage id={'logfile'} />,
                   to: generatePath(urls.instanceLogfile.url, { id: item.id }),
                   disabled: disabled,
-                  hidden: isServiceInactive('LOGGERS'), //LOGFILE
+                  hidden: isServiceInactive('LOGFILE'),
                 },
                 {
                   id: 'caches',
