@@ -54,6 +54,7 @@ class BackupExporterTest {
             that(dto.tree[0].type).isEqualTo("folder")
             val rootFolder = dto.tree[0] as BackupDTO.TreeElement.Folder
             that(rootFolder.model.alias).isEqualTo("rootFolder1")
+            that(rootFolder.model.sort).isEqualTo(1.0)
             that(rootFolder.children).hasSize(2)
             that(rootFolder.children[0].type).isEqualTo("folder")
             that(rootFolder.children[1].type).isEqualTo("application")
