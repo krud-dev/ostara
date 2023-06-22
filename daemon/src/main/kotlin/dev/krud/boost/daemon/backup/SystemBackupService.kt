@@ -38,7 +38,11 @@ class SystemBackupService(
         if (now - last < ONE_HOUR) {
             return
         }
-        createSystemBackup(true)
+        val backupDTO = backupExporter.exportAll()
+        if (backupDTO.tree.isEmpty()) {
+            return
+        }
+        saveBackupToFile(backupDTO, true)
         deleteOldestAutoBackupIfNecessary()
         lastBackupCreationTime.set(timeService.nowMillis())
     }
@@ -47,18 +51,8 @@ class SystemBackupService(
      * @param auto whether this backup was created automatically or manually, used in the file name
      */
     fun createSystemBackup(auto: Boolean): Result<SystemBackupRO> = runCatching {
-        val type = if (auto) "auto" else "manual"
-        val fileName = "backup-${type}-${System.currentTimeMillis()}.jwt.gz"
         val backupDTO = backupExporter.exportAll()
-        val signed = backupJwtService.sign(backupDTO)
-        val file = appMainProperties.backupDirectory
-            .resolve(fileName)
-            .toFile()
-        file.sink().buffer().use { sink ->
-            GzipSink(sink).buffer().use { gzipSink ->
-                gzipSink.writeString(signed, Charsets.UTF_8)
-            }
-        }
+        val fileName = saveBackupToFile(backupDTO, auto)
         SystemBackupRO(
             fileName = fileName,
             date = Date()
@@ -134,6 +128,21 @@ class SystemBackupService(
             }
         }
         backupJwtService.verify(content)
+    }
+
+    private fun saveBackupToFile(backupDTO: BackupDTO, auto: Boolean): String {
+        val type = if (auto) "auto" else "manual"
+        val fileName = "backup-${type}-${System.currentTimeMillis()}.jwt.gz"
+        val signed = backupJwtService.sign(backupDTO)
+        val file = appMainProperties.backupDirectory
+            .resolve(fileName)
+            .toFile()
+        file.sink().buffer().use { sink ->
+            GzipSink(sink).buffer().use { gzipSink ->
+                gzipSink.writeString(signed, Charsets.UTF_8)
+            }
+        }
+        return fileName
     }
 
     private fun deleteOldestAutoBackupIfNecessary() {

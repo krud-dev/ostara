@@ -59,7 +59,7 @@ class SystemBackupServiceTest {
 
     @Test
     fun `createAutoSystemBackup should create a single backup an hour`() {
-        val token = prepareExportScenario()
+        val token = prepareExportScenario(tree = listOf(BackupDTO.TreeElement.Folder()))
         whenever(timeService.nowMillis()).thenReturn(ONE_YEAR)
         systemBackupService.createAutoSystemBackup()
         whenever(timeService.nowMillis()).thenReturn(ONE_YEAR + ONE_HOUR)
@@ -73,6 +73,17 @@ class SystemBackupServiceTest {
             val file = backupFiles[0]
             val content = file.gzippedContent()
             that(content).isEqualTo(token)
+        }
+    }
+
+    @Test
+    fun `createAutoSystemBackup should not create a backup if the tree is empty`() {
+        prepareExportScenario()
+        whenever(timeService.nowMillis()).thenReturn(ONE_YEAR)
+        systemBackupService.createAutoSystemBackup()
+        val backupFiles = Files.list(temporaryDirectory).toList()
+        expect {
+            that(backupFiles.size).isEqualTo(0)
         }
     }
 
@@ -218,11 +229,11 @@ class SystemBackupServiceTest {
         }
     }
 
-    private fun prepareExportScenario(): String {
+    private fun prepareExportScenario(tree: List<BackupDTO.TreeElement> = emptyList()): String {
         val dto = BackupDTO(
             version = 0,
             date = Date(0),
-            tree = emptyList()
+            tree = tree
         )
         val token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpYXQiOjE2ODY2NDA4MzAsImJhY2t1cCI6IntcInZlcnNpb25cIjowLFwiZGF0ZVwiOjAsXCJ0cmVlXCI6W119In0.nKc-Yzg4wG4USRb9-vQufrLpYiuhAUzzJhnBmiOttYA"
         whenever(backupExporter.exportAll()).thenReturn(dto)
