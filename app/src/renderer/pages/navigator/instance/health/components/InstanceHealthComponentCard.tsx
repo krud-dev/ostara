@@ -29,7 +29,7 @@ export default function InstanceHealthComponentCard({ component }: InstanceHealt
   const healthTextId = useMemo<string | undefined>(() => getInstanceHealthStatusTextId(component.status), [component]);
 
   return (
-    <Card>
+    <Card variant={'outlined'}>
       <CardHeader
         title={
           <Box component={'span'} sx={{ textTransform: 'capitalize' }}>
