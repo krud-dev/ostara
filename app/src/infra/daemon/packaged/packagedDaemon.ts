@@ -48,7 +48,9 @@ export class PackagedDaemon extends RestHealthCheckingDaemon {
     }
 
     const heapdumpDirectory = path.join(app.getPath('userData'), 'heapdumps');
+    const backupDirectory = path.join(app.getPath('userData'), 'backup');
     fs.ensureDirSync(heapdumpDirectory);
+    fs.ensureDirSync(backupDirectory);
 
     const env = {
       SERVER_ADDRESS: this.host,
@@ -56,6 +58,7 @@ export class PackagedDaemon extends RestHealthCheckingDaemon {
       SPRING_DATASOURCE_URL: `jdbc:sqlite:${this.daemonDatabaseLocation}`,
       SPRING_PROFILES_ACTIVE: this.sentryEnabled ? 'sentry' : '',
       APP_MAIN_HEAPDUMP_DIRECTORY: heapdumpDirectory,
+      APP_MAIN_BACKUP_DIRECTORY: backupDirectory,
     };
 
     if (!app.isPackaged) {

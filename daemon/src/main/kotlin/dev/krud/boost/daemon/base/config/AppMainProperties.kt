@@ -1,6 +1,5 @@
 package dev.krud.boost.daemon.base.config
 
-import okio.Path.Companion.toPath
 import org.springframework.beans.factory.InitializingBean
 import org.springframework.boot.context.properties.ConfigurationProperties
 import org.springframework.context.annotation.Configuration
