@@ -37,7 +37,7 @@ export default function InstanceInfoValuesCard({ title, values }: InstanceInfoVa
   const hasShowMore = useMemo<boolean>(() => !isEmpty(advancedValues), [values]);
 
   return (
-    <Card>
+    <Card variant={'outlined'}>
       <CardHeader
         title={title}
         action={

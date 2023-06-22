@@ -72,7 +72,7 @@ const ApplicationDashboard: FunctionComponent = () => {
                     <TransitionGroup component={null}>
                       {healthStatuses.map((healthStatus, index) => (
                         <Grow timeout={(index + 2) * ANIMATION_TIMEOUT_SHORT} key={healthStatus}>
-                          <Grid2 xs={12} md={6} lg={4} xl={3} xxl={2} key={healthStatus}>
+                          <Grid2 xs={12} md={6} lg={4} xl={3} xxl={2}>
                             <ApplicationInstancesHealthStatusWidget instances={data!} healthStatus={healthStatus} />
                           </Grid2>
                         </Grow>

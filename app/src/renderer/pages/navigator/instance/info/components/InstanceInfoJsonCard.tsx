@@ -10,10 +10,10 @@ type InstanceInfoJsonCardProps = {
 export default function InstanceInfoJsonCard({ title, object }: InstanceInfoJsonCardProps) {
   const json = useMemo<string>(() => JSON.stringify(object, null, 2), [object]);
   return (
-    <Card>
+    <Card variant={'outlined'}>
       <CardHeader title={title} sx={{ textTransform: 'capitalize' }} />
       <CardContent sx={{ px: 0, pb: '0!important' }}>
-        <CodeEditor language={'json'} value={json} readOnly editable={false} />
+        <CodeEditor language={'json'} value={json} basicSetup={{ lineNumbers: false }} readOnly editable={false} />
       </CardContent>
     </Card>
   );
