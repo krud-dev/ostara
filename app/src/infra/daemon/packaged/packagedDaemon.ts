@@ -48,7 +48,7 @@ export class PackagedDaemon extends RestHealthCheckingDaemon {
     }
 
     const heapdumpDirectory = path.join(app.getPath('userData'), 'heapdumps');
-    const backupDirectory = path.join(app.getPath('userData'), 'backup');
+    const backupDirectory = path.join(app.getPath('userData'), 'backups');
     fs.ensureDirSync(heapdumpDirectory);
     fs.ensureDirSync(backupDirectory);
 
