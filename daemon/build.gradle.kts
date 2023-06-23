@@ -103,7 +103,7 @@ dependencies {
     implementation("com.github.wnameless.json:json-flattener:0.16.4")
     implementation("net.pearx.kasechange:kasechange-jvm:1.4.1")
     implementation("io.hypersistence:hypersistence-utils-hibernate-60:3.5.0")
-    implementation("com.cobber.fta:fta-core:14.6.0")
+    implementation("com.cobber.fta:fta-core:14.6.1")
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.7.1")
     implementation("io.github.oshai:kotlin-logging-jvm:4.0.0")
     implementation("com.auth0:java-jwt:4.4.0")
