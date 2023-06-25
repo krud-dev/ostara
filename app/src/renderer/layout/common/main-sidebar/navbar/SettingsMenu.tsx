@@ -5,12 +5,14 @@ import NavbarIconButton from './NavbarIconButton';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { urls } from 'renderer/routes/urls';
 import { getUrlInfo } from 'renderer/utils/urlUtils';
+import { useUpdateEffect } from 'react-use';
 
 export default function SettingsMenu() {
   const navigate = useNavigate();
   const { pathname } = useLocation();
 
   const [settingsPagesCounter, setSettingsPagesCounter] = useState<number>(0);
+  const [toggleSettingsFlag, setToggleSettingsFlag] = useState<boolean>(false);
 
   const isSettingsPathname = useCallback((pathnameToCheck: string): boolean => {
     return pathnameToCheck.startsWith(urls.settings.url);
@@ -37,6 +39,10 @@ export default function SettingsMenu() {
     }
   }, [pathname, settingsPagesCounter]);
 
+  useUpdateEffect(() => {
+    toggleSettingsHandler();
+  }, [toggleSettingsFlag]);
+
   const subscribeToTriggerEventsState = useSubscribeToEvent();
 
   useEffect(() => {
@@ -45,7 +51,7 @@ export default function SettingsMenu() {
       unsubscribe = await subscribeToTriggerEventsState.mutateAsync({
         event: 'trigger:openSettings',
         listener: (event: IpcRendererEvent) => {
-          toggleSettingsHandler();
+          setToggleSettingsFlag((prev) => !prev);
         },
       });
     })();
@@ -53,6 +59,23 @@ export default function SettingsMenu() {
       unsubscribe?.();
     };
   }, []);
+
+  useEffect(() => {
+    let keyDownHandler: (event: KeyboardEvent) => void;
+    if (active) {
+      keyDownHandler = (event: KeyboardEvent) => {
+        if (event.key === 'Escape') {
+          setToggleSettingsFlag((prev) => !prev);
+        }
+      };
+      window.addEventListener('keydown', keyDownHandler);
+    }
+    return () => {
+      if (keyDownHandler) {
+        window.removeEventListener('keydown', keyDownHandler);
+      }
+    };
+  }, [active]);
 
   return (
     <NavbarIconButton titleId={'settings'} icon={'SettingsOutlined'} active={active} onClick={toggleSettingsHandler} />
