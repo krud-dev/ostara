@@ -11,8 +11,8 @@ import { useSubscribeToEvent } from 'renderer/apis/requests/subscriptions/subscr
 import { IpcRendererEvent } from 'electron';
 import { useUpdateEffect } from 'react-use';
 import { UpdateInfo } from 'electron-updater';
-import { isMac } from '../utils/platformUtils';
-import { LATEST_RELEASE_URL } from '../constants/ui';
+import { isMac, isWindows } from 'renderer/utils/platformUtils';
+import { LATEST_RELEASE_URL } from 'renderer/constants/ui';
 import semverGte from 'semver/functions/gte';
 
 export type AppUpdatesDownloadType = 'external' | 'internal';
@@ -33,7 +33,7 @@ const AppUpdatesContext = React.createContext<AppUpdatesContextProps>(undefined!
 interface AppUpdatesProviderProps extends PropsWithChildren<any> {}
 
 const AppUpdatesProvider: FunctionComponent<AppUpdatesProviderProps> = ({ children }) => {
-  const autoUpdateSupported = useMemo<boolean>(() => isMac, []);
+  const autoUpdateSupported = useMemo<boolean>(() => isMac || isWindows, []);
   const [autoUpdateEnabled, setAutoUpdateEnabled] = useState<boolean>(window.configurationStore.isAutoUpdateEnabled());
   const [newVersionInfo, setNewVersionInfo] = useState<UpdateInfo | undefined>(undefined);
   const [newVersionDownloaded, setNewVersionDownloaded] = useState<UpdateInfo | undefined>(undefined);
