@@ -109,7 +109,7 @@ dependencies {
     implementation("com.auth0:java-jwt:4.4.0")
 
     // Added separately from springdoc for production builds
-    implementation("io.swagger.core.v3:swagger-annotations-jakarta:2.2.12")
+    implementation("io.swagger.core.v3:swagger-annotations-jakarta:2.2.13")
 
     implementation("io.sentry:sentry-spring-boot-starter-jakarta:6.24.0")
 
