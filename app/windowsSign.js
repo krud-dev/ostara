@@ -1,7 +1,10 @@
-const { common } = require("@mui/material/colors");
 const { spawn } = require("child_process");
 
 exports.default = async function (configuration) {
+    if (configuration.platform !== "win32") {
+        console.log(`Skipping windows signing for ${configuration.path}`);
+        return;
+    }
     console.log("Called with " + configuration.path)
     const { path } = configuration;
     const cmd = `signtool sign /n "Open Source Developer, Shani Holdengreber" /t http://time.certum.pl /fd sha256 /v ${path}`;
@@ -27,16 +30,16 @@ function spawnTool(command) {
         execution.stdout.on("data", data => {
             console.log(`stdout: ${data}`);
         });
-        
+
         execution.stderr.on("data", data => {
             console.log(`stderr: ${data}`);
         });
-        
+
         execution.on('error', (error) => {
             console.log(`error: ${error.message}`);
             reject(error);
         });
-        
+
         execution.on("close", code => {
             console.log(`child process exited with code ${code}`);
             resolve();
