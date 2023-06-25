@@ -7,7 +7,7 @@ exports.default = async function (configuration) {
     }
     console.log("Called with " + configuration.path)
     const { path } = configuration;
-    const cmd = `signtool sign /n "Open Source Developer, Shani Holdengreber" /t http://time.certum.pl /fd sha256 /v ${path}`;
+    const cmd = `signtool sign /n "Open Source Developer, Shani Holdengreber" /t http://time.certum.pl /fd sha256 /v "${path}"`;
     console.log(`--- signing cmd: ${cmd}`);
     try {
         await spawnTool(cmd);
