@@ -1,7 +1,7 @@
 const { spawn } = require("child_process");
 
 exports.default = async function (configuration) {
-    if (configuration.platform !== "win32") {
+    if (process.platform !== "win32") {
         console.log(`Skipping windows signing for ${configuration.path}`);
         return;
     }
