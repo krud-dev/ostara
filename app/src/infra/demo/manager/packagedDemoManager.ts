@@ -14,7 +14,9 @@ export class PackagedDemoManager implements DemoManager {
 
   private readonly defaultJdkLocation = path.join(process.resourcesPath, 'jdk', 'bin', isWindows ? 'java.exe' : 'java');
 
-  private readonly defaultDemoLocation = path.join(process.resourcesPath, 'demo', 'demo.jar');
+  private readonly defaultDemoLocation = path.join(process.resourcesPath, 'demo');
+
+  private readonly defaultDemoJarLocation = path.join(this.defaultDemoLocation, 'demo.jar');
 
   private childProcess?: ChildProcessWithoutNullStreams = undefined;
 
@@ -55,10 +57,11 @@ export class PackagedDemoManager implements DemoManager {
     const env = {
       SERVER_ADDRESS: this.host,
       SERVER_PORT: String(this.port),
+      LOGGING_FILE_NAME: path.join(this.defaultDemoLocation, 'demo.log'),
     };
 
     log.info(`Running demo from jar on ${this.address}...`);
-    this.childProcess = spawn(this.defaultJdkLocation, ['-jar', this.defaultDemoLocation], {
+    this.childProcess = spawn(this.defaultJdkLocation, ['-jar', this.defaultDemoJarLocation], {
       env: { ...process.env, ...env },
     });
     log.info(`Demo process started with PID: ${this.childProcess.pid}`);
