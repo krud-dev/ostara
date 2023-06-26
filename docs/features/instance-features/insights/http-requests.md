@@ -12,7 +12,7 @@ Each expandable row is divided into 4 cards
 
 Shows the request count grouped by the different HTTP methods, their max time and their total time if present.
 
-<figure><img src="../../../.gitbook/assets/image (17).png" alt=""><figcaption></figcaption></figure>
+<figure><img src="../../../.gitbook/assets/image (17) (1).png" alt=""><figcaption></figcaption></figure>
 
 #### Statuses
 

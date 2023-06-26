@@ -4,7 +4,7 @@ In some cases, the values we get back from Actuator are intentionally masked and
 
 &#x20;
 
-<figure><img src="../.gitbook/assets/image (29).png" alt=""><figcaption><p>Example of a heavily redacted System Properties</p></figcaption></figure>
+<figure><img src="../.gitbook/assets/image (29) (1).png" alt=""><figcaption><p>Example of a heavily redacted System Properties</p></figcaption></figure>
 
 ### Spring Boot 2.X
 

@@ -43,6 +43,8 @@
 * [Instance Features](features/instance-features/README.md)
   * [Insights](features/instance-features/insights/README.md)
     * [Dashboard](features/instance-features/insights/dashboard.md)
+    * [Health](features/instance-features/insights/health.md)
+    * [Info](features/instance-features/insights/info.md)
     * [Metrics](features/instance-features/insights/metrics.md)
     * [System Environment](features/instance-features/insights/system-environment.md)
     * [System Properties](features/instance-features/insights/system-properties.md)
@@ -57,6 +59,7 @@
     * [Integration Graph](features/instance-features/insights/integration-graph.md)
   * [Manage](features/instance-features/manage/README.md)
     * [Loggers](features/instance-features/manage/loggers.md)
+    * [Logfile](features/instance-features/manage/logfile.md)
     * [Caches](features/instance-features/manage/caches.md)
     * [Togglz](features/instance-features/manage/togglz.md)
   * [JVM](features/instance-features/jvm/README.md)
@@ -65,9 +68,11 @@
   * [Misc](features/instance-features/misc/README.md)
     * [Shutdown](features/instance-features/misc/shutdown.md)
 * [In-App Demo](features/in-app-demo.md)
+* [Local Backups](features/local-backups.md)
 
 ## ⚠ Troubleshooting
 
+* [No data for Info](troubleshooting/no-data-for-info.md)
 * [Environment variables / System properties / App properties are partially or fully masked](troubleshooting/environment-variables-system-properties-app-properties-are-partially-or-fully-masked.md)
 * [Not all requests appear in HTTP Requests](troubleshooting/not-all-requests-appear-in-http-requests.md)
 * [Known Issues for Spring Boot 2](troubleshooting/known-issues-for-spring-boot-2.md)

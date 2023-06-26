@@ -8,7 +8,7 @@ Beans allows you to visualize your application's beans, as well as see the conne
 
 The basic table shows you a list of expandable beans, containing the bean's name, package and [scope](https://docs.spring.io/spring-framework/docs/3.0.0.M3/reference/html/ch04s04.html)
 
-<figure><img src="../../../.gitbook/assets/image (19).png" alt=""><figcaption></figcaption></figure>
+<figure><img src="../../../.gitbook/assets/image (19) (1).png" alt=""><figcaption></figcaption></figure>
 
 Upon expanding a bean, you will be able to see its type, and, if relevant, a list of dependencies. Clicking on a dependency will take you to its position in the table.
 

@@ -4,7 +4,7 @@
 
 System Properties visualizes the application's JVM properties.
 
-<figure><img src="../../../.gitbook/assets/image (3).png" alt=""><figcaption></figcaption></figure>
+<figure><img src="../../../.gitbook/assets/image (3) (1).png" alt=""><figcaption></figcaption></figure>
 
 ### Required Abilities
 

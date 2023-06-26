@@ -14,7 +14,7 @@ Shows scheduled tasks with a cron expression (`@Scheduled(cron = "...")`)
 
 Shows scheduled tasks with a fixed delay (`@Scheduled(fixedDelay = "5000")`)
 
-<figure><img src="../../../.gitbook/assets/image (11).png" alt=""><figcaption></figcaption></figure>
+<figure><img src="../../../.gitbook/assets/image (11) (1).png" alt=""><figcaption></figcaption></figure>
 
 #### Fixed Rate
 
