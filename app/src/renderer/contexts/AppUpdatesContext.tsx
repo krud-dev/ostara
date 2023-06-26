@@ -5,6 +5,7 @@ import React, {
   useContext,
   useEffect,
   useMemo,
+  useRef,
   useState,
 } from 'react';
 import { useSubscribeToEvent } from 'renderer/apis/requests/subscriptions/subscribeToEvent';
@@ -97,9 +98,14 @@ const AppUpdatesProvider: FunctionComponent<AppUpdatesProviderProps> = ({ childr
     return updateInfo;
   }, [setNewVersionInfo]);
 
+  const downloadUpdateStarted = useRef<boolean>(false);
+
   const downloadUpdate = useCallback((): AppUpdatesDownloadType => {
     if (autoUpdateSupported) {
-      window.appUpdater.downloadUpdate();
+      if (!downloadUpdateStarted.current) {
+        window.appUpdater.downloadUpdate();
+        downloadUpdateStarted.current = true;
+      }
       return 'internal';
     }
     window.open(LATEST_RELEASE_URL, '_blank');
