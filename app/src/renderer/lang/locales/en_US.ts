@@ -515,6 +515,8 @@ export default {
   restoreBackupDeleteWarning: 'This will delete all existing configuration and restore the backup.',
   fileName: 'File Name',
   logfile: 'Logfile',
+  couldNotLoadLogfile: 'Could not load logfile from actuator.',
+  errorLoadingData: 'Error loading data',
   selectedConfigurationIsEmpty: 'Selected configuration is empty',
   notificationTitleApplicationAllUp: '{application} is UP',
   notificationBodyApplicationAllUp: 'All instances of {application} are UP.',

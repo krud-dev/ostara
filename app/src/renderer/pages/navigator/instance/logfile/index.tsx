@@ -1,4 +1,4 @@
-import React, { FunctionComponent, useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import React, { FunctionComponent, useCallback, useEffect, useMemo, useState } from 'react';
 import Page from 'renderer/components/layout/Page';
 import { useNavigatorLayout } from 'renderer/contexts/NavigatorLayoutContext';
 import { Card, CardHeader, Divider } from '@mui/material';
@@ -12,6 +12,7 @@ import { FormattedMessage } from 'react-intl';
 import ToolbarButton from 'renderer/components/common/ToolbarButton';
 import { useDownloadInstanceLogfile } from 'renderer/apis/requests/instance/logfile/downloadInstanceLogfile';
 import { getItemDisplayName } from 'renderer/utils/itemUtils';
+import EmptyContent from 'renderer/components/help/EmptyContent';
 
 const LOG_INTERVAL = 3_000;
 const LOG_MAX_LENGTH = 131_072;
@@ -69,12 +70,15 @@ const InstanceLogfile: FunctionComponent = () => {
     };
   }, [active]);
 
-  const uiStatus = useMemo<'loading' | 'content'>(() => {
+  const uiStatus = useMemo<'loading' | 'error' | 'content'>(() => {
     if (isNil(log)) {
+      if (logfileState.error) {
+        return 'error';
+      }
       return 'loading';
     }
     return 'content';
-  }, [log]);
+  }, [log, logfileState.error]);
 
   const downloadState = useDownloadInstanceLogfile();
 
@@ -85,6 +89,12 @@ const InstanceLogfile: FunctionComponent = () => {
   return (
     <Page sx={{ height: '100%' }}>
       {uiStatus === 'loading' && <LogoLoaderCenter />}
+      {uiStatus === 'error' && (
+        <EmptyContent
+          text={<FormattedMessage id={'errorLoadingData'} />}
+          description={<FormattedMessage id={'couldNotLoadLogfile'} />}
+        />
+      )}
       {uiStatus === 'content' && (
         <Card>
           <CardHeader
