@@ -315,7 +315,8 @@
     "win": {
       "target": [
         "nsis"
-      ]
+      ],
+      "sign": "./windowsSign.js"
     },
     "linux": {
       "target": [
