@@ -1,5 +1,29 @@
 # @krud-dev/ostara-main
 
+## 0.11.0
+
+### Minor Changes
+
+- 55a399d0: Added auto updating for Windows
+- bec2a8cf: Added Info page
+- 32e44c66: Added Health page
+- 9057aefc: Added Logfile page
+- f9a020d2: Added settings page with sections
+- 7ef07f41: Added system backups manager to app settings
+- ed26b3a8: Added metrics value formatting by unit
+- 1825ea8a: Added UI animations
+- acb26092: Added build and git info to instance
+- 279a9319: Improved home screen feedback ui
+- c9d870f4: Improved folder-applications and application-instances tables empty states
+- 00e585ef: Added preview for import config and restore backup
+
+### Patch Changes
+
+- d6253787: Fixed manually downloading updates to only allow one click
+- ff984587: Fixed missing sort when exporting folders
+- e5bde84c: Fixed navigator tree move/rename/delete async methods
+- f6089d6d: Fixed slowness when navigating from instance dashboard to another page
+
 ## 0.10.0
 
 ### Minor Changes
