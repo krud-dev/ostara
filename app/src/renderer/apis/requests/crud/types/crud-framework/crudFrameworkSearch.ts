@@ -1,8 +1,9 @@
-import { BaseRO, CrudEntityCrudFramework } from '../../entity/entity';
+import { BaseRO, CrudEntityCrudFramework } from 'renderer/apis/requests/crud/entity/entity';
 import { AxiosResponse } from 'axios';
-import { CrudSearchData, CrudSearchVariables } from '../../crudSearch';
-import { axiosInstance } from '../../../../axiosInstance';
-import { DynamicModelFilter } from '../../../../../../common/generated_definitions';
+import { CrudSearchData, CrudSearchVariables } from 'renderer/apis/requests/crud/crudSearch';
+import { axiosInstance } from 'renderer/apis/axiosInstance';
+import { DynamicModelFilter } from 'common/generated_definitions';
+import { DeepPartial } from 'react-hook-form';
 
 export const crudFrameworkSearch = async <ResponseRO extends BaseRO>(
   entity: CrudEntityCrudFramework,
@@ -13,7 +14,7 @@ export const crudFrameworkSearch = async <ResponseRO extends BaseRO>(
   const result = await axiosInstance.post<
     CrudSearchData<ResponseRO>,
     AxiosResponse<CrudSearchData<ResponseRO>>,
-    DynamicModelFilter
+    DeepPartial<DynamicModelFilter> // DeepPartial should be removed once FilterField type is fixed
   >(`${entity.path}/search`, {
     start: (currentPage - 1) * pageSize,
     limit: pageSize,

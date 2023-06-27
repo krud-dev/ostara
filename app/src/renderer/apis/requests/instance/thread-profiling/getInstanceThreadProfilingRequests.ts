@@ -1,13 +1,13 @@
-import { BaseQueryOptions, BaseUseQueryResult, useBaseQuery } from '../../base/useBaseQuery';
+import { BaseQueryOptions, BaseUseQueryResult, useBaseQuery } from 'renderer/apis/requests/base/useBaseQuery';
 import {
   BaseMutationOptions,
   BaseUseMutationResult,
   useBaseMutation,
 } from 'renderer/apis/requests/base/useBaseMutation';
 import { apiKeys } from 'renderer/apis/apiKeys';
-import { ThreadProfilingRequestRO } from '../../../../../common/generated_definitions';
-import { crudSearch } from '../../crud/crudSearch';
-import { threadProfilingRequestCrudEntity } from '../../crud/entity/entities/threadProfilingRequest.crudEntity';
+import { ThreadProfilingRequestRO } from 'common/generated_definitions';
+import { crudSearch } from 'renderer/apis/requests/crud/crudSearch';
+import { threadProfilingRequestCrudEntity } from 'renderer/apis/requests/crud/entity/entities/threadProfilingRequest.crudEntity';
 
 export type EnrichedThreadProfilingRequestRO = ThreadProfilingRequestRO & {
   secondsRemaining?: number;

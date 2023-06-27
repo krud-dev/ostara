@@ -3,12 +3,13 @@ import { CrudMutationOptions, CrudUseMutationResult, CrudVariables, useCrudReadM
 import { getCrudMethods } from './types/crud';
 import { BaseRO } from './entity/entity';
 import { crudKeys } from './crudKeys';
-import { FilterField, OrderDTO, PagedResult } from '../../../../common/generated_definitions';
+import { FilterField, OrderDTO, PagedResult } from 'common/generated_definitions';
+import { DeepPartial } from 'react-hook-form';
 
 export type CrudSearchVariables = CrudVariables & {
   currentPage?: number;
   pageSize?: number;
-  filterFields?: FilterField[];
+  filterFields?: DeepPartial<FilterField>[]; // DeepPartial should be removed once FilterField type is fixed
   orders?: OrderDTO[];
 };
 
