@@ -9,10 +9,6 @@ class ToStringDeserializerTest {
     private val objectMapper = jacksonObjectMapper()
     private val deserializer = ToStringDeserializer()
 
-    private data class TestClass(
-        val value: String
-    )
-
     @Test
     fun `ToStringDeserializer should return stringified object value`() {
         val parser = objectMapper.factory.createParser("{}")

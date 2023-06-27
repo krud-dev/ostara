@@ -11,6 +11,6 @@ import com.fasterxml.jackson.databind.JsonNode
 class ToStringDeserializer : JsonDeserializer<String>() {
     override fun deserialize(p: JsonParser, ctxt: DeserializationContext): String {
         val node = p.codec.readTree<JsonNode>(p)
-        return node?.toString() ?: ""
+        return node.toString()
     }
 }
