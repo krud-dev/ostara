@@ -40,7 +40,7 @@ const useInstanceHealth = (item: InstanceRO): InstanceHealthResult => {
 
   return useMemo<InstanceHealthResult>(
     () => ({ health, loading, refreshHealth: refreshHandler }),
-    [health, refreshHandler]
+    [health, loading, refreshHandler]
   );
 };
 export default useInstanceHealth;
