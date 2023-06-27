@@ -6,7 +6,11 @@ const useCreateQueryClient = (): QueryClient => {
     () =>
       new QueryClient({
         defaultOptions: {
+          mutations: {
+            networkMode: 'always',
+          },
           queries: {
+            networkMode: 'always',
             refetchOnMount: true,
             refetchOnWindowFocus: false,
             refetchInterval: false,
