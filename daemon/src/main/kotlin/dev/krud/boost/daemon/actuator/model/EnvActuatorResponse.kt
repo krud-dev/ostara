@@ -1,7 +1,6 @@
 package dev.krud.boost.daemon.actuator.model
 
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize
-import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import dev.krud.boost.daemon.jackson.ToStringDeserializer
 import dev.krud.boost.daemon.utils.TypeDefaults
 
