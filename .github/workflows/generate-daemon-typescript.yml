@@ -41,4 +41,4 @@ jobs:
         with:
           add: 'app/src/common/generated_definitions.d.ts'
           default_author: github_actions
-          message: 'Update TypeScript definitions [skip ci]'
+          message: 'Update TypeScript definitions'
