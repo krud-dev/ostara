@@ -1,0 +1,41 @@
+name: Generate Daemon TypeScript
+
+on:
+  pull_request:
+    branches:
+      - master
+    paths:
+      - daemon/**
+      - .github/workflows/generate-daemon-typescript.yml
+
+jobs:
+  generate-typescript:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out Git repository
+        uses: actions/checkout@v3
+      - name: Install Java
+        uses: actions/setup-java@v3
+        with:
+          distribution: 'zulu'
+          java-version: '17'
+          restore-keys: ${{ runner.os }}-sonar
+      - name: Cache Gradle packages
+        uses: actions/cache@v3
+        with:
+          working-directory: daemon
+          path: ~/.gradle/caches
+          key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle.kts') }}
+          restore-keys: ${{ runner.os }}-gradle
+      - name: Build and analyze
+        working-directory: daemon
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: ./gradlew generateTypeScript
+      - name: Commit and push changes
+        run: |
+          git config --global user.name "Ostara Ops"
+          git config --global user.email "ops@ostara.dev"
+          git add app/src/common/generated_definitions.d.ts
+          git diff --quiet && git diff --staged --quiet || git commit -am 'Update TypeScript definitions'
+          git push
