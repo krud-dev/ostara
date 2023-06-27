@@ -1,5 +1,7 @@
 package dev.krud.boost.daemon.actuator.model
 
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize
+import dev.krud.boost.daemon.jackson.ToStringDeserializer
 import dev.krud.boost.daemon.utils.TypeDefaults
 
 data class EnvActuatorResponse(
@@ -11,6 +13,7 @@ data class EnvActuatorResponse(
         val properties: Map<String, Property>? = null
     ) {
         data class Property(
+            @JsonDeserialize(using = ToStringDeserializer::class)
             val value: String = TypeDefaults.STRING,
             val origin: String? = null
         )
