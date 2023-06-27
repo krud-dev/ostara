@@ -1,13 +1,13 @@
-import { BaseQueryOptions, BaseUseQueryResult, useBaseQuery } from '../../base/useBaseQuery';
+import { BaseQueryOptions, BaseUseQueryResult, useBaseQuery } from 'renderer/apis/requests/base/useBaseQuery';
 import {
   BaseMutationOptions,
   BaseUseMutationResult,
   useBaseMutation,
 } from 'renderer/apis/requests/base/useBaseMutation';
 import { apiKeys } from 'renderer/apis/apiKeys';
-import { ApplicationMetricRuleRO } from '../../../../../common/generated_definitions';
-import { crudSearch, CrudSearchVariables } from '../../crud/crudSearch';
-import { metricRuleCrudEntity } from '../../crud/entity/entities/metricRule.crudEntity';
+import { ApplicationMetricRuleRO } from 'common/generated_definitions';
+import { crudSearch } from 'renderer/apis/requests/crud/crudSearch';
+import { metricRuleCrudEntity } from 'renderer/apis/requests/crud/entity/entities/metricRule.crudEntity';
 
 type Variables = {
   applicationId: string;
@@ -24,10 +24,14 @@ export const getApplicationMetricRules = async (variables: Variables): Promise<D
       ...(variables.metricName
         ? [
             {
-              operation: 'Or',
+              operation: 'Or' as const,
               children: [
-                { fieldName: 'metricName', operation: 'Contains', values: [`${variables.metricName}[`] },
-                { fieldName: 'divisorMetricName', operation: 'Contains', values: [`${variables.metricName}[`] },
+                { fieldName: 'metricName', operation: 'Contains' as const, values: [`${variables.metricName}[`] },
+                {
+                  fieldName: 'divisorMetricName',
+                  operation: 'Contains' as const,
+                  values: [`${variables.metricName}[`],
+                },
               ],
             },
           ]

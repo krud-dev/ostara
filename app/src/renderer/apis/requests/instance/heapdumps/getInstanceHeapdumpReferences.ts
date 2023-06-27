@@ -1,13 +1,13 @@
-import { BaseQueryOptions, BaseUseQueryResult, useBaseQuery } from '../../base/useBaseQuery';
+import { BaseQueryOptions, BaseUseQueryResult, useBaseQuery } from 'renderer/apis/requests/base/useBaseQuery';
 import {
   BaseMutationOptions,
   BaseUseMutationResult,
   useBaseMutation,
 } from 'renderer/apis/requests/base/useBaseMutation';
 import { apiKeys } from 'renderer/apis/apiKeys';
-import { InstanceHeapdumpReferenceRO } from '../../../../../common/generated_definitions';
-import { crudSearch } from '../../crud/crudSearch';
-import { heapdumpReferenceCrudEntity } from '../../crud/entity/entities/heapdumpReference.crudEntity';
+import { InstanceHeapdumpReferenceRO } from 'common/generated_definitions';
+import { crudSearch } from 'renderer/apis/requests/crud/crudSearch';
+import { heapdumpReferenceCrudEntity } from 'renderer/apis/requests/crud/entity/entities/heapdumpReference.crudEntity';
 
 export type EnrichedInstanceHeapdumpReferenceRO = InstanceHeapdumpReferenceRO & {
   bytesRead?: number;
