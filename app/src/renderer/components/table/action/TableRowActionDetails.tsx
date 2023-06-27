@@ -1,6 +1,6 @@
 import { EntityRowActionDetails } from 'renderer/entity/entity';
 import { Box, TableCell, TableRow } from '@mui/material';
-import AutoSizer from 'react-virtualized-auto-sizer';
+import AutoSizer, { HorizontalSize } from 'react-virtualized-auto-sizer';
 
 export type TableRowActionDetailsProps<EntityItem> = {
   row: EntityItem;
@@ -23,7 +23,7 @@ export default function TableRowActionDetails<EntityItem>({
       <TableRow sx={{ borderBottom: (theme) => `1px solid ${theme.palette.divider}` }}>
         <TableCell colSpan={999} sx={{ wordBreak: 'break-all', p: 0 }}>
           <AutoSizer disableHeight>
-            {({ width }) => (
+            {({ width }: HorizontalSize) => (
               <Box sx={{ width: width, overflow: 'hidden', px: 2 }}>
                 <action.Component row={row} />
               </Box>

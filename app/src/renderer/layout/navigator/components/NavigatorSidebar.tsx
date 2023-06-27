@@ -7,7 +7,7 @@ import { FilterListOutlined } from '@mui/icons-material';
 import CreateItemMenu from 'renderer/layout/navigator/components/sidebar/menus/CreateItemMenu';
 import SearchItemMenu from 'renderer/layout/navigator/components/sidebar/menus/SearchItemMenu';
 import CreateItemContextMenu from 'renderer/layout/navigator/components/sidebar/menus/CreateItemContextMenu';
-import AutoSizer from 'react-virtualized-auto-sizer';
+import AutoSizer, { VerticalSize } from 'react-virtualized-auto-sizer';
 
 type NavigatorSidebarProps = {
   width: number;
@@ -49,7 +49,7 @@ export default function NavigatorSidebar({ width }: NavigatorSidebarProps) {
 
         <Box sx={{ flexGrow: 1 }} ref={contextMenuRef}>
           <AutoSizer disableWidth>
-            {({ height }) => <NavigatorTree width={width} height={height} search={search} />}
+            {({ height }: VerticalSize) => <NavigatorTree width={width} height={height} search={search} />}
           </AutoSizer>
         </Box>
       </Box>
