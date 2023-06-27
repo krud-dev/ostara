@@ -22,7 +22,8 @@ export class PackagedDaemon extends RestHealthCheckingDaemon {
 
   private readonly defaultJdkLocation = path.join(process.resourcesPath, 'jdk', 'bin', isWindows ? 'java.exe' : 'java');
 
-  private readonly sentryEnabled = configurationStore.get('errorReportingEnabled');
+  private readonly sentryEnabled =
+    process.env.NODE_ENV !== 'development' && configurationStore.get('errorReportingEnabled');
 
   private childProcess?: ChildProcessWithoutNullStreams = undefined;
 
