@@ -58,6 +58,8 @@ Change log levels and evict cache directly in the UI.
 ### Demo
 Check out this [short demo video](https://www.youtube.com/watch?v=5KoHNPjBnUk) to see more.
 
+[![Ostara Demo video on Youtube](./.github/assets/demo-video.png)](https://www.youtube.com/watch?v=5KoHNPjBnUk)
+
 ## Support
 
 * **Documentation:** Visit our [documentation site](https://docs.ostara.dev/) for detailed guides, tutorials, and reference materials. It covers installation instructions, usage guidelines, configuration options, and troubleshooting tips. Check it out here.
@@ -93,4 +95,5 @@ limitations under the License.
 These companies have been kind to provide us with free access to their tools for the ongoing development of Ostara, check them out!
 
 [![Sentry](./.github/assets/sentry.svg)](https://sentry.io)<br/>
-[![Gitbook](./.github/assets/gitbook.svg)](https://www.gitbook.com/)
+[![Gitbook](./.github/assets/gitbook.svg)](https://www.gitbook.com/)<br/>
+[![JetBrains](./.github/assets/jetbrains.svg)](https://www.jetbrains.com/)
