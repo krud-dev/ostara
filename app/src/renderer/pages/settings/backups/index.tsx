@@ -14,7 +14,9 @@ import { BACKUP_ID, DELETE_ID, RESTORE_ID } from 'renderer/entity/actions';
 import { useCreateSystemBackup } from 'renderer/apis/requests/system-backup/createSystemBackup';
 import { useDeleteSystemBackup } from 'renderer/apis/requests/system-backup/deleteSystemBackup';
 import NiceModal from '@ebay/nice-modal-react';
-import RestoreBackupDialog from 'renderer/pages/settings/backups/components/RestoreBackupDialog';
+import RestoreBackupDialog, {
+  RestoreBackupDialogProps,
+} from 'renderer/pages/settings/backups/components/RestoreBackupDialog';
 
 const SettingsBackups: FunctionComponent = () => {
   const { enqueueSnackbar } = useSnackbar();
@@ -27,7 +29,7 @@ const SettingsBackups: FunctionComponent = () => {
   const actionsHandler = useCallback(async (actionId: string, row: SystemBackupRO): Promise<void> => {
     switch (actionId) {
       case RESTORE_ID:
-        await NiceModal.show<boolean>(RestoreBackupDialog, { systemBackup: row });
+        await NiceModal.show<boolean, RestoreBackupDialogProps>(RestoreBackupDialog, { systemBackup: row });
         break;
       case DELETE_ID:
         try {

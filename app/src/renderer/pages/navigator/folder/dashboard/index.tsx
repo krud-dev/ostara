@@ -1,6 +1,6 @@
 import React, { FunctionComponent, useCallback, useMemo } from 'react';
 import Page from 'renderer/components/layout/Page';
-import { useNavigatorLayout } from 'renderer/contexts/NavigatorLayoutContext';
+import { useNavigatorLayoutContext } from 'renderer/contexts/NavigatorLayoutContext';
 import { Box, Button, Card, CardContent, CardHeader, Grow, Stack } from '@mui/material';
 import { ApplicationHealthStatus, ApplicationRO, InstanceRO } from 'common/generated_definitions';
 import EmptyContent from 'renderer/components/help/EmptyContent';
@@ -16,11 +16,13 @@ import FolderApplicationsHealthStatusWidget from './components/FolderApplication
 import FolderApplicationWidget from './components/FolderApplicationWidget';
 import { chain, isEmpty, sortBy } from 'lodash';
 import NiceModal from '@ebay/nice-modal-react';
-import { useItems } from 'renderer/contexts/ItemsContext';
+import { useItemsContext } from 'renderer/contexts/ItemsContext';
 import { findTreeItemPath, getNewItemSort, getSubTreeItemsForItem, getSubTreeRoot } from 'renderer/utils/treeUtils';
 import { getItemDisplayName, isFolder } from 'renderer/utils/itemUtils';
 import LogoLoaderCenter from 'renderer/components/common/LogoLoaderCenter';
-import CreateInstanceDialog from 'renderer/components/item/dialogs/create/CreateInstanceDialog';
+import CreateInstanceDialog, {
+  CreateInstanceDialogProps,
+} from 'renderer/components/item/dialogs/create/CreateInstanceDialog';
 import { TreeItem } from 'renderer/layout/navigator/components/sidebar/tree/tree';
 import { TransitionGroup } from 'react-transition-group';
 
@@ -34,8 +36,8 @@ type DashboardApplicationRO = ApplicationRO & {
 };
 
 const FolderDashboard: FunctionComponent = () => {
-  const { applications } = useItems();
-  const { selectedItem, data: navigatorData, getNewItemOrder } = useNavigatorLayout();
+  const { applications } = useItemsContext();
+  const { selectedItem, data: navigatorData, getNewItemOrder } = useNavigatorLayoutContext();
 
   const folderIds = useMemo<string[] | undefined>(
     () =>
@@ -120,7 +122,7 @@ const FolderDashboard: FunctionComponent = () => {
       }
     }
 
-    await NiceModal.show<InstanceRO[] | undefined>(CreateInstanceDialog, {
+    await NiceModal.show<InstanceRO[] | undefined, CreateInstanceDialogProps>(CreateInstanceDialog, {
       parentFolderId: selectedItem?.id,
       sort: sort,
     });

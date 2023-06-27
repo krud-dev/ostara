@@ -8,7 +8,7 @@ import { alpha } from '@mui/material/styles';
 import ToolbarButton from '../common/ToolbarButton';
 import { FormattedMessage } from 'react-intl';
 import { isBoolean } from 'lodash';
-import { useAnalytics } from '../../contexts/AnalyticsContext';
+import { useAnalyticsContext } from '../../contexts/AnalyticsContext';
 import { useLocation } from 'react-router-dom';
 import { getUrlInfo } from '../../utils/urlUtils';
 
@@ -31,7 +31,7 @@ export default function TableRowCustom<EntityItem>({ row, index }: TableRowCusto
     hasMassActions,
     actionsHandler,
   } = useTable<EntityItem, unknown>();
-  const { track } = useAnalytics();
+  const { track } = useAnalyticsContext();
   const { pathname } = useLocation();
 
   const [loadingActionIds, setLoadingActionIds] = React.useState<string[]>([]);

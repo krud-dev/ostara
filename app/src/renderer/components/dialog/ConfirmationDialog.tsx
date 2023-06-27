@@ -12,9 +12,9 @@ export type ConfirmationDialogProps = {
   continueColor?: ColorSchema;
   cancelText?: ReactNode;
   onConfirm?: () => void;
-};
+} & NiceModalHocProps;
 
-const ConfirmationDialog: FunctionComponent<ConfirmationDialogProps & NiceModalHocProps> = NiceModal.create(
+const ConfirmationDialog: FunctionComponent<ConfirmationDialogProps> = NiceModal.create(
   ({ title, text, continueText, continueColor, cancelText, onConfirm }) => {
     const modal = useModal();
 

@@ -2,15 +2,15 @@ import React, { FunctionComponent, useCallback } from 'react';
 import { Dialog, DialogContent } from '@mui/material';
 import NiceModal, { NiceModalHocProps, useModal } from '@ebay/nice-modal-react';
 import DialogTitleEnhanced from 'renderer/components/dialog/DialogTitleEnhanced';
-import { EnrichedQuartzTrigger } from '../../../../../apis/requests/instance/quartz/getInstanceQuartzTriggers';
-import QuartzTriggerDetails from './QuartzTriggerDetails';
+import { EnrichedQuartzTrigger } from 'renderer/apis/requests/instance/quartz/getInstanceQuartzTriggers';
+import QuartzTriggerDetails from 'renderer/pages/navigator/instance/quartz/components/QuartzTriggerDetails';
 
 export type QuartzTriggerDetailsDialogProps = {
   trigger: EnrichedQuartzTrigger;
-};
+} & NiceModalHocProps;
 
-const QuartzTriggerDetailsDialog: FunctionComponent<QuartzTriggerDetailsDialogProps & NiceModalHocProps> =
-  NiceModal.create(({ trigger }) => {
+const QuartzTriggerDetailsDialog: FunctionComponent<QuartzTriggerDetailsDialogProps> = NiceModal.create(
+  ({ trigger }) => {
     const modal = useModal();
 
     const closeHandler = useCallback((): void => {
@@ -34,6 +34,7 @@ const QuartzTriggerDetailsDialog: FunctionComponent<QuartzTriggerDetailsDialogPr
         </DialogContent>
       </Dialog>
     );
-  });
+  }
+);
 
 export default QuartzTriggerDetailsDialog;

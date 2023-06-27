@@ -4,7 +4,7 @@ import SearchToolbar from '../common/SearchToolbar';
 import React, { useCallback, useMemo } from 'react';
 import ToolbarButton from '../common/ToolbarButton';
 import { FormattedMessage } from 'react-intl';
-import { useAnalytics } from '../../contexts/AnalyticsContext';
+import { useAnalyticsContext } from '../../contexts/AnalyticsContext';
 
 type TableToolbarProps = {};
 
@@ -18,7 +18,7 @@ export default function TableToolbar({}: TableToolbarProps) {
     hasGlobalActions,
     globalActionsHandler,
   } = useTable();
-  const { track } = useAnalytics();
+  const { track } = useAnalyticsContext();
 
   const [loadingActionIds, setLoadingActionIds] = React.useState<string[]>([]);
 

@@ -4,10 +4,10 @@ import MenuPopover from 'renderer/components/menu/popup/MenuPopover';
 import { AddOutlined } from '@mui/icons-material';
 import { bindMenu, usePopupState } from 'material-ui-popup-state/hooks';
 import CreateItemMenuItems from 'renderer/layout/navigator/components/sidebar/menus/CreateItemMenuItems';
-import { useNavigatorLayout } from 'renderer/contexts/NavigatorLayoutContext';
+import { useNavigatorLayoutContext } from 'renderer/contexts/NavigatorLayoutContext';
 
 export default function CreateItemMenu() {
-  const { data } = useNavigatorLayout();
+  const { data } = useNavigatorLayoutContext();
 
   const menuState = usePopupState({ variant: 'popover' });
 

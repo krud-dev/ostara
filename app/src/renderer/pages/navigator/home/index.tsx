@@ -8,13 +8,13 @@ import HomeRepository from './components/HomeRepository';
 import HomeGettingStarted from './components/HomeGettingStarted';
 import HomeDocumentation from './components/HomeDocumentation';
 import HomeWhatsNew from './components/HomeWhatsNew';
-import { useSettings } from '../../../contexts/SettingsContext';
+import { useSettingsContext } from '../../../contexts/SettingsContext';
 import HomeDeveloperMode from './components/HomeDeveloperMode';
 import HomeFeedback from './components/HomeFeedback';
 import { TransitionGroup } from 'react-transition-group';
 
 const Home: FunctionComponent = () => {
-  const { developerMode } = useSettings();
+  const { developerMode } = useSettingsContext();
   return (
     <Page sx={{ height: '100%', display: 'flex', p: 0 }}>
       <Container disableGutters maxWidth={'md'} sx={{ m: 'auto', p: COMPONENTS_SPACING }}>

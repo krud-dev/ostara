@@ -3,16 +3,17 @@ import { Card, CardContent, CardHeader, Container, Grow, Link, MenuItem, Stack, 
 import Page from 'renderer/components/layout/Page';
 import { ANIMATION_GROW_TOP_STYLE, ANIMATION_TIMEOUT_LONG, COMPONENTS_SPACING } from '../../../constants/ui';
 import { FormattedMessage } from 'react-intl';
-import { useSettings } from 'renderer/contexts/SettingsContext';
-import { useAppUpdates } from 'renderer/contexts/AppUpdatesContext';
+import { useSettingsContext } from 'renderer/contexts/SettingsContext';
+import { useAppUpdatesContext } from 'renderer/contexts/AppUpdatesContext';
 import { useSnackbar } from 'notistack';
-import { useAnalytics } from 'renderer/contexts/AnalyticsContext';
+import { useAnalyticsContext } from 'renderer/contexts/AnalyticsContext';
 import semverGt from 'semver/functions/gt';
 import { ThemeSource } from 'infra/ui/models/electronTheme';
 import { TransitionGroup } from 'react-transition-group';
+import { onlineManager } from '@tanstack/react-query';
 
 const SettingsGeneral: FunctionComponent = () => {
-  const { themeSource, setThemeSource } = useSettings();
+  const { themeSource, setThemeSource } = useSettingsContext();
   const {
     autoUpdateSupported,
     autoUpdateEnabled,
@@ -22,9 +23,9 @@ const SettingsGeneral: FunctionComponent = () => {
     checkForUpdates,
     downloadUpdate,
     installUpdate,
-  } = useAppUpdates();
+  } = useAppUpdatesContext();
   const { enqueueSnackbar } = useSnackbar();
-  const { track } = useAnalytics();
+  const { track } = useAnalyticsContext();
 
   const [appVersion, setAppVersion] = useState<string>('');
 
@@ -52,6 +53,11 @@ const SettingsGeneral: FunctionComponent = () => {
       event.preventDefault();
 
       track({ name: 'settings_check_for_updates' });
+
+      if (!onlineManager.isOnline()) {
+        enqueueSnackbar(<FormattedMessage id="noInternetConnectionCheckConnectionTryAgain" />, { variant: 'warning' });
+        return;
+      }
 
       const result = await checkForUpdates();
       if (result) {

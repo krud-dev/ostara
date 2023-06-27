@@ -1,6 +1,6 @@
 import React, { FunctionComponent, ReactNode, useCallback, useEffect, useMemo, useState } from 'react';
 import Page from 'renderer/components/layout/Page';
-import { useNavigatorLayout } from 'renderer/contexts/NavigatorLayoutContext';
+import { useNavigatorLayoutContext } from 'renderer/contexts/NavigatorLayoutContext';
 import {
   Box,
   Button,
@@ -42,7 +42,7 @@ import ToolbarButton from 'renderer/components/common/ToolbarButton';
 import PerfectScrollbar from 'react-perfect-scrollbar';
 
 const InstanceInfo: FunctionComponent = () => {
-  const { selectedItem } = useNavigatorLayout();
+  const { selectedItem } = useNavigatorLayoutContext();
 
   const item = useMemo<InstanceRO>(() => selectedItem as InstanceRO, [selectedItem]);
 

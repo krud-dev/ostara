@@ -1,9 +1,9 @@
 import { useCallback } from 'react';
 import { FormattedMessage } from 'react-intl';
-import { useSettings } from 'renderer/contexts/SettingsContext';
+import { useSettingsContext } from 'renderer/contexts/SettingsContext';
 import CustomMenuItem from 'renderer/components/menu/item/CustomMenuItem';
 import useCopyToClipboard from 'renderer/hooks/useCopyToClipboard';
-import { ItemRO } from '../../../../../../../definitions/daemon';
+import { ItemRO } from 'renderer/definitions/daemon';
 
 type CopyItemToClipboardMenuItemProps = {
   item: ItemRO;
@@ -11,7 +11,7 @@ type CopyItemToClipboardMenuItemProps = {
 };
 
 export default function CopyItemToClipboardMenuItem({ item, onClose }: CopyItemToClipboardMenuItemProps) {
-  const { developerMode } = useSettings();
+  const { developerMode } = useSettingsContext();
   const copyToClipboard = useCopyToClipboard();
 
   const copyHandler = useCallback((): void => {

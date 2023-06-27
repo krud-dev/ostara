@@ -15,14 +15,14 @@ import FormattedRelativeTimeNow from 'renderer/components/format/FormattedRelati
 import { useNavigate } from 'react-router-dom';
 import useItemIcon from 'renderer/hooks/useItemIcon';
 import useItemColor from 'renderer/hooks/useItemColor';
-import { useNavigatorLayout } from 'renderer/contexts/NavigatorLayoutContext';
+import { useNavigatorLayoutContext } from 'renderer/contexts/NavigatorLayoutContext';
 
 type ApplicationInstanceWidgetProps = {
   instance: InstanceRO;
 };
 
 const ApplicationInstanceWidget: FunctionComponent<ApplicationInstanceWidgetProps> = ({ instance }) => {
-  const { data } = useNavigatorLayout();
+  const { data } = useNavigatorLayoutContext();
   const navigate = useNavigate();
 
   const title = useMemo<string>(() => getItemDisplayName(instance), [instance]);

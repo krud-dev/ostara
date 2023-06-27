@@ -1,6 +1,6 @@
 import React, { FunctionComponent, useCallback, useMemo } from 'react';
 import Page from 'renderer/components/layout/Page';
-import { useNavigatorLayout } from 'renderer/contexts/NavigatorLayoutContext';
+import { useNavigatorLayoutContext } from 'renderer/contexts/NavigatorLayoutContext';
 import { Entity } from 'renderer/entity/entity';
 import TableComponent from 'renderer/components/table/TableComponent';
 import {
@@ -14,7 +14,7 @@ import { Card } from '@mui/material';
 import { InstanceRO } from '../../../../../common/generated_definitions';
 
 const InstanceEnvironment: FunctionComponent = () => {
-  const { selectedItem } = useNavigatorLayout();
+  const { selectedItem } = useNavigatorLayoutContext();
   const copyToClipboard = useCopyToClipboard();
 
   const item = useMemo<InstanceRO>(() => selectedItem as InstanceRO, [selectedItem]);

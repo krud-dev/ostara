@@ -3,24 +3,21 @@ import React, { FunctionComponent, useCallback, useMemo, useState } from 'react'
 import { Dialog } from '@mui/material';
 import NiceModal, { NiceModalHocProps, useModal } from '@ebay/nice-modal-react';
 import DialogTitleEnhanced from 'renderer/components/dialog/DialogTitleEnhanced';
-import { useAnalytics } from '../../../../../contexts/AnalyticsContext';
-import {
-  ApplicationMetricRuleCreateRequestRO,
-  ApplicationMetricRuleRO,
-} from '../../../../../../common/generated_definitions';
+import { useAnalyticsContext } from 'renderer/contexts/AnalyticsContext';
+import { ApplicationMetricRuleCreateRequestRO, ApplicationMetricRuleRO } from 'common/generated_definitions';
 import MetricRuleDetailsForm, { MetricRuleFormValues } from './MetricRuleDetailsForm';
-import { useCreateApplicationMetricRule } from '../../../../../apis/requests/application/metric-rules/createApplicationMetricRule';
+import { useCreateApplicationMetricRule } from 'renderer/apis/requests/application/metric-rules/createApplicationMetricRule';
 
 export type CreateMetricRuleDialogProps = {
   applicationId: string;
   defaultValues?: Partial<MetricRuleFormValues>;
   onCreated?: (metricRule: ApplicationMetricRuleRO) => void;
-};
+} & NiceModalHocProps;
 
-const CreateMetricRuleDialog: FunctionComponent<CreateMetricRuleDialogProps & NiceModalHocProps> = NiceModal.create(
+const CreateMetricRuleDialog: FunctionComponent<CreateMetricRuleDialogProps> = NiceModal.create(
   ({ applicationId, defaultValues, onCreated }) => {
     const modal = useModal();
-    const { track } = useAnalytics();
+    const { track } = useAnalyticsContext();
 
     const [submitting, setSubmitting] = useState<boolean>(false);
 

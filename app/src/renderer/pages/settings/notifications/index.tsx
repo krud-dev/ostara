@@ -3,12 +3,12 @@ import { Alert, Card, CardContent, CardHeader, Container, Grow, Link, MenuItem, 
 import Page from 'renderer/components/layout/Page';
 import { ANIMATION_GROW_TOP_STYLE, ANIMATION_TIMEOUT_LONG, COMPONENTS_SPACING } from '../../../constants/ui';
 import { FormattedMessage } from 'react-intl';
-import { useSettings } from 'renderer/contexts/SettingsContext';
+import { useSettingsContext } from 'renderer/contexts/SettingsContext';
 import { TransitionGroup } from 'react-transition-group';
 
 const SettingsNotifications: FunctionComponent = () => {
   const { notificationsActive, setNotificationsActive, notificationsSoundActive, setNotificationsSoundActive } =
-    useSettings();
+    useSettingsContext();
 
   const canOpenOsSettings = useMemo<boolean>(() => window.notifications.canOpenOsSettings(), []);
 

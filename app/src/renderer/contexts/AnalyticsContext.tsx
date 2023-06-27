@@ -7,7 +7,7 @@ import React, {
   useMemo,
   useState,
 } from 'react';
-import { useSettings } from './SettingsContext';
+import { useSettingsContext } from './SettingsContext';
 import { AMPLITUDE_API_KEY } from '../constants/ids';
 import { v4 as uuidv4 } from 'uuid';
 import { useLocalStorageState } from '../hooks/useLocalStorageState';
@@ -28,7 +28,7 @@ const AnalyticsContext = React.createContext<AnalyticsContextProps>(undefined!);
 interface AnalyticsProviderProps extends PropsWithChildren<any> {}
 
 const AnalyticsProvider: FunctionComponent<AnalyticsProviderProps> = ({ children }) => {
-  const { analyticsEnabled, developerMode } = useSettings();
+  const { analyticsEnabled, developerMode } = useSettingsContext();
 
   const [initiated, setInitiated] = useState<boolean>(false);
   const [pendingEvents, setPendingEvents] = useState<AnalyticsEvent[]>([]);
@@ -90,19 +90,12 @@ const AnalyticsProvider: FunctionComponent<AnalyticsProviderProps> = ({ children
     setPendingEvents([]);
   }, [initiated]);
 
-  return (
-    <AnalyticsContext.Provider
-      value={{
-        analyticsActive,
-        track,
-      }}
-    >
-      {children}
-    </AnalyticsContext.Provider>
-  );
+  const memoizedValue = useMemo<AnalyticsContextProps>(() => ({ analyticsActive, track }), [analyticsActive, track]);
+
+  return <AnalyticsContext.Provider value={memoizedValue}>{children}</AnalyticsContext.Provider>;
 };
 
-const useAnalytics = (): AnalyticsContextProps => {
+const useAnalyticsContext = (): AnalyticsContextProps => {
   const context = useContext(AnalyticsContext);
 
   if (!context) throw new Error('AnalyticsContext must be used inside AnalyticsProvider');
@@ -110,4 +103,4 @@ const useAnalytics = (): AnalyticsContextProps => {
   return context;
 };
 
-export { AnalyticsContext, AnalyticsProvider, useAnalytics };
+export { AnalyticsContext, AnalyticsProvider, useAnalyticsContext };

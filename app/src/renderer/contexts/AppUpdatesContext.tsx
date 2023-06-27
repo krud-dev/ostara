@@ -15,6 +15,7 @@ import { UpdateInfo } from 'electron-updater';
 import { isMac, isWindows } from 'renderer/utils/platformUtils';
 import { LATEST_RELEASE_URL } from 'renderer/constants/ui';
 import semverGte from 'semver/functions/gte';
+import { onlineManager } from '@tanstack/react-query';
 
 export type AppUpdatesDownloadType = 'external' | 'internal';
 
@@ -38,18 +39,32 @@ const AppUpdatesProvider: FunctionComponent<AppUpdatesProviderProps> = ({ childr
   const [autoUpdateEnabled, setAutoUpdateEnabled] = useState<boolean>(window.configurationStore.isAutoUpdateEnabled());
   const [newVersionInfo, setNewVersionInfo] = useState<UpdateInfo | undefined>(undefined);
   const [newVersionDownloaded, setNewVersionDownloaded] = useState<UpdateInfo | undefined>(undefined);
+  const [networkStateFlag, setNetworkStateFlag] = useState<boolean>(true);
 
   useUpdateEffect(() => {
     window.configurationStore.setAutoUpdateEnabled(autoUpdateEnabled);
   }, [autoUpdateEnabled]);
 
   useEffect(() => {
+    if (!onlineManager.isOnline()) {
+      return;
+    }
+
     (async () => {
       const updateInfo = await window.appUpdater.checkForUpdates();
       if (updateInfo) {
         setNewVersionInfo(updateInfo);
       }
     })();
+  }, [networkStateFlag]);
+
+  useEffect(() => {
+    const unsubscribe = onlineManager.subscribe(() => {
+      setNetworkStateFlag((prev) => !prev);
+    });
+    return () => {
+      unsubscribe();
+    };
   }, []);
 
   const subscribeToUpdateAvailableState = useSubscribeToEvent();
@@ -87,6 +102,10 @@ const AppUpdatesProvider: FunctionComponent<AppUpdatesProviderProps> = ({ childr
   }, []);
 
   const checkForUpdates = useCallback(async (): Promise<UpdateInfo | undefined> => {
+    if (!onlineManager.isOnline()) {
+      return undefined;
+    }
+
     const updateInfo = await window.appUpdater.checkForUpdates();
     const appVersion = await window.ui.getAppVersion();
 
@@ -119,25 +138,33 @@ const AppUpdatesProvider: FunctionComponent<AppUpdatesProviderProps> = ({ childr
     window.appUpdater.quitAndInstall();
   }, [autoUpdateSupported]);
 
-  return (
-    <AppUpdatesContext.Provider
-      value={{
-        autoUpdateSupported,
-        autoUpdateEnabled,
-        setAutoUpdateEnabled,
-        newVersionInfo,
-        newVersionDownloaded,
-        checkForUpdates,
-        downloadUpdate,
-        installUpdate,
-      }}
-    >
-      {children}
-    </AppUpdatesContext.Provider>
+  const memoizedValue = useMemo<AppUpdatesContextProps>(
+    () => ({
+      autoUpdateSupported,
+      autoUpdateEnabled,
+      setAutoUpdateEnabled,
+      newVersionInfo,
+      newVersionDownloaded,
+      checkForUpdates,
+      downloadUpdate,
+      installUpdate,
+    }),
+    [
+      autoUpdateSupported,
+      autoUpdateEnabled,
+      setAutoUpdateEnabled,
+      newVersionInfo,
+      newVersionDownloaded,
+      checkForUpdates,
+      downloadUpdate,
+      installUpdate,
+    ]
   );
+
+  return <AppUpdatesContext.Provider value={memoizedValue}>{children}</AppUpdatesContext.Provider>;
 };
 
-const useAppUpdates = (): AppUpdatesContextProps => {
+const useAppUpdatesContext = (): AppUpdatesContextProps => {
   const context = useContext(AppUpdatesContext);
 
   if (!context) throw new Error('AppUpdatesContext must be used inside AppUpdatesProvider');
@@ -145,4 +172,4 @@ const useAppUpdates = (): AppUpdatesContextProps => {
   return context;
 };
 
-export { AppUpdatesContext, AppUpdatesProvider, useAppUpdates };
+export { AppUpdatesContext, AppUpdatesProvider, useAppUpdatesContext };

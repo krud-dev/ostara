@@ -3,24 +3,24 @@ import { Controller, useForm } from 'react-hook-form';
 import { Box, Button, Dialog, DialogActions, DialogContent, DialogContentText, TextField } from '@mui/material';
 import { FormattedMessage, useIntl } from 'react-intl';
 import NiceModal, { NiceModalHocProps, useModal } from '@ebay/nice-modal-react';
-import { useSendFeedback } from '../../../../apis/requests/feedback/sendFeedback';
+import { useSendFeedback } from 'renderer/apis/requests/feedback/sendFeedback';
 import { LoadingButton } from '@mui/lab';
 import DialogTitleEnhanced from '../../../../components/dialog/DialogTitleEnhanced';
 import { useSnackbar } from 'notistack';
-import { useAnalytics } from '../../../../contexts/AnalyticsContext';
+import { useAnalyticsContext } from 'renderer/contexts/AnalyticsContext';
 
-export type AppFeedbackDialogProps = {};
+export type AppFeedbackDialogProps = {} & NiceModalHocProps;
 
 type FormValues = {
   text: string;
   email: string;
 };
 
-const AppFeedbackDialog: FunctionComponent<AppFeedbackDialogProps & NiceModalHocProps> = NiceModal.create(({}) => {
+const AppFeedbackDialog: FunctionComponent<AppFeedbackDialogProps> = NiceModal.create(({}) => {
   const modal = useModal();
   const intl = useIntl();
   const { enqueueSnackbar } = useSnackbar();
-  const { track } = useAnalytics();
+  const { track } = useAnalyticsContext();
 
   const {
     control,

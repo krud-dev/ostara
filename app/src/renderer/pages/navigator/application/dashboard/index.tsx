@@ -15,16 +15,18 @@ import ApplicationInstancesHealthStatusWidget from './components/ApplicationInst
 import ApplicationInstanceWidget from './components/ApplicationInstanceWidget';
 import { chain, isEmpty } from 'lodash';
 import NiceModal from '@ebay/nice-modal-react';
-import CreateInstanceDialog from 'renderer/components/item/dialogs/create/CreateInstanceDialog';
-import { useItems } from 'renderer/contexts/ItemsContext';
+import CreateInstanceDialog, {
+  CreateInstanceDialogProps,
+} from 'renderer/components/item/dialogs/create/CreateInstanceDialog';
+import { useItemsContext } from 'renderer/contexts/ItemsContext';
 import { getNewItemSort, getSubTreeRoot } from 'renderer/utils/treeUtils';
 import LogoLoaderCenter from 'renderer/components/common/LogoLoaderCenter';
-import { useNavigatorLayout } from 'renderer/contexts/NavigatorLayoutContext';
+import { useNavigatorLayoutContext } from 'renderer/contexts/NavigatorLayoutContext';
 import { TransitionGroup } from 'react-transition-group';
 
 const ApplicationDashboard: FunctionComponent = () => {
-  const { instances } = useItems();
-  const { selectedItem, data: navigatorData } = useNavigatorLayout();
+  const { instances } = useItemsContext();
+  const { selectedItem, data: navigatorData } = useNavigatorLayoutContext();
 
   const item = useMemo<ApplicationRO>(() => selectedItem as ApplicationRO, [selectedItem]);
   const data = useMemo<InstanceRO[] | undefined>(
@@ -51,7 +53,7 @@ const ApplicationDashboard: FunctionComponent = () => {
 
     const sort = getNewItemSort(treeItem);
 
-    await NiceModal.show<InstanceRO[] | undefined>(CreateInstanceDialog, {
+    await NiceModal.show<InstanceRO[] | undefined, CreateInstanceDialogProps>(CreateInstanceDialog, {
       parentApplicationId: item.id,
       sort: sort,
     });

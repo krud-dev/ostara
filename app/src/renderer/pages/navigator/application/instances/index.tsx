@@ -7,16 +7,18 @@ import { Box, Button, Card } from '@mui/material';
 import { ApplicationRO, InstanceRO } from 'common/generated_definitions';
 import useItemShutdown from 'renderer/hooks/useItemShutdown';
 import { SHUTDOWN_ID } from 'renderer/entity/actions';
-import { useItems } from 'renderer/contexts/ItemsContext';
+import { useItemsContext } from 'renderer/contexts/ItemsContext';
 import { FormattedMessage } from 'react-intl';
 import { getNewItemSort, getSubTreeRoot } from 'renderer/utils/treeUtils';
 import NiceModal from '@ebay/nice-modal-react';
-import CreateInstanceDialog from 'renderer/components/item/dialogs/create/CreateInstanceDialog';
-import { useNavigatorLayout } from 'renderer/contexts/NavigatorLayoutContext';
+import CreateInstanceDialog, {
+  CreateInstanceDialogProps,
+} from 'renderer/components/item/dialogs/create/CreateInstanceDialog';
+import { useNavigatorLayoutContext } from 'renderer/contexts/NavigatorLayoutContext';
 
 const ApplicationInstances: FunctionComponent = () => {
-  const { instances, refetchInstances } = useItems();
-  const { selectedItem, selectedItemAbilities, data: navigatorData } = useNavigatorLayout();
+  const { instances, refetchInstances } = useItemsContext();
+  const { selectedItem, selectedItemAbilities, data: navigatorData } = useNavigatorLayoutContext();
 
   const item = useMemo<ApplicationRO>(() => selectedItem as ApplicationRO, [selectedItem]);
 
@@ -69,7 +71,7 @@ const ApplicationInstances: FunctionComponent = () => {
 
     const sort = getNewItemSort(treeItem);
 
-    await NiceModal.show<InstanceRO[] | undefined>(CreateInstanceDialog, {
+    await NiceModal.show<InstanceRO[] | undefined, CreateInstanceDialogProps>(CreateInstanceDialog, {
       parentApplicationId: item.id,
       sort: sort,
     });

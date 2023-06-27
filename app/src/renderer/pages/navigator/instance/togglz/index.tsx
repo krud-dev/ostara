@@ -1,6 +1,6 @@
 import React, { FunctionComponent, useMemo } from 'react';
 import Page from 'renderer/components/layout/Page';
-import { useNavigatorLayout } from 'renderer/contexts/NavigatorLayoutContext';
+import { useNavigatorLayoutContext } from 'renderer/contexts/NavigatorLayoutContext';
 import { Card } from '@mui/material';
 import { InstanceRO } from '../../../../../common/generated_definitions';
 import { useGetInstanceTogglzQuery } from '../../../../apis/requests/instance/togglz/getInstanceTogglz';
@@ -14,7 +14,7 @@ import LogoLoaderCenter from '../../../../components/common/LogoLoaderCenter';
 type GroupTabInfo = TabInfo & { group?: string };
 
 const InstanceTogglz: FunctionComponent = () => {
-  const { selectedItem } = useNavigatorLayout();
+  const { selectedItem } = useNavigatorLayoutContext();
 
   const item = useMemo<InstanceRO>(() => selectedItem as InstanceRO, [selectedItem]);
 

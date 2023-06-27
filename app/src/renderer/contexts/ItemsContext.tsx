@@ -151,34 +151,39 @@ const ItemsProvider: FunctionComponent<ItemsProviderProps> = ({ children }) => {
     [addItem]
   );
 
-  const getItem = useCallback(
-    (id: string): ItemRO | undefined => {
-      return items?.find((i) => i.id === id);
-    },
-    [items]
+  const getItem = useCallback((id: string): ItemRO | undefined => items?.find((i) => i.id === id), [items]);
+
+  const memoizedValue = useMemo<ItemsContextProps>(
+    () => ({
+      folders,
+      applications,
+      instances,
+      refetchFolders: searchFolderState.refetch,
+      refetchApplications: searchApplicationState.refetch,
+      refetchInstances: searchInstanceState.refetch,
+      items,
+      addItem,
+      addItems,
+      getItem,
+    }),
+    [
+      folders,
+      applications,
+      instances,
+      searchFolderState.refetch,
+      searchApplicationState.refetch,
+      searchInstanceState.refetch,
+      items,
+      addItem,
+      addItems,
+      getItem,
+    ]
   );
 
-  return (
-    <ItemsContext.Provider
-      value={{
-        folders,
-        applications,
-        instances,
-        refetchFolders: searchFolderState.refetch,
-        refetchApplications: searchApplicationState.refetch,
-        refetchInstances: searchInstanceState.refetch,
-        items,
-        addItem,
-        addItems,
-        getItem,
-      }}
-    >
-      {children}
-    </ItemsContext.Provider>
-  );
+  return <ItemsContext.Provider value={memoizedValue}>{children}</ItemsContext.Provider>;
 };
 
-const useItems = (): ItemsContextProps => {
+const useItemsContext = (): ItemsContextProps => {
   const context = useContext(ItemsContext);
 
   if (!context) throw new Error('ItemsContext must be used inside ItemsProvider');
@@ -186,4 +191,4 @@ const useItems = (): ItemsContextProps => {
   return context;
 };
 
-export { ItemsContext, ItemsProvider, useItems };
+export { ItemsContext, ItemsProvider, useItemsContext };

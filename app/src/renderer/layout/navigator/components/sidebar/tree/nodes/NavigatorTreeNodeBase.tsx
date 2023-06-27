@@ -20,7 +20,7 @@ import { IconViewer } from 'renderer/components/common/IconViewer';
 import useItemIcon from 'renderer/hooks/useItemIcon';
 import { PopupState } from 'material-ui-popup-state/hooks';
 import useItemDisplayName from 'renderer/hooks/useItemDisplayName';
-import { useNavigatorTree } from 'renderer/contexts/NavigatorTreeContext';
+import { useNavigatorTreeContext } from 'renderer/contexts/NavigatorTreeContext';
 
 type NavigatorTreeNodeBaseProps = NodeRendererProps<TreeItem> & {
   isSelected?: boolean;
@@ -80,7 +80,7 @@ export default function NavigatorTreeNodeBase({
   onClick,
 }: NavigatorTreeNodeBaseProps) {
   const theme = useTheme();
-  const { data } = useNavigatorTree();
+  const { data } = useNavigatorTreeContext();
 
   const openMenuHandler = useCallback(
     (event: React.MouseEvent): void => {

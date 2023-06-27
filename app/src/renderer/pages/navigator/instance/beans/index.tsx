@@ -1,6 +1,6 @@
 import React, { FunctionComponent, useCallback, useMemo } from 'react';
 import Page from 'renderer/components/layout/Page';
-import { useNavigatorLayout } from 'renderer/contexts/NavigatorLayoutContext';
+import { useNavigatorLayoutContext } from 'renderer/contexts/NavigatorLayoutContext';
 import TableComponent from 'renderer/components/table/TableComponent';
 import { Entity } from 'renderer/entity/entity';
 import { instanceBeanEntity } from 'renderer/entity/entities/instanceBean.entity';
@@ -9,10 +9,10 @@ import { Card } from '@mui/material';
 import { InstanceRO } from '../../../../../common/generated_definitions';
 import { GRAPH_ID } from '../../../../entity/actions';
 import NiceModal from '@ebay/nice-modal-react';
-import BeansGraphDialog from './components/BeansGraphDialog';
+import BeansGraphDialog, { BeansGraphDialogProps } from './components/BeansGraphDialog';
 
 const InstanceBeans: FunctionComponent = () => {
-  const { selectedItem } = useNavigatorLayout();
+  const { selectedItem } = useNavigatorLayoutContext();
 
   const item = useMemo<InstanceRO>(() => selectedItem as InstanceRO, [selectedItem]);
 
@@ -26,7 +26,7 @@ const InstanceBeans: FunctionComponent = () => {
           if (!queryState.data) {
             return;
           }
-          await NiceModal.show<undefined>(BeansGraphDialog, {
+          await NiceModal.show<undefined, BeansGraphDialogProps>(BeansGraphDialog, {
             bean: row,
             allBeans: queryState.data,
           });

@@ -21,23 +21,23 @@ import { useCrudCreateBulk } from 'renderer/apis/requests/crud/crudCreateBulk';
 import LogoLoader from 'renderer/components/common/LogoLoader';
 import { every } from 'lodash';
 import { URL_REGEX } from 'renderer/constants/regex';
-import { useAnalytics } from 'renderer/contexts/AnalyticsContext';
+import { useAnalyticsContext } from 'renderer/contexts/AnalyticsContext';
 import { useNavigate } from 'react-router-dom';
-import { useItems } from 'renderer/contexts/ItemsContext';
+import { useItemsContext } from 'renderer/contexts/ItemsContext';
 
 export type CreateInstanceDialogProps = {
   parentApplicationId?: string;
   parentFolderId?: string;
   sort?: number;
   onCreated?: (item: InstanceRO[]) => void;
-};
+} & NiceModalHocProps;
 
-const CreateInstanceDialog: FunctionComponent<CreateInstanceDialogProps & NiceModalHocProps> = NiceModal.create(
+const CreateInstanceDialog: FunctionComponent<CreateInstanceDialogProps> = NiceModal.create(
   ({ parentApplicationId, parentFolderId, sort, onCreated }) => {
     const modal = useModal();
     const queryClient = useQueryClient();
-    const { track } = useAnalytics();
-    const { addItems } = useItems();
+    const { track } = useAnalyticsContext();
+    const { addItems } = useItemsContext();
     const navigate = useNavigate();
 
     const [defaultValues, setDefaultValues] = useState<Partial<InstanceFormValues> | undefined>(undefined);

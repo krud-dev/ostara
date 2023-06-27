@@ -1,9 +1,9 @@
 import React, { FunctionComponent, useEffect, useState } from 'react';
-import { useAnalytics } from '../../contexts/AnalyticsContext';
+import { useAnalyticsContext } from '../../contexts/AnalyticsContext';
 import { UrlInfo, urls } from '../../routes/urls';
 import { findLast } from 'lodash';
 import { matchPath, useLocation } from 'react-router-dom';
-import { useSettings } from '../../contexts/SettingsContext';
+import { useSettingsContext } from '../../contexts/SettingsContext';
 import { useSubscribeToEvent } from '../../apis/requests/subscriptions/subscribeToEvent';
 import { IpcRendererEvent } from 'electron';
 import { UpdateInfo } from 'electron-updater';
@@ -13,7 +13,7 @@ import { getUrlInfo } from '../../utils/urlUtils';
 interface AnalyticsEventsManagerProps {}
 
 const AnalyticsEventsManager: FunctionComponent<AnalyticsEventsManagerProps> = () => {
-  const { analyticsActive } = useAnalytics();
+  const { analyticsActive } = useAnalyticsContext();
 
   if (!analyticsActive) {
     return null;
@@ -27,9 +27,9 @@ export default AnalyticsEventsManager;
 interface AnalyticsEventsSenderProps {}
 
 const AnalyticsEventsSender: FunctionComponent<AnalyticsEventsSenderProps> = () => {
-  const { track } = useAnalytics();
+  const { track } = useAnalyticsContext();
   const { pathname } = useLocation();
-  const { daemonHealthy } = useSettings();
+  const { daemonHealthy } = useSettingsContext();
 
   const [heartbeatFlag, setHeartbeatFlag] = useState<boolean>(false);
 

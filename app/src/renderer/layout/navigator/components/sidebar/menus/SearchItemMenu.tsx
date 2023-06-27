@@ -5,16 +5,18 @@ import { MoreVertOutlined } from '@mui/icons-material';
 import { FormattedMessage } from 'react-intl';
 import { bindMenu, usePopupState } from 'material-ui-popup-state/hooks';
 import CustomMenuItem from 'renderer/components/menu/item/CustomMenuItem';
-import { useAnalytics } from 'renderer/contexts/AnalyticsContext';
+import { useAnalyticsContext } from 'renderer/contexts/AnalyticsContext';
 import MenuDivider from 'renderer/components/menu/item/MenuDivider';
 import NiceModal from '@ebay/nice-modal-react';
-import ExportConfigurationDialog from 'renderer/layout/navigator/components/sidebar/dialogs/ExportConfigurationDialog';
+import ExportConfigurationDialog, {
+  ExportConfigurationDialogProps,
+} from 'renderer/layout/navigator/components/sidebar/dialogs/ExportConfigurationDialog';
 import ImportConfigurationDialog from 'renderer/layout/navigator/components/sidebar/dialogs/ImportConfigurationDialog';
-import { useNavigatorLayout } from 'renderer/contexts/NavigatorLayoutContext';
+import { useNavigatorLayoutContext } from 'renderer/contexts/NavigatorLayoutContext';
 
 export default function SearchItemMenu() {
-  const { performAction } = useNavigatorLayout();
-  const { track } = useAnalytics();
+  const { performAction } = useNavigatorLayoutContext();
+  const { track } = useAnalyticsContext();
 
   const menuState = usePopupState({ variant: 'popover' });
 
@@ -36,14 +38,14 @@ export default function SearchItemMenu() {
     track({ name: 'export_all_menu_click' });
     menuState.close();
 
-    NiceModal.show<boolean>(ExportConfigurationDialog, {});
+    NiceModal.show<boolean, ExportConfigurationDialogProps>(ExportConfigurationDialog, {});
   }, [track, menuState]);
 
   const importHandler = useCallback((): void => {
     track({ name: 'import_all_menu_click' });
     menuState.close();
 
-    NiceModal.show<boolean>(ImportConfigurationDialog, {});
+    NiceModal.show<boolean, ExportConfigurationDialogProps>(ImportConfigurationDialog, {});
   }, [track, menuState]);
 
   return (

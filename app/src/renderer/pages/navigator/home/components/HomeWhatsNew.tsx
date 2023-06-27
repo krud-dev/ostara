@@ -4,7 +4,7 @@ import PerfectScrollbar from 'react-perfect-scrollbar';
 import AutoSizer from 'react-virtualized-auto-sizer';
 import changelog from '../../../../../../../CHANGELOG.md';
 import { FormattedMessage } from 'react-intl';
-import Markdown from '../../../../components/code/Markdown';
+import Markdown from 'renderer/components/code/Markdown';
 
 type HomeWhatsNewProps = {};
 

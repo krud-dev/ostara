@@ -9,7 +9,7 @@ import { isObject, map, toString } from 'lodash';
 import FormattedBoolean from '../../../../../components/format/FormattedBoolean';
 import { InlineCodeLabel } from '../../../../../components/code/InlineCodeLabel';
 import NiceModal from '@ebay/nice-modal-react';
-import QuartzTriggerDetailsDialog from './QuartzTriggerDetailsDialog';
+import QuartzTriggerDetailsDialog, { QuartzTriggerDetailsDialogProps } from './QuartzTriggerDetailsDialog';
 import { EnrichedQuartzTrigger } from '../../../../../apis/requests/instance/quartz/getInstanceQuartzTriggers';
 import FormattedParsedDate from '../../../../../components/format/FormattedParsedDate';
 import LogoLoader from '../../../../../components/common/LogoLoader';
@@ -41,7 +41,7 @@ export default function QuartzJobDetails({ row }: QuartzJobDetailsProps) {
         group: row.group,
         instanceId: row.instanceId,
       };
-      NiceModal.show<undefined>(QuartzTriggerDetailsDialog, {
+      NiceModal.show<undefined, QuartzTriggerDetailsDialogProps>(QuartzTriggerDetailsDialog, {
         trigger: trigger,
       });
     },

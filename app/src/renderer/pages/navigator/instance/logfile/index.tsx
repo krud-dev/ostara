@@ -1,6 +1,6 @@
 import React, { FunctionComponent, useCallback, useEffect, useMemo, useState } from 'react';
 import Page from 'renderer/components/layout/Page';
-import { useNavigatorLayout } from 'renderer/contexts/NavigatorLayoutContext';
+import { useNavigatorLayoutContext } from 'renderer/contexts/NavigatorLayoutContext';
 import { Card, CardHeader, Divider } from '@mui/material';
 import { isNil } from 'lodash';
 import { InstanceRO } from 'common/generated_definitions';
@@ -18,7 +18,7 @@ const LOG_INTERVAL = 3_000;
 const LOG_MAX_LENGTH = 131_072;
 
 const InstanceLogfile: FunctionComponent = () => {
-  const { selectedItem } = useNavigatorLayout();
+  const { selectedItem } = useNavigatorLayoutContext();
 
   const item = useMemo<InstanceRO>(() => selectedItem as InstanceRO, [selectedItem]);
 

@@ -1,6 +1,6 @@
 import React, { FunctionComponent, useMemo } from 'react';
 import Page from 'renderer/components/layout/Page';
-import { useNavigatorLayout } from 'renderer/contexts/NavigatorLayoutContext';
+import { useNavigatorLayoutContext } from 'renderer/contexts/NavigatorLayoutContext';
 import DashboardWidget from 'renderer/components/widget/DashboardWidget';
 import { ANIMATION_GROW_TOP_STYLE, ANIMATION_TIMEOUT_LONG, COMPONENTS_SPACING } from 'renderer/constants/ui';
 import { InstanceRO } from '../../../../../common/generated_definitions';
@@ -10,7 +10,7 @@ import { Grow } from '@mui/material';
 import { TransitionGroup } from 'react-transition-group';
 
 const InstanceDashboard: FunctionComponent = () => {
-  const { selectedItem } = useNavigatorLayout();
+  const { selectedItem } = useNavigatorLayoutContext();
 
   const item = useMemo<InstanceRO>(() => selectedItem as InstanceRO, [selectedItem]);
 

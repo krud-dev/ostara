@@ -518,6 +518,7 @@ export default {
   couldNotLoadLogfile: 'Could not load logfile from actuator.',
   errorLoadingData: 'Error loading data',
   selectedConfigurationIsEmpty: 'Selected configuration is empty',
+  noInternetConnectionCheckConnectionTryAgain: 'No internet connection. Please check your connection and try again.',
   notificationTitleApplicationAllUp: '{application} is UP',
   notificationBodyApplicationAllUp: 'All instances of {application} are UP.',
   notificationTitleApplicationAllDown: '{application} is DOWN',

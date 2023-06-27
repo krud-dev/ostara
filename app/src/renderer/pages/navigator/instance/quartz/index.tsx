@@ -1,6 +1,6 @@
 import React, { FunctionComponent, useMemo } from 'react';
 import Page from 'renderer/components/layout/Page';
-import { useNavigatorLayout } from 'renderer/contexts/NavigatorLayoutContext';
+import { useNavigatorLayoutContext } from 'renderer/contexts/NavigatorLayoutContext';
 import { Card } from '@mui/material';
 import { FormattedMessage } from 'react-intl';
 import TabPanel, { TabInfo } from 'renderer/components/layout/TabPanel';
@@ -9,7 +9,7 @@ import QuartzJobsTable from './components/QuartzJobsTable';
 import QuartzTriggersTable from './components/QuartzTriggersTable';
 
 const InstanceQuartz: FunctionComponent = () => {
-  const { selectedItem } = useNavigatorLayout();
+  const { selectedItem } = useNavigatorLayoutContext();
 
   const item = useMemo<InstanceRO>(() => selectedItem as InstanceRO, [selectedItem]);
 

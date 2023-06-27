@@ -6,7 +6,7 @@ import { useSetApplicationLoggerLevel } from 'renderer/apis/requests/application
 import { map } from 'lodash';
 import { notEmpty } from 'renderer/utils/objectUtils';
 import { useUpdateEffect } from 'react-use';
-import { useAnalytics } from '../../../../contexts/AnalyticsContext';
+import { useAnalyticsContext } from '../../../../contexts/AnalyticsContext';
 
 type TableCellDataApplicationLoggerLevelProps<EntityItem extends EnrichedApplicationLoggerRO> = {
   row: EntityItem;
@@ -17,7 +17,7 @@ export default function TableCellDataApplicationLoggerLevel<EntityItem extends E
   row,
   column,
 }: TableCellDataApplicationLoggerLevelProps<EntityItem>) {
-  const { track } = useAnalytics();
+  const { track } = useAnalyticsContext();
 
   const [loadingLevels, setLoadingLevels] = useState<string[] | undefined>(undefined);
 

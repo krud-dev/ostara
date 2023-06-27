@@ -1,6 +1,6 @@
 import React, { FunctionComponent, useMemo } from 'react';
 import Page from 'renderer/components/layout/Page';
-import { useNavigatorLayout } from 'renderer/contexts/NavigatorLayoutContext';
+import { useNavigatorLayoutContext } from 'renderer/contexts/NavigatorLayoutContext';
 import { Card } from '@mui/material';
 import { useGetInstancePropertiesQuery } from 'renderer/apis/requests/instance/properties/getInstanceProperties';
 import { isEmpty, map } from 'lodash';
@@ -14,7 +14,7 @@ import useRerenderKey from '../../../../hooks/useRerenderKey';
 import LogoLoaderCenter from '../../../../components/common/LogoLoaderCenter';
 
 const InstanceProperties: FunctionComponent = () => {
-  const { selectedItem } = useNavigatorLayout();
+  const { selectedItem } = useNavigatorLayoutContext();
 
   const item = useMemo<InstanceRO>(() => selectedItem as InstanceRO, [selectedItem]);
 

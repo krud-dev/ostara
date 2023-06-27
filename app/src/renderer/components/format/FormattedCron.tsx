@@ -1,5 +1,5 @@
 import { useMemo } from 'react';
-import { useSettings } from 'renderer/contexts/SettingsContext';
+import { useSettingsContext } from 'renderer/contexts/SettingsContext';
 import cronstrue from 'cronstrue/i18n';
 
 type FormattedCronProps = {
@@ -7,7 +7,7 @@ type FormattedCronProps = {
 };
 
 export default function FormattedCron({ value }: FormattedCronProps) {
-  const { localeInfo } = useSettings();
+  const { localeInfo } = useSettingsContext();
 
   const prettyCron = useMemo<string>(() => cronstrue.toString(value, { locale: localeInfo.id }), [value]);
 

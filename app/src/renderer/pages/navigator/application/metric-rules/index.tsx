@@ -3,10 +3,10 @@ import Page from 'renderer/components/layout/Page';
 import { Card } from '@mui/material';
 import { ApplicationRO } from 'common/generated_definitions';
 import ApplicationMetricRulesTable from './components/ApplicationMetricRulesTable';
-import { useNavigatorLayout } from 'renderer/contexts/NavigatorLayoutContext';
+import { useNavigatorLayoutContext } from 'renderer/contexts/NavigatorLayoutContext';
 
 const ApplicationMetricRules: FunctionComponent = () => {
-  const { selectedItem } = useNavigatorLayout();
+  const { selectedItem } = useNavigatorLayoutContext();
 
   const item = useMemo<ApplicationRO>(() => selectedItem as ApplicationRO, [selectedItem]);
 

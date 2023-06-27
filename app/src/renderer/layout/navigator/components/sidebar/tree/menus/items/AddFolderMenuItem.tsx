@@ -4,7 +4,9 @@ import { NodeApi } from 'react-arborist';
 import { TreeItem } from 'renderer/layout/navigator/components/sidebar/tree/tree';
 import { getItemTypeIcon, isFolder, isItemUpdatable } from 'renderer/utils/itemUtils';
 import NiceModal from '@ebay/nice-modal-react';
-import CreateFolderDialog from 'renderer/components/item/dialogs/create/CreateFolderDialog';
+import CreateFolderDialog, {
+  CreateFolderDialogProps,
+} from 'renderer/components/item/dialogs/create/CreateFolderDialog';
 import { getNewItemSort } from 'renderer/utils/treeUtils';
 import CustomMenuItem from 'renderer/components/menu/item/CustomMenuItem';
 import { MUIconType } from 'renderer/components/common/IconViewer';
@@ -14,7 +16,7 @@ import { FolderRO } from 'common/generated_definitions';
 type AddFolderMenuItemProps = {
   node: NodeApi<TreeItem>;
   onClose?: () => void;
-  onCreated?: (item: ItemRO) => void;
+  onCreated?: (items: ItemRO[]) => void;
 };
 
 export default function AddFolderMenuItem({ node, onClose, onCreated }: AddFolderMenuItemProps) {
@@ -27,7 +29,7 @@ export default function AddFolderMenuItem({ node, onClose, onCreated }: AddFolde
       return;
     }
 
-    await NiceModal.show<FolderRO | undefined>(CreateFolderDialog, {
+    await NiceModal.show<FolderRO | undefined, CreateFolderDialogProps>(CreateFolderDialog, {
       parentFolderId: node.data.id,
       sort: getNewItemSort(node.data),
       onCreated: onCreated,

@@ -12,13 +12,13 @@ export type PasswordDialogProps = {
   cancelText?: ReactNode;
   onPassword?: (password: string) => void;
   onPasswordDismissed?: () => void;
-};
+} & NiceModalHocProps;
 
 type FormValues = {
   password: string;
 };
 
-const PasswordDialog: FunctionComponent<PasswordDialogProps & NiceModalHocProps> = NiceModal.create(
+const PasswordDialog: FunctionComponent<PasswordDialogProps> = NiceModal.create(
   ({ title, text, continueText, cancelText, onPassword, onPasswordDismissed }) => {
     const modal = useModal();
     const intl = useIntl();

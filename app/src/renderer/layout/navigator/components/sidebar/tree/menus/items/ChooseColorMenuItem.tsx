@@ -4,10 +4,10 @@ import { experimentalStyled as styled, useTheme } from '@mui/material/styles';
 import { amber, blue, deepOrange, green, indigo, orange, pink, purple, red } from '@mui/material/colors';
 import { CheckOutlined } from '@mui/icons-material';
 import { DEFAULT_COLOR_VALUE, INHERITED_COLOR_VALUE } from 'renderer/hooks/useItemColor';
-import { ItemRO } from '../../../../../../../definitions/daemon';
-import { useUpdateItem } from '../../../../../../../apis/requests/item/updateItem';
-import { getItemType, isItemUpdatable } from '../../../../../../../utils/itemUtils';
-import { useAnalytics } from '../../../../../../../contexts/AnalyticsContext';
+import { ItemRO } from 'renderer/definitions/daemon';
+import { useUpdateItem } from 'renderer/apis/requests/item/updateItem';
+import { getItemType, isItemUpdatable } from 'renderer/utils/itemUtils';
+import { useAnalyticsContext } from 'renderer/contexts/AnalyticsContext';
 
 const MenuItemStyle = styled(MenuItem)(({ theme }) => ({
   cursor: 'default',
@@ -23,7 +23,7 @@ type ChooseColorMenuItemProps = {
 
 export default function ChooseColorMenuItem({ item, onClose }: ChooseColorMenuItemProps) {
   const theme = useTheme();
-  const { track } = useAnalytics();
+  const { track } = useAnalyticsContext();
 
   const [selectedColor, setSelectedColor] = useState<string | undefined>(item.color);
 

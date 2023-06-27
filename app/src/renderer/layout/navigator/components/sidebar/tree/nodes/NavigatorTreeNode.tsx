@@ -37,7 +37,7 @@ export default function NavigatorTreeNode(props: NavigatorTreeNodeProps) {
   );
 
   const childItemCreatedHandler = useCallback(
-    (item: ItemRO): void => {
+    (items: ItemRO[]): void => {
       node.open();
     },
     [node]

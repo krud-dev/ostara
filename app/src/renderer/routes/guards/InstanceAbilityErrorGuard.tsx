@@ -10,7 +10,7 @@ import { showUpdateItemDialog } from 'renderer/utils/dialogUtils';
 import useItemDisplayName from 'renderer/hooks/useItemDisplayName';
 import { useUpdateInstanceHealth } from 'renderer/apis/requests/instance/health/updateInstanceHealth';
 import { ABILITIES_DOCUMENTATION_URL } from 'renderer/constants/ui';
-import { useNavigatorLayout } from 'renderer/contexts/NavigatorLayoutContext';
+import { useNavigatorLayoutContext } from 'renderer/contexts/NavigatorLayoutContext';
 
 type InstanceAbilityErrorGuardProps = {
   ability: InstanceAbility;
@@ -18,7 +18,7 @@ type InstanceAbilityErrorGuardProps = {
 };
 
 export default function InstanceAbilityErrorGuard({ ability, children }: InstanceAbilityErrorGuardProps) {
-  const { selectedItem, selectedItemAbilities } = useNavigatorLayout();
+  const { selectedItem, selectedItemAbilities } = useNavigatorLayoutContext();
   const item = useMemo<InstanceRO>(() => selectedItem as InstanceRO, [selectedItem]);
   const hasAbility = useMemo(() => !!selectedItemAbilities?.includes(ability), [selectedItemAbilities, ability]);
 

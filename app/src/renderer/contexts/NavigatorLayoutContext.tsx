@@ -15,7 +15,7 @@ import { InstanceAbility } from 'common/generated_definitions';
 import { buildTree } from 'renderer/utils/treeUtils';
 import { chain } from 'lodash';
 import { useGetItemAbilitiesQuery } from 'renderer/apis/requests/item/getItemAbilities';
-import { useItems } from 'renderer/contexts/ItemsContext';
+import { useItemsContext } from 'renderer/contexts/ItemsContext';
 
 type NavigatorLayoutAction = 'expandAll' | 'collapseAll';
 
@@ -33,7 +33,7 @@ const NavigatorLayoutContext = React.createContext<NavigatorLayoutContextProps>(
 interface NavigatorLayoutProviderProps extends PropsWithChildren<any> {}
 
 const NavigatorLayoutProvider: FunctionComponent<NavigatorLayoutProviderProps> = ({ children }) => {
-  const { folders, applications, instances, items, getItem } = useItems();
+  const { folders, applications, instances, items, getItem } = useItemsContext();
   const navigate = useNavigate();
   const params = useParams<{ id?: string }>();
 
@@ -84,32 +84,26 @@ const NavigatorLayoutProvider: FunctionComponent<NavigatorLayoutProviderProps> =
     [getItemAbilitiesState.data]
   );
 
-  const getNewItemOrder = useCallback((): number => {
-    return data?.length
-      ? chain(data)
-          .map<number>((item) => item.sort ?? 0)
-          .max()
-          .value() + 1
-      : 1;
-  }, [data]);
-
-  return (
-    <NavigatorLayoutContext.Provider
-      value={{
-        data,
-        selectedItem,
-        selectedItemAbilities,
-        action,
-        performAction,
-        getNewItemOrder,
-      }}
-    >
-      {children}
-    </NavigatorLayoutContext.Provider>
+  const getNewItemOrder = useCallback(
+    (): number =>
+      data?.length
+        ? chain(data)
+            .map<number>((item) => item.sort ?? 0)
+            .max()
+            .value() + 1
+        : 1,
+    [data]
   );
+
+  const memoizedValue = useMemo<NavigatorLayoutContextProps>(
+    () => ({ data, selectedItem, selectedItemAbilities, action, performAction, getNewItemOrder }),
+    [data, selectedItem, selectedItemAbilities, action, performAction, getNewItemOrder]
+  );
+
+  return <NavigatorLayoutContext.Provider value={memoizedValue}>{children}</NavigatorLayoutContext.Provider>;
 };
 
-const useNavigatorLayout = (): NavigatorLayoutContextProps => {
+const useNavigatorLayoutContext = (): NavigatorLayoutContextProps => {
   const context = useContext(NavigatorLayoutContext);
 
   if (!context) throw new Error('NavigatorLayoutContext must be used inside NavigatorLayoutProvider');
@@ -117,4 +111,4 @@ const useNavigatorLayout = (): NavigatorLayoutContextProps => {
   return context;
 };
 
-export { NavigatorLayoutContext, NavigatorLayoutProvider, useNavigatorLayout };
+export { NavigatorLayoutContext, NavigatorLayoutProvider, useNavigatorLayoutContext };

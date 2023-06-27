@@ -3,13 +3,15 @@ import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { Box, Button, Typography } from '@mui/material';
 import { TreeItem } from 'renderer/layout/navigator/components/sidebar/tree/tree';
 import { FormattedMessage } from 'react-intl';
-import { useNavigatorLayout } from 'renderer/contexts/NavigatorLayoutContext';
+import { useNavigatorLayoutContext } from 'renderer/contexts/NavigatorLayoutContext';
 import { useUpdateItem } from 'renderer/apis/requests/item/updateItem';
 import { useDeleteItem } from 'renderer/apis/requests/item/deleteItem';
 import { showDeleteConfirmationDialog } from 'renderer/utils/dialogUtils';
 import { useMoveItem } from 'renderer/apis/requests/item/moveItem';
 import NiceModal from '@ebay/nice-modal-react';
-import CreateInstanceDialog from 'renderer/components/item/dialogs/create/CreateInstanceDialog';
+import CreateInstanceDialog, {
+  CreateInstanceDialogProps,
+} from 'renderer/components/item/dialogs/create/CreateInstanceDialog';
 import { matchPath, useLocation } from 'react-router-dom';
 import {
   getItemParentId,
@@ -30,7 +32,7 @@ import LogoLoader from '../../../../../components/common/LogoLoader';
 import { LoadingButton } from '@mui/lab';
 import useStartDemo from '../../../../../hooks/demo/useStartDemo';
 import useDelayedEffect from '../../../../../hooks/useDelayedEffect';
-import { useItems } from 'renderer/contexts/ItemsContext';
+import { useItemsContext } from 'renderer/contexts/ItemsContext';
 import NavigatorTreeBase from 'renderer/layout/navigator/components/sidebar/tree/NavigatorTreeBase';
 import NavigatorTreeNode from 'renderer/layout/navigator/components/sidebar/tree/nodes/NavigatorTreeNode';
 
@@ -43,8 +45,8 @@ type NavigatorTreeProps = {
 };
 
 export default function NavigatorTree({ width, height, search }: NavigatorTreeProps) {
-  const { getItem } = useItems();
-  const { data, selectedItem, action } = useNavigatorLayout();
+  const { getItem } = useItemsContext();
+  const { data, selectedItem, action } = useNavigatorLayoutContext();
   const { pathname } = useLocation();
   const { startDemo, loading: loadingDemo } = useStartDemo();
 
@@ -100,7 +102,7 @@ export default function NavigatorTree({ width, height, search }: NavigatorTreePr
   }, [data]);
 
   const createInstanceHandler = useCallback(async (): Promise<void> => {
-    await NiceModal.show<InstanceRO[] | undefined>(CreateInstanceDialog, {});
+    await NiceModal.show<InstanceRO[] | undefined, CreateInstanceDialogProps>(CreateInstanceDialog, {});
   }, []);
 
   const onCreate: CreateHandler<TreeItem> = useCallback(({ parentId, index, parentNode, type }) => {

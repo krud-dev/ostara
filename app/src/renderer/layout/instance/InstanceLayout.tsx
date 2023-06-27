@@ -7,10 +7,10 @@ import InstancePending from 'renderer/layout/instance/components/health/Instance
 import { InstanceRO } from 'common/generated_definitions';
 import LoadingPage from 'renderer/components/layout/LoadingPage';
 import DemoInstanceUnreachable from 'renderer/layout/instance/components/health/DemoInstanceUnreachable';
-import { useNavigatorLayout } from 'renderer/contexts/NavigatorLayoutContext';
+import { useNavigatorLayoutContext } from 'renderer/contexts/NavigatorLayoutContext';
 
 const InstanceLayout: FunctionComponent = () => {
-  const { selectedItem, selectedItemAbilities } = useNavigatorLayout();
+  const { selectedItem, selectedItemAbilities } = useNavigatorLayoutContext();
 
   const item = useMemo<InstanceRO | undefined>(() => selectedItem as InstanceRO | undefined, [selectedItem]);
 

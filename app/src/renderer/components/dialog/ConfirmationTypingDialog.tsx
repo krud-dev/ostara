@@ -14,13 +14,13 @@ export type ConfirmationTypingDialogProps = {
   cancelText?: ReactNode;
   confirmText: string;
   onConfirm?: () => void;
-};
+} & NiceModalHocProps;
 
 type FormValues = {
   confirm: string;
 };
 
-const ConfirmationTypingDialog: FunctionComponent<ConfirmationTypingDialogProps & NiceModalHocProps> = NiceModal.create(
+const ConfirmationTypingDialog: FunctionComponent<ConfirmationTypingDialogProps> = NiceModal.create(
   ({ title, text, continueText, continueColor, cancelText, confirmText, onConfirm }) => {
     const modal = useModal();
     const intl = useIntl();

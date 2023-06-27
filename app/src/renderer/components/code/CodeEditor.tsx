@@ -3,7 +3,7 @@ import { useMemo } from 'react';
 import ReactCodeMirror, { ReactCodeMirrorProps } from '@uiw/react-codemirror';
 import { EditorView } from '@codemirror/view';
 import { Extension } from '@codemirror/state';
-import { useSettings } from 'renderer/contexts/SettingsContext';
+import { useSettingsContext } from 'renderer/contexts/SettingsContext';
 import { langs } from '@uiw/codemirror-extensions-langs';
 
 export type ProgrammingLanguage = 'yaml' | 'java' | 'json';
@@ -13,7 +13,7 @@ interface CodeEditorProps extends ReactCodeMirrorProps {
 }
 
 export default function CodeEditor({ language, extensions, ...props }: CodeEditorProps) {
-  const { darkMode } = useSettings();
+  const { darkMode } = useSettingsContext();
 
   const editorTheme = useMemo<'light' | 'dark'>(() => (darkMode ? 'dark' : 'light'), [darkMode]);
 
