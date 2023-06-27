@@ -1,0 +1,41 @@
+name: Validate Typescript Generated Definitions are up to date
+
+on:
+  pull_request:
+    branches:
+      - master
+    paths:
+      - daemon/**
+      - .github/workflows/validated-typescript-generated-definitions.yml
+
+jobs:
+  validated-typescript-generated-definitions:
+    runs-on: ubuntu-latest
+    concurrency:
+      group: ${{ github.workflow }}-${{ github.ref }}
+      cancel-in-progress: true
+    steps:
+      - name: Check out Git repository
+        uses: actions/checkout@v3
+      - name: Install Java
+        uses: actions/setup-java@v3
+        with:
+          distribution: 'zulu'
+          java-version: '17'
+          restore-keys: ${{ runner.os }}-sonar
+      - name: Cache Gradle packages
+        uses: actions/cache@v3
+        with:
+          path: ~/.gradle/caches
+          key: ${{ runner.os }}-gradle-${{ hashFiles('daemon/*.gradle.kts') }}
+          restore-keys: ${{ runner.os }}-gradle
+      - name: Generate typescript
+        working-directory: daemon
+        run: ./gradlew generateTypeScript
+      - name: Check for changes
+        run: |
+          git diff --exit-code
+          if [ $? -ne 0 ]; then
+            echo "Generated typescript is out of date. Please run ./gradlew generateTypeScript and commit the changes."
+            exit 1
+          fi
