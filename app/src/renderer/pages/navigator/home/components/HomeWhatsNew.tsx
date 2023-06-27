@@ -1,7 +1,7 @@
 import { Box, Card, CardContent, Typography } from '@mui/material';
 import React, { useMemo } from 'react';
 import PerfectScrollbar from 'react-perfect-scrollbar';
-import AutoSizer from 'react-virtualized-auto-sizer';
+import AutoSizer, { VerticalSize } from 'react-virtualized-auto-sizer';
 import changelog from '../../../../../../../CHANGELOG.md';
 import { FormattedMessage } from 'react-intl';
 import Markdown from 'renderer/components/code/Markdown';
@@ -20,7 +20,7 @@ export default function HomeWhatsNew({}: HomeWhatsNewProps) {
 
         <Box sx={{ flexGrow: 1, overflow: 'hidden' }}>
           <AutoSizer disableWidth>
-            {({ height }) => (
+            {({ height }: VerticalSize) => (
               <Box sx={{ height: height, overflow: 'hidden' }}>
                 <PerfectScrollbar options={{ wheelPropagation: true, suppressScrollX: true }}>
                   <Markdown>{markdown}</Markdown>

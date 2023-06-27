@@ -2,7 +2,7 @@ import React, { ComponentType, ReactNode, useEffect, useRef } from 'react';
 import { Box, Divider } from '@mui/material';
 import { Outlet, useLocation } from 'react-router-dom';
 import { SECONDARY_SCROLL_CONTAINER_ID, SIDEBAR_DEFAULT_WIDTH } from 'renderer/constants/ui';
-import AutoSizer from 'react-virtualized-auto-sizer';
+import AutoSizer, { VerticalSize } from 'react-virtualized-auto-sizer';
 
 type SecondarySidebarLayoutProps<T> = {
   Sidebar: ComponentType<{ width: number } & T>;
@@ -31,7 +31,7 @@ export default function SecondarySidebarLayout<T>({ Sidebar, sidebarProps, conte
 
       <Box sx={{ height: '100%', overflow: 'hidden', flexGrow: 1 }}>
         <AutoSizer disableWidth>
-          {({ height }) => (
+          {({ height }: VerticalSize) => (
             <Box
               id={SECONDARY_SCROLL_CONTAINER_ID}
               ref={scrollContainerRef}

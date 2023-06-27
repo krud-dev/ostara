@@ -7,7 +7,7 @@ import {
   InstanceRO,
 } from 'common/generated_definitions';
 import NavigatorTreeBase from 'renderer/layout/navigator/components/sidebar/tree/NavigatorTreeBase';
-import AutoSizer from 'react-virtualized-auto-sizer';
+import AutoSizer, { Size } from 'react-virtualized-auto-sizer';
 import { TreeItem } from 'renderer/layout/navigator/components/sidebar/tree/tree';
 import { v4 as uuidv4 } from 'uuid';
 import NavigatorTreeNodePreview from 'renderer/layout/navigator/components/sidebar/tree/nodes/NavigatorTreeNodePreview';
@@ -69,7 +69,7 @@ export default function NavigatorTreePreview({ backup }: NavigatorTreePreviewPro
 
   return (
     <AutoSizer>
-      {({ width, height }) => (
+      {({ width, height }: Size) => (
         <NavigatorTreeBase
           data={data}
           width={width}

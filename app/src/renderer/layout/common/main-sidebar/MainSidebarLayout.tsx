@@ -2,7 +2,7 @@ import React, { ComponentType, useEffect, useMemo, useRef } from 'react';
 import { MAIN_SCROLL_CONTAINER_ID, SIDEBAR_DEFAULT_WIDTH } from 'renderer/constants/ui';
 import { Outlet, useLocation } from 'react-router-dom';
 import { Box } from '@mui/material';
-import AutoSizer from 'react-virtualized-auto-sizer';
+import AutoSizer, { VerticalSize } from 'react-virtualized-auto-sizer';
 import { useLocalStorageState } from '../../../hooks/useLocalStorageState';
 import { Allotment, LayoutPriority } from 'allotment';
 
@@ -35,7 +35,7 @@ export default function MainSidebarLayout({ Sidebar }: MainSidebarLayoutProps) {
       <Allotment.Pane priority={LayoutPriority.High}>
         <Box sx={{ height: '100%', overflow: 'hidden' }}>
           <AutoSizer disableWidth>
-            {({ height }) => (
+            {({ height }: VerticalSize) => (
               <Box id={MAIN_SCROLL_CONTAINER_ID} ref={scrollContainerRef} sx={{ height: height, overflow: 'auto' }}>
                 <Outlet />
               </Box>
