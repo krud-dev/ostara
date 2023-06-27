@@ -43,7 +43,9 @@
   ],
   "main": "./src/main/main.ts",
   "scripts": {
-    "jdk:download": "../devops/jdkutil.py clean:jdks download unzip",
+    "jdk:download": "run-script-os",
+    "jdk:download:darwin:linux": "../devops/jdkutil.py clean:jdks download unzip",
+    "jdk:download:win32": "python ../devops/jdkutil.py clean:jdks download unzip",
     "clean": "ts-node ./.erb/scripts/clean.js",
     "build": "concurrently \"npm run build:main\" \"npm run build:renderer\" \"npm run build:daemon\" \"npm run build:demo\"",
     "build:main": "cross-env NODE_ENV=production TS_NODE_TRANSPILE_ONLY=true webpack --config ./.erb/configs/webpack.config.main.prod.ts",
@@ -260,6 +262,7 @@
     "react-refresh": "^0.14.0",
     "react-test-renderer": "^18.2.0",
     "rimraf": "^3.0.2",
+    "run-script-os": "^1.1.6",
     "sass": "^1.54.4",
     "sass-loader": "^13.0.2",
     "style-loader": "^3.3.1",
