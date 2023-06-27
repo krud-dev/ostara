@@ -37,5 +37,5 @@ jobs:
           git config --global user.name "Ostara Ops"
           git config --global user.email "ops@ostara.dev"
           git add app/src/common/generated_definitions.d.ts
-          git diff --quiet && git diff --staged --quiet || git commit -am 'Update TypeScript definitions'
+          git diff --quiet && git diff --staged --quiet || git commit -am 'Update TypeScript definitions [skip ci]'
           git push
