@@ -1,4 +1,4 @@
-name: Validate Daemon TypeScript is up to date
+name: Validate Typescript Generated Definitions are up to date
 
 on:
   pull_request:
@@ -6,10 +6,10 @@ on:
       - master
     paths:
       - daemon/**
-      - .github/workflows/generate-daemon-typescript.yml
+      - .github/workflows/validated-typescript-generated-definitions.yml
 
 jobs:
-  validate-typescript-generation:
+  validated-typescript-generated-definitions:
     runs-on: ubuntu-latest
     concurrency:
       group: ${{ github.workflow }}-${{ github.ref }}
