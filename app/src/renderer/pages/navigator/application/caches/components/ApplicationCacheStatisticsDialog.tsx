@@ -1,16 +1,16 @@
 import React, { FunctionComponent, useMemo } from 'react';
 import NiceModal, { NiceModalHocProps } from '@ebay/nice-modal-react';
-import { ItemCacheStatistics } from '../../../../../components/item/cache/ItemCacheDetails';
-import { EnrichedApplicationCacheRO } from '../../../../../apis/requests/application/caches/getApplicationCaches';
-import { useGetApplicationCacheStatisticsQuery } from '../../../../../apis/requests/application/caches/getApplicationCacheStatistics';
-import ItemCacheStatisticsDialog from '../../../../../components/item/cache/ItemCacheStatisticsDialog';
+import { ItemCacheStatistics } from 'renderer/components/item/cache/ItemCacheDetails';
+import { EnrichedApplicationCacheRO } from 'renderer/apis/requests/application/caches/getApplicationCaches';
+import { useGetApplicationCacheStatisticsQuery } from 'renderer/apis/requests/application/caches/getApplicationCacheStatistics';
+import ItemCacheStatisticsDialog from 'renderer/components/item/cache/ItemCacheStatisticsDialog';
 
 export type ApplicationCacheStatisticsDialogProps = {
   row: EnrichedApplicationCacheRO;
-};
+} & NiceModalHocProps;
 
-const ApplicationCacheStatisticsDialog: FunctionComponent<ApplicationCacheStatisticsDialogProps & NiceModalHocProps> =
-  NiceModal.create(({ row }) => {
+const ApplicationCacheStatisticsDialog: FunctionComponent<ApplicationCacheStatisticsDialogProps> = NiceModal.create(
+  ({ row }) => {
     const statisticsQuery = useGetApplicationCacheStatisticsQuery({
       applicationId: row.applicationId,
       cacheName: row.name,
@@ -32,6 +32,7 @@ const ApplicationCacheStatisticsDialog: FunctionComponent<ApplicationCacheStatis
     );
 
     return <ItemCacheStatisticsDialog cacheName={row.name} statistics={statistics} queryState={statisticsQuery} />;
-  });
+  }
+);
 
 export default ApplicationCacheStatisticsDialog;

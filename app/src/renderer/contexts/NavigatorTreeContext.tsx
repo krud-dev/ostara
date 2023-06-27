@@ -1,4 +1,4 @@
-import React, { FunctionComponent, PropsWithChildren, useContext } from 'react';
+import React, { FunctionComponent, PropsWithChildren, useContext, useMemo } from 'react';
 import { TreeItem } from 'renderer/layout/navigator/components/sidebar/tree/tree';
 
 export type NavigatorTreeContextProps = {
@@ -12,18 +12,12 @@ interface NavigatorTreeProviderProps extends PropsWithChildren<any> {
 }
 
 const NavigatorTreeProvider: FunctionComponent<NavigatorTreeProviderProps> = ({ data, children }) => {
-  return (
-    <NavigatorTreeContext.Provider
-      value={{
-        data,
-      }}
-    >
-      {children}
-    </NavigatorTreeContext.Provider>
-  );
+  const memoizedValue = useMemo<NavigatorTreeContextProps>(() => ({ data }), [data]);
+
+  return <NavigatorTreeContext.Provider value={memoizedValue}>{children}</NavigatorTreeContext.Provider>;
 };
 
-const useNavigatorTree = (): NavigatorTreeContextProps => {
+const useNavigatorTreeContext = (): NavigatorTreeContextProps => {
   const context = useContext(NavigatorTreeContext);
 
   if (!context) throw new Error('NavigatorTreeContext must be used inside NavigatorTreeProvider');
@@ -31,4 +25,4 @@ const useNavigatorTree = (): NavigatorTreeContextProps => {
   return context;
 };
 
-export { NavigatorTreeContext, NavigatorTreeProvider, useNavigatorTree };
+export { NavigatorTreeContext, NavigatorTreeProvider, useNavigatorTreeContext };

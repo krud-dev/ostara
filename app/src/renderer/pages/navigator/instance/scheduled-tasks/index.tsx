@@ -1,6 +1,6 @@
 import React, { FunctionComponent, useMemo } from 'react';
 import Page from 'renderer/components/layout/Page';
-import { useNavigatorLayout } from 'renderer/contexts/NavigatorLayoutContext';
+import { useNavigatorLayoutContext } from 'renderer/contexts/NavigatorLayoutContext';
 import { Card } from '@mui/material';
 import { FormattedMessage } from 'react-intl';
 import TabPanel, { TabInfo } from 'renderer/components/layout/TabPanel';
@@ -10,7 +10,7 @@ import ScheduledTasksFixedTable from './components/ScheduledTasksFixedTable';
 import ScheduledTasksCustomTable from './components/ScheduledTasksCustomTable';
 
 const InstanceScheduledTasks: FunctionComponent = () => {
-  const { selectedItem } = useNavigatorLayout();
+  const { selectedItem } = useNavigatorLayoutContext();
 
   const item = useMemo<InstanceRO>(() => selectedItem as InstanceRO, [selectedItem]);
 

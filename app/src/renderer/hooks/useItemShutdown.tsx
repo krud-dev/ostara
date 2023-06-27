@@ -1,7 +1,7 @@
 import { useCallback, useMemo, useState } from 'react';
-import { useAnalytics } from '../contexts/AnalyticsContext';
+import { useAnalyticsContext } from '../contexts/AnalyticsContext';
 import NiceModal from '@ebay/nice-modal-react';
-import ConfirmationDialog from '../components/dialog/ConfirmationDialog';
+import ConfirmationDialog, { ConfirmationDialogProps } from '../components/dialog/ConfirmationDialog';
 import { FormattedMessage } from 'react-intl';
 import { getItemDisplayName } from '../utils/itemUtils';
 import { useShutdownInstance } from '../apis/requests/instance/shutdown/shutdownInstance';
@@ -15,7 +15,7 @@ type ItemShutdownResult = {
 
 const useItemShutdown = (): ItemShutdownResult => {
   const { enqueueSnackbar } = useSnackbar();
-  const { track } = useAnalytics();
+  const { track } = useAnalyticsContext();
 
   const [loading, setLoading] = useState<boolean>(false);
 
@@ -27,7 +27,7 @@ const useItemShutdown = (): ItemShutdownResult => {
 
       setLoading(true);
 
-      const confirm = await NiceModal.show<boolean>(ConfirmationDialog, {
+      const confirm = await NiceModal.show<boolean, ConfirmationDialogProps>(ConfirmationDialog, {
         title: <FormattedMessage id={'shutdown'} />,
         text: <FormattedMessage id={'areYouSureYouWantToShutdown'} values={{ name: getItemDisplayName(item) }} />,
         continueText: <FormattedMessage id={'shutdown'} />,

@@ -5,9 +5,9 @@ import { InstanceRO } from '../../../common/generated_definitions';
 import { instanceCrudEntity } from '../../apis/requests/crud/entity/entities/instance.crudEntity';
 import { getItemUrl } from '../../utils/itemUtils';
 import { useNavigate } from 'react-router-dom';
-import { useAnalytics } from '../../contexts/AnalyticsContext';
+import { useAnalyticsContext } from '../../contexts/AnalyticsContext';
 import { isEmpty } from 'lodash';
-import { useItems } from '../../contexts/ItemsContext';
+import { useItemsContext } from '../../contexts/ItemsContext';
 
 type StartDemoResult = {
   startDemo: () => Promise<void>;
@@ -15,9 +15,9 @@ type StartDemoResult = {
 };
 
 const useStartDemo = (): StartDemoResult => {
-  const { addItem } = useItems();
+  const { addItem } = useItemsContext();
   const navigate = useNavigate();
-  const { track } = useAnalytics();
+  const { track } = useAnalyticsContext();
 
   const [loading, setLoading] = useState<boolean>(false);
 

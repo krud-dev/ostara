@@ -16,11 +16,13 @@ import { Card } from '@mui/material';
 import { ApplicationRO } from 'common/generated_definitions';
 import { useEvictApplicationCache } from 'renderer/apis/requests/application/caches/evictApplicationCache';
 import NiceModal from '@ebay/nice-modal-react';
-import ApplicationCacheStatisticsDialog from 'renderer/pages/navigator/application/caches/components/ApplicationCacheStatisticsDialog';
-import { useNavigatorLayout } from 'renderer/contexts/NavigatorLayoutContext';
+import ApplicationCacheStatisticsDialog, {
+  ApplicationCacheStatisticsDialogProps,
+} from 'renderer/pages/navigator/application/caches/components/ApplicationCacheStatisticsDialog';
+import { useNavigatorLayoutContext } from 'renderer/contexts/NavigatorLayoutContext';
 
 const ApplicationCaches: FunctionComponent = () => {
-  const { selectedItem, selectedItemAbilities } = useNavigatorLayout();
+  const { selectedItem, selectedItemAbilities } = useNavigatorLayoutContext();
   const { enqueueSnackbar } = useSnackbar();
 
   const item = useMemo<ApplicationRO>(() => selectedItem as ApplicationRO, [selectedItem]);
@@ -37,7 +39,7 @@ const ApplicationCaches: FunctionComponent = () => {
   const actionsHandler = useCallback(async (actionId: string, row: EnrichedApplicationCacheRO): Promise<void> => {
     switch (actionId) {
       case STATISTICS_ID:
-        await NiceModal.show<undefined>(ApplicationCacheStatisticsDialog, {
+        await NiceModal.show<undefined, ApplicationCacheStatisticsDialogProps>(ApplicationCacheStatisticsDialog, {
           row: row,
         });
         break;

@@ -1,6 +1,6 @@
 import { useCallback, useMemo, useState } from 'react';
 import { useDeleteDemo } from '../../apis/requests/demo/deleteDemo';
-import { useAnalytics } from '../../contexts/AnalyticsContext';
+import { useAnalyticsContext } from '../../contexts/AnalyticsContext';
 
 type StopDemoResult = {
   stopDemo: () => Promise<void>;
@@ -8,7 +8,7 @@ type StopDemoResult = {
 };
 
 const useStopDemo = (): StopDemoResult => {
-  const { track } = useAnalytics();
+  const { track } = useAnalyticsContext();
 
   const [loading, setLoading] = useState<boolean>(false);
 

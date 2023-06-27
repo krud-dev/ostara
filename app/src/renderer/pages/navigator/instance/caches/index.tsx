@@ -1,6 +1,6 @@
 import React, { FunctionComponent, useCallback, useMemo } from 'react';
 import Page from 'renderer/components/layout/Page';
-import { useNavigatorLayout } from 'renderer/contexts/NavigatorLayoutContext';
+import { useNavigatorLayoutContext } from 'renderer/contexts/NavigatorLayoutContext';
 import TableComponent from 'renderer/components/table/TableComponent';
 import { useSnackbar } from 'notistack';
 import { Entity } from 'renderer/entity/entity';
@@ -17,10 +17,12 @@ import { Card } from '@mui/material';
 import { InstanceRO } from '../../../../../common/generated_definitions';
 import { useEvictInstanceCache } from '../../../../apis/requests/instance/caches/evictInstanceCache';
 import NiceModal from '@ebay/nice-modal-react';
-import InstanceCacheStatisticsDialog from './components/InstanceCacheStatisticsDialog';
+import InstanceCacheStatisticsDialog, {
+  InstanceCacheStatisticsDialogProps,
+} from './components/InstanceCacheStatisticsDialog';
 
 const InstanceCaches: FunctionComponent = () => {
-  const { selectedItem, selectedItemAbilities } = useNavigatorLayout();
+  const { selectedItem, selectedItemAbilities } = useNavigatorLayoutContext();
   const { enqueueSnackbar } = useSnackbar();
 
   const item = useMemo<InstanceRO>(() => selectedItem as InstanceRO, [selectedItem]);
@@ -37,7 +39,7 @@ const InstanceCaches: FunctionComponent = () => {
   const actionsHandler = useCallback(async (actionId: string, row: EnrichedInstanceCacheRO): Promise<void> => {
     switch (actionId) {
       case STATISTICS_ID:
-        await NiceModal.show<undefined>(InstanceCacheStatisticsDialog, {
+        await NiceModal.show<undefined, InstanceCacheStatisticsDialogProps>(InstanceCacheStatisticsDialog, {
           row: row,
         });
         break;

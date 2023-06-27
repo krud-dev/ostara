@@ -1,17 +1,17 @@
 import React, { FunctionComponent, useCallback, useEffect, useMemo } from 'react';
-import { useLocalStorageState } from '../../hooks/useLocalStorageState';
+import { useLocalStorageState } from 'renderer/hooks/useLocalStorageState';
 import NiceModal, { NiceModalHocProps, useModal } from '@ebay/nice-modal-react';
 import { Dialog, DialogContent } from '@mui/material';
-import DialogTitleEnhanced from '../dialog/DialogTitleEnhanced';
+import DialogTitleEnhanced from 'renderer/components/dialog/DialogTitleEnhanced';
 import { FormattedMessage } from 'react-intl';
 import changelog from '../../../../../CHANGELOG.md';
 import Markdown from '../code/Markdown';
-import { useAnalytics } from '../../contexts/AnalyticsContext';
+import { useAnalyticsContext } from '../../contexts/AnalyticsContext';
 
 interface NewVersionManagerProps {}
 
 const NewVersionManager: FunctionComponent<NewVersionManagerProps> = () => {
-  const { track } = useAnalytics();
+  const { track } = useAnalyticsContext();
 
   const [lastAppVersion, setLastAppVersion] = useLocalStorageState<string | undefined>('lastAppVersion', undefined);
 
@@ -25,7 +25,7 @@ const NewVersionManager: FunctionComponent<NewVersionManagerProps> = () => {
 
       if (appVersion !== lastAppVersion) {
         if (lastAppVersion) {
-          NiceModal.show<undefined>(NewVersionDialog, { appVersion });
+          NiceModal.show<undefined, NewVersionDialogProps>(NewVersionDialog, { appVersion });
           track({ name: 'app_update_completed', properties: { version: appVersion } });
         }
         setLastAppVersion(appVersion);
@@ -40,36 +40,34 @@ export default NewVersionManager;
 
 type NewVersionDialogProps = {
   appVersion: string;
-};
+} & NiceModalHocProps;
 
-const NewVersionDialog: FunctionComponent<NewVersionDialogProps & NiceModalHocProps> = NiceModal.create(
-  ({ appVersion }) => {
-    const modal = useModal();
+const NewVersionDialog: FunctionComponent<NewVersionDialogProps> = NiceModal.create(({ appVersion }) => {
+  const modal = useModal();
 
-    const closeHandler = useCallback((): void => {
-      modal.resolve(undefined);
-      modal.hide();
-    }, [modal]);
+  const closeHandler = useCallback((): void => {
+    modal.resolve(undefined);
+    modal.hide();
+  }, [modal]);
 
-    const markdown = useMemo<string>(() => changelog.split('\n').slice(2).join('\n'), []);
+  const markdown = useMemo<string>(() => changelog.split('\n').slice(2).join('\n'), []);
 
-    return (
-      <Dialog
-        open={modal.visible}
-        onClose={closeHandler}
-        TransitionProps={{
-          onExited: () => modal.remove(),
-        }}
-        fullWidth
-        maxWidth={'xs'}
-      >
-        <DialogTitleEnhanced onClose={closeHandler}>
-          <FormattedMessage id={'appVersionUpdated'} /> ({appVersion}) &#x1F381;
-        </DialogTitleEnhanced>
-        <DialogContent>
-          <Markdown>{markdown}</Markdown>
-        </DialogContent>
-      </Dialog>
-    );
-  }
-);
+  return (
+    <Dialog
+      open={modal.visible}
+      onClose={closeHandler}
+      TransitionProps={{
+        onExited: () => modal.remove(),
+      }}
+      fullWidth
+      maxWidth={'xs'}
+    >
+      <DialogTitleEnhanced onClose={closeHandler}>
+        <FormattedMessage id={'appVersionUpdated'} /> ({appVersion}) &#x1F381;
+      </DialogTitleEnhanced>
+      <DialogContent>
+        <Markdown>{markdown}</Markdown>
+      </DialogContent>
+    </Dialog>
+  );
+});

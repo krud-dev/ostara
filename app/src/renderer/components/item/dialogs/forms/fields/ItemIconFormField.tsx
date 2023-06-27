@@ -8,13 +8,13 @@ import ItemIconMenu from 'renderer/components/item/dialogs/forms/fields/ItemIcon
 import { ItemType } from '../../../../../definitions/daemon';
 import { DEFAULT_ICON_VALUE } from '../../../../../hooks/useItemIcon';
 import { FormattedMessage } from 'react-intl';
-import { useAnalytics } from '../../../../../contexts/AnalyticsContext';
+import { useAnalyticsContext } from '../../../../../contexts/AnalyticsContext';
 
 type ItemIconFormFieldProps = { type: ItemType };
 
 export default function ItemIconFormField({ type }: ItemIconFormFieldProps) {
   const menuState = usePopupState({ variant: 'popper' });
-  const { track } = useAnalytics();
+  const { track } = useAnalyticsContext();
 
   const { watch, setValue } = useFormContext<{ icon?: string }>();
 

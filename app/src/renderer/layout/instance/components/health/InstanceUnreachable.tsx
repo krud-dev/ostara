@@ -7,18 +7,18 @@ import { FormattedMessage } from 'react-intl';
 import { showUpdateItemDialog } from 'renderer/utils/dialogUtils';
 import FormattedDateAndRelativeTime from 'renderer/components/format/FormattedDateAndRelativeTime';
 import { LoadingButton } from '@mui/lab';
-import { InstanceRO } from '../../../../../common/generated_definitions';
-import DetailsLabelValueHorizontal from '../../../../components/table/details/DetailsLabelValueHorizontal';
-import useItemDisplayName from '../../../../hooks/useItemDisplayName';
-import useInstanceHealth from '../../../../hooks/useInstanceHealth';
-import { useItems } from '../../../../contexts/ItemsContext';
+import { InstanceRO } from 'common/generated_definitions';
+import DetailsLabelValueHorizontal from 'renderer/components/table/details/DetailsLabelValueHorizontal';
+import useItemDisplayName from 'renderer/hooks/useItemDisplayName';
+import useInstanceHealth from 'renderer/hooks/useInstanceHealth';
+import { useItemsContext } from 'renderer/contexts/ItemsContext';
 
 type InstanceUnreachableProps = {
   item: InstanceRO;
 };
 
 export default function InstanceUnreachable({ item }: InstanceUnreachableProps) {
-  const { getItem } = useItems();
+  const { getItem } = useItemsContext();
   const { health, loading: refreshLoading, refreshHealth } = useInstanceHealth(item);
 
   const displayName = useItemDisplayName(item);

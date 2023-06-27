@@ -182,35 +182,53 @@ const SettingsProvider: FunctionComponent<SettingsProviderProps> = ({ children }
     };
   }, []);
 
-  return (
-    <SettingsContext.Provider
-      value={{
-        developerMode,
-        daemonHealthy,
-        themeSource,
-        setThemeSource,
-        darkMode,
-        setDarkMode,
-        localeInfo,
-        setLocale,
-        isRtl,
-        notificationsActive,
-        setNotificationsActive,
-        notificationsSoundActive,
-        setNotificationsSoundActive,
-        analyticsEnabled,
-        setAnalyticsEnabled,
-        errorReportingEnabled,
-        errorReportingChanged,
-        setErrorReportingEnabled,
-      }}
-    >
-      {children}
-    </SettingsContext.Provider>
+  const memoizedValue = useMemo<SettingsContextProps>(
+    () => ({
+      developerMode,
+      daemonHealthy,
+      themeSource,
+      setThemeSource,
+      darkMode,
+      setDarkMode,
+      localeInfo,
+      setLocale,
+      isRtl,
+      notificationsActive,
+      setNotificationsActive,
+      notificationsSoundActive,
+      setNotificationsSoundActive,
+      analyticsEnabled,
+      setAnalyticsEnabled,
+      errorReportingEnabled,
+      errorReportingChanged,
+      setErrorReportingEnabled,
+    }),
+    [
+      developerMode,
+      daemonHealthy,
+      themeSource,
+      setThemeSource,
+      darkMode,
+      setDarkMode,
+      localeInfo,
+      setLocale,
+      isRtl,
+      notificationsActive,
+      setNotificationsActive,
+      notificationsSoundActive,
+      setNotificationsSoundActive,
+      analyticsEnabled,
+      setAnalyticsEnabled,
+      errorReportingEnabled,
+      errorReportingChanged,
+      setErrorReportingEnabled,
+    ]
   );
+
+  return <SettingsContext.Provider value={memoizedValue}>{children}</SettingsContext.Provider>;
 };
 
-const useSettings = (): SettingsContextProps => {
+const useSettingsContext = (): SettingsContextProps => {
   const context = useContext(SettingsContext);
 
   if (!context) throw new Error('SettingsContext must be used inside SettingsProvider');
@@ -218,4 +236,4 @@ const useSettings = (): SettingsContextProps => {
   return context;
 };
 
-export { SettingsContext, SettingsProvider, useSettings };
+export { SettingsContext, SettingsProvider, useSettingsContext };

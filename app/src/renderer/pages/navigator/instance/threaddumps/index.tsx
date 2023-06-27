@@ -1,28 +1,30 @@
 import React, { FunctionComponent, useCallback, useEffect, useMemo, useState } from 'react';
 import Page from 'renderer/components/layout/Page';
-import { useNavigatorLayout } from 'renderer/contexts/NavigatorLayoutContext';
+import { useNavigatorLayoutContext } from 'renderer/contexts/NavigatorLayoutContext';
 import TableComponent from 'renderer/components/table/TableComponent';
 import { Entity } from 'renderer/entity/entity';
 import { Box, Card } from '@mui/material';
-import { InstanceRO, ThreadProfilingProgressMessage$Payload } from '../../../../../common/generated_definitions';
-import { DELETE_ID, REQUEST_ID, VIEW_ID } from '../../../../entity/actions';
+import { InstanceRO, ThreadProfilingProgressMessage$Payload } from 'common/generated_definitions';
+import { DELETE_ID, REQUEST_ID, VIEW_ID } from 'renderer/entity/actions';
 import { useSnackbar } from 'notistack';
-import { instanceThreadProfilingRequestEntity } from '../../../../entity/entities/instanceThreadProfilingRequest.entity';
+import { instanceThreadProfilingRequestEntity } from 'renderer/entity/entities/instanceThreadProfilingRequest.entity';
 import {
   EnrichedThreadProfilingRequestRO,
   useGetInstanceThreadProfilingRequestsQuery,
-} from '../../../../apis/requests/instance/thread-profiling/getInstanceThreadProfilingRequests';
-import { useDeleteInstanceThreadProfiling } from '../../../../apis/requests/instance/thread-profiling/deleteInstanceThreadProfiling';
-import { useRequestInstanceThreadProfiling } from '../../../../apis/requests/instance/thread-profiling/requestInstanceThreadProfiling';
+} from 'renderer/apis/requests/instance/thread-profiling/getInstanceThreadProfilingRequests';
+import { useDeleteInstanceThreadProfiling } from 'renderer/apis/requests/instance/thread-profiling/deleteInstanceThreadProfiling';
+import { useRequestInstanceThreadProfiling } from 'renderer/apis/requests/instance/thread-profiling/requestInstanceThreadProfiling';
 import { FormattedMessage } from 'react-intl';
 import NiceModal from '@ebay/nice-modal-react';
-import ThreadProfilingRequestDetailsDialog from './components/ThreadProfilingRequestDetailsDialog';
-import { useStomp } from '../../../../apis/websockets/StompContext';
+import ThreadProfilingRequestDetailsDialog, {
+  ThreadProfilingRequestDetailsDialogProps,
+} from './components/ThreadProfilingRequestDetailsDialog';
+import { useStomp } from 'renderer/apis/websockets/StompContext';
 import { LoadingButton } from '@mui/lab';
-import { IconViewer } from '../../../../components/common/IconViewer';
+import { IconViewer } from 'renderer/components/common/IconViewer';
 
 const InstanceThreadProfiling: FunctionComponent = () => {
-  const { selectedItem } = useNavigatorLayout();
+  const { selectedItem } = useNavigatorLayoutContext();
   const { subscribe } = useStomp();
   const { enqueueSnackbar } = useSnackbar();
 
@@ -65,7 +67,7 @@ const InstanceThreadProfiling: FunctionComponent = () => {
   const actionsHandler = useCallback(async (actionId: string, row: EnrichedThreadProfilingRequestRO): Promise<void> => {
     switch (actionId) {
       case VIEW_ID:
-        await NiceModal.show<undefined>(ThreadProfilingRequestDetailsDialog, {
+        await NiceModal.show<undefined, ThreadProfilingRequestDetailsDialogProps>(ThreadProfilingRequestDetailsDialog, {
           request: row,
         });
         break;

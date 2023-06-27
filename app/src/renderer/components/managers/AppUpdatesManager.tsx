@@ -4,19 +4,19 @@ import { Box, Button, Dialog, DialogActions, DialogContent, DialogContentText } 
 import DialogTitleEnhanced from '../dialog/DialogTitleEnhanced';
 import { FormattedMessage } from 'react-intl';
 import Markdown from '../code/Markdown';
-import { useAnalytics } from '../../contexts/AnalyticsContext';
+import { useAnalyticsContext } from '../../contexts/AnalyticsContext';
 import { UpdateInfo } from 'electron-updater';
 import { isString } from 'lodash';
 import { notEmpty } from '../../utils/objectUtils';
 import { useLocalStorageState } from '../../hooks/useLocalStorageState';
-import { useAppUpdates } from '../../contexts/AppUpdatesContext';
+import { useAppUpdatesContext } from '../../contexts/AppUpdatesContext';
 import { useSnackbar } from 'notistack';
 import semverGte from 'semver/functions/gte';
 
 interface AppUpdatesManagerProps {}
 
 const AppUpdatesManager: FunctionComponent<AppUpdatesManagerProps> = () => {
-  const { autoUpdateSupported, autoUpdateEnabled, newVersionDownloaded, newVersionInfo } = useAppUpdates();
+  const { autoUpdateSupported, autoUpdateEnabled, newVersionDownloaded, newVersionInfo } = useAppUpdatesContext();
 
   const [newVersionDetailsShown, setNewVersionDetailsShown] = useState<string | undefined>(undefined);
   const [newVersionDetailsSkipVersion, setNewVersionDetailsSkipVersion] = useLocalStorageState<string | undefined>(
@@ -44,7 +44,7 @@ const AppUpdatesManager: FunctionComponent<AppUpdatesManagerProps> = () => {
         return;
       }
       setNewVersionDetailsShown(newVersionInfo.version);
-      NiceModal.show<undefined>(AppUpdateDetailsDialog, {
+      NiceModal.show<undefined, AppUpdateDetailsDialogProps>(AppUpdateDetailsDialog, {
         updateInfo: newVersionInfo,
         onSkipVersion: setNewVersionDetailsSkipVersion,
       });
@@ -67,7 +67,9 @@ const AppUpdatesManager: FunctionComponent<AppUpdatesManagerProps> = () => {
         return;
       }
       setNewVersionDownloadedShown(newVersionDownloaded.version);
-      NiceModal.show<undefined>(AppUpdateDownloadedDialog, { updateInfo: newVersionDownloaded });
+      NiceModal.show<undefined, AppUpdateDownloadedDialogProps>(AppUpdateDownloadedDialog, {
+        updateInfo: newVersionDownloaded,
+      });
     })();
   }, [newVersionDownloaded]);
 
@@ -79,13 +81,13 @@ export default AppUpdatesManager;
 type AppUpdateDetailsDialogProps = {
   updateInfo: UpdateInfo;
   onSkipVersion?: (version: string) => void;
-};
+} & NiceModalHocProps;
 
-const AppUpdateDetailsDialog: FunctionComponent<AppUpdateDetailsDialogProps & NiceModalHocProps> = NiceModal.create(
+const AppUpdateDetailsDialog: FunctionComponent<AppUpdateDetailsDialogProps> = NiceModal.create(
   ({ updateInfo, onSkipVersion }) => {
     const modal = useModal();
-    const { track } = useAnalytics();
-    const { downloadUpdate } = useAppUpdates();
+    const { track } = useAnalyticsContext();
+    const { downloadUpdate } = useAppUpdatesContext();
     const { enqueueSnackbar } = useSnackbar();
 
     const closeHandler = useCallback((): void => {
@@ -173,13 +175,13 @@ const AppUpdateDetailsDialog: FunctionComponent<AppUpdateDetailsDialogProps & Ni
 
 type AppUpdateDownloadedDialogProps = {
   updateInfo: UpdateInfo;
-};
+} & NiceModalHocProps;
 
-const AppUpdateDownloadedDialog: FunctionComponent<AppUpdateDownloadedDialogProps & NiceModalHocProps> =
-  NiceModal.create(({ updateInfo }) => {
+const AppUpdateDownloadedDialog: FunctionComponent<AppUpdateDownloadedDialogProps> = NiceModal.create(
+  ({ updateInfo }) => {
     const modal = useModal();
-    const { track } = useAnalytics();
-    const { installUpdate } = useAppUpdates();
+    const { track } = useAnalyticsContext();
+    const { installUpdate } = useAppUpdatesContext();
 
     const closeHandler = useCallback((): void => {
       modal.resolve(undefined);
@@ -232,4 +234,5 @@ const AppUpdateDownloadedDialog: FunctionComponent<AppUpdateDownloadedDialogProp
         </DialogActions>
       </Dialog>
     );
-  });
+  }
+);

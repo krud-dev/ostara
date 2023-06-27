@@ -10,22 +10,22 @@ import { useCrudCreate } from 'renderer/apis/requests/crud/crudCreate';
 import { ApplicationModifyRequestRO, ApplicationRO } from 'common/generated_definitions';
 import { applicationCrudEntity } from 'renderer/apis/requests/crud/entity/entities/application.crudEntity';
 import { INHERITED_COLOR_VALUE } from 'renderer/hooks/useItemColor';
-import { useAnalytics } from 'renderer/contexts/AnalyticsContext';
+import { useAnalyticsContext } from 'renderer/contexts/AnalyticsContext';
 import { getItemUrl } from 'renderer/utils/itemUtils';
-import { useItems } from 'renderer/contexts/ItemsContext';
+import { useItemsContext } from 'renderer/contexts/ItemsContext';
 import { useNavigate } from 'react-router-dom';
 
 export type CreateApplicationDialogProps = {
   parentFolderId?: string;
   sort?: number;
-  onCreated?: (item: ApplicationRO) => void;
-};
+  onCreated?: (items: ApplicationRO[]) => void;
+} & NiceModalHocProps;
 
-const CreateApplicationDialog: FunctionComponent<CreateApplicationDialogProps & NiceModalHocProps> = NiceModal.create(
+const CreateApplicationDialog: FunctionComponent<CreateApplicationDialogProps> = NiceModal.create(
   ({ parentFolderId, sort, onCreated }) => {
     const modal = useModal();
-    const { track } = useAnalytics();
-    const { addItem } = useItems();
+    const { track } = useAnalyticsContext();
+    const { addItem } = useItemsContext();
     const navigate = useNavigate();
 
     const [submitting, setSubmitting] = useState<boolean>(false);
@@ -56,7 +56,7 @@ const CreateApplicationDialog: FunctionComponent<CreateApplicationDialogProps & 
             addItem(result);
             navigate(getItemUrl(result));
 
-            onCreated?.(result);
+            onCreated?.([result]);
 
             modal.resolve(result);
             await modal.hide();

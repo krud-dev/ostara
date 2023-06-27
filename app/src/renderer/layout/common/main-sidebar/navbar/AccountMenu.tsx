@@ -1,6 +1,6 @@
 import { useCallback } from 'react';
 import { Box, IconButton } from '@mui/material';
-import { useSettings } from 'renderer/contexts/SettingsContext';
+import { useSettingsContext } from 'renderer/contexts/SettingsContext';
 import MenuPopover from 'renderer/components/menu/popup/MenuPopover';
 import { FormattedMessage } from 'react-intl';
 import MAvatar from 'renderer/components/common/MAvatar';
@@ -9,7 +9,7 @@ import CustomMenuItem from 'renderer/components/menu/item/CustomMenuItem';
 import { useNavigate } from 'react-router-dom';
 
 export default function AccountMenu() {
-  const { isRtl } = useSettings();
+  const { isRtl } = useSettingsContext();
   const navigate = useNavigate();
 
   const menuState = usePopupState({ variant: 'popover' });

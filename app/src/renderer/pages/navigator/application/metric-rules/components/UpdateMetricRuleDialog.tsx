@@ -3,17 +3,17 @@ import React, { FunctionComponent, useCallback, useMemo, useState } from 'react'
 import { Dialog } from '@mui/material';
 import NiceModal, { NiceModalHocProps, useModal } from '@ebay/nice-modal-react';
 import DialogTitleEnhanced from 'renderer/components/dialog/DialogTitleEnhanced';
-import { useUpdateApplicationMetricRule } from '../../../../../apis/requests/application/metric-rules/updateApplicationMetricRule';
+import { useUpdateApplicationMetricRule } from 'renderer/apis/requests/application/metric-rules/updateApplicationMetricRule';
 import MetricRuleDetailsForm, { MetricRuleFormValues } from './MetricRuleDetailsForm';
-import { ApplicationMetricRuleRO } from '../../../../../../common/generated_definitions';
-import { getMetricRuleFormValues } from '../../../../../utils/metricUtils';
+import { ApplicationMetricRuleRO } from 'common/generated_definitions';
+import { getMetricRuleFormValues } from 'renderer/utils/metricUtils';
 
 export type UpdateMetricRuleDialogProps = {
   metricRule: ApplicationMetricRuleRO;
   onUpdated?: (metricRule: ApplicationMetricRuleRO) => void;
-};
+} & NiceModalHocProps;
 
-const UpdateMetricRuleDialog: FunctionComponent<UpdateMetricRuleDialogProps & NiceModalHocProps> = NiceModal.create(
+const UpdateMetricRuleDialog: FunctionComponent<UpdateMetricRuleDialogProps> = NiceModal.create(
   ({ metricRule, onUpdated }) => {
     const modal = useModal();
 

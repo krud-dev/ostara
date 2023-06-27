@@ -3,7 +3,7 @@ import { Alert, Card, CardContent, CardHeader, Container, Grow, Link, MenuItem, 
 import Page from 'renderer/components/layout/Page';
 import { ANIMATION_GROW_TOP_STYLE, ANIMATION_TIMEOUT_LONG, COMPONENTS_SPACING } from '../../../constants/ui';
 import { FormattedMessage } from 'react-intl';
-import { useSettings } from 'renderer/contexts/SettingsContext';
+import { useSettingsContext } from 'renderer/contexts/SettingsContext';
 import { useRestartApp } from 'renderer/apis/requests/ui/restartApp';
 import { TransitionGroup } from 'react-transition-group';
 
@@ -14,7 +14,7 @@ const SettingsPrivacy: FunctionComponent = () => {
     errorReportingEnabled,
     errorReportingChanged,
     setErrorReportingEnabled,
-  } = useSettings();
+  } = useSettingsContext();
   const restartAppState = useRestartApp();
 
   const restartAppHandler = useCallback((event: React.MouseEvent): void => {

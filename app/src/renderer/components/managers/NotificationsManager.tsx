@@ -12,20 +12,20 @@ import {
   ApplicationRO,
 } from 'common/generated_definitions';
 import { useStomp } from '../../apis/websockets/StompContext';
-import { useItems } from '../../contexts/ItemsContext';
+import { useItemsContext } from '../../contexts/ItemsContext';
 import { usePrevious } from 'react-use';
 import { urls } from '../../routes/urls';
 import { useIntl } from 'react-intl';
 import { getItemDisplayName } from '../../utils/itemUtils';
 import { getMetricFullName } from '../../utils/metricUtils';
 import { isNil } from 'lodash';
-import { useSettings } from '../../contexts/SettingsContext';
+import { useSettingsContext } from '../../contexts/SettingsContext';
 
 interface NotificationsManagerProps {}
 
 const NotificationsManager: FunctionComponent<NotificationsManagerProps> = () => {
   const navigate = useNavigate();
-  const { notificationsActive } = useSettings();
+  const { notificationsActive } = useSettingsContext();
 
   const subscribeToNotificationClickedState = useSubscribeToEvent();
 
@@ -58,8 +58,8 @@ export default NotificationsManager;
 interface NotificationsSenderProps {}
 
 const NotificationsSender: FunctionComponent<NotificationsSenderProps> = () => {
-  const { notificationsActive, notificationsSoundActive } = useSettings();
-  const { applications, instances } = useItems();
+  const { notificationsActive, notificationsSoundActive } = useSettingsContext();
+  const { applications, instances } = useItemsContext();
   const { subscribe } = useStomp();
   const intl = useIntl();
 

@@ -1,6 +1,6 @@
 import React, { useMemo } from 'react';
 import { useGetInstanceCacheStatisticsQuery } from 'renderer/apis/requests/instance/caches/getInstanceCacheStatistics';
-import { useNavigatorLayout } from 'renderer/contexts/NavigatorLayoutContext';
+import { useNavigatorLayoutContext } from 'renderer/contexts/NavigatorLayoutContext';
 import ItemCacheDetails, { ItemCacheStatistics } from 'renderer/components/item/cache/ItemCacheDetails';
 import { InstanceCacheRO, InstanceRO } from '../../../../../../common/generated_definitions';
 
@@ -9,7 +9,7 @@ type InstanceCacheDetailsProps = {
 };
 
 export default function InstanceCacheDetails({ row }: InstanceCacheDetailsProps) {
-  const { selectedItem } = useNavigatorLayout();
+  const { selectedItem } = useNavigatorLayoutContext();
 
   const item = useMemo<InstanceRO>(() => selectedItem as InstanceRO, [selectedItem]);
 

@@ -5,7 +5,7 @@ import {
   useBaseMutation,
 } from 'renderer/apis/requests/base/useBaseMutation';
 import { apiKeys } from 'renderer/apis/apiKeys';
-import { HttpMethod, InstanceHttpRequestStatisticsRO } from '../../../../../common/generated_definitions';
+import { InstanceHttpRequestStatisticsRO } from 'common/generated_definitions';
 import { axiosInstance } from '../../../axiosInstance';
 import { AxiosResponse } from 'axios';
 
@@ -14,7 +14,7 @@ type Variables = {
   uri: string;
 };
 
-type Data = { [key in HttpMethod]: InstanceHttpRequestStatisticsRO };
+type Data = { [key: string]: InstanceHttpRequestStatisticsRO };
 
 export const getInstanceHttpRequestStatisticsForUriByMethods = async (variables: Variables): Promise<Data> => {
   return (

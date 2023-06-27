@@ -1,6 +1,6 @@
 import React, { FunctionComponent, useMemo } from 'react';
 import Page from 'renderer/components/layout/Page';
-import { useNavigatorLayout } from 'renderer/contexts/NavigatorLayoutContext';
+import { useNavigatorLayoutContext } from 'renderer/contexts/NavigatorLayoutContext';
 import { Card } from '@mui/material';
 import { isEmpty, map } from 'lodash';
 import EmptyContent from 'renderer/components/help/EmptyContent';
@@ -11,7 +11,7 @@ import { InstanceRO } from '../../../../../common/generated_definitions';
 import LogoLoaderCenter from '../../../../components/common/LogoLoaderCenter';
 
 const InstanceFlyway: FunctionComponent = () => {
-  const { selectedItem } = useNavigatorLayout();
+  const { selectedItem } = useNavigatorLayoutContext();
 
   const item = useMemo<InstanceRO>(() => selectedItem as InstanceRO, [selectedItem]);
 

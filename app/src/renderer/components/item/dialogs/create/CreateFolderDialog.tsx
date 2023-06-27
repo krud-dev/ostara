@@ -8,22 +8,22 @@ import { FolderModifyRequestRO, FolderRO } from 'common/generated_definitions';
 import { useCrudCreate } from 'renderer/apis/requests/crud/crudCreate';
 import { folderCrudEntity } from 'renderer/apis/requests/crud/entity/entities/folder.crudEntity';
 import { INHERITED_COLOR_VALUE } from 'renderer/hooks/useItemColor';
-import { useAnalytics } from 'renderer/contexts/AnalyticsContext';
+import { useAnalyticsContext } from 'renderer/contexts/AnalyticsContext';
 import { getItemUrl } from 'renderer/utils/itemUtils';
-import { useItems } from 'renderer/contexts/ItemsContext';
+import { useItemsContext } from 'renderer/contexts/ItemsContext';
 import { useNavigate } from 'react-router-dom';
 
 export type CreateFolderDialogProps = {
   parentFolderId?: string;
   sort?: number;
-  onCreated?: (item: FolderRO) => void;
-};
+  onCreated?: (items: FolderRO[]) => void;
+} & NiceModalHocProps;
 
-const CreateFolderDialog: FunctionComponent<CreateFolderDialogProps & NiceModalHocProps> = NiceModal.create(
+const CreateFolderDialog: FunctionComponent<CreateFolderDialogProps> = NiceModal.create(
   ({ parentFolderId, sort, onCreated }) => {
     const modal = useModal();
-    const { track } = useAnalytics();
-    const { addItem } = useItems();
+    const { track } = useAnalyticsContext();
+    const { addItem } = useItemsContext();
     const navigate = useNavigate();
 
     const [submitting, setSubmitting] = useState<boolean>(false);
@@ -50,7 +50,7 @@ const CreateFolderDialog: FunctionComponent<CreateFolderDialogProps & NiceModalH
             addItem(result);
             navigate(getItemUrl(result));
 
-            onCreated?.(result);
+            onCreated?.([result]);
 
             modal.resolve(result);
             await modal.hide();

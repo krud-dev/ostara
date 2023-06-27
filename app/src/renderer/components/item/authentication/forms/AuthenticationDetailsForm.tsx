@@ -10,7 +10,7 @@ import AuthenticationDetailsFormHeader from './AuthenticationDetailsFormHeader';
 import AuthenticationDetailsFormBearer from './AuthenticationDetailsFormBearer';
 import AuthenticationDetailsFormQuerystring from './AuthenticationDetailsFormQuerystring';
 import { usePrevious, useUpdateEffect } from 'react-use';
-import { useAnalytics } from '../../../../contexts/AnalyticsContext';
+import { useAnalyticsContext } from '../../../../contexts/AnalyticsContext';
 import { ItemType } from '../../../../definitions/daemon';
 
 export type AuthenticationDetailsFormProps = {
@@ -21,7 +21,7 @@ const AuthenticationDetailsForm: FunctionComponent<AuthenticationDetailsFormProp
   itemType,
 }: AuthenticationDetailsFormProps) => {
   const intl = useIntl();
-  const { track } = useAnalytics();
+  const { track } = useAnalyticsContext();
 
   const { control, watch } = useFormContext<{ authentication: Authentication$Typed }>();
 
@@ -30,9 +30,6 @@ const AuthenticationDetailsForm: FunctionComponent<AuthenticationDetailsFormProp
 
   const AuthenticationDetailsFormType = useMemo<ComponentType<AuthenticationDetailsFormProps>>(() => {
     switch (type) {
-      case 'none':
-      default:
-        return AuthenticationDetailsFormNone;
       case 'inherit':
         return AuthenticationDetailsFormInherit;
       case 'basic':
@@ -43,6 +40,9 @@ const AuthenticationDetailsForm: FunctionComponent<AuthenticationDetailsFormProp
         return AuthenticationDetailsFormBearer;
       case 'query-string':
         return AuthenticationDetailsFormQuerystring;
+      case 'none':
+      default:
+        return AuthenticationDetailsFormNone;
     }
   }, [type]);
 

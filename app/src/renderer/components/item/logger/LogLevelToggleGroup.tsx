@@ -1,7 +1,7 @@
 import { useCallback, useMemo } from 'react';
 import { Box, CircularProgress, ToggleButton, ToggleButtonGroup, Tooltip } from '@mui/material';
 import NiceModal from '@ebay/nice-modal-react';
-import CustomLogLevelDialog from './CustomLogLevelDialog';
+import CustomLogLevelDialog, { CustomLogLevelDialogProps } from './CustomLogLevelDialog';
 
 type LogLevelToggleGroupProps = {
   configuredLevels?: string[];
@@ -44,7 +44,10 @@ export default function LogLevelToggleGroup({
       let levelToChange = newLevel;
 
       if (newLevel === customLogLevel) {
-        const newCustomLevel = await NiceModal.show<string | undefined>(CustomLogLevelDialog, {});
+        const newCustomLevel = await NiceModal.show<string | undefined, CustomLogLevelDialogProps>(
+          CustomLogLevelDialog,
+          {}
+        );
         if (!newCustomLevel) {
           return;
         }

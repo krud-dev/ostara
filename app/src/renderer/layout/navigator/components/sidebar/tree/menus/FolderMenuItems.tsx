@@ -1,4 +1,3 @@
-import { Divider } from '@mui/material';
 import { TreeItemMenuProps } from 'renderer/layout/navigator/components/sidebar/tree/tree';
 import DeleteMenuItem from 'renderer/layout/navigator/components/sidebar/tree/menus/items/DeleteMenuItem';
 import RenameMenuItem from 'renderer/layout/navigator/components/sidebar/tree/menus/items/RenameMenuItem';

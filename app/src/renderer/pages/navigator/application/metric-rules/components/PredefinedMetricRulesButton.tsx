@@ -1,6 +1,6 @@
 import { FormattedMessage } from 'react-intl';
 import React, { FunctionComponent, useCallback, useMemo } from 'react';
-import { useAnalytics } from 'renderer/contexts/AnalyticsContext';
+import { useAnalyticsContext } from 'renderer/contexts/AnalyticsContext';
 import { ApplicationMetricRuleCreateRequestRO, ApplicationMetricRuleRO } from 'common/generated_definitions';
 import { useGetApplicationMetricsQuery } from 'renderer/apis/requests/application/metrics/getApplicationMetrics';
 import { isEmpty } from 'lodash';
@@ -18,7 +18,7 @@ const PredefinedMetricRulesButton: FunctionComponent<PredefinedMetricRulesButton
   applicationId,
   metricName,
 }) => {
-  const { track } = useAnalytics();
+  const { track } = useAnalyticsContext();
 
   const allRules = useMemo<ApplicationMetricRuleCreateRequestRO[]>(
     () => [

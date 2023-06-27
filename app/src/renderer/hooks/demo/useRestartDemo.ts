@@ -1,5 +1,5 @@
 import { useCallback, useMemo, useState } from 'react';
-import { useAnalytics } from '../../contexts/AnalyticsContext';
+import { useAnalyticsContext } from '../../contexts/AnalyticsContext';
 
 type RestartDemoResult = {
   restartDemo: () => Promise<void>;
@@ -7,7 +7,7 @@ type RestartDemoResult = {
 };
 
 const useRestartDemo = (): RestartDemoResult => {
-  const { track } = useAnalytics();
+  const { track } = useAnalyticsContext();
 
   const [loading, setLoading] = useState<boolean>(false);
 

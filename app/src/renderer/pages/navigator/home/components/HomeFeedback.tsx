@@ -3,7 +3,7 @@ import React, { useCallback } from 'react';
 import { FormattedMessage } from 'react-intl';
 import { DISCORD_INVITE_URL, REPOSITORY_ISSUES_URL } from 'renderer/constants/ui';
 import NiceModal from '@ebay/nice-modal-react';
-import AppFeedbackDialog from './AppFeedbackDialog';
+import AppFeedbackDialog, { AppFeedbackDialogProps } from './AppFeedbackDialog';
 import DiscordIcon from 'renderer/components/icons/DiscordIcon';
 import GithubIcon from 'renderer/components/icons/GithubIcon';
 
@@ -11,7 +11,7 @@ type HomeFeedbackProps = {};
 
 export default function HomeFeedback({}: HomeFeedbackProps) {
   const sendFeedbackHandler = useCallback(async (): Promise<void> => {
-    await NiceModal.show<boolean>(AppFeedbackDialog);
+    await NiceModal.show<boolean, AppFeedbackDialogProps>(AppFeedbackDialog);
   }, []);
 
   return (

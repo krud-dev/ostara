@@ -6,16 +6,16 @@ import DialogTitleEnhanced from 'renderer/components/dialog/DialogTitleEnhanced'
 import ApplicationDetailsForm, {
   ApplicationFormValues,
 } from 'renderer/components/item/dialogs/forms/ApplicationDetailsForm';
-import { ApplicationModifyRequestRO, ApplicationRO } from '../../../../../common/generated_definitions';
-import { useCrudUpdate } from '../../../../apis/requests/crud/crudUpdate';
-import { applicationCrudEntity } from '../../../../apis/requests/crud/entity/entities/application.crudEntity';
+import { ApplicationModifyRequestRO, ApplicationRO } from 'common/generated_definitions';
+import { useCrudUpdate } from 'renderer/apis/requests/crud/crudUpdate';
+import { applicationCrudEntity } from 'renderer/apis/requests/crud/entity/entities/application.crudEntity';
 
 export type UpdateApplicationDialogProps = {
   item: ApplicationRO;
   onUpdated?: (item: ApplicationRO) => void;
-};
+} & NiceModalHocProps;
 
-const UpdateApplicationDialog: FunctionComponent<UpdateApplicationDialogProps & NiceModalHocProps> = NiceModal.create(
+const UpdateApplicationDialog: FunctionComponent<UpdateApplicationDialogProps> = NiceModal.create(
   ({ item, onUpdated }) => {
     const modal = useModal();
 

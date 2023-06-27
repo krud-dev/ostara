@@ -14,16 +14,16 @@ import FormattedRelativeTimeNow from 'renderer/components/format/FormattedRelati
 import { useNavigate } from 'react-router-dom';
 import useItemIcon from 'renderer/hooks/useItemIcon';
 import useItemColor from 'renderer/hooks/useItemColor';
-import { useItems } from 'renderer/contexts/ItemsContext';
-import { useNavigatorLayout } from 'renderer/contexts/NavigatorLayoutContext';
+import { useItemsContext } from 'renderer/contexts/ItemsContext';
+import { useNavigatorLayoutContext } from 'renderer/contexts/NavigatorLayoutContext';
 
 type FolderApplicationWidgetProps = {
   application: ApplicationRO;
 };
 
 const FolderApplicationWidget: FunctionComponent<FolderApplicationWidgetProps> = ({ application }) => {
-  const { instances } = useItems();
-  const { data } = useNavigatorLayout();
+  const { instances } = useItemsContext();
+  const { data } = useNavigatorLayoutContext();
   const navigate = useNavigate();
 
   const title = useMemo<string>(() => getItemDisplayName(application), [application]);

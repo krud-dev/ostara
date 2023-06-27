@@ -9,7 +9,7 @@ import {
   InstanceModifyRequestRO,
   InstanceRO,
 } from 'common/generated_definitions';
-import { useNavigatorLayout } from 'renderer/contexts/NavigatorLayoutContext';
+import { useNavigatorLayoutContext } from 'renderer/contexts/NavigatorLayoutContext';
 import { INHERITED_COLOR_VALUE } from 'renderer/hooks/useItemColor';
 import { applicationCrudEntity } from 'renderer/apis/requests/crud/entity/entities/application.crudEntity';
 import { instanceCrudEntity } from 'renderer/apis/requests/crud/entity/entities/instance.crudEntity';
@@ -25,7 +25,7 @@ import { folderCrudEntity } from 'renderer/apis/requests/crud/entity/entities/fo
 import { showDeleteConfirmationDialog } from 'renderer/utils/dialogUtils';
 import { isItemDeletable } from 'renderer/utils/itemUtils';
 import { useCreateApplicationMetricRule } from 'renderer/apis/requests/application/metric-rules/createApplicationMetricRule';
-import { useSettings } from 'renderer/contexts/SettingsContext';
+import { useSettingsContext } from 'renderer/contexts/SettingsContext';
 
 type ApplicationToCreate = {
   folderName?: string;
@@ -38,8 +38,8 @@ type ApplicationToCreate = {
 type HomeDeveloperModeProps = {};
 
 export default function HomeDeveloperMode({}: HomeDeveloperModeProps) {
-  const { notificationsSoundActive } = useSettings();
-  const { data, getNewItemOrder } = useNavigatorLayout();
+  const { notificationsSoundActive } = useSettingsContext();
+  const { data, getNewItemOrder } = useNavigatorLayoutContext();
   const queryClient = useQueryClient();
 
   const testApplications = useMemo<ApplicationToCreate[]>(

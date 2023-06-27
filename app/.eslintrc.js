@@ -1,5 +1,5 @@
 module.exports = {
-  extends: 'erb',
+  extends: ['erb', 'airbnb-typescript', 'prettier'],
   rules: {
     // A temporary hack related to IDE not resolving correct package.json
     'import/no-extraneous-dependencies': 'off',
@@ -9,6 +9,8 @@ module.exports = {
     'react/require-default-props': 'off',
     'react/jsx-curly-brace-presence': 'off',
     'react/jsx-props-no-spreading': 'off',
+    'react/jsx-no-useless-fragment': 'off',
+    'react/function-component-definition': 'off',
     'react-hooks/exhaustive-deps': 'off',
     'jsx-a11y/anchor-is-valid': 'off',
     'promise/catch-or-return': 'off',
@@ -17,6 +19,7 @@ module.exports = {
     '@typescript-eslint/no-use-before-define': 'off',
     '@typescript-eslint/return-await': 'off',
     '@typescript-eslint/no-non-null-assertion': 'off',
+    '@typescript-eslint/no-unused-vars': 'off',
     '@typescript-eslint/ban-ts-comment': 'off',
     'no-empty-pattern': 'off',
     'prefer-default-export': 'off',
@@ -26,6 +29,7 @@ module.exports = {
     'object-shorthand': 'off',
     'import/order': 'off',
     'import/prefer-default-export': 'off',
+    'import/no-relative-packages': 'off',
     'no-underscore-dangle': 'off',
     'import/no-cycle': 'off',
     'no-restricted-syntax': 'off',

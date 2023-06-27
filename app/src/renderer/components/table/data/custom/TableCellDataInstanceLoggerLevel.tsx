@@ -4,7 +4,7 @@ import LogLevelToggleGroup from 'renderer/components/item/logger/LogLevelToggleG
 import { useSetInstanceLoggerLevel } from 'renderer/apis/requests/instance/loggers/setInstanceLoggerLevel';
 import { EnrichedInstanceLoggerRO } from 'renderer/apis/requests/instance/loggers/getInstanceLoggers';
 import { useUpdateEffect } from 'react-use';
-import { useAnalytics } from '../../../../contexts/AnalyticsContext';
+import { useAnalyticsContext } from '../../../../contexts/AnalyticsContext';
 
 type TableCellDataLoggerLevelProps<EntityItem extends EnrichedInstanceLoggerRO> = {
   row: EntityItem;
@@ -15,7 +15,7 @@ export default function TableCellDataInstanceLoggerLevel<EntityItem extends Enri
   row,
   column,
 }: TableCellDataLoggerLevelProps<EntityItem>) {
-  const { track } = useAnalytics();
+  const { track } = useAnalyticsContext();
 
   const [loadingLevels, setLoadingLevels] = useState<string[] | undefined>(undefined);
 

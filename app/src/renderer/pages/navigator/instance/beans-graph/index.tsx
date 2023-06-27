@@ -1,5 +1,5 @@
 import React, { FunctionComponent, useMemo } from 'react';
-import { useNavigatorLayout } from 'renderer/contexts/NavigatorLayoutContext';
+import { useNavigatorLayoutContext } from 'renderer/contexts/NavigatorLayoutContext';
 import { InstanceRO } from '../../../../../common/generated_definitions';
 import { Edge, Node } from 'reactflow';
 import GraphPage from '../../../general/graph';
@@ -7,7 +7,7 @@ import { InstanceBean, useGetInstanceBeansQuery } from '../../../../apis/request
 import { chain } from 'lodash';
 
 const InstanceBeansGraph: FunctionComponent = () => {
-  const { selectedItem } = useNavigatorLayout();
+  const { selectedItem } = useNavigatorLayoutContext();
 
   const item = useMemo<InstanceRO>(() => selectedItem as InstanceRO, [selectedItem]);
 

@@ -1,6 +1,6 @@
 import { EntityBaseColumn } from 'renderer/entity/entity';
 import React, { useCallback, useState } from 'react';
-import { useAnalytics } from '../../../../contexts/AnalyticsContext';
+import { useAnalyticsContext } from '../../../../contexts/AnalyticsContext';
 import { Switch } from '@mui/material';
 import { useUpdateInstanceTogglzFeature } from '../../../../apis/requests/instance/togglz/updateInstanceTogglzFeature';
 import { EnrichedTogglzFeature } from '../../../../apis/requests/instance/togglz/getInstanceTogglz';
@@ -15,7 +15,7 @@ export default function TableCellDataInstanceTogglzToggle<EntityItem extends Enr
   row,
   column,
 }: TableCellDataInstanceTogglzToggleProps<EntityItem>) {
-  const { track } = useAnalytics();
+  const { track } = useAnalyticsContext();
 
   const [enabled, setEnabled] = useState<boolean>(row.enabled);
 

@@ -10,8 +10,8 @@ import { useDeleteApplicationMetricRule } from 'renderer/apis/requests/applicati
 import { applicationMetricRuleEntity } from 'renderer/entity/entities/applicationMetricRule.entity';
 import { IconViewer } from 'renderer/components/common/IconViewer';
 import NiceModal from '@ebay/nice-modal-react';
-import UpdateMetricRuleDialog from './UpdateMetricRuleDialog';
-import CreateMetricRuleDialog from './CreateMetricRuleDialog';
+import UpdateMetricRuleDialog, { UpdateMetricRuleDialogProps } from './UpdateMetricRuleDialog';
+import CreateMetricRuleDialog, { CreateMetricRuleDialogProps } from './CreateMetricRuleDialog';
 import PredefinedMetricRulesButton from 'renderer/pages/navigator/application/metric-rules/components/PredefinedMetricRulesButton';
 
 type ApplicationMetricRulesTableProps = {
@@ -35,9 +35,12 @@ const ApplicationMetricRulesTable: FunctionComponent<ApplicationMetricRulesTable
     async (actionId: string, row: ApplicationMetricRuleRO): Promise<void> => {
       switch (actionId) {
         case UPDATE_ID:
-          await NiceModal.show<ApplicationMetricRuleRO | undefined>(UpdateMetricRuleDialog, {
-            metricRule: row,
-          });
+          await NiceModal.show<ApplicationMetricRuleRO | undefined, UpdateMetricRuleDialogProps>(
+            UpdateMetricRuleDialog,
+            {
+              metricRule: row,
+            }
+          );
           break;
         case DELETE_ID:
           try {
@@ -57,7 +60,7 @@ const ApplicationMetricRulesTable: FunctionComponent<ApplicationMetricRulesTable
   );
 
   const addRuleHandler = useCallback(async (): Promise<void> => {
-    await NiceModal.show<ApplicationMetricRuleRO | undefined>(CreateMetricRuleDialog, {
+    await NiceModal.show<ApplicationMetricRuleRO | undefined, CreateMetricRuleDialogProps>(CreateMetricRuleDialog, {
       applicationId: applicationId,
       defaultValues: {
         metricName: metricName,

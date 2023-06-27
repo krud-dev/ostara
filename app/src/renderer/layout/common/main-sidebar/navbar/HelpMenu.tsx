@@ -2,12 +2,12 @@ import React, { useCallback, useEffect, useState } from 'react';
 import { HelpOutlineOutlined } from '@mui/icons-material';
 import { useLocation } from 'react-router-dom';
 import { getUrlInfo } from '../../../../utils/urlUtils';
-import { useAnalytics } from '../../../../contexts/AnalyticsContext';
+import { useAnalyticsContext } from '../../../../contexts/AnalyticsContext';
 import NavbarIconButton from './NavbarIconButton';
 
 export default function HelpMenu() {
   const { pathname } = useLocation();
-  const { track } = useAnalytics();
+  const { track } = useAnalyticsContext();
 
   const [url, setUrl] = useState<string | undefined>(undefined);
 

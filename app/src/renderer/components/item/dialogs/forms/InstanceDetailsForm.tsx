@@ -15,7 +15,7 @@ import AuthenticationDetailsForm from '../../authentication/forms/Authentication
 import { ApplicationRO, Authentication, InstanceModifyRequestRO } from '../../../../../common/generated_definitions';
 import useEffectiveAuthentication from '../../authentication/hooks/useEffectiveAuthentication';
 import EffectiveAuthenticationDetails from '../../authentication/effective/EffectiveAuthenticationDetails';
-import { useAnalytics } from '../../../../contexts/AnalyticsContext';
+import { useAnalyticsContext } from '../../../../contexts/AnalyticsContext';
 import { useCrudShow } from '../../../../apis/requests/crud/crudShow';
 import { applicationCrudEntity } from '../../../../apis/requests/crud/entity/entities/application.crudEntity';
 
@@ -41,7 +41,7 @@ const InstanceDetailsForm: FunctionComponent<InstanceDetailsFormProps> = ({
 }: InstanceDetailsFormProps) => {
   const intl = useIntl();
   const { enqueueSnackbar } = useSnackbar();
-  const { track } = useAnalytics();
+  const { track } = useAnalyticsContext();
 
   const methods = useForm<InstanceFormValues>({ defaultValues });
   const {

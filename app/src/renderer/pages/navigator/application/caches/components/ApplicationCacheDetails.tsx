@@ -2,14 +2,14 @@ import React, { useMemo } from 'react';
 import { useGetApplicationCacheStatisticsQuery } from 'renderer/apis/requests/application/caches/getApplicationCacheStatistics';
 import ItemCacheDetails, { ItemCacheStatistics } from 'renderer/components/item/cache/ItemCacheDetails';
 import { ApplicationCacheRO, ApplicationRO } from 'common/generated_definitions';
-import { useNavigatorLayout } from 'renderer/contexts/NavigatorLayoutContext';
+import { useNavigatorLayoutContext } from 'renderer/contexts/NavigatorLayoutContext';
 
 type ApplicationCacheDetailsProps = {
   row: ApplicationCacheRO;
 };
 
 export default function ApplicationCacheDetails({ row }: ApplicationCacheDetailsProps) {
-  const { selectedItem } = useNavigatorLayout();
+  const { selectedItem } = useNavigatorLayoutContext();
 
   const item = useMemo<ApplicationRO>(() => selectedItem as ApplicationRO, [selectedItem]);
 

@@ -4,7 +4,7 @@ import { BarChartOutlined, Home } from '@mui/icons-material';
 import React, { useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { urls } from 'renderer/routes/urls';
-import { useSettings } from 'renderer/contexts/SettingsContext';
+import { useSettingsContext } from 'renderer/contexts/SettingsContext';
 import { isMac } from 'renderer/utils/platformUtils';
 import WindowControls from './navbar/WindowControls';
 import { useMaximizeWindow } from '../../../apis/requests/ui/maximizeWindow';
@@ -16,7 +16,7 @@ import NavbarIconButton from './navbar/NavbarIconButton';
 type MainNavbarProps = {};
 
 export default function MainNavbar({}: MainNavbarProps) {
-  const { isRtl, daemonHealthy } = useSettings();
+  const { isRtl, daemonHealthy } = useSettingsContext();
   const navigate = useNavigate();
 
   const homeHandler = useCallback(() => {
