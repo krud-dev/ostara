@@ -7,7 +7,6 @@ plugins {
     kotlin("jvm") version "1.8.22"
     kotlin("plugin.spring") version "1.8.22"
     kotlin("plugin.jpa") version "1.8.22"
-    kotlin("kapt") version "1.8.22"
     id("cz.habarta.typescript-generator") version "3.2.1263"
     jacoco
     id("org.sonarqube") version "4.2.1.3168"
@@ -73,8 +72,6 @@ if (!project.hasProperty("prod")) {
 
 
 dependencies {
-    kapt("org.springframework.boot:spring-boot-configuration-processor")
-
     implementationDev("org.springdoc:springdoc-openapi-starter-webmvc-ui:2.1.0")
     implementationDev("org.xerial:sqlite-jdbc:3.42.0.0")
 
@@ -130,9 +127,6 @@ tasks.bootJar {
 }
 
 tasks.compileKotlin {
-    if (!project.hasProperty("prod")) {
-        finalizedBy("generateTypeScript")
-    }
     kotlinOptions {
         freeCompilerArgs = listOf("-Xjsr305=strict")
         jvmTarget = "17"
@@ -142,6 +136,7 @@ tasks.compileKotlin {
 tasks.test {
     useJUnitPlatform()
     finalizedBy(tasks.jacocoTestReport)
+    maxParallelForks = Runtime.getRuntime().availableProcessors()
 }
 
 tasks.jacocoTestReport {
