@@ -11,6 +11,9 @@ on:
 jobs:
   generate-typescript:
     runs-on: ubuntu-latest
+    concurrency:
+      group: ${{ github.workflow }}-${{ github.ref }}
+      cancel-in-progress: true
     steps:
       - name: Check out Git repository
         uses: actions/checkout@v3
@@ -23,19 +26,17 @@ jobs:
       - name: Cache Gradle packages
         uses: actions/cache@v3
         with:
-          working-directory: daemon
           path: ~/.gradle/caches
-          key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle.kts') }}
+          key: ${{ runner.os }}-gradle-${{ hashFiles('daemon/*.gradle.kts') }}
           restore-keys: ${{ runner.os }}-gradle
-      - name: Build and analyze
+      - name: Generate typescript
         working-directory: daemon
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: ./gradlew generateTypeScript
       - name: Commit and push changes
-        run: |
-          git config --global user.name "Ostara Ops"
-          git config --global user.email "ops@ostara.dev"
-          git add app/src/common/generated_definitions.d.ts
-          git diff --quiet && git diff --staged --quiet || git commit -am 'Update TypeScript definitions [skip ci]'
-          git push
+        uses: EndBug/add-and-commit@v9
+        with:
+          add: 'daemon/src/main/resources/generated_definitions.d.ts'
+          default_author: github_actions
+          message: 'Update TypeScript definitions [skip ci]'
