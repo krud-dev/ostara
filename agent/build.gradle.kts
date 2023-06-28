@@ -68,7 +68,7 @@ dependencies {
   implementation("io.kubernetes:client-java:18.0.0") {
     exclude(group = "org.slf4j", module = "slf4j-api")
   }
-  implementation("io.ktor:ktor-server-call-logging-jvm:2.3.1")
+  implementation("io.ktor:ktor-server-call-logging-jvm:2.3.2")
   testImplementation("io.ktor:ktor-server-tests-jvm:$ktor_version")
   testImplementation("org.jetbrains.kotlin:kotlin-test-junit:$kotlin_version")
   testImplementation("io.strikt:strikt-core:0.34.0")
