@@ -71,7 +71,7 @@ dependencies {
   implementation("io.ktor:ktor-server-call-logging-jvm:2.3.1")
   testImplementation("io.ktor:ktor-server-tests-jvm:$ktor_version")
   testImplementation("org.jetbrains.kotlin:kotlin-test-junit:$kotlin_version")
-  testImplementation("io.strikt:strikt-core:0.34.0")
+  testImplementation("io.strikt:strikt-core:0.34.1")
   testImplementation("org.mockito.kotlin:mockito-kotlin:5.0.0")
 }
 
