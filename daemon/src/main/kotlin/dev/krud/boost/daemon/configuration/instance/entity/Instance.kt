@@ -12,6 +12,7 @@ import jakarta.persistence.CascadeType
 import jakarta.persistence.Column
 import jakarta.persistence.Entity
 import jakarta.persistence.OneToOne
+import org.hibernate.annotations.Formula
 import java.util.*
 
 @Entity
@@ -50,6 +51,14 @@ class Instance(
     @MappedField
     @Column(columnDefinition = "boolean default false")
     var demo: Boolean = false
+
+    @MappedField
+    @Column(nullable = true)
+    var agentDiscoveryId: String? = null
+
+    @MappedField
+    @Formula("(agent_discovery_id is not null)")
+    val discovered: Boolean = false
 
     companion object {
         const val NAME = "instance"

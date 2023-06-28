@@ -70,6 +70,19 @@ class ActuatorHttpClientImpl(
     private val authenticator: Authenticator = Authenticator.NONE,
     private val disableSslVerification: Boolean = false,
 ) : ActuatorHttpClient {
+    /**
+     * Whether this client is pointing at an agent.
+     */
+    private var agentUrl: String? = null
+
+    constructor(agentUrl: String?, baseUrl: String, authenticator: Authenticator = Authenticator.NONE, disableSslVerification: Boolean = false) : this(
+        baseUrl,
+        authenticator,
+        disableSslVerification
+    ) {
+        this.agentUrl = agentUrl
+    }
+
     internal val objectMapper = ObjectMapper().apply {
         registerModule(JavaTimeModule())
         registerModule(KotlinModule.Builder().build())
@@ -83,7 +96,7 @@ class ActuatorHttpClientImpl(
 
     override fun testConnection(): TestConnectionResponse {
         val rootCall = buildRequest(
-            baseHttpUrl,
+            asUrl(),
             "GET"
         )
         val response = runRequest(rootCall)
@@ -143,7 +156,7 @@ class ActuatorHttpClientImpl(
     }
 
     override fun endpoints(): Result<Set<String>> = runCatching {
-        doGet<EndpointsActuatorResponse>(baseHttpUrl)
+        doGet<EndpointsActuatorResponse>(asUrl())
             .getOrThrow()
             .links
             .map { it.key }
@@ -281,7 +294,7 @@ class ActuatorHttpClientImpl(
 
     // TODO: Write tests
     override fun heapDump(progressListener: ProgressListener, onDownloadComplete: (InputStream) -> Unit, onDownloadFailed: (IOException) -> Unit, onDownloadCancelled: () -> Unit): Result<ActuatorHttpClient.HeapdumpResponse> = runCatching {
-        val client = getClient() {
+        val client = getClient {
             addNetworkInterceptor { chain ->
                 val originalResponse: Response = chain.proceed(chain.request())
                 originalResponse
@@ -427,14 +440,20 @@ class ActuatorHttpClientImpl(
         build: Request.Builder.() -> Unit = {}
     ): Request {
         return Request.Builder()
-            .url(url)
+            .apply {
+                if (agentUrl != null) {
+                    header("X-Actuator-Base-Url", baseHttpUrl.toString())
+                }
+            }
             .method(method, requestBody)
+            .url(url)
             .apply(build)
             .build()
     }
 
-    private fun asUrl(vararg segments: String, build: HttpUrl.Builder.() -> Unit = {}): HttpUrl =
-        baseHttpUrl.newBuilder()
+    private fun asUrl(vararg segments: String, build: HttpUrl.Builder.() -> Unit = {}): HttpUrl {
+        val builder = agentUrl?.toHttpUrl()?.newBuilder() ?: baseHttpUrl.newBuilder()
+        return builder
             .apply {
                 segments.forEach { segment ->
                     addPathSegment(segment)
@@ -442,6 +461,7 @@ class ActuatorHttpClientImpl(
             }
             .apply(build)
             .build()
+    }
 
     private fun Response.bodyAsStringAndClose(): String? {
         return body?.use {

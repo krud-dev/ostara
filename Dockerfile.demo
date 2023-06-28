@@ -1,0 +1,10 @@
+FROM azul/zulu-openjdk:17-latest as build
+WORKDIR /tmp
+COPY demo/ demo/
+COPY ./.git .git/
+RUN cd demo && ./gradlew bootJar
+
+FROM azul/zulu-openjdk:17-latest as run
+WORKDIR /app
+COPY --from=build /tmp/demo/build/libs/demo.jar app.jar
+ENTRYPOINT ["java","-jar","app.jar"]

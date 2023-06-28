@@ -4,6 +4,7 @@ import dev.krud.boost.daemon.configuration.application.websocket.ApplicationHeal
 import dev.krud.boost.daemon.configuration.instance.heapdump.websocket.InstanceHeapdumpWebsocketDispatcher
 import dev.krud.boost.daemon.configuration.instance.metric.InstanceMetricWebsocketTopicInterceptor
 import dev.krud.boost.daemon.configuration.instance.websocket.InstanceAbilityWebsocketDispatcher
+import dev.krud.boost.daemon.configuration.instance.websocket.InstanceCrudWebsocketDispatcher
 import dev.krud.boost.daemon.configuration.instance.websocket.InstanceHealthWebsocketDispatcher
 import dev.krud.boost.daemon.configuration.instance.websocket.InstanceHostnameWebsocketDispatcher
 import dev.krud.boost.daemon.configuration.instance.websocket.InstanceMetadataWebsocketDispatcher
@@ -105,6 +106,13 @@ class WebSocketConfig : WebSocketMessageBrokerConfigurer {
             destination = InstanceMetadataWebsocketDispatcher.INSTANCE_METADATA_TOPIC,
             callback = { _, headerAccessor ->
                 instanceMetadataWebsocketDispatcher.replay(headerAccessor.sessionId!!)
+            }
+        )
+
+        fun instanceCrudReplayingInterceptor(instanceCrudWebsocketDispatcher: InstanceCrudWebsocketDispatcher) = SubscriptionInterceptor(
+            destination = InstanceCrudWebsocketDispatcher.INSTANCE_CRUD_TOPIC,
+            callback = { _, headerAccessor ->
+                instanceCrudWebsocketDispatcher.replay(headerAccessor.sessionId!!)
             }
         )
     }

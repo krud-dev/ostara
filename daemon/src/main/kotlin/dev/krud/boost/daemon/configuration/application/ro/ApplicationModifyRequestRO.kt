@@ -1,5 +1,6 @@
 package dev.krud.boost.daemon.configuration.application.ro
 
+import dev.krud.boost.daemon.agent.validation.ValidAgentIdOrNull
 import dev.krud.boost.daemon.configuration.application.entity.Application
 import dev.krud.boost.daemon.configuration.application.enums.ApplicationType
 import dev.krud.boost.daemon.configuration.authentication.Authentication
@@ -31,5 +32,10 @@ data class ApplicationModifyRequestRO(
     @get:ValidFolderIdOrNull
     val parentFolderId: UUID? = null,
     @MappedField
-    var disableSslVerification: Boolean? = null
+    var disableSslVerification: Boolean? = null,
+    @MappedField
+    @field:ValidAgentIdOrNull
+    var agentId: UUID? = null,
+    @MappedField
+    var agentDiscoveryParams: Map<String, String?>? = null
 )

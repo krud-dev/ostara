@@ -63,6 +63,19 @@ class Application(
     @Column(columnDefinition = "boolean default false")
     var demo: Boolean = false
 
+    @MappedField
+    @Column(nullable = true)
+    var agentId: UUID? = null
+
+    @MappedField
+    @Column(nullable = true)
+    var agentDiscoveryType: String? = null
+
+    @MappedField
+    @Column(nullable = true)
+    @Type(JsonType::class)
+    var agentDiscoveryParams: Map<String, String?>? = null
+
     companion object {
         const val NAME = "application"
     }

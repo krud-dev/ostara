@@ -91,5 +91,6 @@ class BackupExporter(
 
     private fun Application.getInstances(): Sequence<Instance> = instanceKrud.searchSequence {
         Instance::parentApplicationId Equal id
+        Instance::agentDiscoveryId.isNull()
     }
 }

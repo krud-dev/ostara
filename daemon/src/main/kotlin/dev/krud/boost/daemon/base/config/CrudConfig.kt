@@ -30,9 +30,21 @@ class CrudConfig {
                 }
             }
 
+            canDelete("disallow discovered instance deletion") {
+                postCondition { instance, _ ->
+                    !instance.discovered
+                }
+            }
+
             canUpdate("disallow demo instance update") {
                 postCondition { instance, _ ->
                     !instance.demo
+                }
+            }
+
+            canUpdate("disallow discovered instance update") {
+                postCondition { instance, _ ->
+                    !instance.discovered
                 }
             }
         }

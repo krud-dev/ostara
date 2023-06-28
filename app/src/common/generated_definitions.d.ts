@@ -199,6 +199,19 @@ export interface TogglzFeatureUpdateRequest {
     enabled: boolean;
 }
 
+export interface AgentModifyRequestRO {
+    name: string;
+    url: string;
+    apiKey?: string;
+}
+
+export interface AgentRO {
+    id: string;
+    name: string;
+    url: string;
+    apiKey?: string;
+}
+
 export interface SystemBackupRO {
     fileName: string;
     date: DateAsNumber;
@@ -254,6 +267,8 @@ export interface ApplicationModifyRequestRO {
     sort?: number;
     parentFolderId?: string;
     disableSslVerification?: boolean;
+    agentId?: string;
+    agentDiscoveryParams?: { [index: string]: string | undefined };
 }
 
 export interface ApplicationRO {
@@ -270,6 +285,9 @@ export interface ApplicationRO {
     authentication: Authentication;
     demo: boolean;
     disableSslVerification: boolean;
+    agentId?: string;
+    agentDiscoveryType?: string;
+    agentDiscoveryParams?: { [index: string]: string | undefined };
 }
 
 export interface FolderModifyRequestRO {
@@ -385,6 +403,8 @@ export interface InstanceRO {
     health: InstanceHealthRO;
     demo: boolean;
     metadata: InstanceMetadataDTO;
+    agentDiscoveryId?: string;
+    discovered: boolean;
 }
 
 export interface InstanceSystemEnvironmentRO {
@@ -514,6 +534,14 @@ export interface InstanceAbilitiesRefreshedEventMessage$Payload {
     abilities: InstanceAbility[];
 }
 
+export interface InstanceCreatedEventMessage extends AbstractMessage<InstanceCreatedEventMessage$Payload> {
+    payload: InstanceCreatedEventMessage$Payload;
+}
+
+export interface InstanceDeletedEventMessage extends AbstractMessage<InstanceDeletedEventMessage$Payload> {
+    payload: InstanceDeletedEventMessage$Payload;
+}
+
 export interface InstanceHealthChangedEventMessage$Payload {
     parentApplicationId: string;
     instanceId: string;
@@ -531,6 +559,10 @@ export interface InstanceHealthCheckPerformedEventMessage$Payload {
 export interface InstanceHostnameUpdatedEventMessage$Payload {
     instanceId: string;
     hostname?: string;
+}
+
+export interface InstanceUpdatedEventMessage extends AbstractMessage<InstanceUpdatedEventMessage$Payload> {
+    payload: InstanceUpdatedEventMessage$Payload;
 }
 
 export interface InstanceMetadataRefreshedMessage$Payload {
@@ -877,6 +909,21 @@ export interface BackupDTO$TreeElement {
     type: "folder" | "application";
 }
 
+export interface InstanceCreatedEventMessage$Payload {
+    instanceId: string;
+    parentApplicationId: string;
+}
+
+export interface InstanceDeletedEventMessage$Payload {
+    instanceId: string;
+    parentApplicationId: string;
+}
+
+export interface InstanceUpdatedEventMessage$Payload {
+    instanceId: string;
+    parentApplicationId: string;
+}
+
 export interface Iterable<T> {
 }
 
@@ -1095,6 +1142,9 @@ export interface BackupDTO$TreeElement$Application extends BackupDTO$TreeElement
     metricRules: BackupDTO$TreeElement$Application$MetricRule[];
 }
 
+export interface AbstractMessage<T> extends Message<T> {
+}
+
 export interface FlywayActuatorResponse$Context$FlywayBean$Migration {
     type: string;
     checksum: number;
@@ -1196,6 +1246,11 @@ export interface BackupDTO$TreeElement$Application$Instance$Model {
     color: string;
     icon?: string;
     sort?: number;
+}
+
+export interface Message<T> {
+    payload: T;
+    headers: { [index: string]: any };
 }
 
 export interface MappingsActuatorResponse$Context$Mappings$DispatcherServletOrHandler$Details$HandlerMethod {
