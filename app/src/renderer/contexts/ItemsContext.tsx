@@ -8,16 +8,19 @@ import React, {
   useState,
 } from 'react';
 import { ItemRO } from '../definitions/daemon';
-import { CrudSearchData, useCrudSearchQuery } from '../apis/requests/crud/crudSearch';
+import { crudSearch, CrudSearchData, useCrudSearchQuery } from '../apis/requests/crud/crudSearch';
 import {
   AgentRO,
   ApplicationHealthUpdatedEventMessage$Payload,
   ApplicationRO,
   FolderRO,
+  InstanceCreatedEventMessage$Payload,
+  InstanceDeletedEventMessage$Payload,
   InstanceHealthChangedEventMessage$Payload,
   InstanceHostnameUpdatedEventMessage$Payload,
   InstanceMetadataRefreshedMessage$Payload,
   InstanceRO,
+  InstanceUpdatedEventMessage$Payload,
 } from 'common/generated_definitions';
 import { instanceCrudEntity } from 'renderer/apis/requests/crud/entity/entities/instance.crudEntity';
 import { folderCrudEntity } from 'renderer/apis/requests/crud/entity/entities/folder.crudEntity';
@@ -26,6 +29,7 @@ import { useStomp } from 'renderer/apis/websockets/StompContext';
 import { isApplication, isFolder, isInstance } from 'renderer/utils/itemUtils';
 import { QueryObserverResult } from '@tanstack/react-query';
 import { agentCrudEntity } from 'renderer/apis/requests/crud/entity/entities/agent.crudEntity';
+import { difference, differenceBy, isEmpty } from 'lodash';
 
 export type ItemsContextProps = {
   folders: FolderRO[] | undefined;
@@ -133,6 +137,73 @@ const ItemsProvider: FunctionComponent<ItemsProviderProps> = ({ children }) => {
         setInstances((prev) =>
           prev?.map((i) => (i.id === metadataRefreshed.instanceId ? { ...i, metadata: metadataRefreshed.metadata } : i))
         );
+      }
+    );
+    return () => {
+      unsubscribe();
+    };
+  }, []);
+
+  const [instanceIdsToRefresh, setInstanceIdsToRefresh] = useState<string[]>([]);
+
+  const addInstanceToRefresh = useCallback(
+    (instanceId: string) => {
+      setInstanceIdsToRefresh((prev) => [...prev.filter((id) => id !== instanceId), instanceId]);
+    },
+    [setInstanceIdsToRefresh]
+  );
+
+  useEffect(() => {
+    if (isEmpty(instanceIdsToRefresh)) {
+      return;
+    }
+
+    const instanceIds = [...instanceIdsToRefresh];
+    setInstanceIdsToRefresh((prev) => difference(prev, instanceIds));
+
+    (async () => {
+      try {
+        const result = await crudSearch<InstanceRO>({
+          entity: instanceCrudEntity,
+          filterFields: [{ fieldName: 'id', operation: 'In', values: instanceIds }],
+        });
+        setInstances((prev) => [...differenceBy(prev, result.results, 'id'), ...result.results]);
+      } catch (e) {}
+    })();
+  }, [instanceIdsToRefresh]);
+
+  useEffect(() => {
+    const unsubscribe = subscribe(
+      '/topic/instanceCreation',
+      {},
+      (instanceCreated: InstanceCreatedEventMessage$Payload): void => {
+        addInstanceToRefresh(instanceCreated.instanceId);
+      }
+    );
+    return () => {
+      unsubscribe();
+    };
+  }, []);
+
+  useEffect(() => {
+    const unsubscribe = subscribe(
+      '/topic/instanceUpdate',
+      {},
+      (instanceUpdated: InstanceUpdatedEventMessage$Payload): void => {
+        addInstanceToRefresh(instanceUpdated.instanceId);
+      }
+    );
+    return () => {
+      unsubscribe();
+    };
+  }, []);
+
+  useEffect(() => {
+    const unsubscribe = subscribe(
+      '/topic/instanceDeletion',
+      {},
+      (instanceDeleted: InstanceDeletedEventMessage$Payload): void => {
+        setInstances((prev) => prev?.filter((i) => i.id !== instanceDeleted.instanceId));
       }
     );
     return () => {
