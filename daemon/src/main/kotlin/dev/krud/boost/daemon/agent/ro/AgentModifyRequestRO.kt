@@ -6,7 +6,6 @@ import dev.krud.shapeshift.resolver.annotation.DefaultMappingTarget
 import dev.krud.shapeshift.resolver.annotation.MappedField
 import jakarta.validation.constraints.AssertTrue
 import jakarta.validation.constraints.NotBlank
-import okhttp3.HttpUrl.Companion.toHttpUrl
 import okhttp3.HttpUrl.Companion.toHttpUrlOrNull
 import org.hibernate.validator.constraints.URL
 
