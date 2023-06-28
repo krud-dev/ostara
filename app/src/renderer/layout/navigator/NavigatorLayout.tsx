@@ -7,7 +7,7 @@ type NavigatorLayoutProps = {};
 export default function NavigatorLayout({}: NavigatorLayoutProps) {
   return (
     <NavigatorLayoutProvider>
-      <MainSidebarLayout Sidebar={NavigatorSidebar} />
+      <MainSidebarLayout Sidebar={NavigatorSidebar} snap />
     </NavigatorLayoutProvider>
   );
 }

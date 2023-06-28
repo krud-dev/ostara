@@ -1,5 +1,5 @@
-import React, { useRef, useState } from 'react';
-import { Box, Stack } from '@mui/material';
+import React, { useCallback, useMemo, useRef, useState } from 'react';
+import { Box, Button, Divider, Stack, Typography } from '@mui/material';
 import { SIDEBAR_HEADER_HEIGHT } from 'renderer/constants/ui';
 import NavigatorTree from 'renderer/layout/navigator/components/sidebar/tree/NavigatorTree';
 import SearchTextField from 'renderer/components/input/SearchTextField';
@@ -8,15 +8,28 @@ import CreateItemMenu from 'renderer/layout/navigator/components/sidebar/menus/C
 import SearchItemMenu from 'renderer/layout/navigator/components/sidebar/menus/SearchItemMenu';
 import CreateItemContextMenu from 'renderer/layout/navigator/components/sidebar/menus/CreateItemContextMenu';
 import AutoSizer, { VerticalSize } from 'react-virtualized-auto-sizer';
+import { FormattedMessage } from 'react-intl';
+import { useItemsContext } from 'renderer/contexts/ItemsContext';
+import { useNavigate } from 'react-router-dom';
+import { urls } from 'renderer/routes/urls';
 
 type NavigatorSidebarProps = {
   width: number;
 };
 
 export default function NavigatorSidebar({ width }: NavigatorSidebarProps) {
+  const { agents } = useItemsContext();
+  const navigate = useNavigate();
+
   const [search, setSearch] = useState<string>('');
 
   const contextMenuRef = useRef<HTMLElement>(null);
+
+  const agentsCount = useMemo<string | undefined>(() => (agents ? agents.length.toString() : undefined), [agents]);
+
+  const manageAgentsHandler = useCallback((): void => {
+    navigate(urls.agents.url);
+  }, [navigate]);
 
   return (
     <>
@@ -52,6 +65,21 @@ export default function NavigatorSidebar({ width }: NavigatorSidebarProps) {
             {({ height }: VerticalSize) => <NavigatorTree width={width} height={height} search={search} />}
           </AutoSizer>
         </Box>
+
+        <Divider />
+
+        <Stack direction={'row'} alignItems={'center'} justifyContent={'space-between'} sx={{ height: 60, px: 2 }}>
+          <Typography
+            variant={'body2'}
+            sx={{ color: 'text.secondary', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}
+          >
+            <FormattedMessage id={'agents'} />
+            {agentsCount ? ` (${agentsCount})` : ''}
+          </Typography>
+          <Button size={'small'} variant={'outlined'} color={'inherit'} onClick={manageAgentsHandler}>
+            <FormattedMessage id={'manage'} />
+          </Button>
+        </Stack>
       </Box>
     </>
   );

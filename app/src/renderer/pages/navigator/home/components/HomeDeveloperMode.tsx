@@ -22,7 +22,7 @@ import { Authentication$Typed } from 'common/manual_definitions';
 import { useGetApplicationsHealth } from 'renderer/apis/requests/application/health/getApplicationsHealth';
 import { useDeleteItem } from 'renderer/apis/requests/item/deleteItem';
 import { folderCrudEntity } from 'renderer/apis/requests/crud/entity/entities/folder.crudEntity';
-import { showDeleteConfirmationDialog } from 'renderer/utils/dialogUtils';
+import { showDeleteItemConfirmationDialog } from 'renderer/utils/dialogUtils';
 import { isItemDeletable } from 'renderer/utils/itemUtils';
 import { useCreateApplicationMetricRule } from 'renderer/apis/requests/application/metric-rules/createApplicationMetricRule';
 import { useSettingsContext } from 'renderer/contexts/SettingsContext';
@@ -194,7 +194,7 @@ export default function HomeDeveloperMode({}: HomeDeveloperModeProps) {
       return;
     }
 
-    const confirm = await showDeleteConfirmationDialog(data);
+    const confirm = await showDeleteItemConfirmationDialog(data);
     if (!confirm) {
       return;
     }

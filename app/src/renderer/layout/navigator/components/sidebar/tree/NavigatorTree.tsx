@@ -6,7 +6,7 @@ import { FormattedMessage } from 'react-intl';
 import { useNavigatorLayoutContext } from 'renderer/contexts/NavigatorLayoutContext';
 import { useUpdateItem } from 'renderer/apis/requests/item/updateItem';
 import { useDeleteItem } from 'renderer/apis/requests/item/deleteItem';
-import { showDeleteConfirmationDialog } from 'renderer/utils/dialogUtils';
+import { showDeleteItemConfirmationDialog } from 'renderer/utils/dialogUtils';
 import { useMoveItem } from 'renderer/apis/requests/item/moveItem';
 import NiceModal from '@ebay/nice-modal-react';
 import CreateInstanceDialog, {
@@ -208,7 +208,7 @@ export default function NavigatorTree({ width, height, search }: NavigatorTreePr
       return;
     }
 
-    const confirm = await showDeleteConfirmationDialog(items);
+    const confirm = await showDeleteItemConfirmationDialog(items);
     if (!confirm) {
       return;
     }

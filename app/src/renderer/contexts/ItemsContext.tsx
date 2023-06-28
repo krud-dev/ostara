@@ -10,6 +10,7 @@ import React, {
 import { ItemRO } from '../definitions/daemon';
 import { CrudSearchData, useCrudSearchQuery } from '../apis/requests/crud/crudSearch';
 import {
+  AgentRO,
   ApplicationHealthUpdatedEventMessage$Payload,
   ApplicationRO,
   FolderRO,
@@ -24,14 +25,17 @@ import { applicationCrudEntity } from 'renderer/apis/requests/crud/entity/entiti
 import { useStomp } from 'renderer/apis/websockets/StompContext';
 import { isApplication, isFolder, isInstance } from 'renderer/utils/itemUtils';
 import { QueryObserverResult } from '@tanstack/react-query';
+import { agentCrudEntity } from 'renderer/apis/requests/crud/entity/entities/agent.crudEntity';
 
 export type ItemsContextProps = {
   folders: FolderRO[] | undefined;
   applications: ApplicationRO[] | undefined;
   instances: InstanceRO[] | undefined;
+  agents: AgentRO[] | undefined;
   refetchFolders: () => Promise<QueryObserverResult<CrudSearchData<FolderRO>>>;
   refetchApplications: () => Promise<QueryObserverResult<CrudSearchData<ApplicationRO>>>;
   refetchInstances: () => Promise<QueryObserverResult<CrudSearchData<InstanceRO>>>;
+  refetchAgents: () => Promise<QueryObserverResult<CrudSearchData<AgentRO>>>;
   items: ItemRO[] | undefined;
   addItem: (item: ItemRO) => void;
   addItems: (items: ItemRO[]) => void;
@@ -48,10 +52,12 @@ const ItemsProvider: FunctionComponent<ItemsProviderProps> = ({ children }) => {
   const [folders, setFolders] = useState<FolderRO[] | undefined>(undefined);
   const [applications, setApplications] = useState<ApplicationRO[] | undefined>(undefined);
   const [instances, setInstances] = useState<InstanceRO[] | undefined>(undefined);
+  const [agents, setAgents] = useState<AgentRO[] | undefined>(undefined);
 
   const searchFolderState = useCrudSearchQuery<FolderRO>({ entity: folderCrudEntity });
   const searchApplicationState = useCrudSearchQuery<ApplicationRO>({ entity: applicationCrudEntity });
   const searchInstanceState = useCrudSearchQuery<InstanceRO>({ entity: instanceCrudEntity });
+  const searchAgentsState = useCrudSearchQuery<AgentRO>({ entity: agentCrudEntity });
 
   useEffect(() => {
     setFolders(searchFolderState.data?.results);
@@ -64,6 +70,10 @@ const ItemsProvider: FunctionComponent<ItemsProviderProps> = ({ children }) => {
   useEffect(() => {
     setInstances(searchInstanceState.data?.results);
   }, [searchInstanceState.data]);
+
+  useEffect(() => {
+    setAgents(searchAgentsState.data?.results);
+  }, [searchAgentsState.data]);
 
   const items = useMemo<ItemRO[] | undefined>(
     () => (folders && applications && instances ? [...folders, ...applications, ...instances] : undefined),
@@ -158,9 +168,11 @@ const ItemsProvider: FunctionComponent<ItemsProviderProps> = ({ children }) => {
       folders,
       applications,
       instances,
+      agents,
       refetchFolders: searchFolderState.refetch,
       refetchApplications: searchApplicationState.refetch,
       refetchInstances: searchInstanceState.refetch,
+      refetchAgents: searchAgentsState.refetch,
       items,
       addItem,
       addItems,
@@ -170,9 +182,11 @@ const ItemsProvider: FunctionComponent<ItemsProviderProps> = ({ children }) => {
       folders,
       applications,
       instances,
+      agents,
       searchFolderState.refetch,
       searchApplicationState.refetch,
       searchInstanceState.refetch,
+      searchAgentsState.refetch,
       items,
       addItem,
       addItems,

@@ -39,6 +39,10 @@ export const urls = asUrlInfos({
     url: '/navigator/dashboard',
     path: 'dashboard',
   },
+  agents: {
+    url: '/navigator/agents',
+    path: 'agents',
+  },
   // Folder Root
   folder: {
     url: '/navigator/folder/:id',

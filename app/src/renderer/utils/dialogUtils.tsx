@@ -15,15 +15,20 @@ import { ApplicationRO, FolderRO, InstanceRO } from 'common/generated_definition
 import { ItemRO } from '../definitions/daemon';
 import { getItemDisplayName, isApplication, isFolder, isInstance } from './itemUtils';
 
-export const showDeleteConfirmationDialog = async (items: ItemRO | ItemRO[]): Promise<boolean> => {
-  const itemsName = isArray(items) ? items.map((i) => getItemDisplayName(i)).join(', ') : getItemDisplayName(items);
+export const showDeleteConfirmationDialog = async (name: string): Promise<boolean> => {
   return await NiceModal.show<boolean, ConfirmationDialogProps>(ConfirmationDialog, {
     title: <FormattedMessage id={'delete'} />,
-    text: <FormattedMessage id={'areYouSureYouWantToDelete'} values={{ name: itemsName }} />,
+    text: <FormattedMessage id={'areYouSureYouWantToDelete'} values={{ name }} />,
     continueText: <FormattedMessage id={'delete'} />,
     continueColor: 'error',
   });
 };
+
+export const showDeleteItemConfirmationDialog = async (items: ItemRO | ItemRO[]): Promise<boolean> => {
+  const itemsName = isArray(items) ? items.map((i) => getItemDisplayName(i)).join(', ') : getItemDisplayName(items);
+  return await showDeleteConfirmationDialog(itemsName);
+};
+
 export const showUpdateItemDialog = async (item: ItemRO): Promise<ItemRO | undefined> => {
   if (isFolder(item)) {
     return await NiceModal.show<FolderRO | undefined, UpdateFolderDialogProps>(UpdateFolderDialog, {

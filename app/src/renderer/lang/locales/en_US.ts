@@ -519,6 +519,13 @@ export default {
   errorLoadingData: 'Error loading data',
   selectedConfigurationIsEmpty: 'Selected configuration is empty',
   noInternetConnectionCheckConnectionTryAgain: 'No internet connection. Please check your connection and try again.',
+  agents: 'Agents',
+  createAgent: 'Create Agent',
+  updateAgent: 'Update Agent',
+  agentsDescription:
+    'Agents allow you to interact with remote environments you may otherwise not have access to, as well as enable you to use common service discovery strategies to automatically find instances.',
+  apiKey: 'API Key',
+  agentApiKeySecuredConnections: 'API Key is required only for secured connections (HTTPS).',
   notificationTitleApplicationAllUp: '{application} is UP',
   notificationBodyApplicationAllUp: 'All instances of {application} are UP.',
   notificationTitleApplicationAllDown: '{application} is DOWN',
