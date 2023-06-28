@@ -1,8 +1,8 @@
-package dev.ostara.plugins
+package dev.ostara.agent.plugins
 
-import dev.ostara.plugins.routes.configureActuatorRoutes
-import dev.ostara.plugins.routes.configureInfoRoutes
-import dev.ostara.plugins.routes.configureServiceDiscoveryRoutes
+import dev.ostara.agent.plugins.routes.configureActuatorRoutes
+import dev.ostara.agent.plugins.routes.configureInfoRoutes
+import dev.ostara.agent.plugins.routes.configureServiceDiscoveryRoutes
 import io.ktor.http.*
 import io.ktor.server.application.*
 import io.ktor.server.plugins.callloging.*

@@ -1,7 +1,7 @@
-package dev.ostara.param.model
+package dev.ostara.agent.param.model
 
-import dev.ostara.param.model.Param.Companion.getInt
-import dev.ostara.param.model.Param.Companion.getString
+import dev.ostara.agent.param.model.Param.Companion.getInt
+import dev.ostara.agent.param.model.Param.Companion.getString
 
 data class Params(
   val list: List<Param>

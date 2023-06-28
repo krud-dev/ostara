@@ -1,8 +1,8 @@
-package dev.ostara.plugins.routes
+package dev.ostara.agent.plugins.routes
 
-import dev.ostara.param.model.ParamSchema.Companion.validate
-import dev.ostara.param.model.Params
-import dev.ostara.servicediscovery.handler.KubernetesServiceDiscoveryHandlerImpl
+import dev.ostara.agent.param.model.ParamSchema.Companion.validate
+import dev.ostara.agent.param.model.Params
+import dev.ostara.agent.servicediscovery.handler.ServiceDiscoveryHandler
 import io.ktor.http.*
 import io.ktor.server.application.*
 import io.ktor.server.plugins.requestvalidation.*
@@ -12,7 +12,7 @@ import io.ktor.server.routing.*
 import org.koin.ktor.ext.getKoin
 
 fun Route.configureServiceDiscoveryRoutes() {
-  val handlers = getKoin().getAll<KubernetesServiceDiscoveryHandlerImpl>()
+  val handlers = getKoin().getAll<ServiceDiscoveryHandler>()
   post("/api/service-discovery/{type}/discover") {
     try {
       val type = call.parameters["type"]?.lowercase()

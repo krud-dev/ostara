@@ -1,6 +1,6 @@
-package dev.ostara.model
+package dev.ostara.agent.model
 
-import dev.ostara.param.model.ParamSchema
+import dev.ostara.agent.param.model.ParamSchema
 
 data class ServiceDiscoveryStrategyDTO(
   val type: String,

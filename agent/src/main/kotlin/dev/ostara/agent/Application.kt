@@ -1,9 +1,9 @@
-package dev.ostara
+package dev.ostara.agent
 
-import dev.ostara.plugins.configureAuthentication
-import dev.ostara.plugins.configureKoin
-import dev.ostara.plugins.configureRouting
-import dev.ostara.plugins.configureSerialization
+import dev.ostara.agent.plugins.configureAuthentication
+import dev.ostara.agent.plugins.configureKoin
+import dev.ostara.agent.plugins.configureRouting
+import dev.ostara.agent.plugins.configureSerialization
 import io.ktor.server.application.*
 import io.ktor.server.engine.*
 import io.ktor.server.netty.*

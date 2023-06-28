@@ -1,4 +1,4 @@
-package dev.ostara.servicediscovery
+package dev.ostara.agent.servicediscovery
 
 data class DiscoveredInstanceDTO(
   val id: String,

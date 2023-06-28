@@ -1,6 +1,6 @@
-package dev.ostara.plugins
+package dev.ostara.agent.plugins
 
-import dev.ostara.servicediscovery.serviceDiscoveryModule
+import dev.ostara.agent.servicediscovery.serviceDiscoveryModule
 import io.ktor.server.application.*
 import org.koin.ktor.plugin.Koin
 

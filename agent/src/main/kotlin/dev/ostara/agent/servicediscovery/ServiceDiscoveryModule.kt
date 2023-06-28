@@ -1,8 +1,8 @@
-package dev.ostara.servicediscovery
+package dev.ostara.agent.servicediscovery
 
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
-import dev.ostara.servicediscovery.handler.KubernetesServiceDiscoveryHandlerImpl
-import dev.ostara.servicediscovery.handler.ServiceDiscoveryHandler
+import dev.ostara.agent.servicediscovery.handler.KubernetesServiceDiscoveryHandlerImpl
+import dev.ostara.agent.servicediscovery.handler.ServiceDiscoveryHandler
 import org.koin.dsl.bind
 import org.koin.dsl.module
 

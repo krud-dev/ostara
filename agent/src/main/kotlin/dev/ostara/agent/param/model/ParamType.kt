@@ -1,4 +1,4 @@
-package dev.ostara.param.model
+package dev.ostara.agent.param.model
 
 import kotlin.reflect.KClass
 

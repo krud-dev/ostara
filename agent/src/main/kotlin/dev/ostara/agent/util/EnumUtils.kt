@@ -1,4 +1,4 @@
-package dev.ostara.util
+package dev.ostara.agent.util
 
 inline fun <reified T : Enum<T>> valueOfOrNull(name: String?): Enum<T>? {
   name ?: return null

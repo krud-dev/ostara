@@ -1,9 +1,9 @@
-package dev.ostara.servicediscovery.handler
+package dev.ostara.agent.servicediscovery.handler
 
-import dev.ostara.param.dsl.params
-import dev.ostara.param.model.ParamSchema
-import dev.ostara.param.model.Params
-import dev.ostara.servicediscovery.DiscoveredInstanceDTO
+import dev.ostara.agent.param.dsl.params
+import dev.ostara.agent.param.model.ParamSchema
+import dev.ostara.agent.param.model.Params
+import dev.ostara.agent.servicediscovery.DiscoveredInstanceDTO
 import io.kubernetes.client.openapi.apis.CoreV1Api
 import io.kubernetes.client.util.Config
 

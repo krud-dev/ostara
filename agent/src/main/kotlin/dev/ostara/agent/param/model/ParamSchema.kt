@@ -1,6 +1,6 @@
-package dev.ostara.param.model
+package dev.ostara.agent.param.model
 
-import dev.ostara.servicediscovery.handler.ServiceDiscoveryHandler
+import dev.ostara.agent.servicediscovery.handler.ServiceDiscoveryHandler
 import io.ktor.server.plugins.requestvalidation.*
 
 data class ParamSchema(

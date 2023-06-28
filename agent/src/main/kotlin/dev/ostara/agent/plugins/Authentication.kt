@@ -1,6 +1,6 @@
-package dev.ostara.plugins
+package dev.ostara.agent.plugins
 
-import dev.ostara.util.AGENT_KEY_HEADER
+import dev.ostara.agent.util.AGENT_KEY_HEADER
 import io.ktor.http.*
 import io.ktor.server.application.*
 import io.ktor.server.plugins.*

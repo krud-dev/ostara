@@ -1,7 +1,7 @@
-package dev.ostara.param.dsl
+package dev.ostara.agent.param.dsl
 
-import dev.ostara.param.model.ParamSchema
-import dev.ostara.param.model.ParamType
+import dev.ostara.agent.param.model.ParamSchema
+import dev.ostara.agent.param.model.ParamType
 
 @DslMarker
 annotation class ParamSchemaDsl
@@ -9,7 +9,7 @@ annotation class ParamSchemaDsl
 @ParamSchemaDsl
 class ParamSchemasBuilder {
   private val paramSchemas = mutableListOf<ParamSchema>()
-  fun <T> param(name: String, type: ParamType, action: ParamSchemaBuilder<T>.() -> Unit) {
+  fun <T> param(name: String, type: ParamType, action: ParamSchemasBuilder.ParamSchemaBuilder<T>.() -> Unit) {
     val builder = ParamSchemaBuilder<T>(
       name,
       type
@@ -18,11 +18,11 @@ class ParamSchemasBuilder {
     paramSchemas += builder.build()
   }
 
-  fun stringParam(name: String, action: ParamSchemaBuilder<String>.() -> Unit) {
+  fun stringParam(name: String, action: ParamSchemasBuilder.ParamSchemaBuilder<String>.() -> Unit) {
     param(name, ParamType.STRING, action)
   }
 
-  fun intParam(name: String, action: ParamSchemaBuilder<Int>.() -> Unit) {
+  fun intParam(name: String, action: ParamSchemasBuilder.ParamSchemaBuilder<Int>.() -> Unit) {
     param(name, ParamType.INT, action)
   }
 

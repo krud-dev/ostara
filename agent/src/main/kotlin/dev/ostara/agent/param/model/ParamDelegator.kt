@@ -1,7 +1,7 @@
-package dev.ostara.param.model
+package dev.ostara.agent.param.model
 
-import dev.ostara.param.model.Param.Companion.getInt
-import dev.ostara.param.model.Param.Companion.getString
+import dev.ostara.agent.param.model.Param.Companion.getInt
+import dev.ostara.agent.param.model.Param.Companion.getString
 import kotlin.reflect.KProperty
 
 class ParamDelegator<T>(private val params: Params) {

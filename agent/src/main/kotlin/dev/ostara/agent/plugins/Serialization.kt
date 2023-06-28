@@ -1,4 +1,4 @@
-package dev.ostara.plugins
+package dev.ostara.agent.plugins
 
 import com.fasterxml.jackson.databind.MapperFeature
 import com.fasterxml.jackson.databind.SerializationFeature
