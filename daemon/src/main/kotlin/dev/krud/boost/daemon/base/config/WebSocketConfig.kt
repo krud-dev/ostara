@@ -4,10 +4,12 @@ import dev.krud.boost.daemon.configuration.application.websocket.ApplicationHeal
 import dev.krud.boost.daemon.configuration.instance.heapdump.websocket.InstanceHeapdumpWebsocketDispatcher
 import dev.krud.boost.daemon.configuration.instance.metric.InstanceMetricWebsocketTopicInterceptor
 import dev.krud.boost.daemon.configuration.instance.websocket.InstanceAbilityWebsocketDispatcher
-import dev.krud.boost.daemon.configuration.instance.websocket.InstanceCrudWebsocketDispatcher
+import dev.krud.boost.daemon.configuration.instance.websocket.InstanceCreationWebsocketDispatcher
+import dev.krud.boost.daemon.configuration.instance.websocket.InstanceDeletionWebsocketDispatcher
 import dev.krud.boost.daemon.configuration.instance.websocket.InstanceHealthWebsocketDispatcher
 import dev.krud.boost.daemon.configuration.instance.websocket.InstanceHostnameWebsocketDispatcher
 import dev.krud.boost.daemon.configuration.instance.websocket.InstanceMetadataWebsocketDispatcher
+import dev.krud.boost.daemon.configuration.instance.websocket.InstanceUpdateWebsocketDispatcher
 import dev.krud.boost.daemon.metricmonitor.websocket.MetricRuleWebsocketDispatcher
 import dev.krud.boost.daemon.threadprofiling.websocket.ThreadProfilingWebsocketDispatcher
 import dev.krud.boost.daemon.websocket.SubscriptionInterceptor
@@ -109,10 +111,27 @@ class WebSocketConfig : WebSocketMessageBrokerConfigurer {
             }
         )
 
-        fun instanceCrudReplayingInterceptor(instanceCrudWebsocketDispatcher: InstanceCrudWebsocketDispatcher) = SubscriptionInterceptor(
-            destination = InstanceCrudWebsocketDispatcher.INSTANCE_CRUD_TOPIC,
+        @Bean
+        fun instanceCreationReplayingInterceptor(instanceCreationWebsocketDispatcher: InstanceCreationWebsocketDispatcher) = SubscriptionInterceptor(
+            destination = InstanceCreationWebsocketDispatcher.INSTANCE_CREATION_TOPIC,
             callback = { _, headerAccessor ->
-                instanceCrudWebsocketDispatcher.replay(headerAccessor.sessionId!!)
+                instanceCreationWebsocketDispatcher.replay(headerAccessor.sessionId!!)
+            }
+        )
+
+        @Bean
+        fun instanceUpdateReplayingInterceptor(instanceUpdateWebsocketDispatcher: InstanceUpdateWebsocketDispatcher) = SubscriptionInterceptor(
+            destination = InstanceUpdateWebsocketDispatcher.INSTANCE_UPDATE_TOPIC,
+            callback = { _, headerAccessor ->
+                instanceUpdateWebsocketDispatcher.replay(headerAccessor.sessionId!!)
+            }
+        )
+
+        @Bean
+        fun instanceDeletionReplayingInterceptor(instanceDeletionWebsocketDispatcher: InstanceDeletionWebsocketDispatcher) = SubscriptionInterceptor(
+            destination = InstanceDeletionWebsocketDispatcher.INSTANCE_DELETION_TOPIC,
+            callback = { _, headerAccessor ->
+                instanceDeletionWebsocketDispatcher.replay(headerAccessor.sessionId!!)
             }
         )
     }
