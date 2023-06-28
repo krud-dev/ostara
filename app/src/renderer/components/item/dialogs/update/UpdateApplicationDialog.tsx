@@ -9,6 +9,7 @@ import ApplicationDetailsForm, {
 import { ApplicationModifyRequestRO, ApplicationRO } from 'common/generated_definitions';
 import { useCrudUpdate } from 'renderer/apis/requests/crud/crudUpdate';
 import { applicationCrudEntity } from 'renderer/apis/requests/crud/entity/entities/application.crudEntity';
+import { useItemsContext } from 'renderer/contexts/ItemsContext';
 
 export type UpdateApplicationDialogProps = {
   item: ApplicationRO;
@@ -18,10 +19,11 @@ export type UpdateApplicationDialogProps = {
 const UpdateApplicationDialog: FunctionComponent<UpdateApplicationDialogProps> = NiceModal.create(
   ({ item, onUpdated }) => {
     const modal = useModal();
+    const { addItem } = useItemsContext();
 
     const [submitting, setSubmitting] = useState<boolean>(false);
 
-    const updateState = useCrudUpdate<ApplicationRO, ApplicationModifyRequestRO>();
+    const updateState = useCrudUpdate<ApplicationRO, ApplicationModifyRequestRO>({ refetchNone: true });
 
     const submitHandler = useCallback(async (data: ApplicationFormValues): Promise<void> => {
       setSubmitting(true);
@@ -33,6 +35,8 @@ const UpdateApplicationDialog: FunctionComponent<UpdateApplicationDialogProps> =
           item: { ...item, ...data },
         });
         if (result) {
+          addItem(result);
+
           onUpdated?.(result);
 
           modal.resolve(result);

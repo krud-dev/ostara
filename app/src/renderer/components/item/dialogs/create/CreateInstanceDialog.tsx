@@ -102,9 +102,6 @@ const CreateInstanceDialog: FunctionComponent<CreateInstanceDialogProps> = NiceM
             items: instancesToCreate,
           });
           if (result?.length) {
-            queryClient.invalidateQueries(crudKeys.entity(applicationCrudEntity));
-            queryClient.invalidateQueries(crudKeys.entity(instanceCrudEntity));
-
             track({ name: 'add_instance', properties: { count: instancesToCreate.length } });
 
             addItems([...(instanceParentApplication ? [instanceParentApplication] : []), ...result]);

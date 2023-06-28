@@ -176,8 +176,10 @@ const ItemsProvider: FunctionComponent<ItemsProviderProps> = ({ children }) => {
     const unsubscribe = subscribe(
       '/topic/instanceCreation',
       {},
-      (instanceCreated: InstanceCreatedEventMessage$Payload): void => {
-        addInstanceToRefresh(instanceCreated.instanceId);
+      (instanceEvent: InstanceCreatedEventMessage$Payload): void => {
+        if (instanceEvent.discovered) {
+          addInstanceToRefresh(instanceEvent.instanceId);
+        }
       }
     );
     return () => {
@@ -189,8 +191,10 @@ const ItemsProvider: FunctionComponent<ItemsProviderProps> = ({ children }) => {
     const unsubscribe = subscribe(
       '/topic/instanceUpdate',
       {},
-      (instanceUpdated: InstanceUpdatedEventMessage$Payload): void => {
-        addInstanceToRefresh(instanceUpdated.instanceId);
+      (instanceEvent: InstanceUpdatedEventMessage$Payload): void => {
+        if (instanceEvent.discovered) {
+          addInstanceToRefresh(instanceEvent.instanceId);
+        }
       }
     );
     return () => {
@@ -202,8 +206,10 @@ const ItemsProvider: FunctionComponent<ItemsProviderProps> = ({ children }) => {
     const unsubscribe = subscribe(
       '/topic/instanceDeletion',
       {},
-      (instanceDeleted: InstanceDeletedEventMessage$Payload): void => {
-        setInstances((prev) => prev?.filter((i) => i.id !== instanceDeleted.instanceId));
+      (instanceEvent: InstanceDeletedEventMessage$Payload): void => {
+        if (instanceEvent.discovered) {
+          setInstances((prev) => prev?.filter((i) => i.id !== instanceEvent.instanceId));
+        }
       }
     );
     return () => {
