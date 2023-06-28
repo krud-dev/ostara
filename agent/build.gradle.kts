@@ -14,7 +14,7 @@ plugins {
 group = "dev.ostara"
 version = "0.11.0-SNAPSHOT"
 application {
-  mainClass.set("dev.ostara.ApplicationKt")
+  mainClass.set("dev.ostara.agent.ApplicationKt")
 
   val isDevelopment: Boolean = project.ext.has("development")
   applicationDefaultJvmArgs = listOf("-Dio.ktor.development=$isDevelopment")

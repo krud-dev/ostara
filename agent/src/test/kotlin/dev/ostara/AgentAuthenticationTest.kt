@@ -1,7 +1,7 @@
 package dev.ostara
 
-import dev.ostara.plugins.AgentAuthentication
-import dev.ostara.plugins.configureAuthentication
+import dev.ostara.agent.plugins.AgentAuthentication
+import dev.ostara.agent.plugins.configureAuthentication
 import io.ktor.client.request.*
 import io.ktor.client.statement.*
 import io.ktor.http.*
