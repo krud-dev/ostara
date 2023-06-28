@@ -912,16 +912,19 @@ export interface BackupDTO$TreeElement {
 export interface InstanceCreatedEventMessage$Payload {
     instanceId: string;
     parentApplicationId: string;
+    discovered: boolean;
 }
 
 export interface InstanceDeletedEventMessage$Payload {
     instanceId: string;
     parentApplicationId: string;
+    discovered: boolean;
 }
 
 export interface InstanceUpdatedEventMessage$Payload {
     instanceId: string;
     parentApplicationId: string;
+    discovered: boolean;
 }
 
 export interface Iterable<T> {

@@ -8,6 +8,7 @@ import java.util.*
 class InstanceDeletedEventMessage(payload: Payload) : AbstractMessage<InstanceDeletedEventMessage.Payload>(payload) {
     data class Payload(
         val instanceId: UUID,
-        val parentApplicationId: UUID
+        val parentApplicationId: UUID,
+        val discovered: Boolean
     )
 }
