@@ -9,6 +9,8 @@ val logback_version: String by project
 plugins {
   kotlin("jvm") version "1.8.22"
   id("io.ktor.plugin") version "2.3.1"
+  id("org.sonarqube") version "4.2.1.3168"
+  jacoco
 }
 
 group = "dev.ostara"
@@ -71,4 +73,26 @@ dependencies {
   testImplementation("org.jetbrains.kotlin:kotlin-test-junit:$kotlin_version")
   testImplementation("io.strikt:strikt-core:0.34.0")
   testImplementation("org.mockito.kotlin:mockito-kotlin:5.0.0")
+}
+
+sonar {
+  properties {
+    property("sonar.projectKey", "ostara-agent")
+    property("sonar.organization", "krud-dev")
+    property("sonar.host.url", "https://sonarcloud.io")
+  }
+}
+
+tasks.test {
+  useJUnitPlatform()
+  finalizedBy(tasks.jacocoTestReport)
+  maxParallelForks = Runtime.getRuntime().availableProcessors()
+}
+
+tasks.jacocoTestReport {
+  dependsOn(tasks.test)
+  reports {
+    xml.required.set(true)
+    html.required.set(false)
+  }
 }
