@@ -84,7 +84,6 @@ sonar {
 }
 
 tasks.test {
-  useJUnitPlatform()
   finalizedBy(tasks.jacocoTestReport)
   maxParallelForks = Runtime.getRuntime().availableProcessors()
 }
