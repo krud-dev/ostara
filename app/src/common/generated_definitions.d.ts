@@ -534,6 +534,14 @@ export interface InstanceAbilitiesRefreshedEventMessage$Payload {
     abilities: InstanceAbility[];
 }
 
+export interface InstanceCreatedEventMessage extends AbstractMessage<InstanceCreatedEventMessage$Payload> {
+    payload: InstanceCreatedEventMessage$Payload;
+}
+
+export interface InstanceDeletedEventMessage extends AbstractMessage<InstanceDeletedEventMessage$Payload> {
+    payload: InstanceDeletedEventMessage$Payload;
+}
+
 export interface InstanceHealthChangedEventMessage$Payload {
     parentApplicationId: string;
     instanceId: string;
@@ -551,6 +559,10 @@ export interface InstanceHealthCheckPerformedEventMessage$Payload {
 export interface InstanceHostnameUpdatedEventMessage$Payload {
     instanceId: string;
     hostname?: string;
+}
+
+export interface InstanceUpdatedEventMessage extends AbstractMessage<InstanceUpdatedEventMessage$Payload> {
+    payload: InstanceUpdatedEventMessage$Payload;
 }
 
 export interface InstanceMetadataRefreshedMessage$Payload {
@@ -897,6 +909,21 @@ export interface BackupDTO$TreeElement {
     type: "folder" | "application";
 }
 
+export interface InstanceCreatedEventMessage$Payload {
+    instanceId: string;
+    parentApplicationId: string;
+}
+
+export interface InstanceDeletedEventMessage$Payload {
+    instanceId: string;
+    parentApplicationId: string;
+}
+
+export interface InstanceUpdatedEventMessage$Payload {
+    instanceId: string;
+    parentApplicationId: string;
+}
+
 export interface Iterable<T> {
 }
 
@@ -1115,6 +1142,9 @@ export interface BackupDTO$TreeElement$Application extends BackupDTO$TreeElement
     metricRules: BackupDTO$TreeElement$Application$MetricRule[];
 }
 
+export interface AbstractMessage<T> extends Message<T> {
+}
+
 export interface FlywayActuatorResponse$Context$FlywayBean$Migration {
     type: string;
     checksum: number;
@@ -1216,6 +1246,11 @@ export interface BackupDTO$TreeElement$Application$Instance$Model {
     color: string;
     icon?: string;
     sort?: number;
+}
+
+export interface Message<T> {
+    payload: T;
+    headers: { [index: string]: any };
 }
 
 export interface MappingsActuatorResponse$Context$Mappings$DispatcherServletOrHandler$Details$HandlerMethod {
