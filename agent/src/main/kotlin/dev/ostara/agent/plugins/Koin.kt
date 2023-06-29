@@ -1,6 +1,7 @@
 package dev.ostara.agent.plugins
 
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
+import com.sksamuel.hoplite.addResourceSource
 import dev.ostara.agent.configuration.OstaraConfiguration
 import dev.ostara.agent.service.serviceModule
 import io.ktor.server.application.*
@@ -12,7 +13,9 @@ fun Application.configureKoin() {
     modules(
       listOf(
         module {
-          single { OstaraConfiguration.load("/Users/idane/projects/krud/spring-boost/agent/src/main/resources/kubernetes-config.yml") }
+          single { OstaraConfiguration.load {
+            addResourceSource("/test-config.yml")
+          } }
           single { jacksonObjectMapper() }
         },
         serviceModule

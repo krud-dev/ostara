@@ -1,6 +1,0 @@
-serviceDiscoveries:
-  - type: kubernetes
-    namespace: demo
-    appNameLabel: app.kubernetes.io/name
-  - type: internal
-    apiKey: test

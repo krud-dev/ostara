@@ -1,6 +1,7 @@
 package dev.ostara.agent.configuration
 
 import com.sksamuel.hoplite.ConfigLoaderBuilder
+import com.sksamuel.hoplite.Undefined.path
 import com.sksamuel.hoplite.addFileSource
 import com.sksamuel.hoplite.fp.getOrElse
 
@@ -48,8 +49,14 @@ data class OstaraConfiguration(
   companion object {
     const val DEFAULT_CONFIG_PATH = "/etc/ostara/config.yml"
     fun load(path: String = DEFAULT_CONFIG_PATH): OstaraConfiguration {
+      return load {
+        addFileSource(path)
+      }
+    }
+
+    fun load(action: ConfigLoaderBuilder.() -> Unit): OstaraConfiguration {
       return ConfigLoaderBuilder.default()
-        .addFileSource(path, optional = true)
+        .apply(action)
         .strict()
         .build()
         .loadConfig<OstaraConfiguration>()

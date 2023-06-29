@@ -1,0 +1,3 @@
+serviceDiscoveries:
+  - type: internal
+    apiKey: test
