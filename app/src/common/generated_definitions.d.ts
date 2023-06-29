@@ -522,9 +522,21 @@ export interface BackupDTO {
     tree: BackupDTO$TreeElementUnion[];
 }
 
+export interface ApplicationCreatedEventMessage extends AbstractMessage<ApplicationCreatedEventMessage$Payload> {
+    payload: ApplicationCreatedEventMessage$Payload;
+}
+
+export interface ApplicationDeletedEventMessage extends AbstractMessage<ApplicationDeletedEventMessage$Payload> {
+    payload: ApplicationDeletedEventMessage$Payload;
+}
+
 export interface ApplicationHealthUpdatedEventMessage$Payload {
     applicationId: string;
     newHealth: ApplicationHealthRO;
+}
+
+export interface ApplicationUpdatedEventMessage extends AbstractMessage<ApplicationUpdatedEventMessage$Payload> {
+    payload: ApplicationUpdatedEventMessage$Payload;
 }
 
 export interface EffectiveAuthentication {
@@ -926,6 +938,21 @@ export interface ServiceDiscoveryStrategyDTO {
 
 export interface BackupDTO$TreeElement {
     type: "folder" | "application" | "agent";
+}
+
+export interface ApplicationCreatedEventMessage$Payload {
+    applicationId: string;
+    discovered: boolean;
+}
+
+export interface ApplicationDeletedEventMessage$Payload {
+    applicationId: string;
+    discovered: boolean;
+}
+
+export interface ApplicationUpdatedEventMessage$Payload {
+    applicationId: string;
+    discovered: boolean;
 }
 
 export interface InstanceCreatedEventMessage$Payload {

@@ -71,6 +71,7 @@
     "start:daemon": "cd ../daemon && ./gradlew bootRun",
     "start:demo": "cd ../demo && ./gradlew bootRun",
     "start:agent": "cd ../agent && ./gradlew runFatJar",
+    "daemon:generateTypescript": "cd ../daemon && ./gradlew generateTypescript",
     "test": "jest",
     "changeset": "changeset",
     "release": "changeset version && changeset tag"
