@@ -18,6 +18,7 @@ import {
   getItemParentId,
   getItemType,
   getItemUrl,
+  isAgent,
   isApplication,
   isFolder,
   isInstance,
@@ -255,7 +256,16 @@ export default function NavigatorTree({ width, height, search }: NavigatorTreePr
       ) {
         return true;
       }
+      if (
+        dragNodes.some((node) => isApplication(node.data) && !!node.data.parentAgentId) &&
+        dragNodes.some((node) => getItemParentId(node.data) !== parentNode.data.id)
+      ) {
+        return true;
+      }
       if (dragNodes.some((node) => isApplication(node.data)) && !parentNode.isRoot && !isFolder(parentNode.data)) {
+        return true;
+      }
+      if (dragNodes.some((node) => isAgent(node.data)) && !parentNode.isRoot && !isFolder(parentNode.data)) {
         return true;
       }
       if (dragNodes.some((node) => isFolder(node.data)) && !parentNode.isRoot && !isFolder(parentNode.data)) {

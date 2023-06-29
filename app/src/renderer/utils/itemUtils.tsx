@@ -78,7 +78,7 @@ export const getItemDisplayName = (item: ItemRO): string => {
 
 export const getItemParentId = (item: ItemRO): string | undefined => {
   if (isApplication(item)) {
-    return item.parentFolderId || item.parentAgentId;
+    return item.parentAgentId || item.parentFolderId;
   }
   if (isFolder(item)) {
     return item.parentFolderId;
