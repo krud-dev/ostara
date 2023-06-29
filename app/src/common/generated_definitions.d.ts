@@ -203,6 +203,9 @@ export interface AgentModifyRequestRO {
     name: string;
     url: string;
     apiKey?: string;
+    icon?: string;
+    sort?: number;
+    color: string;
 }
 
 export interface AgentRO {
@@ -210,6 +213,11 @@ export interface AgentRO {
     name: string;
     url: string;
     apiKey?: string;
+    color: string;
+    icon?: string;
+    sort?: number;
+    parentFolderId?: string;
+    authentication: Authentication;
 }
 
 export interface SystemBackupRO {
@@ -267,8 +275,6 @@ export interface ApplicationModifyRequestRO {
     sort?: number;
     parentFolderId?: string;
     disableSslVerification?: boolean;
-    agentId?: string;
-    agentDiscoveryParams?: { [index: string]: string | undefined };
 }
 
 export interface ApplicationRO {
@@ -285,9 +291,9 @@ export interface ApplicationRO {
     authentication: Authentication;
     demo: boolean;
     disableSslVerification: boolean;
-    agentId?: string;
-    agentDiscoveryType?: string;
-    agentDiscoveryParams?: { [index: string]: string | undefined };
+    parentAgentId?: string;
+    agentExternalId?: string;
+    discovered: boolean;
 }
 
 export interface FolderModifyRequestRO {
@@ -403,7 +409,8 @@ export interface InstanceRO {
     health: InstanceHealthRO;
     demo: boolean;
     metadata: InstanceMetadataDTO;
-    agentDiscoveryId?: string;
+    parentAgentId?: string;
+    agentExternalId?: string;
     discovered: boolean;
 }
 
@@ -867,10 +874,10 @@ export interface TogglzFeatureActuatorResponse$Metadata {
     attributes?: { [index: string]: string | undefined };
 }
 
-export interface Unit {
+export interface Authentication {
 }
 
-export interface Authentication {
+export interface Unit {
 }
 
 export interface InstanceMetadataDTO {
@@ -1341,7 +1348,7 @@ export type ApplicationMetricRule$Type = "SIMPLE" | "RELATIVE";
 
 export type ThreadProfilingStatus = "RUNNING" | "FINISHED";
 
-export type EffectiveAuthentication$SourceType = "FOLDER" | "APPLICATION";
+export type EffectiveAuthentication$SourceType = "FOLDER" | "APPLICATION" | "AGENT";
 
 export type FilterFieldOperation = "Equal" | "NotEqual" | "In" | "NotIn" | "GreaterThan" | "GreaterEqual" | "LowerThan" | "LowerEqual" | "Between" | "Contains" | "IsNull" | "IsNotNull" | "IsEmpty" | "IsNotEmpty" | "And" | "Or" | "Not" | "Noop";
 

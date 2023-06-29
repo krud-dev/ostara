@@ -5,6 +5,7 @@ import java.util.*
 
 class ApplicationUpdatedEventMessage(payload: Payload) : AbstractMessage<ApplicationUpdatedEventMessage.Payload>(payload) {
     data class Payload(
-        val applicationId: UUID
+        val applicationId: UUID,
+        val discovered: Boolean
     )
 }

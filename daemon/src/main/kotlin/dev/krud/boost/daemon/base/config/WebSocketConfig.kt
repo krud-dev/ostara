@@ -1,6 +1,9 @@
 package dev.krud.boost.daemon.base.config
 
+import dev.krud.boost.daemon.configuration.application.websocket.ApplicationCreationWebsocketDispatcher
+import dev.krud.boost.daemon.configuration.application.websocket.ApplicationDeletionWebsocketDispatcher
 import dev.krud.boost.daemon.configuration.application.websocket.ApplicationHealthWebsocketDispatcher
+import dev.krud.boost.daemon.configuration.application.websocket.ApplicationUpdateWebsocketDispatcher
 import dev.krud.boost.daemon.configuration.instance.heapdump.websocket.InstanceHeapdumpWebsocketDispatcher
 import dev.krud.boost.daemon.configuration.instance.metric.InstanceMetricWebsocketTopicInterceptor
 import dev.krud.boost.daemon.configuration.instance.websocket.InstanceAbilityWebsocketDispatcher
@@ -132,6 +135,30 @@ class WebSocketConfig : WebSocketMessageBrokerConfigurer {
             destination = InstanceDeletionWebsocketDispatcher.INSTANCE_DELETION_TOPIC,
             callback = { _, headerAccessor ->
                 instanceDeletionWebsocketDispatcher.replay(headerAccessor.sessionId!!)
+            }
+        )
+
+        @Bean
+        fun applicationCreationReplayingInterceptor(applicationCreationWebsocketDispatcher: ApplicationCreationWebsocketDispatcher) = SubscriptionInterceptor(
+            destination = ApplicationCreationWebsocketDispatcher.APPLICATION_CREATION_TOPIC,
+            callback = { _, headerAccessor ->
+                applicationCreationWebsocketDispatcher.replay(headerAccessor.sessionId!!)
+            }
+        )
+
+        @Bean
+        fun applicationUpdateReplayingInterceptor(applicationUpdateWebsocketDispatcher: ApplicationUpdateWebsocketDispatcher) = SubscriptionInterceptor(
+            destination = ApplicationUpdateWebsocketDispatcher.APPLICATION_UPDATE_TOPIC,
+            callback = { _, headerAccessor ->
+                applicationUpdateWebsocketDispatcher.replay(headerAccessor.sessionId!!)
+            }
+        )
+
+        @Bean
+        fun applicationDeletionReplayingInterceptor(applicationDeletionWebsocketDispatcher: ApplicationDeletionWebsocketDispatcher) = SubscriptionInterceptor(
+            destination = ApplicationDeletionWebsocketDispatcher.APPLICATION_DELETION_TOPIC,
+            callback = { _, headerAccessor ->
+                applicationDeletionWebsocketDispatcher.replay(headerAccessor.sessionId!!)
             }
         )
     }

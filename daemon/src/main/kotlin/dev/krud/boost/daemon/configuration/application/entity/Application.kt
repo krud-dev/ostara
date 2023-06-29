@@ -46,7 +46,15 @@ class Application(
     @MappedField
     @Type(JsonType::class)
     @Column(columnDefinition = "json")
-    var authentication: Authentication = Authentication.Inherit.DEFAULT
+    var authentication: Authentication = Authentication.Inherit.DEFAULT,
+
+    @MappedField
+    @Column(nullable = true)
+    var parentAgentId: UUID? = null,
+
+    @MappedField
+    @Column(nullable = true)
+    var agentExternalId: String? = null
 ) : AbstractEntity() {
     @MappedField
     @Formula("(select count(*) from instance i where i.parent_application_id = id)")
@@ -64,17 +72,8 @@ class Application(
     var demo: Boolean = false
 
     @MappedField
-    @Column(nullable = true)
-    var agentId: UUID? = null
-
-    @MappedField
-    @Column(nullable = true)
-    var agentDiscoveryType: String? = null
-
-    @MappedField
-    @Column(nullable = true)
-    @Type(JsonType::class)
-    var agentDiscoveryParams: Map<String, String?>? = null
+    @Formula("(agent_external_id is not null)")
+    val discovered: Boolean = false
 
     companion object {
         const val NAME = "application"

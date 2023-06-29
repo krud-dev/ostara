@@ -54,10 +54,14 @@ class Instance(
 
     @MappedField
     @Column(nullable = true)
-    var agentDiscoveryId: String? = null
+    var parentAgentId: UUID? = null
 
     @MappedField
-    @Formula("(agent_discovery_id is not null)")
+    @Column(nullable = true)
+    var agentExternalId: String? = null
+
+    @MappedField
+    @Formula("(agent_external_id is not null)")
     val discovered: Boolean = false
 
     companion object {

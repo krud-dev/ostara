@@ -24,10 +24,11 @@ class KubernetesServiceDiscoveryHandlerImpl : ServiceDiscoveryHandler<OstaraConf
     val pods = api.listNamespacedPod(namespace, null, null, null, null, null, null, null, null, 10, false)
     val result = pods.items
       .groupBy { it.metadata?.labels?.get(appNameLabel) }
+      .filterKeys { it != null }
       .mapValues { (appName, pods) ->
         pods.map { pod ->
           DiscoveredInstanceDTO(
-            appName = appName,
+            appName = appName!!,
             id = pod.metadata!!.uid!!,
             name = pod.metadata!!.name!!,
             url = "$scheme://${pod.status!!.podIP}:$port/${actuatorPath.removePrefix("/")}"

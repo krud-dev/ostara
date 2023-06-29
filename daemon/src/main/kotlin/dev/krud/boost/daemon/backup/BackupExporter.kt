@@ -1,9 +1,9 @@
 package dev.krud.boost.daemon.backup
 
-import dev.krud.boost.daemon.backup.ro.BackupDTO.Companion.toTreeElement
 import dev.krud.boost.daemon.backup.migration.BackupMigration
 import dev.krud.boost.daemon.backup.migration.BackupMigration.Companion.getLatestVersion
 import dev.krud.boost.daemon.backup.ro.BackupDTO
+import dev.krud.boost.daemon.backup.ro.BackupDTO.Companion.toTreeElement
 import dev.krud.boost.daemon.configuration.application.entity.Application
 import dev.krud.boost.daemon.configuration.folder.entity.Folder
 import dev.krud.boost.daemon.configuration.instance.entity.Instance
@@ -87,10 +87,11 @@ class BackupExporter(
             Application::parentFolderId Equal parentFolderId
         }
         Application::demo Equal false
+        Application::discovered Equal false
     }
 
     private fun Application.getInstances(): Sequence<Instance> = instanceKrud.searchSequence {
         Instance::parentApplicationId Equal id
-        Instance::agentDiscoveryId.isNull()
+        Instance::discovered Equal false
     }
 }

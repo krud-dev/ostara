@@ -27,8 +27,8 @@ class InstanceActuatorClientProviderImpl(
     override fun provide(instance: Instance): ActuatorHttpClient {
         val effectiveAuthentication = applicationAuthenticationService.getEffectiveAuthentication(instance.parentApplicationId)
         val application = applicationKrud.showById(instance.parentApplicationId)!!
-        val agentUrl = if (application.agentId != null) {
-            val agent = agentKrud.showById(application.agentId!!)
+        val agentUrl = if (application.parentAgentId != null) {
+            val agent = agentKrud.showById(application.parentAgentId!!)
             // Remove last slash if exists
             "${agent?.url?.removeSuffix("/")}/api/actuator/proxy"
         } else {

@@ -1,15 +1,12 @@
 package dev.krud.boost.daemon.agent
 
 import dev.krud.boost.daemon.agent.model.Agent
-import dev.krud.boost.daemon.agent.model.DiscoveredInstanceDTO
-import dev.krud.boost.daemon.configuration.application.ApplicationService
 import dev.krud.boost.daemon.configuration.application.entity.Application
+import dev.krud.boost.daemon.configuration.application.enums.ApplicationType
 import dev.krud.boost.daemon.configuration.instance.entity.Instance
-import dev.krud.boost.daemon.exception.throwBadRequest
 import dev.krud.boost.daemon.utils.ONE_MINUTE
 import dev.krud.boost.daemon.utils.ResultAggregationSummary
 import dev.krud.boost.daemon.utils.ResultAggregationSummary.Companion.aggregate
-import dev.krud.boost.daemon.utils.runFeignCatching
 import dev.krud.crudframework.crud.handler.krud.Krud
 import org.springframework.scheduling.annotation.Scheduled
 import org.springframework.stereotype.Component
@@ -18,82 +15,78 @@ import java.util.*
 @Component
 class AgentDiscoveryService(
     private val agentService: AgentService,
-    private val applicationService: ApplicationService,
     private val agentClientProvider: AgentClientProvider,
     private val applicationKrud: Krud<Application, UUID>,
-    private val instanceKrud: Krud<Instance, UUID>
+    private val instanceKrud: Krud<Instance, UUID>,
+    private val agentKrud: Krud<Agent, UUID>
 ) {
     @Scheduled(fixedRate = ONE_MINUTE)
     fun runDiscovery(): ResultAggregationSummary<Unit> {
-        val applications = applicationKrud
-            .searchByFilter {
-                where {
-                    Application::agentId.isNotNull()
-                    Application::agentDiscoveryType.isNotNull()
-                }
-            }
-        val results = applications.map { application ->
-            runDiscoveryForApplication(application)
+        val agents = agentKrud.searchByFilter { }
+        val results = agents.map { agent ->
+            runDiscoveryForAgent(agent)
         }
         return results.aggregate()
     }
 
 
-    fun runDiscoveryForApplication(applicationId: UUID) = runCatching {
-        val application = applicationService.getApplicationOrThrow(applicationId)
-        runDiscoveryForApplication(application).getOrThrow()
-    }
-
-    fun runDiscoveryForApplication(application: Application) = runCatching {
-        if (application.agentId == null || application.agentDiscoveryType == null) {
-            throwBadRequest("Agent or discovery type not set for application ${application.id}")
-        }
-        val discoveredInstances = discoverInstances(application.agentId!!, application.agentDiscoveryParams ?: emptyMap(), application.agentDiscoveryType!!)
-            .getOrNull() // todo: do something with the error
-            ?: return@runCatching
-        val discoveredInstanceIds = discoveredInstances.map { it.id }
-
-        instanceKrud.deleteByFilter {
-            where {
-                Instance::parentApplicationId Equal application.id
-                if (discoveredInstanceIds.isNotEmpty()) {
-                    Instance::agentDiscoveryId NotIn discoveredInstances.map { it.id }
-                }
-            }
-        }
-
-        val updatedIds = mutableListOf<String>()
-        instanceKrud.updateByFilter(applyPolicies = false, {
-            where {
-                Instance::parentApplicationId Equal application.id
-                Instance::agentDiscoveryId In discoveredInstances.map { it.id }
-            }
-        }, {
-            val discoveredInstance = discoveredInstances.first { it.id == this.agentDiscoveryId }
-            this.alias = discoveredInstance.name
-            this.actuatorUrl = discoveredInstance.url ?: ""
-            updatedIds.add(discoveredInstance.id)
-        })
-
-        val instancesToCreate = discoveredInstances
-            .filter { it.id !in updatedIds }
-            .map {
-                Instance(it.name, it.url ?: "", application.id).apply {
-                    this.agentDiscoveryId = it.id
-                }
-            }
-        if (instancesToCreate.isNotEmpty()) {
-            instanceKrud.bulkCreate(instancesToCreate, false)
-        }
-    }
-
-    fun discoverInstances(agentId: UUID, params: Map<String, String?>, type: String): Result<List<DiscoveredInstanceDTO>> = runCatching {
+    fun runDiscoveryForAgent(agentId: UUID) = runCatching {
         val agent = agentService.getAgentOrThrow(agentId)
-        discoverInstances(agent, params, type).getOrThrow()
+        runDiscoveryForAgent(agent).getOrThrow()
     }
 
-    fun discoverInstances(agent: Agent, params: Map<String, String?>, type: String): Result<List<DiscoveredInstanceDTO>> = runFeignCatching {
-        agentClientProvider.getAgentClient(agent)
-            .discoverInstances(params, type)
+    fun runDiscoveryForAgent(agent: Agent) = runCatching {
+        val client = agentClientProvider.getAgentClient(agent)
+        val instances = client.getInstances()
+        val instancesByApplications = instances.groupBy { it.appName }
+        instancesByApplications.forEach {
+            (appName, instances) ->
+            var isNewApplication = false
+            val application = applicationKrud.showByFilter {
+                where {
+                    Application::parentAgentId Equal agent.id
+                    Application::agentExternalId Equal appName
+                }
+            } ?: applicationKrud.create(Application(appName, type = ApplicationType.SPRING_BOOT, parentAgentId = agent.id, agentExternalId = appName))
+                .apply {
+                    isNewApplication = true
+                }
+            val updatedIds = mutableListOf<String>()
+            if (!isNewApplication) {
+                instanceKrud.deleteByFilter {
+                    where {
+                        Instance::parentAgentId Equal agent.id
+                        Instance::parentApplicationId Equal application.id
+                        if (instances.isNotEmpty()) {
+                            Instance::agentExternalId NotIn instances.map { it.id }
+                        }
+                    }
+                }
+                instanceKrud.updateByFilter(applyPolicies = false, {
+                    where {
+                        Instance::parentAgentId Equal agent.id
+                        Instance::parentApplicationId Equal application.id
+                        Instance::agentExternalId In instances.map { it.id }
+                    }
+                }, {
+                    val discoveredInstance = instances.first { it.id == this.agentExternalId }
+                    this.alias = discoveredInstance.name
+                    this.actuatorUrl = discoveredInstance.url ?: ""
+                    this.agentExternalId = discoveredInstance.id
+                    updatedIds.add(discoveredInstance.id)
+                })
+            }
+            val instancesToCreate = instances
+                .filter { it.id !in updatedIds }
+                .map {
+                    Instance(it.name, it.url ?: "", application.id).apply {
+                        this.parentAgentId = agent.id
+                        this.agentExternalId = it.id
+                    }
+                }
+            if (instancesToCreate.isNotEmpty()) {
+                instanceKrud.bulkCreate(instancesToCreate, false)
+            }
+        }
     }
 }

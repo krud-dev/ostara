@@ -11,6 +11,7 @@ data class EffectiveAuthentication(
 ) {
     enum class SourceType {
         FOLDER,
-        APPLICATION
+        APPLICATION,
+        AGENT
     }
 }

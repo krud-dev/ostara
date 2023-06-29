@@ -26,7 +26,7 @@ class AgentDiscoveryServiceTest {
     @Test
     fun `runDiscoveryForApplication should fail if agent or discovery type not set`() {
         val application = applicationKrud.create(stubApplication())
-        val result = agentDiscoveryService.runDiscoveryForApplication(application)
+        val result = agentDiscoveryService.runDiscoveryForAgent(application)
         expectThat(result)
             .isFailure()
             .isA<ResponseStatusException>()

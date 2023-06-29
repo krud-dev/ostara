@@ -2,6 +2,8 @@ package dev.krud.boost.daemon.agent.ro
 
 import com.fasterxml.jackson.annotation.JsonIgnore
 import dev.krud.boost.daemon.agent.model.Agent
+import dev.krud.boost.daemon.configuration.authentication.Authentication
+import dev.krud.boost.daemon.utils.DEFAULT_COLOR
 import dev.krud.shapeshift.resolver.annotation.DefaultMappingTarget
 import dev.krud.shapeshift.resolver.annotation.MappedField
 import jakarta.validation.constraints.AssertTrue
@@ -19,7 +21,15 @@ class AgentModifyRequestRO(
     @field:URL
     val url: String,
     @MappedField
-    var apiKey: String?
+    var apiKey: String?,
+    @MappedField
+    val icon: String? = null,
+    @MappedField
+    val sort: Double? = null,
+    @MappedField
+    val color: String = DEFAULT_COLOR,
+    @MappedField
+    var authentication: Authentication = Authentication.Inherit.DEFAULT,
 ) {
     @JsonIgnore
     @AssertTrue(message = "API key should not be supplied for HTTP URLs")

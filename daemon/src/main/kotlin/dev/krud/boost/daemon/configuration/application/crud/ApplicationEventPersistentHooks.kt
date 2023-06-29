@@ -18,22 +18,22 @@ class ApplicationEventPersistentHooks(
     private val systemEventsChannel: PublishSubscribeChannel
 ) : CreateHooks<UUID, Application>, CreateFromHooks<UUID, Application>, UpdateHooks<UUID, Application>, UpdateFromHooks<UUID, Application>, DeleteHooks<UUID, Application> {
     override fun postCreate(entity: Application) {
-        systemEventsChannel.send(ApplicationCreatedEventMessage(ApplicationCreatedEventMessage.Payload(entity.id)))
+        systemEventsChannel.send(ApplicationCreatedEventMessage(ApplicationCreatedEventMessage.Payload(entity.id, entity.discovered)))
     }
 
     override fun postCreateFrom(entity: Application) {
-        systemEventsChannel.send(ApplicationCreatedEventMessage(ApplicationCreatedEventMessage.Payload(entity.id)))
+        systemEventsChannel.send(ApplicationCreatedEventMessage(ApplicationCreatedEventMessage.Payload(entity.id, entity.discovered)))
     }
 
     override fun postUpdate(entity: Application) {
-        systemEventsChannel.send(ApplicationUpdatedEventMessage(ApplicationUpdatedEventMessage.Payload(entity.id)))
+        systemEventsChannel.send(ApplicationUpdatedEventMessage(ApplicationUpdatedEventMessage.Payload(entity.id, entity.discovered)))
     }
 
     override fun postUpdateFrom(entity: Application) {
-        systemEventsChannel.send(ApplicationUpdatedEventMessage(ApplicationUpdatedEventMessage.Payload(entity.id)))
+        systemEventsChannel.send(ApplicationUpdatedEventMessage(ApplicationUpdatedEventMessage.Payload(entity.id, entity.discovered)))
     }
 
     override fun postDelete(entity: Application) {
-        systemEventsChannel.send(ApplicationDeletedEventMessage(ApplicationDeletedEventMessage.Payload(entity.id)))
+        systemEventsChannel.send(ApplicationDeletedEventMessage(ApplicationDeletedEventMessage.Payload(entity.id, entity.discovered)))
     }
 }
