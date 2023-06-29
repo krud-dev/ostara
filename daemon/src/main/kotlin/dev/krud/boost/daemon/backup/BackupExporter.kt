@@ -1,5 +1,6 @@
 package dev.krud.boost.daemon.backup
 
+import dev.krud.boost.daemon.agent.model.Agent
 import dev.krud.boost.daemon.backup.migration.BackupMigration
 import dev.krud.boost.daemon.backup.migration.BackupMigration.Companion.getLatestVersion
 import dev.krud.boost.daemon.backup.ro.BackupDTO
@@ -19,6 +20,7 @@ class BackupExporter(
     private val folderKrud: Krud<Folder, UUID>,
     private val applicationKrud: Krud<Application, UUID>,
     private val instanceKrud: Krud<Instance, UUID>,
+    private val agentKrud: Krud<Agent, UUID>,
     private val applicationMetricRuleKrud: Krud<ApplicationMetricRule, UUID>
 ) {
     fun exportAll(): BackupDTO {
@@ -30,9 +32,13 @@ class BackupExporter(
             .map {
                 buildApplicationTreeElement(it)
             }
+        val rootAgents = getAgents()
+            .map {
+                buildAgentTreeElement(it)
+            }
         return BackupDTO(
             version = backupMigrations.getLatestVersion(),
-            tree = (rootFolders + rootApplications).toList(),
+            tree = (rootFolders + rootApplications + rootAgents).toList(),
             date = Date()
         )
 
@@ -43,7 +49,18 @@ class BackupExporter(
             .apply {
                 children = getFolders(folder.id)
                     .map { buildFolderTreeElement(it) }
-                    .toList() + getApplications(folder.id)
+                    .toList() +
+                        getApplications(folder.id).map { buildApplicationTreeElement(it) } +
+                        getAgents(folder.id).map { buildAgentTreeElement(it) }
+                    .toList()
+            }
+        return treeElement
+    }
+
+    private fun buildAgentTreeElement(agent: Agent): BackupDTO.TreeElement.Agent {
+        val treeElement = agent.toTreeElement()
+            .apply {
+                children = agent.getApplications()
                     .map { buildApplicationTreeElement(it) }
                     .toList()
             }
@@ -80,11 +97,24 @@ class BackupExporter(
         }
     }
 
-    private fun getApplications(parentFolderId: UUID? = null) = applicationKrud.searchSequence {
+    private fun getAgents(parentFolderId: UUID? = null) = agentKrud.searchSequence {
+        if (parentFolderId == null) {
+            Agent::parentFolderId.isNull()
+        } else {
+            Agent::parentFolderId Equal parentFolderId
+        }
+    }
+
+    private fun getApplications(parentFolderId: UUID? = null, parentAgentId: UUID? = null) = applicationKrud.searchSequence {
         if (parentFolderId == null) {
             Application::parentFolderId.isNull()
         } else {
             Application::parentFolderId Equal parentFolderId
+        }
+        if (parentAgentId == null) {
+            Application::parentAgentId.isNull()
+        } else {
+            Application::parentAgentId Equal parentAgentId
         }
         Application::demo Equal false
     }
@@ -92,5 +122,9 @@ class BackupExporter(
     private fun Application.getInstances(): Sequence<Instance> = instanceKrud.searchSequence {
         Instance::parentApplicationId Equal id
         Instance::discovered Equal false
+    }
+
+    private fun Agent.getApplications(): Sequence<Application> = applicationKrud.searchSequence {
+        Application::parentAgentId Equal id
     }
 }
