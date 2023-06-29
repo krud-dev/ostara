@@ -5,16 +5,11 @@ import { Alert, Box, Button, DialogActions, DialogContent, TextField } from '@mu
 import { LoadingButton } from '@mui/lab';
 import InputAdornment from '@mui/material/InputAdornment';
 import ItemIconFormField from 'renderer/components/item/dialogs/forms/fields/ItemIconFormField';
-import AuthenticationDetailsForm from '../../authentication/forms/AuthenticationDetailsForm';
-import {
-  AgentModifyRequestRO,
-  Authentication,
-  FolderModifyRequestRO,
-} from '../../../../../common/generated_definitions';
-import useEffectiveAuthentication from '../../authentication/hooks/useEffectiveAuthentication';
-import EffectiveAuthenticationDetails from '../../authentication/effective/EffectiveAuthenticationDetails';
+import AuthenticationDetailsForm from 'renderer/components/item/authentication/forms/AuthenticationDetailsForm';
+import { AgentModifyRequestRO, Authentication } from 'common/generated_definitions';
+import useEffectiveAuthentication from 'renderer/components/item/authentication/hooks/useEffectiveAuthentication';
+import EffectiveAuthenticationDetails from 'renderer/components/item/authentication/effective/EffectiveAuthenticationDetails';
 import { URL_REGEX } from 'renderer/constants/regex';
-import { getActuatorUrls } from 'renderer/utils/itemUtils';
 
 export type AgentDetailsFormProps = {
   defaultValues?: Partial<AgentFormValues>;
@@ -47,6 +42,16 @@ const AgentDetailsForm: FunctionComponent<AgentDetailsFormProps> = ({
   const cancelHandler = useCallback((): void => {
     onCancel();
   }, [onCancel]);
+
+  const authentication = useWatch<AgentFormValues>({
+    control: control,
+    name: 'authentication',
+    defaultValue: defaultValues?.authentication,
+  }) as Authentication | undefined;
+
+  const effectiveAuthentication = useEffectiveAuthentication({
+    folderId: defaultValues?.parentFolderId,
+  });
 
   const url = watch('url');
 
@@ -84,6 +89,13 @@ const AgentDetailsForm: FunctionComponent<AgentDetailsFormProps> = ({
                   autoFocus
                   error={invalid}
                   helperText={error?.message}
+                  InputProps={{
+                    endAdornment: (
+                      <InputAdornment position="end">
+                        <ItemIconFormField type={'agent'} />
+                      </InputAdornment>
+                    ),
+                  }}
                 />
               );
             }}
@@ -144,9 +156,16 @@ const AgentDetailsForm: FunctionComponent<AgentDetailsFormProps> = ({
             }}
           />
 
-          <Alert severity={'info'} variant={'outlined'} sx={{ mt: 2 }}>
+          <Alert severity={'info'} variant={'outlined'} sx={{ mt: 2, mb: 1 }}>
             <FormattedMessage id="agentApiKeySecuredConnections" />
           </Alert>
+
+          <AuthenticationDetailsForm itemType={'agent'} />
+
+          <EffectiveAuthenticationDetails
+            authentication={authentication}
+            effectiveAuthentication={effectiveAuthentication}
+          />
         </DialogContent>
         <DialogActions>
           <Box sx={{ flexGrow: 1 }} />

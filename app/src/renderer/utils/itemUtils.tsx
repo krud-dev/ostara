@@ -5,6 +5,7 @@ import blueGrey from '@mui/material/colors/blueGrey';
 import { MUIconType } from 'renderer/components/common/IconViewer';
 import { ItemRO, ItemType } from 'renderer/definitions/daemon';
 import {
+  AgentRO,
   ApplicationHealthStatus,
   ApplicationRO,
   FolderRO,
@@ -19,17 +20,22 @@ import React, { ReactNode } from 'react';
 import { Box, CircularProgress } from '@mui/material';
 import { FormattedMessage } from 'react-intl';
 import FormattedRelativeTimeNow from 'renderer/components/format/FormattedRelativeTimeNow';
+import { agentCrudEntity } from 'renderer/apis/requests/crud/entity/entities/agent.crudEntity';
 
 export function isApplication(item: ItemRO): item is ApplicationRO {
   return 'type' in item;
 }
 
 export function isFolder(item: ItemRO): item is FolderRO {
-  return !isApplication(item) && !isInstance(item);
+  return !isApplication(item) && !isInstance(item) && !isAgent(item);
 }
 
 export function isInstance(item: ItemRO): item is InstanceRO {
   return 'actuatorUrl' in item;
+}
+
+export function isAgent(item: ItemRO): item is AgentRO {
+  return 'url' in item;
 }
 
 export const getItemType = (item: ItemRO): ItemType => {
@@ -41,6 +47,9 @@ export const getItemType = (item: ItemRO): ItemType => {
   }
   if (isInstance(item)) {
     return 'instance';
+  }
+  if (isAgent(item)) {
+    return 'agent';
   }
   throw new Error(`Unknown item type`);
 };
@@ -61,18 +70,24 @@ export const getItemDisplayName = (item: ItemRO): string => {
         .replace(/\/.*$/, '') // Remove path
     );
   }
+  if (isAgent(item)) {
+    return item.name;
+  }
   throw new Error(`Unknown item type`);
 };
 
 export const getItemParentId = (item: ItemRO): string | undefined => {
   if (isApplication(item)) {
-    return item.parentFolderId;
+    return item.parentFolderId || item.parentAgentId;
   }
   if (isFolder(item)) {
     return item.parentFolderId;
   }
   if (isInstance(item)) {
     return item.parentApplicationId;
+  }
+  if (isAgent(item)) {
+    return item.parentFolderId;
   }
   throw new Error(`Unknown item type`);
 };
@@ -89,6 +104,25 @@ export const getItemTypeEntity = (itemType: ItemType): CrudEntity => {
       return applicationCrudEntity;
     case 'instance':
       return instanceCrudEntity;
+    case 'agent':
+      return agentCrudEntity;
+    default:
+      throw new Error(`Unknown item type`);
+  }
+};
+
+export const getItemNameKey = (item: ItemRO): string => {
+  return getItemTypeNameKey(getItemType(item));
+};
+
+export const getItemTypeNameKey = (itemType: ItemType): string => {
+  switch (itemType) {
+    case 'folder':
+    case 'application':
+    case 'instance':
+      return 'alias';
+    case 'agent':
+      return 'name';
     default:
       throw new Error(`Unknown item type`);
   }
@@ -102,6 +136,8 @@ export const getItemTypeIcon = (itemType: ItemType): MUIconType => {
       return 'CloudOutlined';
     case 'instance':
       return 'DnsOutlined';
+    case 'agent':
+      return 'SensorsOutlined';
     default:
       throw new Error(`Unknown item type`);
   }
@@ -115,6 +151,8 @@ export const getItemTypeTextId = (itemType: ItemType): string => {
       return 'application';
     case 'instance':
       return 'instance';
+    case 'agent':
+      return 'agent';
     default:
       throw new Error(`Unknown item type`);
   }
@@ -129,6 +167,8 @@ export const getItemUrl = (item: ItemRO): string => {
       return generatePath(urls.application.url, { id: item.id });
     case 'instance':
       return generatePath(urls.instance.url, { id: item.id });
+    case 'agent':
+      return generatePath(urls.agent.url, { id: item.id });
     default:
       throw new Error(`Unknown item type`);
   }
@@ -137,6 +177,9 @@ export const getItemUrl = (item: ItemRO): string => {
 export const getItemNameTooltip = (item: ItemRO): ReactNode | undefined => {
   if (isInstance(item)) {
     return item.actuatorUrl;
+  }
+  if (isAgent(item)) {
+    return item.url;
   }
   return undefined;
 };

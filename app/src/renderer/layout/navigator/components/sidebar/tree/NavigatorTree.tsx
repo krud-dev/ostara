@@ -14,6 +14,7 @@ import CreateInstanceDialog, {
 } from 'renderer/components/item/dialogs/create/CreateInstanceDialog';
 import { matchPath, useLocation } from 'react-router-dom';
 import {
+  getItemNameKey,
   getItemParentId,
   getItemType,
   getItemUrl,
@@ -35,6 +36,7 @@ import useDelayedEffect from '../../../../../hooks/useDelayedEffect';
 import { useItemsContext } from 'renderer/contexts/ItemsContext';
 import NavigatorTreeBase from 'renderer/layout/navigator/components/sidebar/tree/NavigatorTreeBase';
 import NavigatorTreeNode from 'renderer/layout/navigator/components/sidebar/tree/nodes/NavigatorTreeNode';
+import { get } from 'lodash';
 
 const NAVIGATOR_TREE_PADDING_BOTTOM = 12;
 
@@ -167,10 +169,11 @@ export default function NavigatorTree({ width, height, search }: NavigatorTreePr
       if (!item) {
         return;
       }
-      if (item.alias === name) {
+      const nameKey = getItemNameKey(item);
+      if (get(item, nameKey) === name) {
         return;
       }
-      await updateItem({ ...item, alias: name });
+      await updateItem({ ...item, [nameKey]: name });
     },
     [getItem, updateItem]
   );

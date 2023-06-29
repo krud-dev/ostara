@@ -10,66 +10,72 @@ import AgentDetailsForm, { AgentFormValues } from 'renderer/components/item/dial
 import { agentCrudEntity } from 'renderer/apis/requests/crud/entity/entities/agent.crudEntity';
 
 export type CreateAgentDialogProps = {
+  parentFolderId?: string;
+  sort?: number;
   onCreated?: (items: AgentRO[]) => void;
 } & NiceModalHocProps;
 
-const CreateFolderDialog: FunctionComponent<CreateAgentDialogProps> = NiceModal.create(({ onCreated }) => {
-  const modal = useModal();
-  const { track } = useAnalyticsContext();
+const CreateFolderDialog: FunctionComponent<CreateAgentDialogProps> = NiceModal.create(
+  ({ parentFolderId, sort, onCreated }) => {
+    const modal = useModal();
+    const { track } = useAnalyticsContext();
 
-  const [submitting, setSubmitting] = useState<boolean>(false);
+    const [submitting, setSubmitting] = useState<boolean>(false);
 
-  const createState = useCrudCreate<AgentRO, AgentModifyRequestRO>();
+    const createState = useCrudCreate<AgentRO, AgentModifyRequestRO>();
 
-  const submitHandler = useCallback(
-    async (data: AgentFormValues): Promise<void> => {
-      setSubmitting(true);
+    const submitHandler = useCallback(
+      async (data: AgentFormValues): Promise<void> => {
+        setSubmitting(true);
 
-      const itemToCreate: AgentModifyRequestRO = {
-        ...data,
-      };
-      try {
-        const result = await createState.mutateAsync({ entity: agentCrudEntity, item: itemToCreate });
-        if (result) {
-          track({ name: 'add_agent' });
+        const itemToCreate: AgentModifyRequestRO = {
+          ...data,
+          parentFolderId: parentFolderId,
+          sort: sort ?? 1,
+        };
+        try {
+          const result = await createState.mutateAsync({ entity: agentCrudEntity, item: itemToCreate });
+          if (result) {
+            track({ name: 'add_agent' });
 
-          onCreated?.([result]);
+            onCreated?.([result]);
 
-          modal.resolve(result);
-          await modal.hide();
+            modal.resolve(result);
+            await modal.hide();
+          }
+        } catch (e) {
+        } finally {
+          setSubmitting(false);
         }
-      } catch (e) {
-      } finally {
-        setSubmitting(false);
+      },
+      [onCreated, createState, modal]
+    );
+
+    const cancelHandler = useCallback((): void => {
+      if (submitting) {
+        return;
       }
-    },
-    [onCreated, createState, modal]
-  );
+      modal.resolve(undefined);
+      modal.hide();
+    }, [submitting, modal]);
 
-  const cancelHandler = useCallback((): void => {
-    if (submitting) {
-      return;
-    }
-    modal.resolve(undefined);
-    modal.hide();
-  }, [submitting, modal]);
-
-  return (
-    <Dialog
-      open={modal.visible}
-      onClose={cancelHandler}
-      TransitionProps={{
-        onExited: () => modal.remove(),
-      }}
-      fullWidth
-      maxWidth={'xs'}
-    >
-      <DialogTitleEnhanced disabled={submitting} onClose={cancelHandler}>
-        <FormattedMessage id={'createAgent'} />
-      </DialogTitleEnhanced>
-      <AgentDetailsForm defaultValues={{}} onSubmit={submitHandler} onCancel={cancelHandler} />
-    </Dialog>
-  );
-});
+    return (
+      <Dialog
+        open={modal.visible}
+        onClose={cancelHandler}
+        TransitionProps={{
+          onExited: () => modal.remove(),
+        }}
+        fullWidth
+        maxWidth={'xs'}
+      >
+        <DialogTitleEnhanced disabled={submitting} onClose={cancelHandler}>
+          <FormattedMessage id={'createAgent'} />
+        </DialogTitleEnhanced>
+        <AgentDetailsForm defaultValues={{ parentFolderId }} onSubmit={submitHandler} onCancel={cancelHandler} />
+      </Dialog>
+    );
+  }
+);
 
 export default CreateFolderDialog;

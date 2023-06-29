@@ -18,7 +18,7 @@ import { chain, isEmpty, sortBy } from 'lodash';
 import NiceModal from '@ebay/nice-modal-react';
 import { useItemsContext } from 'renderer/contexts/ItemsContext';
 import { findTreeItemPath, getNewItemSort, getSubTreeItemsForItem, getSubTreeRoot } from 'renderer/utils/treeUtils';
-import { getItemDisplayName, isFolder } from 'renderer/utils/itemUtils';
+import { getItemDisplayName, getItemParentId, isAgent, isFolder } from 'renderer/utils/itemUtils';
 import LogoLoaderCenter from 'renderer/components/common/LogoLoaderCenter';
 import CreateInstanceDialog, {
   CreateInstanceDialogProps,
@@ -39,11 +39,11 @@ const FolderDashboard: FunctionComponent = () => {
   const { applications } = useItemsContext();
   const { selectedItem, data: navigatorData, getNewItemOrder } = useNavigatorLayoutContext();
 
-  const folderIds = useMemo<string[] | undefined>(
+  const parentIds = useMemo<string[] | undefined>(
     () =>
       selectedItem
         ? getSubTreeItemsForItem(navigatorData || [], selectedItem.id)
-            .filter((i) => isFolder(i))
+            .filter((i) => isFolder(i) || isAgent(i))
             .map((i) => i.id)
         : undefined,
     [selectedItem, navigatorData]
@@ -54,10 +54,13 @@ const FolderDashboard: FunctionComponent = () => {
   );
   const data = useMemo<ApplicationRO[] | undefined>(
     () =>
-      folderIds
-        ? applications?.filter((a) => !!a.parentFolderId && folderIds.includes(a.parentFolderId))
+      parentIds
+        ? applications?.filter((a) => {
+            const parentId = getItemParentId(a);
+            return !!parentId && parentIds.includes(parentId);
+          })
         : applications,
-    [applications, folderIds]
+    [applications, parentIds]
   );
   const groupedData = useMemo<
     { path: string; displayPath: string; applications: DashboardApplicationRO[] }[] | undefined

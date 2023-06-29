@@ -8,11 +8,14 @@ import React, {
   useState,
 } from 'react';
 import { ItemRO } from '../definitions/daemon';
-import { crudSearch, CrudSearchData, useCrudSearchQuery } from '../apis/requests/crud/crudSearch';
+import { CrudSearchData, useCrudSearchQuery } from '../apis/requests/crud/crudSearch';
 import {
   AgentRO,
+  ApplicationCreatedEventMessage$Payload,
+  ApplicationDeletedEventMessage$Payload,
   ApplicationHealthUpdatedEventMessage$Payload,
   ApplicationRO,
+  ApplicationUpdatedEventMessage$Payload,
   FolderRO,
   InstanceCreatedEventMessage$Payload,
   InstanceDeletedEventMessage$Payload,
@@ -26,10 +29,10 @@ import { instanceCrudEntity } from 'renderer/apis/requests/crud/entity/entities/
 import { folderCrudEntity } from 'renderer/apis/requests/crud/entity/entities/folder.crudEntity';
 import { applicationCrudEntity } from 'renderer/apis/requests/crud/entity/entities/application.crudEntity';
 import { useStomp } from 'renderer/apis/websockets/StompContext';
-import { isApplication, isFolder, isInstance } from 'renderer/utils/itemUtils';
+import { isAgent, isApplication, isFolder, isInstance } from 'renderer/utils/itemUtils';
 import { QueryObserverResult } from '@tanstack/react-query';
 import { agentCrudEntity } from 'renderer/apis/requests/crud/entity/entities/agent.crudEntity';
-import { difference, differenceBy, isEmpty } from 'lodash';
+import useItemsRefresh from 'renderer/hooks/useItemsRefresh';
 
 export type ItemsContextProps = {
   folders: FolderRO[] | undefined;
@@ -80,9 +83,85 @@ const ItemsProvider: FunctionComponent<ItemsProviderProps> = ({ children }) => {
   }, [searchAgentsState.data]);
 
   const items = useMemo<ItemRO[] | undefined>(
-    () => (folders && applications && instances ? [...folders, ...applications, ...instances] : undefined),
-    [folders, applications, instances]
+    () =>
+      folders && applications && instances && agents
+        ? [...folders, ...applications, ...instances, ...agents]
+        : undefined,
+    [folders, applications, instances, agents]
   );
+
+  const addItem = useCallback((itemToAdd: ItemRO): void => {
+    if (isInstance(itemToAdd)) {
+      setInstances((prev) => [...(prev?.filter((i) => i.id !== itemToAdd.id) ?? []), itemToAdd]);
+    }
+    if (isApplication(itemToAdd)) {
+      setApplications((prev) => [...(prev?.filter((a) => a.id !== itemToAdd.id) ?? []), itemToAdd]);
+    }
+    if (isFolder(itemToAdd)) {
+      setFolders((prev) => [...(prev?.filter((f) => f.id !== itemToAdd.id) ?? []), itemToAdd]);
+    }
+    if (isAgent(itemToAdd)) {
+      setAgents((prev) => [...(prev?.filter((a) => a.id !== itemToAdd.id) ?? []), itemToAdd]);
+    }
+  }, []);
+
+  const addItems = useCallback(
+    (itemsToAdd: ItemRO[]): void => {
+      for (const item of itemsToAdd) {
+        addItem(item);
+      }
+    },
+    [addItem]
+  );
+
+  const getItem = useCallback((id: string): ItemRO | undefined => items?.find((i) => i.id === id), [items]);
+
+  const addApplicationToRefresh = useItemsRefresh('application', addItems);
+
+  useEffect(() => {
+    const unsubscribe = subscribe(
+      '/topic/applicationCreation',
+      {},
+      (applicationEvent: ApplicationCreatedEventMessage$Payload): void => {
+        if (applicationEvent.discovered) {
+          addApplicationToRefresh(applicationEvent.applicationId);
+        }
+      }
+    );
+    return () => {
+      unsubscribe();
+    };
+  }, []);
+
+  useEffect(() => {
+    const unsubscribe = subscribe(
+      '/topic/applicationUpdate',
+      {},
+      (applicationEvent: ApplicationUpdatedEventMessage$Payload): void => {
+        if (applicationEvent.discovered) {
+          addApplicationToRefresh(applicationEvent.applicationId);
+        }
+      }
+    );
+    return () => {
+      unsubscribe();
+    };
+  }, []);
+
+  useEffect(() => {
+    const unsubscribe = subscribe(
+      '/topic/applicationDeletion',
+      {},
+      (applicationEvent: ApplicationDeletedEventMessage$Payload): void => {
+        if (applicationEvent.discovered) {
+          setApplications((prev) => prev?.filter((i) => i.id !== applicationEvent.applicationId));
+        }
+      }
+    );
+    return () => {
+      unsubscribe();
+    };
+  }, []);
 
   useEffect(() => {
     const unsubscribe = subscribe(
@@ -92,6 +171,53 @@ const ItemsProvider: FunctionComponent<ItemsProviderProps> = ({ children }) => {
         setApplications((prev) =>
           prev?.map((a) => (a.id === healthChanged.applicationId ? { ...a, health: healthChanged.newHealth } : a))
         );
+      }
+    );
+    return () => {
+      unsubscribe();
+    };
+  }, []);
+
+  const addInstanceToRefresh = useItemsRefresh('instance', addItems);
+
+  useEffect(() => {
+    const unsubscribe = subscribe(
+      '/topic/instanceCreation',
+      {},
+      (instanceEvent: InstanceCreatedEventMessage$Payload): void => {
+        if (instanceEvent.discovered) {
+          addInstanceToRefresh(instanceEvent.instanceId);
+        }
+      }
+    );
+    return () => {
+      unsubscribe();
+    };
+  }, []);
+
+  useEffect(() => {
+    const unsubscribe = subscribe(
+      '/topic/instanceUpdate',
+      {},
+      (instanceEvent: InstanceUpdatedEventMessage$Payload): void => {
+        if (instanceEvent.discovered) {
+          addInstanceToRefresh(instanceEvent.instanceId);
+        }
+      }
+    );
+    return () => {
+      unsubscribe();
+    };
+  }, []);
+
+  useEffect(() => {
+    const unsubscribe = subscribe(
+      '/topic/instanceDeletion',
+      {},
+      (instanceEvent: InstanceDeletedEventMessage$Payload): void => {
+        if (instanceEvent.discovered) {
+          setInstances((prev) => prev?.filter((i) => i.id !== instanceEvent.instanceId));
+        }
       }
     );
     return () => {
@@ -143,102 +269,6 @@ const ItemsProvider: FunctionComponent<ItemsProviderProps> = ({ children }) => {
       unsubscribe();
     };
   }, []);
-
-  const [instanceIdsToRefresh, setInstanceIdsToRefresh] = useState<string[]>([]);
-
-  const addInstanceToRefresh = useCallback(
-    (instanceId: string) => {
-      setInstanceIdsToRefresh((prev) => [...prev.filter((id) => id !== instanceId), instanceId]);
-    },
-    [setInstanceIdsToRefresh]
-  );
-
-  useEffect(() => {
-    if (isEmpty(instanceIdsToRefresh)) {
-      return;
-    }
-
-    const instanceIds = [...instanceIdsToRefresh];
-    setInstanceIdsToRefresh((prev) => difference(prev, instanceIds));
-
-    (async () => {
-      try {
-        const result = await crudSearch<InstanceRO>({
-          entity: instanceCrudEntity,
-          filterFields: [{ fieldName: 'id', operation: 'In', values: instanceIds }],
-        });
-        setInstances((prev) => [...differenceBy(prev, result.results, 'id'), ...result.results]);
-      } catch (e) {}
-    })();
-  }, [instanceIdsToRefresh]);
-
-  useEffect(() => {
-    const unsubscribe = subscribe(
-      '/topic/instanceCreation',
-      {},
-      (instanceEvent: InstanceCreatedEventMessage$Payload): void => {
-        if (instanceEvent.discovered) {
-          addInstanceToRefresh(instanceEvent.instanceId);
-        }
-      }
-    );
-    return () => {
-      unsubscribe();
-    };
-  }, []);
-
-  useEffect(() => {
-    const unsubscribe = subscribe(
-      '/topic/instanceUpdate',
-      {},
-      (instanceEvent: InstanceUpdatedEventMessage$Payload): void => {
-        if (instanceEvent.discovered) {
-          addInstanceToRefresh(instanceEvent.instanceId);
-        }
-      }
-    );
-    return () => {
-      unsubscribe();
-    };
-  }, []);
-
-  useEffect(() => {
-    const unsubscribe = subscribe(
-      '/topic/instanceDeletion',
-      {},
-      (instanceEvent: InstanceDeletedEventMessage$Payload): void => {
-        if (instanceEvent.discovered) {
-          setInstances((prev) => prev?.filter((i) => i.id !== instanceEvent.instanceId));
-        }
-      }
-    );
-    return () => {
-      unsubscribe();
-    };
-  }, []);
-
-  const addItem = useCallback((itemToAdd: ItemRO): void => {
-    if (isInstance(itemToAdd)) {
-      setInstances((prev) => [...(prev?.filter((i) => i.id !== itemToAdd.id) ?? []), itemToAdd]);
-    }
-    if (isApplication(itemToAdd)) {
-      setApplications((prev) => [...(prev?.filter((a) => a.id !== itemToAdd.id) ?? []), itemToAdd]);
-    }
-    if (isFolder(itemToAdd)) {
-      setFolders((prev) => [...(prev?.filter((f) => f.id !== itemToAdd.id) ?? []), itemToAdd]);
-    }
-  }, []);
-
-  const addItems = useCallback(
-    (itemsToAdd: ItemRO[]): void => {
-      for (const item of itemsToAdd) {
-        addItem(item);
-      }
-    },
-    [addItem]
-  );
-
-  const getItem = useCallback((id: string): ItemRO | undefined => items?.find((i) => i.id === id), [items]);
 
   const memoizedValue = useMemo<ItemsContextProps>(
     () => ({
