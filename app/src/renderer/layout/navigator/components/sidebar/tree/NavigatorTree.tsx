@@ -48,7 +48,7 @@ type NavigatorTreeProps = {
 };
 
 export default function NavigatorTree({ width, height, search }: NavigatorTreeProps) {
-  const { getItem } = useItemsContext();
+  const { addItem, getItem } = useItemsContext();
   const { data, selectedItem, action } = useNavigatorLayoutContext();
   const { pathname } = useLocation();
   const { startDemo, loading: loadingDemo } = useStartDemo();
@@ -112,12 +112,14 @@ export default function NavigatorTree({ width, height, search }: NavigatorTreePr
     return null;
   }, []);
 
-  const updateItemState = useUpdateItem();
+  const updateItemState = useUpdateItem({ refetchNone: true });
 
   const updateItem = useCallback(
     async (item: ItemRO): Promise<ItemRO | undefined> => {
       try {
-        return await updateItemState.mutateAsync({ item });
+        const result = await updateItemState.mutateAsync({ item });
+        addItem(result);
+        return result;
       } catch (e) {}
       return undefined;
     },
@@ -130,7 +132,7 @@ export default function NavigatorTree({ width, height, search }: NavigatorTreePr
     setDisableDrag(false);
   }, [data]);
 
-  const moveItemState = useMoveItem();
+  const moveItemState = useMoveItem({ refetchNone: true });
 
   const moveItem = useCallback(
     async (id: string, type: ItemType, parentId: string | undefined, sort: number): Promise<ItemRO | undefined> => {
@@ -138,19 +140,25 @@ export default function NavigatorTree({ width, height, search }: NavigatorTreePr
       if (!item) {
         return undefined;
       }
-      if (getItemParentId(item) === parentId && item.sort === sort) {
+
+      const isSameParent = getItemParentId(item) === parentId;
+      if (isSameParent && item.sort === sort) {
         return undefined;
       }
 
+      const newParentId = isSameParent ? undefined : parentId;
+
       setDisableDrag(true);
       try {
-        return await moveItemState.mutateAsync({ id, type, parentId, sort });
+        const result = await moveItemState.mutateAsync({ id, type, parentId: newParentId, sort });
+        addItem(result);
+        return result;
       } catch (e) {
         setDisableDrag(false);
       }
       return undefined;
     },
-    [getItem, moveItemState]
+    [addItem, getItem, moveItemState]
   );
 
   const deleteItemState = useDeleteItem();
@@ -250,19 +258,22 @@ export default function NavigatorTree({ width, height, search }: NavigatorTreePr
       if (dragNodes.some((node) => isInstance(node.data)) && dragNodes.some((node) => !isInstance(node.data))) {
         return true;
       }
+      if (dragNodes.some((node) => isInstance(node.data) && getItemParentId(node.data) !== parentNode.data.id)) {
+        return true;
+      }
       if (
-        dragNodes.some((node) => isInstance(node.data)) &&
-        dragNodes.some((node) => getItemParentId(node.data) !== parentNode.data.id)
+        dragNodes.some(
+          (node) =>
+            isApplication(node.data) && !!node.data.parentAgentId && getItemParentId(node.data) !== parentNode.data.id
+        )
       ) {
         return true;
       }
       if (
-        dragNodes.some((node) => isApplication(node.data) && !!node.data.parentAgentId) &&
-        dragNodes.some((node) => getItemParentId(node.data) !== parentNode.data.id)
+        dragNodes.some((node) => isApplication(node.data) && getItemParentId(node.data) !== parentNode.id) &&
+        !parentNode.isRoot &&
+        !isFolder(parentNode.data)
       ) {
-        return true;
-      }
-      if (dragNodes.some((node) => isApplication(node.data)) && !parentNode.isRoot && !isFolder(parentNode.data)) {
         return true;
       }
       if (dragNodes.some((node) => isAgent(node.data)) && !parentNode.isRoot && !isFolder(parentNode.data)) {

@@ -253,6 +253,9 @@ export const isItemUpdatable = (item: ItemRO): boolean => {
   if (isItemDemo(item)) {
     return false;
   }
+  if (isInstance(item) && item.discovered) {
+    return false;
+  }
   return true;
 };
 
