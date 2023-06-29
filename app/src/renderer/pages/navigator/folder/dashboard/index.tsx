@@ -2,18 +2,12 @@ import React, { FunctionComponent, useCallback, useMemo } from 'react';
 import Page from 'renderer/components/layout/Page';
 import { useNavigatorLayoutContext } from 'renderer/contexts/NavigatorLayoutContext';
 import { Box, Button, Card, CardContent, CardHeader, Grow, Stack } from '@mui/material';
-import { ApplicationHealthStatus, ApplicationRO, InstanceRO } from 'common/generated_definitions';
+import { ApplicationRO, InstanceRO } from 'common/generated_definitions';
 import EmptyContent from 'renderer/components/help/EmptyContent';
 import { FormattedMessage } from 'react-intl';
-import {
-  COMPONENTS_SPACING,
-  ANIMATION_TIMEOUT_SHORT,
-  ANIMATION_TIMEOUT_LONG,
-  ANIMATION_GROW_TOP_STYLE,
-} from 'renderer/constants/ui';
+import { ANIMATION_GROW_TOP_STYLE, ANIMATION_TIMEOUT_LONG, COMPONENTS_SPACING } from 'renderer/constants/ui';
 import Grid2 from '@mui/material/Unstable_Grid2';
-import FolderApplicationsHealthStatusWidget from './components/FolderApplicationsHealthStatusWidget';
-import FolderApplicationWidget from './components/FolderApplicationWidget';
+import ApplicationDashboardWidget from 'renderer/components/widget/application/ApplicationDashboardWidget';
 import { chain, isEmpty, sortBy } from 'lodash';
 import NiceModal from '@ebay/nice-modal-react';
 import { useItemsContext } from 'renderer/contexts/ItemsContext';
@@ -25,6 +19,7 @@ import CreateInstanceDialog, {
 } from 'renderer/components/item/dialogs/create/CreateInstanceDialog';
 import { TreeItem } from 'renderer/layout/navigator/components/sidebar/tree/tree';
 import { TransitionGroup } from 'react-transition-group';
+import ApplicationsHealthSummaryDashboardWidget from 'renderer/components/widget/application/ApplicationsHealthSummaryDashboardWidget';
 
 const PATH_SEPARATOR = '/';
 const DISPLAY_PATH_SEPARATOR = ' / ';
@@ -111,11 +106,6 @@ const FolderDashboard: FunctionComponent = () => {
   );
   const loading = useMemo<boolean>(() => !data || !groupedData, [data, groupedData]);
 
-  const healthStatuses = useMemo<ApplicationHealthStatus[]>(
-    () => ['ALL_UP', 'ALL_DOWN', 'SOME_DOWN', 'EMPTY', 'UNKNOWN', 'PENDING'],
-    []
-  );
-
   const createInstanceHandler = useCallback(async (): Promise<void> => {
     let sort = getNewItemOrder();
     if (selectedItem) {
@@ -139,22 +129,9 @@ const FolderDashboard: FunctionComponent = () => {
         <Stack direction={'column'} spacing={COMPONENTS_SPACING}>
           <TransitionGroup component={null}>
             <Grow timeout={ANIMATION_TIMEOUT_LONG} style={ANIMATION_GROW_TOP_STYLE}>
-              <Card>
-                <CardHeader title={<FormattedMessage id={'summary'} />} />
-                <CardContent>
-                  <Grid2 container spacing={COMPONENTS_SPACING}>
-                    <TransitionGroup component={null}>
-                      {healthStatuses.map((healthStatus, index) => (
-                        <Grow timeout={(index + 2) * ANIMATION_TIMEOUT_SHORT} key={healthStatus}>
-                          <Grid2 xs={12} md={6} lg={4} xl={3} xxl={2}>
-                            <FolderApplicationsHealthStatusWidget applications={data!} healthStatus={healthStatus} />
-                          </Grid2>
-                        </Grow>
-                      ))}
-                    </TransitionGroup>
-                  </Grid2>
-                </CardContent>
-              </Card>
+              <Box>
+                <ApplicationsHealthSummaryDashboardWidget applications={data!} />
+              </Box>
             </Grow>
 
             {isEmpty(data) && (
@@ -190,7 +167,7 @@ const FolderDashboard: FunctionComponent = () => {
                     <Grid2 container spacing={COMPONENTS_SPACING}>
                       {group.applications.map((application) => (
                         <Grid2 xs={12} md={6} lg={4} xl={3} xxl={2} key={application.id}>
-                          <FolderApplicationWidget application={application} />
+                          <ApplicationDashboardWidget application={application} />
                         </Grid2>
                       ))}
                     </Grid2>

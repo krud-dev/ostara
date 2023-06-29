@@ -1,20 +1,20 @@
 import React, { FunctionComponent, useMemo } from 'react';
 import { Box, Card, CardContent, Stack, Typography } from '@mui/material';
 import { FormattedMessage } from 'react-intl';
-import { ApplicationHealthStatus, ApplicationRO } from '../../../../../../common/generated_definitions';
+import { ApplicationHealthStatus, ApplicationRO } from 'common/generated_definitions';
 import {
   getApplicationHealthStatusColor,
   getApplicationHealthStatusIcon,
   getApplicationHealthStatusTextId,
-} from '../../../../../utils/itemUtils';
-import { IconViewer, MUIconType } from '../../../../../components/common/IconViewer';
+} from 'renderer/utils/itemUtils';
+import { IconViewer, MUIconType } from 'renderer/components/common/IconViewer';
 
-type FolderApplicationsHealthStatusWidgetProps = {
+type ApplicationHealthStatusDashboardWidgetProps = {
   applications: ApplicationRO[];
   healthStatus: ApplicationHealthStatus;
 };
 
-const FolderApplicationsHealthStatusWidget: FunctionComponent<FolderApplicationsHealthStatusWidgetProps> = ({
+const ApplicationHealthStatusDashboardWidget: FunctionComponent<ApplicationHealthStatusDashboardWidgetProps> = ({
   applications,
   healthStatus,
 }) => {
@@ -61,4 +61,4 @@ const FolderApplicationsHealthStatusWidget: FunctionComponent<FolderApplications
     </Card>
   );
 };
-export default FolderApplicationsHealthStatusWidget;
+export default ApplicationHealthStatusDashboardWidget;

@@ -17,11 +17,11 @@ import useItemColor from 'renderer/hooks/useItemColor';
 import { useItemsContext } from 'renderer/contexts/ItemsContext';
 import { useNavigatorLayoutContext } from 'renderer/contexts/NavigatorLayoutContext';
 
-type FolderApplicationWidgetProps = {
+type ApplicationDashboardWidgetProps = {
   application: ApplicationRO;
 };
 
-const FolderApplicationWidget: FunctionComponent<FolderApplicationWidgetProps> = ({ application }) => {
+const ApplicationDashboardWidget: FunctionComponent<ApplicationDashboardWidgetProps> = ({ application }) => {
   const { instances } = useItemsContext();
   const { data } = useNavigatorLayoutContext();
   const navigate = useNavigate();
@@ -92,4 +92,4 @@ const FolderApplicationWidget: FunctionComponent<FolderApplicationWidgetProps> =
     </Card>
   );
 };
-export default FolderApplicationWidget;
+export default ApplicationDashboardWidget;
