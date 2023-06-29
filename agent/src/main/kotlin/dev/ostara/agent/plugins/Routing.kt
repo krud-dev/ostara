@@ -1,8 +1,9 @@
 package dev.ostara.agent.plugins
 
-import dev.ostara.agent.plugins.routes.configureActuatorRoutes
-import dev.ostara.agent.plugins.routes.configureInfoRoutes
-import dev.ostara.agent.plugins.routes.configureServiceDiscoveryRoutes
+import dev.ostara.agent.routes.configureActuatorRoutes
+import dev.ostara.agent.routes.configureInfoRoutes
+import dev.ostara.agent.routes.configureInstancesRoutes
+import dev.ostara.agent.routes.configureInternalServiceDiscoveryRoutes
 import io.ktor.http.*
 import io.ktor.server.application.*
 import io.ktor.server.plugins.callloging.*
@@ -32,7 +33,8 @@ fun Application.configureRouting() {
   routing {
     configureActuatorRoutes()
     configureInfoRoutes()
-    configureServiceDiscoveryRoutes()
+    configureInstancesRoutes()
+    configureInternalServiceDiscoveryRoutes()
     get("/") {
       call.respondText("OK")
     }

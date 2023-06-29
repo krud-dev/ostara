@@ -5,6 +5,7 @@ val koin_version: String by project
 val koin_ktor_version: String by project
 val kotlin_version: String by project
 val logback_version: String by project
+val hoplite_version: String by project
 
 plugins {
   kotlin("jvm") version "1.8.22"
@@ -60,9 +61,12 @@ dependencies {
   implementation("io.ktor:ktor-server-request-validation:$ktor_version")
   implementation("io.ktor:ktor-server-status-pages:$ktor_version")
   implementation("com.github.mrmike:ok2curl:0.8.0")
+  implementation("com.sksamuel.hoplite:hoplite-core:$hoplite_version")
+  runtimeOnly("com.sksamuel.hoplite:hoplite-yaml:$hoplite_version")
+
 
   implementation("io.insert-koin:koin-core:$koin_version")
-  implementation("io.insert-koin:koin-ktor:$koin_ktor_version")
+  implementation("io.insert-koin:koin-ktor:$koin_version")
 
   implementation("ch.qos.logback:logback-classic:$logback_version")
   implementation("io.kubernetes:client-java:18.0.0") {
@@ -73,6 +77,10 @@ dependencies {
   testImplementation("org.jetbrains.kotlin:kotlin-test-junit:$kotlin_version")
   testImplementation("io.strikt:strikt-core:0.34.0")
   testImplementation("org.mockito.kotlin:mockito-kotlin:5.0.0")
+}
+
+kotlin {
+  jvmToolchain(17)
 }
 
 sonar {

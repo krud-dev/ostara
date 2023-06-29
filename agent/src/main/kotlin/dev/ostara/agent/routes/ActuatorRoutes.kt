@@ -1,4 +1,4 @@
-package dev.ostara.agent.plugins.routes
+package dev.ostara.agent.routes
 
 import com.moczul.ok2curl.CurlInterceptor
 import com.moczul.ok2curl.logger.Logger

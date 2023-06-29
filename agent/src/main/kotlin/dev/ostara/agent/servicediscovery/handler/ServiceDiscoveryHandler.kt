@@ -1,14 +1,12 @@
 package dev.ostara.agent.servicediscovery.handler
 
-import dev.ostara.agent.param.model.ParamSchema
-import dev.ostara.agent.param.model.Params
+import dev.ostara.agent.configuration.OstaraConfiguration
 import dev.ostara.agent.servicediscovery.DiscoveredInstanceDTO
 
-interface ServiceDiscoveryHandler {
-  val type: String
-  val params: List<ParamSchema>
+interface ServiceDiscoveryHandler<T : OstaraConfiguration.ServiceDiscovery> {
+  fun supports(config: OstaraConfiguration.ServiceDiscovery): Boolean
 
   fun discoverInstances(
-    config: Params,
+    config: T,
   ): List<DiscoveredInstanceDTO>
 }

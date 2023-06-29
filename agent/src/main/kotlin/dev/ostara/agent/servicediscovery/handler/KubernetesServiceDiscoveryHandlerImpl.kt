@@ -1,60 +1,39 @@
 package dev.ostara.agent.servicediscovery.handler
 
-import dev.ostara.agent.param.dsl.params
-import dev.ostara.agent.param.model.ParamSchema
-import dev.ostara.agent.param.model.Params
+import dev.ostara.agent.configuration.OstaraConfiguration
 import dev.ostara.agent.servicediscovery.DiscoveredInstanceDTO
 import io.kubernetes.client.openapi.apis.CoreV1Api
 import io.kubernetes.client.util.Config
 
 
-class KubernetesServiceDiscoveryHandlerImpl : ServiceDiscoveryHandler {
-  override val type: String = "kubernetes"
-  override val params: List<ParamSchema> = params {
-    stringParam("namespace") {
-      required = true
-      description = "The namespace to search for pods in"
-    }
-    stringParam("labelSelector") {
-      required = true
-      description = "The label selector to use when searching for pods"
-    }
-    stringParam("actuatorPath") {
-      required = true
-      description = "The path to the actuator endpoint"
-      defaultValue = "/actuator"
-    }
-    intParam("port") {
-      required = true
-      description = "The port to use when connecting to the actuator endpoint"
-      defaultValue = 8080
-    }
-    stringParam("scheme") {
-      required = true
-      description = "The scheme to use when connecting to the actuator endpoint"
-      defaultValue = "http"
-      validOptions = listOf("http", "https")
-    }
-  }
-
-  val client = Config.defaultClient()
-  val api = CoreV1Api()
+class KubernetesServiceDiscoveryHandlerImpl : ServiceDiscoveryHandler<OstaraConfiguration.ServiceDiscovery.Kubernetes> {
+  private val client = Config.defaultClient()
+  private val api = CoreV1Api()
     .apply { apiClient = client }
 
-  override fun discoverInstances(config: Params): List<DiscoveredInstanceDTO> {
-    val namespace by config.resolveRequired<String>()
-    val labelSelector by config.resolveRequired<String>()
-    val actuatorPath by config.resolveRequired<String>()
-    val port by config.resolveRequired<Int>()
-    val scheme by config.resolveRequired<String>()
-    val pods = api.listNamespacedPod(namespace, null, null, null, null, labelSelector, null, null, null, 10, false)
-    return pods.items.map { pod ->
-      DiscoveredInstanceDTO(
-        id = pod.metadata!!.uid!!,
-        name = pod.metadata!!.name!!,
-        url = "$scheme://${pod.status!!.podIP}:$port/${actuatorPath.removePrefix("/")}"
-      )
-    }
+  override fun supports(config: OstaraConfiguration.ServiceDiscovery): Boolean {
+    return config is OstaraConfiguration.ServiceDiscovery.Kubernetes
+  }
+
+  override fun discoverInstances(config: OstaraConfiguration.ServiceDiscovery.Kubernetes): List<DiscoveredInstanceDTO> {
+    val namespace = config.namespace
+    val appNameLabel = config.appNameLabel
+    val actuatorPath = config.actuatorPath
+    val port = config.port
+    val scheme = config.scheme
+    val pods = api.listNamespacedPod(namespace, null, null, null, null, null, null, null, null, 10, false)
+    val result = pods.items
+      .groupBy { it.metadata?.labels?.get(appNameLabel) }
+      .mapValues { (appName, pods) ->
+        pods.map { pod ->
+          DiscoveredInstanceDTO(
+            appName = appName,
+            id = pod.metadata!!.uid!!,
+            name = pod.metadata!!.name!!,
+            url = "$scheme://${pod.status!!.podIP}:$port/${actuatorPath.removePrefix("/")}"
+          )
+        }
+      }.flatMap { it.value }
+    return result
   }
 }
-
