@@ -206,6 +206,8 @@ export interface AgentModifyRequestRO {
     icon?: string;
     sort?: number;
     color: string;
+    authentication: Authentication;
+    parentFolderId?: string;
 }
 
 export interface AgentRO {
@@ -923,7 +925,7 @@ export interface ServiceDiscoveryStrategyDTO {
 }
 
 export interface BackupDTO$TreeElement {
-    type: "folder" | "application";
+    type: "folder" | "application" | "agent";
 }
 
 export interface InstanceCreatedEventMessage$Payload {
@@ -1171,6 +1173,12 @@ export interface BackupDTO$TreeElement$Application extends BackupDTO$TreeElement
     metricRules: BackupDTO$TreeElement$Application$MetricRule[];
 }
 
+export interface BackupDTO$TreeElement$Agent extends BackupDTO$TreeElement {
+    type: "agent";
+    model: BackupDTO$TreeElement$Agent$Model;
+    children: BackupDTO$TreeElement$Application[];
+}
+
 export interface AbstractMessage<T> extends Message<T> {
 }
 
@@ -1260,6 +1268,16 @@ export interface BackupDTO$TreeElement$Application$MetricRule {
     value2?: number;
     enabled: boolean;
     type: string;
+}
+
+export interface BackupDTO$TreeElement$Agent$Model {
+    name: string;
+    url: string;
+    apiKey?: string;
+    color: string;
+    icon?: string;
+    sort?: number;
+    authenticationProperties?: { [index: string]: string | undefined };
 }
 
 export interface MappingsActuatorResponse$Context$Mappings$DispatcherServletOrHandler$Details {
@@ -1356,4 +1374,4 @@ export type FilterFieldDataType = "String" | "Integer" | "Long" | "Double" | "Bo
 
 export type ParamType = "STRING" | "INT";
 
-export type BackupDTO$TreeElementUnion = BackupDTO$TreeElement$Folder | BackupDTO$TreeElement$Application;
+export type BackupDTO$TreeElementUnion = BackupDTO$TreeElement$Folder | BackupDTO$TreeElement$Application | BackupDTO$TreeElement$Agent;
