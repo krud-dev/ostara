@@ -11,7 +11,7 @@ class InternalServiceDiscoveryHandlerImpl : ServiceDiscoveryHandler<OstaraConfig
   private val instanceStore = mutableMapOf<Pair<String, String>, Pair<RegistrationRequest, Date>>()
 
   init {
-    evictionTimer = timer("evictInstances", false, period = 60_000) {
+    evictionTimer = timer("evictInstances", false, period = 30_000) {
       val now = Date()
       instanceStore.entries.removeIf {
         val (_, registeredAt) = it.value
@@ -39,7 +39,7 @@ class InternalServiceDiscoveryHandlerImpl : ServiceDiscoveryHandler<OstaraConfig
         appName = request.appName,
         id = request.host,
         name = request.host,
-        url = "http://${request.host}:${request.servicePort}/${request.managementSuffix.removePrefix("/")}"
+        url = request.managementUrl
       )
     }
   }
@@ -48,9 +48,7 @@ class InternalServiceDiscoveryHandlerImpl : ServiceDiscoveryHandler<OstaraConfig
     data class RegistrationRequest(
       val appName: String,
       val host: String,
-      val servicePort: Int,
-      val managementPort: Int,
-      val managementSuffix: String
+      val managementUrl: String
     )
   }
 }

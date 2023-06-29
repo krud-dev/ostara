@@ -15,7 +15,7 @@ class ServiceDiscoveryService(
   private val discoveredInstances = AtomicReference<List<DiscoveredInstanceDTO>>(listOf())
   private val scheduler: Timer
   init {
-    scheduler = timer("discoverInstances", false, period = 60000) {
+    scheduler = timer("discoverInstances", false, period = 30_000) {
       runDiscovery()
     }
   }
