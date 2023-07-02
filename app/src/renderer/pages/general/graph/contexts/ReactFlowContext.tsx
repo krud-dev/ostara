@@ -112,27 +112,37 @@ const ReactFlowProvider: FunctionComponent<ReactFlowProviderProps> = ({
     );
   }, [selectedNode, graphData]);
 
-  return (
-    <ReactFlowContext.Provider
-      value={{
-        graphData,
-        loading,
-        empty,
-        search,
-        setSearch,
-        selectedNode,
-        incomingNodeIds,
-        outgoingNodeIds,
-        isHighlight,
-        selectNode,
-      }}
-    >
-      {children}
-    </ReactFlowContext.Provider>
+  const memoizedValue = useMemo<ReactFlowContextProps>(
+    () => ({
+      graphData,
+      loading,
+      empty,
+      search,
+      setSearch,
+      selectedNode,
+      incomingNodeIds,
+      outgoingNodeIds,
+      isHighlight,
+      selectNode,
+    }),
+    [
+      graphData,
+      loading,
+      empty,
+      search,
+      setSearch,
+      selectedNode,
+      incomingNodeIds,
+      outgoingNodeIds,
+      isHighlight,
+      selectNode,
+    ]
   );
+
+  return <ReactFlowContext.Provider value={memoizedValue}>{children}</ReactFlowContext.Provider>;
 };
 
-const useReactFlow = (): ReactFlowContextProps => {
+const useReactFlowContext = (): ReactFlowContextProps => {
   const context = useContext(ReactFlowContext);
 
   if (!context) throw new Error('ReactFlowContext must be used inside ReactFlowProvider');
@@ -140,4 +150,4 @@ const useReactFlow = (): ReactFlowContextProps => {
   return context;
 };
 
-export { ReactFlowContext, ReactFlowProvider, useReactFlow };
+export { ReactFlowContext, ReactFlowProvider, useReactFlowContext };

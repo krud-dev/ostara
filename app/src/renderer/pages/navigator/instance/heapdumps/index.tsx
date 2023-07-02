@@ -19,13 +19,13 @@ import { useRequestInstanceHeapdump } from '../../../../apis/requests/instance/h
 import { useSnackbar } from 'notistack';
 import { useDeleteInstanceHeapdumpReference } from '../../../../apis/requests/instance/heapdumps/deleteInstanceHeapdumpReference';
 import { useDownloadInstanceHeapdumpReference } from '../../../../apis/requests/instance/heapdumps/downloadInstanceHeapdumpReference';
-import { useStomp } from '../../../../apis/websockets/StompContext';
+import { useStompContext } from '../../../../apis/websockets/StompContext';
 import { LoadingButton } from '@mui/lab';
 import { IconViewer } from '../../../../components/common/IconViewer';
 
 const InstanceHeapdumpReferences: FunctionComponent = () => {
   const { selectedItem } = useNavigatorLayoutContext();
-  const { subscribe } = useStomp();
+  const { subscribe } = useStompContext();
   const { enqueueSnackbar } = useSnackbar();
 
   const item = useMemo<InstanceRO>(() => selectedItem as InstanceRO, [selectedItem]);

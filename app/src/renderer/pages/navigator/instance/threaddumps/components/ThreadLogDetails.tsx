@@ -7,7 +7,7 @@ import { FormattedMessage } from 'react-intl';
 import FormattedDateAndRelativeTime from '../../../../../components/format/FormattedDateAndRelativeTime';
 import ThreadLogStackTrace from './ThreadLogStackTrace';
 import ToolbarButton from '../../../../../components/common/ToolbarButton';
-import { useThreadLog } from '../contexts/ThreadLogContext';
+import { useThreadLogContext } from '../contexts/ThreadLogContext';
 import DetailsLabelValueHorizontal from '../../../../../components/table/details/DetailsLabelValueHorizontal';
 import { InlineCodeLabel } from '../../../../../components/code/InlineCodeLabel';
 
@@ -17,7 +17,7 @@ type ThreadLogDetailsProps = {
 };
 
 export default function ThreadLogDetails({ threadLog, sx }: ThreadLogDetailsProps) {
-  const { toggleOpenHandler } = useThreadLog();
+  const { toggleOpenHandler } = useThreadLogContext();
 
   const showStackTrace = useMemo<boolean>(() => threadLog.stackTrace.length > 0, [threadLog.stackTrace]);
 

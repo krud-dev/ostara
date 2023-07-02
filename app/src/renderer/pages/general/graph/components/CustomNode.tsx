@@ -4,7 +4,7 @@ import { alpha, experimentalStyled as styled } from '@mui/material/styles';
 import { Handle, NodeProps, Position } from 'reactflow';
 import { NODE_HEIGHT, NODE_WIDTH } from '../utils/reactFlowUtils';
 import { InlineCodeLabel } from '../../../../components/code/InlineCodeLabel';
-import { useReactFlow } from '../contexts/ReactFlowContext';
+import { useReactFlowContext } from '../contexts/ReactFlowContext';
 
 const NodeStyled = styled(Box)(({ theme }) => ({
   width: NODE_WIDTH,
@@ -27,7 +27,7 @@ const NodeStyled = styled(Box)(({ theme }) => ({
 type CustomNodeProps = NodeProps;
 
 export default function CustomNode({ id, data }: CustomNodeProps) {
-  const { search, selectedNode, incomingNodeIds, outgoingNodeIds, isHighlight } = useReactFlow();
+  const { search, selectedNode, incomingNodeIds, outgoingNodeIds, isHighlight } = useReactFlowContext();
 
   const selected = useMemo(() => selectedNode?.id === id, [selectedNode, id]);
   const incoming = useMemo<boolean>(

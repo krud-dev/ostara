@@ -19,13 +19,13 @@ import NiceModal from '@ebay/nice-modal-react';
 import ThreadProfilingRequestDetailsDialog, {
   ThreadProfilingRequestDetailsDialogProps,
 } from './components/ThreadProfilingRequestDetailsDialog';
-import { useStomp } from 'renderer/apis/websockets/StompContext';
+import { useStompContext } from 'renderer/apis/websockets/StompContext';
 import { LoadingButton } from '@mui/lab';
 import { IconViewer } from 'renderer/components/common/IconViewer';
 
 const InstanceThreadProfiling: FunctionComponent = () => {
   const { selectedItem } = useNavigatorLayoutContext();
-  const { subscribe } = useStomp();
+  const { subscribe } = useStompContext();
   const { enqueueSnackbar } = useSnackbar();
 
   const item = useMemo<InstanceRO>(() => selectedItem as InstanceRO, [selectedItem]);

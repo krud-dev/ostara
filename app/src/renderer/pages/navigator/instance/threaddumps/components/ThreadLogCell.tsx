@@ -3,7 +3,7 @@ import { Box } from '@mui/material';
 import { EMPTY_STRING } from 'renderer/constants/ui';
 import { THREAD_LOG_BAR_HEIGHT, ThreadLog } from './ThreadProfilingRequestDetailsDialog';
 import { alpha, lighten, Theme, useTheme } from '@mui/material/styles';
-import { useThreadLog } from '../contexts/ThreadLogContext';
+import { useThreadLogContext } from '../contexts/ThreadLogContext';
 import { SxProps } from '@mui/system';
 
 type ThreadLogCellProps = {
@@ -12,7 +12,7 @@ type ThreadLogCellProps = {
 
 export default function ThreadLogCell({ threadLog }: ThreadLogCellProps) {
   const theme = useTheme();
-  const { search, openIds, toggleOpenHandler, isOpen, isHighlight } = useThreadLog();
+  const { search, openIds, toggleOpenHandler, isOpen, isHighlight } = useThreadLogContext();
 
   const backgroundColor = useMemo<string>(() => {
     if (!threadLog) {
