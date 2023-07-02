@@ -3,7 +3,7 @@ import { Box, Stack, Typography } from '@mui/material';
 import { THREAD_LOG_BAR_HEIGHT, THREAD_LOG_BAR_LABEL_WIDTH, ThreadLog } from './ThreadProfilingRequestDetailsDialog';
 import ThreadLogCell from './ThreadLogCell';
 import { keyBy } from 'lodash';
-import { useThreadLog } from '../contexts/ThreadLogContext';
+import { useThreadLogContext } from '../contexts/ThreadLogContext';
 import PerfectScrollbar from 'react-perfect-scrollbar';
 import ThreadLogDetails from './ThreadLogDetails';
 
@@ -13,7 +13,7 @@ type ThreadLogsBarProps = {
 };
 
 export default function ThreadLogsBar({ threadLogs, logsCount }: ThreadLogsBarProps) {
-  const { openIds, isOpen } = useThreadLog();
+  const { openIds, isOpen } = useThreadLogContext();
 
   const threadName = useMemo<string>(() => threadLogs[0]?.threadName || '', [threadLogs]);
 

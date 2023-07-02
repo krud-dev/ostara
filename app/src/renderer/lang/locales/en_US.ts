@@ -446,6 +446,7 @@ export default {
   forward: 'Forward',
   clearFilters: 'Clear Filters',
   selectedItemIsFiltered: 'Selected item is filtered',
+  selectedItemIsNotAvailable: 'Selected item is not available',
   relative: 'Relative',
   metricRuleExplanationSimple:
     'Use "Simple" to compare a metric to the value. For example: disk.free[VALUE] < 1000000.',

@@ -1,4 +1,4 @@
-import React, { FunctionComponent, PropsWithChildren, useContext } from 'react';
+import React, { FunctionComponent, PropsWithChildren, useContext, useMemo } from 'react';
 import { PopupState } from 'material-ui-popup-state/hooks';
 
 export type ContextMenuContextProps = {
@@ -12,18 +12,12 @@ interface ContextMenuProviderProps extends PropsWithChildren<any> {
 }
 
 const ContextMenuProvider: FunctionComponent<ContextMenuProviderProps> = ({ menuState, children }) => {
-  return (
-    <ContextMenuContext.Provider
-      value={{
-        menuState,
-      }}
-    >
-      {children}
-    </ContextMenuContext.Provider>
-  );
+  const memoizedValue = useMemo<ContextMenuContextProps>(() => ({ menuState }), [menuState]);
+
+  return <ContextMenuContext.Provider value={memoizedValue}>{children}</ContextMenuContext.Provider>;
 };
 
-const useContextMenu = (): ContextMenuContextProps => {
+const useContextMenuContext = (): ContextMenuContextProps => {
   const context = useContext(ContextMenuContext);
 
   if (!context) throw new Error('ContextMenuContext must be used inside ContextMenuProvider');
@@ -31,4 +25,4 @@ const useContextMenu = (): ContextMenuContextProps => {
   return context;
 };
 
-export { ContextMenuContext, ContextMenuProvider, useContextMenu };
+export { ContextMenuContext, ContextMenuProvider, useContextMenuContext };

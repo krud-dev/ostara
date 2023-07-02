@@ -1,7 +1,7 @@
 import { Theme } from '@mui/material/styles';
 import { Box, Checkbox, SxProps, TableCell, TableHead, TableRow, TableSortLabel } from '@mui/material';
 import { FormattedMessage } from 'react-intl';
-import { useTable } from 'renderer/components/table/TableContext';
+import { useTableContext } from 'renderer/components/table/TableContext';
 import { DEFAULT_TABLE_COLUMN_WIDTH } from 'renderer/constants/ui';
 import React, { useMemo } from 'react';
 import ToolbarButton from '../common/ToolbarButton';
@@ -35,7 +35,7 @@ export default function TableHeadCustom({ sx }: TableHeadCustomProps) {
     changeOrderHandler,
     hasActions,
     hasMassActions,
-  } = useTable();
+  } = useTableContext();
 
   const hasDetailsRowAction = useMemo<boolean>(() => entity.rowAction?.type === 'Details', [entity]);
   const actionsWidth = useMemo<number>(() => entity.actions.length * 36 + 40, [entity]);

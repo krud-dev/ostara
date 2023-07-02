@@ -5,14 +5,14 @@ import { COMPONENTS_SPACING } from 'renderer/constants/ui';
 import React, { useCallback } from 'react';
 import { InlineCodeLabel } from 'renderer/components/code/InlineCodeLabel';
 import DetailsLabelValueVertical from 'renderer/components/table/details/DetailsLabelValueVertical';
-import { useTable } from '../../../../../components/table/TableContext';
+import { useTableContext } from '../../../../../components/table/TableContext';
 
 type InstanceBeanDetailsProps = {
   row: InstanceBean;
 };
 
 export default function InstanceBeanDetails({ row }: InstanceBeanDetailsProps) {
-  const { highlightHandler } = useTable<InstanceBean, unknown>();
+  const { highlightHandler } = useTableContext<InstanceBean, unknown>();
 
   const dependencyClickHandler = useCallback(
     (event: React.MouseEvent, dependency: string) => {

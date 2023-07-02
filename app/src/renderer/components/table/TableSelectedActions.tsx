@@ -1,7 +1,7 @@
 import { Checkbox, IconButton, Stack, StackProps, Tooltip, Typography } from '@mui/material';
 import { COMPONENTS_SPACING } from 'renderer/constants/ui';
 import { FormattedMessage } from 'react-intl';
-import { useTable } from 'renderer/components/table/TableContext';
+import { useTableContext } from 'renderer/components/table/TableContext';
 import { IconViewer } from 'renderer/components/common/IconViewer';
 import React, { useCallback } from 'react';
 import ToolbarButton from '../common/ToolbarButton';
@@ -17,7 +17,7 @@ export default function TableSelectedActions({ sx, ...other }: TableSelectedActi
     hasSelectedRows,
     selectAllRowsHandler,
     massActionsHandler,
-  } = useTable();
+  } = useTableContext();
 
   const [loadingActionIds, setLoadingActionIds] = React.useState<string[]>([]);
 

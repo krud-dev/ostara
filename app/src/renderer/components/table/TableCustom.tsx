@@ -12,7 +12,7 @@ import {
   TABLE_PAGINATION_HEIGHT,
   TABLE_SCROLL_CONTAINER_ID,
 } from 'renderer/constants/ui';
-import { useTable } from 'renderer/components/table/TableContext';
+import { useTableContext } from 'renderer/components/table/TableContext';
 import { useTheme } from '@mui/material/styles';
 import { useScrollSync } from 'renderer/hooks/useScrollSync';
 import useElementDocumentHeight from 'renderer/hooks/useElementDocumentHeight';
@@ -23,7 +23,7 @@ type TableCustomProps<EntityItem> = {};
 
 export default function TableCustom<EntityItem>({}: TableCustomProps<EntityItem>) {
   const { entity, displayRows, rows, loading, empty, page, changePageHandler, rowsPerPage, changeRowsPerPageHandler } =
-    useTable<EntityItem, unknown>();
+    useTableContext<EntityItem, unknown>();
   const theme = useTheme();
   const showRowPerPage = useMediaQuery(theme.breakpoints.up('md'));
 

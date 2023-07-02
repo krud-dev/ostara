@@ -1,4 +1,12 @@
-import React, { FunctionComponent, PropsWithChildren, useCallback, useContext, useEffect, useRef } from 'react';
+import React, {
+  FunctionComponent,
+  PropsWithChildren,
+  useCallback,
+  useContext,
+  useEffect,
+  useMemo,
+  useRef,
+} from 'react';
 import { Client, IMessage } from '@stomp/stompjs';
 import { StompTopicKey, StompTopics } from './stompTopics';
 import { forEach } from 'lodash';
@@ -86,18 +94,12 @@ const StompProvider: FunctionComponent<StompProviderProps> = ({ children }) => {
     []
   );
 
-  return (
-    <StompContext.Provider
-      value={{
-        subscribe,
-      }}
-    >
-      {children}
-    </StompContext.Provider>
-  );
+  const memoizedValue = useMemo<StompContextProps>(() => ({ subscribe }), [subscribe]);
+
+  return <StompContext.Provider value={memoizedValue}>{children}</StompContext.Provider>;
 };
 
-const useStomp = (): StompContextProps => {
+const useStompContext = (): StompContextProps => {
   const context = useContext(StompContext);
 
   if (!context) throw new Error('StompContext must be used inside StompProvider');
@@ -105,4 +107,4 @@ const useStomp = (): StompContextProps => {
   return context;
 };
 
-export { StompContext, StompProvider, useStomp };
+export { StompContext, StompProvider, useStompContext };

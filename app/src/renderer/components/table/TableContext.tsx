@@ -37,7 +37,7 @@ export type TableContextProps<EntityItem, CustomFilters> = {
   changeRowsPerPageHandler: (newRowsPerPage: number) => void;
   filter: string;
   changeFilterHandler: (newFilter: string) => void;
-  customFilters: CustomFilters;
+  customFilters: CustomFilters | undefined;
   changeCustomFiltersHandler: (newCustomFilters?: CustomFilters) => void;
   clearFiltersHandler: () => void;
   orderColumn: string | undefined;
@@ -277,6 +277,8 @@ function TableProvider<EntityItem, CustomFilters>({
               </Button>
             ),
           });
+        } else {
+          enqueueSnackbar(<FormattedMessage id="selectedItemIsNotAvailable" />, { variant: 'warning' });
         }
         return;
       }
@@ -291,6 +293,8 @@ function TableProvider<EntityItem, CustomFilters>({
     [
       entity,
       filteredTableData,
+      tableData,
+      page,
       rowsPerPage,
       clearFiltersHandler,
       setDelayedHighlightAnchor,
@@ -299,55 +303,93 @@ function TableProvider<EntityItem, CustomFilters>({
     ]
   );
 
-  return (
-    <TableContext.Provider
-      value={{
-        entity,
-        visibleColumns,
-        rows: filteredTableData,
-        displayRows: displayTableData,
-        refreshHandler,
-        selectedRows,
-        hasSelectedRows,
-        selectRowHandler,
-        isRowSelected,
-        selectAllIndeterminate,
-        selectAllChecked,
-        selectAllRowsHandler,
-        openRows,
-        toggleRowOpenHandler,
-        closeAllRowsHandler,
-        isRowOpen,
-        loading,
-        empty,
-        emptyContent,
-        page,
-        changePageHandler,
-        rowsPerPage,
-        changeRowsPerPageHandler,
-        filter,
-        changeFilterHandler,
-        customFilters,
-        changeCustomFiltersHandler,
-        clearFiltersHandler,
-        orderColumn,
-        orderDirection,
-        changeOrderHandler,
-        hasActions,
-        hasMassActions,
-        hasGlobalActions,
-        actionsHandler,
-        massActionsHandler,
-        globalActionsHandler,
-        highlightHandler,
-      }}
-    >
-      {children}
-    </TableContext.Provider>
+  const memoizedValue = useMemo<TableContextProps<EntityItem, CustomFilters>>(
+    () => ({
+      entity,
+      visibleColumns,
+      rows: filteredTableData,
+      displayRows: displayTableData,
+      refreshHandler,
+      selectedRows,
+      hasSelectedRows,
+      selectRowHandler,
+      isRowSelected,
+      selectAllIndeterminate,
+      selectAllChecked,
+      selectAllRowsHandler,
+      openRows,
+      toggleRowOpenHandler,
+      closeAllRowsHandler,
+      isRowOpen,
+      loading,
+      empty,
+      emptyContent,
+      page,
+      changePageHandler,
+      rowsPerPage,
+      changeRowsPerPageHandler,
+      filter,
+      changeFilterHandler,
+      customFilters,
+      changeCustomFiltersHandler,
+      clearFiltersHandler,
+      orderColumn,
+      orderDirection,
+      changeOrderHandler,
+      hasActions,
+      hasMassActions,
+      hasGlobalActions,
+      actionsHandler,
+      massActionsHandler,
+      globalActionsHandler,
+      highlightHandler,
+    }),
+    [
+      entity,
+      visibleColumns,
+      filteredTableData,
+      displayTableData,
+      refreshHandler,
+      selectedRows,
+      hasSelectedRows,
+      selectRowHandler,
+      isRowSelected,
+      selectAllIndeterminate,
+      selectAllChecked,
+      selectAllRowsHandler,
+      openRows,
+      toggleRowOpenHandler,
+      closeAllRowsHandler,
+      isRowOpen,
+      loading,
+      empty,
+      emptyContent,
+      page,
+      changePageHandler,
+      rowsPerPage,
+      changeRowsPerPageHandler,
+      filter,
+      changeFilterHandler,
+      customFilters,
+      changeCustomFiltersHandler,
+      clearFiltersHandler,
+      orderColumn,
+      orderDirection,
+      changeOrderHandler,
+      hasActions,
+      hasMassActions,
+      hasGlobalActions,
+      actionsHandler,
+      massActionsHandler,
+      globalActionsHandler,
+      highlightHandler,
+    ]
   );
+
+  return <TableContext.Provider value={memoizedValue}>{children}</TableContext.Provider>;
 }
 
-function useTable<EntityItem, CustomFilters>(): TableContextProps<EntityItem, CustomFilters> {
+function useTableContext<EntityItem, CustomFilters>(): TableContextProps<EntityItem, CustomFilters> {
   const context = useContext(TableContext);
 
   if (!context) throw new Error('TableContext must be used inside TableProvider');
@@ -355,4 +397,4 @@ function useTable<EntityItem, CustomFilters>(): TableContextProps<EntityItem, Cu
   return context;
 }
 
-export { TableContext, TableProvider, useTable };
+export { TableContext, TableProvider, useTableContext };

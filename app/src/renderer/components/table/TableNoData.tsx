@@ -1,10 +1,10 @@
 import { TableRow, TableCell } from '@mui/material';
 import EmptyContent from 'renderer/components/help/EmptyContent';
 import { FormattedMessage } from 'react-intl';
-import { useTable } from './TableContext';
+import { useTableContext } from './TableContext';
 
 export default function TableNoData() {
-  const { emptyContent } = useTable();
+  const { emptyContent } = useTableContext();
   return (
     <TableRow>
       <TableCell colSpan={999}>
