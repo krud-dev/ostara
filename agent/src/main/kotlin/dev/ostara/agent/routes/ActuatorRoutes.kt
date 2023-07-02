@@ -16,7 +16,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import org.koin.ktor.ext.inject
 
-private const val INSTANCE_ID_HEADER = "X-Ostara-InstanceId" // Temporary
+private const val INSTANCE_ID_HEADER = "X-Ostara-InstanceId"  
 private val HEADERS_TO_REMOVE = listOf(INSTANCE_ID_HEADER, "Host", "User-Agent", "Connection")
 
 @OptIn(InternalAPI::class)
