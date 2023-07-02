@@ -12,10 +12,13 @@ import NiceModal from '@ebay/nice-modal-react';
 import CreateInstanceDialog, {
   CreateInstanceDialogProps,
 } from 'renderer/components/item/dialogs/create/CreateInstanceDialog';
-import { matchPath, useLocation } from 'react-router-dom';
+import { matchPath, useLocation, useNavigate } from 'react-router-dom';
 import {
+  getItemDisplayName,
+  getItemEntity,
   getItemParentId,
   getItemType,
+  getItemTypeEntity,
   getItemUrl,
   isApplication,
   isFolder,
@@ -35,6 +38,11 @@ import useDelayedEffect from '../../../../../hooks/useDelayedEffect';
 import { useItemsContext } from 'renderer/contexts/ItemsContext';
 import NavigatorTreeBase from 'renderer/layout/navigator/components/sidebar/tree/NavigatorTreeBase';
 import NavigatorTreeNode from 'renderer/layout/navigator/components/sidebar/tree/nodes/NavigatorTreeNode';
+import { chain, isEmpty } from 'lodash';
+import { findTreeItemPath } from 'renderer/utils/treeUtils';
+import { crudKeys } from 'renderer/apis/requests/crud/crudKeys';
+import { instanceCrudEntity } from 'renderer/apis/requests/crud/entity/entities/instance.crudEntity';
+import { useQueryClient } from '@tanstack/react-query';
 
 const NAVIGATOR_TREE_PADDING_BOTTOM = 12;
 
@@ -49,11 +57,13 @@ export default function NavigatorTree({ width, height, search }: NavigatorTreePr
   const { data, selectedItem, action } = useNavigatorLayoutContext();
   const { pathname } = useLocation();
   const { startDemo, loading: loadingDemo } = useStartDemo();
+  const queryClient = useQueryClient();
+  const navigate = useNavigate();
 
   const treeRef = useRef<TreeApi<TreeItem> | null>(null);
 
-  const isLoading = useMemo<boolean>(() => !data, [data]);
-  const isEmpty = useMemo<boolean>(() => !!data && data.length === 0, [data]);
+  const loading = useMemo<boolean>(() => !data, [data]);
+  const empty = useMemo<boolean>(() => !!data && data.length === 0, [data]);
   const hasData = useMemo<boolean>(() => !!data && data.length > 0, [data]);
 
   useEffect(() => {
@@ -150,12 +160,20 @@ export default function NavigatorTree({ width, height, search }: NavigatorTreePr
     [getItem, moveItemState]
   );
 
-  const deleteItemState = useDeleteItem();
+  const deleteItemState = useDeleteItem({ refetchNone: true });
 
-  const deleteItem = useCallback(
-    async (item: ItemRO): Promise<void> => {
+  const deleteItems = useCallback(
+    async (items: ItemRO[]): Promise<void> => {
       try {
-        await deleteItemState.mutateAsync({ item });
+        const deletePromises = items.map((item) => deleteItemState.mutateAsync({ item }));
+        await Promise.all(deletePromises);
+
+        const invalidatePromises = chain(items)
+          .map((item) => getItemEntity(item))
+          .uniq()
+          .map((entity) => queryClient.invalidateQueries(crudKeys.entity(entity)))
+          .value();
+        await Promise.all(invalidatePromises);
       } catch (e) {}
     },
     [deleteItemState]
@@ -181,41 +199,69 @@ export default function NavigatorTree({ width, height, search }: NavigatorTreePr
       const beforeSort = children?.[index - 1]?.sort ?? 0;
       const afterSort = children?.[index]?.sort ?? 0;
 
-      const promises = dragNodes.map((node, nodeIndex, array) => {
-        const item = node.data;
+      const promises = dragNodes
+        .filter((node) => !node.parent || !dragNodes.find((n) => n.id === node.parent?.id))
+        .map((node, nodeIndex, array) => {
+          const item = node.data;
 
-        let newSort: number;
-        if (beforeSort && afterSort) {
-          newSort = beforeSort + ((afterSort - beforeSort) / (array.length + 1)) * (nodeIndex + 1);
-        } else if (beforeSort) {
-          newSort = beforeSort + nodeIndex + 1;
-        } else if (afterSort) {
-          newSort = (afterSort / (array.length + 1)) * (nodeIndex + 1);
-        } else {
-          newSort = nodeIndex + 1;
-        }
+          let newSort: number;
+          if (beforeSort && afterSort) {
+            newSort = beforeSort + ((afterSort - beforeSort) / (array.length + 1)) * (nodeIndex + 1);
+          } else if (beforeSort) {
+            newSort = beforeSort + nodeIndex + 1;
+          } else if (afterSort) {
+            newSort = (afterSort / (array.length + 1)) * (nodeIndex + 1);
+          } else {
+            newSort = nodeIndex + 1;
+          }
 
-        return moveItem(item.id, getItemType(item), parentId || undefined, newSort);
-      });
+          return moveItem(item.id, getItemType(item), parentId || undefined, newSort);
+        });
       await Promise.all(promises);
     },
     [data]
   );
 
-  const onDelete: DeleteHandler<TreeItem> = useCallback(async ({ ids, nodes }): Promise<void> => {
-    const items = nodes.map((node) => node.data).filter((item) => isItemDeletable(item));
-    if (!items.length) {
-      return;
-    }
+  const onDelete: DeleteHandler<TreeItem> = useCallback(
+    async ({ ids, nodes }): Promise<void> => {
+      const items = nodes.map((node) => node.data).filter((item) => isItemDeletable(item));
+      if (!items.length) {
+        return;
+      }
 
-    const confirm = await showDeleteConfirmationDialog(items);
-    if (!confirm) {
-      return;
-    }
+      const confirm = await showDeleteConfirmationDialog(items);
+      if (!confirm) {
+        return;
+      }
 
-    const promises = items.map((item) => deleteItem(item));
-    await Promise.all(promises);
-  }, []);
+      const itemsToDelete = items.filter((item) => {
+        const path = findTreeItemPath(data || [], item.id);
+        return path?.every((p) => !ids.includes(p.id));
+      });
+      await deleteItems(itemsToDelete);
+    },
+    [data, deleteItems]
+  );
+
+  const [selectedNodes, setSelectedNodes] = useState<NodeApi<TreeItem>[]>([]);
+
+  const onSelect = useCallback(
+    (nodes: NodeApi<TreeItem>[]): void => {
+      if (isEmpty(nodes)) {
+        selectedNodes.forEach((node) => treeRef.current?.selectMulti(node.id));
+      } else {
+        setSelectedNodes(nodes);
+      }
+
+      if (nodes.length === 1) {
+        const nodeUrl = getItemUrl(nodes[0].data);
+        if (!pathname.startsWith(nodeUrl)) {
+          navigate(nodeUrl);
+        }
+      }
+    },
+    [navigate, pathname]
+  );
 
   const disableEditItem = useCallback((treeItem: TreeItem): boolean => {
     return !isItemUpdatable(treeItem);
@@ -265,7 +311,7 @@ export default function NavigatorTree({ width, height, search }: NavigatorTreePr
 
   return (
     <>
-      {isLoading && (
+      {loading && (
         <Box
           sx={{
             height: height,
@@ -278,7 +324,7 @@ export default function NavigatorTree({ width, height, search }: NavigatorTreePr
         </Box>
       )}
 
-      {isEmpty && (
+      {empty && (
         <Box
           sx={{
             height: height,
@@ -318,9 +364,13 @@ export default function NavigatorTree({ width, height, search }: NavigatorTreePr
           onRename={onRename}
           onMove={onMove}
           onDelete={onDelete}
+          onSelect={onSelect}
+          selection={selectedItem?.id}
+          selectionFollowsFocus
           disableDrag={disableDragItem}
           disableDrop={disableDropItems}
           disableEdit={disableEditItem}
+          disableMultiSelection={false}
         >
           {NavigatorTreeNode}
         </NavigatorTreeBase>
