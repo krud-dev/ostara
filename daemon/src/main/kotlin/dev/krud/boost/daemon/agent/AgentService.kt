@@ -35,7 +35,7 @@ class AgentService(
             .getAgentInfo()
     }
 
-    fun moveAgent(agentId: UUID, newParentFolderId: UUID?, newSort: Double?): Any {
+    fun moveAgent(agentId: UUID, newParentFolderId: UUID?, newSort: Double?): Agent {
         log.debug { "Moving agent $agentId to folder $newParentFolderId with sort $newSort" }
         val agent = getAgentOrThrow(agentId)
         if (agent.parentFolderId == newParentFolderId && agent.sort == newSort) {
@@ -44,9 +44,9 @@ class AgentService(
         }
         agent.parentFolderId = newParentFolderId
         agent.sort = newSort
-        val updatedApplication = agentKrud.update(agent)
+        val updatedAgent = agentKrud.update(agent)
         systemEventsChannel.send(AgentMovedEventMessage(AgentMovedEventMessage.Payload(agentId, agent.parentFolderId, newParentFolderId, newSort)))
-        return updatedApplication
+        return updatedAgent
     }
 
     companion object {

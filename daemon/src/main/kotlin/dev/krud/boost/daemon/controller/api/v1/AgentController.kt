@@ -6,7 +6,6 @@ import dev.krud.boost.daemon.agent.model.Agent
 import dev.krud.boost.daemon.agent.model.AgentInfoDTO
 import dev.krud.boost.daemon.agent.ro.AgentModifyRequestRO
 import dev.krud.boost.daemon.agent.ro.AgentRO
-import dev.krud.boost.daemon.configuration.application.ro.ApplicationRO
 import dev.krud.boost.daemon.configuration.folder.validation.ValidFolderIdOrNull
 import dev.krud.boost.daemon.utils.ResultAggregationSummary
 import dev.krud.crudframework.crud.handler.krud.Krud
@@ -74,7 +73,7 @@ class AgentController(
     @ApiResponse(responseCode = "200", description = "Move operation")
     @ApiResponse(responseCode = "404", description = "Application not found")
     @ApiResponse(responseCode = "503", description = "Folder invalid")
-    fun moveAgent(@PathVariable agentId: UUID, @RequestParam(required = false) @Valid @ValidFolderIdOrNull newParentFolderId: UUID? = null, @RequestParam(required = false) newSort: Double? = null): ApplicationRO {
+    fun moveAgent(@PathVariable agentId: UUID, @RequestParam(required = false) @Valid @ValidFolderIdOrNull newParentFolderId: UUID? = null, @RequestParam(required = false) newSort: Double? = null): AgentRO {
         val application = agentService.moveAgent(agentId, newParentFolderId, newSort)
         return shapeShift.map(application)
     }
