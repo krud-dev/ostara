@@ -75,12 +75,18 @@ class ActuatorHttpClientImpl(
      */
     private var agentUrl: String? = null
 
-    constructor(agentUrl: String?, baseUrl: String, authenticator: Authenticator = Authenticator.NONE, disableSslVerification: Boolean = false) : this(
+    /**
+     * The external ID of the instance on the agent
+     */
+    private var instanceAgentExternalId: String? = null
+
+    constructor(agentUrl: String?, instanceAgentExternalId: String?, baseUrl: String, authenticator: Authenticator = Authenticator.NONE, disableSslVerification: Boolean = false) : this(
         baseUrl,
         authenticator,
         disableSslVerification
     ) {
         this.agentUrl = agentUrl
+        this.instanceAgentExternalId = instanceAgentExternalId
     }
 
     internal val objectMapper = ObjectMapper().apply {
@@ -441,8 +447,8 @@ class ActuatorHttpClientImpl(
     ): Request {
         return Request.Builder()
             .apply {
-                if (agentUrl != null) {
-                    header("X-Actuator-Base-Url", baseHttpUrl.toString())
+                if (agentUrl != null && instanceAgentExternalId != null) {
+                    header("X-Ostara-InstanceId", instanceAgentExternalId!!)
                 }
             }
             .method(method, requestBody)

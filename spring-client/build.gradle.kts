@@ -21,11 +21,13 @@ repositories {
 }
 
 dependencies {
+  implementation("org.jetbrains.kotlin:kotlin-reflect")
   api("org.springframework.boot:spring-boot-starter-actuator")
   compileOnly("org.springframework.boot:spring-boot-starter-web")
-  implementation("org.jetbrains.kotlin:kotlin-reflect")
+  compileOnly("org.springframework.boot:spring-boot-starter-webflux")
   testImplementation("org.springframework.boot:spring-boot-starter-test")
   testImplementation("org.springframework.boot:spring-boot-starter-web")
+  testImplementation("org.springframework.boot:spring-boot-starter-webflux")
 }
 
 tasks.withType<KotlinCompile> {

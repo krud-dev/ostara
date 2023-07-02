@@ -38,7 +38,7 @@ class InstanceActuatorClientProviderImpl(
             "Providing actuator client for instance ${instance.id} with url ${instance.actuatorUrl} using authentication $effectiveAuthentication"
         }
 
-        return ActuatorHttpClientImpl(agentUrl, instance.actuatorUrl, effectiveAuthentication.authentication.authenticator, applicationService.getApplicationDisableSslVerification(instance.parentApplicationId))
+        return ActuatorHttpClientImpl(agentUrl, instance.agentExternalId, instance.actuatorUrl, effectiveAuthentication.authentication.authenticator, applicationService.getApplicationDisableSslVerification(instance.parentApplicationId))
     }
 
     override fun provideForUrl(url: String, authentication: Authentication, disableSslVerification: Boolean): ActuatorHttpClient {

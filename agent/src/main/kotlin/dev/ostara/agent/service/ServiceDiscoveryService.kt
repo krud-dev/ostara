@@ -24,6 +24,10 @@ class ServiceDiscoveryService(
     return discoveredInstances.get()
   }
 
+  fun getDiscoveredInstanceById(id: String): DiscoveredInstanceDTO? {
+    return discoveredInstances.get().find { it.id == id }
+  }
+
   fun runDiscovery() {
     log.debug("Running instance discovery")
     val discoveredInstances = mutableListOf<DiscoveredInstanceDTO>()
