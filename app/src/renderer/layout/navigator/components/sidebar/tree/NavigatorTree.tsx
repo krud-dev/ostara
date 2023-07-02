@@ -289,11 +289,14 @@ export default function NavigatorTree({ width, height, search }: NavigatorTreePr
       if (!isItemUpdatable(parentNode.data)) {
         return true;
       }
-      if (dragNodes.some((node) => isInstance(node.data)) && dragNodes.some((node) => !isInstance(node.data))) {
+      if (
+        dragNodes.some((node) => isInstance(node.data) && !dragNodes.find((n) => n.id === node.parent?.id)) &&
+        dragNodes.some((node) => !isInstance(node.data))
+      ) {
         return true;
       }
       if (
-        dragNodes.some((node) => isInstance(node.data)) &&
+        dragNodes.some((node) => isInstance(node.data) && !dragNodes.find((n) => n.id === node.parent?.id)) &&
         dragNodes.some((node) => getItemParentId(node.data) !== parentNode.data.id)
       ) {
         return true;
