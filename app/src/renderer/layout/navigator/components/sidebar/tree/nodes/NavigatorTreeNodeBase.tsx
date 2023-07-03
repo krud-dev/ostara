@@ -10,8 +10,6 @@ import {
   getItemHealthStatusColor,
   getItemHealthStatusComponent,
   getItemNameTooltip,
-  isApplication,
-  isFolder,
   isInstance,
   isItemUpdatable,
 } from 'renderer/utils/itemUtils';
