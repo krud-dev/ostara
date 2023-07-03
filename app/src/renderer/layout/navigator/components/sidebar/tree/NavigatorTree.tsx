@@ -179,7 +179,7 @@ export default function NavigatorTree({ width, height, search }: NavigatorTreePr
         await Promise.all(invalidatePromises);
       } catch (e) {}
     },
-    [deleteItemState]
+    [deleteItemState, queryClient]
   );
 
   const onRename: RenameHandler<TreeItem> = useCallback(
@@ -252,7 +252,7 @@ export default function NavigatorTree({ width, height, search }: NavigatorTreePr
 
   const onSelect = useCallback(
     (nodes: NodeApi<TreeItem>[]): void => {
-      if (isEmpty(nodes) && selectedItem) {
+      if (isEmpty(nodes) && selectedItem && getItem(selectedItem.id)) {
         treeRef.current?.select(selectedItem.id);
       }
 
@@ -263,7 +263,7 @@ export default function NavigatorTree({ width, height, search }: NavigatorTreePr
         }
       }
     },
-    [navigate, pathname]
+    [navigate, pathname, getItem]
   );
 
   const disableEditItem = useCallback((treeItem: TreeItem): boolean => {
