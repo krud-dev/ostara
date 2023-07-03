@@ -29,7 +29,6 @@ dependencies {
   implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
   implementation("org.jetbrains.kotlin:kotlin-reflect")
   implementation("org.apache.curator:curator-framework:5.5.0")
-//  implementation("org.springframework.cloud:spring-cloud-starter-consul-discovery")
   implementation("org.springframework.cloud:spring-cloud-starter-zookeeper-discovery")
   implementation("io.github.oshai:kotlin-logging-jvm:4.0.0")
   implementation("io.kubernetes:client-java:18.0.0") {
@@ -67,6 +66,10 @@ tasks.jacocoTestReport {
     xml.required.set(true)
     html.required.set(false)
   }
+}
+
+tasks.bootJar {
+  archiveFileName.set("agent.jar")
 }
 
 springBoot {
