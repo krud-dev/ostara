@@ -5,6 +5,8 @@ plugins {
   id("io.spring.dependency-management") version "1.1.0"
   kotlin("jvm") version "1.8.22"
   kotlin("plugin.spring") version "1.8.22"
+  jacoco
+  id("org.sonarqube") version "4.2.1.3168"
 }
 
 group = "dev.ostara"
@@ -46,10 +48,6 @@ dependencyManagement {
   }
 }
 
-springBoot {
-  buildInfo()
-}
-
 tasks.withType<KotlinCompile> {
   kotlinOptions {
     freeCompilerArgs += "-Xjsr305=strict"
@@ -57,6 +55,28 @@ tasks.withType<KotlinCompile> {
   }
 }
 
-tasks.withType<Test> {
+tasks.test {
   useJUnitPlatform()
+  finalizedBy(tasks.jacocoTestReport)
+  maxParallelForks = Runtime.getRuntime().availableProcessors()
+}
+
+tasks.jacocoTestReport {
+  dependsOn(tasks.test)
+  reports {
+    xml.required.set(true)
+    html.required.set(false)
+  }
+}
+
+springBoot {
+  buildInfo()
+}
+
+sonar {
+  properties {
+    property("sonar.projectKey", "ostara-agent")
+    property("sonar.organization", "krud-dev")
+    property("sonar.host.url", "https://sonarcloud.io")
+  }
 }
