@@ -1,21 +1,22 @@
-package dev.ostara.agent.servicediscovery.handler
+package dev.ostara.agent.servicediscovery
 
-import dev.ostara.agent.configuration.OstaraConfiguration
-import dev.ostara.agent.servicediscovery.DiscoveredInstanceDTO
+import dev.ostara.agent.config.ServiceDiscoveryProperties
+import dev.ostara.agent.model.DiscoveredInstanceDTO
 import io.kubernetes.client.openapi.apis.CoreV1Api
 import io.kubernetes.client.util.Config
+import org.springframework.stereotype.Component
 
-
-class KubernetesServiceDiscoveryHandlerImpl : ServiceDiscoveryHandler<OstaraConfiguration.ServiceDiscovery.Kubernetes> {
+@Component
+class KubernetesServiceDiscoveryHandlerImpl : ServiceDiscoveryHandler<ServiceDiscoveryProperties.ServiceDiscovery.Kubernetes> {
   private val client = Config.defaultClient()
   private val api = CoreV1Api()
     .apply { apiClient = client }
 
-  override fun supports(config: OstaraConfiguration.ServiceDiscovery): Boolean {
-    return config is OstaraConfiguration.ServiceDiscovery.Kubernetes
+  override fun supports(config: ServiceDiscoveryProperties.ServiceDiscovery): Boolean {
+    return config is ServiceDiscoveryProperties.ServiceDiscovery.Kubernetes
   }
 
-  override fun discoverInstances(config: OstaraConfiguration.ServiceDiscovery.Kubernetes): List<DiscoveredInstanceDTO> {
+  override fun discoverInstances(config: ServiceDiscoveryProperties.ServiceDiscovery.Kubernetes): List<DiscoveredInstanceDTO> {
     val namespace = config.namespace
     val appNameLabel = config.appNameLabel
     val actuatorPath = config.actuatorPath
@@ -31,7 +32,8 @@ class KubernetesServiceDiscoveryHandlerImpl : ServiceDiscoveryHandler<OstaraConf
             appName = appName!!,
             id = pod.metadata!!.uid!!,
             name = pod.metadata!!.name!!,
-            url = "$scheme://${pod.status!!.podIP}:$port/${actuatorPath.removePrefix("/")}"
+            url = "http://localhost:13333/actuator"
+//            url = "$scheme://${pod.status!!.podIP}:$port/${actuatorPath.removePrefix("/")}"
           )
         }
       }.flatMap { it.value }

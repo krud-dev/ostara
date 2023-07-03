@@ -1,24 +1,20 @@
 package dev.ostara.agent.service
 
-import dev.ostara.agent.configuration.OstaraConfiguration
-import dev.ostara.agent.servicediscovery.DiscoveredInstanceDTO
-import dev.ostara.agent.servicediscovery.handler.ServiceDiscoveryHandler
-import io.ktor.util.logging.*
-import java.util.*
+import dev.ostara.agent.config.ServiceDiscoveryProperties
+import dev.ostara.agent.config.ServiceDiscoveryProperties.Companion.serviceDiscoveries
+import dev.ostara.agent.model.DiscoveredInstanceDTO
+import dev.ostara.agent.servicediscovery.ServiceDiscoveryHandler
+import io.github.oshai.kotlinlogging.KotlinLogging
+import org.springframework.scheduling.annotation.Scheduled
+import org.springframework.stereotype.Service
 import java.util.concurrent.atomic.AtomicReference
-import kotlin.concurrent.timer
 
+@Service
 class ServiceDiscoveryService(
-  private val ostaraConfiguration: OstaraConfiguration,
-  private val serviceDiscoveryHandlers: List<ServiceDiscoveryHandler<OstaraConfiguration.ServiceDiscovery>>
+  private val serviceDiscoveryProperties: ServiceDiscoveryProperties,
+  private val serviceDiscoveryHandlers: List<ServiceDiscoveryHandler<*>>
 ) {
   private val discoveredInstances = AtomicReference<List<DiscoveredInstanceDTO>>(listOf())
-  private val scheduler: Timer
-  init {
-    scheduler = timer("discoverInstances", false, period = 30_000) {
-      runDiscovery()
-    }
-  }
 
   fun getDiscoveredInstances(): List<DiscoveredInstanceDTO> {
     return discoveredInstances.get()
@@ -28,19 +24,20 @@ class ServiceDiscoveryService(
     return discoveredInstances.get().find { it.id == id }
   }
 
+  @Scheduled(fixedDelay = 30_000)
   fun runDiscovery() {
     log.debug("Running instance discovery")
     val discoveredInstances = mutableListOf<DiscoveredInstanceDTO>()
-    ostaraConfiguration.serviceDiscoveries.forEach { serviceDiscovery ->
-      val handler = serviceDiscoveryHandlers.find { it.supports(serviceDiscovery) }
+      serviceDiscoveryProperties.serviceDiscoveries.forEach { serviceDiscoverySettings ->
+      val handler = serviceDiscoveryHandlers.find { it.supports(serviceDiscoverySettings) } as ServiceDiscoveryHandler<ServiceDiscoveryProperties.ServiceDiscovery>?
       if (handler != null) {
-        discoveredInstances.addAll(handler.discoverInstances(serviceDiscovery))
+        discoveredInstances.addAll(handler.discoverInstances(serviceDiscoverySettings))
       }
     }
     this.discoveredInstances.set(discoveredInstances.toList())
   }
 
   companion object {
-    private val log = KtorSimpleLogger(ServiceDiscoveryService::class.qualifiedName!!)
+    private val log = KotlinLogging.logger { }
   }
 }

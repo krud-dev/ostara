@@ -30,7 +30,7 @@ class InstanceActuatorClientProviderImpl(
         val agentUrl = if (application.parentAgentId != null) {
             val agent = agentKrud.showById(application.parentAgentId!!)
             // Remove last slash if exists
-            "${agent?.url?.removeSuffix("/")}/api/actuator/proxy"
+            "${agent?.url?.removeSuffix("/")}/api/v1/proxy"
         } else {
             null
         }

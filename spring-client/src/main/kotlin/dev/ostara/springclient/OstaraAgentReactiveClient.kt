@@ -8,7 +8,7 @@ class OstaraAgentReactiveClient(
 ) : OstaraAgentClient {
   override fun register(request: RegistrationRequest) {
     webClient.post()
-      .uri("$url/api/serviceDiscovery/internal/register")
+      .uri("$url/api/v1/service-discovery/internal/register")
       .bodyValue(request)
       .retrieve()
       .bodyToMono(String::class.java)
@@ -17,7 +17,7 @@ class OstaraAgentReactiveClient(
 
   override fun deregister(request: RegistrationRequest) {
     webClient.post()
-      .uri("$url/api/serviceDiscovery/internal/deregister")
+      .uri("$url/api/v1/service-discovery/internal/deregister")
       .bodyValue(request)
       .retrieve()
       .bodyToMono(String::class.java)

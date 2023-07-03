@@ -10,7 +10,7 @@ class OstaraAgentWebClient(
 ) : OstaraAgentClient {
   override fun register(request: RegistrationRequest) {
     val response = restTemplate.exchange(
-      "$url/api/serviceDiscovery/internal/register",
+      "$url/api/v1/service-discovery/internal/register",
         HttpMethod.POST,
         HttpEntity(request),
       String::class.java
@@ -19,7 +19,7 @@ class OstaraAgentWebClient(
 
   override fun deregister(request: RegistrationRequest) {
     val response = restTemplate.exchange(
-      "$url/api/serviceDiscovery/internal/deregister",
+      "$url/api/v1/service-discovery/internal/deregister",
         HttpMethod.POST,
         HttpEntity(request),
       String::class.java
