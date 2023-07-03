@@ -1,7 +1,7 @@
 package dev.ostara.agent.controller
 
 import dev.ostara.agent.model.RegistrationRequestDTO
-import dev.ostara.agent.servicediscovery.InternalServiceDiscoveryHandlerImpl
+import dev.ostara.agent.service.InternalService
 import dev.ostara.agent.util.API_PREFIX
 import org.springframework.http.HttpStatus
 import org.springframework.web.bind.annotation.*
@@ -9,18 +9,17 @@ import org.springframework.web.bind.annotation.*
 @RestController
 @RequestMapping("$API_PREFIX/internal/service-discovery")
 class InternalServiceDiscoveryController(
-  private val internalServiceDiscoveryHandler: InternalServiceDiscoveryHandlerImpl
+  private val internalService: InternalService
 ) {
-
   @PostMapping("/register")
   @ResponseStatus(HttpStatus.CREATED)
   fun register(@RequestBody request: RegistrationRequestDTO) {
-    internalServiceDiscoveryHandler.doRegister(request)
+    internalService.doRegister(request)
   }
 
   @PostMapping("/deregister")
   @ResponseStatus(HttpStatus.NO_CONTENT)
   fun deregister(@RequestBody request: RegistrationRequestDTO) {
-    internalServiceDiscoveryHandler.doUnregister(request)
+    internalService.doUnregister(request)
   }
 }

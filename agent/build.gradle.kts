@@ -42,6 +42,10 @@ dependencyManagement {
   }
 }
 
+springBoot {
+  buildInfo()
+}
+
 tasks.withType<KotlinCompile> {
   kotlinOptions {
     freeCompilerArgs += "-Xjsr305=strict"

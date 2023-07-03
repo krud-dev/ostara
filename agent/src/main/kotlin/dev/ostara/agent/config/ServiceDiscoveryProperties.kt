@@ -14,12 +14,6 @@ class ServiceDiscoveryProperties {
   @NestedConfigurationProperty
   var kubernetes: List<ServiceDiscovery.Kubernetes> = emptyList()
 
-  /**
-   * List of internal service discovery strategies to use
-   */
-  @NestedConfigurationProperty
-  var internal: List<ServiceDiscovery.Internal> = emptyList()
-
   sealed interface ServiceDiscovery {
     data class Internal(
       /**
@@ -53,6 +47,6 @@ class ServiceDiscoveryProperties {
   }
 
   companion object {
-    val ServiceDiscoveryProperties.serviceDiscoveries get() = kubernetes + internal
+    val ServiceDiscoveryProperties.serviceDiscoveries get() = kubernetes
   }
 }

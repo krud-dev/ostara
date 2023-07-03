@@ -1,4 +1,4 @@
-package dev.ostara.agent.servicediscovery
+package dev.ostara.agent.service
 
 import dev.ostara.agent.config.ServiceDiscoveryProperties
 import dev.ostara.agent.model.DiscoveredInstanceDTO
@@ -6,15 +6,10 @@ import dev.ostara.agent.model.RegistrationRequestDTO
 import org.springframework.scheduling.annotation.Scheduled
 import org.springframework.stereotype.Component
 import java.util.*
-import javax.annotation.PostConstruct
 
 @Component
-class InternalServiceDiscoveryHandlerImpl : ServiceDiscoveryHandler<ServiceDiscoveryProperties.ServiceDiscovery.Internal> {
+class InternalService {
   private val instanceStore = mutableMapOf<Pair<String, String>, Pair<RegistrationRequestDTO, Date>>()
-
-  override fun supports(config: ServiceDiscoveryProperties.ServiceDiscovery): Boolean {
-    return config is ServiceDiscoveryProperties.ServiceDiscovery.Internal
-  }
 
   @Scheduled(fixedDelay = 30_000)
   fun evictStale() {
@@ -34,7 +29,7 @@ class InternalServiceDiscoveryHandlerImpl : ServiceDiscoveryHandler<ServiceDisco
     instanceStore.remove(request.appName to request.host)
   }
 
-  override fun discoverInstances(config: ServiceDiscoveryProperties.ServiceDiscovery.Internal): List<DiscoveredInstanceDTO> {
+  fun getInstances(): List<DiscoveredInstanceDTO> {
     return instanceStore.values.map { (request, _) ->
       DiscoveredInstanceDTO(
         appName = request.appName,

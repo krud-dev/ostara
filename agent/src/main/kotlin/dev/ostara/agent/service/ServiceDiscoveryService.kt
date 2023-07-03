@@ -12,16 +12,17 @@ import java.util.concurrent.atomic.AtomicReference
 @Service
 class ServiceDiscoveryService(
   private val serviceDiscoveryProperties: ServiceDiscoveryProperties,
-  private val serviceDiscoveryHandlers: List<ServiceDiscoveryHandler<*>>
+  private val serviceDiscoveryHandlers: List<ServiceDiscoveryHandler<*>>,
+  private val internalService: InternalService
 ) {
   private val discoveredInstances = AtomicReference<List<DiscoveredInstanceDTO>>(listOf())
 
   fun getDiscoveredInstances(): List<DiscoveredInstanceDTO> {
-    return discoveredInstances.get()
+    return discoveredInstances.get() + internalService.getInstances()
   }
 
   fun getDiscoveredInstanceById(id: String): DiscoveredInstanceDTO? {
-    return discoveredInstances.get().find { it.id == id }
+    return getDiscoveredInstances().find { it.id == id }
   }
 
   @Scheduled(fixedDelay = 30_000)
