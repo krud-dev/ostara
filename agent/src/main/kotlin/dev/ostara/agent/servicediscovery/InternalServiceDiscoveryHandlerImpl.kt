@@ -1,15 +1,32 @@
-package dev.ostara.agent.service
+package dev.ostara.agent.servicediscovery
 
+import dev.ostara.agent.config.ServiceDiscoveryProperties
 import dev.ostara.agent.model.DiscoveredInstanceDTO
 import dev.ostara.agent.model.RegistrationRequestDTO
+import dev.ostara.agent.service.TimeService
 import org.springframework.scheduling.annotation.Scheduled
 import org.springframework.stereotype.Component
 
 @Component
-class InternalService(
+class InternalServiceDiscoveryHandlerImpl(
   private val timeService: TimeService
-) {
+) : ServiceDiscoveryHandler<ServiceDiscoveryProperties.ServiceDiscovery.Internal> {
   private val instanceStore = mutableMapOf<Pair<String, String>, Pair<RegistrationRequestDTO, Long>>()
+
+  override fun supports(config: ServiceDiscoveryProperties.ServiceDiscovery): Boolean {
+    return config is ServiceDiscoveryProperties.ServiceDiscovery.Internal
+  }
+
+  override fun discoverInstances(config: ServiceDiscoveryProperties.ServiceDiscovery.Internal): List<DiscoveredInstanceDTO> {
+    return instanceStore.values.map { (request, _) ->
+      DiscoveredInstanceDTO(
+        appName = request.appName,
+        id = "${request.appName}-${request.host}",
+        name = request.host,
+        url = request.managementUrl
+      )
+    }
+  }
 
   @Scheduled(fixedDelay = 30_000)
   fun evictStale() {
@@ -27,16 +44,5 @@ class InternalService(
 
   fun doUnregister(request: RegistrationRequestDTO) {
     instanceStore.remove(request.appName to request.host)
-  }
-
-  fun getInstances(): List<DiscoveredInstanceDTO> {
-    return instanceStore.values.map { (request, _) ->
-      DiscoveredInstanceDTO(
-        appName = request.appName,
-        id = "${request.appName}-${request.host}",
-        name = request.host,
-        url = request.managementUrl
-      )
-    }
   }
 }

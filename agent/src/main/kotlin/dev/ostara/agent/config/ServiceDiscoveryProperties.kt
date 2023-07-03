@@ -9,16 +9,28 @@ import org.springframework.context.annotation.Configuration
 @ConfigurationProperties(prefix = "$CONFIGURATION_PREFIX.service-discovery", ignoreUnknownFields = false)
 class ServiceDiscoveryProperties {
   /**
-   * List of Kubernetes service discovery strategies to use
+   * Internal service discovery configuration
+   */
+  var internal: ServiceDiscovery.Internal = ServiceDiscovery.Internal()
+  /**
+   * Kubernetes service discovery configuration
    */
   @NestedConfigurationProperty
-  var kubernetes: List<ServiceDiscovery.Kubernetes> = emptyList()
+  var kubernetes: ServiceDiscovery.Kubernetes? = null
 
+  /**
+   * Zookeeper service discovery configuration
+   */
   @NestedConfigurationProperty
-  var zookeeper: List<ServiceDiscovery.Zookeeper> = emptyList()
+  var zookeeper: ServiceDiscovery.Zookeeper? = null
 
   sealed interface ServiceDiscovery {
+    val enabled: Boolean
+    data class Internal(
+      override val enabled: Boolean = true,
+    ) : ServiceDiscovery
     data class Kubernetes(
+      override val enabled: Boolean = true,
       /**
        * The namespace to search for pods in
        */
@@ -42,6 +54,7 @@ class ServiceDiscoveryProperties {
     ) : ServiceDiscovery
 
     data class Zookeeper(
+      override val enabled: Boolean = true,
       /**
        * The Zookeeper connection string
        */
@@ -59,6 +72,8 @@ class ServiceDiscoveryProperties {
   }
 
   companion object {
-    val ServiceDiscoveryProperties.serviceDiscoveries get() = kubernetes + zookeeper
+    val ServiceDiscoveryProperties.serviceDiscoveries get()
+    = listOfNotNull(internal, kubernetes, zookeeper)
+        .filter { it.enabled }
   }
 }
