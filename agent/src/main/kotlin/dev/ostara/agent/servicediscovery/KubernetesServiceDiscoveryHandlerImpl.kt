@@ -5,19 +5,17 @@ import dev.ostara.agent.model.DiscoveredInstanceDTO
 import io.kubernetes.client.openapi.apis.CoreV1Api
 import io.kubernetes.client.util.Config
 import org.springframework.stereotype.Component
+import java.io.StringReader
 
 @Component
 class KubernetesServiceDiscoveryHandlerImpl :
   ServiceDiscoveryHandler<ServiceDiscoveryProperties.ServiceDiscovery.Kubernetes> {
-  private val client = Config.defaultClient()
-  private val api = CoreV1Api()
-    .apply { apiClient = client }
-
   override fun supports(config: ServiceDiscoveryProperties.ServiceDiscovery): Boolean {
     return config is ServiceDiscoveryProperties.ServiceDiscovery.Kubernetes
   }
 
   override fun discoverInstances(config: ServiceDiscoveryProperties.ServiceDiscovery.Kubernetes): List<DiscoveredInstanceDTO> {
+    val api = getClient(config)
     val namespace = config.namespace
     val appNameLabel = config.appNameLabel
     val actuatorPath = config.actuatorPath
@@ -38,5 +36,20 @@ class KubernetesServiceDiscoveryHandlerImpl :
         }
       }.flatMap { it.value }
     return result
+  }
+
+  private fun getClient(config: ServiceDiscoveryProperties.ServiceDiscovery.Kubernetes): CoreV1Api {
+    val kubeConfigPath = config.kubeConfigPath
+    val kubeConfigYaml = config.kubeConfigYaml
+    val client = if (kubeConfigYaml != null) {
+      Config.fromConfig(
+        StringReader(kubeConfigYaml)
+      )
+    } else if (kubeConfigPath != null) {
+      Config.fromConfig(kubeConfigPath)
+    } else {
+      Config.defaultClient()
+    }
+    return CoreV1Api(client)
   }
 }

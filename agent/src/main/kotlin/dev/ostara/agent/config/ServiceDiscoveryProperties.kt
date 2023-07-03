@@ -32,6 +32,14 @@ class ServiceDiscoveryProperties {
     data class Kubernetes(
       override val enabled: Boolean = true,
       /**
+       * The path to the kubeconfig file
+       */
+      val kubeConfigPath: String? = null,
+      /**
+       * The kubeconfig yaml as a string, supersedes [kubeConfigPath] if set
+       */
+      val kubeConfigYaml: String? = null,
+      /**
        * The namespace to search for pods in
        */
       val namespace: String,
