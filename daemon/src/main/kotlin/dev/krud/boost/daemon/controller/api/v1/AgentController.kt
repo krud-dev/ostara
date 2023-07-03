@@ -44,6 +44,16 @@ class AgentController(
         return agentService.getAgentInfo(agentId).getOrThrow()
     }
 
+    @GetMapping("/infoForUrl", produces = ["application/json"])
+    @ResponseStatus(HttpStatus.OK)
+    @Operation(
+        summary = "Get agent info for a URL"
+    )
+    @ApiResponse(responseCode = "200", description = "Agent info")
+    fun getAgentInfo(@RequestParam agentUrl: String): AgentInfoDTO {
+        return agentService.getAgentInfo(agentUrl).getOrThrow()
+    }
+
     @PostMapping("/runDiscovery", produces = ["application/json"])
     @ResponseStatus(HttpStatus.OK)
     @Operation(
@@ -63,6 +73,7 @@ class AgentController(
     fun runDiscoveryForAgent(@RequestParam agentId: UUID) {
         agentDiscoveryService.runDiscoveryForAgent(agentId).getOrThrow()
     }
+
 
     @PostMapping("/{agentId}/move")
     @ResponseStatus(HttpStatus.OK)

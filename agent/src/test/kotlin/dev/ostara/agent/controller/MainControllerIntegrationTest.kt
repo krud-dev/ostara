@@ -22,7 +22,7 @@ class MainControllerIntegrationTest {
   @Test
   fun `getInfo returns correct version`() {
     whenever(buildProperties.version).thenReturn("1.2.3")
-    mockMvc.get("/api/v1/info")
+    mockMvc.get("/api/v1")
       .andExpect {
         status { isOk() }
         content {

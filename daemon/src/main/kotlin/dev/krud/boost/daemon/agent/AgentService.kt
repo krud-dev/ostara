@@ -35,6 +35,11 @@ class AgentService(
             .getAgentInfo()
     }
 
+    fun getAgentInfo(url: String): Result<AgentInfoDTO> = runFeignCatching {
+        agentClientProvider.getAgentClient(url)
+            .getAgentInfo()
+    }
+
     fun moveAgent(agentId: UUID, newParentFolderId: UUID?, newSort: Double?): Agent {
         log.debug { "Moving agent $agentId to folder $newParentFolderId with sort $newSort" }
         val agent = getAgentOrThrow(agentId)

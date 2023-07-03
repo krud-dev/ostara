@@ -6,7 +6,7 @@ import feign.Headers
 import feign.RequestLine
 
 interface AgentClient {
-    @RequestLine("GET /api/v1/info")
+    @RequestLine("GET /api/v1")
     fun getAgentInfo(): AgentInfoDTO
 
     @RequestLine("GET /api/v1/instances")

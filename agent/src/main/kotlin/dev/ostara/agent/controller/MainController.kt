@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RestController
 class MainController(
   private val buildProperties: BuildProperties
 ) {
-  @GetMapping("/info", produces = ["application/json"])
+  @GetMapping(produces = ["application/json"])
   fun getInfo(): AgentInfoDTO {
     return AgentInfoDTO(
       version = buildProperties.version
