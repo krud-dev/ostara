@@ -14,14 +14,11 @@ import CreateInstanceDialog, {
 } from 'renderer/components/item/dialogs/create/CreateInstanceDialog';
 import { matchPath, useLocation, useNavigate } from 'react-router-dom';
 import {
-  getItemDisplayName,
   getItemEntity,
   getItemNameKey,
   getItemParentId,
   getItemType,
-  getItemTypeEntity,
   getItemUrl,
-  isAgent,
   isApplication,
   isFolder,
   isInstance,
@@ -43,7 +40,6 @@ import NavigatorTreeNode from 'renderer/layout/navigator/components/sidebar/tree
 import { chain, get, isEmpty } from 'lodash';
 import { findTreeItemPath } from 'renderer/utils/treeUtils';
 import { crudKeys } from 'renderer/apis/requests/crud/crudKeys';
-import { instanceCrudEntity } from 'renderer/apis/requests/crud/entity/entities/instance.crudEntity';
 import { useQueryClient } from '@tanstack/react-query';
 
 const NAVIGATOR_TREE_PADDING_BOTTOM = 12;
@@ -150,16 +146,13 @@ export default function NavigatorTree({ width, height, search }: NavigatorTreePr
         return undefined;
       }
 
-      const isSameParent = getItemParentId(item) === parentId;
-      if (isSameParent && item.sort === sort) {
+      if (getItemParentId(item) === parentId && item.sort === sort) {
         return undefined;
       }
 
-      const newParentId = isSameParent ? undefined : parentId;
-
       setDisableDrag(true);
       try {
-        const result = await moveItemState.mutateAsync({ id, type, parentId: newParentId, sort });
+        const result = await moveItemState.mutateAsync({ id, type, parentId, sort });
         addItem(result);
         return result;
       } catch (e) {
@@ -167,7 +160,7 @@ export default function NavigatorTree({ width, height, search }: NavigatorTreePr
       }
       return undefined;
     },
-    [addItem, getItem, moveItemState]
+    [addItem, getItem, setDisableDrag, moveItemState]
   );
 
   const deleteItemState = useDeleteItem({ refetchNone: true });
@@ -211,7 +204,10 @@ export default function NavigatorTree({ width, height, search }: NavigatorTreePr
       const afterSort = children?.[index]?.sort ?? 0;
 
       const promises = dragNodes
-        .filter((node) => !node.parent || !dragNodes.find((n) => n.id === node.parent?.id))
+        .filter((node) => {
+          const path = findTreeItemPath(data || [], node.id);
+          return !!path?.every((p) => !dragNodes.find((n) => n.id === p.id));
+        })
         .map((node, nodeIndex, array) => {
           const item = node.data;
 
@@ -230,7 +226,7 @@ export default function NavigatorTree({ width, height, search }: NavigatorTreePr
         });
       await Promise.all(promises);
     },
-    [data]
+    [data, moveItem]
   );
 
   const onDelete: DeleteHandler<TreeItem> = useCallback(
@@ -254,14 +250,10 @@ export default function NavigatorTree({ width, height, search }: NavigatorTreePr
     [data, deleteItems]
   );
 
-  const [selectedNodes, setSelectedNodes] = useState<NodeApi<TreeItem>[]>([]);
-
   const onSelect = useCallback(
     (nodes: NodeApi<TreeItem>[]): void => {
-      if (isEmpty(nodes)) {
-        selectedNodes.forEach((node) => treeRef.current?.selectMulti(node.id));
-      } else {
-        setSelectedNodes(nodes);
+      if (isEmpty(nodes) && selectedItem) {
+        treeRef.current?.select(selectedItem.id);
       }
 
       if (nodes.length === 1) {
@@ -300,42 +292,35 @@ export default function NavigatorTree({ width, height, search }: NavigatorTreePr
       if (!isItemUpdatable(parentNode.data)) {
         return true;
       }
-      if (
-        dragNodes.some((node) => isInstance(node.data) && !dragNodes.find((n) => n.id === node.parent?.id)) &&
-        dragNodes.some((node) => !isInstance(node.data))
-      ) {
+
+      const nodesToCheck = dragNodes.filter((node) => {
+        const path = findTreeItemPath(data || [], node.id);
+        return !!path?.every((p) => !dragNodes.find((n) => n.id === p.id));
+      });
+
+      if (nodesToCheck.some((node) => isInstance(node.data)) && nodesToCheck.some((node) => !isInstance(node.data))) {
+        return true;
+      }
+      if (nodesToCheck.some((node) => isInstance(node.data) && node.data.parentApplicationId !== parentNode.id)) {
         return true;
       }
       if (
-        dragNodes.some((node) => isInstance(node.data) && !dragNodes.find((n) => n.id === node.parent?.id)) &&
-        dragNodes.some((node) => getItemParentId(node.data) !== parentNode.data.id)
-      ) {
-        return true;
-      }
-      if (
-        dragNodes.some(
-          (node) =>
-            isApplication(node.data) && !dragNodes.find((n) => n.id === node.parent?.id) && !!node.data.parentAgentId && getItemParentId(node.data) !== parentNode.data.id
+        nodesToCheck.some(
+          (node) => isApplication(node.data) && !!node.data.parentAgentId && node.data.parentAgentId !== parentNode.id
         )
       ) {
         return true;
       }
       if (
-        dragNodes.some((node) => isApplication(node.data) && !dragNodes.find((n) => n.id === node.parent?.id) && getItemParentId(node.data) !== parentNode.id) &&
+        nodesToCheck.some((node) => !isInstance(node.data) && getItemParentId(node.data) !== parentNode.id) &&
         !parentNode.isRoot &&
         !isFolder(parentNode.data)
       ) {
         return true;
       }
-      if (dragNodes.some((node) => isAgent(node.data)) && !parentNode.isRoot && !isFolder(parentNode.data)) {
-        return true;
-      }
-      if (dragNodes.some((node) => isFolder(node.data)) && !parentNode.isRoot && !isFolder(parentNode.data)) {
-        return true;
-      }
       return false;
     },
-    []
+    [data]
   );
 
   return (
