@@ -3,11 +3,11 @@ import TableCellDataHealthStatus from 'renderer/components/table/data/custom/Tab
 import { generatePath } from 'react-router-dom';
 import { urls } from 'renderer/routes/urls';
 import { InstanceAbility, InstanceRO } from 'common/generated_definitions';
-import { getItemDisplayName } from '../../utils/itemUtils';
 import { SHUTDOWN_ID } from '../actions';
 import { FormattedMessage } from 'react-intl';
 
 export type EnrichedInstanceRO = InstanceRO & {
+  displayName: string;
   applicationAbilities?: InstanceAbility[];
 };
 
@@ -15,10 +15,9 @@ export const applicationInstanceEntity: Entity<EnrichedInstanceRO> = {
   id: 'applicationInstance',
   columns: [
     {
-      id: 'alias',
-      type: 'CustomText',
+      id: 'displayName',
+      type: 'Text',
       labelId: 'name',
-      getText: (item) => getItemDisplayName(item),
       getTooltip: (item) => item.actuatorUrl,
     },
     {
@@ -83,7 +82,7 @@ export const applicationInstanceEntity: Entity<EnrichedInstanceRO> = {
   },
   defaultOrder: [
     {
-      id: 'name',
+      id: 'displayName',
       direction: 'asc',
     },
   ],
@@ -92,7 +91,7 @@ export const applicationInstanceEntity: Entity<EnrichedInstanceRO> = {
   filterData: (data, filter) =>
     data.filter(
       (item) =>
-        item.alias?.toLowerCase().includes(filter.toLowerCase()) ||
+        item.displayName?.toLowerCase().includes(filter.toLowerCase()) ||
         item.metadata?.version?.toLowerCase().includes(filter.toLowerCase()) ||
         item.metadata?.gitBranch?.toLowerCase().includes(filter.toLowerCase()) ||
         item.metadata?.gitCommitId?.toLowerCase().includes(filter.toLowerCase())

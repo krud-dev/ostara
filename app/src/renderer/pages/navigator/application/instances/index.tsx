@@ -15,6 +15,7 @@ import CreateInstanceDialog, {
   CreateInstanceDialogProps,
 } from 'renderer/components/item/dialogs/create/CreateInstanceDialog';
 import { useNavigatorLayoutContext } from 'renderer/contexts/NavigatorLayoutContext';
+import { getItemDisplayName } from 'renderer/utils/itemUtils';
 
 const ApplicationInstances: FunctionComponent = () => {
   const { instances, refetchInstances } = useItemsContext();
@@ -27,7 +28,11 @@ const ApplicationInstances: FunctionComponent = () => {
     () =>
       instances
         ?.filter((i) => i.parentApplicationId === item.id)
-        ?.map<EnrichedInstanceRO>((i) => ({ ...i, applicationAbilities: selectedItemAbilities })),
+        ?.map<EnrichedInstanceRO>((i) => ({
+          ...i,
+          displayName: getItemDisplayName(i),
+          applicationAbilities: selectedItemAbilities,
+        })),
     [instances, selectedItemAbilities]
   );
   const loading = useMemo<boolean>(() => !data, [data]);
