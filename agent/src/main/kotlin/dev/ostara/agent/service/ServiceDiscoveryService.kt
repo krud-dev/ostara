@@ -29,8 +29,9 @@ class ServiceDiscoveryService(
   fun runDiscovery() {
     log.debug("Running instance discovery")
     val discoveredInstances = mutableListOf<DiscoveredInstanceDTO>()
-      serviceDiscoveryProperties.serviceDiscoveries.forEach { serviceDiscoverySettings ->
-      val handler = serviceDiscoveryHandlers.find { it.supports(serviceDiscoverySettings) } as ServiceDiscoveryHandler<ServiceDiscoveryProperties.ServiceDiscovery>?
+    serviceDiscoveryProperties.serviceDiscoveries.forEach { serviceDiscoverySettings ->
+      val handler =
+        serviceDiscoveryHandlers.find { it.supports(serviceDiscoverySettings) } as ServiceDiscoveryHandler<ServiceDiscoveryProperties.ServiceDiscovery>?
       if (handler != null) {
         discoveredInstances.addAll(handler.discoverInstances(serviceDiscoverySettings))
       }

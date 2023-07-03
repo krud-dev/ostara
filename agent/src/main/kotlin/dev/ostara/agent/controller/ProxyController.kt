@@ -18,7 +18,10 @@ class ProxyController(
   private val serviceDiscoveryService: ServiceDiscoveryService
 ) {
   @RequestMapping("/**")
-  fun doCall(@RequestHeader(PROXY_INSTANCE_ID_HEADER) instanceId: String, requestEntity: RequestEntity<Any>): ResponseEntity<String> {
+  fun doCall(
+    @RequestHeader(PROXY_INSTANCE_ID_HEADER) instanceId: String,
+    requestEntity: RequestEntity<Any>
+  ): ResponseEntity<String> {
     val instance = serviceDiscoveryService.getDiscoveredInstanceById(instanceId)
       ?: return ResponseEntity.notFound().build()
     val instanceUrl = instance.url!!

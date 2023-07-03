@@ -7,7 +7,8 @@ import io.kubernetes.client.util.Config
 import org.springframework.stereotype.Component
 
 @Component
-class KubernetesServiceDiscoveryHandlerImpl : ServiceDiscoveryHandler<ServiceDiscoveryProperties.ServiceDiscovery.Kubernetes> {
+class KubernetesServiceDiscoveryHandlerImpl :
+  ServiceDiscoveryHandler<ServiceDiscoveryProperties.ServiceDiscovery.Kubernetes> {
   private val client = Config.defaultClient()
   private val api = CoreV1Api()
     .apply { apiClient = client }
