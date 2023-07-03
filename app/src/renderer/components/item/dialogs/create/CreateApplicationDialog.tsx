@@ -30,7 +30,7 @@ const CreateApplicationDialog: FunctionComponent<CreateApplicationDialogProps> =
 
     const [submitting, setSubmitting] = useState<boolean>(false);
 
-    const createState = useCrudCreate<ApplicationRO, ApplicationModifyRequestRO>();
+    const createState = useCrudCreate<ApplicationRO, ApplicationModifyRequestRO>({ refetchNone: true });
 
     const submitHandler = useCallback(
       async (data: ApplicationFormValues): Promise<void> => {

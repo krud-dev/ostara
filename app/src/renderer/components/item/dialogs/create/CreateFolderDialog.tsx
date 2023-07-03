@@ -28,7 +28,7 @@ const CreateFolderDialog: FunctionComponent<CreateFolderDialogProps> = NiceModal
 
     const [submitting, setSubmitting] = useState<boolean>(false);
 
-    const createState = useCrudCreate<FolderRO, FolderModifyRequestRO>();
+    const createState = useCrudCreate<FolderRO, FolderModifyRequestRO>({ refetchNone: true });
 
     const submitHandler = useCallback(
       async (data: FolderFormValues): Promise<void> => {

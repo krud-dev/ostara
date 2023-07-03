@@ -1,6 +1,8 @@
 package dev.krud.boost.daemon.backup
 
+import dev.krud.boost.daemon.agent.model.Agent
 import dev.krud.boost.daemon.backup.ro.BackupDTO
+import dev.krud.boost.daemon.backup.ro.BackupDTO.Companion.toAgent
 import dev.krud.boost.daemon.backup.ro.BackupDTO.Companion.toApplication
 import dev.krud.boost.daemon.backup.ro.BackupDTO.Companion.toApplicationMetricRule
 import dev.krud.boost.daemon.backup.ro.BackupDTO.Companion.toFolder
@@ -17,6 +19,7 @@ import java.util.*
 @Component
 class BackupImporter(
     private val folderKrud: Krud<Folder, UUID>,
+    private val agentKrud: Krud<Agent, UUID>,
     private val applicationKrud: Krud<Application, UUID>,
     private val instanceKrud: Krud<Instance, UUID>,
     private val applicationMetricRuleKrud: Krud<ApplicationMetricRule, UUID>
@@ -27,6 +30,7 @@ class BackupImporter(
             when (it) {
                 is BackupDTO.TreeElement.Folder -> importFolder(it)
                 is BackupDTO.TreeElement.Application -> importApplication(it)
+                is BackupDTO.TreeElement.Agent -> importAgent(it)
             }
         }
     }
@@ -38,6 +42,12 @@ class BackupImporter(
                 Folder::parentFolderId.isNull()
             }
         }
+        agentKrud.deleteByFilter {
+            where {
+                Agent::parentFolderId.isNull()
+            }
+        }
+
         applicationKrud.deleteByFilter {
             where {
                 Application::parentFolderId.isNull()
@@ -54,10 +64,18 @@ class BackupImporter(
             when (it) {
                 is BackupDTO.TreeElement.Folder -> importFolder(it, createdFolder.id)
                 is BackupDTO.TreeElement.Application -> importApplication(it, createdFolder.id)
+                is BackupDTO.TreeElement.Agent -> importAgent(it, createdFolder.id)
             }
         }
 
         return folder
+    }
+
+    private fun importAgent(element: BackupDTO.TreeElement.Agent, parentFolderId: UUID? = null): Agent {
+        val agent = element.toAgent(parentFolderId)
+        val createdApplication = agentKrud.create(agent)
+        element.children.forEach { importApplication(it, createdApplication.id) }
+        return agent
     }
 
     private fun importApplication(element: BackupDTO.TreeElement.Application, parentFolderId: UUID? = null): Application {

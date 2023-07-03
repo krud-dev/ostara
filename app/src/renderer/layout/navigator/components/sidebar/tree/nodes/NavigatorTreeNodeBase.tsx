@@ -12,6 +12,7 @@ import {
   getItemNameTooltip,
   isApplication,
   isFolder,
+  isInstance,
   isItemUpdatable,
 } from 'renderer/utils/itemUtils';
 import { SxProps } from '@mui/system';
@@ -130,7 +131,7 @@ export default function NavigatorTreeNodeBase({
     () => (node.isOpen ? KeyboardArrowDown : KeyboardArrowRight),
     [node.isOpen]
   );
-  const showToggle = useMemo<boolean>(() => isFolder(node.data) || isApplication(node.data), [node.data]);
+  const showToggle = useMemo<boolean>(() => !isInstance(node.data), [node.data]);
   const isFocused = useMemo<boolean>(
     () => node.isFocused && (!isSelected || !node.isOnlySelection),
     [isSelected, node.isFocused, node.isOnlySelection]

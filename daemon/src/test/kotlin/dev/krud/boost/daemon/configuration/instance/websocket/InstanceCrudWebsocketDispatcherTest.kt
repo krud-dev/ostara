@@ -5,5 +5,5 @@ import org.springframework.messaging.simp.SimpMessagingTemplate
 
 class InstanceCrudWebsocketDispatcherTest {
     private val messagingTemplate: SimpMessagingTemplate = mock()
-    private val instanceCrudWebsocketDispatcher = InstanceCrudWebsocketDispatcher(messagingTemplate)
+    private val instanceCreationWebsocketDispatcher = InstanceCreationWebsocketDispatcher(messagingTemplate)
 }

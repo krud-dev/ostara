@@ -12,10 +12,14 @@ class AgentClientProvider(
     private val feignHttpClient: feign.Client
 ) {
     fun getAgentClient(agent: Agent): AgentClient {
+        return getAgentClient(agent.url)
+    }
+
+    fun getAgentClient(url: String): AgentClient {
         return feign.Feign.builder()
             .client(feignHttpClient)
             .encoder(feignEncoder)
             .decoder(feignDecoder)
-            .target(AgentClient::class.java, agent.url)
+            .target(AgentClient::class.java, url)
     }
 }

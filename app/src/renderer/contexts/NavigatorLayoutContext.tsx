@@ -33,16 +33,13 @@ const NavigatorLayoutContext = React.createContext<NavigatorLayoutContextProps>(
 interface NavigatorLayoutProviderProps extends PropsWithChildren<any> {}
 
 const NavigatorLayoutProvider: FunctionComponent<NavigatorLayoutProviderProps> = ({ children }) => {
-  const { folders, applications, instances, items, getItem } = useItemsContext();
+  const { items, getItem } = useItemsContext();
   const navigate = useNavigate();
   const params = useParams<{ id?: string }>();
 
   const [action, setAction] = useState<NavigatorLayoutAction | undefined>(undefined);
 
-  const data = useMemo<TreeItem[] | undefined>(
-    () => (folders && applications && instances ? buildTree([...folders, ...applications, ...instances]) : undefined),
-    [folders, applications, instances]
-  );
+  const data = useMemo<TreeItem[] | undefined>(() => (items ? buildTree(items) : undefined), [items]);
 
   useEffect(() => {
     if (items && params.id) {

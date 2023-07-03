@@ -6,7 +6,7 @@ import { FormattedMessage } from 'react-intl';
 import { useNavigatorLayoutContext } from 'renderer/contexts/NavigatorLayoutContext';
 import { useUpdateItem } from 'renderer/apis/requests/item/updateItem';
 import { useDeleteItem } from 'renderer/apis/requests/item/deleteItem';
-import { showDeleteConfirmationDialog } from 'renderer/utils/dialogUtils';
+import { showDeleteItemConfirmationDialog } from 'renderer/utils/dialogUtils';
 import { useMoveItem } from 'renderer/apis/requests/item/moveItem';
 import NiceModal from '@ebay/nice-modal-react';
 import CreateInstanceDialog, {
@@ -14,9 +14,11 @@ import CreateInstanceDialog, {
 } from 'renderer/components/item/dialogs/create/CreateInstanceDialog';
 import { matchPath, useLocation } from 'react-router-dom';
 import {
+  getItemNameKey,
   getItemParentId,
   getItemType,
   getItemUrl,
+  isAgent,
   isApplication,
   isFolder,
   isInstance,
@@ -35,6 +37,7 @@ import useDelayedEffect from '../../../../../hooks/useDelayedEffect';
 import { useItemsContext } from 'renderer/contexts/ItemsContext';
 import NavigatorTreeBase from 'renderer/layout/navigator/components/sidebar/tree/NavigatorTreeBase';
 import NavigatorTreeNode from 'renderer/layout/navigator/components/sidebar/tree/nodes/NavigatorTreeNode';
+import { get } from 'lodash';
 
 const NAVIGATOR_TREE_PADDING_BOTTOM = 12;
 
@@ -45,7 +48,7 @@ type NavigatorTreeProps = {
 };
 
 export default function NavigatorTree({ width, height, search }: NavigatorTreeProps) {
-  const { getItem } = useItemsContext();
+  const { addItem, getItem } = useItemsContext();
   const { data, selectedItem, action } = useNavigatorLayoutContext();
   const { pathname } = useLocation();
   const { startDemo, loading: loadingDemo } = useStartDemo();
@@ -109,12 +112,14 @@ export default function NavigatorTree({ width, height, search }: NavigatorTreePr
     return null;
   }, []);
 
-  const updateItemState = useUpdateItem();
+  const updateItemState = useUpdateItem({ refetchNone: true });
 
   const updateItem = useCallback(
     async (item: ItemRO): Promise<ItemRO | undefined> => {
       try {
-        return await updateItemState.mutateAsync({ item });
+        const result = await updateItemState.mutateAsync({ item });
+        addItem(result);
+        return result;
       } catch (e) {}
       return undefined;
     },
@@ -127,7 +132,7 @@ export default function NavigatorTree({ width, height, search }: NavigatorTreePr
     setDisableDrag(false);
   }, [data]);
 
-  const moveItemState = useMoveItem();
+  const moveItemState = useMoveItem({ refetchNone: true });
 
   const moveItem = useCallback(
     async (id: string, type: ItemType, parentId: string | undefined, sort: number): Promise<ItemRO | undefined> => {
@@ -135,19 +140,25 @@ export default function NavigatorTree({ width, height, search }: NavigatorTreePr
       if (!item) {
         return undefined;
       }
-      if (getItemParentId(item) === parentId && item.sort === sort) {
+
+      const isSameParent = getItemParentId(item) === parentId;
+      if (isSameParent && item.sort === sort) {
         return undefined;
       }
 
+      const newParentId = isSameParent ? undefined : parentId;
+
       setDisableDrag(true);
       try {
-        return await moveItemState.mutateAsync({ id, type, parentId, sort });
+        const result = await moveItemState.mutateAsync({ id, type, parentId: newParentId, sort });
+        addItem(result);
+        return result;
       } catch (e) {
         setDisableDrag(false);
       }
       return undefined;
     },
-    [getItem, moveItemState]
+    [addItem, getItem, moveItemState]
   );
 
   const deleteItemState = useDeleteItem();
@@ -167,10 +178,11 @@ export default function NavigatorTree({ width, height, search }: NavigatorTreePr
       if (!item) {
         return;
       }
-      if (item.alias === name) {
+      const nameKey = getItemNameKey(item);
+      if (get(item, nameKey) === name) {
         return;
       }
-      await updateItem({ ...item, alias: name });
+      await updateItem({ ...item, [nameKey]: name });
     },
     [getItem, updateItem]
   );
@@ -208,7 +220,7 @@ export default function NavigatorTree({ width, height, search }: NavigatorTreePr
       return;
     }
 
-    const confirm = await showDeleteConfirmationDialog(items);
+    const confirm = await showDeleteItemConfirmationDialog(items);
     if (!confirm) {
       return;
     }
@@ -246,13 +258,25 @@ export default function NavigatorTree({ width, height, search }: NavigatorTreePr
       if (dragNodes.some((node) => isInstance(node.data)) && dragNodes.some((node) => !isInstance(node.data))) {
         return true;
       }
+      if (dragNodes.some((node) => isInstance(node.data) && getItemParentId(node.data) !== parentNode.data.id)) {
+        return true;
+      }
       if (
-        dragNodes.some((node) => isInstance(node.data)) &&
-        dragNodes.some((node) => getItemParentId(node.data) !== parentNode.data.id)
+        dragNodes.some(
+          (node) =>
+            isApplication(node.data) && !!node.data.parentAgentId && getItemParentId(node.data) !== parentNode.data.id
+        )
       ) {
         return true;
       }
-      if (dragNodes.some((node) => isApplication(node.data)) && !parentNode.isRoot && !isFolder(parentNode.data)) {
+      if (
+        dragNodes.some((node) => isApplication(node.data) && getItemParentId(node.data) !== parentNode.id) &&
+        !parentNode.isRoot &&
+        !isFolder(parentNode.data)
+      ) {
+        return true;
+      }
+      if (dragNodes.some((node) => isAgent(node.data)) && !parentNode.isRoot && !isFolder(parentNode.data)) {
         return true;
       }
       if (dragNodes.some((node) => isFolder(node.data)) && !parentNode.isRoot && !isFolder(parentNode.data)) {

@@ -8,6 +8,7 @@ import java.util.*
 class InstanceUpdatedEventMessage(payload: Payload) : AbstractMessage<InstanceUpdatedEventMessage.Payload>(payload) {
     data class Payload(
         val instanceId: UUID,
-        val parentApplicationId: UUID
+        val parentApplicationId: UUID,
+        val discovered: Boolean
     )
 }

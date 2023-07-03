@@ -27,6 +27,7 @@ export default function NavigatorTreePreview({ backup }: NavigatorTreePreviewPro
         type: backupItem.model.type as ApplicationType,
         demo: false,
         authentication: { type: 'none' },
+        discovered: false,
         health: {
           status: 'UNKNOWN',
           lastUpdateTime: 0,
@@ -41,6 +42,7 @@ export default function NavigatorTreePreview({ backup }: NavigatorTreePreviewPro
             metadata: {},
             demo: false,
             authentication: { type: 'none' },
+            discovered: false,
             health: {
               status: 'UNKNOWN',
               lastUpdateTime: 0,

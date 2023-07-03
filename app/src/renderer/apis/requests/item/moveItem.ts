@@ -9,6 +9,7 @@ import { getItemTypeEntity } from '../../../utils/itemUtils';
 import { moveFolder } from '../folder/moveFolder';
 import { moveApplication } from '../application/moveApplication';
 import { moveInstance } from '../instance/moveInstance';
+import { moveAgent } from 'renderer/apis/requests/agent/moveAgent';
 
 type Variables = {
   id: string;
@@ -24,6 +25,12 @@ export const moveItem = async (variables: Variables): Promise<Data> => {
     case 'folder':
       return await moveFolder({
         folderId: variables.id,
+        newParentFolderId: variables.parentId,
+        newSort: variables.sort,
+      });
+    case 'agent':
+      return await moveAgent({
+        agentId: variables.id,
         newParentFolderId: variables.parentId,
         newSort: variables.sort,
       });

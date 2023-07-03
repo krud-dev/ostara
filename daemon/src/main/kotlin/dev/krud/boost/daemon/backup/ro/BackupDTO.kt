@@ -2,6 +2,7 @@ package dev.krud.boost.daemon.backup.ro
 
 import com.fasterxml.jackson.annotation.JsonSubTypes
 import com.fasterxml.jackson.annotation.JsonTypeInfo
+import dev.krud.boost.daemon.agent.model.Agent
 import dev.krud.boost.daemon.base.annotations.GenerateTypescript
 import dev.krud.boost.daemon.configuration.application.entity.Application
 import dev.krud.boost.daemon.configuration.application.enums.ApplicationType
@@ -25,9 +26,10 @@ class BackupDTO(
     @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.EXISTING_PROPERTY, property = "type")
     @JsonSubTypes(
         JsonSubTypes.Type(value = TreeElement.Folder::class, name = "folder"),
-        JsonSubTypes.Type(value = TreeElement.Application::class, name = "application")
+        JsonSubTypes.Type(value = TreeElement.Application::class, name = "application"),
+        JsonSubTypes.Type(value = TreeElement.Agent::class, name = "agent")
     )
-    sealed interface TreeElement    {
+    sealed interface TreeElement {
         val type: String
 
         class Folder(
@@ -39,6 +41,23 @@ class BackupDTO(
             data class Model(
                 val alias: String = TypeDefaults.STRING,
                 val description: String? = null,
+                val color: String = DEFAULT_COLOR,
+                val icon: String? = null,
+                val sort: Double? = null,
+                val authenticationProperties: Map<String, String?>? = null
+            )
+        }
+
+        class Agent(
+            val model: Model = Model(),
+            var children: List<Application> = emptyList()
+        ) : TreeElement {
+            override val type: String = "agent"
+
+            data class Model(
+                val name: String = TypeDefaults.STRING,
+                val url: String = TypeDefaults.STRING,
+                val apiKey: String? = null,
                 val color: String = DEFAULT_COLOR,
                 val icon: String? = null,
                 val sort: Double? = null,
@@ -110,6 +129,34 @@ class BackupDTO(
             return Folder(
                 alias = this.model.alias,
                 description = this.model.description,
+                color = this.model.color,
+                icon = this.model.icon,
+                sort = this.model.sort,
+                authentication = Authentication.fromMap(this.model.authenticationProperties ?: emptyMap()),
+            ).apply {
+                this.parentFolderId = parentFolderId
+            }
+        }
+
+        fun Agent.toTreeElement(): TreeElement.Agent {
+            return TreeElement.Agent(
+                model = TreeElement.Agent.Model(
+                    name = name,
+                    url = url,
+                    apiKey = apiKey,
+                    color = color,
+                    icon = icon,
+                    sort = sort,
+                    authenticationProperties = authentication.asMap(),
+                ),
+            )
+        }
+
+        fun TreeElement.Agent.toAgent(parentFolderId: UUID? = null): Agent {
+            return Agent(
+                name = this.model.name,
+                url = this.model.url,
+                apiKey = this.model.apiKey,
                 color = this.model.color,
                 icon = this.model.icon,
                 sort = this.model.sort,

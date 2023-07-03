@@ -1,5 +1,6 @@
 package dev.krud.boost.daemon.backup
 
+import dev.krud.boost.daemon.agent.model.Agent
 import dev.krud.boost.daemon.backup.ro.BackupDTO
 import dev.krud.boost.daemon.configuration.application.entity.Application
 import dev.krud.boost.daemon.configuration.application.enums.ApplicationType
@@ -22,7 +23,8 @@ class BackupImporterTest {
     private val applicationKrud = TestKrud(Application::class.java) { UUID.randomUUID() }
     private val instanceKrud = TestKrud(Instance::class.java) { UUID.randomUUID() }
     private val applicationMetricRuleKrud = TestKrud(ApplicationMetricRule::class.java) { UUID.randomUUID() }
-    private val backupImporter = BackupImporter(folderKrud, applicationKrud, instanceKrud, applicationMetricRuleKrud)
+    private val agentKrud = TestKrud(Agent::class.java) { UUID.randomUUID() }
+    private val backupImporter = BackupImporter(folderKrud, agentKrud, applicationKrud, instanceKrud, applicationMetricRuleKrud)
     // region private val dto = ...
     private val dto = BackupDTO(
         version = 1,

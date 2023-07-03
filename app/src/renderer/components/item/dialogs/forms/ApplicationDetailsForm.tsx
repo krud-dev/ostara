@@ -18,6 +18,7 @@ export type ApplicationDetailsFormProps = {
 
 export type ApplicationFormValues = ApplicationModifyRequestRO & {
   id?: string;
+  parentAgentId?: string;
 };
 
 const ApplicationDetailsForm: FunctionComponent<ApplicationDetailsFormProps> = ({
@@ -49,6 +50,7 @@ const ApplicationDetailsForm: FunctionComponent<ApplicationDetailsFormProps> = (
   }) as Authentication | undefined;
 
   const effectiveAuthentication = useEffectiveAuthentication({
+    agentId: defaultValues?.parentAgentId,
     folderId: defaultValues?.parentFolderId,
   });
 

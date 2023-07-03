@@ -203,6 +203,11 @@ export interface AgentModifyRequestRO {
     name: string;
     url: string;
     apiKey?: string;
+    icon?: string;
+    sort?: number;
+    color: string;
+    authentication: Authentication;
+    parentFolderId?: string;
 }
 
 export interface AgentRO {
@@ -210,6 +215,11 @@ export interface AgentRO {
     name: string;
     url: string;
     apiKey?: string;
+    color: string;
+    icon?: string;
+    sort?: number;
+    parentFolderId?: string;
+    authentication: Authentication;
 }
 
 export interface SystemBackupRO {
@@ -267,8 +277,6 @@ export interface ApplicationModifyRequestRO {
     sort?: number;
     parentFolderId?: string;
     disableSslVerification?: boolean;
-    agentId?: string;
-    agentDiscoveryParams?: { [index: string]: string | undefined };
 }
 
 export interface ApplicationRO {
@@ -285,9 +293,9 @@ export interface ApplicationRO {
     authentication: Authentication;
     demo: boolean;
     disableSslVerification: boolean;
-    agentId?: string;
-    agentDiscoveryType?: string;
-    agentDiscoveryParams?: { [index: string]: string | undefined };
+    parentAgentId?: string;
+    agentExternalId?: string;
+    discovered: boolean;
 }
 
 export interface FolderModifyRequestRO {
@@ -403,7 +411,8 @@ export interface InstanceRO {
     health: InstanceHealthRO;
     demo: boolean;
     metadata: InstanceMetadataDTO;
-    agentDiscoveryId?: string;
+    parentAgentId?: string;
+    agentExternalId?: string;
     discovered: boolean;
 }
 
@@ -502,15 +511,32 @@ export interface InfoActuatorResponse$Git$Unknown extends InfoActuatorResponse$G
     type: string;
 }
 
+export interface AgentInfoDTO {
+    version: string;
+    serviceDiscoveryStrategies: ServiceDiscoveryStrategyDTO[];
+}
+
 export interface BackupDTO {
     version?: number;
     date?: DateAsNumber;
     tree: BackupDTO$TreeElementUnion[];
 }
 
+export interface ApplicationCreatedEventMessage extends AbstractMessage<ApplicationCreatedEventMessage$Payload> {
+    payload: ApplicationCreatedEventMessage$Payload;
+}
+
+export interface ApplicationDeletedEventMessage extends AbstractMessage<ApplicationDeletedEventMessage$Payload> {
+    payload: ApplicationDeletedEventMessage$Payload;
+}
+
 export interface ApplicationHealthUpdatedEventMessage$Payload {
     applicationId: string;
     newHealth: ApplicationHealthRO;
+}
+
+export interface ApplicationUpdatedEventMessage extends AbstractMessage<ApplicationUpdatedEventMessage$Payload> {
+    payload: ApplicationUpdatedEventMessage$Payload;
 }
 
 export interface EffectiveAuthentication {
@@ -862,10 +888,10 @@ export interface TogglzFeatureActuatorResponse$Metadata {
     attributes?: { [index: string]: string | undefined };
 }
 
-export interface Unit {
+export interface Authentication {
 }
 
-export interface Authentication {
+export interface Unit {
 }
 
 export interface InstanceMetadataDTO {
@@ -905,23 +931,46 @@ export interface InfoActuatorResponse$Git$Simple$Commit {
     time?: ParsedDate;
 }
 
+export interface ServiceDiscoveryStrategyDTO {
+    type: string;
+    params: ParamSchema[];
+}
+
 export interface BackupDTO$TreeElement {
-    type: "folder" | "application";
+    type: "folder" | "application" | "agent";
+}
+
+export interface ApplicationCreatedEventMessage$Payload {
+    applicationId: string;
+    discovered: boolean;
+}
+
+export interface ApplicationDeletedEventMessage$Payload {
+    applicationId: string;
+    discovered: boolean;
+}
+
+export interface ApplicationUpdatedEventMessage$Payload {
+    applicationId: string;
+    discovered: boolean;
 }
 
 export interface InstanceCreatedEventMessage$Payload {
     instanceId: string;
     parentApplicationId: string;
+    discovered: boolean;
 }
 
 export interface InstanceDeletedEventMessage$Payload {
     instanceId: string;
     parentApplicationId: string;
+    discovered: boolean;
 }
 
 export interface InstanceUpdatedEventMessage$Payload {
     instanceId: string;
     parentApplicationId: string;
+    discovered: boolean;
 }
 
 export interface Iterable<T> {
@@ -1129,6 +1178,15 @@ export interface InfoActuatorResponse$Git$Full$Remote$Origin {
     url: string;
 }
 
+export interface ParamSchema {
+    name: string;
+    type: ParamType;
+    description: string;
+    required: boolean;
+    defaultValue?: string;
+    validOptions?: string[];
+}
+
 export interface BackupDTO$TreeElement$Folder extends BackupDTO$TreeElement {
     type: "folder";
     model: BackupDTO$TreeElement$Folder$Model;
@@ -1140,6 +1198,12 @@ export interface BackupDTO$TreeElement$Application extends BackupDTO$TreeElement
     model: BackupDTO$TreeElement$Application$Model;
     children: BackupDTO$TreeElement$Application$Instance[];
     metricRules: BackupDTO$TreeElement$Application$MetricRule[];
+}
+
+export interface BackupDTO$TreeElement$Agent extends BackupDTO$TreeElement {
+    type: "agent";
+    model: BackupDTO$TreeElement$Agent$Model;
+    children: BackupDTO$TreeElement$Application[];
 }
 
 export interface AbstractMessage<T> extends Message<T> {
@@ -1233,6 +1297,16 @@ export interface BackupDTO$TreeElement$Application$MetricRule {
     type: string;
 }
 
+export interface BackupDTO$TreeElement$Agent$Model {
+    name: string;
+    url: string;
+    apiKey?: string;
+    color: string;
+    icon?: string;
+    sort?: number;
+    authenticationProperties?: { [index: string]: string | undefined };
+}
+
 export interface MappingsActuatorResponse$Context$Mappings$DispatcherServletOrHandler$Details {
     handlerMethod?: MappingsActuatorResponse$Context$Mappings$DispatcherServletOrHandler$Details$HandlerMethod;
     handlerFunction?: MappingsActuatorResponse$Context$Mappings$DispatcherServletOrHandler$Details$HandlerFunction;
@@ -1319,10 +1393,12 @@ export type ApplicationMetricRule$Type = "SIMPLE" | "RELATIVE";
 
 export type ThreadProfilingStatus = "RUNNING" | "FINISHED";
 
-export type EffectiveAuthentication$SourceType = "FOLDER" | "APPLICATION";
+export type EffectiveAuthentication$SourceType = "FOLDER" | "APPLICATION" | "AGENT";
 
 export type FilterFieldOperation = "Equal" | "NotEqual" | "In" | "NotIn" | "GreaterThan" | "GreaterEqual" | "LowerThan" | "LowerEqual" | "Between" | "Contains" | "IsNull" | "IsNotNull" | "IsEmpty" | "IsNotEmpty" | "And" | "Or" | "Not" | "Noop";
 
 export type FilterFieldDataType = "String" | "Integer" | "Long" | "Double" | "Boolean" | "Date" | "Object" | "Enum" | "UUID" | "None";
 
-export type BackupDTO$TreeElementUnion = BackupDTO$TreeElement$Folder | BackupDTO$TreeElement$Application;
+export type ParamType = "STRING" | "INT";
+
+export type BackupDTO$TreeElementUnion = BackupDTO$TreeElement$Folder | BackupDTO$TreeElement$Application | BackupDTO$TreeElement$Agent;

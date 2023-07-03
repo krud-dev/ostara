@@ -7,6 +7,7 @@ import InstanceDetailsForm, { InstanceFormValues } from 'renderer/components/ite
 import { InstanceModifyRequestRO, InstanceRO } from 'common/generated_definitions';
 import { useCrudUpdate } from 'renderer/apis/requests/crud/crudUpdate';
 import { instanceCrudEntity } from 'renderer/apis/requests/crud/entity/entities/instance.crudEntity';
+import { useItemsContext } from 'renderer/contexts/ItemsContext';
 
 export type UpdateInstanceDialogProps = {
   item: InstanceRO;
@@ -15,10 +16,11 @@ export type UpdateInstanceDialogProps = {
 
 const UpdateInstanceDialog: FunctionComponent<UpdateInstanceDialogProps> = NiceModal.create(({ item, onUpdated }) => {
   const modal = useModal();
+  const { addItem } = useItemsContext();
 
   const [submitting, setSubmitting] = useState<boolean>(false);
 
-  const updateState = useCrudUpdate<InstanceRO, InstanceModifyRequestRO>();
+  const updateState = useCrudUpdate<InstanceRO, InstanceModifyRequestRO>({ refetchNone: true });
 
   const submitHandler = useCallback(async (data: InstanceFormValues): Promise<void> => {
     setSubmitting(true);
@@ -30,6 +32,8 @@ const UpdateInstanceDialog: FunctionComponent<UpdateInstanceDialogProps> = NiceM
         item: { ...item, ...data },
       });
       if (result) {
+        addItem(result);
+
         onUpdated?.(result);
 
         modal.resolve(result);
