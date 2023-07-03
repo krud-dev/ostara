@@ -1,5 +1,6 @@
 package dev.krud.boost.daemon.configuration.folder.crud
 
+import dev.krud.boost.daemon.agent.model.Agent
 import dev.krud.boost.daemon.configuration.application.entity.Application
 import dev.krud.boost.daemon.configuration.folder.entity.Folder
 import dev.krud.boost.daemon.configuration.folder.messaging.FolderAuthenticationChangedMessage
@@ -17,6 +18,7 @@ class FolderPersistentHooks(
     private val folderKrud: Krud<Folder, UUID>,
     private val applicationKrud: Krud<Application, UUID>,
     private val systemEventsChannel: PublishSubscribeChannel,
+    private val agentKrud: Krud<Agent, UUID>,
     cacheManager: CacheManager
 ) : DeleteHooks<UUID, Folder>, UpdateHooks<UUID, Folder> {
     private val folderEffectiveAuthenticationCache by cacheManager.resolve()
@@ -41,6 +43,11 @@ class FolderPersistentHooks(
         applicationKrud.deleteByFilter {
             where {
                 Application::parentFolderId Equal entity.id
+            }
+        }
+        agentKrud.deleteByFilter {
+            where {
+                Agent::parentFolderId Equal entity.id
             }
         }
     }

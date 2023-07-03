@@ -1,7 +1,7 @@
 import { chain, forEach } from 'lodash';
 import { TreeItem } from 'renderer/layout/navigator/components/sidebar/tree/tree';
 import { ItemRO } from '../definitions/daemon';
-import { isInstance } from './itemUtils';
+import { getItemParentId } from './itemUtils';
 
 export const getNewItemSort = (treeItem: TreeItem): number => {
   return treeItem.children?.length
@@ -22,27 +22,17 @@ export const buildTree = (items: ItemRO[]): TreeItem[] => {
 
   const dataTree: TreeItem[] = [];
   forEach(items, (item) => {
-    if (isInstance(item)) {
-      const treeItem = hashMap.get(item.id);
-      if (treeItem && item.parentApplicationId) {
-        const parentChildren = hashMap.get(item.parentApplicationId)?.children;
+    const treeItem = hashMap.get(item.id);
+    if (treeItem) {
+      const parentId = getItemParentId(item);
+      if (parentId) {
+        const parentChildren = hashMap.get(parentId)?.children;
         if (parentChildren) {
           parentChildren.push(treeItem);
           sortByOrder(parentChildren);
         }
-      }
-    } else {
-      const treeItem = hashMap.get(item.id);
-      if (treeItem) {
-        if (item.parentFolderId) {
-          const parentChildren = hashMap.get(item.parentFolderId)?.children;
-          if (parentChildren) {
-            parentChildren.push(treeItem);
-            sortByOrder(parentChildren);
-          }
-        } else {
-          dataTree.push(treeItem);
-        }
+      } else {
+        dataTree.push(treeItem);
       }
     }
   });

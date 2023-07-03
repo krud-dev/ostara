@@ -8,9 +8,10 @@ import { Allotment, LayoutPriority } from 'allotment';
 
 type MainSidebarLayoutProps = {
   Sidebar: ComponentType<{ width: number }>;
+  snap?: boolean;
 };
 
-export default function MainSidebarLayout({ Sidebar }: MainSidebarLayoutProps) {
+export default function MainSidebarLayout({ Sidebar, snap }: MainSidebarLayoutProps) {
   const { pathname } = useLocation();
 
   const scrollContainerRef = useRef<HTMLElement>();
@@ -27,7 +28,7 @@ export default function MainSidebarLayout({ Sidebar }: MainSidebarLayoutProps) {
 
   return (
     <Allotment defaultSizes={defaultSizes} proportionalLayout={false} onChange={(sizes) => setSidebarWidth(sizes[0])}>
-      <Allotment.Pane minSize={200} maxSize={500}>
+      <Allotment.Pane minSize={200} maxSize={500} snap={snap}>
         <Box sx={{ height: '100%' }}>
           <Sidebar width={sidebarWidth} />
         </Box>

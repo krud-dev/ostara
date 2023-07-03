@@ -101,6 +101,9 @@ class ApplicationService(
     fun moveApplication(applicationId: UUID, newParentFolderId: UUID?, newSort: Double?): Application {
         log.debug { "Moving application $applicationId to folder $newParentFolderId with sort $newSort" }
         val application = getApplicationOrThrow(applicationId)
+        if (newParentFolderId != null && application.discovered) {
+            throwBadRequest("Cannot move discovered applications outside of their agent")
+        }
         if (application.parentFolderId == newParentFolderId && application.sort == newSort) {
             log.debug { "Application $applicationId is already in folder $newParentFolderId with sort $newSort, skipping update" }
             return application

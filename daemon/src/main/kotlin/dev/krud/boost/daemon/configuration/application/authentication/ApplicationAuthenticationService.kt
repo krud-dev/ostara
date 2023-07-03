@@ -1,5 +1,6 @@
 package dev.krud.boost.daemon.configuration.application.authentication
 
+import dev.krud.boost.daemon.configuration.agent.authentication.AgentAuthenticationService
 import dev.krud.boost.daemon.configuration.application.ApplicationService
 import dev.krud.boost.daemon.configuration.authentication.Authentication
 import dev.krud.boost.daemon.configuration.authentication.EffectiveAuthentication
@@ -12,6 +13,7 @@ import java.util.*
 @Service
 class ApplicationAuthenticationService(
     private val applicationService: ApplicationService,
+    private val agentAuthenticationService: AgentAuthenticationService,
     private val folderAuthenticationService: FolderAuthenticationService
 ) {
     @Cacheable(cacheNames = ["applicationEffectiveAuthenticationCache"], key = "#applicationId")
@@ -22,6 +24,10 @@ class ApplicationAuthenticationService(
             val effectiveAuthentication = EffectiveAuthentication(application.authentication, EffectiveAuthentication.SourceType.APPLICATION, applicationId)
             log.debug { "Application $applicationId has its own authentication ${application.authentication}, returning $effectiveAuthentication" }
             return effectiveAuthentication
+        }
+
+        if (application.parentAgentId != null) {
+            return agentAuthenticationService.getEffectiveAuthentication(application.parentAgentId!!)
         }
 
         if (application.parentFolderId == null) {

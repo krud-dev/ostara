@@ -7,6 +7,7 @@ import FolderDetailsForm, { FolderFormValues } from 'renderer/components/item/di
 import { useCrudUpdate } from 'renderer/apis/requests/crud/crudUpdate';
 import { FolderModifyRequestRO, FolderRO } from 'common/generated_definitions';
 import { folderCrudEntity } from 'renderer/apis/requests/crud/entity/entities/folder.crudEntity';
+import { useItemsContext } from 'renderer/contexts/ItemsContext';
 
 export type UpdateFolderDialogProps = {
   item: FolderRO;
@@ -15,10 +16,11 @@ export type UpdateFolderDialogProps = {
 
 const UpdateFolderDialog: FunctionComponent<UpdateFolderDialogProps> = NiceModal.create(({ item, onUpdated }) => {
   const modal = useModal();
+  const { addItem } = useItemsContext();
 
   const [submitting, setSubmitting] = useState<boolean>(false);
 
-  const updateState = useCrudUpdate<FolderRO, FolderModifyRequestRO>();
+  const updateState = useCrudUpdate<FolderRO, FolderModifyRequestRO>({ refetchNone: true });
 
   const submitHandler = useCallback(async (data: FolderFormValues): Promise<void> => {
     setSubmitting(true);
@@ -30,6 +32,8 @@ const UpdateFolderDialog: FunctionComponent<UpdateFolderDialogProps> = NiceModal
         item: { ...item, ...data },
       });
       if (result) {
+        addItem(result);
+
         onUpdated?.(result);
 
         modal.resolve(result);

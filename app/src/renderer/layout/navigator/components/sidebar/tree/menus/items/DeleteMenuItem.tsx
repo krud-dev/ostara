@@ -1,7 +1,7 @@
 import { useCallback, useMemo } from 'react';
 import { FormattedMessage } from 'react-intl';
 import { useDeleteItem } from 'renderer/apis/requests/item/deleteItem';
-import { showDeleteConfirmationDialog } from 'renderer/utils/dialogUtils';
+import { showDeleteItemConfirmationDialog } from 'renderer/utils/dialogUtils';
 import CustomMenuItem from 'renderer/components/menu/item/CustomMenuItem';
 import { ItemRO } from '../../../../../../../definitions/daemon';
 import { isItemDeletable } from '../../../../../../../utils/itemUtils';
@@ -19,7 +19,7 @@ export default function DeleteMenuItem({ item, onClose }: DeleteMenuItemProps) {
   const deleteHandler = useCallback(async (): Promise<void> => {
     onClose?.();
 
-    const confirm = await showDeleteConfirmationDialog(item);
+    const confirm = await showDeleteItemConfirmationDialog(item);
     if (!confirm) {
       return;
     }

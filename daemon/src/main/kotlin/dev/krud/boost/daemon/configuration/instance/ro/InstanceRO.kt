@@ -19,6 +19,7 @@ class InstanceRO(
     var health: InstanceHealthRO = InstanceHealthRO.unknown(id),
     var demo: Boolean = false,
     var metadata: InstanceMetadataDTO = InstanceMetadataDTO(),
-    var agentDiscoveryId: String? = null,
+    var parentAgentId: UUID? = null,
+    var agentExternalId: String? = null,
     var discovered: Boolean = TypeDefaults.BOOLEAN
 )

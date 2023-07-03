@@ -121,7 +121,7 @@ class InstanceMetadataServiceTest {
         instanceMetadataCache.put(instance.id, InstanceMetadataDTO())
         instanceMetadataService.onInstanceEvent(
             InstanceUpdatedEventMessage(
-                InstanceUpdatedEventMessage.Payload(instance.id, instance.parentApplicationId)
+                InstanceUpdatedEventMessage.Payload(instance.id, instance.parentApplicationId, false)
             )
         )
         expect {
@@ -136,7 +136,7 @@ class InstanceMetadataServiceTest {
         instanceMetadataCache.put(instance.id, InstanceMetadataDTO())
         instanceMetadataService.onInstanceEvent(
             InstanceDeletedEventMessage(
-                InstanceDeletedEventMessage.Payload(instance.id, instance.parentApplicationId)
+                InstanceDeletedEventMessage.Payload(instance.id, instance.parentApplicationId, false)
             )
         )
         expect {

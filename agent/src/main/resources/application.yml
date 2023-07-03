@@ -1,0 +1,12 @@
+server:
+  port: 14444
+ostara:
+  agent:
+    service-discovery:
+      kubernetes:
+        - namespace: demo
+          app-name-label: app.kubernetes.io/name
+spring:
+  cloud:
+    zookeeper:
+      enabled: false

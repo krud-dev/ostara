@@ -6,7 +6,7 @@ import { Box, Button, Card } from '@mui/material';
 import { ApplicationRO, FolderRO, InstanceRO } from 'common/generated_definitions';
 import { folderApplicationEntity } from 'renderer/entity/entities/folderApplication.entity';
 import { getNewItemSort, getSubTreeItemsForItem, getSubTreeRoot } from 'renderer/utils/treeUtils';
-import { isFolder } from 'renderer/utils/itemUtils';
+import { getItemParentId, isAgent, isFolder } from 'renderer/utils/itemUtils';
 import { useItemsContext } from 'renderer/contexts/ItemsContext';
 import { FormattedMessage } from 'react-intl';
 import NiceModal from '@ebay/nice-modal-react';
@@ -21,18 +21,22 @@ const FolderApplications: FunctionComponent = () => {
 
   const item = useMemo<FolderRO>(() => selectedItem as FolderRO, [selectedItem]);
 
-  const folderIds = useMemo<string[]>(
+  const parentIds = useMemo<string[]>(
     () =>
       getSubTreeItemsForItem(navigatorData || [], item.id)
-        .filter((i) => isFolder(i))
+        .filter((i) => isFolder(i) || isAgent(item))
         .map((i) => i.id),
     [item.id, navigatorData]
   );
 
   const entity = useMemo<Entity<ApplicationRO>>(() => folderApplicationEntity, []);
   const data = useMemo<ApplicationRO[] | undefined>(
-    () => applications?.filter((a) => !!a.parentFolderId && folderIds.includes(a.parentFolderId)),
-    [applications, folderIds]
+    () =>
+      applications?.filter((a) => {
+        const parentId = getItemParentId(a);
+        return !!parentId && parentIds.includes(parentId);
+      }),
+    [applications, parentIds]
   );
   const loading = useMemo<boolean>(() => !data, [data]);
 

@@ -10,14 +10,14 @@ import InputAdornment from '@mui/material/InputAdornment';
 import ItemIconFormField from 'renderer/components/item/dialogs/forms/fields/ItemIconFormField';
 import { URL_REGEX } from 'renderer/constants/regex';
 import { IconViewer } from '../../../common/IconViewer';
-import { getActuatorUrls } from '../../../../utils/itemUtils';
-import AuthenticationDetailsForm from '../../authentication/forms/AuthenticationDetailsForm';
-import { ApplicationRO, Authentication, InstanceModifyRequestRO } from '../../../../../common/generated_definitions';
-import useEffectiveAuthentication from '../../authentication/hooks/useEffectiveAuthentication';
-import EffectiveAuthenticationDetails from '../../authentication/effective/EffectiveAuthenticationDetails';
-import { useAnalyticsContext } from '../../../../contexts/AnalyticsContext';
-import { useCrudShow } from '../../../../apis/requests/crud/crudShow';
-import { applicationCrudEntity } from '../../../../apis/requests/crud/entity/entities/application.crudEntity';
+import { getActuatorUrls } from 'renderer/utils/itemUtils';
+import AuthenticationDetailsForm from 'renderer/components/item/authentication/forms/AuthenticationDetailsForm';
+import { ApplicationRO, Authentication, InstanceModifyRequestRO } from 'common/generated_definitions';
+import useEffectiveAuthentication from 'renderer/components/item/authentication/hooks/useEffectiveAuthentication';
+import EffectiveAuthenticationDetails from 'renderer/components/item/authentication/effective/EffectiveAuthenticationDetails';
+import { useAnalyticsContext } from 'renderer/contexts/AnalyticsContext';
+import { useCrudShow } from 'renderer/apis/requests/crud/crudShow';
+import { applicationCrudEntity } from 'renderer/apis/requests/crud/entity/entities/application.crudEntity';
 
 export type InstanceDetailsFormProps = {
   defaultValues?: Partial<InstanceFormValues>;
@@ -31,6 +31,7 @@ export type InstanceFormValues = InstanceModifyRequestRO & {
   parentApplicationName?: string;
   disableSslVerification?: boolean;
   parentFolderId?: string;
+  parentAgentId?: string;
   authentication?: Authentication;
 };
 
@@ -76,6 +77,7 @@ const InstanceDetailsForm: FunctionComponent<InstanceDetailsFormProps> = ({
 
   const effectiveAuthentication = useEffectiveAuthentication({
     applicationId: defaultValues?.parentApplicationId,
+    agentId: defaultValues?.parentAgentId,
     folderId: defaultValues?.parentFolderId,
   });
 

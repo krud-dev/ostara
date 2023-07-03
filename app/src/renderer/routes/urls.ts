@@ -55,6 +55,22 @@ export const urls = asUrlInfos({
     path: 'applications',
     helpUrl: 'https://docs.ostara.dev/documentation/folders',
   },
+  // Folder Root
+  agent: {
+    url: '/navigator/agent/:id',
+    path: 'agent/:id',
+    redirect: true,
+  },
+  agentDashboard: {
+    url: '/navigator/agent/:id/dashboard',
+    path: 'dashboard',
+    helpUrl: 'https://docs.ostara.dev/features/agent-features/overview/dashboard',
+  },
+  agentApplications: {
+    url: '/navigator/agent/:id/applications',
+    path: 'applications',
+    helpUrl: 'https://docs.ostara.dev/documentation/agents',
+  },
   // Application Root
   application: {
     url: '/navigator/application/:id',

@@ -203,7 +203,8 @@ class ApplicationMetricRuleServiceTest {
             InstanceDeletedEventMessage(
                 InstanceDeletedEventMessage.Payload(
                     instance.id,
-                    instance.parentApplicationId
+                    instance.parentApplicationId,
+                    false
                 )
             )
         )
@@ -226,7 +227,8 @@ class ApplicationMetricRuleServiceTest {
             InstanceCreatedEventMessage(
                 InstanceCreatedEventMessage.Payload(
                     instance.id,
-                    instance.parentApplicationId
+                    instance.parentApplicationId,
+                    false
                 )
             )
         )

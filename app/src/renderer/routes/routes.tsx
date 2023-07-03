@@ -48,6 +48,9 @@ import SettingsNotifications from 'renderer/pages/settings/notifications';
 import SettingsPrivacy from 'renderer/pages/settings/privacy';
 import SettingsBackups from 'renderer/pages/settings/backups';
 import InstanceLogfile from 'renderer/pages/navigator/instance/logfile';
+import AgentLayout from 'renderer/layout/agent/AgentLayout';
+import AgentDashboard from 'renderer/pages/navigator/agent/dashboard';
+import AgentApplications from 'renderer/pages/navigator/agent/applications';
 
 export default function Router() {
   return useRoutes([
@@ -87,6 +90,21 @@ export default function Router() {
                 {
                   path: urls.folderApplications.path,
                   element: <FolderApplications />,
+                },
+              ],
+            },
+            {
+              path: urls.agent.path,
+              element: <AgentLayout />,
+              children: [
+                { path: '', element: <Navigate to={urls.agentDashboard.path} replace /> },
+                {
+                  path: urls.agentDashboard.path,
+                  element: <AgentDashboard />,
+                },
+                {
+                  path: urls.agentApplications.path,
+                  element: <AgentApplications />,
                 },
               ],
             },

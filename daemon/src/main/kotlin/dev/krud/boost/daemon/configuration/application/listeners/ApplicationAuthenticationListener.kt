@@ -1,5 +1,6 @@
 package dev.krud.boost.daemon.configuration.application.listeners
 
+import dev.krud.boost.daemon.agent.messaging.AgentAuthenticationChangedMessage
 import dev.krud.boost.daemon.configuration.application.ApplicationService
 import dev.krud.boost.daemon.configuration.application.entity.Application
 import dev.krud.boost.daemon.configuration.application.messaging.ApplicationAuthenticationChangedMessage
@@ -31,6 +32,7 @@ class ApplicationAuthenticationListener(
     fun onMessage(message: Message<*>) {
         when (message) {
             is FolderAuthenticationChangedMessage -> handleParentFolderAuthenticationChanged(message.payload.folderId)
+            is AgentAuthenticationChangedMessage -> handleParentFolderAuthenticationChanged(message.payload.agentId)
             is ApplicationMovedEventMessage -> {
                 log.debug { "Handling application moved event for application ${message.payload.applicationId}" }
                 forceUpdateInstancesHealth(message.payload.applicationId)
@@ -60,6 +62,22 @@ class ApplicationAuthenticationListener(
                 forceUpdateInstancesHealth(application.id)
             }
     }
+
+    fun handleParentAgentAuthenticationChanged(agentId: UUID) {
+        log.debug {
+            "Handling parent folder authentication changed event for agent $agentId"
+        }
+        applicationKrud.searchByFilter {
+            where {
+                Application::parentAgentId Equal agentId
+                Application::authenticationType Equal Authentication.Inherit.DEFAULT.type
+            }
+        }
+            .forEach { application ->
+                forceUpdateInstancesHealth(application.id)
+            }
+    }
+
 
     fun forceUpdateInstancesHealth(applicationId: UUID) {
         log.debug { "Requesting update of instances health for application $applicationId" }

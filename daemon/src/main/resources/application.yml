@@ -49,6 +49,9 @@ cache:
     - name: instanceMetadataCache
     - name: instancePropertyCache
       expire-after-write: 1m
+    - name: agentEffectiveAuthenticationCache
+      expire-after-write: 30m
+      expire-after-access: 10m
     - name: applicationEffectiveAuthenticationCache
       expire-after-write: 30m
       expire-after-access: 10m

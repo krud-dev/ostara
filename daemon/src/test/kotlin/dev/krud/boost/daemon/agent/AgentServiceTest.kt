@@ -15,7 +15,7 @@ import java.util.*
 class AgentServiceTest {
     private val agentKrud = TestKrud(Agent::class.java) { UUID.randomUUID() }
     private val agentClientProvider = mock<AgentClientProvider>()
-    private val agentService = AgentService(agentKrud, agentClientProvider)
+    private val agentService = AgentService(agentKrud, agentClientProvider, mock())
 
     @Test
     fun `getAgent should return agent if exists`() {

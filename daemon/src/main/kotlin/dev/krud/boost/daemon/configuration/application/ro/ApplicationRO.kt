@@ -19,7 +19,7 @@ class ApplicationRO(
     var authentication: Authentication = Authentication.Inherit.DEFAULT,
     var demo: Boolean = false,
     var disableSslVerification: Boolean = false,
-    var agentId: UUID? = null,
-    var agentDiscoveryType: String? = null,
-    var agentDiscoveryParams: Map<String, String?>? = null,
+    var parentAgentId: UUID? = null,
+    var agentExternalId: String? = null,
+    var discovered: Boolean = false,
 )
