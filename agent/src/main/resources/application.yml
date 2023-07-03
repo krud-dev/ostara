@@ -4,9 +4,3 @@ spring:
   cloud:
     zookeeper:
       enabled: false
-ostara:
-  agent:
-    service-discovery:
-      zookeeper:
-        enabled: true
-        connectionString: localhost:2181
