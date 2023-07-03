@@ -14,14 +14,10 @@ class ServiceDiscoveryProperties {
   @NestedConfigurationProperty
   var kubernetes: List<ServiceDiscovery.Kubernetes> = emptyList()
 
-  sealed interface ServiceDiscovery {
-    data class Internal(
-      /**
-       * The API key to be used when registering the instance against this agent
-       */
-      val apiKey: String
-    ) : ServiceDiscovery
+  @NestedConfigurationProperty
+  var zookeeper: List<ServiceDiscovery.Zookeeper> = emptyList()
 
+  sealed interface ServiceDiscovery {
     data class Kubernetes(
       /**
        * The namespace to search for pods in
@@ -44,9 +40,25 @@ class ServiceDiscoveryProperties {
        */
       val scheme: String = "http",
     ) : ServiceDiscovery
+
+    data class Zookeeper(
+      /**
+       * The Zookeeper connection string
+       */
+      val connectionString: String,
+      /**
+       * The Zookeeper path to the service discovery root
+       */
+      val rootNode: String = "/services",
+      val metadata: Map<String, String> = emptyMap(),
+      /**
+       * The path to the actuator endpoint
+       */
+      val actuatorPath: String = "/actuator",
+    ) : ServiceDiscovery
   }
 
   companion object {
-    val ServiceDiscoveryProperties.serviceDiscoveries get() = kubernetes
+    val ServiceDiscoveryProperties.serviceDiscoveries get() = kubernetes + zookeeper
   }
 }

@@ -1,8 +1,8 @@
 package dev.ostara.agent.controller
 
 import dev.ostara.agent.model.RegistrationRequestDTO
-import dev.ostara.agent.service.ServiceDiscoveryService
 import dev.ostara.agent.service.InternalService
+import dev.ostara.agent.service.ServiceDiscoveryService
 import dev.ostara.agent.test.IntegrationTest
 import org.junit.jupiter.api.Test
 import org.mockito.kotlin.any
@@ -65,12 +65,14 @@ class ProxyControllerIntegrationTest {
     )
     serviceDiscoveryService.runDiscovery()
 
-    whenever(restTemplate.exchange(
-      eq("http://localhost:13333/actuator/health"),
-      eq(HttpMethod.GET),
-      any(),
-      eq(String::class.java)
-    )).thenReturn(ResponseEntity.ok("OK"))
+    whenever(
+      restTemplate.exchange(
+        eq("http://localhost:13333/actuator/health"),
+        eq(HttpMethod.GET),
+        any(),
+        eq(String::class.java)
+      )
+    ).thenReturn(ResponseEntity.ok("OK"))
 
     mockMvc.get(
       "/api/v1/proxy/health"
