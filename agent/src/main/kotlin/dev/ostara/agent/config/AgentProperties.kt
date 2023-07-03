@@ -7,7 +7,7 @@ import org.springframework.boot.context.properties.ConfigurationProperties
 import org.springframework.context.annotation.Configuration
 import java.util.*
 
-@ConfigurationProperties(prefix = "$CONFIGURATION_PREFIX.main", ignoreUnknownFields = false)
+@ConfigurationProperties(prefix = AgentProperties.PREFIX, ignoreUnknownFields = false)
 @Configuration
 class AgentProperties : InitializingBean {
   /**
@@ -24,6 +24,7 @@ class AgentProperties : InitializingBean {
   }
 
   companion object {
+    const val PREFIX = "$CONFIGURATION_PREFIX.main"
     private val log = KotlinLogging.logger { }
   }
 }

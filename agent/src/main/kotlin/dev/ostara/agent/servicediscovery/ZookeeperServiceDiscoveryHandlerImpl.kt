@@ -2,6 +2,7 @@ package dev.ostara.agent.servicediscovery
 
 import com.fasterxml.jackson.databind.ObjectMapper
 import dev.ostara.agent.config.ServiceDiscoveryProperties
+import dev.ostara.agent.config.condition.ConditionalOnZookeeperEnabled
 import dev.ostara.agent.model.DiscoveredInstanceDTO
 import io.github.oshai.kotlinlogging.KotlinLogging
 import org.apache.curator.framework.CuratorFrameworkFactory
@@ -11,6 +12,7 @@ import org.springframework.cloud.zookeeper.discovery.ZookeeperInstance
 import org.springframework.stereotype.Component
 
 @Component
+@ConditionalOnZookeeperEnabled
 class ZookeeperServiceDiscoveryHandlerImpl(
   private val objectMapper: ObjectMapper
 ) : ServiceDiscoveryHandler<ServiceDiscoveryProperties.ServiceDiscovery.Zookeeper> {

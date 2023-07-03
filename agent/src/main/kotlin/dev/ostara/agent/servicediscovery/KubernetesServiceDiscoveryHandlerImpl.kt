@@ -1,6 +1,7 @@
 package dev.ostara.agent.servicediscovery
 
 import dev.ostara.agent.config.ServiceDiscoveryProperties
+import dev.ostara.agent.config.condition.ConditionalOnKubernetesEnabled
 import dev.ostara.agent.model.DiscoveredInstanceDTO
 import io.kubernetes.client.openapi.apis.CoreV1Api
 import io.kubernetes.client.util.Config
@@ -8,6 +9,7 @@ import org.springframework.stereotype.Component
 import java.io.StringReader
 
 @Component
+@ConditionalOnKubernetesEnabled
 class KubernetesServiceDiscoveryHandlerImpl :
   ServiceDiscoveryHandler<ServiceDiscoveryProperties.ServiceDiscovery.Kubernetes> {
   override fun supports(config: ServiceDiscoveryProperties.ServiceDiscovery): Boolean {

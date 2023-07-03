@@ -6,7 +6,7 @@ import org.springframework.boot.context.properties.NestedConfigurationProperty
 import org.springframework.context.annotation.Configuration
 
 @Configuration
-@ConfigurationProperties(prefix = "$CONFIGURATION_PREFIX.service-discovery", ignoreUnknownFields = false)
+@ConfigurationProperties(prefix = ServiceDiscoveryProperties.PREFIX, ignoreUnknownFields = false)
 class ServiceDiscoveryProperties {
   /**
    * Internal service discovery configuration
@@ -30,7 +30,7 @@ class ServiceDiscoveryProperties {
       override val enabled: Boolean = true,
     ) : ServiceDiscovery
     data class Kubernetes(
-      override val enabled: Boolean = true,
+      override val enabled: Boolean = false,
       /**
        * The path to the kubeconfig file
        */
@@ -62,7 +62,7 @@ class ServiceDiscoveryProperties {
     ) : ServiceDiscovery
 
     data class Zookeeper(
-      override val enabled: Boolean = true,
+      override val enabled: Boolean = false,
       /**
        * The Zookeeper connection string
        */
@@ -80,6 +80,7 @@ class ServiceDiscoveryProperties {
   }
 
   companion object {
+    const val PREFIX = "$CONFIGURATION_PREFIX.service-discovery"
     val ServiceDiscoveryProperties.serviceDiscoveries get()
     = listOfNotNull(internal, kubernetes, zookeeper)
         .filter { it.enabled }
