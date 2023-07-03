@@ -32,8 +32,7 @@ class KubernetesServiceDiscoveryHandlerImpl : ServiceDiscoveryHandler<ServiceDis
             appName = appName!!,
             id = pod.metadata!!.uid!!,
             name = pod.metadata!!.name!!,
-            url = "http://localhost:13333/actuator"
-//            url = "$scheme://${pod.status!!.podIP}:$port/${actuatorPath.removePrefix("/")}"
+            url = "$scheme://${pod.status!!.podIP}:$port/${actuatorPath.removePrefix("/")}"
           )
         }
       }.flatMap { it.value }
