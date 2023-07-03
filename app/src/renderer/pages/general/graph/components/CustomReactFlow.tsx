@@ -11,7 +11,7 @@ import { alpha, experimentalStyled as styled } from '@mui/material/styles';
 import { Background, Controls, MiniMap, OnInit, ReactFlow, ReactFlowInstance } from 'reactflow';
 import CustomNode from './CustomNode';
 import { NodeTypes } from '@reactflow/core/dist/esm/types/general';
-import { useReactFlow } from '../contexts/ReactFlowContext';
+import { useReactFlowContext } from '../contexts/ReactFlowContext';
 import { Node } from '@reactflow/core/dist/esm/types/nodes';
 
 const ReactFlowStyled = styled(ReactFlow)(({ theme }) => ({
@@ -65,7 +65,7 @@ const ControlsStyled = styled(Controls)(({ theme }) => ({
 type CustomReactFlowProps = {};
 
 const CustomReactFlow: FunctionComponent<CustomReactFlowProps> = ({}) => {
-  const { graphData, search, selectedNode, isHighlight, selectNode } = useReactFlow();
+  const { graphData, search, selectedNode, isHighlight, selectNode } = useReactFlowContext();
 
   const reactFlowRef = useRef<ReactFlowInstance>();
 

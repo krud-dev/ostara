@@ -11,7 +11,7 @@ import {
   ApplicationMetricRuleTriggeredMessage$Payload,
   ApplicationRO,
 } from 'common/generated_definitions';
-import { useStomp } from '../../apis/websockets/StompContext';
+import { useStompContext } from '../../apis/websockets/StompContext';
 import { useItemsContext } from '../../contexts/ItemsContext';
 import { usePrevious } from 'react-use';
 import { urls } from '../../routes/urls';
@@ -60,7 +60,7 @@ interface NotificationsSenderProps {}
 const NotificationsSender: FunctionComponent<NotificationsSenderProps> = () => {
   const { notificationsActive, notificationsSoundActive } = useSettingsContext();
   const { applications, instances } = useItemsContext();
-  const { subscribe } = useStomp();
+  const { subscribe } = useStompContext();
   const intl = useIntl();
 
   const sendNotification = useCallback(

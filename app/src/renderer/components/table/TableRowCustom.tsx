@@ -1,6 +1,6 @@
 import { Box, Checkbox, TableCell, TableRow, Tooltip } from '@mui/material';
 import { EntityColumn } from 'renderer/entity/entity';
-import { useTable } from 'renderer/components/table/TableContext';
+import { useTableContext } from 'renderer/components/table/TableContext';
 import React, { useCallback, useMemo } from 'react';
 import TableCellData from 'renderer/components/table/data/TableCellData';
 import TableRowAction from 'renderer/components/table/action/TableRowAction';
@@ -30,7 +30,7 @@ export default function TableRowCustom<EntityItem>({ row, index }: TableRowCusto
     hasActions,
     hasMassActions,
     actionsHandler,
-  } = useTable<EntityItem, unknown>();
+  } = useTableContext<EntityItem, unknown>();
   const { track } = useAnalyticsContext();
   const { pathname } = useLocation();
 

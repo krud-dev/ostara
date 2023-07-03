@@ -99,7 +99,7 @@ const StompProvider: FunctionComponent<StompProviderProps> = ({ children }) => {
   return <StompContext.Provider value={memoizedValue}>{children}</StompContext.Provider>;
 };
 
-const useStomp = (): StompContextProps => {
+const useStompContext = (): StompContextProps => {
   const context = useContext(StompContext);
 
   if (!context) throw new Error('StompContext must be used inside StompProvider');
@@ -107,4 +107,4 @@ const useStomp = (): StompContextProps => {
   return context;
 };
 
-export { StompContext, StompProvider, useStomp };
+export { StompContext, StompProvider, useStompContext };

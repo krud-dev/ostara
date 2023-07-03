@@ -28,7 +28,7 @@ import {
 import { instanceCrudEntity } from 'renderer/apis/requests/crud/entity/entities/instance.crudEntity';
 import { folderCrudEntity } from 'renderer/apis/requests/crud/entity/entities/folder.crudEntity';
 import { applicationCrudEntity } from 'renderer/apis/requests/crud/entity/entities/application.crudEntity';
-import { useStomp } from 'renderer/apis/websockets/StompContext';
+import { useStompContext } from 'renderer/apis/websockets/StompContext';
 import { isAgent, isApplication, isFolder, isInstance } from 'renderer/utils/itemUtils';
 import { QueryObserverResult } from '@tanstack/react-query';
 import { agentCrudEntity } from 'renderer/apis/requests/crud/entity/entities/agent.crudEntity';
@@ -54,7 +54,7 @@ const ItemsContext = React.createContext<ItemsContextProps>(undefined!);
 interface ItemsProviderProps extends PropsWithChildren<any> {}
 
 const ItemsProvider: FunctionComponent<ItemsProviderProps> = ({ children }) => {
-  const { subscribe } = useStomp();
+  const { subscribe } = useStompContext();
 
   const [folders, setFolders] = useState<FolderRO[] | undefined>(undefined);
   const [applications, setApplications] = useState<ApplicationRO[] | undefined>(undefined);

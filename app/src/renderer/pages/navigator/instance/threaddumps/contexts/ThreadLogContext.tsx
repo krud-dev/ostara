@@ -1,4 +1,4 @@
-import React, { FunctionComponent, PropsWithChildren, useCallback, useContext, useState } from 'react';
+import React, { FunctionComponent, PropsWithChildren, useCallback, useContext, useMemo, useState } from 'react';
 import { ThreadLog } from '../components/ThreadProfilingRequestDetailsDialog';
 import useDebounceFn from '../../../../../hooks/useDebounceFn';
 
@@ -58,25 +58,15 @@ const ThreadLogProvider: FunctionComponent<ThreadLogProviderProps> = ({ children
     );
   }, []);
 
-  return (
-    <ThreadLogContext.Provider
-      value={{
-        getId,
-        search,
-        setSearch,
-        openIds,
-        toggleOpenHandler,
-        closeAllHandler,
-        isOpen,
-        isHighlight,
-      }}
-    >
-      {children}
-    </ThreadLogContext.Provider>
+  const memoizedValue = useMemo<ThreadLogContextProps>(
+    () => ({ getId, search, setSearch, openIds, toggleOpenHandler, closeAllHandler, isOpen, isHighlight }),
+    [getId, search, setSearch, openIds, toggleOpenHandler, closeAllHandler, isOpen, isHighlight]
   );
+
+  return <ThreadLogContext.Provider value={memoizedValue}>{children}</ThreadLogContext.Provider>;
 };
 
-const useThreadLog = (): ThreadLogContextProps => {
+const useThreadLogContext = (): ThreadLogContextProps => {
   const context = useContext(ThreadLogContext);
 
   if (!context) throw new Error('ThreadLogContext must be used inside ThreadLogProvider');
@@ -84,4 +74,4 @@ const useThreadLog = (): ThreadLogContextProps => {
   return context;
 };
 
-export { ThreadLogContext, ThreadLogProvider, useThreadLog };
+export { ThreadLogContext, ThreadLogProvider, useThreadLogContext };

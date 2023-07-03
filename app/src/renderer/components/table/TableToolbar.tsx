@@ -1,5 +1,5 @@
 import { Stack } from '@mui/material';
-import { useTable } from 'renderer/components/table/TableContext';
+import { useTableContext } from 'renderer/components/table/TableContext';
 import SearchToolbar from '../common/SearchToolbar';
 import React, { useCallback, useMemo } from 'react';
 import ToolbarButton from '../common/ToolbarButton';
@@ -17,7 +17,7 @@ export default function TableToolbar({}: TableToolbarProps) {
     changeCustomFiltersHandler,
     hasGlobalActions,
     globalActionsHandler,
-  } = useTable();
+  } = useTableContext();
   const { track } = useAnalyticsContext();
 
   const [loadingActionIds, setLoadingActionIds] = React.useState<string[]>([]);

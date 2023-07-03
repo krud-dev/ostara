@@ -1,7 +1,7 @@
 import React, { useCallback, useEffect, useMemo, useRef } from 'react';
 import { ThreadLog } from './ThreadProfilingRequestDetailsDialog';
 import CodeEditor from '../../../../../components/code/CodeEditor';
-import { useThreadLog } from '../contexts/ThreadLogContext';
+import { useThreadLogContext } from '../contexts/ThreadLogContext';
 import { EditorView } from '@codemirror/view';
 import {
   searchHighlight,
@@ -14,7 +14,7 @@ type ThreadLogStackTraceProps = {
 };
 
 export default function ThreadLogStackTrace({ threadLog }: ThreadLogStackTraceProps) {
-  const { search } = useThreadLog();
+  const { search } = useThreadLogContext();
 
   const viewRef = useRef<EditorView>();
 

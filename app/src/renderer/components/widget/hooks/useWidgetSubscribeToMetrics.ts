@@ -1,7 +1,7 @@
 import { useCallback, useEffect } from 'react';
 import { isEmpty } from 'lodash';
 import { InstanceMetricRO } from '../../../../common/generated_definitions';
-import { useStomp } from '../../../apis/websockets/StompContext';
+import { useStompContext } from '../../../apis/websockets/StompContext';
 import { useGetLatestMetric } from '../../../apis/requests/metrics/getLatestMetric';
 import { notEmpty } from '../../../utils/objectUtils';
 
@@ -15,7 +15,7 @@ const useWidgetSubscribeToMetrics = (
   } = {}
 ): void => {
   const { active = true } = options;
-  const { subscribe } = useStomp();
+  const { subscribe } = useStompContext();
 
   const metricUpdateHandler = useCallback(
     (metricDto: InstanceMetricRO): void => {
