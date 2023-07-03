@@ -21,7 +21,7 @@ type NavigatorTreeBaseProps = {
   sx?: SxProps<Theme>;
 } & Omit<TreeProps<TreeItem>, 'idAccessor' | 'indent' | 'rowHeight' | 'searchMatch'>;
 
-export default function NavigatorTreeBase({ data, children, treeRef, sx, ...props }: NavigatorTreeBaseProps) {
+export default function NavigatorTreeBase({ data, children, treeRef, onDelete, sx, ...props }: NavigatorTreeBaseProps) {
   const innerTreeRef = useRef<TreeApi<TreeItem> | null>(null);
 
   const refHandler = useCallback((tree?: TreeApi<TreeItem> | null): void => {
@@ -40,6 +40,11 @@ export default function NavigatorTreeBase({ data, children, treeRef, sx, ...prop
     if ((isWindows && event.key === 'F2') || (!isWindows && event.key === 'Enter')) {
       const node = innerTreeRef.current?.focusedNode || innerTreeRef.current?.selectedNodes[0];
       node?.edit();
+    }
+    if (event.key === 'Delete' && onDelete) {
+      const selectedNodes = innerTreeRef.current?.selectedNodes || [];
+      const selectedNodeIds = selectedNodes.map((node) => node.id);
+      onDelete({ ids: selectedNodeIds, nodes: selectedNodes });
     }
   }, []);
 

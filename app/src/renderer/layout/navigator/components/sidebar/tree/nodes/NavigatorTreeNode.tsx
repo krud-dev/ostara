@@ -1,8 +1,6 @@
 import { NodeRendererProps } from 'react-arborist';
-import React, { useCallback, useMemo, useRef } from 'react';
+import React, { useCallback, useRef } from 'react';
 import { TreeItem } from 'renderer/layout/navigator/components/sidebar/tree/tree';
-import { getItemUrl } from 'renderer/utils/itemUtils';
-import { matchPath, useLocation, useNavigate } from 'react-router-dom';
 import ItemMenu from 'renderer/layout/navigator/components/sidebar/tree/menus/ItemMenu';
 import { usePopupState } from 'material-ui-popup-state/hooks';
 import ItemContextMenu from 'renderer/layout/navigator/components/sidebar/tree/menus/ItemContextMenu';
@@ -13,8 +11,6 @@ type NavigatorTreeNodeProps = NodeRendererProps<TreeItem>;
 
 export default function NavigatorTreeNode(props: NavigatorTreeNodeProps) {
   const { node } = props;
-  const navigate = useNavigate();
-  const { pathname } = useLocation();
 
   const menuState = usePopupState({ variant: 'popover' });
 
@@ -29,23 +25,11 @@ export default function NavigatorTreeNode(props: NavigatorTreeNodeProps) {
     [node]
   );
 
-  const itemClickHandler = useCallback(
-    (event: React.MouseEvent): void => {
-      navigate(getItemUrl(node.data));
-    },
-    [node]
-  );
-
   const childItemCreatedHandler = useCallback(
     (items: ItemRO[]): void => {
       node.open();
     },
     [node]
-  );
-
-  const isSelected = useMemo<boolean>(
-    () => matchPath({ path: getItemUrl(node.data), end: false }, pathname) !== null,
-    [node.data, pathname]
   );
 
   return (
@@ -59,13 +43,7 @@ export default function NavigatorTreeNode(props: NavigatorTreeNodeProps) {
         onContextMenuChange={onContextMenuChange}
       />
 
-      <NavigatorTreeNodeBase
-        {...props}
-        isSelected={isSelected}
-        menuState={menuState}
-        contextMenuRef={contextMenuRef}
-        onClick={itemClickHandler}
-      />
+      <NavigatorTreeNodeBase {...props} menuState={menuState} contextMenuRef={contextMenuRef} />
     </>
   );
 }

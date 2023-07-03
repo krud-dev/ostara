@@ -28,6 +28,7 @@ declare module '@mui/material/styles/createPalette' {
   }
   interface TypeAction {
     alternate: string;
+    selectedHoverOpacity: number;
   }
   interface SimplePaletteColorOptions {
     lighter: string;
@@ -191,7 +192,8 @@ const COMMON = {
     disabled: GREY[500_80],
     disabledBackground: GREY[500_24],
     focus: GREY[500_24],
-    hoverOpacity: 0.1, // 0.08,
+    hoverOpacity: 0.08,
+    selectedHoverOpacity: 0.24,
     disabledOpacity: 0.48,
   },
 };

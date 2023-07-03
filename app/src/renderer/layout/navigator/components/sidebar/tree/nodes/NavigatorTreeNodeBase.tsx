@@ -24,7 +24,6 @@ import useItemDisplayName from 'renderer/hooks/useItemDisplayName';
 import { useNavigatorTreeContext } from 'renderer/contexts/NavigatorTreeContext';
 
 type NavigatorTreeNodeBaseProps = NodeRendererProps<TreeItem> & {
-  isSelected?: boolean;
   menuState?: PopupState;
   contextMenuRef?: React.MutableRefObject<HTMLElement | null>;
   onClick?: (event: React.MouseEvent) => void;
@@ -75,7 +74,6 @@ export default function NavigatorTreeNodeBase({
   tree,
   dragHandle,
   preview,
-  isSelected,
   menuState,
   contextMenuRef,
   onClick,
@@ -95,7 +93,6 @@ export default function NavigatorTreeNodeBase({
 
   const itemClickHandler = useCallback(
     (event: React.MouseEvent): void => {
-      node.select();
       onClick?.(event);
     },
     [node]
@@ -132,19 +129,6 @@ export default function NavigatorTreeNodeBase({
     [node.isOpen]
   );
   const showToggle = useMemo<boolean>(() => !isInstance(node.data), [node.data]);
-  const isFocused = useMemo<boolean>(
-    () => node.isFocused && (!isSelected || !node.isOnlySelection),
-    [isSelected, node.isFocused, node.isOnlySelection]
-  );
-  const isWillReceiveDrop = useMemo<boolean>(() => node.willReceiveDrop, [node.willReceiveDrop]);
-
-  useEffect(() => {
-    if (isSelected) {
-      node.select();
-    } else {
-      node.deselect();
-    }
-  }, [isSelected]);
 
   // Bug fix because disableEdit on tree not working
   useEffect(() => {
@@ -153,36 +137,38 @@ export default function NavigatorTreeNodeBase({
     }
   }, [node.isEditing]);
 
-  const focusRootStyle = useMemo<SxProps<Theme>>(
+  const activeRootStyle = useMemo<SxProps<Theme>>(
     () => ({
-      outline: `1px solid ${theme.palette.primary.lighter}`,
-      outlineOffset: '-1px',
+      bgcolor: alpha(theme.palette.primary.main, theme.palette.action.selectedOpacity),
+      '&:hover': { bgcolor: alpha(theme.palette.primary.main, theme.palette.action.selectedHoverOpacity) },
+      '&:before': { display: 'block' },
     }),
     [theme]
   );
 
-  const activeRootStyle = useMemo<SxProps<Theme>>(
+  const focusRootStyle = useMemo<SxProps<Theme>>(
     () => ({
-      bgcolor: alpha(theme.palette.primary.main, theme.palette.action.selectedOpacity),
-      '&:before': { display: 'block' },
+      outline: `1px solid ${alpha(theme.palette.primary.main, 0.5)}`,
+      outlineOffset: '-1px',
     }),
     [theme]
   );
 
   const willReceiveDropRootStyle = useMemo<SxProps<Theme>>(
     () => ({
-      bgcolor: alpha(theme.palette.secondary.light, theme.palette.action.selectedOpacity),
+      bgcolor: alpha(theme.palette.info.light, theme.palette.action.selectedOpacity),
+      '&:hover': { bgcolor: alpha(theme.palette.info.light, theme.palette.action.selectedOpacity) },
     }),
     [theme]
   );
 
   const stateStyle = useMemo<SxProps<Theme>>(
     () => ({
-      ...(isFocused && focusRootStyle),
-      ...(isSelected && activeRootStyle),
-      ...(isWillReceiveDrop && willReceiveDropRootStyle),
+      ...(node.isSelected && activeRootStyle),
+      ...(node.isFocused && focusRootStyle),
+      ...(node.willReceiveDrop && willReceiveDropRootStyle),
     }),
-    [isFocused, isSelected, isWillReceiveDrop, focusRootStyle, activeRootStyle, willReceiveDropRootStyle]
+    [node.isSelected, node.isFocused, node.willReceiveDrop, focusRootStyle, activeRootStyle, willReceiveDropRootStyle]
   );
 
   return (
@@ -198,7 +184,6 @@ export default function NavigatorTreeNodeBase({
       button
       disableGutters
       disablePadding
-      selected={isSelected}
       sx={stateStyle}
       style={style}
       onClick={itemClickHandler}
