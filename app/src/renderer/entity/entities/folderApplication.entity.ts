@@ -40,7 +40,7 @@ export const folderApplicationEntity: Entity<ApplicationRO> = {
   },
   defaultOrder: [
     {
-      id: 'name',
+      id: 'alias',
       direction: 'asc',
     },
   ],
