@@ -2,7 +2,7 @@ package dev.ostara.agent.controller
 
 import com.fasterxml.jackson.databind.ObjectMapper
 import dev.ostara.agent.model.RegistrationRequestDTO
-import dev.ostara.agent.service.InternalService
+import dev.ostara.agent.servicediscovery.InternalServiceDiscoveryHandlerImpl
 import dev.ostara.agent.service.ServiceDiscoveryService
 import dev.ostara.agent.service.TimeService
 import dev.ostara.agent.test.IntegrationTest
@@ -22,7 +22,7 @@ import strikt.assertions.isNull
 
 @IntegrationTest
 @TestPropertySource(properties = ["app.scheduling.enable=false"])
-class InternalServiceDiscoveryControllerIntegrationTest {
+class InternalServiceDiscoveryHandlerImplDiscoveryControllerIntegrationTest {
   @Autowired
   private lateinit var mockMvc: MockMvc
 
@@ -33,7 +33,7 @@ class InternalServiceDiscoveryControllerIntegrationTest {
   private lateinit var timeService: TimeService
 
   @Autowired
-  private lateinit var internalService: InternalService
+  private lateinit var internalServiceDiscoveryHandlerImpl: InternalServiceDiscoveryHandlerImpl
 
   @Autowired
   private lateinit var serviceDiscoveryService: ServiceDiscoveryService
@@ -50,6 +50,7 @@ class InternalServiceDiscoveryControllerIntegrationTest {
     doRegister().andExpect {
       status { isCreated() }
     }
+    serviceDiscoveryService.runDiscovery()
     val instance = serviceDiscoveryService.getDiscoveredInstanceById("appName-hostName")
     expectThat(instance).isNotNull()
   }
@@ -59,8 +60,10 @@ class InternalServiceDiscoveryControllerIntegrationTest {
   fun `registered instance should be removed after 60 seconds`() {
     whenever(timeService.currentTimeMillis()).thenReturn(0)
     doRegister().andReturn()
+    serviceDiscoveryService.runDiscovery()
     whenever(timeService.currentTimeMillis()).thenReturn(61_000)
-    internalService.evictStale()
+    internalServiceDiscoveryHandlerImpl.evictStale()
+    serviceDiscoveryService.runDiscovery()
     expectThat(serviceDiscoveryService.getDiscoveredInstanceById("appName-hostName")).isNull()
   }
 
@@ -68,9 +71,11 @@ class InternalServiceDiscoveryControllerIntegrationTest {
   @DirtiesContext
   fun `deregister should deregister an instance`() {
     doRegister().andReturn()
+    serviceDiscoveryService.runDiscovery()
     doDeregister().andExpect {
       status { isNoContent() }
     }
+    serviceDiscoveryService.runDiscovery()
     val instance = serviceDiscoveryService.getDiscoveredInstanceById("appName-hostName")
     expectThat(instance).isNull()
   }

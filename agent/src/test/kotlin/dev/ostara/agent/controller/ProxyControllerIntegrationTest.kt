@@ -1,7 +1,7 @@
 package dev.ostara.agent.controller
 
 import dev.ostara.agent.model.RegistrationRequestDTO
-import dev.ostara.agent.service.InternalService
+import dev.ostara.agent.servicediscovery.InternalServiceDiscoveryHandlerImpl
 import dev.ostara.agent.service.ServiceDiscoveryService
 import dev.ostara.agent.test.IntegrationTest
 import org.junit.jupiter.api.Test
@@ -24,7 +24,7 @@ class ProxyControllerIntegrationTest {
   private lateinit var serviceDiscoveryService: ServiceDiscoveryService
 
   @Autowired
-  private lateinit var internalServiceDiscoveryHandlerImpl: InternalService
+  private lateinit var internalServiceDiscoveryHandlerImpl: InternalServiceDiscoveryHandlerImpl
 
   @Autowired
   private lateinit var mockMvc: MockMvc

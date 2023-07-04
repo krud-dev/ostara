@@ -14,19 +14,19 @@ class AgentAuthenticationFilter(
   private val agentProperties: AgentProperties
 ) : OncePerRequestFilter() {
   override fun doFilterInternal(request: HttpServletRequest, response: HttpServletResponse, filterChain: FilterChain) {
-    // TODO: support forwarded headers
-    val scheme = request.scheme
+    val secure = request.isSecure
     val apiKey = request.getHeader(AGENT_KEY_HEADER)
-    if (scheme != "https") {
+    if (!secure) {
       if (!apiKey.isNullOrBlank()) {
         response.sendError(HttpStatus.BAD_REQUEST.value(), "$AGENT_KEY_HEADER header is only allowed over https")
+      } else {
+        filterChain.doFilter(request, response)
       }
-      filterChain.doFilter(request, response)
       return
     }
 
     if (apiKey.isNullOrBlank()) {
-      response.sendError(HttpStatus.UNAUTHORIZED.value(), "$AGENT_KEY_HEADER header is required")
+      response.sendError(HttpStatus.BAD_REQUEST.value(), "$AGENT_KEY_HEADER header is required")
       return
     }
 

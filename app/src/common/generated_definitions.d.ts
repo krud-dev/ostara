@@ -513,7 +513,7 @@ export interface InfoActuatorResponse$Git$Unknown extends InfoActuatorResponse$G
 
 export interface AgentInfoDTO {
     version: string;
-    serviceDiscoveryStrategies: ServiceDiscoveryStrategyDTO[];
+    sources: string[];
 }
 
 export interface BackupDTO {
@@ -931,11 +931,6 @@ export interface InfoActuatorResponse$Git$Simple$Commit {
     time?: ParsedDate;
 }
 
-export interface ServiceDiscoveryStrategyDTO {
-    type: string;
-    params: ParamSchema[];
-}
-
 export interface BackupDTO$TreeElement {
     type: "folder" | "application" | "agent";
 }
@@ -1178,15 +1173,6 @@ export interface InfoActuatorResponse$Git$Full$Remote$Origin {
     url: string;
 }
 
-export interface ParamSchema {
-    name: string;
-    type: ParamType;
-    description: string;
-    required: boolean;
-    defaultValue?: string;
-    validOptions?: string[];
-}
-
 export interface BackupDTO$TreeElement$Folder extends BackupDTO$TreeElement {
     type: "folder";
     model: BackupDTO$TreeElement$Folder$Model;
@@ -1398,7 +1384,5 @@ export type EffectiveAuthentication$SourceType = "FOLDER" | "APPLICATION" | "AGE
 export type FilterFieldOperation = "Equal" | "NotEqual" | "In" | "NotIn" | "GreaterThan" | "GreaterEqual" | "LowerThan" | "LowerEqual" | "Between" | "Contains" | "IsNull" | "IsNotNull" | "IsEmpty" | "IsNotEmpty" | "And" | "Or" | "Not" | "Noop";
 
 export type FilterFieldDataType = "String" | "Integer" | "Long" | "Double" | "Boolean" | "Date" | "Object" | "Enum" | "UUID" | "None";
-
-export type ParamType = "STRING" | "INT";
 
 export type BackupDTO$TreeElementUnion = BackupDTO$TreeElement$Folder | BackupDTO$TreeElement$Application | BackupDTO$TreeElement$Agent;

@@ -1,7 +1,8 @@
 package dev.ostara.agent.controller
 
 import dev.ostara.agent.model.RegistrationRequestDTO
-import dev.ostara.agent.service.InternalService
+import dev.ostara.agent.service.ServiceDiscoveryService
+import dev.ostara.agent.servicediscovery.InternalServiceDiscoveryHandlerImpl
 import dev.ostara.agent.test.IntegrationTest
 import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
@@ -16,7 +17,10 @@ class InstancesControllerIntegrationTest {
   private lateinit var mockMvc: MockMvc
 
   @Autowired
-  private lateinit var internalService: InternalService
+  private lateinit var serviceDiscoveryService: ServiceDiscoveryService
+
+  @Autowired
+  private lateinit var internalServiceDiscoveryHandlerImpl: InternalServiceDiscoveryHandlerImpl
 
   @Test
   @DirtiesContext
@@ -30,13 +34,14 @@ class InstancesControllerIntegrationTest {
   @Test
   @DirtiesContext
   fun `getInstances should return all registered instances`() {
-    internalService.doRegister(
+    internalServiceDiscoveryHandlerImpl.doRegister(
       RegistrationRequestDTO(
         "appName",
         "hostName",
         "http://hostname:8080/actuator",
       )
     )
+    serviceDiscoveryService.runDiscovery()
     doGetInstances().andExpect {
       status { isOk() }
       jsonPath("$[0].appName") { value("appName") }

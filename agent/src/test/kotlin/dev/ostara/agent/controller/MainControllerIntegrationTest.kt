@@ -18,7 +18,7 @@ class MainControllerIntegrationTest {
   private lateinit var mockMvc: MockMvc
 
   @Test
-  fun `getInfo returns correct version`() {
+  fun `getInfo returns correct version and internal source`() {
     whenever(buildProperties.version).thenReturn("1.2.3")
     mockMvc.get("/api/v1")
       .andExpect {
@@ -26,8 +26,8 @@ class MainControllerIntegrationTest {
         content {
           contentType("application/json")
           jsonPath("$.version") { value("1.2.3") }
+          jsonPath("$.sources[0]") { value("Internal") }
         }
-
       }
   }
 

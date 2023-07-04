@@ -65,6 +65,11 @@ class ZookeeperServiceDiscoveryHandlerImplTest {
     }
   """.trimIndent()
 
+  private val config = ServiceDiscoveryProperties.ServiceDiscovery.Zookeeper(
+    connectionString = server.connectString,
+    actuatorPath = "/management"
+  )
+
   @BeforeEach
   fun setUp() {
     server.start()
@@ -84,11 +89,23 @@ class ZookeeperServiceDiscoveryHandlerImplTest {
   }
 
   @Test
+  fun `supports should return true on Zookeeper config`() {
+    val result = handler.supports(config)
+    expect {
+      that(result).isEqualTo(true)
+    }
+  }
+
+  @Test
+  fun `zookeeper should return no instances if root node does not exist`() {
+    val instances = handler.discoverInstances(config)
+    expect {
+      that(instances).hasSize(0)
+    }
+  }
+
+  @Test
   fun `zookeeper service discovery happy flow`() {
-    val config = ServiceDiscoveryProperties.ServiceDiscovery.Zookeeper(
-      connectionString = server.connectString,
-      actuatorPath = "/management"
-    )
     curatorClient.create().forPath("/services")
     curatorClient.create().forPath("/services/service1")
     curatorClient.create()
@@ -100,6 +117,5 @@ class ZookeeperServiceDiscoveryHandlerImplTest {
       that(instances[0].name).isEqualTo("3334e727b52b")
       that(instances[0].url).isEqualTo("http://3334e727b52b:33281/management")
     }
-    println()
   }
 }
