@@ -26,7 +26,7 @@ class KubernetesServiceDiscoveryHandlerImpl(
   override fun discoverInstances(config: ServiceDiscoveryProperties.ServiceDiscovery.Kubernetes): List<DiscoveredInstanceDTO> {
     val namespace = config.namespace
       ?: kubernetesAwarenessService?.getNamespace()
-      ?: error("Unable to determine namespace")
+      ?: error("Unable to determine namespace! If not running in Kubernetes, please specify the namespace in [ ostara.agent.service-discovery.kubernetes.namespace ]")
     val actuatorPath = config.actuatorPath
     val managementPortName = config.managementPortName
     val scheme = config.scheme
@@ -64,7 +64,7 @@ class KubernetesServiceDiscoveryHandlerImpl(
 
   private fun EndpointAddress.isSelf(): Boolean {
     return kubernetesAwarenessService?.let {
-      this.targetRef?.name == kubernetesAwarenessService.getHostname()
+        this.targetRef?.name == kubernetesAwarenessService.getHostname()
     } ?: false
   }
 
