@@ -75,7 +75,14 @@ export class AppUpdater {
   }
 
   quitAndInstall() {
-    autoUpdater.quitAndInstall();
+    setImmediate(() => {
+      app.removeAllListeners('window-all-closed');
+      BrowserWindow.getAllWindows().forEach((window) => {
+        window.removeAllListeners('close');
+        window.close();
+      });
+      autoUpdater.quitAndInstall(false);
+    });
   }
 
   private async checkForUpdatesJob(runAnyways = false) {
