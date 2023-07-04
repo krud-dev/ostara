@@ -7,9 +7,9 @@ import { useUpdateEffect } from 'react-use';
 import { isItemInactive } from 'renderer/utils/itemUtils';
 import { useGetAgentInfoQuery } from 'renderer/apis/requests/agent/getAgentInfo';
 
-type AgentServiceDiscoveryStrategiesProps = { item: AgentRO };
+type AgentSourcesProps = { item: AgentRO };
 
-export default function AgentServiceDiscoveryStrategies({ item }: AgentServiceDiscoveryStrategiesProps) {
+export default function AgentSources({ item }: AgentSourcesProps) {
   const agentInactive = useMemo<boolean>(() => isItemInactive(item), [item]);
 
   const infoState = useGetAgentInfoQuery(
@@ -33,7 +33,7 @@ export default function AgentServiceDiscoveryStrategies({ item }: AgentServiceDi
     if (!infoState.data) {
       return 'loading';
     }
-    if (!infoState.data.serviceDiscoveryStrategies?.length) {
+    if (!infoState.data.sources?.length) {
       return 'empty';
     }
     return 'success';
@@ -56,17 +56,17 @@ export default function AgentServiceDiscoveryStrategies({ item }: AgentServiceDi
         )}
         {uiStatus === 'error' && (
           <Typography variant={'caption'} sx={{ color: 'error.main', px: COMPONENTS_SPACING }}>
-            <FormattedMessage id={'errorLoadingStrategies'} />
+            <FormattedMessage id={'errorLoadingSources'} />
           </Typography>
         )}
         {uiStatus === 'loading' && (
           <Typography variant={'caption'} sx={{ color: 'text.secondary', px: COMPONENTS_SPACING }}>
-            <FormattedMessage id={'loadingStrategies'} />
+            <FormattedMessage id={'loadingAgentSources'} />
           </Typography>
         )}
         {uiStatus === 'empty' && (
           <Typography variant={'caption'} sx={{ color: 'text.secondary', px: COMPONENTS_SPACING }}>
-            <FormattedMessage id={'noServiceDiscoveryStrategies'} />
+            <FormattedMessage id={'noAgentSources'} />
           </Typography>
         )}
         {uiStatus === 'success' && (
@@ -78,9 +78,9 @@ export default function AgentServiceDiscoveryStrategies({ item }: AgentServiceDi
             flexWrap={'wrap'}
             sx={{ height: '100%', px: COMPONENTS_SPACING, py: 0.5 }}
           >
-            {infoState.data?.serviceDiscoveryStrategies?.map((strategy) => (
-              <Tooltip title={<FormattedMessage id={'agentServiceDiscoveryStrategies'} />} key={strategy.type}>
-                <Chip label={strategy.type} color={'default'} />
+            {infoState.data?.sources?.map((source) => (
+              <Tooltip title={<FormattedMessage id={'agentSources'} />} key={source}>
+                <Chip label={source} color={'default'} />
               </Tooltip>
             ))}
           </Stack>

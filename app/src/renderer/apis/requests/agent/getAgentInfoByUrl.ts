@@ -15,7 +15,11 @@ type Variables = { agentUrl: string };
 type Data = AgentInfoDTO;
 
 export const getAgentInfoByUrl = async (variables: Variables): Promise<Data> => {
-  return (await axiosInstance.get<Data, AxiosResponse<Data>>(`${agentCrudEntity.path}/infoForUrl`)).data;
+  return (
+    await axiosInstance.get<Data, AxiosResponse<Data>>(
+      `${agentCrudEntity.path}/infoForUrl?agentUrl=${encodeURIComponent(variables.agentUrl)}`
+    )
+  ).data;
 };
 
 export const useGetAgentInfoByUrl = (

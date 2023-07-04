@@ -1,5 +1,6 @@
 import React, { ComponentType, FunctionComponent, useCallback, useEffect, useMemo, useState } from 'react';
 import {
+  AgentRO,
   ApplicationRO,
   Authentication,
   EffectiveAuthentication,
@@ -20,6 +21,8 @@ import { useCrudShow, useCrudShowQuery } from '../../../../apis/requests/crud/cr
 import { applicationCrudEntity } from '../../../../apis/requests/crud/entity/entities/application.crudEntity';
 import { folderCrudEntity } from '../../../../apis/requests/crud/entity/entities/folder.crudEntity';
 import { getItemDisplayName, getItemType, getItemTypeTextId } from '../../../../utils/itemUtils';
+import { agentCrudEntity } from 'renderer/apis/requests/crud/entity/entities/agent.crudEntity';
+import { CrudEntityCrudFramework } from 'renderer/apis/requests/crud/entity/entity';
 
 export type EffectiveAuthenticationDetailsProps = {
   authentication?: Authentication;
@@ -45,9 +48,22 @@ const EffectiveAuthenticationDetails: FunctionComponent<EffectiveAuthenticationD
     [authentication, internalEffectiveAuthentication]
   );
 
-  const showItemState = useCrudShowQuery<ApplicationRO | FolderRO>(
+  const sourceEntity = useMemo<CrudEntityCrudFramework | undefined>(() => {
+    switch (internalEffectiveAuthentication.sourceType) {
+      case 'APPLICATION':
+        return applicationCrudEntity;
+      case 'FOLDER':
+        return folderCrudEntity;
+      case 'AGENT':
+        return agentCrudEntity;
+      default:
+        return undefined;
+    }
+  }, [internalEffectiveAuthentication.sourceType]);
+
+  const showItemState = useCrudShowQuery<ApplicationRO | FolderRO | AgentRO>(
     {
-      entity: internalEffectiveAuthentication.sourceType === 'APPLICATION' ? applicationCrudEntity : folderCrudEntity,
+      entity: sourceEntity!,
       id: internalEffectiveAuthentication.sourceId!,
     },
     { enabled: show }
@@ -68,9 +84,6 @@ const EffectiveAuthenticationDetails: FunctionComponent<EffectiveAuthenticationD
 
   const EffectiveAuthenticationDetailsType = useMemo<ComponentType<EffectiveAuthenticationDetailsProps>>(() => {
     switch (internalEffectiveAuthentication.authentication?.type) {
-      case 'none':
-      default:
-        return EffectiveAuthenticationDetailsNone;
       case 'inherit':
         return EffectiveAuthenticationDetailsInherit;
       case 'basic':
@@ -81,14 +94,14 @@ const EffectiveAuthenticationDetails: FunctionComponent<EffectiveAuthenticationD
         return EffectiveAuthenticationDetailsBearer;
       case 'query-string':
         return EffectiveAuthenticationDetailsQuerystring;
+      case 'none':
+      default:
+        return EffectiveAuthenticationDetailsNone;
     }
   }, [internalEffectiveAuthentication.authentication]);
 
   const typeMessageId = useMemo<string>(() => {
     switch (internalEffectiveAuthentication.authentication?.type) {
-      case 'none':
-      default:
-        return 'none';
       case 'inherit':
         return 'inherit';
       case 'basic':
@@ -99,6 +112,9 @@ const EffectiveAuthenticationDetails: FunctionComponent<EffectiveAuthenticationD
         return 'bearer';
       case 'query-string':
         return 'querystring';
+      case 'none':
+      default:
+        return 'none';
     }
   }, [internalEffectiveAuthentication.authentication]);
 
