@@ -36,6 +36,7 @@ dependencies {
   testImplementation("org.mockito.kotlin:mockito-kotlin:5.0.0")
   testImplementation("org.testcontainers:testcontainers:1.18.3")
   testImplementation("org.apache.curator:curator-test:5.5.0")
+  testImplementation("io.fabric8:kubernetes-server-mock")
 }
 
 dependencyManagement {
