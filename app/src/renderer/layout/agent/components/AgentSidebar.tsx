@@ -10,6 +10,7 @@ import { IconViewer } from 'renderer/components/common/IconViewer';
 import { getItemTypeIcon } from 'renderer/utils/itemUtils';
 import { AgentRO } from 'common/generated_definitions';
 import { BarChartOutlined } from '@mui/icons-material';
+import AgentSources from 'renderer/layout/agent/components/AgentSources';
 
 type AgentSidebarProps = { item: AgentRO; width: number };
 
@@ -40,7 +41,16 @@ export default function AgentSidebar({ item, width }: AgentSidebarProps) {
 
   return (
     <Box sx={{ width: width, height: '100%', display: 'flex', flexDirection: 'column' }}>
-      <Sidebar sidebarConfig={navConfig} header={<ItemHeader item={item} />} sx={{ flexGrow: 1 }} />
+      <Sidebar
+        sidebarConfig={navConfig}
+        header={
+          <>
+            <ItemHeader item={item} />
+            <AgentSources item={item} />
+          </>
+        }
+        sx={{ flexGrow: 1 }}
+      />
     </Box>
   );
 }

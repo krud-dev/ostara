@@ -37,7 +37,7 @@ export const useTestConnectionByUrlQuery = (
   options?: BaseQueryOptions<Data, Variables>
 ): BaseUseQueryResult<Data> =>
   useBaseQuery<Data, Variables>(
-    apiKeys.actuatorConnection(variables.actuatorUrl),
+    apiKeys.connectionByUrl(variables.actuatorUrl),
     testConnectionByUrl,
     variables,
     options
