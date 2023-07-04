@@ -7,11 +7,18 @@ import CopyIdToClipboardMenuItem from 'renderer/layout/navigator/components/side
 import React from 'react';
 import CopyItemToClipboardMenuItem from './items/CopyItemToClipboardMenuItem';
 import MenuDivider from '../../../../../../components/menu/item/MenuDivider';
+import RunDiscoveryMenuItem from 'renderer/layout/navigator/components/sidebar/tree/menus/items/RunDiscoveryMenuItem';
 
 export default function AgentMenuItems({ item, node, onCreated, menuState }: TreeItemMenuProps) {
   const { close } = menuState;
   return (
     <>
+      {node && (
+        <>
+          <RunDiscoveryMenuItem node={node} onClose={close} />
+          <MenuDivider />
+        </>
+      )}
       <ChooseColorMenuItem item={item} onClose={close} />
       <MenuDivider />
       <CopyIdToClipboardMenuItem item={item} onClose={close} />

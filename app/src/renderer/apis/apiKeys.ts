@@ -101,10 +101,9 @@ export const apiKeys = {
   itemInstances: (id: string) => [...crudKeys.entity(instanceCrudEntity), 'item', id],
 
   applicationsHealth: () => ['applicationsHealth'],
-  instanceHealth: (id: string) => ['instanceHealth'],
+  instanceHealth: (id: string) => ['instanceHealth', id],
 
-  actuator: () => ['actuator'],
-  actuatorConnection: (url: string) => [...apiKeys.actuator(), 'connection', url],
+  connectionByUrl: (url: string) => ['connection', url],
 
   metrics: () => ['metrics'],
   metricLatest: (instanceId: string, metricName: string) => [...apiKeys.metrics(), 'latest', instanceId, metricName],

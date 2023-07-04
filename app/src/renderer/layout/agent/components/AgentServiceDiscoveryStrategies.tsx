@@ -1,44 +1,43 @@
 import React, { useMemo } from 'react';
 import { Box, Chip, Stack, Tooltip, Typography } from '@mui/material';
 import { COMPONENTS_SPACING, NAVIGATOR_ITEM_HEIGHT } from 'renderer/constants/ui';
-import { InstanceRO } from 'common/generated_definitions';
+import { AgentRO } from 'common/generated_definitions';
 import { FormattedMessage } from 'react-intl';
-import { useGetInstanceEnvQuery } from 'renderer/apis/requests/instance/env/getInstanceEnv';
 import { useUpdateEffect } from 'react-use';
 import { isItemInactive } from 'renderer/utils/itemUtils';
+import { useGetAgentInfoQuery } from 'renderer/apis/requests/agent/getAgentInfo';
 
-type InstanceActiveProfilesProps = { item: InstanceRO };
+type AgentServiceDiscoveryStrategiesProps = { item: AgentRO };
 
-export default function InstanceActiveProfiles({ item }: InstanceActiveProfilesProps) {
-  const instanceInactive = useMemo<boolean>(() => isItemInactive(item), [item]);
-  const instanceLoading = useMemo<boolean>(() => item.health.status === 'PENDING', [item]);
+export default function AgentServiceDiscoveryStrategies({ item }: AgentServiceDiscoveryStrategiesProps) {
+  const agentInactive = useMemo<boolean>(() => isItemInactive(item), [item]);
 
-  const envState = useGetInstanceEnvQuery(
-    { instanceId: item.id },
-    { enabled: !instanceInactive && !instanceLoading, disableGlobalError: true }
+  const infoState = useGetAgentInfoQuery(
+    { agentId: item.id },
+    { enabled: !agentInactive, disableGlobalError: true, refetchInterval: 1000 * 60 * 5 }
   );
 
   useUpdateEffect(() => {
-    if (!instanceInactive && !instanceLoading) {
-      envState.refetch();
+    if (!agentInactive) {
+      infoState.refetch();
     }
-  }, [instanceInactive, instanceLoading]);
+  }, [agentInactive]);
 
   const uiStatus = useMemo<'error' | 'success' | 'loading' | 'empty' | 'inactive'>(() => {
-    if (instanceInactive) {
+    if (agentInactive) {
       return 'inactive';
     }
-    if (envState.error) {
+    if (infoState.error) {
       return 'error';
     }
-    if (instanceLoading || !envState.data) {
+    if (!infoState.data) {
       return 'loading';
     }
-    if (!envState.data.activeProfiles?.length) {
+    if (!infoState.data.serviceDiscoveryStrategies?.length) {
       return 'empty';
     }
     return 'success';
-  }, [instanceInactive, instanceLoading, envState]);
+  }, [agentInactive, infoState]);
 
   return (
     <Box
@@ -52,22 +51,22 @@ export default function InstanceActiveProfiles({ item }: InstanceActiveProfilesP
       <>
         {uiStatus === 'inactive' && (
           <Typography variant={'caption'} sx={{ color: 'text.secondary', px: COMPONENTS_SPACING }}>
-            <FormattedMessage id={'cannotConnectToInstance'} />
+            <FormattedMessage id={'cannotConnectToAgent'} />
           </Typography>
         )}
         {uiStatus === 'error' && (
           <Typography variant={'caption'} sx={{ color: 'error.main', px: COMPONENTS_SPACING }}>
-            <FormattedMessage id={'errorLoadingActiveProfiles'} />
+            <FormattedMessage id={'errorLoadingStrategies'} />
           </Typography>
         )}
         {uiStatus === 'loading' && (
           <Typography variant={'caption'} sx={{ color: 'text.secondary', px: COMPONENTS_SPACING }}>
-            <FormattedMessage id={'loadingActiveProfiles'} />
+            <FormattedMessage id={'loadingStrategies'} />
           </Typography>
         )}
         {uiStatus === 'empty' && (
           <Typography variant={'caption'} sx={{ color: 'text.secondary', px: COMPONENTS_SPACING }}>
-            <FormattedMessage id={'noActiveProfiles'} />
+            <FormattedMessage id={'noServiceDiscoveryStrategies'} />
           </Typography>
         )}
         {uiStatus === 'success' && (
@@ -79,9 +78,9 @@ export default function InstanceActiveProfiles({ item }: InstanceActiveProfilesP
             flexWrap={'wrap'}
             sx={{ height: '100%', px: COMPONENTS_SPACING, py: 0.5 }}
           >
-            {envState.data?.activeProfiles?.map((profile) => (
-              <Tooltip title={<FormattedMessage id={'activeProfile'} />} key={profile}>
-                <Chip label={profile} color={'default'} />
+            {infoState.data?.serviceDiscoveryStrategies?.map((strategy) => (
+              <Tooltip title={<FormattedMessage id={'agentServiceDiscoveryStrategies'} />} key={strategy.type}>
+                <Chip label={strategy.type} color={'default'} />
               </Tooltip>
             ))}
           </Stack>

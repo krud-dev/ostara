@@ -266,8 +266,14 @@ export const isItemDeletable = (item: ItemRO): boolean => {
   return true;
 };
 
-export const isInstanceInactive = (instance: InstanceRO): boolean => {
-  return instance.health.status === 'UNREACHABLE' || instance.health.status === 'INVALID';
+export const isItemInactive = (item: ItemRO): boolean => {
+  if (isInstance(item)) {
+    return item.health.status === 'UNREACHABLE' || item.health.status === 'INVALID';
+  }
+  if (isAgent(item)) {
+    return false; // TODO: implement when agent has health status
+  }
+  return false;
 };
 
 export const isItemHealthy = (item: ItemRO): boolean => {

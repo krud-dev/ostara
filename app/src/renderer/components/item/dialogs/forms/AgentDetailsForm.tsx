@@ -10,6 +10,9 @@ import { AgentModifyRequestRO, Authentication } from 'common/generated_definitio
 import useEffectiveAuthentication from 'renderer/components/item/authentication/hooks/useEffectiveAuthentication';
 import EffectiveAuthenticationDetails from 'renderer/components/item/authentication/effective/EffectiveAuthenticationDetails';
 import { URL_REGEX } from 'renderer/constants/regex';
+import { useSnackbar } from 'notistack';
+import { useAnalyticsContext } from 'renderer/contexts/AnalyticsContext';
+import { useGetAgentInfoByUrl } from 'renderer/apis/requests/agent/getAgentInfoByUrl';
 
 export type AgentDetailsFormProps = {
   defaultValues?: Partial<AgentFormValues>;
@@ -25,6 +28,8 @@ const AgentDetailsForm: FunctionComponent<AgentDetailsFormProps> = ({
   onCancel,
 }: AgentDetailsFormProps) => {
   const intl = useIntl();
+  const { enqueueSnackbar } = useSnackbar();
+  const { track } = useAnalyticsContext();
 
   const methods = useForm<AgentFormValues>({ defaultValues });
   const {
@@ -62,6 +67,19 @@ const AgentDetailsForm: FunctionComponent<AgentDetailsFormProps> = ({
       setValue('apiKey', '');
     }
   }, [apiKeyDisabled]);
+
+  const testConnectionState = useGetAgentInfoByUrl({ disableGlobalError: true });
+
+  const testConnectionHandler = useCallback(async (): Promise<void> => {
+    track({ name: 'test_connection', properties: { item_type: 'instance' } });
+
+    try {
+      await testConnectionState.mutateAsync({ agentUrl: url });
+      enqueueSnackbar(<FormattedMessage id="testConnectionToAgentSuccess" />, { variant: 'success' });
+    } catch (e) {
+      enqueueSnackbar(<FormattedMessage id="testConnectionToAgentFailed" />, { variant: 'error' });
+    }
+  }, [testConnectionState, defaultValues, url]);
 
   return (
     <FormProvider {...methods}>
@@ -168,6 +186,14 @@ const AgentDetailsForm: FunctionComponent<AgentDetailsFormProps> = ({
           />
         </DialogContent>
         <DialogActions>
+          <LoadingButton
+            variant="text"
+            color="primary"
+            loading={testConnectionState.isLoading}
+            onClick={testConnectionHandler}
+          >
+            <FormattedMessage id={'testConnection'} />
+          </LoadingButton>
           <Box sx={{ flexGrow: 1 }} />
           <Button variant="outlined" color="primary" disabled={isSubmitting} onClick={cancelHandler}>
             <FormattedMessage id={'cancel'} />
