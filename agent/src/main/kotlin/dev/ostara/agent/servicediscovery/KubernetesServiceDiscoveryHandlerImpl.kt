@@ -4,6 +4,9 @@ import dev.ostara.agent.config.ServiceDiscoveryProperties
 import dev.ostara.agent.config.condition.ConditionalOnKubernetesEnabled
 import dev.ostara.agent.model.DiscoveredInstanceDTO
 import dev.ostara.agent.service.KubernetesAwarenessService
+import io.fabric8.kubernetes.api.model.EndpointAddress
+import io.fabric8.kubernetes.api.model.EndpointPort
+import io.fabric8.kubernetes.api.model.Endpoints
 import io.fabric8.kubernetes.client.KubernetesClient
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Component
@@ -28,54 +31,13 @@ class KubernetesServiceDiscoveryHandlerImpl(
     val managementPortName = config.managementPortName
     val scheme = config.scheme
     val podLabels = config.podLabels
-    val result = client.endpoints()
-      .let { operation ->
-        if (namespace == "*") {
-          operation.inAnyNamespace()
-        } else {
-          operation.inNamespace(namespace)
-        }
-      }
-      .list()
-      .items
+    val result = getEndpoints(namespace)
       .flatMap { endpoints ->
         val serviceName = endpoints.metadata.name
-        val availablePorts = endpoints.subsets.flatMap { subset ->
-          subset.ports
-        }
-        val port = when {
-          !managementPortName.isNullOrBlank() -> availablePorts.firstOrNull { it.name == managementPortName }
-            ?: availablePorts.first()
-
-          else -> availablePorts.first()
-        }
-
+        val port = endpoints.getOptimalPort(managementPortName)
         endpoints.subsets.flatMap { subset ->
           subset.addresses
-            .filter { address ->
-              if (kubernetesAwarenessService == null) {
-                true
-              } else {
-                address.targetRef?.name != kubernetesAwarenessService.getHostname()
-              }
-            }
-            .filter { address ->
-              val targetRef = address.targetRef ?: return@filter false
-              if (targetRef.kind != POD_KIND || targetRef.name == null) {
-                return@filter false
-              }
-              if (podLabels.isEmpty()) {
-                true
-              } else {
-                val pod = client
-                  .pods()
-                  .withName(targetRef.name)
-                  .get()
-                podLabels.all { (key, value) ->
-                  pod.metadata.labels[key] == value
-                }
-              }
-            }
+            .filter { address -> !address.isSelf() && address.isTargetPod() && address.doLabelsMatch(podLabels) }
             .map { address ->
               DiscoveredInstanceDTO(
                 appName = serviceName,
@@ -87,6 +49,53 @@ class KubernetesServiceDiscoveryHandlerImpl(
         }
       }
     return result
+  }
+
+  private fun Endpoints.getOptimalPort(desiredPortName: String?): EndpointPort {
+    val availablePorts = subsets.flatMap { subset -> subset.ports }
+    val port = when {
+      !desiredPortName.isNullOrBlank() -> availablePorts.firstOrNull { it.name == desiredPortName }
+        ?: availablePorts.first()
+
+      else -> availablePorts.first()
+    }
+    return port
+  }
+
+  private fun EndpointAddress.isSelf(): Boolean {
+    return kubernetesAwarenessService?.let {
+      this.targetRef?.name == kubernetesAwarenessService.getHostname()
+    } ?: false
+  }
+
+  private fun EndpointAddress.isTargetPod(): Boolean {
+    return this.targetRef?.kind == POD_KIND
+  }
+
+  private fun EndpointAddress.doLabelsMatch(labels: Map<String, String>): Boolean {
+    if (labels.isEmpty()) {
+      return true
+    }
+    val pod = client
+      .pods()
+      .withName(this.targetRef.name)
+      .get() ?: return false
+    return labels.all { (key, value) ->
+      pod.metadata.labels[key] == value
+    }
+  }
+
+  private fun getEndpoints(namespace: String): List<Endpoints> {
+    return client.endpoints()
+      .let { operation ->
+        if (namespace == "*") {
+          operation.inAnyNamespace()
+        } else {
+          operation.inNamespace(namespace)
+        }
+      }
+      .list()
+      .items
   }
 
   companion object {
