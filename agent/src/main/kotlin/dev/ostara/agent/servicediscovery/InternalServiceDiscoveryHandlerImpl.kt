@@ -5,8 +5,6 @@ import dev.ostara.agent.config.condition.ConditionalOnInternalEnabled
 import dev.ostara.agent.model.DiscoveredInstanceDTO
 import dev.ostara.agent.model.RegistrationRequestDTO
 import dev.ostara.agent.service.TimeService
-import dev.ostara.agent.util.CONFIGURATION_PREFIX
-import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty
 import org.springframework.scheduling.annotation.Scheduled
 import org.springframework.stereotype.Component
 
