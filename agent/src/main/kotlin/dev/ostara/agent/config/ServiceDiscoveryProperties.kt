@@ -40,25 +40,25 @@ class ServiceDiscoveryProperties {
        */
       val kubeConfigYaml: String? = null,
       /**
-       * The namespace to search for pods in
+       * The namespace to search for pods in. Does not need to be set if running in a pod, otherwise mandatory
        */
-      val namespace: String,
-      /**
-       * The label selector to use when searching for pods
-       */
-      val appNameLabel: String,
+      val namespace: String? = null,
       /**
        * The path to the actuator endpoint
        */
       val actuatorPath: String = "/actuator",
       /**
-       * The port to use when connecting to the actuator endpoint
+       * The name of the port as specified in the service which exposes the actuator endpoint, when multiple ports exists
        */
-      val port: Int = 8080,
+      val managementPortName: String? = "management",
       /**
        * The scheme to use when connecting to the actuator endpoint
        */
       val scheme: String = "http",
+      /**
+       * Pod labels to match against
+       */
+      val podLabels: Map<String, String> = emptyMap(),
     ) : ServiceDiscovery
 
     data class Zookeeper(
@@ -71,6 +71,9 @@ class ServiceDiscoveryProperties {
        * The Zookeeper path to the service discovery root
        */
       val rootNode: String = "/services",
+      /**
+       * Metadata to match against
+       */
       val metadata: Map<String, String> = emptyMap(),
       /**
        * The path to the actuator endpoint

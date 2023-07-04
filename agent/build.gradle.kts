@@ -24,16 +24,13 @@ extra["springCloudVersion"] = "2022.0.3"
 
 dependencies {
   implementation("org.springframework.boot:spring-boot-starter-web")
-  implementation("org.springframework.boot:spring-boot-starter-web")
   implementation("org.springframework.boot:spring-boot-starter-actuator")
   implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
   implementation("org.jetbrains.kotlin:kotlin-reflect")
   implementation("org.apache.curator:curator-framework:5.5.0")
   implementation("org.springframework.cloud:spring-cloud-starter-zookeeper-discovery")
   implementation("io.github.oshai:kotlin-logging-jvm:4.0.0")
-  implementation("io.kubernetes:client-java:18.0.0") {
-    exclude(group = "org.slf4j", module = "slf4j-api")
-  }
+  implementation("io.fabric8:kubernetes-client")
   testImplementation("org.springframework.boot:spring-boot-starter-test")
   testImplementation("io.strikt:strikt-core:0.34.1")
   testImplementation("org.mockito.kotlin:mockito-kotlin:5.0.0")
