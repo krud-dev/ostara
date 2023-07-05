@@ -1,5 +1,6 @@
 package dev.krud.boost.daemon.agent
 
+import com.fasterxml.jackson.module.kotlin.MissingKotlinParameterException
 import dev.krud.boost.daemon.IntegrationTest
 import dev.krud.boost.daemon.agent.messaging.AgentHealthUpdatedEventMessage
 import dev.krud.boost.daemon.agent.model.Agent
@@ -7,6 +8,7 @@ import dev.krud.boost.daemon.agent.model.AgentHealthDTO
 import dev.krud.boost.daemon.agent.model.AgentInfoDTO
 import dev.krud.boost.daemon.test.awaitOrThrow
 import dev.krud.crudframework.crud.handler.krud.Krud
+import feign.FeignException
 import feign.Request
 import feign.RetryableException
 import org.junit.jupiter.api.AfterEach
@@ -75,10 +77,20 @@ class AgentHealthServiceIntegrationTest {
         val health = agentHealthService.fetchAgentHealth(theAgent.id)
         expect {
             that(health.info).isNull()
-            that(health.statusCode).isEqualTo(-1)
+            that(health.statusCode).isEqualTo(-2)
             that(health.status).isEqualTo(AgentHealthDTO.Companion.Status.UNHEALTHY)
             that(health.message).isEqualTo("Unreachable!")
-            that(health.reachable).isEqualTo(false)
+        }
+    }
+
+    @Test
+    fun `fetchAgentHealth should return unhealthy if url is determined not to be an agent`() {
+        primeInfoBadPayloadError()
+        val health = agentHealthService.fetchAgentHealth(theAgent.id)
+        expect {
+            that(health.info).isNull()
+            that(health.statusCode).isEqualTo(-3)
+            that(health.status).isEqualTo(AgentHealthDTO.Companion.Status.UNHEALTHY)
         }
     }
 
@@ -116,5 +128,10 @@ class AgentHealthServiceIntegrationTest {
             null,
             mock()
         ))
+    }
+
+    private fun primeInfoBadPayloadError() {
+        val theException = object : FeignException(200, "OK", mock<MissingKotlinParameterException>()) {}
+        whenever(agentClient.getAgentInfo(theAgent.apiKey)).thenThrow(theException)
     }
 }

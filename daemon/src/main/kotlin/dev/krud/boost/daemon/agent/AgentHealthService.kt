@@ -1,5 +1,6 @@
 package dev.krud.boost.daemon.agent
 
+import com.fasterxml.jackson.module.kotlin.MissingKotlinParameterException
 import dev.krud.boost.daemon.agent.messaging.AgentHealthUpdatedEventMessage
 import dev.krud.boost.daemon.agent.model.Agent
 import dev.krud.boost.daemon.agent.model.AgentHealthDTO
@@ -52,7 +53,7 @@ class AgentHealthService(
         val currentHealth = agentHealthCache.get(agent.id, AgentHealthDTO::class.java)
             ?: AgentHealthDTO.pending()
         val health = runCatching {
-            fetchAgentHealth(agent.id)
+            fetchAgentHealth(agent)
         }
             .fold(
                 onSuccess = { health ->
@@ -101,8 +102,14 @@ class AgentHealthService(
             ) {
                 return when (it) {
                     is RetryableException -> AgentHealthDTO.unreachable(it.message)
-                    is FeignException -> AgentHealthDTO.error(it.status(), it.message)
-                    else -> AgentHealthDTO.error(0, it.message)
+                    is FeignException -> {
+                        if (it.cause is MissingKotlinParameterException) {
+                            AgentHealthDTO.notAgent()
+                        } else {
+                            AgentHealthDTO.error(it.status(), it.message)
+                        }
+                    }
+                    else -> AgentHealthDTO.error(-1, it.message)
                 }
             }
     }

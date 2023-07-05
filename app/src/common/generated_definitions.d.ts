@@ -517,7 +517,6 @@ export interface AgentHealthUpdatedEventMessage extends AbstractMessage<AgentHea
 }
 
 export interface AgentHealthDTO {
-    reachable: boolean;
     statusCode: number;
     message?: string;
     status: AgentHealthDTO$Companion$Status;
