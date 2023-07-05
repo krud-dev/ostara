@@ -109,7 +109,7 @@ class AgentHealthService(
                             AgentHealthDTO.error(it.status(), it.message)
                         }
                     }
-                    else -> AgentHealthDTO.error(-1, it.message)
+                    else -> AgentHealthDTO.error(-4, it.message)
                 }
             }
     }

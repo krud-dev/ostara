@@ -24,6 +24,7 @@ import strikt.api.expect
 import strikt.assertions.isEqualTo
 import strikt.assertions.isNotNull
 import strikt.assertions.isNull
+import java.lang.RuntimeException
 import java.util.*
 import java.util.concurrent.CountDownLatch
 import java.util.concurrent.TimeUnit
@@ -95,6 +96,17 @@ class AgentHealthServiceIntegrationTest {
     }
 
     @Test
+    fun `fetchAgentHealth should return unhealthy if arbitrary non feign exception is received`() {
+        primeUnknownError()
+        val health = agentHealthService.fetchAgentHealth(theAgent.id)
+        expect {
+            that(health.info).isNull()
+            that(health.statusCode).isEqualTo(-4)
+            that(health.status).isEqualTo(AgentHealthDTO.Companion.Status.UNHEALTHY)
+        }
+    }
+
+    @Test
     fun `agent health change should fire event`() {
         val info = AgentInfoDTO("1.2.3", setOf("Internal"))
         primeInfoSuccess(info)
@@ -133,5 +145,11 @@ class AgentHealthServiceIntegrationTest {
     private fun primeInfoBadPayloadError() {
         val theException = object : FeignException(200, "OK", mock<MissingKotlinParameterException>()) {}
         whenever(agentClient.getAgentInfo(theAgent.apiKey)).thenThrow(theException)
+    }
+
+    private fun primeUnknownError() {
+        whenever(agentClient.getAgentInfo(theAgent.apiKey)).thenThrow(
+            RuntimeException("¯\\_(ツ)_/¯")
+        )
     }
 }
