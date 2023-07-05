@@ -359,8 +359,8 @@
     ],
     "publish": {
       "provider": "github",
-      "owner": "krud-dev",
-      "repo": "ostara"
+      "owner": "idane",
+      "repo": "boost_tmp"
     }
   },
   "devEngines": {
