@@ -8,11 +8,11 @@ import { scheduleJob } from 'node-schedule';
 import semverGt from 'semver/functions/gt';
 
 export class AppUpdater {
-  constructor(autoUpdate = false) {
+  constructor() {
     if (process.env.NODE_ENV === 'development') {
       autoUpdater.updateConfigPath = path.join(__dirname, 'app-dev-update.yml');
     }
-    this.updateAutoUpdate(autoUpdate);
+    this.updateAutoUpdate(false);
     log.transports.file.level = 'info';
 
     autoUpdater.logger = log;
@@ -70,8 +70,8 @@ export class AppUpdater {
     return undefined;
   }
 
-  downloadUpdate() {
-    autoUpdater.downloadUpdate();
+  async downloadUpdate(): Promise<void> {
+    await autoUpdater.downloadUpdate();
   }
 
   quitAndInstall() {
@@ -120,10 +120,4 @@ export function initializeAppUpdaterSubscriptions(window: BrowserWindow) {
   });
 }
 
-configurationStore.onDidChange('autoUpdateEnabled', (newValue) => {
-  if (newValue !== undefined) {
-    appUpdater.updateAutoUpdate(newValue);
-  }
-});
-
-export const appUpdater = new AppUpdater(configurationStore.get('autoUpdateEnabled'));
+export const appUpdater = new AppUpdater();

@@ -1,4 +1,4 @@
-export type CrudEntityType = 'CrudFramework' | 'LocalStorage';
+export type CrudEntityType = 'CrudFramework' | 'Stub';
 
 export type CrudEntityBase = {
   id: string;

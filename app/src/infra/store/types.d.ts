@@ -10,10 +10,6 @@ declare global {
     clear(): void;
     isErrorReportingEnabled(): boolean;
     setErrorReportingEnabled(enabled: boolean): void;
-
-    isAutoUpdateEnabled(): boolean;
-
-    setAutoUpdateEnabled(enabled: boolean): void;
   };
 
   interface Window {

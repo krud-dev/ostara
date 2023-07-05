@@ -26,10 +26,4 @@ export const configurationStoreBridge: ConfigurationBridge<keyof Configuration> 
   setErrorReportingEnabled(enabled: boolean): void {
     ipcRenderer.send('configurationStore:set', 'errorReportingEnabled', enabled);
   },
-  isAutoUpdateEnabled(): boolean {
-    return ipcRenderer.sendSync('configurationStore:get', 'autoUpdateEnabled');
-  },
-  setAutoUpdateEnabled(enabled: boolean): void {
-    ipcRenderer.send('configurationStore:set', 'autoUpdateEnabled', enabled);
-  },
 };

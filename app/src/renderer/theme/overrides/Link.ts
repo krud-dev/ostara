@@ -9,7 +9,16 @@ export default function Link(theme: Theme): Components {
       },
 
       styleOverrides: {
-        root: {},
+        root: {
+          '&[disabled]': {
+            color: theme.palette.action.disabled,
+            pointerEvents: 'none',
+            cursor: 'default',
+            '&:hover': {
+              textDecoration: 'none',
+            },
+          },
+        },
       },
     },
   };

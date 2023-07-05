@@ -5,10 +5,6 @@ export const defaults = {
    * Whether Sentry error reporting is enabled or not.
    */
   errorReportingEnabled: true,
-  /**
-   * Whether auto-updates are enabled or not.
-   */
-  autoUpdateEnabled: true,
 
   lastUpdateCheckTime: 0,
 };

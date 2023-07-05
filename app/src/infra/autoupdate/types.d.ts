@@ -3,7 +3,7 @@ import { UpdateInfo } from 'electron-updater';
 declare global {
   type AppUpdaterBridge = {
     checkForUpdates(): Promise<UpdateInfo | undefined>;
-    downloadUpdate(): void;
+    downloadUpdate(): Promise<void>;
     quitAndInstall(): void;
   };
 
