@@ -44,7 +44,7 @@ class AgentController(
         return agentService.getAgentInfo(agentId).getOrThrow()
     }
 
-    @GetMapping("/infoForUrl", produces = ["application/json"])
+    @PostMapping("/infoForUrl", produces = ["application/json"])
     @ResponseStatus(HttpStatus.OK)
     @Operation(
         summary = "Get agent info for a URL"
