@@ -1,5 +1,6 @@
 package dev.krud.boost.daemon.base.config
 
+import dev.krud.boost.daemon.agent.websocket.AgentHealthWebsocketDispatcher
 import dev.krud.boost.daemon.configuration.application.websocket.ApplicationCreationWebsocketDispatcher
 import dev.krud.boost.daemon.configuration.application.websocket.ApplicationDeletionWebsocketDispatcher
 import dev.krud.boost.daemon.configuration.application.websocket.ApplicationHealthWebsocketDispatcher
@@ -159,6 +160,14 @@ class WebSocketConfig : WebSocketMessageBrokerConfigurer {
             destination = ApplicationDeletionWebsocketDispatcher.APPLICATION_DELETION_TOPIC,
             callback = { _, headerAccessor ->
                 applicationDeletionWebsocketDispatcher.replay(headerAccessor.sessionId!!)
+            }
+        )
+
+        @Bean
+        fun agentHealthReplayingInterceptor(agentHealthWebsocketDispatcher: AgentHealthWebsocketDispatcher) = SubscriptionInterceptor(
+            destination = AgentHealthWebsocketDispatcher.AGENT_HEALTH_TOPIC,
+            callback = { _, headerAccessor ->
+                agentHealthWebsocketDispatcher.replay(headerAccessor.sessionId!!)
             }
         )
     }
