@@ -15,14 +15,14 @@ import EffectiveAuthenticationDetailsInherit from './EffectiveAuthenticationDeta
 import EffectiveAuthenticationDetailsHeader from './EffectiveAuthenticationDetailsHeader';
 import EffectiveAuthenticationDetailsBearer from './EffectiveAuthenticationDetailsBearer';
 import EffectiveAuthenticationDetailsQuerystring from './EffectiveAuthenticationDetailsQuerystring';
-import { showUpdateItemDialog } from '../../../../utils/dialogUtils';
-import { LoadingButton } from '@mui/lab';
-import { useCrudShow, useCrudShowQuery } from '../../../../apis/requests/crud/crudShow';
-import { applicationCrudEntity } from '../../../../apis/requests/crud/entity/entities/application.crudEntity';
-import { folderCrudEntity } from '../../../../apis/requests/crud/entity/entities/folder.crudEntity';
-import { getItemDisplayName, getItemType, getItemTypeTextId } from '../../../../utils/itemUtils';
+import { showUpdateItemDialog } from 'renderer/utils/dialogUtils';
+import { useCrudShowQuery } from 'renderer/apis/requests/crud/crudShow';
+import { applicationCrudEntity } from 'renderer/apis/requests/crud/entity/entities/application.crudEntity';
+import { folderCrudEntity } from 'renderer/apis/requests/crud/entity/entities/folder.crudEntity';
+import { getItemDisplayName, getItemType, getItemTypeTextId } from 'renderer/utils/itemUtils';
 import { agentCrudEntity } from 'renderer/apis/requests/crud/entity/entities/agent.crudEntity';
-import { CrudEntityCrudFramework } from 'renderer/apis/requests/crud/entity/entity';
+import { CrudEntity } from 'renderer/apis/requests/crud/entity/entity';
+import { stubCrudEntity } from 'renderer/apis/requests/crud/entity/entities/stub.crudEntity';
 
 export type EffectiveAuthenticationDetailsProps = {
   authentication?: Authentication;
@@ -48,7 +48,7 @@ const EffectiveAuthenticationDetails: FunctionComponent<EffectiveAuthenticationD
     [authentication, internalEffectiveAuthentication]
   );
 
-  const sourceEntity = useMemo<CrudEntityCrudFramework | undefined>(() => {
+  const sourceEntity = useMemo<CrudEntity>(() => {
     switch (internalEffectiveAuthentication.sourceType) {
       case 'APPLICATION':
         return applicationCrudEntity;
@@ -57,14 +57,19 @@ const EffectiveAuthenticationDetails: FunctionComponent<EffectiveAuthenticationD
       case 'AGENT':
         return agentCrudEntity;
       default:
-        return undefined;
+        return stubCrudEntity;
     }
   }, [internalEffectiveAuthentication.sourceType]);
 
+  const sourceId = useMemo<string>(
+    () => internalEffectiveAuthentication.sourceId || '',
+    [internalEffectiveAuthentication.sourceId]
+  );
+
   const showItemState = useCrudShowQuery<ApplicationRO | FolderRO | AgentRO>(
     {
-      entity: sourceEntity!,
-      id: internalEffectiveAuthentication.sourceId!,
+      entity: sourceEntity,
+      id: sourceId,
     },
     { enabled: show }
   );
