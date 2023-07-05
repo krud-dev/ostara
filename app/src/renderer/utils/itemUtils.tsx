@@ -5,6 +5,7 @@ import blueGrey from '@mui/material/colors/blueGrey';
 import { MUIconType } from 'renderer/components/common/IconViewer';
 import { ItemRO, ItemType } from 'renderer/definitions/daemon';
 import {
+  AgentHealthDTO$Companion$Status,
   AgentRO,
   ApplicationHealthStatus,
   ApplicationRO,
@@ -271,7 +272,7 @@ export const isItemInactive = (item: ItemRO): boolean => {
     return item.health.status === 'UNREACHABLE' || item.health.status === 'INVALID';
   }
   if (isAgent(item)) {
-    return false; // TODO: implement when agent has health status
+    return item.health.status === 'UNHEALTHY';
   }
   return false;
 };
@@ -282,6 +283,9 @@ export const isItemHealthy = (item: ItemRO): boolean => {
   }
   if (isInstance(item)) {
     return item.health.status === 'UP';
+  }
+  if (isAgent(item)) {
+    return item.health.status === 'HEALTHY';
   }
   return true;
 };
@@ -328,6 +332,19 @@ export const getApplicationHealthStatusColor = (status: ApplicationHealthStatus)
   }
 };
 
+export const getAgentHealthStatusColor = (status: AgentHealthDTO$Companion$Status): string | undefined => {
+  switch (status) {
+    case 'HEALTHY':
+      return green[HEALTH_STATUS_COLORS_INDEX];
+    case 'UNHEALTHY':
+      return red[HEALTH_STATUS_COLORS_INDEX];
+    case 'PENDING':
+      return 'text.primary';
+    default:
+      return undefined;
+  }
+};
+
 export const getItemHealthStatusColor = (item: ItemRO): string | undefined => {
   if (isInstance(item)) {
     return getInstanceHealthStatusColor(item.health.status);
@@ -335,15 +352,44 @@ export const getItemHealthStatusColor = (item: ItemRO): string | undefined => {
   if (isApplication(item)) {
     return getApplicationHealthStatusColor(item.health.status);
   }
+  if (isAgent(item)) {
+    return getAgentHealthStatusColor(item.health.status);
+  }
+  return undefined;
+};
+
+const ITEM_HEALTH_STATUS_LOADING_COMPONENT = <CircularProgress size={6} thickness={12} />;
+
+export const getInstanceHealthStatusComponent = (item: InstanceRO): ReactNode | undefined => {
+  if (item.health.status === 'PENDING') {
+    return ITEM_HEALTH_STATUS_LOADING_COMPONENT;
+  }
+  return undefined;
+};
+
+export const getApplicationHealthStatusComponent = (item: ApplicationRO): ReactNode | undefined => {
+  if (item.health.status === 'PENDING') {
+    return ITEM_HEALTH_STATUS_LOADING_COMPONENT;
+  }
+  return undefined;
+};
+
+export const getAgentHealthStatusComponent = (item: AgentRO): ReactNode | undefined => {
+  if (item.health.status === 'PENDING') {
+    return ITEM_HEALTH_STATUS_LOADING_COMPONENT;
+  }
   return undefined;
 };
 
 export const getItemHealthStatusComponent = (item: ItemRO): ReactNode | undefined => {
-  if (
-    (isInstance(item) && item.health.status === 'PENDING') ||
-    (isApplication(item) && item.health.status === 'PENDING')
-  ) {
-    return <CircularProgress size={6} thickness={12} />;
+  if (isInstance(item)) {
+    return getInstanceHealthStatusComponent(item);
+  }
+  if (isApplication(item)) {
+    return getApplicationHealthStatusComponent(item);
+  }
+  if (isAgent(item)) {
+    return getAgentHealthStatusComponent(item);
   }
   return undefined;
 };
@@ -388,12 +434,28 @@ export const getApplicationHealthStatusTextId = (status: ApplicationHealthStatus
   }
 };
 
+export const getAgentHealthStatusTextId = (status: AgentHealthDTO$Companion$Status): string | undefined => {
+  switch (status) {
+    case 'HEALTHY':
+      return 'healthy';
+    case 'UNHEALTHY':
+      return 'unhealthy';
+    case 'PENDING':
+      return 'loading';
+    default:
+      return undefined;
+  }
+};
+
 export const getItemHealthStatusTextId = (item: ItemRO): string | undefined => {
   if (isInstance(item)) {
     return getInstanceHealthStatusTextId(item.health.status);
   }
   if (isApplication(item)) {
     return getApplicationHealthStatusTextId(item.health.status);
+  }
+  if (isAgent(item)) {
+    return getAgentHealthStatusTextId(item.health.status);
   }
   return undefined;
 };
@@ -431,6 +493,19 @@ export const getApplicationHealthStatusIcon = (status: ApplicationHealthStatus):
       return 'QuestionMarkOutlined';
     case 'EMPTY':
       return 'MotionPhotosOffOutlined';
+    case 'PENDING':
+      return 'HourglassEmptyOutlined';
+    default:
+      return 'QuestionMarkOutlined';
+  }
+};
+
+export const getAgentHealthStatusIcon = (status: AgentHealthDTO$Companion$Status): MUIconType => {
+  switch (status) {
+    case 'HEALTHY':
+      return 'LinkOutlined';
+    case 'UNHEALTHY':
+      return 'LinkOffOutlined';
     case 'PENDING':
       return 'HourglassEmptyOutlined';
     default:

@@ -9,7 +9,7 @@ import { InstanceRO } from '../../../../../common/generated_definitions';
 import DetailsLabelValueHorizontal from '../../../../components/table/details/DetailsLabelValueHorizontal';
 import useRestartDemo from '../../../../hooks/demo/useRestartDemo';
 import useStopDemo from '../../../../hooks/demo/useStopDemo';
-import useInstanceHealth from '../../../../hooks/useInstanceHealth';
+import useInstanceHealth from 'renderer/hooks/items/useInstanceHealth';
 
 type DemoInstanceUnreachableProps = {
   item: InstanceRO;

@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useMemo, useState } from 'react';
-import { InstanceHealthRO, InstanceRO } from '../../common/generated_definitions';
+import { InstanceHealthRO, InstanceRO } from 'common/generated_definitions';
 import { useUpdateEffect } from 'react-use';
-import { useUpdateInstanceHealthQuery } from '../apis/requests/instance/health/updateInstanceHealth';
+import { useUpdateInstanceHealthQuery } from 'renderer/apis/requests/instance/health/updateInstanceHealth';
 
 type InstanceHealthResult = {
   health: InstanceHealthRO;

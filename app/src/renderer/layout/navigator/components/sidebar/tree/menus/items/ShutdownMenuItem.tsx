@@ -4,7 +4,7 @@ import CustomMenuItem from 'renderer/components/menu/item/CustomMenuItem';
 import { ItemRO } from '../../../../../../../definitions/daemon';
 import { useGetItemAbilitiesQuery } from '../../../../../../../apis/requests/item/getItemAbilities';
 import Divider from '@mui/material/Divider';
-import useItemShutdown from '../../../../../../../hooks/useItemShutdown';
+import useItemShutdown from 'renderer/hooks/items/useItemShutdown';
 import { isItemHealthy } from '../../../../../../../utils/itemUtils';
 import { Box, Tooltip } from '@mui/material';
 import MenuDivider from '../../../../../../../components/menu/item/MenuDivider';

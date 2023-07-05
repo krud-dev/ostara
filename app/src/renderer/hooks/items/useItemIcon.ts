@@ -1,7 +1,7 @@
 import { useMemo } from 'react';
 import { MUIconType } from 'renderer/components/common/IconViewer';
 import { getItemType, getItemTypeIcon } from 'renderer/utils/itemUtils';
-import { ItemRO } from '../definitions/daemon';
+import { ItemRO } from 'renderer/definitions/daemon';
 
 export const DEFAULT_ICON_VALUE = 'default';
 

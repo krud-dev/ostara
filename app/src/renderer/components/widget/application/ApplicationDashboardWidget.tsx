@@ -12,8 +12,8 @@ import {
 import { IconViewer, MUIconType } from 'renderer/components/common/IconViewer';
 import FormattedRelativeTimeNow from 'renderer/components/format/FormattedRelativeTimeNow';
 import { useNavigate } from 'react-router-dom';
-import useItemIcon from 'renderer/hooks/useItemIcon';
-import useItemColor from 'renderer/hooks/useItemColor';
+import useItemIcon from 'renderer/hooks/items/useItemIcon';
+import useItemColor from 'renderer/hooks/items/useItemColor';
 import { useItemsContext } from 'renderer/contexts/ItemsContext';
 import { useNavigatorLayoutContext } from 'renderer/contexts/NavigatorLayoutContext';
 

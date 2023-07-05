@@ -9,7 +9,7 @@ import ApplicationDetailsForm, {
 import { useCrudCreate } from 'renderer/apis/requests/crud/crudCreate';
 import { ApplicationModifyRequestRO, ApplicationRO } from 'common/generated_definitions';
 import { applicationCrudEntity } from 'renderer/apis/requests/crud/entity/entities/application.crudEntity';
-import { INHERITED_COLOR_VALUE } from 'renderer/hooks/useItemColor';
+import { INHERITED_COLOR_VALUE } from 'renderer/hooks/items/useItemColor';
 import { useAnalyticsContext } from 'renderer/contexts/AnalyticsContext';
 import { getItemUrl } from 'renderer/utils/itemUtils';
 import { useItemsContext } from 'renderer/contexts/ItemsContext';

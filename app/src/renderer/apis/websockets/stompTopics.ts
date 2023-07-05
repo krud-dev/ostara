@@ -1,4 +1,5 @@
 import {
+  AgentHealthUpdatedEventMessage$Payload,
   ApplicationCreatedEventMessage$Payload,
   ApplicationDeletedEventMessage$Payload,
   ApplicationHealthUpdatedEventMessage$Payload,
@@ -21,12 +22,13 @@ export type StompTopics = {
   '/topic/instanceDeletion': InstanceDeletedEventMessage$Payload;
   '/topic/instanceHealth': InstanceHealthChangedEventMessage$Payload;
   '/topic/instanceMetadata': InstanceMetadataRefreshedMessage$Payload;
+  '/topic/instanceHostname': InstanceHostnameUpdatedEventMessage$Payload;
   '/topic/applicationCreation': ApplicationCreatedEventMessage$Payload;
   '/topic/applicationUpdate': ApplicationUpdatedEventMessage$Payload;
   '/topic/applicationDeletion': ApplicationDeletedEventMessage$Payload;
   '/topic/applicationHealth': ApplicationHealthUpdatedEventMessage$Payload;
+  '/topic/agentHealth': AgentHealthUpdatedEventMessage$Payload;
   '/topic/metric/:instanceId/:metricName': InstanceMetricRO;
-  '/topic/instanceHostname': InstanceHostnameUpdatedEventMessage$Payload;
   '/topic/instanceHeapdumpDownloadProgress': InstanceHeapdumpDownloadProgressMessage$Payload;
   '/topic/instanceThreadProfilingProgress': ThreadProfilingProgressMessage$Payload;
   '/topic/applicationMetricRuleTriggers': ApplicationMetricRuleTriggeredMessage$Payload;

@@ -12,7 +12,15 @@ type RunDiscoveryMenuItemProps = {
 };
 
 export default function RunDiscoveryMenuItem({ node, onClose }: RunDiscoveryMenuItemProps) {
-  const disabled = useMemo<boolean>(() => false, [node.data]); // TODO: disable if agent is syncing
+  const disabled = useMemo<boolean>(() => {
+    if (!isAgent(node.data)) {
+      return true;
+    }
+    if (node.data.health.status !== 'HEALTHY') {
+      return true;
+    }
+    return false; // TODO: disable if agent is syncing
+  }, [node.data]);
 
   const runDiscoveryState = useRunDiscoveryForAgent();
 

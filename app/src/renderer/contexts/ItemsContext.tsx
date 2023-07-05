@@ -10,6 +10,7 @@ import React, {
 import { ItemRO } from '../definitions/daemon';
 import { CrudSearchData, useCrudSearchQuery } from '../apis/requests/crud/crudSearch';
 import {
+  AgentHealthUpdatedEventMessage$Payload,
   AgentRO,
   ApplicationCreatedEventMessage$Payload,
   ApplicationDeletedEventMessage$Payload,
@@ -32,7 +33,7 @@ import { useStompContext } from 'renderer/apis/websockets/StompContext';
 import { isAgent, isApplication, isFolder, isInstance } from 'renderer/utils/itemUtils';
 import { QueryObserverResult } from '@tanstack/react-query';
 import { agentCrudEntity } from 'renderer/apis/requests/crud/entity/entities/agent.crudEntity';
-import useItemsRefresh from 'renderer/hooks/useItemsRefresh';
+import useItemsRefresh from 'renderer/hooks/items/useItemsRefresh';
 
 export type ItemsContextProps = {
   folders: FolderRO[] | undefined;
@@ -115,6 +116,17 @@ const ItemsProvider: FunctionComponent<ItemsProviderProps> = ({ children }) => {
   );
 
   const getItem = useCallback((id: string): ItemRO | undefined => items?.find((i) => i.id === id), [items]);
+
+  useEffect(() => {
+    const unsubscribe = subscribe('/topic/agentHealth', {}, (healthChanged: AgentHealthUpdatedEventMessage$Payload) => {
+      setAgents((prev) =>
+        prev?.map((a) => (a.id === healthChanged.agentId ? { ...a, health: healthChanged.newHealth } : a))
+      );
+    });
+    return () => {
+      unsubscribe();
+    };
+  }, []);
 
   const addApplicationToRefresh = useItemsRefresh('application', addItems);
 
