@@ -6,10 +6,12 @@ import dev.krud.boost.daemon.agent.model.AgentHealthDTO
 import dev.krud.boost.daemon.agent.ro.AgentRO
 import dev.krud.shapeshift.decorator.MappingDecorator
 import dev.krud.shapeshift.decorator.MappingDecoratorContext
+import org.springframework.context.annotation.Lazy
 import org.springframework.stereotype.Component
 
 @Component
 class AgentToRoDecorator(
+    @Lazy
     private val agentHealthService: AgentHealthService
 ) : MappingDecorator<Agent, AgentRO> {
     override fun decorate(context: MappingDecoratorContext<Agent, AgentRO>) {
