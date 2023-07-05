@@ -64,6 +64,11 @@ class IntegrationConfig {
     }
 
     @Bean
+    fun agentHealthChannel(): PublishSubscribeChannel {
+        return MessageChannels.publishSubscribe().get()
+    }
+
+    @Bean
     fun applicationMetricRuleTriggerFlow() = integrationFlow(
         instanceApplicationMetricRuleTriggerChannel()
     ) {

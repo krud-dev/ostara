@@ -511,6 +511,16 @@ export interface InfoActuatorResponse$Git$Unknown extends InfoActuatorResponse$G
     type: string;
 }
 
+export interface AgentHealthDTO {
+    agentId: string;
+    reachable: boolean;
+    statusCode: number;
+    message?: string;
+    status: AgentHealthDTO$Companion$Status;
+    info?: AgentInfoDTO;
+    time: DateAsNumber;
+}
+
 export interface AgentInfoDTO {
     version: string;
     sources: string[];
@@ -1383,6 +1393,8 @@ export type ApplicationMetricRuleOperation = "GREATER_THAN" | "LOWER_THAN" | "BE
 export type ApplicationMetricRule$Type = "SIMPLE" | "RELATIVE";
 
 export type ThreadProfilingStatus = "RUNNING" | "FINISHED";
+
+export type AgentHealthDTO$Companion$Status = "PENDING" | "UNHEALTHY" | "HEALTHY";
 
 export type EffectiveAuthentication$SourceType = "FOLDER" | "APPLICATION" | "AGENT";
 

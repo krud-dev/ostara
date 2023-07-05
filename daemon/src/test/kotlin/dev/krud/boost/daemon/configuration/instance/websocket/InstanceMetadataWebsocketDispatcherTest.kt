@@ -4,6 +4,7 @@ import dev.krud.boost.daemon.configuration.instance.entity.Instance
 import dev.krud.boost.daemon.configuration.instance.metadata.messaing.InstanceMetadataRefreshedMessage
 import dev.krud.boost.daemon.configuration.instance.metadata.ro.InstanceMetadataDTO
 import dev.krud.boost.daemon.configuration.instance.stubInstance
+import dev.krud.boost.daemon.test.awaitOrThrow
 import dev.krud.crudframework.crud.handler.krud.Krud
 import org.junit.jupiter.api.Test
 import org.mockito.kotlin.mock
@@ -47,7 +48,7 @@ class InstanceMetadataWebsocketDispatcherTest {
             instanceMetadataRefreshChannel.subscribe {
                 latch.countDown()
             }
-            latch.await(1000, TimeUnit.MILLISECONDS)
+            latch.awaitOrThrow(1000, TimeUnit.MILLISECONDS)
             verify(messagingTemplate, times(1)).convertAndSend(
                 InstanceMetadataWebsocketDispatcher.INSTANCE_METADATA_TOPIC,
                 message.payload

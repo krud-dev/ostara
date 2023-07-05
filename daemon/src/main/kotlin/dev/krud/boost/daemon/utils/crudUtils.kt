@@ -5,7 +5,7 @@ import dev.krud.crudframework.model.BaseCrudEntity
 import dev.krud.crudframework.modelfilter.dsl.FilterFieldsBuilder
 import java.io.Serializable
 
-fun <Entity : BaseCrudEntity<ID>, ID : Serializable> Krud<Entity, ID>.searchSequence(chunkSize: Long = 100L, block: FilterFieldsBuilder<Entity>.() -> Unit) = sequence {
+fun <Entity : BaseCrudEntity<ID>, ID : Serializable> Krud<Entity, ID>.searchSequence(chunkSize: Long = 100L, block: FilterFieldsBuilder<Entity>.() -> Unit = {}) = sequence {
     var hasMore: Boolean
     var offset = 0L
     do {
