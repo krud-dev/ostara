@@ -1,3 +1,6 @@
 spring:
   datasource:
     url: 'jdbc:sqlite::memory:'
+app:
+  main:
+    scheduling-enabled: false

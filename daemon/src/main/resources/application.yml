@@ -68,3 +68,4 @@ cache:
       expire-after-write: 30m
       expire-after-access: 10m
     - name: ruleInstanceAssociationCache
+    - name: agentHealthCache

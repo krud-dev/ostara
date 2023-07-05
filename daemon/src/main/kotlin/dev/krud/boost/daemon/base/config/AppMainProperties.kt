@@ -7,7 +7,7 @@ import java.nio.file.Path
 import kotlin.io.path.createDirectories
 
 @Configuration
-@ConfigurationProperties(prefix = "app.main", ignoreUnknownFields = true)
+@ConfigurationProperties(prefix = AppMainProperties.PREFIX, ignoreUnknownFields = true)
 class AppMainProperties : InitializingBean  {
     /**
      * App data directory to use when saving data to disk.
@@ -19,8 +19,17 @@ class AppMainProperties : InitializingBean  {
      */
     var backupDirectory: Path = Path.of(".", "backups")
 
+    /**
+     * Whether to enable scheduling.
+     */
+    var schedulingEnabled: Boolean = true
+
     override fun afterPropertiesSet() {
         Path.of(heapdumpDirectory).createDirectories()
         backupDirectory.createDirectories()
+    }
+
+    companion object {
+        const val PREFIX = "app.main"
     }
 }
