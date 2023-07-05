@@ -59,6 +59,7 @@ const AgentDetailsForm: FunctionComponent<AgentDetailsFormProps> = ({
   });
 
   const url = watch('url');
+  const apiKey = watch('apiKey');
 
   const apiKeyDisabled = useMemo<boolean>(() => !url?.startsWith('https'), [url]);
 
@@ -74,7 +75,7 @@ const AgentDetailsForm: FunctionComponent<AgentDetailsFormProps> = ({
     track({ name: 'test_connection', properties: { item_type: 'instance' } });
 
     try {
-      await testConnectionState.mutateAsync({ agentUrl: url });
+      await testConnectionState.mutateAsync({ request: { url, apiKey } });
       enqueueSnackbar(<FormattedMessage id="testConnectionToAgentSuccess" />, { variant: 'success' });
     } catch (e) {
       enqueueSnackbar(<FormattedMessage id="testConnectionToAgentFailed" />, { variant: 'error' });

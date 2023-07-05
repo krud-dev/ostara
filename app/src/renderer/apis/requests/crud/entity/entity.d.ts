@@ -9,11 +9,11 @@ type CrudEntityCrudFramework = CrudEntityBase & {
   path: string;
 };
 
-type CrudEntityLocalStorage = CrudEntityBase & {
-  type: 'LocalStorage';
+type CrudEntityStub = CrudEntityBase & {
+  type: 'Stub';
 };
 
-export type CrudEntity = CrudEntityCrudFramework | CrudEntityLocalStorage;
+export type CrudEntity = CrudEntityCrudFramework | CrudEntityStub;
 
 export type BaseRO = {
   id: string;

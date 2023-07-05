@@ -3,10 +3,8 @@ import {
   BaseUseMutationResult,
   useBaseMutation,
 } from 'renderer/apis/requests/base/useBaseMutation';
-import { BaseQueryOptions, BaseUseQueryResult, useBaseQuery } from 'renderer/apis/requests/base/useBaseQuery';
-import { apiKeys } from 'renderer/apis/apiKeys';
-import { Authentication, TestConnectionResponse } from '../../../../common/generated_definitions';
-import { axiosInstance } from '../../axiosInstance';
+import { Authentication, TestConnectionResponse } from 'common/generated_definitions';
+import { axiosInstance } from 'renderer/apis/axiosInstance';
 import { AxiosResponse } from 'axios';
 
 type Variables = { actuatorUrl: string; authentication?: Authentication; disableSslVerification?: boolean };
@@ -31,14 +29,3 @@ export const testConnectionByUrl = async (variables: Variables): Promise<Data> =
 export const useTestConnectionByUrl = (
   options?: BaseMutationOptions<Data, Variables>
 ): BaseUseMutationResult<Data, Variables> => useBaseMutation<Data, Variables>(testConnectionByUrl, options);
-
-export const useTestConnectionByUrlQuery = (
-  variables: Variables,
-  options?: BaseQueryOptions<Data, Variables>
-): BaseUseQueryResult<Data> =>
-  useBaseQuery<Data, Variables>(
-    apiKeys.connectionByUrl(variables.actuatorUrl),
-    testConnectionByUrl,
-    variables,
-    options
-  );
