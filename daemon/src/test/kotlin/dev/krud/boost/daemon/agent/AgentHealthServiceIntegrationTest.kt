@@ -18,13 +18,15 @@ import org.mockito.Mockito.mock
 import org.mockito.kotlin.whenever
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.mock.mockito.MockBean
+import org.springframework.cache.Cache
+import org.springframework.cache.CacheManager
+import org.springframework.cache.get
 import org.springframework.integration.channel.PublishSubscribeChannel
 import org.springframework.test.annotation.DirtiesContext
 import strikt.api.expect
 import strikt.assertions.isEqualTo
 import strikt.assertions.isNotNull
 import strikt.assertions.isNull
-import java.lang.RuntimeException
 import java.util.*
 import java.util.concurrent.CountDownLatch
 import java.util.concurrent.TimeUnit
@@ -41,6 +43,9 @@ class AgentHealthServiceIntegrationTest {
     @Autowired
     private lateinit var agentHealthChannel: PublishSubscribeChannel
 
+    @Autowired
+    private lateinit var cacheManager: CacheManager
+
     @MockBean
     private lateinit var agentClientProvider: AgentClientProvider
 
@@ -48,15 +53,30 @@ class AgentHealthServiceIntegrationTest {
 
     private lateinit var theAgent: Agent
 
+    private lateinit var agentHealthCache: Cache
+
     @BeforeEach
     fun setUp() {
         theAgent = agentKrud.create(stubAgent())
         whenever(agentClientProvider.getAgentClient(theAgent)).thenReturn(agentClient)
+        agentHealthCache = cacheManager["agentHealthCache"]!!
     }
 
     @AfterEach
     fun tearDown() {
         agentKrud.delete(theAgent)
+    }
+
+    @Test
+    fun `refreshAgentsHealth should refresh all agent healths`() {
+        val info = AgentInfoDTO("1.2.3", setOf("Internal"))
+        primeInfoSuccess(info)
+        agentHealthService.refreshAgentsHealth()
+        val health = agentHealthCache.get(theAgent.id, AgentHealthDTO::class.java)
+        expect {
+            that(health).isNotNull()
+            that(health!!.info).isEqualTo(info)
+        }
     }
 
     @Test

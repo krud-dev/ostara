@@ -28,9 +28,9 @@ class AgentHealthService(
     private val agentHealthCache by cacheManager.resolve()
 
     @Scheduled(fixedRate = ONE_SECOND * 10)
-    fun cycleAgentsHealth() {
+    fun refreshAgentsHealth() {
         log.debug {
-            "Cycling agents health"
+            "Refreshing agents health"
         }
         agentKrud.searchSequence()
             .forEach { agent ->
