@@ -220,6 +220,7 @@ export interface AgentRO {
     sort?: number;
     parentFolderId?: string;
     authentication: Authentication;
+    health: AgentHealthDTO;
 }
 
 export interface SystemBackupRO {
@@ -509,6 +510,10 @@ export interface InfoActuatorResponse$Git$Simple extends InfoActuatorResponse$Gi
 
 export interface InfoActuatorResponse$Git$Unknown extends InfoActuatorResponse$Git {
     type: string;
+}
+
+export interface AgentHealthUpdatedEventMessage extends AbstractMessage<AgentHealthUpdatedEventMessage$Payload> {
+    payload: AgentHealthUpdatedEventMessage$Payload;
 }
 
 export interface AgentHealthDTO {
@@ -946,6 +951,12 @@ export interface InfoActuatorResponse$Git$Simple$Commit {
     time?: ParsedDate;
 }
 
+export interface AgentHealthUpdatedEventMessage$Payload {
+    agentId: string;
+    oldHealth: AgentHealthDTO;
+    newHealth: AgentHealthDTO;
+}
+
 export interface BackupDTO$TreeElement {
     type: "folder" | "application" | "agent";
 }
@@ -1188,6 +1199,9 @@ export interface InfoActuatorResponse$Git$Full$Remote$Origin {
     url: string;
 }
 
+export interface AbstractMessage<T> extends Message<T> {
+}
+
 export interface BackupDTO$TreeElement$Folder extends BackupDTO$TreeElement {
     type: "folder";
     model: BackupDTO$TreeElement$Folder$Model;
@@ -1205,9 +1219,6 @@ export interface BackupDTO$TreeElement$Agent extends BackupDTO$TreeElement {
     type: "agent";
     model: BackupDTO$TreeElement$Agent$Model;
     children: BackupDTO$TreeElement$Application[];
-}
-
-export interface AbstractMessage<T> extends Message<T> {
 }
 
 export interface FlywayActuatorResponse$Context$FlywayBean$Migration {
@@ -1314,6 +1325,11 @@ export interface MappingsActuatorResponse$Context$Mappings$DispatcherServletOrHa
     requestMappingConditions?: MappingsActuatorResponse$Context$Mappings$DispatcherServletOrHandler$Details$RequestMappingConditions;
 }
 
+export interface Message<T> {
+    payload: T;
+    headers: { [index: string]: any };
+}
+
 export interface BackupDTO$TreeElement$Application$Instance$Model {
     alias?: string;
     actuatorUrl: string;
@@ -1321,11 +1337,6 @@ export interface BackupDTO$TreeElement$Application$Instance$Model {
     color: string;
     icon?: string;
     sort?: number;
-}
-
-export interface Message<T> {
-    payload: T;
-    headers: { [index: string]: any };
 }
 
 export interface MappingsActuatorResponse$Context$Mappings$DispatcherServletOrHandler$Details$HandlerMethod {

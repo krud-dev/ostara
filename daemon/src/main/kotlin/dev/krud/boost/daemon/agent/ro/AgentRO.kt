@@ -1,5 +1,6 @@
 package dev.krud.boost.daemon.agent.ro
 
+import dev.krud.boost.daemon.agent.model.AgentHealthDTO
 import dev.krud.boost.daemon.configuration.authentication.Authentication
 import dev.krud.boost.daemon.utils.DEFAULT_COLOR
 import dev.krud.boost.daemon.utils.TypeDefaults
@@ -14,5 +15,6 @@ class AgentRO(
     val icon: String? = null,
     val sort: Double? = null,
     val parentFolderId: UUID? = null,
-    val authentication: Authentication = Authentication.Inherit.DEFAULT
+    val authentication: Authentication = Authentication.Inherit.DEFAULT,
+    var health: AgentHealthDTO = AgentHealthDTO.pending(id)
 )
