@@ -44,10 +44,10 @@ class InstanceMetadataWebsocketDispatcherTest {
                 )
             )
             val latch = CountDownLatch(1)
-            instanceMetadataRefreshChannel.send(message)
             instanceMetadataRefreshChannel.subscribe {
                 latch.countDown()
             }
+            instanceMetadataRefreshChannel.send(message)
             latch.awaitOrThrow(1000, TimeUnit.MILLISECONDS)
             verify(messagingTemplate, times(1)).convertAndSend(
                 InstanceMetadataWebsocketDispatcher.INSTANCE_METADATA_TOPIC,
