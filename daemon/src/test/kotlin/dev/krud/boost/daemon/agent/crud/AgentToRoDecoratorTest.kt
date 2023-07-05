@@ -22,7 +22,7 @@ class AgentToRoDecoratorTest {
     fun `decorate should set the agent cached health to the RO`() {
         val agent = stubAgent()
         val ro = AgentRO()
-        val health = AgentHealthDTO.unreachable(agent.id)
+        val health = AgentHealthDTO.unreachable()
         whenever(agentHealthService.getCachedHealth(agent.id)).thenReturn(
             health
         )
@@ -50,7 +50,7 @@ class AgentToRoDecoratorTest {
             )
         )
         expect {
-            that(ro.health).isEqualTo(AgentHealthDTO.pending(agent.id))
+            that(ro.health).isEqualTo(AgentHealthDTO.pending())
         }
     }
 }

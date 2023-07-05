@@ -63,7 +63,6 @@ class AgentHealthServiceIntegrationTest {
         val health = agentHealthService.fetchAgentHealth(theAgent.id)
         expect {
             that(health.info).isEqualTo(info)
-            that(health.agentId).isEqualTo(theAgent.id)
             that(health.statusCode).isEqualTo(200)
             that(health.status).isEqualTo(AgentHealthDTO.Companion.Status.HEALTHY)
             that(health.message).isNull()
@@ -76,7 +75,6 @@ class AgentHealthServiceIntegrationTest {
         val health = agentHealthService.fetchAgentHealth(theAgent.id)
         expect {
             that(health.info).isNull()
-            that(health.agentId).isEqualTo(theAgent.id)
             that(health.statusCode).isEqualTo(-1)
             that(health.status).isEqualTo(AgentHealthDTO.Companion.Status.UNHEALTHY)
             that(health.message).isEqualTo("Unreachable!")

@@ -50,7 +50,7 @@ class AgentHealthService(
 
     fun refreshAgentHealth(agent: Agent): AgentHealthDTO {
         val currentHealth = agentHealthCache.get(agent.id, AgentHealthDTO::class.java)
-            ?: AgentHealthDTO.pending(agent.id)
+            ?: AgentHealthDTO.pending()
         val health = runCatching {
             fetchAgentHealth(agent.id)
         }
@@ -61,7 +61,7 @@ class AgentHealthService(
                 },
                 onFailure = {
                     log.error(it) { "Failed to refresh health for agent $agent.id" }
-                    AgentHealthDTO.error(agent.id, 0, it.message)
+                    AgentHealthDTO.error(0, it.message)
                 }
             )
         if (currentHealth != health) {
@@ -96,13 +96,13 @@ class AgentHealthService(
         }
             .fold(
                 {
-                    return AgentHealthDTO.ok(agent.id, it)
+                    return AgentHealthDTO.ok(it)
                 }
             ) {
                 return when (it) {
-                    is RetryableException -> AgentHealthDTO.unreachable(agent.id, it.message)
-                    is FeignException -> AgentHealthDTO.error(agent.id, it.status(), it.message)
-                    else -> AgentHealthDTO.error(agent.id, 0, it.message)
+                    is RetryableException -> AgentHealthDTO.unreachable(it.message)
+                    is FeignException -> AgentHealthDTO.error(it.status(), it.message)
+                    else -> AgentHealthDTO.error(0, it.message)
                 }
             }
     }

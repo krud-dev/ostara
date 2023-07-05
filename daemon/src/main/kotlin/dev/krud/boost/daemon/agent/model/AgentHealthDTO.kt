@@ -5,7 +5,6 @@ import java.util.*
 
 @GenerateTypescript
 data class AgentHealthDTO(
-    val agentId: UUID,
     val reachable: Boolean,
     val statusCode: Int,
     val message: String?,
@@ -18,27 +17,24 @@ data class AgentHealthDTO(
             PENDING, UNHEALTHY, HEALTHY
         }
 
-        fun pending(agentId: UUID): AgentHealthDTO {
+        fun pending(): AgentHealthDTO {
             return AgentHealthDTO(
-                agentId = agentId,
                 reachable = false,
                 statusCode = -1,
                 message = null,
                 status = Status.PENDING
             )
         }
-        fun unreachable(agentId: UUID, message: String? = null): AgentHealthDTO {
+        fun unreachable(message: String? = null): AgentHealthDTO {
             return AgentHealthDTO(
-                agentId,
                 reachable = false,
                 statusCode = -1,
                 message = message,
                 status = Status.UNHEALTHY
             )
         }
-        fun ok(agentId: UUID, info: AgentInfoDTO, statusCode: Int = 200, statusText: String? = null): AgentHealthDTO {
+        fun ok(info: AgentInfoDTO, statusCode: Int = 200, statusText: String? = null): AgentHealthDTO {
             return AgentHealthDTO(
-                agentId,
                 info = info,
                 reachable = true,
                 statusCode = statusCode,
@@ -47,9 +43,8 @@ data class AgentHealthDTO(
             )
         }
 
-        fun error(agentId: UUID, statusCode: Int, statusText: String? = null): AgentHealthDTO {
+        fun error(statusCode: Int, statusText: String? = null): AgentHealthDTO {
             return AgentHealthDTO(
-                agentId,
                 reachable = true,
                 statusCode = statusCode,
                 message = statusText,

@@ -16,5 +16,5 @@ class AgentRO(
     val sort: Double? = null,
     val parentFolderId: UUID? = null,
     val authentication: Authentication = Authentication.Inherit.DEFAULT,
-    var health: AgentHealthDTO = AgentHealthDTO.pending(id)
+    var health: AgentHealthDTO = AgentHealthDTO.pending()
 )

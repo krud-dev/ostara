@@ -16,6 +16,6 @@ class AgentToRoDecorator(
 ) : MappingDecorator<Agent, AgentRO> {
     override fun decorate(context: MappingDecoratorContext<Agent, AgentRO>) {
         context.to.health = agentHealthService.getCachedHealth(context.from.id)
-            ?: AgentHealthDTO.pending(context.from.id)
+            ?: AgentHealthDTO.pending()
     }
 }

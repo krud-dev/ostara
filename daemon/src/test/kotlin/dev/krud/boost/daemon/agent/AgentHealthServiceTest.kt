@@ -32,7 +32,7 @@ class AgentHealthServiceTest {
     @Test
     fun `getCachedHealth should return cached value if value is cached`() {
         val agent = stubAgent()
-        val health = AgentHealthDTO.pending(agent.id)
+        val health = AgentHealthDTO.pending()
         agentHealthCache.put(agent.id, health)
         val cachedHealth = agentHealthService.getCachedHealth(agent.id)
         expect {
