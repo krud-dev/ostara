@@ -11,12 +11,11 @@ import { notEmpty } from '../../utils/objectUtils';
 import { useLocalStorageState } from '../../hooks/useLocalStorageState';
 import { useAppUpdatesContext } from '../../contexts/AppUpdatesContext';
 import { useSnackbar } from 'notistack';
-import semverGte from 'semver/functions/gte';
 
 interface AppUpdatesManagerProps {}
 
 const AppUpdatesManager: FunctionComponent<AppUpdatesManagerProps> = () => {
-  const { autoUpdateSupported, autoUpdateEnabled, newVersionDownloaded, newVersionInfo } = useAppUpdatesContext();
+  const { autoUpdateSupported, newVersionDownloaded, newVersionInfo } = useAppUpdatesContext();
 
   const [newVersionDetailsShown, setNewVersionDetailsShown] = useState<string | undefined>(undefined);
   const [newVersionDetailsSkipVersion, setNewVersionDetailsSkipVersion] = useLocalStorageState<string | undefined>(
@@ -26,51 +25,41 @@ const AppUpdatesManager: FunctionComponent<AppUpdatesManagerProps> = () => {
   const [newVersionDownloadedShown, setNewVersionDownloadedShown] = useState<string | undefined>(undefined);
 
   useEffect(() => {
-    (async () => {
-      if (!newVersionInfo) {
-        return;
-      }
-      const appVersion = await window.ui.getAppVersion();
-      if (semverGte(appVersion, newVersionInfo.version)) {
-        return;
-      }
-      if (newVersionDetailsShown === newVersionInfo.version) {
-        return;
-      }
-      if (newVersionDetailsSkipVersion === newVersionInfo.version) {
-        return;
-      }
-      if (autoUpdateSupported && (autoUpdateEnabled || newVersionDownloaded)) {
-        return;
-      }
-      setNewVersionDetailsShown(newVersionInfo.version);
-      NiceModal.show<undefined, AppUpdateDetailsDialogProps>(AppUpdateDetailsDialog, {
-        updateInfo: newVersionInfo,
-        onSkipVersion: setNewVersionDetailsSkipVersion,
-      });
-    })();
+    if (!newVersionInfo) {
+      return;
+    }
+    if (newVersionDetailsShown === newVersionInfo.version) {
+      return;
+    }
+    if (newVersionDetailsSkipVersion === newVersionInfo.version) {
+      return;
+    }
+    if (autoUpdateSupported && newVersionDownloaded) {
+      return;
+    }
+
+    setNewVersionDetailsShown(newVersionInfo.version);
+    NiceModal.show<undefined, AppUpdateDetailsDialogProps>(AppUpdateDetailsDialog, {
+      updateInfo: newVersionInfo,
+      onSkipVersion: setNewVersionDetailsSkipVersion,
+    });
   }, [newVersionInfo]);
 
   useEffect(() => {
-    (async () => {
-      if (!newVersionDownloaded) {
-        return;
-      }
-      const appVersion = await window.ui.getAppVersion();
-      if (semverGte(appVersion, newVersionDownloaded.version)) {
-        return;
-      }
-      if (newVersionDownloadedShown === newVersionDownloaded.version) {
-        return;
-      }
-      if (!autoUpdateSupported) {
-        return;
-      }
-      setNewVersionDownloadedShown(newVersionDownloaded.version);
-      NiceModal.show<undefined, AppUpdateDownloadedDialogProps>(AppUpdateDownloadedDialog, {
-        updateInfo: newVersionDownloaded,
-      });
-    })();
+    if (!newVersionDownloaded) {
+      return;
+    }
+    if (newVersionDownloadedShown === newVersionDownloaded.version) {
+      return;
+    }
+    if (!autoUpdateSupported) {
+      return;
+    }
+
+    setNewVersionDownloadedShown(newVersionDownloaded.version);
+    NiceModal.show<undefined, AppUpdateDownloadedDialogProps>(AppUpdateDownloadedDialog, {
+      updateInfo: newVersionDownloaded,
+    });
   }, [newVersionDownloaded]);
 
   return null;
@@ -87,7 +76,7 @@ const AppUpdateDetailsDialog: FunctionComponent<AppUpdateDetailsDialogProps> = N
   ({ updateInfo, onSkipVersion }) => {
     const modal = useModal();
     const { track } = useAnalyticsContext();
-    const { downloadUpdate } = useAppUpdatesContext();
+    const { autoUpdateSupported, downloadUpdate } = useAppUpdatesContext();
     const { enqueueSnackbar } = useSnackbar();
 
     const closeHandler = useCallback((): void => {
@@ -116,13 +105,14 @@ const AppUpdateDetailsDialog: FunctionComponent<AppUpdateDetailsDialogProps> = N
     const downloadHandler = useCallback((): void => {
       track({ name: 'app_update_details_dialog_download' });
 
-      const downloadType = downloadUpdate();
-      if (downloadType === 'internal') {
+      downloadUpdate();
+
+      if (autoUpdateSupported) {
         enqueueSnackbar(<FormattedMessage id="downloadStarted" />, { variant: 'info' });
       }
 
       closeHandler();
-    }, [downloadUpdate, closeHandler]);
+    }, [autoUpdateSupported, downloadUpdate, closeHandler]);
 
     const laterHandler = useCallback((): void => {
       track({ name: 'app_update_details_dialog_later' });

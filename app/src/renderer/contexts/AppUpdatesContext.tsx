@@ -5,28 +5,27 @@ import React, {
   useContext,
   useEffect,
   useMemo,
-  useRef,
   useState,
 } from 'react';
 import { useSubscribeToEvent } from 'renderer/apis/requests/subscriptions/subscribeToEvent';
 import { IpcRendererEvent } from 'electron';
-import { useUpdateEffect } from 'react-use';
 import { UpdateInfo } from 'electron-updater';
 import { isMac, isWindows } from 'renderer/utils/platformUtils';
 import { LATEST_RELEASE_URL } from 'renderer/constants/ui';
-import semverGte from 'semver/functions/gte';
 import { onlineManager } from '@tanstack/react-query';
-
-export type AppUpdatesDownloadType = 'external' | 'internal';
+import semverGt from 'semver/functions/gt';
 
 export type AppUpdatesContextProps = {
+  appVersion: string;
   autoUpdateSupported: boolean;
-  autoUpdateEnabled: boolean;
-  setAutoUpdateEnabled: (autoUpdateEnabled: boolean) => void;
+  checkForUpdatesLoading: boolean;
+  checkForUpdatesCompleted: boolean;
+  downloadUpdateLoading: boolean;
   newVersionInfo: UpdateInfo | undefined;
   newVersionDownloaded: UpdateInfo | undefined;
+  updateError: Error | undefined;
   checkForUpdates: () => Promise<UpdateInfo | undefined>;
-  downloadUpdate: () => AppUpdatesDownloadType;
+  downloadUpdate: () => Promise<void>;
   installUpdate: () => void;
 };
 
@@ -35,15 +34,22 @@ const AppUpdatesContext = React.createContext<AppUpdatesContextProps>(undefined!
 interface AppUpdatesProviderProps extends PropsWithChildren<any> {}
 
 const AppUpdatesProvider: FunctionComponent<AppUpdatesProviderProps> = ({ children }) => {
-  const autoUpdateSupported = useMemo<boolean>(() => isMac || isWindows, []);
-  const [autoUpdateEnabled, setAutoUpdateEnabled] = useState<boolean>(window.configurationStore.isAutoUpdateEnabled());
+  const [appVersion, setAppVersion] = useState<string>('');
+  const [checkForUpdatesLoading, setCheckForUpdatesLoading] = useState<boolean>(false);
+  const [checkForUpdatesCompleted, setCheckForUpdatesCompleted] = useState<boolean>(false);
+  const [downloadUpdateLoading, setDownloadUpdateLoading] = useState<boolean>(false);
   const [newVersionInfo, setNewVersionInfo] = useState<UpdateInfo | undefined>(undefined);
   const [newVersionDownloaded, setNewVersionDownloaded] = useState<UpdateInfo | undefined>(undefined);
+  const [updateError, setUpdateError] = useState<Error | undefined>(undefined);
   const [networkStateFlag, setNetworkStateFlag] = useState<boolean>(true);
 
-  useUpdateEffect(() => {
-    window.configurationStore.setAutoUpdateEnabled(autoUpdateEnabled);
-  }, [autoUpdateEnabled]);
+  const autoUpdateSupported = useMemo<boolean>(() => isMac || isWindows, []);
+
+  useEffect(() => {
+    (async () => {
+      setAppVersion(await window.ui.getAppVersion());
+    })();
+  }, []);
 
   useEffect(() => {
     if (!onlineManager.isOnline()) {
@@ -51,10 +57,7 @@ const AppUpdatesProvider: FunctionComponent<AppUpdatesProviderProps> = ({ childr
     }
 
     (async () => {
-      const updateInfo = await window.appUpdater.checkForUpdates();
-      if (updateInfo) {
-        setNewVersionInfo(updateInfo);
-      }
+      await checkForUpdates();
     })();
   }, [networkStateFlag]);
 
@@ -67,6 +70,11 @@ const AppUpdatesProvider: FunctionComponent<AppUpdatesProviderProps> = ({ childr
     };
   }, []);
 
+  const isValidAppUpdate = useCallback(
+    (updateInfo: UpdateInfo, currentAppVersion: string): boolean => semverGt(updateInfo.version, currentAppVersion),
+    []
+  );
+
   const subscribeToUpdateAvailableState = useSubscribeToEvent();
 
   useEffect(() => {
@@ -75,7 +83,12 @@ const AppUpdatesProvider: FunctionComponent<AppUpdatesProviderProps> = ({ childr
       unsubscribe = await subscribeToUpdateAvailableState.mutateAsync({
         event: 'app:updateAvailable',
         listener: (event: IpcRendererEvent, updateInfo: UpdateInfo) => {
-          setNewVersionInfo(updateInfo);
+          (async () => {
+            const currentAppVersion = await window.ui.getAppVersion();
+            if (isValidAppUpdate(updateInfo, currentAppVersion)) {
+              setNewVersionInfo(updateInfo);
+            }
+          })();
         },
       });
     })();
@@ -92,7 +105,29 @@ const AppUpdatesProvider: FunctionComponent<AppUpdatesProviderProps> = ({ childr
       unsubscribe = await subscribeToUpdateDownloadedState.mutateAsync({
         event: 'app:updateDownloaded',
         listener: (event: IpcRendererEvent, updateInfo: UpdateInfo) => {
-          setNewVersionDownloaded(updateInfo);
+          (async () => {
+            const currentAppVersion = await window.ui.getAppVersion();
+            if (isValidAppUpdate(updateInfo, currentAppVersion)) {
+              setNewVersionDownloaded(updateInfo);
+            }
+          })();
+        },
+      });
+    })();
+    return () => {
+      unsubscribe?.();
+    };
+  }, []);
+
+  const subscribeToUpdateErrorState = useSubscribeToEvent();
+
+  useEffect(() => {
+    let unsubscribe: (() => void) | undefined;
+    (async () => {
+      unsubscribe = await subscribeToUpdateErrorState.mutateAsync({
+        event: 'app:updateError',
+        listener: (event: IpcRendererEvent, error: Error) => {
+          setUpdateError(error);
         },
       });
     })();
@@ -106,30 +141,39 @@ const AppUpdatesProvider: FunctionComponent<AppUpdatesProviderProps> = ({ childr
       return undefined;
     }
 
-    const updateInfo = await window.appUpdater.checkForUpdates();
-    const appVersion = await window.ui.getAppVersion();
+    setUpdateError(undefined);
+    setCheckForUpdatesLoading(true);
 
-    if (!updateInfo || semverGte(appVersion, updateInfo.version)) {
+    const updateInfo = await window.appUpdater.checkForUpdates();
+    const currentAppVersion = await window.ui.getAppVersion();
+
+    setCheckForUpdatesLoading(false);
+    setCheckForUpdatesCompleted(true);
+
+    if (!updateInfo || !isValidAppUpdate(updateInfo, currentAppVersion)) {
       return undefined;
     }
 
     setNewVersionInfo(updateInfo);
     return updateInfo;
-  }, [setNewVersionInfo]);
+  }, [setCheckForUpdatesLoading, setNewVersionInfo]);
 
-  const downloadUpdateStarted = useRef<boolean>(false);
-
-  const downloadUpdate = useCallback((): AppUpdatesDownloadType => {
-    if (autoUpdateSupported) {
-      if (!downloadUpdateStarted.current) {
-        window.appUpdater.downloadUpdate();
-        downloadUpdateStarted.current = true;
-      }
-      return 'internal';
+  const downloadUpdate = useCallback(async (): Promise<void> => {
+    if (downloadUpdateLoading) {
+      return;
     }
-    window.open(LATEST_RELEASE_URL, '_blank');
-    return 'external';
-  }, [autoUpdateSupported]);
+
+    setUpdateError(undefined);
+    setDownloadUpdateLoading(true);
+
+    if (autoUpdateSupported) {
+      await window.appUpdater.downloadUpdate();
+    } else {
+      window.open(LATEST_RELEASE_URL, '_blank');
+    }
+
+    setDownloadUpdateLoading(false);
+  }, [downloadUpdateLoading, autoUpdateSupported]);
 
   const installUpdate = useCallback((): void => {
     if (!autoUpdateSupported) {
@@ -140,21 +184,27 @@ const AppUpdatesProvider: FunctionComponent<AppUpdatesProviderProps> = ({ childr
 
   const memoizedValue = useMemo<AppUpdatesContextProps>(
     () => ({
+      appVersion,
       autoUpdateSupported,
-      autoUpdateEnabled,
-      setAutoUpdateEnabled,
+      checkForUpdatesLoading,
+      checkForUpdatesCompleted,
+      downloadUpdateLoading,
       newVersionInfo,
       newVersionDownloaded,
+      updateError,
       checkForUpdates,
       downloadUpdate,
       installUpdate,
     }),
     [
+      appVersion,
       autoUpdateSupported,
-      autoUpdateEnabled,
-      setAutoUpdateEnabled,
+      checkForUpdatesLoading,
+      checkForUpdatesCompleted,
+      downloadUpdateLoading,
       newVersionInfo,
       newVersionDownloaded,
+      updateError,
       checkForUpdates,
       downloadUpdate,
       installUpdate,

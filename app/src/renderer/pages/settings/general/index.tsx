@@ -1,5 +1,17 @@
-import React, { FunctionComponent, useCallback, useEffect, useMemo, useState } from 'react';
-import { Card, CardContent, CardHeader, Container, Grow, Link, MenuItem, Stack, TextField } from '@mui/material';
+import React, { FunctionComponent, useCallback, useMemo } from 'react';
+import {
+  Alert,
+  Card,
+  CardContent,
+  CardHeader,
+  CircularProgress,
+  Container,
+  Grow,
+  Link,
+  MenuItem,
+  Stack,
+  TextField,
+} from '@mui/material';
 import Page from 'renderer/components/layout/Page';
 import { ANIMATION_GROW_TOP_STYLE, ANIMATION_TIMEOUT_LONG, COMPONENTS_SPACING } from '../../../constants/ui';
 import { FormattedMessage } from 'react-intl';
@@ -7,19 +19,23 @@ import { useSettingsContext } from 'renderer/contexts/SettingsContext';
 import { useAppUpdatesContext } from 'renderer/contexts/AppUpdatesContext';
 import { useSnackbar } from 'notistack';
 import { useAnalyticsContext } from 'renderer/contexts/AnalyticsContext';
-import semverGt from 'semver/functions/gt';
 import { ThemeSource } from 'infra/ui/models/electronTheme';
 import { TransitionGroup } from 'react-transition-group';
 import { onlineManager } from '@tanstack/react-query';
+import { useUpdateEffect } from 'react-use';
+import { getErrorMessage } from 'renderer/utils/errorUtils';
 
 const SettingsGeneral: FunctionComponent = () => {
   const { themeSource, setThemeSource } = useSettingsContext();
   const {
+    appVersion,
     autoUpdateSupported,
-    autoUpdateEnabled,
-    setAutoUpdateEnabled,
+    checkForUpdatesLoading,
+    checkForUpdatesCompleted,
+    downloadUpdateLoading,
     newVersionInfo,
     newVersionDownloaded,
+    updateError,
     checkForUpdates,
     downloadUpdate,
     installUpdate,
@@ -27,22 +43,14 @@ const SettingsGeneral: FunctionComponent = () => {
   const { enqueueSnackbar } = useSnackbar();
   const { track } = useAnalyticsContext();
 
-  const [appVersion, setAppVersion] = useState<string>('');
-
-  useEffect(() => {
-    (async () => {
-      setAppVersion(await window.ui.getAppVersion());
-    })();
-  }, []);
-
   const appUpdatesView = useMemo<'none' | 'check' | 'download' | 'install'>(() => {
     if (!appVersion) {
       return 'none';
     }
-    if (newVersionDownloaded && semverGt(newVersionDownloaded.version, appVersion) && autoUpdateSupported) {
+    if (newVersionDownloaded && autoUpdateSupported) {
       return 'install';
     }
-    if (newVersionInfo && semverGt(newVersionInfo.version, appVersion)) {
+    if (newVersionInfo) {
       return 'download';
     }
     return 'check';
@@ -77,10 +85,7 @@ const SettingsGeneral: FunctionComponent = () => {
 
       track({ name: 'settings_download_update' });
 
-      const downloadType = downloadUpdate();
-      if (downloadType === 'internal') {
-        enqueueSnackbar(<FormattedMessage id="downloadStarted" />, { variant: 'info' });
-      }
+      downloadUpdate();
     },
     [downloadUpdate]
   );
@@ -96,6 +101,18 @@ const SettingsGeneral: FunctionComponent = () => {
     [installUpdate]
   );
 
+  useUpdateEffect(() => {
+    if (updateError) {
+      enqueueSnackbar(
+        <>
+          <FormattedMessage id="appUpdateGeneralError" />
+          {` ${getErrorMessage(updateError)}`}
+        </>,
+        { variant: 'error' }
+      );
+    }
+  }, [updateError]);
+
   return (
     <Page sx={{ height: '100%', p: 0 }}>
       <Container disableGutters maxWidth={'md'} sx={{ m: 'auto', p: COMPONENTS_SPACING }}>
@@ -103,7 +120,7 @@ const SettingsGeneral: FunctionComponent = () => {
           <TransitionGroup component={null}>
             <Grow timeout={ANIMATION_TIMEOUT_LONG} style={ANIMATION_GROW_TOP_STYLE}>
               <Card>
-                <CardHeader title={<FormattedMessage id={'theme'} />} />
+                <CardHeader title={<FormattedMessage id={'general'} />} />
                 <CardContent>
                   <TextField
                     fullWidth
@@ -123,31 +140,6 @@ const SettingsGeneral: FunctionComponent = () => {
                       <FormattedMessage id="light" />
                     </MenuItem>
                   </TextField>
-                </CardContent>
-              </Card>
-            </Grow>
-
-            <Grow timeout={ANIMATION_TIMEOUT_LONG * 2} style={ANIMATION_GROW_TOP_STYLE}>
-              <Card>
-                <CardHeader title={<FormattedMessage id={'updates'} />} />
-                <CardContent>
-                  {autoUpdateSupported && (
-                    <TextField
-                      fullWidth
-                      label={<FormattedMessage id="automaticUpdates" />}
-                      margin="normal"
-                      select
-                      value={autoUpdateEnabled}
-                      onChange={(e) => setAutoUpdateEnabled(e.target.value === 'true')}
-                    >
-                      <MenuItem value={'true'}>
-                        <FormattedMessage id="yes" />
-                      </MenuItem>
-                      <MenuItem value={'false'}>
-                        <FormattedMessage id="no" />
-                      </MenuItem>
-                    </TextField>
-                  )}
 
                   <TextField
                     fullWidth
@@ -158,9 +150,22 @@ const SettingsGeneral: FunctionComponent = () => {
                     helperText={
                       <>
                         {appUpdatesView === 'check' && (
-                          <Link href={`#`} onClick={checkForUpdatesHandler} variant={'inherit'}>
-                            <FormattedMessage id={'checkForUpdates'} />
-                          </Link>
+                          <>
+                            {checkForUpdatesCompleted && (
+                              <>
+                                <FormattedMessage id="appIsUpToDate" />
+                                {'. '}
+                              </>
+                            )}
+                            <Link
+                              component={'button'}
+                              onClick={checkForUpdatesHandler}
+                              variant={'inherit'}
+                              disabled={checkForUpdatesLoading}
+                            >
+                              <FormattedMessage id={'checkForUpdates'} />
+                            </Link>
+                          </>
                         )}
                         {appUpdatesView === 'download' && (
                           <>
@@ -169,16 +174,24 @@ const SettingsGeneral: FunctionComponent = () => {
                               values={{ version: newVersionInfo?.version }}
                             />
                             <br />
-                            <Link href={`#`} onClick={downloadUpdateHandler} variant={'inherit'}>
-                              <FormattedMessage id={'downloadUpdate'} />
-                            </Link>
+                            <Stack direction={'row'} spacing={0.75} alignItems={'center'}>
+                              <Link
+                                component={'button'}
+                                onClick={downloadUpdateHandler}
+                                variant={'inherit'}
+                                disabled={downloadUpdateLoading}
+                              >
+                                <FormattedMessage id={'downloadUpdate'} />
+                              </Link>
+                              {downloadUpdateLoading && <CircularProgress size={10} variant={'indeterminate'} />}
+                            </Stack>
                           </>
                         )}
                         {appUpdatesView === 'install' && (
                           <>
                             <FormattedMessage id="appUpdateDownloadedAndReady" />
                             <br />
-                            <Link href={`#`} onClick={installUpdateHandler} variant={'inherit'}>
+                            <Link component={'button'} onClick={installUpdateHandler} variant={'inherit'}>
                               <FormattedMessage id={'quitAndInstall'} />
                             </Link>
                           </>
@@ -186,6 +199,12 @@ const SettingsGeneral: FunctionComponent = () => {
                       </>
                     }
                   />
+
+                  {updateError && (
+                    <Alert severity={'error'} variant={'outlined'}>
+                      <FormattedMessage id="appUpdateGeneralError" />
+                    </Alert>
+                  )}
                 </CardContent>
               </Card>
             </Grow>
