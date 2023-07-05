@@ -516,6 +516,11 @@ export interface AgentInfoDTO {
     sources: string[];
 }
 
+export interface AgentGetInfoRequestDTO {
+    url: string;
+    apiKey?: string;
+}
+
 export interface BackupDTO {
     version?: number;
     date?: DateAsNumber;

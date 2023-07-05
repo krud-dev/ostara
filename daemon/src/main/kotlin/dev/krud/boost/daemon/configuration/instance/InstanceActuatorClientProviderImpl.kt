@@ -27,10 +27,8 @@ class InstanceActuatorClientProviderImpl(
     override fun provide(instance: Instance): ActuatorHttpClient {
         val effectiveAuthentication = applicationAuthenticationService.getEffectiveAuthentication(instance.parentApplicationId)
         val application = applicationKrud.showById(instance.parentApplicationId)!!
-        val agentUrl = if (application.parentAgentId != null) {
-            val agent = agentKrud.showById(application.parentAgentId!!)
-            // Remove last slash if exists
-            "${agent?.url?.removeSuffix("/")}/api/v1/proxy"
+        val agent = if (application.parentAgentId != null) {
+            agentKrud.showById(application.parentAgentId!!)
         } else {
             null
         }
@@ -38,7 +36,7 @@ class InstanceActuatorClientProviderImpl(
             "Providing actuator client for instance ${instance.id} with url ${instance.actuatorUrl} using authentication $effectiveAuthentication"
         }
 
-        return ActuatorHttpClientImpl(agentUrl, instance.agentExternalId, instance.actuatorUrl, effectiveAuthentication.authentication.authenticator, applicationService.getApplicationDisableSslVerification(instance.parentApplicationId))
+        return ActuatorHttpClientImpl(agent?.url, agent?.apiKey, instance.agentExternalId, instance.actuatorUrl, effectiveAuthentication.authentication.authenticator, applicationService.getApplicationDisableSslVerification(instance.parentApplicationId))
     }
 
     override fun provideForUrl(url: String, authentication: Authentication, disableSslVerification: Boolean): ActuatorHttpClient {

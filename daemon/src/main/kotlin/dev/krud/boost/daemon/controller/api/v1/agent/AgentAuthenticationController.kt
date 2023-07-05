@@ -21,7 +21,7 @@ import java.util.*
 class AgentAuthenticationController(
     private val agentAuthenticationService: AgentAuthenticationService
 ) {
-    @GetMapping("/effective", produces = ["agent/json"])
+    @GetMapping("/effective", produces = ["application/json"])
     @ResponseStatus(HttpStatus.OK)
     @Operation(
         summary = "Get agent effective authentication"

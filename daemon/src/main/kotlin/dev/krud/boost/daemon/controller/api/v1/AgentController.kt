@@ -4,6 +4,7 @@ import dev.krud.boost.daemon.agent.AgentDiscoveryService
 import dev.krud.boost.daemon.agent.AgentService
 import dev.krud.boost.daemon.agent.model.Agent
 import dev.krud.boost.daemon.agent.model.AgentInfoDTO
+import dev.krud.boost.daemon.agent.ro.AgentGetInfoRequestDTO
 import dev.krud.boost.daemon.agent.ro.AgentModifyRequestRO
 import dev.krud.boost.daemon.agent.ro.AgentRO
 import dev.krud.boost.daemon.configuration.folder.validation.ValidFolderIdOrNull
@@ -18,6 +19,7 @@ import org.springframework.http.HttpStatus
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.PostMapping
+import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RequestParam
 import org.springframework.web.bind.annotation.ResponseStatus
@@ -50,8 +52,8 @@ class AgentController(
         summary = "Get agent info for a URL"
     )
     @ApiResponse(responseCode = "200", description = "Agent info")
-    fun getAgentInfo(@RequestParam agentUrl: String): AgentInfoDTO {
-        return agentService.getAgentInfo(agentUrl).getOrThrow()
+    fun getAgentInfo(@RequestBody request: AgentGetInfoRequestDTO): AgentInfoDTO {
+        return agentService.getAgentInfo(request.url, request.apiKey).getOrThrow()
     }
 
     @PostMapping("/runDiscovery", produces = ["application/json"])

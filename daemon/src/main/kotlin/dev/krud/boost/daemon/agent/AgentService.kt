@@ -32,12 +32,12 @@ class AgentService(
 
     fun getAgentInfo(agent: Agent): Result<AgentInfoDTO> = runFeignCatching {
         agentClientProvider.getAgentClient(agent)
-            .getAgentInfo()
+            .getAgentInfo(agent.apiKey)
     }
 
-    fun getAgentInfo(url: String): Result<AgentInfoDTO> = runFeignCatching {
+    fun getAgentInfo(url: String, apiKey: String?): Result<AgentInfoDTO> = runFeignCatching {
         agentClientProvider.getAgentClient(url)
-            .getAgentInfo()
+            .getAgentInfo(apiKey)
     }
 
     fun moveAgent(agentId: UUID, newParentFolderId: UUID?, newSort: Double?): Agent {

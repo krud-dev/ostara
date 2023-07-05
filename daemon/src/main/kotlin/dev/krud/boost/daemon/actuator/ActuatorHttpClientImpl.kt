@@ -35,6 +35,7 @@ import dev.krud.boost.daemon.actuator.model.TestConnectionResponse
 import dev.krud.boost.daemon.actuator.model.ThreadDumpActuatorResponse
 import dev.krud.boost.daemon.actuator.model.TogglzFeatureActuatorResponse
 import dev.krud.boost.daemon.actuator.model.TogglzFeatureUpdateRequest
+import dev.krud.boost.daemon.agent.AgentClient
 import dev.krud.boost.daemon.exception.throwBadRequest
 import dev.krud.boost.daemon.exception.throwForbidden
 import dev.krud.boost.daemon.exception.throwInternalServerError
@@ -76,16 +77,22 @@ class ActuatorHttpClientImpl(
     private var agentUrl: String? = null
 
     /**
+     * The API key to use when communicating with the agent
+     */
+    private var agentApiKey: String? = null
+
+    /**
      * The external ID of the instance on the agent
      */
     private var instanceAgentExternalId: String? = null
 
-    constructor(agentUrl: String?, instanceAgentExternalId: String?, baseUrl: String, authenticator: Authenticator = Authenticator.NONE, disableSslVerification: Boolean = false) : this(
+    constructor(agentUrl: String?, agentApiKey: String?, instanceAgentExternalId: String?, baseUrl: String, authenticator: Authenticator = Authenticator.NONE, disableSslVerification: Boolean = false) : this(
         baseUrl,
         authenticator,
         disableSslVerification
     ) {
         this.agentUrl = agentUrl
+        this.agentApiKey = agentApiKey
         this.instanceAgentExternalId = instanceAgentExternalId
     }
 
@@ -448,7 +455,10 @@ class ActuatorHttpClientImpl(
         return Request.Builder()
             .apply {
                 if (agentUrl != null && instanceAgentExternalId != null) {
-                    header("X-Ostara-InstanceId", instanceAgentExternalId!!)
+                    header(AgentClient.PROXY_INSTANCE_ID_HEADER, instanceAgentExternalId!!)
+                    if (agentApiKey != null) {
+                        header(AgentClient.AGENT_KEY_HEADER, agentApiKey!!)
+                    }
                 }
             }
             .method(method, requestBody)
@@ -458,7 +468,11 @@ class ActuatorHttpClientImpl(
     }
 
     private fun asUrl(vararg segments: String, build: HttpUrl.Builder.() -> Unit = {}): HttpUrl {
-        val builder = agentUrl?.toHttpUrl()?.newBuilder() ?: baseHttpUrl.newBuilder()
+        val builder = agentUrl?.toHttpUrl()?.newBuilder()?.apply {
+            addPathSegment("api")
+            addPathSegment("v1")
+            addPathSegment("proxy")
+        } ?: baseHttpUrl.newBuilder()
         return builder
             .apply {
                 segments.forEach { segment ->

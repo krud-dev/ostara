@@ -37,7 +37,7 @@ class AgentDiscoveryService(
 
     fun runDiscoveryForAgent(agent: Agent) = runCatching {
         val client = agentClientProvider.getAgentClient(agent)
-        val instances = client.getInstances()
+        val instances = client.getInstances(agent.apiKey)
         val instancesByApplications = instances.groupBy { it.appName }
         instancesByApplications.forEach {
             (appName, instances) ->
@@ -53,15 +53,6 @@ class AgentDiscoveryService(
                 }
             val updatedIds = mutableListOf<String>()
             if (!isNewApplication) {
-                instanceKrud.deleteByFilter {
-                    where {
-                        Instance::parentAgentId Equal agent.id
-                        Instance::parentApplicationId Equal application.id
-                        if (instances.isNotEmpty()) {
-                            Instance::agentExternalId NotIn instances.map { it.id }
-                        }
-                    }
-                }
                 instanceKrud.updateByFilter(applyPolicies = false, {
                     where {
                         Instance::parentAgentId Equal agent.id
@@ -86,6 +77,15 @@ class AgentDiscoveryService(
                 }
             if (instancesToCreate.isNotEmpty()) {
                 instanceKrud.bulkCreate(instancesToCreate, false)
+            }
+        }
+
+        instanceKrud.deleteByFilter {
+            where {
+                Instance::parentAgentId Equal agent.id
+                if (instances.isNotEmpty()) {
+                    Instance::agentExternalId NotIn instances.map { it.id }
+                }
             }
         }
     }

@@ -3,13 +3,20 @@ package dev.krud.boost.daemon.agent
 import dev.krud.boost.daemon.agent.model.AgentInfoDTO
 import dev.krud.boost.daemon.agent.model.DiscoveredInstanceDTO
 import feign.Headers
+import feign.Param
 import feign.RequestLine
 
 interface AgentClient {
     @RequestLine("GET /api/v1")
-    fun getAgentInfo(): AgentInfoDTO
+    @Headers("$AGENT_KEY_HEADER: {apiKey}")
+    fun getAgentInfo(@Param("apiKey") apiKey: String?): AgentInfoDTO
 
     @RequestLine("GET /api/v1/instances")
-    @Headers("Content-Type: application/json")
-    fun getInstances(): List<DiscoveredInstanceDTO>
+    @Headers("$AGENT_KEY_HEADER: {apiKey}")
+    fun getInstances(@Param("apiKey") apiKey: String?): List<DiscoveredInstanceDTO>
+
+    companion object {
+        const val AGENT_KEY_HEADER = "X-Ostara-Key"
+        const val PROXY_INSTANCE_ID_HEADER = "X-Ostara-InstanceId"
+    }
 }
