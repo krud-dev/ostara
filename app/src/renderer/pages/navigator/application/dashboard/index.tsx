@@ -93,16 +93,20 @@ const ApplicationDashboard: FunctionComponent = () => {
                     <EmptyContent
                       text={<FormattedMessage id={'applicationIsEmpty'} />}
                       description={
-                        <>
-                          <Box>
-                            <FormattedMessage id={'addNewInstanceByClicking'} />
-                          </Box>
-                          <Box sx={{ mt: 2 }}>
-                            <Button variant={'outlined'} color={'primary'} onClick={createInstanceHandler}>
-                              <FormattedMessage id={'createInstance'} />
-                            </Button>
-                          </Box>
-                        </>
+                        item.discovered ? (
+                          <FormattedMessage id={'agentNotFindInstances'} />
+                        ) : (
+                          <>
+                            <Box>
+                              <FormattedMessage id={'addNewInstanceByClicking'} />
+                            </Box>
+                            <Box sx={{ mt: 2 }}>
+                              <Button variant={'outlined'} color={'primary'} onClick={createInstanceHandler}>
+                                <FormattedMessage id={'createInstance'} />
+                              </Button>
+                            </Box>
+                          </>
+                        )
                       }
                     />
                   ) : (

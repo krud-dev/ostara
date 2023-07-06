@@ -1,4 +1,4 @@
-import { useCallback, useMemo } from 'react';
+import { ReactNode, useCallback, useMemo } from 'react';
 import { FormattedMessage } from 'react-intl';
 import { NodeApi } from 'react-arborist';
 import { TreeItem } from 'renderer/layout/navigator/components/sidebar/tree/tree';
@@ -45,12 +45,26 @@ export default function RunDiscoveryMenuItem({ node, onClose }: RunDiscoveryMenu
     }
   }, [onClose, node, runDiscoveryState, enqueueSnackbar]);
 
+  const tooltip = useMemo<ReactNode | undefined>(() => {
+    if (!isEnrichedAgent(node.data)) {
+      return undefined;
+    }
+    if (node.data.health.status !== 'HEALTHY') {
+      return <FormattedMessage id={'syncAgentNotHealthy'} />;
+    }
+    if (node.data.syncing) {
+      return <FormattedMessage id={'syncAgentInProgress'} />;
+    }
+    return undefined;
+  }, [node.data]);
+
   return (
     <CustomMenuItem
       icon={'SyncOutlined'}
       text={<FormattedMessage id={'syncAgent'} />}
       onClick={runDiscoveryHandler}
       disabled={disabled}
+      tooltip={tooltip}
     />
   );
 }
