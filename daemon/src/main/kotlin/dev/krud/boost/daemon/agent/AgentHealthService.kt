@@ -44,6 +44,12 @@ class AgentHealthService(
             }
     }
 
+    fun refreshAgentHealth(agentId: UUID): AgentHealthDTO {
+        return refreshAgentHealth(
+            agentService.getAgentOrThrow(agentId)
+        )
+    }
+
     fun refreshAgentHealth(agent: Agent): AgentHealthDTO {
         val currentHealth = agentHealthCache.get(agent.id, AgentHealthDTO::class.java)
             ?: AgentHealthDTO.pending()
