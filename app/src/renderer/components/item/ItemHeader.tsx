@@ -65,7 +65,7 @@ export default function ItemHeader({ item }: ItemHeaderProps) {
                 minWidth: 0,
                 height: 10,
                 p: 0,
-                backgroundColor: healthStatusColor,
+                backgroundColor: healthStatusComponent ? 'transparent' : healthStatusColor,
               },
             }}
             invisible={!healthStatusColor}

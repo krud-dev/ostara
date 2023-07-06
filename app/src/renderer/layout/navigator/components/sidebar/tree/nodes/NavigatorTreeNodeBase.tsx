@@ -210,7 +210,7 @@ export default function NavigatorTreeNodeBase({
               minWidth: 0,
               height: 8,
               p: 0,
-              backgroundColor: healthStatusColor,
+              backgroundColor: healthStatusComponent ? 'transparent' : healthStatusColor,
             },
           }}
           invisible={!healthStatusColor}

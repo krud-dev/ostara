@@ -35,14 +35,14 @@ export const NotificationsGeneratorAgentHealth: FunctionComponent<NotificationsG
     switch (newHealth.status) {
       case 'HEALTHY':
         return {
-          title: intl.formatMessage({ id: 'notificationTitleAgentHealthy' }, { application: agentName }),
-          body: intl.formatMessage({ id: 'notificationBodyAgentHealthy' }, { application: agentName }),
+          title: intl.formatMessage({ id: 'notificationTitleAgentHealthy' }, { agent: agentName }),
+          body: intl.formatMessage({ id: 'notificationBodyAgentHealthy' }),
           url: agentUrl,
         };
       case 'UNHEALTHY':
         return {
-          title: intl.formatMessage({ id: 'notificationTitleAgentUnhealthy' }, { application: agentName }),
-          body: intl.formatMessage({ id: 'notificationBodyAgentUnhealthy' }, { application: agentName }),
+          title: intl.formatMessage({ id: 'notificationTitleAgentUnhealthy' }, { agent: agentName }),
+          body: intl.formatMessage({ id: 'notificationBodyAgentUnhealthy' }),
           url: agentUrl,
         };
       default:

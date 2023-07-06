@@ -2,7 +2,7 @@ import { generatePath } from 'react-router-dom';
 import { urls } from 'renderer/routes/urls';
 import { green, grey, orange, pink, purple, red, yellow } from '@mui/material/colors';
 import blueGrey from '@mui/material/colors/blueGrey';
-import { MUIconType } from 'renderer/components/common/IconViewer';
+import { IconViewer, MUIconType } from 'renderer/components/common/IconViewer';
 import { ItemRO, ItemType } from 'renderer/definitions/daemon';
 import {
   AgentHealthDTO$Companion$Status,
@@ -337,7 +337,7 @@ export const getAgentHealthStatusColor = (status: AgentHealthDTO$Companion$Statu
     case 'HEALTHY':
       return green[HEALTH_STATUS_COLORS_INDEX];
     case 'UNHEALTHY':
-      return red[HEALTH_STATUS_COLORS_INDEX];
+      return yellow[HEALTH_STATUS_COLORS_INDEX];
     case 'PENDING':
       return 'text.primary';
     default:
@@ -354,42 +354,6 @@ export const getItemHealthStatusColor = (item: ItemRO): string | undefined => {
   }
   if (isAgent(item)) {
     return getAgentHealthStatusColor(item.health.status);
-  }
-  return undefined;
-};
-
-const ITEM_HEALTH_STATUS_LOADING_COMPONENT = <CircularProgress size={6} thickness={12} />;
-
-export const getInstanceHealthStatusComponent = (item: InstanceRO): ReactNode | undefined => {
-  if (item.health.status === 'PENDING') {
-    return ITEM_HEALTH_STATUS_LOADING_COMPONENT;
-  }
-  return undefined;
-};
-
-export const getApplicationHealthStatusComponent = (item: ApplicationRO): ReactNode | undefined => {
-  if (item.health.status === 'PENDING') {
-    return ITEM_HEALTH_STATUS_LOADING_COMPONENT;
-  }
-  return undefined;
-};
-
-export const getAgentHealthStatusComponent = (item: AgentRO): ReactNode | undefined => {
-  if (item.health.status === 'PENDING') {
-    return ITEM_HEALTH_STATUS_LOADING_COMPONENT;
-  }
-  return undefined;
-};
-
-export const getItemHealthStatusComponent = (item: ItemRO): ReactNode | undefined => {
-  if (isInstance(item)) {
-    return getInstanceHealthStatusComponent(item);
-  }
-  if (isApplication(item)) {
-    return getApplicationHealthStatusComponent(item);
-  }
-  if (isAgent(item)) {
-    return getAgentHealthStatusComponent(item);
   }
   return undefined;
 };
@@ -511,6 +475,48 @@ export const getAgentHealthStatusIcon = (status: AgentHealthDTO$Companion$Status
     default:
       return 'QuestionMarkOutlined';
   }
+};
+
+const ITEM_HEALTH_STATUS_LOADING_COMPONENT = <CircularProgress size={6} thickness={12} />;
+
+export const getInstanceHealthStatusComponent = (item: InstanceRO): ReactNode | undefined => {
+  if (item.health.status === 'PENDING') {
+    return ITEM_HEALTH_STATUS_LOADING_COMPONENT;
+  }
+  return undefined;
+};
+
+export const getApplicationHealthStatusComponent = (item: ApplicationRO): ReactNode | undefined => {
+  if (item.health.status === 'PENDING') {
+    return ITEM_HEALTH_STATUS_LOADING_COMPONENT;
+  }
+  return undefined;
+};
+
+export const getAgentHealthStatusComponent = (item: AgentRO): ReactNode | undefined => {
+  switch (item.health.status) {
+    case 'PENDING':
+      return ITEM_HEALTH_STATUS_LOADING_COMPONENT;
+    case 'HEALTHY':
+      return <></>;
+    case 'UNHEALTHY':
+      return <IconViewer icon={'WarningOutlined'} sx={{ color: 'warning.main', fontSize: 10 }} />;
+    default:
+      return undefined;
+  }
+};
+
+export const getItemHealthStatusComponent = (item: ItemRO): ReactNode | undefined => {
+  if (isInstance(item)) {
+    return getInstanceHealthStatusComponent(item);
+  }
+  if (isApplication(item)) {
+    return getApplicationHealthStatusComponent(item);
+  }
+  if (isAgent(item)) {
+    return getAgentHealthStatusComponent(item);
+  }
+  return undefined;
 };
 
 // export const getDataCollectionModeColor = (dataCollectionMode: DataCollectionMode): ColorSchema => {
