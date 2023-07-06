@@ -549,6 +549,7 @@ export default {
   checkApiKey: 'Check API Key',
   unhealthy: 'Unhealthy',
   healthy: 'Healthy',
+  sslError: 'SSL Error',
   notificationTitleApplicationAllUp: '{application} is UP',
   notificationBodyApplicationAllUp: 'All instances of {application} are UP.',
   notificationTitleApplicationAllDown: '{application} is DOWN',

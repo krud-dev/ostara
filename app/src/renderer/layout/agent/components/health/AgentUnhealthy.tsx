@@ -50,8 +50,15 @@ export default function AgentUnhealthy({ item }: AgentUnhealthyProps) {
           </>
         );
       case -4:
+        return <FormattedMessage id={'sslError'} />;
+      case -999:
       default:
-        return <FormattedMessage id={'anUnknownErrorHasOccurred'} />;
+        return (
+          <>
+            <FormattedMessage id={'anUnknownErrorHasOccurred'} />
+            {` (${health.message})`}
+          </>
+        );
     }
   }, [health]);
 
@@ -67,6 +74,7 @@ export default function AgentUnhealthy({ item }: AgentUnhealthyProps) {
         );
       case 404:
       case -3:
+      case -4:
         return (
           <Link component={'button'} onClick={updateHandler}>
             <FormattedMessage id={'checkAgentUrl'} />
