@@ -80,23 +80,23 @@ export const NotificationsGeneratorApplicationHealth: FunctionComponent<Notifica
       return;
     }
 
-    const application = previousApplications?.find((a) => a.id === healthUpdatedEvent.applicationId);
-    if (!application) {
+    const previousApplication = previousApplications?.find((a) => a.id === healthUpdatedEvent.applicationId);
+    if (!previousApplication) {
       return;
     }
 
     const notificationStatuses: ApplicationHealthStatus[] = ['ALL_UP', 'ALL_DOWN', 'SOME_DOWN'];
     if (
-      notificationStatuses.includes(application.health.status) &&
+      notificationStatuses.includes(previousApplication.health.status) &&
       notificationStatuses.includes(healthUpdatedEvent.newHealth.status) &&
-      application.health.status !== healthUpdatedEvent.newHealth.status
+      previousApplication.health.status !== healthUpdatedEvent.newHealth.status
     ) {
-      const notificationInfo = getNotificationInfo(application, healthUpdatedEvent.newHealth);
+      const notificationInfo = getNotificationInfo(previousApplication, healthUpdatedEvent.newHealth);
       if (notificationInfo) {
         sendNotification(notificationInfo);
       }
     }
-  }, [healthUpdatedEvent, previousApplications]);
+  }, [healthUpdatedEvent]);
 
   useEffect(() => {
     const unsubscribe = subscribe(
