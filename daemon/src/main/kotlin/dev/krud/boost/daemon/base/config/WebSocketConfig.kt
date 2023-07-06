@@ -17,9 +17,11 @@ import dev.krud.boost.daemon.configuration.instance.websocket.InstanceUpdateWebs
 import dev.krud.boost.daemon.metricmonitor.websocket.MetricRuleWebsocketDispatcher
 import dev.krud.boost.daemon.threadprofiling.websocket.ThreadProfilingWebsocketDispatcher
 import dev.krud.boost.daemon.websocket.SubscriptionInterceptor
+import dev.krud.boost.daemon.websocket.replay.InboundWebsocketReplayingInterceptor
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
+import org.springframework.context.annotation.Lazy
 import org.springframework.messaging.simp.config.ChannelRegistration
 import org.springframework.messaging.simp.config.MessageBrokerRegistry
 import org.springframework.web.socket.config.annotation.EnableWebSocketMessageBroker
@@ -31,6 +33,10 @@ import org.springframework.web.socket.config.annotation.WebSocketMessageBrokerCo
 class WebSocketConfig : WebSocketMessageBrokerConfigurer {
     @Autowired
     private lateinit var instanceMetricWebsocketTopicInterceptor: InstanceMetricWebsocketTopicInterceptor
+
+    @Autowired
+    @Lazy
+    private lateinit var inboundWebsocketReplayingInterceptor: InboundWebsocketReplayingInterceptor
 
     @Autowired
     private lateinit var subscriptionInterceptors: List<SubscriptionInterceptor>
@@ -46,7 +52,7 @@ class WebSocketConfig : WebSocketMessageBrokerConfigurer {
     }
 
     override fun configureClientInboundChannel(registration: ChannelRegistration) {
-        registration.interceptors(instanceMetricWebsocketTopicInterceptor, *subscriptionInterceptors.toTypedArray())
+        registration.interceptors(instanceMetricWebsocketTopicInterceptor, inboundWebsocketReplayingInterceptor, *subscriptionInterceptors.toTypedArray())
     }
 
     @Configuration

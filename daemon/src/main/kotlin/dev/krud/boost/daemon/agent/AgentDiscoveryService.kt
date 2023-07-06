@@ -1,13 +1,14 @@
 package dev.krud.boost.daemon.agent
 
 import dev.krud.boost.daemon.agent.messaging.AgentDiscoveryFailedEventMessage
-import dev.krud.boost.daemon.agent.messaging.AgentDiscoverySucceededEventMessage
 import dev.krud.boost.daemon.agent.messaging.AgentDiscoveryStartedEventMessage
+import dev.krud.boost.daemon.agent.messaging.AgentDiscoverySucceededEventMessage
 import dev.krud.boost.daemon.agent.model.Agent
 import dev.krud.boost.daemon.agent.model.AgentHealthDTO
 import dev.krud.boost.daemon.configuration.application.entity.Application
 import dev.krud.boost.daemon.configuration.application.enums.ApplicationType
 import dev.krud.boost.daemon.configuration.instance.entity.Instance
+import dev.krud.boost.daemon.exception.throwBadRequest
 import dev.krud.boost.daemon.utils.ONE_MINUTE
 import dev.krud.boost.daemon.utils.ResultAggregationSummary
 import dev.krud.boost.daemon.utils.ResultAggregationSummary.Companion.aggregate
@@ -44,11 +45,6 @@ class AgentDiscoveryService(
     }
 
     fun runDiscoveryForAgent(agent: Agent) = runCatching {
-        val agentHealth = agentHealthService.getCachedHealth(agent.id)
-        if (agentHealth?.status != AgentHealthDTO.Companion.Status.HEALTHY) {
-            log.debug { "Skipping discovery for agent ${agent.id} because it is not healthy" }
-            return@runCatching
-        }
         agentDiscoveryChannel.send(
             AgentDiscoveryStartedEventMessage(
                 AgentDiscoveryStartedEventMessage.Payload(
@@ -56,6 +52,11 @@ class AgentDiscoveryService(
                 )
             )
         )
+        val agentHealth = agentHealthService.getCachedHealth(agent.id)
+        if (agentHealth?.status != AgentHealthDTO.Companion.Status.HEALTHY) {
+            log.debug { "Skipping discovery for agent ${agent.id} because it is not healthy" }
+            throwBadRequest("Agent is not healthy")
+        }
         log.debug { "Running discovery for agent ${agent.id}" }
         val client = agentClientProvider.getAgentClient(agent)
         val instances = client.getInstances(agent.apiKey)
