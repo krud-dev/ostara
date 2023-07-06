@@ -1,5 +1,8 @@
 package dev.krud.boost.daemon.agent
 
+import dev.krud.boost.daemon.agent.messaging.AgentDiscoveryFailedEventMessage
+import dev.krud.boost.daemon.agent.messaging.AgentDiscoverySucceededEventMessage
+import dev.krud.boost.daemon.agent.messaging.AgentDiscoveryStartedEventMessage
 import dev.krud.boost.daemon.agent.model.Agent
 import dev.krud.boost.daemon.agent.model.AgentHealthDTO
 import dev.krud.boost.daemon.configuration.application.entity.Application
@@ -10,6 +13,7 @@ import dev.krud.boost.daemon.utils.ResultAggregationSummary
 import dev.krud.boost.daemon.utils.ResultAggregationSummary.Companion.aggregate
 import dev.krud.crudframework.crud.handler.krud.Krud
 import io.github.oshai.kotlinlogging.KotlinLogging
+import org.springframework.integration.channel.PublishSubscribeChannel
 import org.springframework.scheduling.annotation.Scheduled
 import org.springframework.stereotype.Component
 import java.util.*
@@ -19,6 +23,7 @@ class AgentDiscoveryService(
     private val agentService: AgentService,
     private val agentHealthService: AgentHealthService,
     private val agentClientProvider: AgentClientProvider,
+    private val agentDiscoveryChannel: PublishSubscribeChannel,
     private val applicationKrud: Krud<Application, UUID>,
     private val instanceKrud: Krud<Instance, UUID>,
     private val agentKrud: Krud<Agent, UUID>
@@ -44,14 +49,20 @@ class AgentDiscoveryService(
             log.debug { "Skipping discovery for agent ${agent.id} because it is not healthy" }
             return@runCatching
         }
+        agentDiscoveryChannel.send(
+            AgentDiscoveryStartedEventMessage(
+                AgentDiscoveryStartedEventMessage.Payload(
+                    agentId = agent.id
+                )
+            )
+        )
         log.debug { "Running discovery for agent ${agent.id}" }
         val client = agentClientProvider.getAgentClient(agent)
         val instances = client.getInstances(agent.apiKey)
         log.debug { "Discovered ${instances.size} instances for agent ${agent.id}" }
         val instancesByApplications = instances.groupBy { it.appName }
         log.debug { "Discovered ${instancesByApplications.size} applications for agent ${agent.id}" }
-        instancesByApplications.forEach {
-            (appName, instances) ->
+        instancesByApplications.forEach { (appName, instances) ->
             log.debug { "Processing application $appName with ${instances.size} instances for agent ${agent.id}" }
             var isNewApplication = false
             val application = applicationKrud.showByFilter {
@@ -111,6 +122,20 @@ class AgentDiscoveryService(
             }
         }
     }
+        .onSuccess {
+            agentDiscoveryChannel.send(
+                AgentDiscoverySucceededEventMessage(
+                    AgentDiscoverySucceededEventMessage.Payload(agent.id)
+                )
+            )
+        }
+        .onFailure {
+            agentDiscoveryChannel.send(
+                AgentDiscoveryFailedEventMessage(
+                    AgentDiscoveryFailedEventMessage.Payload(agent.id, it.message)
+                )
+            )
+        }
 
     companion object {
         private val log = KotlinLogging.logger { }
