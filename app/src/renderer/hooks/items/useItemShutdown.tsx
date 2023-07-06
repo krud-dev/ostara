@@ -1,12 +1,12 @@
 import { useCallback, useMemo, useState } from 'react';
-import { useAnalyticsContext } from '../contexts/AnalyticsContext';
+import { useAnalyticsContext } from 'renderer/contexts/AnalyticsContext';
 import NiceModal from '@ebay/nice-modal-react';
-import ConfirmationDialog, { ConfirmationDialogProps } from '../components/dialog/ConfirmationDialog';
+import ConfirmationDialog, { ConfirmationDialogProps } from 'renderer/components/dialog/ConfirmationDialog';
 import { FormattedMessage } from 'react-intl';
-import { getItemDisplayName } from '../utils/itemUtils';
-import { useShutdownInstance } from '../apis/requests/instance/shutdown/shutdownInstance';
+import { getItemDisplayName } from 'renderer/utils/itemUtils';
+import { useShutdownInstance } from 'renderer/apis/requests/instance/shutdown/shutdownInstance';
 import { useSnackbar } from 'notistack';
-import { ItemRO } from '../definitions/daemon';
+import { ItemRO } from 'renderer/definitions/daemon';
 
 type ItemShutdownResult = {
   itemShutdown: (item: ItemRO) => Promise<void>;

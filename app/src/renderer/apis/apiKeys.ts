@@ -102,6 +102,7 @@ export const apiKeys = {
 
   applicationsHealth: () => ['applicationsHealth'],
   instanceHealth: (id: string) => ['instanceHealth', id],
+  agentHealth: (id: string) => ['agentHealth', id],
 
   metrics: () => ['metrics'],
   metricLatest: (instanceId: string, metricName: string) => [...apiKeys.metrics(), 'latest', instanceId, metricName],

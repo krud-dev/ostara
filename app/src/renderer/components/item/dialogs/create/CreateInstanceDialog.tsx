@@ -13,7 +13,7 @@ import {
 } from 'common/generated_definitions';
 import { applicationCrudEntity } from 'renderer/apis/requests/crud/entity/entities/application.crudEntity';
 import { instanceCrudEntity } from 'renderer/apis/requests/crud/entity/entities/instance.crudEntity';
-import { INHERITED_COLOR_VALUE } from 'renderer/hooks/useItemColor';
+import { INHERITED_COLOR_VALUE } from 'renderer/hooks/items/useItemColor';
 import { getActuatorUrls, getItemUrl } from 'renderer/utils/itemUtils';
 import { useQueryClient } from '@tanstack/react-query';
 import { crudKeys } from 'renderer/apis/requests/crud/crudKeys';

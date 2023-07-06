@@ -5,7 +5,7 @@ import { Entity } from 'renderer/entity/entity';
 import { applicationInstanceEntity, EnrichedInstanceRO } from 'renderer/entity/entities/applicationInstance.entity';
 import { Box, Button, Card } from '@mui/material';
 import { ApplicationRO, InstanceRO } from 'common/generated_definitions';
-import useItemShutdown from 'renderer/hooks/useItemShutdown';
+import useItemShutdown from 'renderer/hooks/items/useItemShutdown';
 import { SHUTDOWN_ID } from 'renderer/entity/actions';
 import { useItemsContext } from 'renderer/contexts/ItemsContext';
 import { FormattedMessage } from 'react-intl';

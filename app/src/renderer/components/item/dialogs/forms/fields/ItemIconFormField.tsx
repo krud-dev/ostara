@@ -6,7 +6,7 @@ import { IconViewer, MUIconType } from 'renderer/components/common/IconViewer';
 import { useFormContext } from 'react-hook-form';
 import ItemIconMenu from 'renderer/components/item/dialogs/forms/fields/ItemIconMenu';
 import { ItemType } from '../../../../../definitions/daemon';
-import { DEFAULT_ICON_VALUE } from '../../../../../hooks/useItemIcon';
+import { DEFAULT_ICON_VALUE } from 'renderer/hooks/items/useItemIcon';
 import { FormattedMessage } from 'react-intl';
 import { useAnalyticsContext } from '../../../../../contexts/AnalyticsContext';
 

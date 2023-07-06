@@ -7,7 +7,7 @@ import FolderDetailsForm, { FolderFormValues } from 'renderer/components/item/di
 import { FolderModifyRequestRO, FolderRO } from 'common/generated_definitions';
 import { useCrudCreate } from 'renderer/apis/requests/crud/crudCreate';
 import { folderCrudEntity } from 'renderer/apis/requests/crud/entity/entities/folder.crudEntity';
-import { INHERITED_COLOR_VALUE } from 'renderer/hooks/useItemColor';
+import { INHERITED_COLOR_VALUE } from 'renderer/hooks/items/useItemColor';
 import { useAnalyticsContext } from 'renderer/contexts/AnalyticsContext';
 import { getItemUrl } from 'renderer/utils/itemUtils';
 import { useItemsContext } from 'renderer/contexts/ItemsContext';

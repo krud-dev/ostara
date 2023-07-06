@@ -16,7 +16,7 @@ import NewVersionManager from './components/managers/NewVersionManager';
 import AnalyticsEventsManager from './components/managers/AnalyticsEventsManager';
 import AppUpdatesManager from './components/managers/AppUpdatesManager';
 import { AppUpdatesProvider } from './contexts/AppUpdatesContext';
-import NotificationsManager from './components/managers/NotificationsManager';
+import NotificationsManager from 'renderer/components/managers/notifications/NotificationsManager';
 import { ItemsProvider } from './contexts/ItemsContext';
 
 export default function App() {

@@ -18,7 +18,6 @@ import {
   LocalHospitalOutlined,
   StorageOutlined,
   SyncAltOutlined,
-  TextSnippetOutlined,
   ToggleOnOutlined,
   WysiwygOutlined,
   YardOutlined,
@@ -35,7 +34,7 @@ import { isItemInactive } from 'renderer/utils/itemUtils';
 type InstanceSidebarProps = { item: InstanceRO; itemAbilities?: InstanceAbility[]; disabled: boolean; width: number };
 
 export default function InstanceSidebar({ item, itemAbilities, disabled, width }: InstanceSidebarProps) {
-  const instanceInactive = useMemo<boolean>(() => isItemInactive(item), [item]);
+  const itemInactive = useMemo<boolean>(() => isItemInactive(item), [item]);
 
   const isServiceInactive = useCallback(
     (ability: InstanceAbility): boolean => {
@@ -44,9 +43,16 @@ export default function InstanceSidebar({ item, itemAbilities, disabled, width }
     [itemAbilities]
   );
 
+  const isServiceDisabled = useCallback(
+    (ability?: InstanceAbility): boolean => {
+      return disabled || itemInactive || (!!ability && isServiceInactive(ability));
+    },
+    [disabled, itemInactive, isServiceInactive]
+  );
+
   const navConfig = useMemo<SidebarConfig | undefined>(
     () =>
-      itemAbilities || instanceInactive
+      itemAbilities
         ? [
             {
               id: 'insights',
@@ -57,70 +63,70 @@ export default function InstanceSidebar({ item, itemAbilities, disabled, width }
                   icon: <BarChartOutlined />,
                   label: <FormattedMessage id={'dashboard'} />,
                   to: generatePath(urls.instanceDashboard.url, { id: item.id }),
-                  disabled: disabled,
+                  disabled: isServiceDisabled(),
                 },
                 {
                   id: 'health',
                   icon: <LocalHospitalOutlined />,
                   label: <FormattedMessage id={'health'} />,
                   to: generatePath(urls.instanceHealth.url, { id: item.id }),
-                  disabled: disabled || isServiceInactive('HEALTH'),
+                  disabled: isServiceDisabled('HEALTH'),
                 },
                 {
                   id: 'info',
                   icon: <DvrOutlined />,
                   label: <FormattedMessage id={'info'} />,
                   to: generatePath(urls.instanceInfo.url, { id: item.id }),
-                  disabled: disabled || isServiceInactive('INFO'),
+                  disabled: isServiceDisabled('INFO'),
                 },
                 {
                   id: 'metrics',
                   icon: <DataUsageOutlined />,
                   label: <FormattedMessage id={'metrics'} />,
                   to: generatePath(urls.instanceMetrics.url, { id: item.id }),
-                  disabled: disabled || isServiceInactive('METRICS'),
+                  disabled: isServiceDisabled('METRICS'),
                 },
                 {
                   id: 'system-environment',
                   icon: <YardOutlined />,
                   label: <FormattedMessage id={'systemEnvironment'} />,
                   to: generatePath(urls.instanceSystemEnvironment.url, { id: item.id }),
-                  disabled: disabled || isServiceInactive('SYSTEM_ENVIRONMENT'),
+                  disabled: isServiceDisabled('SYSTEM_ENVIRONMENT'),
                 },
                 {
                   id: 'system-properties',
                   icon: <WysiwygOutlined />,
                   label: <FormattedMessage id={'systemProperties'} />,
                   to: generatePath(urls.instanceSystemProperties.url, { id: item.id }),
-                  disabled: disabled || isServiceInactive('SYSTEM_PROPERTIES'),
+                  disabled: isServiceDisabled('SYSTEM_PROPERTIES'),
                 },
                 {
                   id: 'properties',
                   icon: <ListAltOutlined />,
                   label: <FormattedMessage id={'appProperties'} />,
                   to: generatePath(urls.instanceProperties.url, { id: item.id }),
-                  disabled: disabled || isServiceInactive('PROPERTIES'),
+                  disabled: isServiceDisabled('PROPERTIES'),
                 },
                 {
                   id: 'beans',
                   icon: <EggOutlined />,
                   label: <FormattedMessage id={'beans'} />,
                   to: generatePath(urls.instanceBeans.url, { id: item.id }),
-                  disabled: disabled || isServiceInactive('BEANS'),
+                  disabled: isServiceDisabled('BEANS'),
                 },
                 // {
                 //   id: 'beans-graph',
                 //   icon: <MediationOutlined />,
                 //   label: <FormattedMessage id={'beansGraph'} />,
                 //   to: generatePath(urls.instanceBeansGraph.url, { id: item.id }),
-                //   disabled: disabled || isServiceInactive('BEANS'),
+                //   disabled: isServiceDisabled('BEANS'),
                 // },
                 {
                   id: 'http-requests',
                   icon: <HttpOutlined />,
                   label: <FormattedMessage id={'httpRequests'} />,
                   to: generatePath(urls.instanceHttpRequests.url, { id: item.id }),
-                  disabled: disabled,
+                  disabled: isServiceDisabled('HTTP_REQUEST_STATISTICS'),
                   hidden: isServiceInactive('HTTP_REQUEST_STATISTICS'),
                 },
                 {
@@ -128,7 +134,7 @@ export default function InstanceSidebar({ item, itemAbilities, disabled, width }
                   icon: <AccessTimeOutlined />,
                   label: <FormattedMessage id={'quartz'} />,
                   to: generatePath(urls.instanceQuartz.url, { id: item.id }),
-                  disabled: disabled,
+                  disabled: isServiceDisabled('QUARTZ'),
                   hidden: isServiceInactive('QUARTZ'),
                 },
                 {
@@ -136,7 +142,7 @@ export default function InstanceSidebar({ item, itemAbilities, disabled, width }
                   icon: <EventRepeatOutlined />,
                   label: <FormattedMessage id={'scheduledTasks'} />,
                   to: generatePath(urls.instanceScheduledTasks.url, { id: item.id }),
-                  disabled: disabled,
+                  disabled: isServiceDisabled('SCHEDULEDTASKS'),
                   hidden: isServiceInactive('SCHEDULEDTASKS'),
                 },
                 {
@@ -144,7 +150,7 @@ export default function InstanceSidebar({ item, itemAbilities, disabled, width }
                   icon: <SyncAltOutlined />,
                   label: <FormattedMessage id={'mappings'} />,
                   to: generatePath(urls.instanceMappings.url, { id: item.id }),
-                  disabled: disabled,
+                  disabled: isServiceDisabled('MAPPINGS'),
                   hidden: isServiceInactive('MAPPINGS'),
                 },
                 {
@@ -152,7 +158,7 @@ export default function InstanceSidebar({ item, itemAbilities, disabled, width }
                   icon: <StorageOutlined />,
                   label: <FormattedMessage id={'flyway'} />,
                   to: generatePath(urls.instanceFlyway.url, { id: item.id }),
-                  disabled: disabled,
+                  disabled: isServiceDisabled('FLYWAY'),
                   hidden: isServiceInactive('FLYWAY'),
                 },
                 {
@@ -160,7 +166,7 @@ export default function InstanceSidebar({ item, itemAbilities, disabled, width }
                   icon: <StorageOutlined />,
                   label: <FormattedMessage id={'liquibase'} />,
                   to: generatePath(urls.instanceLiquibase.url, { id: item.id }),
-                  disabled: disabled,
+                  disabled: isServiceDisabled('LIQUIBASE'),
                   hidden: isServiceInactive('LIQUIBASE'),
                 },
                 {
@@ -168,7 +174,7 @@ export default function InstanceSidebar({ item, itemAbilities, disabled, width }
                   icon: <AccountTreeOutlined />,
                   label: <FormattedMessage id={'integrationGraph'} />,
                   to: generatePath(urls.instanceIntegrationGraph.url, { id: item.id }),
-                  disabled: disabled,
+                  disabled: isServiceDisabled('INTEGRATIONGRAPH'),
                   hidden: isServiceInactive('INTEGRATIONGRAPH'),
                 },
               ],
@@ -182,14 +188,14 @@ export default function InstanceSidebar({ item, itemAbilities, disabled, width }
                   icon: <DifferenceOutlined />,
                   label: <FormattedMessage id={'loggers'} />,
                   to: generatePath(urls.instanceLoggers.url, { id: item.id }),
-                  disabled: disabled || isServiceInactive('LOGGERS'),
+                  disabled: isServiceDisabled('LOGGERS'),
                 },
                 {
                   id: 'logfile',
                   icon: <DescriptionOutlined />,
                   label: <FormattedMessage id={'logfile'} />,
                   to: generatePath(urls.instanceLogfile.url, { id: item.id }),
-                  disabled: disabled,
+                  disabled: isServiceDisabled('LOGFILE'),
                   hidden: isServiceInactive('LOGFILE'),
                 },
                 {
@@ -197,14 +203,14 @@ export default function InstanceSidebar({ item, itemAbilities, disabled, width }
                   icon: <ClassOutlined />,
                   label: <FormattedMessage id={'caches'} />,
                   to: generatePath(urls.instanceCaches.url, { id: item.id }),
-                  disabled: disabled || isServiceInactive('CACHES'),
+                  disabled: isServiceDisabled('CACHES'),
                 },
                 {
                   id: 'togglz',
                   icon: <ToggleOnOutlined />,
                   label: <FormattedMessage id={'togglz'} />,
                   to: generatePath(urls.instanceTogglz.url, { id: item.id }),
-                  disabled: disabled,
+                  disabled: isServiceDisabled('TOGGLZ'),
                   hidden: isServiceInactive('TOGGLZ'),
                 },
               ],
@@ -218,20 +224,20 @@ export default function InstanceSidebar({ item, itemAbilities, disabled, width }
                   icon: <DeviceHubOutlined />,
                   label: <FormattedMessage id={'threadProfiling'} />,
                   to: generatePath(urls.instanceThreadDump.url, { id: item.id }),
-                  disabled: disabled || isServiceInactive('THREADDUMP'),
+                  disabled: isServiceDisabled('THREADDUMP'),
                 },
                 {
                   id: 'heapDump',
                   icon: <LanOutlined />,
                   label: <FormattedMessage id={'heapDump'} />,
                   to: generatePath(urls.instanceHeapDump.url, { id: item.id }),
-                  disabled: disabled || isServiceInactive('HEAPDUMP'),
+                  disabled: isServiceDisabled('HEAPDUMP'),
                 },
               ],
             },
           ]
         : undefined,
-    [item, itemAbilities, disabled, isServiceInactive, instanceInactive]
+    [item, itemAbilities, disabled, itemInactive]
   );
 
   return (

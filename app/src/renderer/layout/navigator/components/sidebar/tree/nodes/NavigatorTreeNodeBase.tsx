@@ -14,11 +14,11 @@ import {
   isItemUpdatable,
 } from 'renderer/utils/itemUtils';
 import { SxProps } from '@mui/system';
-import useItemColor from 'renderer/hooks/useItemColor';
+import useItemColor from 'renderer/hooks/items/useItemColor';
 import { IconViewer } from 'renderer/components/common/IconViewer';
-import useItemIcon from 'renderer/hooks/useItemIcon';
+import useItemIcon from 'renderer/hooks/items/useItemIcon';
 import { PopupState } from 'material-ui-popup-state/hooks';
-import useItemDisplayName from 'renderer/hooks/useItemDisplayName';
+import useItemDisplayName from 'renderer/hooks/items/useItemDisplayName';
 import { useNavigatorTreeContext } from 'renderer/contexts/NavigatorTreeContext';
 
 type NavigatorTreeNodeBaseProps = NodeRendererProps<TreeItem> & {
@@ -210,7 +210,7 @@ export default function NavigatorTreeNodeBase({
               minWidth: 0,
               height: 8,
               p: 0,
-              backgroundColor: healthStatusColor,
+              backgroundColor: healthStatusComponent ? 'transparent' : healthStatusColor,
             },
           }}
           invisible={!healthStatusColor}

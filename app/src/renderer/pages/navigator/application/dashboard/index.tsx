@@ -41,7 +41,7 @@ const ApplicationDashboard: FunctionComponent = () => {
   );
   const loading = useMemo<boolean>(() => !data, [data]);
   const healthStatuses = useMemo<InstanceHealthStatus[]>(
-    () => ['UP', 'DOWN', 'UNREACHABLE', 'OUT_OF_SERVICE', 'INVALID', 'PENDING'],
+    () => ['UP', 'DOWN', 'UNREACHABLE', 'INVALID', 'UNKNOWN', 'OUT_OF_SERVICE', 'PENDING'],
     []
   );
 

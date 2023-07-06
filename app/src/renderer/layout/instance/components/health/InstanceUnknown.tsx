@@ -1,24 +1,38 @@
-import { Card, CardContent, CardHeader, Divider, Stack, Typography } from '@mui/material';
+import { Button, Card, CardContent, CardHeader, Divider, Link, Stack, Typography } from '@mui/material';
 import Page from 'renderer/components/layout/Page';
-import React from 'react';
-import { IconViewer } from 'renderer/components/common/IconViewer';
+import React, { ReactNode, useCallback, useMemo } from 'react';
+import { getInstanceHealthStatusColor, getInstanceHealthStatusIcon, isItemUpdatable } from 'renderer/utils/itemUtils';
+import { IconViewer, MUIconType } from 'renderer/components/common/IconViewer';
 import { FormattedMessage } from 'react-intl';
+import { showUpdateItemDialog } from 'renderer/utils/dialogUtils';
 import FormattedDateAndRelativeTime from 'renderer/components/format/FormattedDateAndRelativeTime';
 import { LoadingButton } from '@mui/lab';
-import { InstanceRO } from '../../../../../common/generated_definitions';
-import DetailsLabelValueHorizontal from '../../../../components/table/details/DetailsLabelValueHorizontal';
-import useRestartDemo from '../../../../hooks/demo/useRestartDemo';
-import useStopDemo from '../../../../hooks/demo/useStopDemo';
+import { InstanceRO } from 'common/generated_definitions';
+import DetailsLabelValueHorizontal from 'renderer/components/table/details/DetailsLabelValueHorizontal';
+import useItemDisplayName from 'renderer/hooks/items/useItemDisplayName';
 import useInstanceHealth from 'renderer/hooks/items/useInstanceHealth';
+import { useItemsContext } from 'renderer/contexts/ItemsContext';
 
-type DemoInstanceUnreachableProps = {
+type InstanceUnknownProps = {
   item: InstanceRO;
 };
 
-export default function DemoInstanceUnreachable({ item }: DemoInstanceUnreachableProps) {
-  const { restartDemo, loading: loadingRestart } = useRestartDemo();
-  const { stopDemo, loading: loadingStop } = useStopDemo();
+export default function InstanceUnknown({ item }: InstanceUnknownProps) {
   const { health, loading: refreshLoading, refreshHealth } = useInstanceHealth(item);
+
+  const displayName = useItemDisplayName(item);
+  const updateDisabled = useMemo<boolean>(() => !isItemUpdatable(item), [item]);
+  const healthStatusColor = useMemo<string | undefined>(() => getInstanceHealthStatusColor(health.status), [health]);
+  const healthStatusIcon = useMemo<MUIconType>(() => getInstanceHealthStatusIcon(health.status), [health]);
+
+  const updateHandler = useCallback(
+    (event: React.MouseEvent): void => {
+      event.preventDefault();
+
+      showUpdateItemDialog(item);
+    },
+    [item]
+  );
 
   return (
     <Page sx={{ height: '100%' }}>
@@ -33,14 +47,14 @@ export default function DemoInstanceUnreachable({ item }: DemoInstanceUnreachabl
             justifyContent: 'center',
           }}
         >
-          <IconViewer icon={'HourglassEmptyOutlined'} sx={{ color: 'text.primary', fontSize: 48 }} />
+          <IconViewer icon={healthStatusIcon} sx={{ color: healthStatusColor, fontSize: 48 }} />
 
           <Typography variant="h5" gutterBottom sx={{ mt: 2 }}>
-            <FormattedMessage id={'demoServiceLoading'} />
+            <FormattedMessage id={'instanceAliasUnknown'} values={{ alias: displayName }} />
           </Typography>
 
           <Typography sx={{ color: 'text.secondary' }}>
-            <FormattedMessage id={'takeTimeToLoadDemo'} />
+            <FormattedMessage id={'checkSystemConfiguration'} />
           </Typography>
 
           <Card variant={'outlined'} sx={{ mt: 3 }}>
@@ -49,6 +63,11 @@ export default function DemoInstanceUnreachable({ item }: DemoInstanceUnreachabl
             <CardContent>
               <Stack spacing={2}>
                 <DetailsLabelValueHorizontal label={<FormattedMessage id={'actuatorUrl'} />} value={item.actuatorUrl} />
+                <DetailsLabelValueHorizontal
+                  label={<FormattedMessage id={'error'} />}
+                  value={health.statusText}
+                  valueSx={{ color: 'error.main' }}
+                />
 
                 <Divider />
 
@@ -65,14 +84,11 @@ export default function DemoInstanceUnreachable({ item }: DemoInstanceUnreachabl
           </Card>
 
           <Stack direction={{ xs: 'column', sm: 'row' }} spacing={2} sx={{ mt: 3 }}>
+            <Button variant="outlined" color="primary" onClick={updateHandler} disabled={updateDisabled}>
+              <FormattedMessage id={'updateInstance'} />
+            </Button>
             <LoadingButton variant="outlined" color="primary" onClick={refreshHealth} loading={refreshLoading}>
               <FormattedMessage id={'refreshStatus'} />
-            </LoadingButton>
-            <LoadingButton variant="outlined" color="warning" onClick={restartDemo} loading={loadingRestart}>
-              <FormattedMessage id={'restartDemo'} />
-            </LoadingButton>
-            <LoadingButton variant="outlined" color="error" onClick={stopDemo} loading={loadingStop}>
-              <FormattedMessage id={'stopDemo'} />
             </LoadingButton>
           </Stack>
         </CardContent>

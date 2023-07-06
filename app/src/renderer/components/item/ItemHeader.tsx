@@ -10,11 +10,11 @@ import {
   getItemVersionTooltip,
 } from 'renderer/utils/itemUtils';
 import { COMPONENTS_SPACING, EMPTY_STRING, SIDEBAR_HEADER_HEIGHT } from 'renderer/constants/ui';
-import useItemColor from 'renderer/hooks/useItemColor';
+import useItemColor from 'renderer/hooks/items/useItemColor';
 import { FormattedMessage } from 'react-intl';
 import { usePopupState } from 'material-ui-popup-state/hooks';
 import { IconViewer } from 'renderer/components/common/IconViewer';
-import useItemIcon from 'renderer/hooks/useItemIcon';
+import useItemIcon from 'renderer/hooks/items/useItemIcon';
 import ItemMenu from 'renderer/layout/navigator/components/sidebar/tree/menus/ItemMenu';
 import { ItemRO } from '../../definitions/daemon';
 import { useNavigatorLayoutContext } from 'renderer/contexts/NavigatorLayoutContext';
@@ -65,7 +65,7 @@ export default function ItemHeader({ item }: ItemHeaderProps) {
                 minWidth: 0,
                 height: 10,
                 p: 0,
-                backgroundColor: healthStatusColor,
+                backgroundColor: healthStatusComponent ? 'transparent' : healthStatusColor,
               },
             }}
             invisible={!healthStatusColor}

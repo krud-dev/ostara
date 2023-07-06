@@ -2,9 +2,10 @@ import { generatePath } from 'react-router-dom';
 import { urls } from 'renderer/routes/urls';
 import { green, grey, orange, pink, purple, red, yellow } from '@mui/material/colors';
 import blueGrey from '@mui/material/colors/blueGrey';
-import { MUIconType } from 'renderer/components/common/IconViewer';
+import { IconViewer, MUIconType } from 'renderer/components/common/IconViewer';
 import { ItemRO, ItemType } from 'renderer/definitions/daemon';
 import {
+  AgentHealthDTO$Companion$Status,
   AgentRO,
   ApplicationHealthStatus,
   ApplicationRO,
@@ -21,6 +22,7 @@ import { Box, CircularProgress } from '@mui/material';
 import { FormattedMessage } from 'react-intl';
 import FormattedRelativeTimeNow from 'renderer/components/format/FormattedRelativeTimeNow';
 import { agentCrudEntity } from 'renderer/apis/requests/crud/entity/entities/agent.crudEntity';
+import { EnrichedAgentRO } from 'common/manual_definitions';
 
 export function isApplication(item: ItemRO): item is ApplicationRO {
   return 'type' in item;
@@ -36,6 +38,10 @@ export function isInstance(item: ItemRO): item is InstanceRO {
 
 export function isAgent(item: ItemRO): item is AgentRO {
   return 'url' in item;
+}
+
+export function isEnrichedAgent(item: ItemRO): item is EnrichedAgentRO {
+  return 'syncing' in item;
 }
 
 export const getItemType = (item: ItemRO): ItemType => {
@@ -268,10 +274,10 @@ export const isItemDeletable = (item: ItemRO): boolean => {
 
 export const isItemInactive = (item: ItemRO): boolean => {
   if (isInstance(item)) {
-    return item.health.status === 'UNREACHABLE' || item.health.status === 'INVALID';
+    return item.health.status === 'UNREACHABLE' || item.health.status === 'INVALID' || item.health.status === 'UNKNOWN';
   }
   if (isAgent(item)) {
-    return false; // TODO: implement when agent has health status
+    return item.health.status === 'UNHEALTHY';
   }
   return false;
 };
@@ -282,6 +288,9 @@ export const isItemHealthy = (item: ItemRO): boolean => {
   }
   if (isInstance(item)) {
     return item.health.status === 'UP';
+  }
+  if (isAgent(item)) {
+    return item.health.status === 'HEALTHY';
   }
   return true;
 };
@@ -328,6 +337,19 @@ export const getApplicationHealthStatusColor = (status: ApplicationHealthStatus)
   }
 };
 
+export const getAgentHealthStatusColor = (status: AgentHealthDTO$Companion$Status): string | undefined => {
+  switch (status) {
+    case 'HEALTHY':
+      return green[HEALTH_STATUS_COLORS_INDEX];
+    case 'UNHEALTHY':
+      return yellow[HEALTH_STATUS_COLORS_INDEX];
+    case 'PENDING':
+      return 'text.primary';
+    default:
+      return undefined;
+  }
+};
+
 export const getItemHealthStatusColor = (item: ItemRO): string | undefined => {
   if (isInstance(item)) {
     return getInstanceHealthStatusColor(item.health.status);
@@ -335,15 +357,8 @@ export const getItemHealthStatusColor = (item: ItemRO): string | undefined => {
   if (isApplication(item)) {
     return getApplicationHealthStatusColor(item.health.status);
   }
-  return undefined;
-};
-
-export const getItemHealthStatusComponent = (item: ItemRO): ReactNode | undefined => {
-  if (
-    (isInstance(item) && item.health.status === 'PENDING') ||
-    (isApplication(item) && item.health.status === 'PENDING')
-  ) {
-    return <CircularProgress size={6} thickness={12} />;
+  if (isAgent(item)) {
+    return getAgentHealthStatusColor(item.health.status);
   }
   return undefined;
 };
@@ -388,12 +403,28 @@ export const getApplicationHealthStatusTextId = (status: ApplicationHealthStatus
   }
 };
 
+export const getAgentHealthStatusTextId = (status: AgentHealthDTO$Companion$Status): string | undefined => {
+  switch (status) {
+    case 'HEALTHY':
+      return 'healthy';
+    case 'UNHEALTHY':
+      return 'unhealthy';
+    case 'PENDING':
+      return 'loading';
+    default:
+      return undefined;
+  }
+};
+
 export const getItemHealthStatusTextId = (item: ItemRO): string | undefined => {
   if (isInstance(item)) {
     return getInstanceHealthStatusTextId(item.health.status);
   }
   if (isApplication(item)) {
     return getApplicationHealthStatusTextId(item.health.status);
+  }
+  if (isAgent(item)) {
+    return getAgentHealthStatusTextId(item.health.status);
   }
   return undefined;
 };
@@ -411,7 +442,7 @@ export const getInstanceHealthStatusIcon = (status: InstanceHealthStatus): MUIco
     case 'UNKNOWN':
       return 'QuestionMarkOutlined';
     case 'INVALID':
-      return 'LinkOffOutlined';
+      return 'PortableWifiOffOutlined';
     case 'PENDING':
       return 'HourglassEmptyOutlined';
     default:
@@ -436,6 +467,61 @@ export const getApplicationHealthStatusIcon = (status: ApplicationHealthStatus):
     default:
       return 'QuestionMarkOutlined';
   }
+};
+
+export const getAgentHealthStatusIcon = (status: AgentHealthDTO$Companion$Status): MUIconType => {
+  switch (status) {
+    case 'HEALTHY':
+      return 'LinkOutlined';
+    case 'UNHEALTHY':
+      return 'LinkOffOutlined';
+    case 'PENDING':
+      return 'HourglassEmptyOutlined';
+    default:
+      return 'QuestionMarkOutlined';
+  }
+};
+
+const ITEM_HEALTH_STATUS_LOADING_COMPONENT = <CircularProgress size={6} thickness={12} />;
+
+export const getInstanceHealthStatusComponent = (item: InstanceRO): ReactNode | undefined => {
+  if (item.health.status === 'PENDING') {
+    return ITEM_HEALTH_STATUS_LOADING_COMPONENT;
+  }
+  return undefined;
+};
+
+export const getApplicationHealthStatusComponent = (item: ApplicationRO): ReactNode | undefined => {
+  if (item.health.status === 'PENDING') {
+    return ITEM_HEALTH_STATUS_LOADING_COMPONENT;
+  }
+  return undefined;
+};
+
+export const getAgentHealthStatusComponent = (item: AgentRO): ReactNode | undefined => {
+  switch (item.health.status) {
+    case 'PENDING':
+      return ITEM_HEALTH_STATUS_LOADING_COMPONENT;
+    case 'HEALTHY':
+      return <></>;
+    case 'UNHEALTHY':
+      return <IconViewer icon={'WarningOutlined'} sx={{ color: 'warning.main', fontSize: 10 }} />;
+    default:
+      return undefined;
+  }
+};
+
+export const getItemHealthStatusComponent = (item: ItemRO): ReactNode | undefined => {
+  if (isInstance(item)) {
+    return getInstanceHealthStatusComponent(item);
+  }
+  if (isApplication(item)) {
+    return getApplicationHealthStatusComponent(item);
+  }
+  if (isAgent(item)) {
+    return getAgentHealthStatusComponent(item);
+  }
+  return undefined;
 };
 
 // export const getDataCollectionModeColor = (dataCollectionMode: DataCollectionMode): ColorSchema => {

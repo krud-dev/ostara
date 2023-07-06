@@ -3,7 +3,7 @@ import { Box, MenuItem, Stack } from '@mui/material';
 import { experimentalStyled as styled, useTheme } from '@mui/material/styles';
 import { amber, blue, deepOrange, green, indigo, orange, pink, purple, red } from '@mui/material/colors';
 import { CheckOutlined } from '@mui/icons-material';
-import { DEFAULT_COLOR_VALUE, INHERITED_COLOR_VALUE } from 'renderer/hooks/useItemColor';
+import { DEFAULT_COLOR_VALUE, INHERITED_COLOR_VALUE } from 'renderer/hooks/items/useItemColor';
 import { ItemRO } from 'renderer/definitions/daemon';
 import { useUpdateItem } from 'renderer/apis/requests/item/updateItem';
 import { getItemType, isItemUpdatable } from 'renderer/utils/itemUtils';

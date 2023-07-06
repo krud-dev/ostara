@@ -9,8 +9,8 @@ import FormattedDateAndRelativeTime from 'renderer/components/format/FormattedDa
 import { LoadingButton } from '@mui/lab';
 import { InstanceRO } from '../../../../../common/generated_definitions';
 import DetailsLabelValueHorizontal from '../../../../components/table/details/DetailsLabelValueHorizontal';
-import useItemDisplayName from '../../../../hooks/useItemDisplayName';
-import useInstanceHealth from '../../../../hooks/useInstanceHealth';
+import useItemDisplayName from 'renderer/hooks/items/useItemDisplayName';
+import useInstanceHealth from 'renderer/hooks/items/useInstanceHealth';
 
 type InstanceInvalidProps = {
   item: InstanceRO;

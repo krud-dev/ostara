@@ -12,7 +12,7 @@ import {
   InstanceRO,
 } from 'common/generated_definitions';
 import { useNavigatorLayoutContext } from 'renderer/contexts/NavigatorLayoutContext';
-import { INHERITED_COLOR_VALUE } from 'renderer/hooks/useItemColor';
+import { INHERITED_COLOR_VALUE } from 'renderer/hooks/items/useItemColor';
 import { applicationCrudEntity } from 'renderer/apis/requests/crud/entity/entities/application.crudEntity';
 import { instanceCrudEntity } from 'renderer/apis/requests/crud/entity/entities/instance.crudEntity';
 import { crudKeys } from 'renderer/apis/requests/crud/crudKeys';

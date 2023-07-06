@@ -1,6 +1,6 @@
 import { useCallback, useMemo } from 'react';
 import { useTheme } from '@mui/material/styles';
-import { ItemRO } from '../definitions/daemon';
+import { ItemRO } from 'renderer/definitions/daemon';
 import { TreeItem } from 'renderer/layout/navigator/components/sidebar/tree/tree';
 import { findTreeItemPath } from 'renderer/utils/treeUtils';
 import { chain } from 'lodash';

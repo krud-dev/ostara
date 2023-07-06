@@ -10,6 +10,10 @@ import React, {
 import { ItemRO } from '../definitions/daemon';
 import { CrudSearchData, useCrudSearchQuery } from '../apis/requests/crud/crudSearch';
 import {
+  AgentDiscoveryFailedEventMessage$Payload,
+  AgentDiscoveryStartedEventMessage$Payload,
+  AgentDiscoverySucceededEventMessage$Payload,
+  AgentHealthUpdatedEventMessage$Payload,
   AgentRO,
   ApplicationCreatedEventMessage$Payload,
   ApplicationDeletedEventMessage$Payload,
@@ -32,7 +36,8 @@ import { useStompContext } from 'renderer/apis/websockets/StompContext';
 import { isAgent, isApplication, isFolder, isInstance } from 'renderer/utils/itemUtils';
 import { QueryObserverResult } from '@tanstack/react-query';
 import { agentCrudEntity } from 'renderer/apis/requests/crud/entity/entities/agent.crudEntity';
-import useItemsRefresh from 'renderer/hooks/useItemsRefresh';
+import useItemsRefresh from 'renderer/hooks/items/useItemsRefresh';
+import { EnrichedAgentRO } from 'common/manual_definitions';
 
 export type ItemsContextProps = {
   folders: FolderRO[] | undefined;
@@ -59,7 +64,8 @@ const ItemsProvider: FunctionComponent<ItemsProviderProps> = ({ children }) => {
   const [folders, setFolders] = useState<FolderRO[] | undefined>(undefined);
   const [applications, setApplications] = useState<ApplicationRO[] | undefined>(undefined);
   const [instances, setInstances] = useState<InstanceRO[] | undefined>(undefined);
-  const [agents, setAgents] = useState<AgentRO[] | undefined>(undefined);
+  const [agents, setAgents] = useState<EnrichedAgentRO[] | undefined>(undefined);
+  const [syncingAgentIds, setSyncingAgentIds] = useState<string[]>([]);
 
   const searchFolderState = useCrudSearchQuery<FolderRO>({ entity: folderCrudEntity });
   const searchApplicationState = useCrudSearchQuery<ApplicationRO>({ entity: applicationCrudEntity });
@@ -79,8 +85,10 @@ const ItemsProvider: FunctionComponent<ItemsProviderProps> = ({ children }) => {
   }, [searchInstanceState.data]);
 
   useEffect(() => {
-    setAgents(searchAgentsState.data?.results);
-  }, [searchAgentsState.data]);
+    setAgents(
+      searchAgentsState.data?.results.map((agent) => ({ ...agent, syncing: syncingAgentIds.includes(agent.id) }))
+    );
+  }, [searchAgentsState.data, syncingAgentIds]);
 
   const items = useMemo<ItemRO[] | undefined>(
     () =>
@@ -101,7 +109,10 @@ const ItemsProvider: FunctionComponent<ItemsProviderProps> = ({ children }) => {
       setFolders((prev) => [...(prev?.filter((f) => f.id !== itemToAdd.id) ?? []), itemToAdd]);
     }
     if (isAgent(itemToAdd)) {
-      setAgents((prev) => [...(prev?.filter((a) => a.id !== itemToAdd.id) ?? []), itemToAdd]);
+      setAgents((prev) => [
+        ...(prev?.filter((a) => a.id !== itemToAdd.id) ?? []),
+        { ...itemToAdd, syncing: syncingAgentIds.includes(itemToAdd.id) },
+      ]);
     }
   }, []);
 
@@ -115,6 +126,56 @@ const ItemsProvider: FunctionComponent<ItemsProviderProps> = ({ children }) => {
   );
 
   const getItem = useCallback((id: string): ItemRO | undefined => items?.find((i) => i.id === id), [items]);
+
+  useEffect(() => {
+    const unsubscribe = subscribe('/topic/agentHealth', {}, (healthChanged: AgentHealthUpdatedEventMessage$Payload) => {
+      setAgents((prev) =>
+        prev?.map((a) => (a.id === healthChanged.agentId ? { ...a, health: healthChanged.newHealth } : a))
+      );
+    });
+    return () => {
+      unsubscribe();
+    };
+  }, []);
+
+  useEffect(() => {
+    const unsubscribe = subscribe(
+      '/topic/agentDiscoveryStart',
+      {},
+      (discoveryChanged: AgentDiscoveryStartedEventMessage$Payload) => {
+        setSyncingAgentIds((prev) => [...prev, discoveryChanged.agentId]);
+      }
+    );
+    return () => {
+      unsubscribe();
+    };
+  }, []);
+
+  useEffect(() => {
+    const unsubscribe = subscribe(
+      '/topic/agentDiscoverySuccess',
+      {},
+      (discoveryChanged: AgentDiscoverySucceededEventMessage$Payload) => {
+        setSyncingAgentIds((prev) => prev.filter((id) => id !== discoveryChanged.agentId));
+      }
+    );
+    return () => {
+      unsubscribe();
+    };
+  }, []);
+
+  useEffect(() => {
+    const unsubscribe = subscribe(
+      '/topic/agentDiscoveryFailure',
+      {},
+      (discoveryChanged: AgentDiscoveryFailedEventMessage$Payload) => {
+        setSyncingAgentIds((prev) => prev.filter((id) => id !== discoveryChanged.agentId));
+      }
+    );
+    return () => {
+      unsubscribe();
+    };
+  }, []);
 
   const addApplicationToRefresh = useItemsRefresh('application', addItems);
 

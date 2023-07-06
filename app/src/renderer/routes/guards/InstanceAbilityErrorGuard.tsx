@@ -7,7 +7,7 @@ import DetailsLabelValueHorizontal from 'renderer/components/table/details/Detai
 import { LoadingButton } from '@mui/lab';
 import Page from 'renderer/components/layout/Page';
 import { showUpdateItemDialog } from 'renderer/utils/dialogUtils';
-import useItemDisplayName from 'renderer/hooks/useItemDisplayName';
+import useItemDisplayName from 'renderer/hooks/items/useItemDisplayName';
 import { useUpdateInstanceHealth } from 'renderer/apis/requests/instance/health/updateInstanceHealth';
 import { ABILITIES_DOCUMENTATION_URL } from 'renderer/constants/ui';
 import { useNavigatorLayoutContext } from 'renderer/contexts/NavigatorLayoutContext';
