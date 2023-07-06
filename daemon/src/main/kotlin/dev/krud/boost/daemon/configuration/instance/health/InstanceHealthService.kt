@@ -2,6 +2,8 @@ package dev.krud.boost.daemon.configuration.instance.health
 
 import com.github.benmanes.caffeine.cache.Cache
 import dev.krud.boost.daemon.actuator.model.HealthActuatorResponse
+import dev.krud.boost.daemon.agent.AgentHealthService
+import dev.krud.boost.daemon.agent.model.AgentHealthDTO
 import dev.krud.boost.daemon.configuration.instance.InstanceActuatorClientProvider
 import dev.krud.boost.daemon.configuration.instance.InstanceService
 import dev.krud.boost.daemon.configuration.instance.entity.Instance
@@ -32,7 +34,7 @@ class InstanceHealthService(
     private val instanceService: InstanceService,
     private val actuatorClientProvider: InstanceActuatorClientProvider,
     private val systemEventsChannel: PublishSubscribeChannel,
-    private val instanceHealthCheckRequestChannel: QueueChannel,
+    private val agentHealthService: AgentHealthService,
     cacheManager: CacheManager
 ) : DisposableBean {
     private val instanceHealthCache by cacheManager.resolve()
@@ -106,6 +108,14 @@ class InstanceHealthService(
 
     fun getHealth(instance: Instance): InstanceHealthRO {
         log.debug { "Getting health for instance ${instance.id}" }
+        if (instance.parentAgentId != null) {
+            log.debug { "Instance ${instance.id} is managed by agent ${instance.parentAgentId}, checking agent health" }
+            val agentHealth = agentHealthService.getCachedHealth(instance.parentAgentId!!)
+            if (agentHealth?.status != AgentHealthDTO.Companion.Status.HEALTHY) {
+                log.debug { "Agent ${instance.parentAgentId} is not healthy, instance ${instance.id} is not healthy" }
+                return InstanceHealthRO.unknown(instance.id, "Agent is not healthy")
+            }
+        }
         val actuatorClient = actuatorClientProvider.provide(instance)
         val response = try {
             actuatorClient.testConnection()

@@ -26,7 +26,7 @@ enum class ApplicationHealthStatus {
 
             val withoutNulls = this.filterNotNull()
 
-            if (withoutNulls.any { it in listOf(InstanceHealthStatus.UNKNOWN, InstanceHealthStatus.PENDING) }) {
+            if (withoutNulls.any { it == InstanceHealthStatus.PENDING }) {
                 return PENDING
             }
 
@@ -36,6 +36,10 @@ enum class ApplicationHealthStatus {
 
             if (withoutNulls.all { it in listOf(InstanceHealthStatus.DOWN, InstanceHealthStatus.UNREACHABLE, InstanceHealthStatus.INVALID, InstanceHealthStatus.OUT_OF_SERVICE) }) {
                 return ALL_DOWN
+            }
+
+            if (withoutNulls.all { it == InstanceHealthStatus.UNKNOWN }) {
+                return UNKNOWN
             }
 
             return SOME_DOWN
