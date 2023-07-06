@@ -9,7 +9,6 @@ import {
 } from 'common/generated_definitions';
 import { useStompContext } from 'renderer/apis/websockets/StompContext';
 import { useItemsContext } from 'renderer/contexts/ItemsContext';
-import { usePrevious } from 'react-use';
 import { urls } from 'renderer/routes/urls';
 import { useIntl } from 'react-intl';
 import { getItemDisplayName } from 'renderer/utils/itemUtils';
@@ -21,8 +20,6 @@ export const NotificationsGeneratorAgentHealth: FunctionComponent<NotificationsG
   const { agents } = useItemsContext();
   const { subscribe } = useStompContext();
   const intl = useIntl();
-
-  const previousAgents = usePrevious(agents);
 
   const [healthUpdatedEvent, setHealthUpdatedEvent] = useState<AgentHealthUpdatedEventMessage$Payload | undefined>(
     undefined
@@ -55,14 +52,14 @@ export const NotificationsGeneratorAgentHealth: FunctionComponent<NotificationsG
       return;
     }
 
-    const agent = previousAgents?.find((a) => a.id === healthUpdatedEvent.agentId);
+    const agent = agents?.find((a) => a.id === healthUpdatedEvent.agentId);
     if (!agent) {
       return;
     }
 
     const notificationStatuses: AgentHealthDTO$Companion$Status[] = ['UNHEALTHY', 'HEALTHY'];
     if (
-      notificationStatuses.includes(agent.health.status) &&
+      notificationStatuses.includes(healthUpdatedEvent.oldHealth.status) &&
       notificationStatuses.includes(healthUpdatedEvent.newHealth.status) &&
       agent.health.status !== healthUpdatedEvent.newHealth.status
     ) {
@@ -71,7 +68,7 @@ export const NotificationsGeneratorAgentHealth: FunctionComponent<NotificationsG
         sendNotification(notificationInfo);
       }
     }
-  }, [healthUpdatedEvent, previousAgents]);
+  }, [healthUpdatedEvent]);
 
   useEffect(() => {
     const unsubscribe = subscribe('/topic/agentHealth', {}, (healthChanged: AgentHealthUpdatedEventMessage$Payload) => {
