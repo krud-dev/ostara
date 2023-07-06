@@ -10,6 +10,11 @@ data class AgentHealthDTO(
     val status: Status,
     val info: AgentInfoDTO? = null
 ) {
+    object Codes {
+        const val PENDING = -1
+        const val UNREACHABLE = -2
+        const val NOT_AGENT = -3
+    }
     val time = Date()
     companion object {
         enum class Status {
@@ -18,14 +23,14 @@ data class AgentHealthDTO(
 
         fun pending(): AgentHealthDTO {
             return AgentHealthDTO(
-                statusCode = -1,
+                statusCode = Codes.PENDING,
                 message = null,
                 status = Status.PENDING
             )
         }
         fun unreachable(message: String? = null): AgentHealthDTO {
             return AgentHealthDTO(
-                statusCode = -2,
+                statusCode = Codes.UNREACHABLE,
                 message = message,
                 status = Status.UNHEALTHY
             )
@@ -33,7 +38,7 @@ data class AgentHealthDTO(
 
         fun notAgent(message: String? = null): AgentHealthDTO {
             return AgentHealthDTO(
-                statusCode = -3,
+                statusCode = Codes.NOT_AGENT,
                 message = message,
                 status = Status.UNHEALTHY
             )
