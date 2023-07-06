@@ -8,6 +8,7 @@ import { InstanceRO } from 'common/generated_definitions';
 import LoadingPage from 'renderer/components/layout/LoadingPage';
 import DemoInstanceUnreachable from 'renderer/layout/instance/components/health/DemoInstanceUnreachable';
 import { useNavigatorLayoutContext } from 'renderer/contexts/NavigatorLayoutContext';
+import InstanceUnknown from 'renderer/layout/instance/components/health/InstanceUnknown';
 
 const InstanceLayout: FunctionComponent = () => {
   const { selectedItem, selectedItemAbilities } = useNavigatorLayoutContext();
@@ -26,6 +27,9 @@ const InstanceLayout: FunctionComponent = () => {
     }
     if (item.health.status === 'INVALID') {
       return <InstanceInvalid item={item} />;
+    }
+    if (item.health.status === 'UNKNOWN') {
+      return <InstanceUnknown item={item} />;
     }
     if (item.health.status === 'PENDING') {
       return <InstancePending item={item} />;

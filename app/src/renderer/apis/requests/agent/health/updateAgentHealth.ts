@@ -16,7 +16,7 @@ type Variables = {
 type Data = AgentHealthDTO;
 
 export const updateAgentHealth = async (variables: Variables): Promise<Data> => {
-  return (await axiosInstance.put<Data, AxiosResponse<Data>>(`agents/health/update/${variables.agentId}`)).data;
+  return (await axiosInstance.put<Data, AxiosResponse<Data>>(`agents/updateHealth/${variables.agentId}`)).data;
 };
 
 export const useUpdateAgentHealth = (
