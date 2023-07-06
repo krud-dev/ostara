@@ -16,7 +16,8 @@ class AgentHealthServiceTest {
         mock(),
         cacheManager,
         mock(),
-        mock()
+        mock(),
+        mock(),
     )
     private val agentHealthCache by cacheManager.resolve()
 

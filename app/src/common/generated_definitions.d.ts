@@ -512,6 +512,18 @@ export interface InfoActuatorResponse$Git$Unknown extends InfoActuatorResponse$G
     type: string;
 }
 
+export interface AgentDiscoveryFailedEventMessage extends AbstractMessage<AgentDiscoveryFailedEventMessage$Payload> {
+    payload: AgentDiscoveryFailedEventMessage$Payload;
+}
+
+export interface AgentDiscoveryStartedEventMessage extends AbstractMessage<AgentDiscoveryStartedEventMessage$Payload> {
+    payload: AgentDiscoveryStartedEventMessage$Payload;
+}
+
+export interface AgentDiscoverySucceededEventMessage extends AbstractMessage<AgentDiscoverySucceededEventMessage$Payload> {
+    payload: AgentDiscoverySucceededEventMessage$Payload;
+}
+
 export interface AgentHealthUpdatedEventMessage extends AbstractMessage<AgentHealthUpdatedEventMessage$Payload> {
     payload: AgentHealthUpdatedEventMessage$Payload;
 }
@@ -947,6 +959,19 @@ export interface InfoActuatorResponse$Git$Full$Remote {
 export interface InfoActuatorResponse$Git$Simple$Commit {
     id: string;
     time?: ParsedDate;
+}
+
+export interface AgentDiscoveryFailedEventMessage$Payload {
+    agentId: string;
+    error?: string;
+}
+
+export interface AgentDiscoveryStartedEventMessage$Payload {
+    agentId: string;
+}
+
+export interface AgentDiscoverySucceededEventMessage$Payload {
+    agentId: string;
 }
 
 export interface AgentHealthUpdatedEventMessage$Payload {

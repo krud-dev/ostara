@@ -1,8 +1,10 @@
 package dev.krud.boost.daemon.controller.api.v1
 
 import dev.krud.boost.daemon.agent.AgentDiscoveryService
+import dev.krud.boost.daemon.agent.AgentHealthService
 import dev.krud.boost.daemon.agent.AgentService
 import dev.krud.boost.daemon.agent.model.Agent
+import dev.krud.boost.daemon.agent.model.AgentHealthDTO
 import dev.krud.boost.daemon.agent.model.AgentInfoDTO
 import dev.krud.boost.daemon.agent.ro.AgentGetInfoRequestDTO
 import dev.krud.boost.daemon.agent.ro.AgentModifyRequestRO
@@ -19,6 +21,7 @@ import org.springframework.http.HttpStatus
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.PostMapping
+import org.springframework.web.bind.annotation.PutMapping
 import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RequestParam
@@ -31,6 +34,7 @@ import java.util.*
 @Tag(name = "Agent", description = "Agent API")
 class AgentController(
     private val agentService: AgentService,
+    private val agentHealthService: AgentHealthService,
     private val agentDiscoveryService: AgentDiscoveryService,
     private val shapeShift: ShapeShift,
     agentKrud: Krud<Agent, UUID>,
@@ -89,5 +93,16 @@ class AgentController(
     fun moveAgent(@PathVariable agentId: UUID, @RequestParam(required = false) @Valid @ValidFolderIdOrNull newParentFolderId: UUID? = null, @RequestParam(required = false) newSort: Double? = null): AgentRO {
         val application = agentService.moveAgent(agentId, newParentFolderId, newSort)
         return shapeShift.map(application)
+    }
+
+    @PutMapping("/updateHealth/{agentId}", produces = ["application/json"])
+    @ResponseStatus(HttpStatus.OK)
+    @Operation(
+        summary = "Update agent health and return it"
+    )
+    @ApiResponse(responseCode = "200", description = "Received agent health")
+    @ApiResponse(responseCode = "404", description = "Agent not found")
+    fun updateInstanceHealth(@PathVariable agentId: UUID): AgentHealthDTO {
+        return agentHealthService.refreshAgentHealth(agentId)
     }
 }
