@@ -269,7 +269,7 @@ export const isItemDeletable = (item: ItemRO): boolean => {
 
 export const isItemInactive = (item: ItemRO): boolean => {
   if (isInstance(item)) {
-    return item.health.status === 'UNREACHABLE' || item.health.status === 'INVALID';
+    return item.health.status === 'UNREACHABLE' || item.health.status === 'INVALID' || item.health.status === 'UNKNOWN';
   }
   if (isAgent(item)) {
     return item.health.status === 'UNHEALTHY';
@@ -437,7 +437,7 @@ export const getInstanceHealthStatusIcon = (status: InstanceHealthStatus): MUIco
     case 'UNKNOWN':
       return 'QuestionMarkOutlined';
     case 'INVALID':
-      return 'LinkOffOutlined';
+      return 'PortableWifiOffOutlined';
     case 'PENDING':
       return 'HourglassEmptyOutlined';
     default:
