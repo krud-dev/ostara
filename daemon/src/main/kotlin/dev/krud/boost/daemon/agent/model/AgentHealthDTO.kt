@@ -10,29 +10,28 @@ data class AgentHealthDTO(
     val status: Status,
     val info: AgentInfoDTO? = null
 ) {
-    object Codes {
+    val time = Date()
+    companion object {
         const val UNKNOWN = -999
         const val PENDING = -1
         const val UNREACHABLE = -2
         const val NOT_AGENT = -3
         const val SSL_ERROR = -4
-    }
-    val time = Date()
-    companion object {
+
         enum class Status {
             PENDING, UNHEALTHY, HEALTHY
         }
 
         fun pending(): AgentHealthDTO {
             return AgentHealthDTO(
-                statusCode = Codes.PENDING,
+                statusCode = PENDING,
                 message = null,
                 status = Status.PENDING
             )
         }
         fun unreachable(message: String? = null): AgentHealthDTO {
             return AgentHealthDTO(
-                statusCode = Codes.UNREACHABLE,
+                statusCode = UNREACHABLE,
                 message = message,
                 status = Status.UNHEALTHY
             )
@@ -40,7 +39,7 @@ data class AgentHealthDTO(
 
         fun sslError(message: String? = null): AgentHealthDTO {
             return AgentHealthDTO(
-                statusCode = Codes.SSL_ERROR,
+                statusCode = SSL_ERROR,
                 message = message,
                 status = Status.UNHEALTHY
             )
@@ -48,7 +47,7 @@ data class AgentHealthDTO(
 
         fun notAgent(message: String? = null): AgentHealthDTO {
             return AgentHealthDTO(
-                statusCode = Codes.NOT_AGENT,
+                statusCode = NOT_AGENT,
                 message = message,
                 status = Status.UNHEALTHY
             )
@@ -63,7 +62,7 @@ data class AgentHealthDTO(
             )
         }
 
-        fun error(statusCode: Int = Codes.UNKNOWN, message: String? = null): AgentHealthDTO {
+        fun error(statusCode: Int = UNKNOWN, message: String? = null): AgentHealthDTO {
             return AgentHealthDTO(
                 statusCode = statusCode,
                 message = message,
