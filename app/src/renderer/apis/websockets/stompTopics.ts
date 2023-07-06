@@ -1,4 +1,7 @@
 import {
+  AgentDiscoveryFailedEventMessage$Payload,
+  AgentDiscoveryStartedEventMessage$Payload,
+  AgentDiscoverySucceededEventMessage$Payload,
   AgentHealthUpdatedEventMessage$Payload,
   ApplicationCreatedEventMessage$Payload,
   ApplicationDeletedEventMessage$Payload,
@@ -28,6 +31,9 @@ export type StompTopics = {
   '/topic/applicationDeletion': ApplicationDeletedEventMessage$Payload;
   '/topic/applicationHealth': ApplicationHealthUpdatedEventMessage$Payload;
   '/topic/agentHealth': AgentHealthUpdatedEventMessage$Payload;
+  '/topic/agentDiscoveryStart': AgentDiscoveryStartedEventMessage$Payload;
+  '/topic/agentDiscoverySuccess': AgentDiscoverySucceededEventMessage$Payload;
+  '/topic/agentDiscoveryFailure': AgentDiscoveryFailedEventMessage$Payload;
   '/topic/metric/:instanceId/:metricName': InstanceMetricRO;
   '/topic/instanceHeapdumpDownloadProgress': InstanceHeapdumpDownloadProgressMessage$Payload;
   '/topic/instanceThreadProfilingProgress': ThreadProfilingProgressMessage$Payload;

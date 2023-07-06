@@ -1,11 +1,11 @@
 import {
+  AgentRO,
   Authentication$Basic,
   Authentication$BearerToken,
   Authentication$Header,
   Authentication$Inherit,
   Authentication$None,
   Authentication$QueryString,
-  InfoActuatorResponse,
   InfoActuatorResponse$Git$Full,
   InfoActuatorResponse$Git$Simple,
   InfoActuatorResponse$Git$Unknown,
@@ -66,3 +66,7 @@ export interface InfoActuatorResponse$Git$Unknown$Typed extends InfoActuatorResp
   type: 'unknown';
   [key: string]: any;
 }
+
+export type EnrichedAgentRO = AgentRO & {
+  syncing: boolean;
+};

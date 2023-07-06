@@ -2,9 +2,10 @@ import { useCallback, useMemo } from 'react';
 import { FormattedMessage } from 'react-intl';
 import { NodeApi } from 'react-arborist';
 import { TreeItem } from 'renderer/layout/navigator/components/sidebar/tree/tree';
-import { isAgent } from 'renderer/utils/itemUtils';
+import { isAgent, isEnrichedAgent } from 'renderer/utils/itemUtils';
 import CustomMenuItem from 'renderer/components/menu/item/CustomMenuItem';
 import { useRunDiscoveryForAgent } from 'renderer/apis/requests/agent/runDiscoveryForAgent';
+import { useSnackbar } from 'notistack';
 
 type RunDiscoveryMenuItemProps = {
   node: NodeApi<TreeItem>;
@@ -12,14 +13,19 @@ type RunDiscoveryMenuItemProps = {
 };
 
 export default function RunDiscoveryMenuItem({ node, onClose }: RunDiscoveryMenuItemProps) {
+  const { enqueueSnackbar } = useSnackbar();
+
   const disabled = useMemo<boolean>(() => {
-    if (!isAgent(node.data)) {
+    if (!isEnrichedAgent(node.data)) {
       return true;
     }
     if (node.data.health.status !== 'HEALTHY') {
       return true;
     }
-    return false; // TODO: disable if agent is syncing
+    if (node.data.syncing) {
+      return true;
+    }
+    return false;
   }, [node.data]);
 
   const runDiscoveryState = useRunDiscoveryForAgent();
@@ -31,8 +37,13 @@ export default function RunDiscoveryMenuItem({ node, onClose }: RunDiscoveryMenu
       return;
     }
 
-    await runDiscoveryState.mutateAsync({ agentId: node.data.id });
-  }, [onClose, node]);
+    try {
+      await runDiscoveryState.mutateAsync({ agentId: node.data.id });
+      enqueueSnackbar(<FormattedMessage id={'syncAgentStarted'} />, { variant: 'info' });
+    } catch (e) {
+      enqueueSnackbar(<FormattedMessage id={'syncAgentFailed'} />, { variant: 'error' });
+    }
+  }, [onClose, node, runDiscoveryState, enqueueSnackbar]);
 
   return (
     <CustomMenuItem

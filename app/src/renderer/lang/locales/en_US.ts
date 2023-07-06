@@ -529,6 +529,8 @@ export default {
   addAgent: 'Add Agent',
   updateAgent: 'Update Agent',
   syncAgent: 'Sync Agent',
+  syncAgentStarted: 'Sync agent started',
+  syncAgentFailed: 'Sync agent failed',
   agentsDescription:
     'Agents allow you to interact with remote environments you may otherwise not have access to, as well as enable you to use common service discovery strategies to automatically find instances.',
   agentIsEmpty: 'Agent is empty',

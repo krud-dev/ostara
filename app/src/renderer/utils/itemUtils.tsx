@@ -22,6 +22,7 @@ import { Box, CircularProgress } from '@mui/material';
 import { FormattedMessage } from 'react-intl';
 import FormattedRelativeTimeNow from 'renderer/components/format/FormattedRelativeTimeNow';
 import { agentCrudEntity } from 'renderer/apis/requests/crud/entity/entities/agent.crudEntity';
+import { EnrichedAgentRO } from 'common/manual_definitions';
 
 export function isApplication(item: ItemRO): item is ApplicationRO {
   return 'type' in item;
@@ -37,6 +38,10 @@ export function isInstance(item: ItemRO): item is InstanceRO {
 
 export function isAgent(item: ItemRO): item is AgentRO {
   return 'url' in item;
+}
+
+export function isEnrichedAgent(item: ItemRO): item is EnrichedAgentRO {
+  return 'syncing' in item;
 }
 
 export const getItemType = (item: ItemRO): ItemType => {
