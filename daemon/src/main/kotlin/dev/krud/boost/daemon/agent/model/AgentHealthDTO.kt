@@ -11,9 +11,11 @@ data class AgentHealthDTO(
     val info: AgentInfoDTO? = null
 ) {
     object Codes {
+        const val UNKNOWN = -999
         const val PENDING = -1
         const val UNREACHABLE = -2
         const val NOT_AGENT = -3
+        const val SSL_ERROR = -4
     }
     val time = Date()
     companion object {
@@ -36,6 +38,14 @@ data class AgentHealthDTO(
             )
         }
 
+        fun sslError(message: String? = null): AgentHealthDTO {
+            return AgentHealthDTO(
+                statusCode = Codes.SSL_ERROR,
+                message = message,
+                status = Status.UNHEALTHY
+            )
+        }
+
         fun notAgent(message: String? = null): AgentHealthDTO {
             return AgentHealthDTO(
                 statusCode = Codes.NOT_AGENT,
@@ -44,19 +54,19 @@ data class AgentHealthDTO(
             )
         }
 
-        fun ok(info: AgentInfoDTO, statusCode: Int = 200, statusText: String? = null): AgentHealthDTO {
+        fun ok(info: AgentInfoDTO, statusCode: Int = 200, message: String? = null): AgentHealthDTO {
             return AgentHealthDTO(
                 statusCode = statusCode,
-                message = statusText,
+                message = message,
                 status = Status.HEALTHY,
                 info = info
             )
         }
 
-        fun error(statusCode: Int, statusText: String? = null): AgentHealthDTO {
+        fun error(statusCode: Int = Codes.UNKNOWN, message: String? = null): AgentHealthDTO {
             return AgentHealthDTO(
                 statusCode = statusCode,
-                message = statusText,
+                message = message,
                 status = Status.UNHEALTHY
             )
         }

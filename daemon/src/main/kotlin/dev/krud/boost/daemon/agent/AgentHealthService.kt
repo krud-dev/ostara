@@ -1,6 +1,5 @@
 package dev.krud.boost.daemon.agent
 
-import com.fasterxml.jackson.module.kotlin.MissingKotlinParameterException
 import dev.krud.boost.daemon.agent.messaging.AgentHealthUpdatedEventMessage
 import dev.krud.boost.daemon.agent.model.Agent
 import dev.krud.boost.daemon.agent.model.AgentHealthDTO
@@ -8,8 +7,6 @@ import dev.krud.boost.daemon.utils.ONE_SECOND
 import dev.krud.boost.daemon.utils.resolve
 import dev.krud.boost.daemon.utils.searchSequence
 import dev.krud.crudframework.crud.handler.krud.Krud
-import feign.FeignException
-import feign.RetryableException
 import io.github.oshai.kotlinlogging.KotlinLogging
 import org.springframework.cache.CacheManager
 import org.springframework.integration.channel.PublishSubscribeChannel
@@ -23,7 +20,8 @@ class AgentHealthService(
     private val agentClientProvider: AgentClientProvider,
     cacheManager: CacheManager,
     private val agentKrud: Krud<Agent, UUID>,
-    private val agentHealthChannel: PublishSubscribeChannel
+    private val agentHealthChannel: PublishSubscribeChannel,
+    private val agentHealthConverter: AgentHealthConverter
 ) {
     private val agentHealthCache by cacheManager.resolve()
 
@@ -34,9 +32,6 @@ class AgentHealthService(
         }
         agentKrud.searchSequence()
             .forEach { agent ->
-                log.debug {
-                    "Cycling health for agent ${agent.id}"
-                }
                 runCatching {
                     refreshAgentHealth(agent)
                 }
@@ -91,27 +86,14 @@ class AgentHealthService(
         val client = agentClientProvider.getAgentClient(
             agent
         )
-        runCatching {
+        return runCatching {
             log.debug { "Getting health for agent $${agent.id} from ${agent.url}" }
             client.getAgentInfo(agent.apiKey)
         }
             .fold(
-                {
-                    return AgentHealthDTO.ok(it)
-                }
-            ) {
-                return when (it) {
-                    is RetryableException -> AgentHealthDTO.unreachable(it.message)
-                    is FeignException -> {
-                        if (it.cause is MissingKotlinParameterException) {
-                            AgentHealthDTO.notAgent()
-                        } else {
-                            AgentHealthDTO.error(it.status(), it.message)
-                        }
-                    }
-                    else -> AgentHealthDTO.error(-4, it.message)
-                }
-            }
+                onSuccess = { AgentHealthDTO.ok(it) },
+                onFailure = { agentHealthConverter.convert(it) }
+            )
     }
 
     fun getCachedHealth(agentId: UUID): AgentHealthDTO? {

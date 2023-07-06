@@ -27,9 +27,11 @@ import strikt.api.expect
 import strikt.assertions.isEqualTo
 import strikt.assertions.isNotNull
 import strikt.assertions.isNull
+import java.net.ConnectException
 import java.util.*
 import java.util.concurrent.CountDownLatch
 import java.util.concurrent.TimeUnit
+import javax.net.ssl.SSLException
 
 @IntegrationTest
 @DirtiesContext
@@ -100,7 +102,7 @@ class AgentHealthServiceIntegrationTest {
             that(health.info).isNull()
             that(health.statusCode).isEqualTo(-2)
             that(health.status).isEqualTo(AgentHealthDTO.Companion.Status.UNHEALTHY)
-            that(health.message).isEqualTo("Unreachable!")
+            that(health.message).isEqualTo("¯\\_(ツ)_/¯")
         }
     }
 
@@ -116,13 +118,26 @@ class AgentHealthServiceIntegrationTest {
     }
 
     @Test
-    fun `fetchAgentHealth should return unhealthy if arbitrary non feign exception is received`() {
-        primeUnknownError()
+    fun `fetchAgentHealth should return unhealthy if url has an ssl error`() {
+        primeInfoSslError()
         val health = agentHealthService.fetchAgentHealth(theAgent.id)
         expect {
             that(health.info).isNull()
             that(health.statusCode).isEqualTo(-4)
             that(health.status).isEqualTo(AgentHealthDTO.Companion.Status.UNHEALTHY)
+            that(health.message).isEqualTo("¯\\_(ツ)_/¯")
+        }
+    }
+
+    @Test
+    fun `fetchAgentHealth should return unhealthy if arbitrary non feign exception is received`() {
+        primeInfoUnknownError()
+        val health = agentHealthService.fetchAgentHealth(theAgent.id)
+        expect {
+            that(health.info).isNull()
+            that(health.statusCode).isEqualTo(-999)
+            that(health.status).isEqualTo(AgentHealthDTO.Companion.Status.UNHEALTHY)
+            that(health.message).isEqualTo("¯\\_(ツ)_/¯")
         }
     }
 
@@ -153,13 +168,31 @@ class AgentHealthServiceIntegrationTest {
     }
 
     private fun primeInfoUnreachableError() {
-        whenever(agentClient.getAgentInfo(theAgent.apiKey)).thenThrow(RetryableException(
+        val theException = RetryableException(
             -1,
-            "Unreachable!",
+            "",
             Request.HttpMethod.GET,
             null,
             mock()
-        ))
+        )
+            .initCause(
+                ConnectException("¯\\_(ツ)_/¯")
+            )
+        whenever(agentClient.getAgentInfo(theAgent.apiKey)).thenThrow(theException)
+    }
+
+    private fun primeInfoSslError() {
+        val theException = RetryableException(
+            -1,
+            "",
+            Request.HttpMethod.GET,
+            null,
+            mock()
+        )
+            .initCause(
+                SSLException("¯\\_(ツ)_/¯")
+            )
+        whenever(agentClient.getAgentInfo(theAgent.apiKey)).thenThrow(theException)
     }
 
     private fun primeInfoBadPayloadError() {
@@ -167,7 +200,7 @@ class AgentHealthServiceIntegrationTest {
         whenever(agentClient.getAgentInfo(theAgent.apiKey)).thenThrow(theException)
     }
 
-    private fun primeUnknownError() {
+    private fun primeInfoUnknownError() {
         whenever(agentClient.getAgentInfo(theAgent.apiKey)).thenThrow(
             RuntimeException("¯\\_(ツ)_/¯")
         )
