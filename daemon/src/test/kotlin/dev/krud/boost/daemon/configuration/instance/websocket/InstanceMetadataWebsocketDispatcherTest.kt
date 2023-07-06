@@ -15,6 +15,7 @@ import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.boot.test.mock.mockito.MockBean
 import org.springframework.integration.channel.PublishSubscribeChannel
 import org.springframework.messaging.simp.SimpMessagingTemplate
+import org.springframework.test.context.ActiveProfiles
 import java.util.*
 import java.util.concurrent.CountDownLatch
 import java.util.concurrent.TimeUnit
@@ -24,6 +25,7 @@ class InstanceMetadataWebsocketDispatcherTest {
     private val instanceMetadataWebsocketDispatcher = InstanceMetadataWebsocketDispatcher(messagingTemplate)
 
     @SpringBootTest
+    @ActiveProfiles("test")
     class SpringTest {
         @MockBean
         private lateinit var messagingTemplate: SimpMessagingTemplate

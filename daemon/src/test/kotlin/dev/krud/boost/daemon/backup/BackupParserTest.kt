@@ -10,6 +10,7 @@ import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.TestFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
+import org.springframework.test.context.ActiveProfiles
 import strikt.api.expect
 import strikt.api.expectThat
 import strikt.api.expectThrows
@@ -157,6 +158,7 @@ class BackupParserTest {
     }
 
     @SpringBootTest
+    @ActiveProfiles("test")
     class BackupParserVersionSpringTests {
         @Autowired
         private lateinit var backupParser: BackupParser

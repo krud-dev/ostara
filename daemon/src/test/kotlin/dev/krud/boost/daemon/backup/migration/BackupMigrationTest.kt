@@ -7,6 +7,7 @@ import com.fasterxml.jackson.module.kotlin.kotlinModule
 import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
+import org.springframework.test.context.ActiveProfiles
 import strikt.api.expectThat
 import strikt.assertions.hasSize
 import strikt.assertions.isEqualTo
@@ -41,6 +42,7 @@ class BackupMigrationTest {
     }
 
     @SpringBootTest
+    @ActiveProfiles("test")
     class BackupMigrationSpringTest {
         @Autowired
         private lateinit var backupMigrations: List<BackupMigration>
