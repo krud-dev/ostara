@@ -3,7 +3,7 @@ package dev.krud.boost.daemon.base.config
 import dev.krud.boost.daemon.configuration.instance.heapdump.messaging.InstanceHeapdumpDownloadProgressMessage
 import dev.krud.boost.daemon.metricmonitor.rule.messaging.ApplicationMetricRuleTriggeredMessage
 import dev.krud.boost.daemon.metricmonitor.rule.messaging.InstanceApplicationMetricRuleTriggeredMessage
-import dev.krud.boost.daemon.websocket.WebsocketTransportingSubscriber
+import dev.krud.boost.daemon.websocket.replay.WebsocketForwardingSubscriber
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 import org.springframework.integration.channel.PublishSubscribeChannel
@@ -70,10 +70,10 @@ class IntegrationConfig {
     }
 
     @Bean
-    fun agentDiscoveryChannel(websocketTransportingSubscriber: WebsocketTransportingSubscriber): PublishSubscribeChannel {
+    fun agentDiscoveryChannel(websocketForwardingSubscriber: WebsocketForwardingSubscriber): PublishSubscribeChannel {
         return MessageChannels.publishSubscribe().get()
             .also {
-                it.subscribe(websocketTransportingSubscriber)
+                it.subscribe(websocketForwardingSubscriber)
             }
     }
 
