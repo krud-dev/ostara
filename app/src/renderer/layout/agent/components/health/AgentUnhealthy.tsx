@@ -50,7 +50,12 @@ export default function AgentUnhealthy({ item }: AgentUnhealthyProps) {
           </>
         );
       case -4:
-        return <FormattedMessage id={'sslError'} />;
+        return (
+          <>
+            <FormattedMessage id={'sslError'} />
+            {` (${health.message})`}
+          </>
+        );
       case -999:
       default:
         return (

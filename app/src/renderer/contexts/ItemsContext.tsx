@@ -88,7 +88,11 @@ const ItemsProvider: FunctionComponent<ItemsProviderProps> = ({ children }) => {
     setAgents(
       searchAgentsState.data?.results.map((agent) => ({ ...agent, syncing: syncingAgentIds.includes(agent.id) }))
     );
-  }, [searchAgentsState.data, syncingAgentIds]);
+  }, [searchAgentsState.data]);
+
+  useEffect(() => {
+    setAgents((prev) => prev?.map((agent) => ({ ...agent, syncing: syncingAgentIds.includes(agent.id) })));
+  }, [syncingAgentIds]);
 
   const items = useMemo<ItemRO[] | undefined>(
     () =>

@@ -531,9 +531,13 @@ export default {
   syncAgent: 'Sync Agent',
   syncAgentStarted: 'Sync agent started',
   syncAgentFailed: 'Sync agent failed',
+  syncAgentNotHealthy: 'Sync agent is only available when agent is healthy',
+  syncAgentInProgress: 'Sync agent in progress',
   agentsDescription:
     'Agents allow you to interact with remote environments you may otherwise not have access to, as well as enable you to use common service discovery strategies to automatically find instances.',
   agentIsEmpty: 'Agent is empty',
+  agentNotFindInstances:
+    'The agent did not find any instances yet. You can run the discovery again by right clicking the agent and selecting "Sync Agent".',
   agentUrl: 'Agent URL',
   checkAgentUrl: 'Check Agent URL',
   apiKey: 'API Key',
