@@ -84,8 +84,8 @@ class ServiceDiscoveryProperties {
 
   companion object {
     const val PREFIX = "$CONFIGURATION_PREFIX.service-discovery"
-    val ServiceDiscoveryProperties.serviceDiscoveries get()
-    = listOfNotNull(internal, kubernetes, zookeeper)
-        .filter { it.enabled }
+    val ServiceDiscoveryProperties.serviceDiscoveries get() = listOfNotNull(internal, kubernetes, zookeeper)
+    val ServiceDiscoveryProperties.serviceDiscoveriesWithoutInternal get()
+    = serviceDiscoveries.filter { it !is ServiceDiscovery.Internal }
   }
 }
