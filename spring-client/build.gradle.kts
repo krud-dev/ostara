@@ -1,5 +1,4 @@
 import org.jetbrains.dokka.gradle.DokkaTask
-import org.jetbrains.kotlin.gradle.plugin.extraProperties
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 import org.springframework.boot.gradle.tasks.bundling.BootJar
 import org.springframework.boot.gradle.tasks.run.BootRun
@@ -63,9 +62,15 @@ tasks.named<Jar>("jar") {
 
 if (hasProperty("release")) {
   group = "dev.krud"
-  val effectiveVersion = extraProperties["override.version"]?.toString() ?: version.toString()
-  java.sourceCompatibility = JavaVersion.VERSION_17
-  val isSnapshot = version.toString().endsWith("-SNAPSHOT")
+  val effectiveVersion = if (hasProperty("release.version")) {
+    extra["release.version"]
+  } else {
+    version
+  }
+    .let {
+      toString()
+    }
+  val isSnapshot = false
   val repoUri = if (isSnapshot) {
     "https://s01.oss.sonatype.org/content/repositories/snapshots/"
   } else {
