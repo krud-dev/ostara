@@ -1,5 +1,5 @@
 import { FormattedMessage, useIntl } from 'react-intl';
-import React, { FunctionComponent, useCallback, useEffect, useMemo } from 'react';
+import React, { FunctionComponent, ReactNode, useCallback, useEffect, useMemo } from 'react';
 import { Controller, FormProvider, useForm, useWatch } from 'react-hook-form';
 import { Alert, Box, Button, DialogActions, DialogContent, TextField } from '@mui/material';
 import { LoadingButton } from '@mui/lab';
@@ -17,6 +17,7 @@ import { useGetAgentInfoByUrl } from 'renderer/apis/requests/agent/getAgentInfoB
 export type AgentDetailsFormProps = {
   defaultValues?: Partial<AgentFormValues>;
   onSubmit: (data: AgentFormValues) => Promise<void>;
+  cancelLabel?: ReactNode;
   onCancel: () => void;
 };
 
@@ -25,6 +26,7 @@ export type AgentFormValues = AgentModifyRequestRO;
 const AgentDetailsForm: FunctionComponent<AgentDetailsFormProps> = ({
   defaultValues,
   onSubmit,
+  cancelLabel,
   onCancel,
 }: AgentDetailsFormProps) => {
   const intl = useIntl();
@@ -197,7 +199,7 @@ const AgentDetailsForm: FunctionComponent<AgentDetailsFormProps> = ({
           </LoadingButton>
           <Box sx={{ flexGrow: 1 }} />
           <Button variant="outlined" color="primary" disabled={isSubmitting} onClick={cancelHandler}>
-            <FormattedMessage id={'cancel'} />
+            {cancelLabel || <FormattedMessage id={'cancel'} />}
           </Button>
           <LoadingButton variant="contained" color="primary" loading={isSubmitting} type={'submit'}>
             <FormattedMessage id={'save'} />

@@ -89,6 +89,23 @@ const StepperPanel: FunctionComponent<StepperPanelProps> = ({
     setActiveStep(step.id);
   }, [steps, activeStepIndex, setActiveStep]);
 
+  const isStepClickable = useCallback(
+    (stepId: string): boolean => {
+      return activeStep !== stepId && loadedSteps.includes(stepId);
+    },
+    [activeStep, loadedSteps]
+  );
+
+  const stepClickHandler = useCallback(
+    (stepId: string) => {
+      if (!isStepClickable(stepId)) {
+        return;
+      }
+      selectStep(stepId);
+    },
+    [selectStep, isStepClickable]
+  );
+
   return (
     <StepperProvider
       selectStep={selectStep}
@@ -98,11 +115,19 @@ const StepperPanel: FunctionComponent<StepperPanelProps> = ({
     >
       <Box sx={sx}>
         <Stepper activeStep={activeStepIndex} alternativeLabel>
-          {steps.map((step) => (
-            <Step key={step.id}>
-              <StepLabel>{step.label}</StepLabel>
-            </Step>
-          ))}
+          {steps.map((step) => {
+            const isClickable = isStepClickable(step.id);
+            return (
+              <Step key={step.id}>
+                <StepLabel
+                  sx={{ ...(isClickable ? { cursor: 'pointer!important' } : {}) }}
+                  onClick={() => stepClickHandler(step.id)}
+                >
+                  {step.label}
+                </StepLabel>
+              </Step>
+            );
+          })}
         </Stepper>
 
         {divider}
