@@ -56,6 +56,8 @@ export default function AgentUnhealthy({ item }: AgentUnhealthyProps) {
             {` (${health.message})`}
           </>
         );
+      case -5:
+        return <FormattedMessage id={'agentVersionNotSupported'} />;
       case -999:
       default:
         return (
