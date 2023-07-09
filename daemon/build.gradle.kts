@@ -107,6 +107,7 @@ dependencies {
     implementation("io.github.openfeign:feign-core:12.3")
     implementation("io.github.openfeign:feign-jackson:12.3")
     implementation("io.github.openfeign:feign-okhttp:12.3")
+    implementation("com.vdurmont:semver4j:3.1.0")
 
     // Added separately from springdoc for production builds
     implementation("io.swagger.core.v3:swagger-annotations-jakarta:2.2.15")
