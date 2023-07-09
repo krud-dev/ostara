@@ -7,6 +7,8 @@ plugins {
   id("io.spring.dependency-management") version "1.1.0"
   kotlin("jvm") version "1.9.0"
   kotlin("plugin.spring") version "1.9.0"
+  jacoco
+  id("org.sonarqube") version "4.2.1.3168"
 }
 
 group = "dev.ostara"
@@ -52,4 +54,12 @@ tasks.named<BootRun>("bootRun") {
 tasks.named<Jar>("jar") {
   enabled = true
   archiveClassifier.set("")
+}
+
+sonar {
+  properties {
+    property("sonar.projectKey", "ostara-spring-client")
+    property("sonar.organization", "krud-dev")
+    property("sonar.host.url", "https://sonarcloud.io")
+  }
 }
