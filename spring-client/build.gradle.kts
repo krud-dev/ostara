@@ -11,6 +11,7 @@ plugins {
   jacoco
   id("org.sonarqube") version "4.2.1.3168"
   `maven-publish`
+  id("io.github.gradle-nexus.publish-plugin") version "2.0.0-rc-1"
   signing
   id("org.jetbrains.dokka") version "1.8.20"
 }
@@ -76,20 +77,21 @@ if (hasProperty("release")) {
     }
   }
 
+  nexusPublishing {
+    this@nexusPublishing.repositories {
+      sonatype {
+        username.set(extra["ossrh.username"].toString())
+        password.set(extra["ossrh.password"].toString())
+        nexusUrl.set(uri("https://s01.oss.sonatype.org/service/local/"))
+        snapshotRepositoryUrl.set(uri("https://s01.oss.sonatype.org/content/repositories/snapshots/"))
+      }
+    }
+  }
+
   publishing {
     publications.create<MavenPublication>("maven") {
       from(components["java"])
       version = effectiveVersion
-      repositories {
-        maven {
-          name = "OSSRH"
-          url = uri(repoUri)
-          credentials {
-            username = System.getenv("OSSRH_USERNAME") ?: extra["ossrh.username"]?.toString()
-            password = System.getenv("OSSRH_PASSWORD") ?: extra["ossrh.password"]?.toString()
-          }
-        }
-      }
       pom {
         version = effectiveVersion
         description.set("The Spring Client for Ostara, a cross-platform desktop app for managing and monitoring Spring Boot applications using the Actuator API, providing comprehensive insights and effortless control.")
