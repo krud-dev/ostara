@@ -40,7 +40,7 @@ jobs:
           if [ "${{ github.event_name }}" = "pull_request" ]; then
             VERSION=$(./gradlew -q printVersion)
             VERSION=${VERSION%-SNAPSHOT}
-            VERSION=${VERSION}-SNAPSHOT.${{ github.event.number }}
+            VERSION=${VERSION}.${{ github.event.number }}-SNAPSHOT
           fi
 
           ./gradlew -Prelease -Poverride.version=$VERSION clean jar publishAllPublicationsToOSSRHRepository
