@@ -11,6 +11,7 @@ plugins {
   jacoco
   id("org.sonarqube") version "4.2.1.3168"
   `maven-publish`
+  id("io.github.gradle-nexus.publish-plugin") version "2.0.0-rc-1"
   signing
   id("org.jetbrains.dokka") version "1.8.20"
 }
@@ -61,15 +62,8 @@ tasks.named<Jar>("jar") {
 }
 
 if (hasProperty("release")) {
-  group = "dev.krud"
-  java.sourceCompatibility = JavaVersion.VERSION_17
+  val effectiveVersion = (findProperty("releaseVersion") ?: version).toString()
   val isSnapshot = version.toString().endsWith("-SNAPSHOT")
-  val repoUri = if (isSnapshot) {
-    "https://s01.oss.sonatype.org/content/repositories/snapshots/"
-  } else {
-    "https://s01.oss.sonatype.org/service/local/staging/deploy/maven2/"
-  }
-
   if (!isSnapshot) {
     java {
       withJavadocJar()
@@ -77,22 +71,23 @@ if (hasProperty("release")) {
     }
   }
 
+  nexusPublishing {
+    this@nexusPublishing.repositories {
+      sonatype {
+        username.set(extra["ossrhUsername"].toString())
+        password.set(extra["ossrhPassword"].toString())
+        nexusUrl.set(uri("https://s01.oss.sonatype.org/service/local/"))
+        snapshotRepositoryUrl.set(uri("https://s01.oss.sonatype.org/content/repositories/snapshots/"))
+      }
+    }
+  }
+
   publishing {
     publications.create<MavenPublication>("maven") {
       from(components["java"])
-      version = this.version
-      repositories {
-        maven {
-          name = "OSSRH"
-          url = uri(repoUri)
-          credentials {
-            username = System.getenv("OSSRH_USERNAME") ?: extra["ossrh.username"]?.toString()
-            password = System.getenv("OSSRH_PASSWORD") ?: extra["ossrh.password"]?.toString()
-          }
-        }
-      }
+      version = effectiveVersion
       pom {
-        name.set(this.name)
+        version = effectiveVersion
         description.set("The Spring Client for Ostara, a cross-platform desktop app for managing and monitoring Spring Boot applications using the Actuator API, providing comprehensive insights and effortless control.")
         url.set("https://github.com/krud-dev/ostara")
         licenses {
@@ -129,8 +124,21 @@ if (hasProperty("release")) {
     }
 
     signing {
-      sign(publishing.publications["maven"])
+      useInMemoryPgpKeys(
+        extra["signingKey"].toString(),
+        extra["signingKeyId"].toString(),
+        extra["signingPassword"].toString(),
+      )
+      if (!isSnapshot) {
+        sign(publishing.publications["maven"])
+      }
     }
+  }
+}
+
+tasks.create("printVersion") {
+  doLast {
+    println(version)
   }
 }
 
