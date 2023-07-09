@@ -129,7 +129,9 @@ if (hasProperty("release")) {
         extra["signingKeyId"].toString(),
         extra["signingPassword"].toString(),
       )
-      sign(publishing.publications["maven"])
+      if (!isSnapshot) {
+        sign(publishing.publications["maven"])
+      }
     }
   }
 }

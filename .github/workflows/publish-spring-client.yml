@@ -31,11 +31,6 @@ jobs:
           path: ~/.gradle/caches
           key: ${{ runner.os }}-gradle-${{ hashFiles('spring-client/*.gradle.kts') }}
           restore-keys: ${{ runner.os }}-gradle
-      # - name: Install GPG secret key
-      #   env: 
-      #     OSSRH_GPG_SECRET_KEY: ${{ secrets.OSSRH_GPG_SECRET_KEY }}
-      #   run: |
-      #     cat <(echo -e "${{ secrets.OSSRH_GPG_SECRET_KEY }}") | gpg --batch --import
       - name: Build and publish
         working-directory: spring-client
         env:
