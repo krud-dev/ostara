@@ -109,7 +109,7 @@ dependencies {
     implementation("io.github.openfeign:feign-okhttp:12.3")
 
     // Added separately from springdoc for production builds
-    implementation("io.swagger.core.v3:swagger-annotations-jakarta:2.2.14")
+    implementation("io.swagger.core.v3:swagger-annotations-jakarta:2.2.15")
 
     implementation("io.sentry:sentry-spring-boot-starter-jakarta:6.25.0")
 
