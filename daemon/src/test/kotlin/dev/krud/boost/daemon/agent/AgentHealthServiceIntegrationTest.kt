@@ -34,7 +34,7 @@ import java.util.concurrent.TimeUnit
 import javax.net.ssl.SSLException
 
 @IntegrationTest
-@DirtiesContext
+@DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
 class AgentHealthServiceIntegrationTest {
     @Autowired
     private lateinit var agentHealthService: AgentHealthService
