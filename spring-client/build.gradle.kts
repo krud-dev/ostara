@@ -63,13 +63,7 @@ tasks.named<Jar>("jar") {
 
 if (hasProperty("release")) {
   val effectiveVersion = (findProperty("releaseVersion") ?: version).toString()
-  val isSnapshot = false
-  val repoUri = if (isSnapshot) {
-    "https://s01.oss.sonatype.org/content/repositories/snapshots/"
-  } else {
-    "https://s01.oss.sonatype.org/service/local/staging/deploy/maven2/"
-  }
-
+  val isSnapshot = version.toString().endsWith("-SNAPSHOT")
   if (!isSnapshot) {
     java {
       withJavadocJar()
@@ -131,6 +125,7 @@ if (hasProperty("release")) {
 
     signing {
       useInMemoryPgpKeys(
+        extra["signingKey"].toString(),
         extra["signingKeyId"].toString(),
         extra["signingPassword"].toString(),
       )
