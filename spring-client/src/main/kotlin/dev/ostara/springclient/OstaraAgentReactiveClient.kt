@@ -11,22 +11,23 @@ class OstaraAgentReactiveClient(
   private val registrationUrl = "${baseUrl.removeSuffix("/")}${REGISTRATION_ENDPOINT}"
   private val deregistrationUrl = "${baseUrl.removeSuffix("/")}${DEREGISTRATION_ENDPOINT}}"
 
-  override fun register(request: RegistrationRequest) {
-
+  override fun register(request: RegistrationRequest) = runCatching {
     webClient.post()
       .uri(registrationUrl)
       .bodyValue(request)
       .retrieve()
       .bodyToMono(String::class.java)
       .block()
+    return@runCatching
   }
 
-  override fun deregister(request: RegistrationRequest) {
+  override fun deregister(request: RegistrationRequest) = runCatching {
     webClient.post()
       .uri(deregistrationUrl)
       .bodyValue(request)
       .retrieve()
       .bodyToMono(String::class.java)
       .block()
+    return@runCatching
   }
 }
