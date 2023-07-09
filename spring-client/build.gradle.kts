@@ -1,4 +1,5 @@
 import org.jetbrains.dokka.gradle.DokkaTask
+import org.jetbrains.kotlin.gradle.plugin.extraProperties
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 import org.springframework.boot.gradle.tasks.bundling.BootJar
 import org.springframework.boot.gradle.tasks.run.BootRun
@@ -62,6 +63,7 @@ tasks.named<Jar>("jar") {
 
 if (hasProperty("release")) {
   group = "dev.krud"
+  val effectiveVersion = extraProperties["override.version"]?.toString() ?: version.toString()
   java.sourceCompatibility = JavaVersion.VERSION_17
   val isSnapshot = version.toString().endsWith("-SNAPSHOT")
   val repoUri = if (isSnapshot) {
@@ -80,7 +82,7 @@ if (hasProperty("release")) {
   publishing {
     publications.create<MavenPublication>("maven") {
       from(components["java"])
-      version = this.version
+      version = effectiveVersion
       repositories {
         maven {
           name = "OSSRH"
@@ -131,6 +133,12 @@ if (hasProperty("release")) {
     signing {
       sign(publishing.publications["maven"])
     }
+  }
+}
+
+tasks.create("printVersion") {
+  doLast {
+    println(version)
   }
 }
 
