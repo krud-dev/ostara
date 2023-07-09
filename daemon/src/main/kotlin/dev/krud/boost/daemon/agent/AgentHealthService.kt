@@ -99,8 +99,8 @@ class AgentHealthService(
             client.getAgentInfo(agent.apiKey)
         }
             .fold(
-                onSuccess = { AgentHealthDTO.ok(it) },
-                onFailure = { agentHealthConverter.convert(it) }
+                onSuccess = { agentHealthConverter.convertInfo(it) },
+                onFailure = { agentHealthConverter.convertException(it) }
             )
     }
 

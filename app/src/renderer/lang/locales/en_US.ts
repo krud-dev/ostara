@@ -538,6 +538,8 @@ export default {
   agentIsEmpty: 'Agent is empty',
   agentNotFindInstances:
     'The agent did not find any instances yet. You can run the discovery again by right clicking the agent and selecting "Sync Agent".',
+  currentAgentVersion: 'The current agent version is {version}.',
+  agentVersionNotSupported: 'Agent version not supported',
   agentUrl: 'Agent URL',
   checkAgentUrl: 'Check Agent URL',
   apiKey: 'API Key',

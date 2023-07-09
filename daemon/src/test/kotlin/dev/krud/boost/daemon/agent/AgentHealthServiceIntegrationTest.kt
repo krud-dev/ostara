@@ -34,7 +34,7 @@ import java.util.concurrent.TimeUnit
 import javax.net.ssl.SSLException
 
 @IntegrationTest
-@DirtiesContext
+@DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
 class AgentHealthServiceIntegrationTest {
     @Autowired
     private lateinit var agentHealthService: AgentHealthService
@@ -138,6 +138,18 @@ class AgentHealthServiceIntegrationTest {
             that(health.statusCode).isEqualTo(-999)
             that(health.status).isEqualTo(AgentHealthDTO.Companion.Status.UNHEALTHY)
             that(health.message).isEqualTo("¯\\_(ツ)_/¯")
+        }
+    }
+
+    @Test
+    fun `fetchAgentHealth should return agent not supported if agent version is not supported`() {
+        val info = AgentInfoDTO("0.0.1", setOf("Internal"))
+        primeInfoSuccess(info)
+        val health = agentHealthService.fetchAgentHealth(theAgent.id)
+        expect {
+            that(health.info).isEqualTo(info)
+            that(health.statusCode).isEqualTo(-5)
+            that(health.status).isEqualTo(AgentHealthDTO.Companion.Status.UNHEALTHY)
         }
     }
 

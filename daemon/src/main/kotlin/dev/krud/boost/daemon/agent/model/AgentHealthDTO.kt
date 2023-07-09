@@ -17,6 +17,7 @@ data class AgentHealthDTO(
         const val UNREACHABLE = -2
         const val NOT_AGENT = -3
         const val SSL_ERROR = -4
+        const val AGENT_NOT_SUPPORTED = -5
 
         enum class Status {
             PENDING, UNHEALTHY, HEALTHY
@@ -67,6 +68,15 @@ data class AgentHealthDTO(
                 statusCode = statusCode,
                 message = message,
                 status = Status.UNHEALTHY
+            )
+        }
+
+        fun notSupported(info: AgentInfoDTO, supportedVersionRange: String): AgentHealthDTO {
+            return AgentHealthDTO(
+                statusCode = AGENT_NOT_SUPPORTED,
+                message = "Agent version ${info.version} is not supported, required version range is $supportedVersionRange",
+                status = Status.UNHEALTHY,
+                info = info
             )
         }
     }
