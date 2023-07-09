@@ -61,7 +61,6 @@ tasks.named<Jar>("jar") {
 }
 
 if (hasProperty("release")) {
-  group = "dev.krud"
   val effectiveVersion = if (hasProperty("release.version")) {
     extra["release.version"]
   } else {
@@ -99,7 +98,7 @@ if (hasProperty("release")) {
         }
       }
       pom {
-        name.set(this.name)
+        version = effectiveVersion
         description.set("The Spring Client for Ostara, a cross-platform desktop app for managing and monitoring Spring Boot applications using the Actuator API, providing comprehensive insights and effortless control.")
         url.set("https://github.com/krud-dev/ostara")
         licenses {
