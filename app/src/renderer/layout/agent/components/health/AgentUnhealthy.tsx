@@ -57,7 +57,12 @@ export default function AgentUnhealthy({ item }: AgentUnhealthyProps) {
           </>
         );
       case -5:
-        return <FormattedMessage id={'agentVersionNotSupported'} />;
+        return (
+          <>
+            <FormattedMessage id={'agentVersionNotSupported'} />
+            {` (${health.message})`}
+          </>
+        );
       case -999:
       default:
         return (
@@ -87,6 +92,10 @@ export default function AgentUnhealthy({ item }: AgentUnhealthyProps) {
             <FormattedMessage id={'checkAgentUrl'} />
           </Link>
         );
+      case -5:
+        return health.info?.version ? (
+          <FormattedMessage id={'currentAgentVersion'} values={{ version: health.info?.version }} />
+        ) : undefined;
       default:
         return undefined;
     }
