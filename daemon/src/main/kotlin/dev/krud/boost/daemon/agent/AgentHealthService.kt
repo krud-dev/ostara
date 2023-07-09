@@ -9,6 +9,7 @@ import dev.krud.boost.daemon.utils.searchSequence
 import dev.krud.crudframework.crud.handler.krud.Krud
 import io.github.oshai.kotlinlogging.KotlinLogging
 import org.springframework.cache.CacheManager
+import org.springframework.integration.annotation.ServiceActivator
 import org.springframework.integration.channel.PublishSubscribeChannel
 import org.springframework.scheduling.annotation.Scheduled
 import org.springframework.stereotype.Service
@@ -44,6 +45,7 @@ class AgentHealthService(
             }
     }
 
+    @ServiceActivator(inputChannel = "agentHealthCheckRequestChannel", outputChannel = "nullChannel")
     fun refreshAgentHealth(agentId: UUID): AgentHealthDTO {
         return refreshAgentHealth(
             agentService.getAgentOrThrow(agentId)

@@ -104,9 +104,9 @@ dependencies {
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.7.2")
     implementation("io.github.oshai:kotlin-logging-jvm:4.0.2")
     implementation("com.auth0:java-jwt:4.4.0")
-    implementation("io.github.openfeign:feign-core:12.3")
-    implementation("io.github.openfeign:feign-jackson:12.3")
-    implementation("io.github.openfeign:feign-okhttp:12.3")
+    implementation("io.github.openfeign:feign-core:12.4")
+    implementation("io.github.openfeign:feign-jackson:12.4")
+    implementation("io.github.openfeign:feign-okhttp:12.4")
     implementation("com.vdurmont:semver4j:3.1.0")
 
     // Added separately from springdoc for production builds

@@ -78,6 +78,11 @@ class IntegrationConfig {
     }
 
     @Bean
+    fun agentHealthCheckRequestChannel(): QueueChannel {
+        return MessageChannels.queue().get()
+    }
+
+    @Bean
     fun applicationMetricRuleTriggerFlow() = integrationFlow(
         instanceApplicationMetricRuleTriggerChannel()
     ) {
