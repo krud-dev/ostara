@@ -1,5 +1,6 @@
 package dev.ostara.springclient
 
+import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.DisposableBean
 import org.springframework.beans.factory.InitializingBean
 import java.util.*
@@ -12,25 +13,33 @@ class OstaraClientRunner(
   private lateinit var registrationTimer: Timer
 
   override fun afterPropertiesSet() {
-    println("Starting Ostara Client...")
+    log.info("Initializing Ostara Agent Client Runner...")
     registrationTimer = timer("ostaraRegistration", false, 0, 10_000) {
-      println("Registering with Ostara Agent...")
-      runCatching {
-        ostaraAgentClient.register(registrationRequest)
-      }
+      log.trace("Initiating registration request...")
+      ostaraAgentClient.register(registrationRequest)
         .onSuccess {
-          println("Successfully registered with Ostara Agent")
+          log.trace("Registration request successful.")
         }
         .onFailure {
-          println("Failed to register with Ostara Agent ${it.message}")
-//          it.printStackTrace()
+          log.error("Registration request failed.", it)
         }
     }
+    log.info("Ostara Agent Client Runner initialized.")
   }
 
   override fun destroy() {
-    println("Deregistering with Ostara Agent...")
+    log.info("Deregistering from Ostara Agent...")
     registrationTimer.cancel()
     ostaraAgentClient.deregister(registrationRequest)
+      .onSuccess {
+        log.info("Deregistration request successful.")
+      }
+      .onFailure {
+        log.error("Deregistration request failed.", it)
+      }
+  }
+
+  companion object {
+    private val log = LoggerFactory.getLogger(OstaraClientRunner::class.java)
   }
 }

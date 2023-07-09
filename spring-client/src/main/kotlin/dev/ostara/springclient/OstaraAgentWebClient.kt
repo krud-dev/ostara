@@ -13,21 +13,23 @@ class OstaraAgentWebClient(
   private val registrationUrl = "${baseUrl.removeSuffix("/")}$REGISTRATION_ENDPOINT"
   private val deregistrationUrl = "${baseUrl.removeSuffix("/")}$DEREGISTRATION_ENDPOINT}"
 
-  override fun register(request: RegistrationRequest) {
-    val response = restTemplate.exchange(
+  override fun register(request: RegistrationRequest) = runCatching {
+    restTemplate.exchange(
       registrationUrl,
       HttpMethod.POST,
       HttpEntity(request),
       String::class.java
     )
+    return@runCatching
   }
 
-  override fun deregister(request: RegistrationRequest) {
-    val response = restTemplate.exchange(
+  override fun deregister(request: RegistrationRequest) = runCatching {
+    restTemplate.exchange(
       deregistrationUrl,
       HttpMethod.POST,
       HttpEntity(request),
       String::class.java
     )
+    return@runCatching
   }
 }
