@@ -51,4 +51,4 @@ jobs:
             VERSION=${VERSION%-SNAPSHOT}
             VERSION=${VERSION}.${{ github.event.number }}-SNAPSHOT
           fi
-          ./gradlew -Prelease -Prelease.version=$VERSION publishToSonatype closeSonatypeStagingRepository
+          ./gradlew -Prelease -PreleaseVersion=$VERSION publishToSonatype closeSonatypeStagingRepository
