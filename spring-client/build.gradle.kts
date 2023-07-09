@@ -61,14 +61,7 @@ tasks.named<Jar>("jar") {
 }
 
 if (hasProperty("release")) {
-  val effectiveVersion = if (hasProperty("release.version")) {
-    extra["release.version"]
-  } else {
-    version
-  }
-    .let {
-      toString()
-    }
+  val effectiveVersion = (findProperty("release.version") ?: version).toString()
   val isSnapshot = false
   val repoUri = if (isSnapshot) {
     "https://s01.oss.sonatype.org/content/repositories/snapshots/"

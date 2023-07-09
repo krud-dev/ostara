@@ -51,4 +51,4 @@ jobs:
             VERSION=${VERSION%-SNAPSHOT}
             VERSION=${VERSION}.${{ github.event.number }}-SNAPSHOT
           fi
-          ./gradlew -Psigning.keyId=$OSSRH_GPG_SECRET_KEY_ID -Psigning.password=$OSSRH_GPG_SECRET_KEY_PASSWORD -Prelease -release.version=$VERSION clean jar publishAllPublicationsToOSSRHRepository
+          ./gradlew -Psigning.keyId=$OSSRH_GPG_SECRET_KEY_ID -Psigning.password=$OSSRH_GPG_SECRET_KEY_PASSWORD -Prelease -Prelease.version=$VERSION clean jar publishAllPublicationsToOSSRHRepository
