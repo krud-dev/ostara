@@ -1,6 +1,0 @@
-server:
-  port: 14444
-spring:
-  cloud:
-    zookeeper:
-      enabled: false

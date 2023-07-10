@@ -43,7 +43,7 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
         run: ./gradlew test sonarqube --info
-      - name: Publish Test Report - Agent
+      - name: Publish Test Report - Spring Client
         uses: mikepenz/action-junit-report@v3
         if: success() || failure()
         with:

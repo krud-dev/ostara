@@ -70,7 +70,6 @@
     "start:renderer": "cross-env NODE_ENV=development TS_NODE_TRANSPILE_ONLY=true webpack serve --config ./.erb/configs/webpack.config.renderer.dev.ts",
     "start:daemon": "cd ../daemon && ./gradlew bootRun",
     "start:demo": "cd ../demo && ./gradlew bootRun",
-    "start:agent": "cd ../agent && ./gradlew bootRun",
     "daemon:generateTypescript": "cd ../daemon && ./gradlew generateTypescript",
     "test": "jest",
     "changeset": "changeset",
