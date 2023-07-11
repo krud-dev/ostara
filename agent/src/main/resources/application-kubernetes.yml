@@ -1,7 +1,0 @@
-server:
-  forward-headers-strategy: framework
-ostara:
-  agent:
-    service-discovery:
-      kubernetes:
-        enabled: true

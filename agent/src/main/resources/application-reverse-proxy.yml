@@ -1,2 +1,0 @@
-server:
-  forward-headers-strategy: framework
