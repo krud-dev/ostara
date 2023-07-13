@@ -22,8 +22,13 @@ import org.springframework.web.reactive.function.client.WebClient
     WebEndpointProperties::class
   ]
 )
-@EnableConfigurationProperties(OstaraClientProperties::class, ServerProperties::class, ManagementServerProperties::class, WebEndpointProperties::class)
-class OstaraClientAutoConfiguration {
+@EnableConfigurationProperties(
+  OstaraClientProperties::class,
+  ServerProperties::class,
+  ManagementServerProperties::class,
+  WebEndpointProperties::class
+)
+class OstaraClientConfiguration {
   @Configuration
   @ConditionalOnWebApplication(type = ConditionalOnWebApplication.Type.SERVLET)
   class OstaraWebConfiguration {
