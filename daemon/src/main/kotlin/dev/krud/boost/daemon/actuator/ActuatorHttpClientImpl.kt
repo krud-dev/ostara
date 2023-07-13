@@ -455,7 +455,6 @@ class ActuatorHttpClientImpl(
         return Request.Builder()
             .apply {
                 if (agentUrl != null && instanceAgentExternalId != null) {
-                    header(AgentClient.PROXY_INSTANCE_ID_HEADER, instanceAgentExternalId!!)
                     if (agentApiKey != null) {
                         header(AgentClient.AGENT_KEY_HEADER, agentApiKey!!)
                     }
@@ -472,6 +471,7 @@ class ActuatorHttpClientImpl(
             addPathSegment("api")
             addPathSegment("v1")
             addPathSegment("proxy")
+            addPathSegment(instanceAgentExternalId!!)
         } ?: baseHttpUrl.newBuilder()
         return builder
             .apply {
