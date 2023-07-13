@@ -12,16 +12,11 @@ interface AgentClient {
     @Headers("$AGENT_KEY_HEADER: {apiKey}")
     fun getAgentInfo(@Param("apiKey") apiKey: String?): AgentInfoDTO
 
-    @RequestLine("GET /api/v1")
-    @Headers("$AGENT_KEY_HEADER: {apiKey}")
-    fun getAgentInfo2(@Param("apiKey") apiKey: String?): ResponseEntity<AgentInfoDTO>
-
     @RequestLine("GET /api/v1/instances")
     @Headers("$AGENT_KEY_HEADER: {apiKey}")
     fun getInstances(@Param("apiKey") apiKey: String?): List<DiscoveredInstanceDTO>
 
     companion object {
         const val AGENT_KEY_HEADER = "X-Ostara-Key"
-        const val PROXY_INSTANCE_ID_HEADER = "X-Ostara-InstanceId"
     }
 }

@@ -44,7 +44,7 @@ class AgentHealthConverter {
     }
 
     companion object {
-        const val SUPPORTED_AGENT_VERSION_RANGE = ">=0.0.12"
+        const val SUPPORTED_AGENT_VERSION_RANGE = ">=0.0.1"
         private fun String?.toSemver(): Semver? {
             return this?.let { Semver(it, Semver.SemverType.NPM) }
         }

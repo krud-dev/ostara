@@ -143,7 +143,7 @@ class AgentHealthServiceIntegrationTest {
 
     @Test
     fun `fetchAgentHealth should return agent not supported if agent version is not supported`() {
-        val info = AgentInfoDTO("0.0.1", setOf("Internal"))
+        val info = AgentInfoDTO("0.0.0", setOf("Internal"))
         primeInfoSuccess(info)
         val health = agentHealthService.fetchAgentHealth(theAgent.id)
         expect {
