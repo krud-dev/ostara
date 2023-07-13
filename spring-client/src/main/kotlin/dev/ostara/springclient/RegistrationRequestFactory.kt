@@ -17,7 +17,7 @@ class RegistrationRequestFactory(
   private val managementServerProperties: ManagementServerProperties,
   private val webEndpointProperties: WebEndpointProperties
 ) : FactoryBean<RegistrationRequest> {
-  override fun getObjectType(): Class<*>? {
+  override fun getObjectType(): Class<*> {
     return RegistrationRequest::class.java
   }
 
