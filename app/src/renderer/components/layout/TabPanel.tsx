@@ -1,4 +1,12 @@
-import React, { FunctionComponent, PropsWithChildren, ReactNode, useEffect, useMemo, useState } from 'react';
+import React, {
+  FunctionComponent,
+  PropsWithChildren,
+  ReactNode,
+  useCallback,
+  useEffect,
+  useMemo,
+  useState,
+} from 'react';
 import { Badge, Box, Tab, Tabs } from '@mui/material';
 import { SxProps } from '@mui/system';
 import { Theme } from '@mui/material/styles';
@@ -38,12 +46,16 @@ const TabPanel: FunctionComponent<TabPanelProps> = ({ tabs, divider, sx, sxTabCo
     }
   }, [activeTab]);
 
-  const toggleTab = (event: React.SyntheticEvent, tabIndex: number): void => {
-    const tab = tabs[tabIndex];
-    if (tab && tab.id !== activeTab) {
+  const toggleTab = useCallback(
+    (event: React.SyntheticEvent, tabIndex: number): void => {
+      const tab = get(tabs, tabIndex);
+      if (!tab) {
+        return;
+      }
       setActiveTab(tab.id);
-    }
-  };
+    },
+    [tabs, setActiveTab]
+  );
 
   return (
     <Box sx={sx}>

@@ -31,6 +31,13 @@ export const ABILITIES_DOCUMENTATION_URL = 'https://docs.ostara.dev/features/abi
 export const REDACTION_DOCUMENTATION_URL =
   'https://docs.ostara.dev/troubleshooting/environment-variables-system-properties-app-properties-are-partially-or-fully-masked';
 export const INFO_TROUBLESHOOTING_DOCUMENTATION_URL = 'https://docs.ostara.dev/troubleshooting/no-data-for-info';
+export const AGENT_KUBERNETES_DOCUMENTATION_URL =
+  'https://docs.ostara.dev/documentation/agents/installation-in-kubernetes';
+export const AGENT_SELF_HOSTED_DOCUMENTATION_URL =
+  'https://docs.ostara.dev/documentation/agents/installation-in-mac-linux';
+export const AGENT_SERVICE_DISCOVERY_DOCUMENTATION_URL =
+  'https://docs.ostara.dev/documentation/agents/configuration/service-discovery';
+export const AGENT_TROUBLESHOOTING_DOCUMENTATION_URL = 'https://docs.ostara.dev/troubleshooting/connecting-to-agents';
 export const DISCORD_INVITE_URL = 'https://discord.gg/VJ82fuSYxd';
 export const SEND_FEEDBACK_URL = 'https://feqbilmwjizzspslglqi.functions.supabase.co/contact-request';
 export const SUPPORT_EMAIL = 'support@ostara.dev';

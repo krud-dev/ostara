@@ -528,6 +528,7 @@ export default {
   createAgent: 'Create Agent',
   addAgent: 'Add Agent',
   updateAgent: 'Update Agent',
+  installAgent: 'Install Agent',
   syncAgent: 'Sync Agent',
   syncAgentStarted: 'Sync agent started',
   syncAgentFailed: 'Sync agent failed',
@@ -560,6 +561,37 @@ export default {
   unhealthy: 'Unhealthy',
   healthy: 'Healthy',
   sslError: 'SSL Error',
+  previous: 'Previous',
+  next: 'Next',
+  whatIsAnAgent: 'What is an agent?',
+  whatIsAnAgentText:
+    'An Ostara agent, is a worker installed in your enviroment. It plays a pivotal role in connecting Ostara to the services within your environment. By installing an agent, you enable Ostara to discover and monitor your applications automatically.',
+  whatDoesAnAgentDo: 'What does an agent do?',
+  whatDoesAnAgentDoText:
+    'The agent acts as a bridge between Ostara and the services running within your environment. It facilitates communication with actuator, and most importantly it runs service discovery in the environment. Once services are discovered, it adds them to your Ostara app and then starts retrieving metrics and data from those services, and relaying it back to Ostara for analysis and monitoring.',
+  installationAndConfiguration: 'Installation & Configuration',
+  installingAgentSteps: 'Installing an agent is a straightforward process that requires following a few simple steps.',
+  installAgentInYourEnvironment: 'Install the agent in your environment:',
+  installAgentInYourEnvironmentKubernetes:
+    'Kubernetes: You can use the helm chart we provide, check out the full documentation {url}.',
+  installAgentInYourEnvironmentSelfHosted:
+    'Self Hosted: You can install it from our compiled sources, check out the guide {url}.',
+  configurationIsDownViaOurYamlFile:
+    'Configuration is done via our YAML file, there you set what type of service discovery is available for your environment.',
+  configureKubernetesServiceDiscovery:
+    'Kubernetes: Configure the Kubernetes service discovery by adding the following:',
+  makeSureAgentHasNetworkAccess:
+    'Make sure that the agent has network access to the services you want to connect to, on the actuator port. Additionally save the endpoint (URL and port) that you have exposed the agent, this will be needed in the next step, connecting Ostara to the agent.',
+  agentServiceDiscoveryOptionsOverview:
+    'For a detailed overview of the different service discovery options you can check out the documentation {url}.',
+  agentInstallationNextStep:
+    'After you have installed the agent continue to the next step and supply the URL (including port) and API key (if applicable) for the agent. We recommend that you test connection to make sure that you have configured everything correctly.',
+  agentCheckTroubleshootingGuide:
+    'If you are having issues with the connection to the agent, please check out our troubleshooting guide {url}.',
+  here: 'here',
+  stepOne: 'Step 1',
+  stepTwo: 'Step 2',
+  stepThree: 'Step 3',
   notificationTitleApplicationAllUp: '{application} is UP',
   notificationBodyApplicationAllUp: 'All instances of {application} are UP.',
   notificationTitleApplicationAllDown: '{application} is DOWN',
