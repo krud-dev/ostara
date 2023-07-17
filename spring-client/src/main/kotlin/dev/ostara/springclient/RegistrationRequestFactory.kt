@@ -36,7 +36,7 @@ class RegistrationRequestFactory(
     }
     val contextId = applicationContext.id
     if (contextId.isNullOrBlank()) {
-      error("Unable to determine application name. <<TODO>>")
+      error("Unable to determine application name. Please either set ostara.client.app-name or spring.application.name")
     }
     return contextId
   }
@@ -108,7 +108,7 @@ class RegistrationRequestFactory(
     if (localAddress != null) {
       return localAddress
     }
-    error("Unable to determine service address. <<TODO>>")
+    error("Unable to determine service address.")
   }
 
   private fun getServicePort(): Int {
