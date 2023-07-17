@@ -1,4 +1,3 @@
-import org.jetbrains.dokka.gradle.DokkaTask
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 import org.springframework.boot.gradle.tasks.bundling.BootJar
 import org.springframework.boot.gradle.tasks.run.BootRun
@@ -126,8 +125,9 @@ if (hasProperty("release")) {
 
     signing {
       useInMemoryPgpKeys(
+        properties["signingKeyId"].toString(),
         properties["signingKey"].toString(),
-        properties["signingPassword"].toString(),
+        properties["signingPassword"].toString()
       )
       sign(publishing.publications["maven"])
     }
