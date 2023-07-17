@@ -46,7 +46,7 @@ jobs:
             VERSION=$(./gradlew -q printVersion)
             VERSION=${VERSION%-SNAPSHOT}
             VERSION=${VERSION}.${{ github.event.number }}-SNAPSHOT
-            ./gradlew -Prelease -PreleaseVersion=$VERSION publishToSonatype
+            ./gradlew --stacktrace -Prelease -PreleaseVersion=$VERSION publishToSonatype
           else
-            ./gradlew -Prelease publishToSonatype closeSonatypeStagingRepository
+            ./gradlew --stacktrace -Prelease publishToSonatype closeSonatypeStagingRepository
           fi
