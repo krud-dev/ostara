@@ -1,3 +1,4 @@
+import org.jetbrains.dokka.gradle.DokkaTask
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 import org.springframework.boot.gradle.tasks.bundling.BootJar
 import org.springframework.boot.gradle.tasks.run.BootRun
@@ -115,14 +116,13 @@ if (hasProperty("release")) {
     }
   }
 
-  if (!isSnapshot || true) { // Temporary
+  if (!isSnapshot) {
     val javadocTask = tasks.named<Javadoc>("javadoc").get()
 
-//    tasks.withType<DokkaTask> {
-//      javadocTask.dependsOn(this)
-//      outputDirectory.set(javadocTask.destinationDir)
-//    }
-    // TODO: uncomment
+    tasks.withType<DokkaTask> {
+      javadocTask.dependsOn(this)
+      outputDirectory.set(javadocTask.destinationDir)
+    }
 
     signing {
       val signingKeyBase64: String? by project
