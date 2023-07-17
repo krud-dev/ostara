@@ -30,6 +30,8 @@ repositories {
 
 dependencies {
   implementation("org.jetbrains.kotlin:kotlin-reflect")
+  implementation("jakarta.validation:jakarta.validation-api")
+  implementation("org.springframework.boot:spring-boot-starter-validation")
   api("org.springframework.boot:spring-boot-starter-actuator")
   compileOnly("org.springframework.boot:spring-boot-starter-web")
   compileOnly("org.springframework.boot:spring-boot-starter-webflux")
@@ -88,7 +90,7 @@ if (hasProperty("release")) {
       from(components["java"])
       version = effectiveVersion
       pom {
-        name = project.name
+        name.set(project.name)
         version = effectiveVersion
         description.set("The Spring Client for Ostara, a cross-platform desktop app for managing and monitoring Spring Boot applications using the Actuator API, providing comprehensive insights and effortless control.")
         url.set("https://github.com/krud-dev/ostara")
