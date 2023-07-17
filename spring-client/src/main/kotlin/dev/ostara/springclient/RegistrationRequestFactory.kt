@@ -30,15 +30,15 @@ class RegistrationRequestFactory(
   }
 
   private fun getApplicationName(): String {
-    val appName = ostaraClientProperties.applicationName
-    if (appName.isNotBlank()) {
-      return appName
+    val ostaraAppName = ostaraClientProperties.applicationName
+    if (ostaraAppName.isNotBlank()) {
+      return ostaraAppName
     }
-    val contextId = applicationContext.id
-    if (contextId.isNullOrBlank()) {
+    val springAppName = applicationContext.applicationName
+    if (springAppName.isBlank()) {
       error("Unable to determine application name. <<TODO>>")
     }
-    return contextId
+    return springAppName
   }
 
   private fun getManagementScheme(): String {

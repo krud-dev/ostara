@@ -88,7 +88,7 @@ if (hasProperty("release")) {
       from(components["java"])
       version = effectiveVersion
       pom {
-        name = project.name
+        name.set(project.name)
         version = effectiveVersion
         description.set("The Spring Client for Ostara, a cross-platform desktop app for managing and monitoring Spring Boot applications using the Actuator API, providing comprehensive insights and effortless control.")
         url.set("https://github.com/krud-dev/ostara")
