@@ -13,13 +13,12 @@ import { StepperContext, useStepperContext } from 'renderer/components/layout/st
 import {
   AGENT_KUBERNETES_DOCUMENTATION_URL,
   AGENT_SELF_HOSTED_DOCUMENTATION_URL,
-  AGENT_SERVICE_DISCOVERY_DOCUMENTATION_URL,
+  AGENT_SERVICE_DISCOVERY_INTERNAL_DOCUMENTATION_URL,
+  AGENT_SERVICE_DISCOVERY_KUBERNETES_DOCUMENTATION_URL,
+  AGENT_SERVICE_DISCOVERY_ZOOKEEPER_DOCUMENTATION_URL,
   AGENT_TROUBLESHOOTING_DOCUMENTATION_URL,
   COMPONENTS_SPACING,
-  REDACTION_DOCUMENTATION_URL,
 } from 'renderer/constants/ui';
-import CodeEditor from 'renderer/components/code/CodeEditor';
-import { indentFoldingExtension } from 'renderer/components/code/extensions/indentFoldingExtension';
 
 export type CreateAgentDialogProps = {
   parentFolderId?: string;
@@ -162,19 +161,6 @@ function AgentOverview({ onCancel }: AgentOverviewProps) {
 function AgentInstallation() {
   const { nextStep, previousStep } = useStepperContext();
 
-  const code = useMemo<string>(
-    () =>
-      `ostara:
-  agent:
-    main:
-      api-key: <ChangeMe>
-      service-discovery:
-        kubernetes:
-          enabled: true
-          namespace: default`,
-    []
-  );
-
   return (
     <>
       <DialogContent>
@@ -215,26 +201,70 @@ function AgentInstallation() {
           <FormattedMessage id={'stepTwo'} />
         </Typography>
         <Typography variant={'body2'} sx={{ color: 'text.secondary' }}>
-          <FormattedMessage id={'configurationIsDownViaOurYamlFile'} />
-        </Typography>
-        <Typography variant={'body2'} sx={{ color: 'text.secondary' }}>
-          <FormattedMessage id={'configureKubernetesServiceDiscovery'} />
-        </Typography>
-        <CodeEditor language={'yaml'} value={code} readOnly extensions={[indentFoldingExtension]} />
-        <Typography variant={'body2'} sx={{ color: 'text.secondary', mt: 2 }}>
-          <FormattedMessage id={'makeSureAgentHasNetworkAccess'} />
+          <FormattedMessage id={'configurationIsDoneViaOurYamlFile'} />
         </Typography>
         <Typography variant={'body2'} sx={{ color: 'text.secondary', mt: 2 }}>
+          <Box component={'span'} sx={{ fontWeight: 'bold' }}>
+            <FormattedMessage id={'internal'} />
+          </Box>
+          {': '}
           <FormattedMessage
-            id={'agentServiceDiscoveryOptionsOverview'}
+            id={'configureServiceDiscoveryInternal'}
             values={{
               url: (
-                <Link href={AGENT_SERVICE_DISCOVERY_DOCUMENTATION_URL} target="_blank" rel="noopener noreferrer">
+                <Link
+                  href={AGENT_SERVICE_DISCOVERY_INTERNAL_DOCUMENTATION_URL}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
                   <FormattedMessage id={'here'} />
                 </Link>
               ),
             }}
           />
+        </Typography>
+        <Typography variant={'body2'} sx={{ color: 'text.secondary', mt: 1 }}>
+          <Box component={'span'} sx={{ fontWeight: 'bold' }}>
+            <FormattedMessage id={'kubernetes'} />
+          </Box>
+          {': '}
+          <FormattedMessage
+            id={'configureServiceDiscoveryKubernetes'}
+            values={{
+              url: (
+                <Link
+                  href={AGENT_SERVICE_DISCOVERY_KUBERNETES_DOCUMENTATION_URL}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  <FormattedMessage id={'here'} />
+                </Link>
+              ),
+            }}
+          />
+        </Typography>
+        <Typography variant={'body2'} sx={{ color: 'text.secondary', mt: 1 }}>
+          <Box component={'span'} sx={{ fontWeight: 'bold' }}>
+            <FormattedMessage id={'serviceRegistry'} />
+          </Box>
+          {': '}
+          <FormattedMessage
+            id={'configureServiceDiscoveryServiceRegistry'}
+            values={{
+              url: (
+                <Link
+                  href={AGENT_SERVICE_DISCOVERY_ZOOKEEPER_DOCUMENTATION_URL}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  <FormattedMessage id={'here'} />
+                </Link>
+              ),
+            }}
+          />
+        </Typography>
+        <Typography variant={'body2'} sx={{ color: 'text.secondary', mt: 2 }}>
+          <FormattedMessage id={'makeSureAgentHasNetworkAccess'} />
         </Typography>
         <Typography variant={'subtitle1'} sx={{ mt: 2 }}>
           <FormattedMessage id={'stepThree'} />

@@ -576,14 +576,19 @@ export default {
     'Kubernetes: You can use the helm chart we provide, check out the full documentation {url}.',
   installAgentInYourEnvironmentSelfHosted:
     'Self Hosted: You can install it from our compiled sources, check out the guide {url}.',
-  configurationIsDownViaOurYamlFile:
+  configurationIsDoneViaOurYamlFile:
     'Configuration is done via our YAML file, there you set what type of service discovery is available for your environment.',
-  configureKubernetesServiceDiscovery:
-    'Kubernetes: Configure the Kubernetes service discovery by adding the following:',
+  internal: 'Internal',
+  configureServiceDiscoveryInternal:
+    'You have the option to utilize our Spring Boot client to register services for discovery. For more comprehensive details, please click {url}.',
+  kubernetes: 'Kubernetes',
+  configureServiceDiscoveryKubernetes:
+    'If your agent is installed within the cluster, Kubernetes service discovery will be enabled by default. Check out how to customize the configuration {url}.',
+  serviceRegistry: 'Service Registry',
+  configureServiceDiscoveryServiceRegistry:
+    'If you employ ZooKeeper in your environment, you have the option to connect the agent and leverage its service discovery capabilities. To learn more about the configuration, please click {url}.',
   makeSureAgentHasNetworkAccess:
     'Make sure that the agent has network access to the services you want to connect to, on the actuator port. Additionally save the endpoint (URL and port) that you have exposed the agent, this will be needed in the next step, connecting Ostara to the agent.',
-  agentServiceDiscoveryOptionsOverview:
-    'For a detailed overview of the different service discovery options you can check out the documentation {url}.',
   agentInstallationNextStep:
     'After you have installed the agent continue to the next step and supply the URL (including port) and API key (if applicable) for the agent. We recommend that you test connection to make sure that you have configured everything correctly.',
   agentCheckTroubleshootingGuide:

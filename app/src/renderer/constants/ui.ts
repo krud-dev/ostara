@@ -35,8 +35,12 @@ export const AGENT_KUBERNETES_DOCUMENTATION_URL =
   'https://docs.ostara.dev/documentation/agents/installation-in-kubernetes';
 export const AGENT_SELF_HOSTED_DOCUMENTATION_URL =
   'https://docs.ostara.dev/documentation/agents/installation-in-mac-linux';
-export const AGENT_SERVICE_DISCOVERY_DOCUMENTATION_URL =
-  'https://docs.ostara.dev/documentation/agents/configuration/service-discovery';
+export const AGENT_SERVICE_DISCOVERY_INTERNAL_DOCUMENTATION_URL =
+  'https://docs.ostara.dev/documentation/agents/configuration/service-discovery/internal';
+export const AGENT_SERVICE_DISCOVERY_KUBERNETES_DOCUMENTATION_URL =
+  'https://docs.ostara.dev/documentation/agents/configuration/service-discovery/kubernetes';
+export const AGENT_SERVICE_DISCOVERY_ZOOKEEPER_DOCUMENTATION_URL =
+  'https://docs.ostara.dev/documentation/agents/configuration/service-discovery/zookeeper';
 export const AGENT_TROUBLESHOOTING_DOCUMENTATION_URL = 'https://docs.ostara.dev/troubleshooting/connecting-to-agents';
 export const DISCORD_INVITE_URL = 'https://discord.gg/VJ82fuSYxd';
 export const SEND_FEEDBACK_URL = 'https://feqbilmwjizzspslglqi.functions.supabase.co/contact-request';
