@@ -74,8 +74,8 @@ if (hasProperty("release")) {
   nexusPublishing {
     this@nexusPublishing.repositories {
       sonatype {
-        username.set(extra["ossrhUsername"].toString())
-        password.set(extra["ossrhPassword"].toString())
+        username.set(properties["ossrhUsername"].toString())
+        password.set(properties["ossrhPassword"].toString())
         nexusUrl.set(uri("https://s01.oss.sonatype.org/service/local/"))
         snapshotRepositoryUrl.set(uri("https://s01.oss.sonatype.org/content/repositories/snapshots/"))
       }
@@ -115,23 +115,21 @@ if (hasProperty("release")) {
     }
   }
 
-  if (!isSnapshot) {
+  if (!isSnapshot || true) { // Temporary
     val javadocTask = tasks.named<Javadoc>("javadoc").get()
 
-    tasks.withType<DokkaTask> {
-      javadocTask.dependsOn(this)
-      outputDirectory.set(javadocTask.destinationDir)
-    }
+//    tasks.withType<DokkaTask> {
+//      javadocTask.dependsOn(this)
+//      outputDirectory.set(javadocTask.destinationDir)
+//    }
+    // TODO: uncomment
 
     signing {
       useInMemoryPgpKeys(
-        extra["signingKey"].toString(),
-        extra["signingKeyId"].toString(),
-        extra["signingPassword"].toString(),
+        properties["signingKey"].toString(),
+        properties["signingPassword"].toString(),
       )
-      if (!isSnapshot) {
-        sign(publishing.publications["maven"])
-      }
+      sign(publishing.publications["maven"])
     }
   }
 }
