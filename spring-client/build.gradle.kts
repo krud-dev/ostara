@@ -1,6 +1,7 @@
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 import org.springframework.boot.gradle.tasks.bundling.BootJar
 import org.springframework.boot.gradle.tasks.run.BootRun
+import java.util.*
 
 plugins {
   id("org.springframework.boot") version "3.1.1"
@@ -124,27 +125,15 @@ if (hasProperty("release")) {
     // TODO: uncomment
 
     signing {
+      val signingKeyBase64: String? by project
+      val signingKey = signingKeyBase64?.let { decodeBase64(it) }
+      val signingPassword: String? by project
       useInMemoryPgpKeys(
-        properties["signingKey"].toString(),
-        properties["signingPassword"].toString()
+        signingKey,
+        signingPassword
       )
       sign(publishing.publications["maven"])
     }
-  }
-}
-
-tasks.create("printVersion") {
-  doLast {
-    println(version)
-  }
-}
-
-tasks.create("ttt") {
-  val signingKey: String? by project
-  doLast {
-    println(
-      signingKey!!.chunked(64).joinToString("\n")
-    )
   }
 }
 
@@ -154,4 +143,8 @@ sonar {
     property("sonar.organization", "krud-dev")
     property("sonar.host.url", "https://sonarcloud.io")
   }
+}
+
+fun decodeBase64(base64: String): String {
+  return String(Base64.getDecoder().decode(base64))
 }
