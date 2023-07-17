@@ -34,11 +34,11 @@ class RegistrationRequestFactory(
     if (ostaraAppName.isNotBlank()) {
       return ostaraAppName
     }
-    val springAppName = applicationContext.applicationName
-    if (springAppName.isBlank()) {
+    val contextId = applicationContext.id
+    if (contextId.isNullOrBlank()) {
       error("Unable to determine application name. <<TODO>>")
     }
-    return springAppName
+    return contextId
   }
 
   private fun getManagementScheme(): String {
@@ -112,10 +112,7 @@ class RegistrationRequestFactory(
   }
 
   private fun getServicePort(): Int {
-    val serverPort = serverProperties.port
-    if (serverPort != null) {
-      return serverPort
-    }
-    error("Unable to determine service port. <<TODO>>")
+    val serverPort = serverProperties.port ?: 8080
+    return serverPort
   }
 }

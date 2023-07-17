@@ -30,6 +30,8 @@ repositories {
 
 dependencies {
   implementation("org.jetbrains.kotlin:kotlin-reflect")
+  implementation("jakarta.validation:jakarta.validation-api")
+  implementation("org.springframework.boot:spring-boot-starter-validation")
   api("org.springframework.boot:spring-boot-starter-actuator")
   compileOnly("org.springframework.boot:spring-boot-starter-web")
   compileOnly("org.springframework.boot:spring-boot-starter-webflux")
