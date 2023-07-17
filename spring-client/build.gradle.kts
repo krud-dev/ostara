@@ -145,6 +145,12 @@ sonar {
   }
 }
 
+tasks.create("printVersion") {
+  doLast {
+    println(version)
+  }
+}
+
 fun decodeBase64(base64: String): String {
   return String(Base64.getDecoder().decode(base64))
 }
