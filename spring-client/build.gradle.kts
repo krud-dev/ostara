@@ -2,6 +2,7 @@ import org.jetbrains.dokka.gradle.DokkaTask
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 import org.springframework.boot.gradle.tasks.bundling.BootJar
 import org.springframework.boot.gradle.tasks.run.BootRun
+import java.util.*
 
 plugins {
   id("org.springframework.boot") version "3.1.1"
@@ -74,8 +75,8 @@ if (hasProperty("release")) {
   nexusPublishing {
     this@nexusPublishing.repositories {
       sonatype {
-        username.set(extra["ossrhUsername"].toString())
-        password.set(extra["ossrhPassword"].toString())
+        username.set(properties["ossrhUsername"].toString())
+        password.set(properties["ossrhPassword"].toString())
         nexusUrl.set(uri("https://s01.oss.sonatype.org/service/local/"))
         snapshotRepositoryUrl.set(uri("https://s01.oss.sonatype.org/content/repositories/snapshots/"))
       }
@@ -124,21 +125,15 @@ if (hasProperty("release")) {
     }
 
     signing {
+      val signingKeyBase64: String? by project
+      val signingKey = signingKeyBase64?.let { decodeBase64(it) }
+      val signingPassword: String? by project
       useInMemoryPgpKeys(
-        extra["signingKey"].toString(),
-        extra["signingKeyId"].toString(),
-        extra["signingPassword"].toString(),
+        signingKey,
+        signingPassword
       )
-      if (!isSnapshot) {
-        sign(publishing.publications["maven"])
-      }
+      sign(publishing.publications["maven"])
     }
-  }
-}
-
-tasks.create("printVersion") {
-  doLast {
-    println(version)
   }
 }
 
@@ -148,4 +143,14 @@ sonar {
     property("sonar.organization", "krud-dev")
     property("sonar.host.url", "https://sonarcloud.io")
   }
+}
+
+tasks.create("printVersion") {
+  doLast {
+    println(version)
+  }
+}
+
+fun decodeBase64(base64: String): String {
+  return String(Base64.getDecoder().decode(base64))
 }

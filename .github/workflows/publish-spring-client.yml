@@ -38,15 +38,14 @@ jobs:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
           ORG_GRADLE_PROJECT_ossrhUsername: ${{ secrets.OSSRH_USERNAME }}
           ORG_GRADLE_PROJECT_ossrhPassword: ${{ secrets.OSSRH_PASSWORD }}
-          ORG_GRADLE_PROJECT_signingKey: ${{ secrets.OSSRH_GPG_SECRET_KEY }}
-          ORG_GRADLE_PROJECT_signingKeyId: ${{ secrets.OSSRH_GPG_SECRET_KEY_ID }}
+          ORG_GRADLE_PROJECT_signingKeyBase64: ${{ secrets.OSSRH_GPG_SECRET_KEY_BASE64 }}
           ORG_GRADLE_PROJECT_signingPassword: ${{ secrets.OSSRH_GPG_SECRET_KEY_PASSWORD }}
         run: |
           if [ "${{ github.event_name }}" = "pull_request" ]; then
             VERSION=$(./gradlew -q printVersion)
             VERSION=${VERSION%-SNAPSHOT}
             VERSION=${VERSION}.${{ github.event.number }}-SNAPSHOT
-            ./gradlew -Prelease -PreleaseVersion=$VERSION publishToSonatype
+            ./gradlew --stacktrace -Prelease -PreleaseVersion=$VERSION publishToSonatype
           else
-            ./gradlew -Prelease publishToSonatype closeSonatypeStagingRepository
+            ./gradlew --stacktrace -Prelease publishToSonatype closeSonatypeStagingRepository
           fi
