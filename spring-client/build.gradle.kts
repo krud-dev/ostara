@@ -125,7 +125,6 @@ if (hasProperty("release")) {
 
     signing {
       useInMemoryPgpKeys(
-        properties["signingKeyId"].toString(),
         properties["signingKey"].toString(),
         properties["signingPassword"].toString()
       )
@@ -137,6 +136,15 @@ if (hasProperty("release")) {
 tasks.create("printVersion") {
   doLast {
     println(version)
+  }
+}
+
+tasks.create("ttt") {
+  val signingKey: String? by project
+  doLast {
+    println(
+      signingKey!!.chunked(64).joinToString("\n")
+    )
   }
 }
 
