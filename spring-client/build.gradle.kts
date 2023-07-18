@@ -38,6 +38,9 @@ dependencies {
   testImplementation("org.springframework.boot:spring-boot-starter-test")
   testImplementation("org.springframework.boot:spring-boot-starter-web")
   testImplementation("org.springframework.boot:spring-boot-starter-webflux")
+  testImplementation("com.squareup.okhttp3:mockwebserver:4.11.0")
+  testImplementation("io.strikt:strikt-core:0.34.1")
+  testImplementation("org.mockito.kotlin:mockito-kotlin:5.0.0")
 }
 
 tasks.withType<KotlinCompile> {
