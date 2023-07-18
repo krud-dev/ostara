@@ -1,0 +1,6 @@
+server:
+  port: 0
+ostara:
+  client:
+    agent-url: http://localhost:14444
+    api-key: bla

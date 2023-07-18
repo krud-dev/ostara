@@ -80,8 +80,9 @@ class OstaraClientConfiguration {
   @Bean
   fun ostaraClientRunner(
     ostaraAgentClient: OstaraAgentClient,
-    registrationRequest: RegistrationRequest
+    registrationRequest: RegistrationRequest,
+    ostaraClientProperties: OstaraClientProperties
   ): OstaraClientRunner {
-    return OstaraClientRunner(ostaraAgentClient, registrationRequest)
+    return OstaraClientRunner(ostaraAgentClient, registrationRequest, ostaraClientProperties)
   }
 }

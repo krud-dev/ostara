@@ -1,5 +1,6 @@
 package dev.ostara.springclient
 
+import dev.ostara.springclient.config.OstaraClientProperties
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.DisposableBean
 import org.springframework.beans.factory.InitializingBean
@@ -8,13 +9,14 @@ import kotlin.concurrent.timer
 
 class OstaraClientRunner(
   private val ostaraAgentClient: OstaraAgentClient,
-  private val registrationRequest: RegistrationRequest
+  private val registrationRequest: RegistrationRequest,
+  private val ostaraClientProperties: OstaraClientProperties
 ) : InitializingBean, DisposableBean {
   private lateinit var registrationTimer: Timer
 
   override fun afterPropertiesSet() {
     log.info("Initializing Ostara Agent Client Runner...")
-    registrationTimer = timer("ostaraRegistration", false, 0, 10_000) {
+    registrationTimer = timer("ostaraRegistration", false, 0, ostaraClientProperties.runnerIntervalSeconds * 1000) {
       log.trace("Initiating registration request...")
       ostaraAgentClient.register(registrationRequest)
         .onSuccess {
@@ -29,6 +31,10 @@ class OstaraClientRunner(
 
   override fun destroy() {
     log.info("Deregistering from Ostara Agent...")
+    if (!::registrationTimer.isInitialized) {
+      log.warn("Registration timer not initialized, skipping deregistration.")
+      return
+    }
     registrationTimer.cancel()
     ostaraAgentClient.deregister(registrationRequest)
       .onSuccess {
