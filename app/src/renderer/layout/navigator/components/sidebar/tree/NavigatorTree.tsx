@@ -250,20 +250,30 @@ export default function NavigatorTree({ width, height, search }: NavigatorTreePr
     [data, deleteItems]
   );
 
+  const [selectedNodes, setSelectedNodes] = useState<NodeApi<TreeItem>[]>([]);
+
+  useUpdateEffect(() => {
+    if (selectedNodes.some((node) => node.id === selectedItem?.id)) {
+      return;
+    }
+
+    if (isEmpty(selectedNodes) && selectedItem && getItem(selectedItem.id)) {
+      treeRef.current?.select(selectedItem.id);
+    }
+
+    if (selectedNodes.length === 1) {
+      const nodeUrl = getItemUrl(selectedNodes[0].data);
+      if (!pathname.startsWith(nodeUrl)) {
+        navigate(nodeUrl);
+      }
+    }
+  }, [selectedNodes]);
+
   const onSelect = useCallback(
     (nodes: NodeApi<TreeItem>[]): void => {
-      if (isEmpty(nodes) && selectedItem && getItem(selectedItem.id)) {
-        treeRef.current?.select(selectedItem.id);
-      }
-
-      if (nodes.length === 1) {
-        const nodeUrl = getItemUrl(nodes[0].data);
-        if (!pathname.startsWith(nodeUrl)) {
-          navigate(nodeUrl);
-        }
-      }
+      setSelectedNodes(nodes);
     },
-    [navigate, pathname, getItem]
+    [setSelectedNodes]
   );
 
   const disableEditItem = useCallback((treeItem: TreeItem): boolean => {
