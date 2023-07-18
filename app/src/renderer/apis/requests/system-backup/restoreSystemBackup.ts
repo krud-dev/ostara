@@ -9,6 +9,7 @@ import { crudKeys } from 'renderer/apis/requests/crud/crudKeys';
 import { instanceCrudEntity } from 'renderer/apis/requests/crud/entity/entities/instance.crudEntity';
 import { applicationCrudEntity } from 'renderer/apis/requests/crud/entity/entities/application.crudEntity';
 import { folderCrudEntity } from 'renderer/apis/requests/crud/entity/entities/folder.crudEntity';
+import { agentCrudEntity } from 'renderer/apis/requests/crud/entity/entities/agent.crudEntity';
 
 type Variables = {
   fileName: string;
@@ -34,6 +35,7 @@ export const useRestoreSystemBackup = (
     invalidateQueriesKeysFn: (data, variables) => [
       crudKeys.entity(instanceCrudEntity),
       crudKeys.entity(applicationCrudEntity),
+      crudKeys.entity(agentCrudEntity),
       crudKeys.entity(folderCrudEntity),
     ],
   });
