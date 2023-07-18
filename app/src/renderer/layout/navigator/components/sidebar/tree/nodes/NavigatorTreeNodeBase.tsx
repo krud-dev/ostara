@@ -22,6 +22,7 @@ import useItemDisplayName from 'renderer/hooks/items/useItemDisplayName';
 import { useNavigatorTreeContext } from 'renderer/contexts/NavigatorTreeContext';
 
 type NavigatorTreeNodeBaseProps = NodeRendererProps<TreeItem> & {
+  hideHealthStatus?: boolean;
   menuState?: PopupState;
   contextMenuRef?: React.MutableRefObject<HTMLElement | null>;
   onClick?: (event: React.MouseEvent) => void;
@@ -72,6 +73,7 @@ export default function NavigatorTreeNodeBase({
   tree,
   dragHandle,
   preview,
+  hideHealthStatus,
   menuState,
   contextMenuRef,
   onClick,
@@ -213,7 +215,7 @@ export default function NavigatorTreeNodeBase({
               backgroundColor: healthStatusComponent ? 'transparent' : healthStatusColor,
             },
           }}
-          invisible={!healthStatusColor}
+          invisible={!healthStatusColor || hideHealthStatus}
           badgeContent={healthStatusComponent}
         >
           <IconViewer icon={itemIcon} fontSize="small" />

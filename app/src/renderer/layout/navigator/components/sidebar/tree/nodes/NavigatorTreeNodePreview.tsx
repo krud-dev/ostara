@@ -6,5 +6,5 @@ import NavigatorTreeNodeBase from 'renderer/layout/navigator/components/sidebar/
 type NavigatorTreeNodePreviewProps = NodeRendererProps<TreeItem>;
 
 export default function NavigatorTreeNodePreview(props: NavigatorTreeNodePreviewProps) {
-  return <NavigatorTreeNodeBase {...props} />;
+  return <NavigatorTreeNodeBase {...props} hideHealthStatus />;
 }
