@@ -12,6 +12,16 @@
 
 * [Folders](documentation/folders/README.md)
   * [Creating / Updating Folders](documentation/folders/creating-updating-folders.md)
+* [Agents](documentation/agents/README.md)
+  * [Agent Version Compatibility Matrix](documentation/agents/agent-version-compatibility-matrix.md)
+  * [Configuration](documentation/agents/configuration/README.md)
+    * [Service Discovery](documentation/agents/configuration/service-discovery/README.md)
+      * [Internal](documentation/agents/configuration/service-discovery/internal.md)
+      * [Kubernetes](documentation/agents/configuration/service-discovery/kubernetes.md)
+      * [ZooKeeper](documentation/agents/configuration/service-discovery/zookeeper.md)
+  * [Installation](documentation/agents/installation/README.md)
+    * [Mac/Linux](documentation/agents/installation/mac-linux.md)
+    * [Kubernetes](documentation/agents/installation/kubernetes.md)
 * [Applications](documentation/applications/README.md)
   * [Creating / Updating Applications](documentation/applications/creating-updating-applications.md)
 * [Instances](documentation/instances/README.md)
@@ -32,6 +42,9 @@
   * [Overview](features/folder-features/overview/README.md)
     * [Dashboard](features/folder-features/overview/dashboard.md)
     * [Applications](features/folder-features/overview/applications.md)
+* [Agent Features](features/agent-features/README.md)
+  * [Overview](features/agent-features/overview/README.md)
+    * [Dashboard](features/agent-features/overview/dashboard.md)
 * [Application Features](features/application-features/README.md)
   * [Overview](features/application-features/overview/README.md)
     * [Dashboard](features/application-features/overview/dashboard.md)
@@ -74,6 +87,8 @@
 
 ## ⚠ Troubleshooting
 
+* [Connecting to Agents](troubleshooting/connecting-to-agents/README.md)
+  * [Service Discovery](troubleshooting/connecting-to-agents/service-discovery.md)
 * [No data for Info](troubleshooting/no-data-for-info.md)
 * [Environment variables / System properties / App properties are partially or fully masked](troubleshooting/environment-variables-system-properties-app-properties-are-partially-or-fully-masked.md)
 * [Not all requests appear in HTTP Requests](troubleshooting/not-all-requests-appear-in-http-requests.md)

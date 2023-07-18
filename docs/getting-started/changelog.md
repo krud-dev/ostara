@@ -1,5 +1,25 @@
 # Changelog
 
+### 0.12.0
+
+#### Major Changes
+
+* Added agents ([More Information](../documentation/agents/))
+
+#### Minor Changes
+
+* 556adb6c: Added snap support for main sidebar to allow full screen dashboard
+* 41bf060f: Improved app updater mechanism
+* 53150176: Added multi item selection and actions in the navigator tree
+
+#### Patch Changes
+
+* 01ed858c: Fixed react query offline behavior
+* 7f29a900: Fixed ResizeObserver loop limit exceeded error
+* 3bf39ce3: Fixed app updater quit and install
+* 9945e576: Added network check to check for updates
+* 30a02279: Fixed 'value' in actuator environment response not being transformable to string
+
 ### 0.11.0
 
 #### Minor Changes
