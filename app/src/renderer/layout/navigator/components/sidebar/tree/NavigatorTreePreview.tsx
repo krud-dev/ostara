@@ -1,5 +1,6 @@
 import React, { useCallback, useMemo } from 'react';
 import {
+  AgentRO,
   ApplicationRO,
   ApplicationType,
   BackupDTO,
@@ -55,6 +56,21 @@ export default function NavigatorTreePreview({ backup }: NavigatorTreePreviewPro
         }),
       };
       return application;
+    }
+
+    if (backupItem.type === 'agent') {
+      const agent: AgentRO & { children: TreeItem[] } = {
+        id: id,
+        ...backupItem.model,
+        authentication: { type: 'none' },
+        health: {
+          status: 'PENDING',
+          statusCode: 0,
+          time: 0,
+        },
+        children: backupItem.children?.map(convertBackupItemToTreeItem),
+      };
+      return agent;
     }
 
     return {
