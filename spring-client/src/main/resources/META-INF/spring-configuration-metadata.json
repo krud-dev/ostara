@@ -1,0 +1,38 @@
+{
+  "groups": [
+    {
+      "name": "ostara.client",
+      "type": "dev.ostara.springclient.config.OstaraClientProperties",
+      "sourceType": "dev.ostara.springclient.config.OstaraClientProperties"
+    }
+  ],
+  "properties": [
+    {
+      "name": "ostara.client.agent-url",
+      "type": "java.lang.String",
+      "description": "The URL of the Ostara Agent.",
+      "sourceType": "dev.ostara.springclient.config.OstaraClientProperties"
+    },
+    {
+      "name": "ostara.client.api-key",
+      "type": "java.lang.String",
+      "description": "The API key to use when communicating with the Ostara Agent.",
+      "sourceType": "dev.ostara.springclient.config.OstaraClientProperties"
+    },
+    {
+      "name": "ostara.client.application-name",
+      "type": "java.lang.String",
+      "description": "The name of the application to register with the Ostara Agent, if not set the value of `spring.application.name` will be used.",
+      "sourceType": "dev.ostara.springclient.config.OstaraClientProperties",
+      "defaultValue": "${spring.application.name}"
+    },
+    {
+      "name": "ostara.client.runner-interval-seconds",
+      "type": "java.lang.Long",
+      "description": "The interval in seconds for the [OstaraClientRunner] to run and register the application with the Ostara Agent.",
+      "sourceType": "dev.ostara.springclient.config.OstaraClientProperties",
+      "defaultValue": "10"
+    }
+  ],
+  "hints": []
+}
