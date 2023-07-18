@@ -18,7 +18,7 @@ plugins {
 }
 
 group = "dev.ostara"
-version = "0.12.0-SNAPSHOT"
+version = "0.12.0"
 
 java {
   sourceCompatibility = JavaVersion.VERSION_17

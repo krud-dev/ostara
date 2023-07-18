@@ -13,7 +13,7 @@ plugins {
 }
 
 group = "dev.krud.boost"
-version = "0.12.0-SNAPSHOT"
+version = "0.12.0"
 
 val crudFrameworkVersion = "0.25.0"
 val shapeShiftVersion = "0.8.0"
