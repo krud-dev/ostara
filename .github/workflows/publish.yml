@@ -12,21 +12,78 @@ on:
       - .github/actions/**
   
 jobs:
-  publish:
-    runs-on: macos-latest
-    concurrency:
-      group: ${{ github.workflow }}-${{ github.ref }}
-      cancel-in-progress: true
+  determine-version:
+    runs-on: ubuntu-latest
+    outputs:
+      version: ${{ steps.determine-version.outputs.version }}
     steps:
       - name: Checkout git repo
         uses: actions/checkout@v3
-      - id: determine-version
+      - name: Determine version
+        id: determine-version
         uses: ./.github/actions/determine-version
+  build-daemon:
+    runs-on: ubuntu-latest
+    needs: determine-version
+    steps:
+      - name: Checkout git repo
+        uses: actions/checkout@v3
       - name: Install Java
         uses: actions/setup-java@v3
         with:
           distribution: 'zulu'
           java-version: '17'
+      - name: Cache Gradle packages
+        uses: actions/cache@v3
+        with:
+          path: ~/.gradle/caches
+          key: ${{ runner.os }}-gradle-${{ hashFiles('daemon/*.gradle.kts') }}
+          restore-keys: ${{ runner.os }}-gradle
+      - name: Install and build
+        env: 
+          ORG_GRADLE_PROJECT_version: ${{ needs.determine-version.outputs.version }}
+        run: |
+          cd daemon
+          ./gradlew bootJar
+      - name: Upload artifact
+        uses: actions/upload-artifact@v2
+        with:
+          name: daemon-jar
+          path: daemon/build/libs/daemon.jar
+  build-demo:
+    runs-on: ubuntu-latest
+    needs: determine-version
+    steps:
+      - name: Checkout git repo
+        uses: actions/checkout@v3
+      - name: Install Java
+        uses: actions/setup-java@v3
+        with:
+          distribution: 'zulu'
+          java-version: '17'
+      - name: Cache Gradle packages
+        uses: actions/cache@v3
+        with:
+          path: ~/.gradle/caches
+          key: ${{ runner.os }}-gradle-${{ hashFiles('demo/*.gradle.kts') }}
+          restore-keys: ${{ runner.os }}-gradle
+      - name: Install and build
+        env: 
+          ORG_GRADLE_PROJECT_version: ${{ needs.determine-version.outputs.version }}
+        run: |
+          cd demo
+          ./gradlew bootJar
+      - name: Upload artifact
+        uses: actions/upload-artifact@v2
+        with:
+          name: demo-jar
+          path: demo/build/libs/demo.jar
+  build-app:
+    runs-on: macos-latest
+    needs: determine-version
+    steps:
+      - name: Checkout git repo
+        uses: actions/checkout@v3
       - name: Install Node and NPM
         uses: actions/setup-node@v3
         with:
@@ -34,25 +91,66 @@ jobs:
           cache: npm
       - name: Install and build
         env:
-          VERSION: ${{ steps.determine-version.outputs.version }}
-          ORG_GRADLE_PROJECT_version: ${{ steps.determine-version.outputs.version }}
+          VERSION: ${{ needs.determine-version.outputs.version }}
         run: |
           cd app
           npm install
-          npm run postinstall
-          npm run jdk:download
-          npm run build
-
-      - name: Publish releases
+          npm run build:main
+          npm run build:renderer
+      - name: Upload artifact
+        uses: actions/upload-artifact@v2
+        with:
+          name: app-build
+          path: app/release/build
+  package-windows:
+    runs-on: ubuntu-latest
+    needs: [determine-version, build-daemon, build-demo, build-app]
+    concurrency:
+      group: ${{ github.workflow }}-${{ github.ref }}
+      cancel-in-progress: true
+    steps:
+      - name: Checkout git repo
+        uses: actions/checkout@v3
+      - name: Install Node and NPM
+        uses: actions/setup-node@v3
+        with:
+          node-version: 16
+          cache: npm
+      - name: Cache Node packages
+        uses: actions/cache@v2
+        with:
+          path: ~/.npm
+          key: ${{ runner.os }}-node-${{ hashFiles('app/package-lock.json') }}
+          restore-keys: ${{ runner.os }}-node
+      - uses: actions/download-artifact@v2
+        with:
+          name: daemon-jar
+      - uses: actions/download-artifact@v2
+        with:
+          name: demo-jar
+      - uses: actions/download-artifact@v2
+        with:
+          name: app-build
+      - name: Install and build
         env:
-          # These values are used for auto updates signing
-          APPLE_ID: ${{ secrets.APPLE_ID }}
-          APPLE_ID_PASS: ${{ secrets.APPLE_ID_PASS }}
-          APPLE_APP_SPECIFIC_PASSWORD: ${{ secrets.APPLE_APP_SPECIFIC_PASSWORD }}
-          CSC_LINK: ${{ secrets.CSC_LINK }}
-          CSC_KEY_PASSWORD: ${{ secrets.CSC_KEY_PASSWORD }}
-          # This is used for uploading release assets to github
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          VERSION: ${{ needs.determine-version.outputs.version }}
         run: |
           cd app
-          npm exec electron-builder -- --publish always --win --mac --linux
+          npm install
+          npm run jdk:download
+          npm run electron:builder -- --publish never --win
+          npm run build
+
+      # - name: Publish releases
+      #   env:
+      #     # These values are used for auto updates signing
+      #     APPLE_ID: ${{ secrets.APPLE_ID }}
+      #     APPLE_ID_PASS: ${{ secrets.APPLE_ID_PASS }}
+      #     APPLE_APP_SPECIFIC_PASSWORD: ${{ secrets.APPLE_APP_SPECIFIC_PASSWORD }}
+      #     CSC_LINK: ${{ secrets.CSC_LINK }}
+      #     CSC_KEY_PASSWORD: ${{ secrets.CSC_KEY_PASSWORD }}
+      #     # This is used for uploading release assets to github
+      #     GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      #   run: |
+      #     cd app
+      #     npm exec electron-builder -- --publish always --win --mac --linux
