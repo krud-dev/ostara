@@ -1,6 +1,5 @@
 {
   "name": "@krud-dev/ostara-main",
-  "version": "0.13.0-snapshot",
   "description": "A visual tool to monitor and interact with Spring Boot applications via Actuator",
   "private": "true",
   "keywords": [
