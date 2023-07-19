@@ -10,7 +10,7 @@ plugins {
   kotlin("jvm") version "1.9.0"
   kotlin("plugin.spring") version "1.9.0"
   jacoco
-  id("org.sonarqube") version "4.2.1.3168"
+  id("org.sonarqube") version "4.3.0.3225"
   `maven-publish`
   id("io.github.gradle-nexus.publish-plugin") version "2.0.0-rc-1"
   signing
