@@ -9,7 +9,6 @@ plugins {
 }
 
 group = "dev.krud.ostara"
-version = "0.13.0-SNAPSHOT"
 java.sourceCompatibility = JavaVersion.VERSION_17
 
 repositories {
