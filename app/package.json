@@ -54,7 +54,7 @@
     "build:demo": "cd ../demo && ./gradlew bootJar",
     "postinstall": "ts-node .erb/scripts/check-native-dep.js && electron-builder install-app-deps && cross-env NODE_ENV=development TS_NODE_TRANSPILE_ONLY=true webpack --config ./.erb/configs/webpack.config.renderer.dev.dll.ts",
     "lint": "cross-env NODE_ENV=development eslint . --ext .js,.jsx,.ts,.tsx",
-    "electron:builder": "electron-builder build -c.extraMetadata.version=\"${VERSION:-${NODE_ENV:-0.0.0-development}}\"",
+    "electron:builder": "electron-builder build -c.extraMetadata.version=\"${VERSION:-0.0.0-${NODE_ENV:-development}}\"",
     "package:dev": "npm run electron:builder -- -c.mac.identity=null",
     "package": "npm run jdk:download && npm run clean && npm run build && electron:builder -- --publish never",
     "package:all": "npm run jdk:download && npm run clean && npm run build && electron:builder -- --publish never -mwl --arm64 --x64",
