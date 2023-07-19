@@ -1,0 +1,19 @@
+name: 'Determine Version'
+description: 'Determine the current version'
+outputs:
+  version: ${{ steps.determine-version.outputs.version }}
+runs:
+  using: 'composite'
+  steps:
+    - name: Determine version
+      id: determine-version
+      shell: sh
+      run: |
+        EXACT_DESCRIBE_RESULT=$(git describe --tags --exact-match)
+        EXACT_MATCH_EXIT_CODE=$?
+        if [ $EXACT_MATCH_EXIT_CODE -eq 0 ]; then
+          echo "version=${DESCRIBE_RESULT}" >> $GITHUB_OUTPUT
+        else
+          DESCRIBE_RESULT=$(git describe --tags)
+          echo "version=${DESCRIBE_RESULT}-snapshot" >> $GITHUB_OUTPUT
+        fi

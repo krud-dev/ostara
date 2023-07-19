@@ -2,8 +2,6 @@ name: Publish
 
 on:
   push:
-    branches:
-      - master
     paths:
       - daemon/**
       - app/**
@@ -11,6 +9,7 @@ on:
       - package.json
       - package-lock.json
       - .github/workflows/publish.yml
+  
 jobs:
   publish:
     runs-on: macos-latest
@@ -20,6 +19,8 @@ jobs:
     steps:
       - name: Checkout git repo
         uses: actions/checkout@v3
+      - id: determine-version
+        uses: ./.github/actions/determine-version
       - name: Install Java
         uses: actions/setup-java@v3
         with:
@@ -30,8 +31,10 @@ jobs:
         with:
           node-version: 16
           cache: npm
-
       - name: Install and build
+        env:
+          VERSION: ${{ steps.determine-version.outputs.version }}
+          ORG_GRADLE_PROJECT_version: ${{ steps.determine-version.outputs.version }}
         run: |
           cd app
           npm install
