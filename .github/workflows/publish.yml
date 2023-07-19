@@ -142,7 +142,6 @@ jobs:
           npm install
           npm run jdk:download
           npm run electron:builder -- --publish never --win
-          npm run build
 
       # - name: Publish releases
       #   env:
