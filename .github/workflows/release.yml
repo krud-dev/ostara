@@ -142,6 +142,9 @@ jobs:
           APPLE_ID_PASS: ${{ secrets.APPLE_ID_PASS }}
           CSC_LINK: ${{ secrets.CSC_LINK }}
           CSC_KEY_PASSWORD: ${{ secrets.CSC_KEY_PASSWORD }}
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          PUBLISH_FOR_PULL_REQUEST: true
+          CSC_FOR_PULL_REQUEST: true
         run: |
           cd app
           npm install
