@@ -15,16 +15,16 @@ runs:
       id: determine-version
       shell: sh
       run: |
-        set +e
         if [[ "$GITHUB_REF" == "refs/heads/release/"* ]]; then
-          echo "version=v${GITHUB_REF#refs/heads/release/}" >> $GITHUB_OUTPUT
+          echo "version=${GITHUB_REF#refs/heads/release/}" >> $GITHUB_OUTPUT
           exit 0
         fi
+        set +e
         EXACT_DESCRIBE_RESULT=$(git describe --tags --exact-match)
         EXACT_MATCH_EXIT_CODE=$?
         set -e
         if [ $EXACT_MATCH_EXIT_CODE -eq 0 ]; then
-          echo "version=${DESCRIBE_RESULT:1}" >> $GITHUB_OUTPUT
+          echo "version=${EXACT_DESCRIBE_RESULT:1}" >> $GITHUB_OUTPUT
         else
           DESCRIBE_RESULT=$(git describe --tags --abbrev=0)
           echo "version=${DESCRIBE_RESULT:1}-snapshot" >> $GITHUB_OUTPUT
