@@ -11,7 +11,7 @@ on:
   
 jobs:
   determine-version:
-    if: github.event.label.name == 'ci-do-release' || github.event_name == 'push'
+    if: github.event_name == 'push' || contains(github.event.pull_request.labels.*.name, 'ci-do-release')
     runs-on: ubuntu-latest
     outputs:
       version: ${{ steps.determine-version.outputs.version }}
