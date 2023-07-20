@@ -130,6 +130,11 @@ jobs:
         with:
           name: app-build
           path: app/release/app/dist/
+      - name: Cache JDKs
+        uses: actions/cache@v3
+        with:
+          path: devops/jdks
+          key: ${{ runner.os }}-jdks
       - name: Install and build
         env:
           VERSION: ${{ needs.determine-version.outputs.version }}
