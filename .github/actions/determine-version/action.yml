@@ -13,7 +13,7 @@ runs:
         fetch-depth: 0
     - name: Determine version
       id: determine-version
-      shell: sh
+      shell: bash
       run: |
         if [[ "$GITHUB_REF" == "refs/heads/release/"* ]]; then
           echo "version=${GITHUB_REF#refs/heads/release/}" >> $GITHUB_OUTPUT
