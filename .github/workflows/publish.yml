@@ -33,12 +33,7 @@ jobs:
         with:
           distribution: 'zulu'
           java-version: '17'
-      - name: Cache Gradle packages
-        uses: actions/cache@v3
-        with:
-          path: ~/.gradle/caches
-          key: ${{ runner.os }}-gradle-${{ hashFiles('daemon/*.gradle.kts') }}
-          restore-keys: ${{ runner.os }}-gradle
+          cache: gradle
       - name: Install and build
         env: 
           ORG_GRADLE_PROJECT_version: ${{ needs.determine-version.outputs.version }}
@@ -50,6 +45,7 @@ jobs:
         with:
           name: daemon-jar
           path: daemon/build/libs/daemon.jar
+          retention-days: 7
           if-no-files-found: error
   build-demo:
     runs-on: ubuntu-latest
@@ -62,12 +58,7 @@ jobs:
         with:
           distribution: 'zulu'
           java-version: '17'
-      - name: Cache Gradle packages
-        uses: actions/cache@v3
-        with:
-          path: ~/.gradle/caches
-          key: ${{ runner.os }}-gradle-${{ hashFiles('demo/*.gradle.kts') }}
-          restore-keys: ${{ runner.os }}-gradle
+          cache: gradle
       - name: Install and build
         env: 
           ORG_GRADLE_PROJECT_version: ${{ needs.determine-version.outputs.version }}
@@ -79,6 +70,7 @@ jobs:
         with:
           name: demo-jar
           path: demo/build/libs/demo.jar
+          retention-days: 7
           if-no-files-found: error
   build-app:
     runs-on: macos-latest
@@ -104,6 +96,7 @@ jobs:
         with:
           name: app-build
           path: app/release/app/dist/
+          retention-days: 7
           if-no-files-found: error
   package-windows:
     runs-on: ubuntu-latest
@@ -128,12 +121,15 @@ jobs:
       - uses: actions/download-artifact@v2
         with:
           name: daemon-jar
+          path: daemon/build/libs/
       - uses: actions/download-artifact@v2
         with:
           name: demo-jar
+          path: demo/build/libs/
       - uses: actions/download-artifact@v2
         with:
           name: app-build
+          path: app/release/app/dist/
       - name: Install and build
         env:
           VERSION: ${{ needs.determine-version.outputs.version }}
