@@ -161,12 +161,7 @@ jobs:
         with:
           distribution: 'zulu'
           java-version: '17'
-      - name: Cache Gradle packages
-        uses: actions/cache@v3
-        with:
-          path: ~/.gradle/caches
-          key: ${{ runner.os }}-gradle-${{ hashFiles('spring-client/*.gradle.kts') }}
-          restore-keys: ${{ runner.os }}-gradle
+          cache: gradle
       - name: Build and release
         working-directory: spring-client
         env:
