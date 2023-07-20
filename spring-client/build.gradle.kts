@@ -18,7 +18,7 @@ plugins {
 }
 
 group = "dev.ostara"
-version = "0.13.0-SNAPSHOT"
+version = version.toString().uppercase()
 
 java {
   sourceCompatibility = JavaVersion.VERSION_17
@@ -68,8 +68,8 @@ tasks.named<Jar>("jar") {
 }
 
 if (hasProperty("release")) {
-  val effectiveVersion = (findProperty("releaseVersion") ?: version).toString()
-  val isSnapshot = version.toString().endsWith("-SNAPSHOT")
+  val effectiveVersion = version.toString()
+  val isSnapshot = effectiveVersion.endsWith("-SNAPSHOT")
   if (!isSnapshot) {
     java {
       withJavadocJar()

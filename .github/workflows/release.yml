@@ -1,0 +1,178 @@
+name: Publish
+
+on:
+  push:
+    branches:
+      - master
+      - release/**
+  pull_request:
+    types:
+      - labeled
+  
+jobs:
+  determine-version:
+    if: github.event_name == 'push' || github.event.label.name == 'ci-do-release'
+    runs-on: ubuntu-latest
+    outputs:
+      version: ${{ steps.determine-version.outputs.version }}
+    steps:
+      - name: Checkout git repo
+        uses: actions/checkout@v3
+      - name: Determine version
+        id: determine-version
+        uses: ./.github/actions/determine-version
+  build-daemon:
+    runs-on: ubuntu-latest
+    needs: determine-version
+    steps:
+      - name: Checkout git repo
+        uses: actions/checkout@v3
+      - name: Install Java
+        uses: actions/setup-java@v3
+        with:
+          distribution: 'zulu'
+          java-version: '17'
+          cache: gradle
+      - name: Install and build
+        env: 
+          ORG_GRADLE_PROJECT_version: ${{ needs.determine-version.outputs.version }}
+        run: |
+          cd daemon
+          ./gradlew bootJar
+      - name: Upload artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: daemon-jar
+          path: daemon/build/libs/daemon.jar
+          retention-days: 7
+          if-no-files-found: error
+  build-demo:
+    runs-on: ubuntu-latest
+    needs: determine-version
+    steps:
+      - name: Checkout git repo
+        uses: actions/checkout@v3
+      - name: Install Java
+        uses: actions/setup-java@v3
+        with:
+          distribution: 'zulu'
+          java-version: '17'
+          cache: gradle
+      - name: Install and build
+        env: 
+          ORG_GRADLE_PROJECT_version: ${{ needs.determine-version.outputs.version }}
+        run: |
+          cd demo
+          ./gradlew bootJar
+      - name: Upload artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: demo-jar
+          path: demo/build/libs/demo.jar
+          retention-days: 7
+          if-no-files-found: error
+  build-app:
+    runs-on: macos-latest
+    needs: determine-version
+    steps:
+      - name: Checkout git repo
+        uses: actions/checkout@v3
+      - name: Install Node and NPM
+        uses: actions/setup-node@v3
+        with:
+          node-version: 16
+          cache: npm
+      - name: Install and build
+        env:
+          VERSION: ${{ needs.determine-version.outputs.version }}
+        run: |
+          cd app
+          npm install
+            
+          npm run build:main
+          npm run build:renderer
+      - name: Upload artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: app-build
+          path: app/release/app/dist/
+          retention-days: 7
+          if-no-files-found: error
+  release-app:
+    runs-on: macos-latest
+    needs: [determine-version, build-daemon, build-demo, build-app]
+    concurrency:
+      group: ${{ github.workflow }}-${{ github.ref }}
+      cancel-in-progress: true
+    steps:
+      - name: Checkout git repo
+        uses: actions/checkout@v3
+      - name: Install Node and NPM
+        uses: actions/setup-node@v3
+        with:
+          node-version: 16
+          cache: npm
+      - name: Cache Node packages
+        uses: actions/cache@v2
+        with:
+          path: ~/.npm
+          key: ${{ runner.os }}-node-${{ hashFiles('app/package-lock.json') }}
+          restore-keys: ${{ runner.os }}-node
+      - uses: actions/download-artifact@v2
+        with:
+          name: daemon-jar
+          path: daemon/build/libs/
+      - uses: actions/download-artifact@v2
+        with:
+          name: demo-jar
+          path: demo/build/libs/
+      - uses: actions/download-artifact@v2
+        with:
+          name: app-build
+          path: app/release/app/dist/
+      - name: Cache JDKs
+        uses: actions/cache@v3
+        with:
+          path: devops/jdks
+          key: ${{ runner.os }}-jdks
+      - name: Install and build
+        env:
+          VERSION: ${{ needs.determine-version.outputs.version }}
+          APPLE_ID: ${{ secrets.APPLE_ID }}
+          APPLE_ID_PASS: ${{ secrets.APPLE_ID_PASS }}
+          CSC_LINK: ${{ secrets.CSC_LINK }}
+          CSC_KEY_PASSWORD: ${{ secrets.CSC_KEY_PASSWORD }}
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          PUBLISH_FOR_PULL_REQUEST: true
+          CSC_FOR_PULL_REQUEST: true
+        run: |
+          cd app
+          npm install
+          npm run postinstall
+          npm run jdk:download
+          npm run electron:builder -- --publish always --mac --linux
+  release-spring-client:
+    runs-on: ubuntu-latest
+    needs: determine-version
+    env: 
+      ORG_GRADLE_PROJECT_version: ${{ needs.determine-version.outputs.version }}
+    steps:
+      - name: Check out Git repository
+        uses: actions/checkout@v3
+      - name: Install Java
+        uses: actions/setup-java@v3
+        with:
+          distribution: 'zulu'
+          java-version: '17'
+          cache: gradle
+      - name: Build and release
+        working-directory: spring-client
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+          ORG_GRADLE_PROJECT_ossrhUsername: ${{ secrets.OSSRH_USERNAME }}
+          ORG_GRADLE_PROJECT_ossrhPassword: ${{ secrets.OSSRH_PASSWORD }}
+          ORG_GRADLE_PROJECT_signingKeyBase64: ${{ secrets.OSSRH_GPG_SECRET_KEY_BASE64 }}
+          ORG_GRADLE_PROJECT_signingPassword: ${{ secrets.OSSRH_GPG_SECRET_KEY_PASSWORD }}
+        run: ./gradlew --stacktrace -Prelease publishToSonatype closeSonatypeStagingRepository
+        
