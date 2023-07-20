@@ -18,6 +18,7 @@ plugins {
 }
 
 group = "dev.ostara"
+version = version.toString().uppercase()
 
 java {
   sourceCompatibility = JavaVersion.VERSION_17
@@ -67,7 +68,7 @@ tasks.named<Jar>("jar") {
 }
 
 if (hasProperty("release")) {
-  val effectiveVersion = version.toString().uppercase()
+  val effectiveVersion = version.toString()
   val isSnapshot = effectiveVersion.endsWith("-SNAPSHOT")
   if (!isSnapshot) {
     java {
