@@ -100,7 +100,7 @@ jobs:
           path: app/release/app/dist/
           retention-days: 7
           if-no-files-found: error
-  package-mac:
+  package:
     runs-on: macos-latest
     needs: [determine-version, build-daemon, build-demo, build-app]
     concurrency:
@@ -149,4 +149,4 @@ jobs:
           npm install
           npm run postinstall
           npm run jdk:download
-          npm run electron:builder -- --publish never --mac
+          npm run electron:builder --publish always --mac --linux
