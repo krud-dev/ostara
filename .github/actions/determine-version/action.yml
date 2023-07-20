@@ -16,6 +16,10 @@ runs:
       shell: sh
       run: |
         set +e
+        if [[ "$GITHUB_REF" == "refs/heads/release/"* ]]; then
+          echo "version=v${GITHUB_REF#refs/heads/release/}" >> $GITHUB_OUTPUT
+          exit 0
+        fi
         EXACT_DESCRIBE_RESULT=$(git describe --tags --exact-match)
         EXACT_MATCH_EXIT_CODE=$?
         set -e
