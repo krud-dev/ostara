@@ -67,8 +67,8 @@ tasks.named<Jar>("jar") {
 }
 
 if (hasProperty("release")) {
-  val effectiveVersion = version.toString()
-  val isSnapshot = effectiveVersion.lowercase().endsWith("-snapshot")
+  val effectiveVersion = version.toString().uppercase()
+  val isSnapshot = effectiveVersion.endsWith("-SNAPSHOT")
   if (!isSnapshot) {
     java {
       withJavadocJar()

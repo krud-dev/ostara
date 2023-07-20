@@ -173,7 +173,7 @@ jobs:
           ORG_GRADLE_PROJECT_signingPassword: ${{ secrets.OSSRH_GPG_SECRET_KEY_PASSWORD }}
         run: ./gradlew --stacktrace -Prelease publishToSonatype closeSonatypeStagingRepository
       - name: Remove ci-do-release label
-        if: github.event.label.name == 'help-wanted'
+        if: github.event.label.name == 'ci-do-release'
         uses: actions-ecosystem/action-remove-labels@v1
         with:
           labels: ci-do-release
