@@ -89,7 +89,7 @@ jobs:
         run: |
           cd app
           npm install
-          npm run postinstall
+            
           npm run build:main
           npm run build:renderer
       - name: Upload artifact
@@ -100,7 +100,7 @@ jobs:
           retention-days: 7
           if-no-files-found: error
   package-windows:
-    runs-on: ubuntu-latest
+    runs-on: macos-latest
     needs: [determine-version, build-daemon, build-demo, build-app]
     concurrency:
       group: ${{ github.workflow }}-${{ github.ref }}
