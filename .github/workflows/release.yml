@@ -147,7 +147,7 @@ jobs:
           npm install
           npm run postinstall
           npm run jdk:download
-          npm run electron:builder --publish always --mac --linux
+          npm run electron:builder -- --publish always --mac --linux
   release-spring-client:
     runs-on: ubuntu-latest
     needs: determine-version
