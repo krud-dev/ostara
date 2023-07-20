@@ -67,7 +67,7 @@ tasks.named<Jar>("jar") {
   archiveClassifier.set("")
 }
 
-if (hasProperty("release")) {
+if (hasProperty("release")) { // 
   val effectiveVersion = version.toString()
   val isSnapshot = effectiveVersion.endsWith("-SNAPSHOT")
   if (!isSnapshot) {
