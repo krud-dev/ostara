@@ -113,7 +113,7 @@ jobs:
           node-version: 16
           cache: npm
       - name: Cache Node packages
-        uses: actions/cache@v2
+        uses: actions/cache@v3
         with:
           path: ~/.npm
           key: ${{ runner.os }}-node-${{ hashFiles('app/package-lock.json') }}
