@@ -22,7 +22,7 @@ runs:
         if [ $EXACT_MATCH_EXIT_CODE -eq 0 ]; then
           echo "version=${DESCRIBE_RESULT}" >> $GITHUB_OUTPUT
         else
-          DESCRIBE_RESULT=$(git describe --tags)
+          DESCRIBE_RESULT=$(git describe --tags --abbrev=0)
           echo "version=${DESCRIBE_RESULT}-snapshot" >> $GITHUB_OUTPUT
         fi
     
