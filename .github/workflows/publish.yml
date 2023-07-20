@@ -2,9 +2,14 @@ name: Publish
 
 on:
   push:
-    branches:
-      - master
-      - release/**
+    paths:
+      - daemon/**
+      - app/**
+      - demo/**
+      - package.json
+      - package-lock.json
+      - .github/workflows/publish.yml
+      - .github/actions/**
   
   
 jobs:
