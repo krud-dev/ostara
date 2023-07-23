@@ -3,11 +3,18 @@ package dev.krud.boost.daemon.threadprofiling.messaging
 import dev.krud.boost.daemon.base.annotations.GenerateTypescript
 import dev.krud.boost.daemon.base.messaging.AbstractMessage
 import dev.krud.boost.daemon.threadprofiling.enums.ThreadProfilingStatus
-import java.util.UUID
+import dev.krud.boost.daemon.websocket.replay.webSocketHeaders
+import java.util.*
 
 class ThreadProfilingProgressMessage(
     payload: Payload
-) : AbstractMessage<ThreadProfilingProgressMessage.Payload>(payload) {
+) : AbstractMessage<ThreadProfilingProgressMessage.Payload>(
+    payload,
+    *webSocketHeaders(
+        "/topic/instanceThreadProfilingProgress",
+        payload.requestId.toString()
+    )
+) {
     @GenerateTypescript
     data class Payload(
         val requestId: UUID,

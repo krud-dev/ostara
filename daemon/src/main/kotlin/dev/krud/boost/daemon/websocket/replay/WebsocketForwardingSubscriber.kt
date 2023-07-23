@@ -2,24 +2,40 @@ package dev.krud.boost.daemon.websocket.replay
 
 import org.springframework.context.annotation.Lazy
 import org.springframework.messaging.Message
-import org.springframework.messaging.MessageHandler
+import org.springframework.messaging.MessageChannel
 import org.springframework.messaging.MessageHeaders
 import org.springframework.messaging.simp.SimpMessagingTemplate
+import org.springframework.messaging.support.ChannelInterceptor
 import org.springframework.stereotype.Component
 
+fun webSocketHeaders(topic: String, group: String, replay: Boolean = true): Array<Pair<String, String>> {
+    return listOf(
+        WebSocketForwardingInterceptor.TOPIC to topic,
+        WebSocketForwardingInterceptor.REPLAY_GROUP to group
+    ).let {
+        if (replay) {
+            it + (WebSocketForwardingInterceptor.NO_REPLAY to "true")
+        } else {
+            it
+        }
+    }.toTypedArray()
+}
+
 @Component
-class WebsocketForwardingSubscriber(
+class WebSocketForwardingInterceptor(
     @Lazy
     private val messagingTemplate: SimpMessagingTemplate,
     private val store: WebsocketReplayStore
-) : MessageHandler {
-    override fun handleMessage(message: Message<*>) {
-        val topic = message.headers.topic()
-        if (!topic.isNullOrBlank()) {
-            if (message.headers.shouldReplay()) {
-                storeForReplay(topic, message)
+) : ChannelInterceptor {
+    override fun afterSendCompletion(message: Message<*>, channel: MessageChannel, sent: Boolean, ex: Exception?) {
+        if (sent) {
+            val topic = message.headers.topic()
+            if (!topic.isNullOrBlank()) {
+                if (message.headers.shouldReplay()) {
+                    storeForReplay(topic, message)
+                }
+                messagingTemplate.convertAndSend(topic, message.payload)
             }
-            messagingTemplate.convertAndSend(topic, message.payload)
         }
     }
 
