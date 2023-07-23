@@ -4,6 +4,7 @@ import com.fasterxml.jackson.core.type.TypeReference
 import com.fasterxml.jackson.databind.DeserializationFeature
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule
+import com.fasterxml.jackson.module.kotlin.KotlinFeature
 import com.fasterxml.jackson.module.kotlin.KotlinModule
 import dev.krud.boost.daemon.actuator.model.BeansActuatorResponse
 import dev.krud.boost.daemon.actuator.model.CacheActuatorResponse
@@ -98,7 +99,12 @@ class ActuatorHttpClientImpl(
 
     internal val objectMapper = ObjectMapper().apply {
         registerModule(JavaTimeModule())
-        registerModule(KotlinModule.Builder().build())
+        registerModule(KotlinModule
+            .Builder()
+            .configure(KotlinFeature.NullToEmptyCollection, true)
+            .configure(KotlinFeature.NullToEmptyMap, true)
+            .configure(KotlinFeature.NullIsSameAsDefault, true)
+            .build())
         registerModule(
             MultiDateParsingModule()
         )
