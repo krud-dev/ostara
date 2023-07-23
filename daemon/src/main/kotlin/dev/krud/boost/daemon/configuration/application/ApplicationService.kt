@@ -40,7 +40,7 @@ class ApplicationService(
         return application
     }
 
-    fun getApplicationInstances(applicationId: UUID): List<Instance> {
+    fun getApplicationInstances(applicationId: UUID, limit: Long? = null): List<Instance> {
         log.debug {
             "Getting instances for application $applicationId from database"
         }
@@ -48,6 +48,9 @@ class ApplicationService(
             .searchByFilter {
                 where {
                     Instance::parentApplicationId Equal applicationId
+                }
+                limit?.let {
+                    this.limit = it
                 }
             }
             .results.apply {
@@ -78,7 +81,7 @@ class ApplicationService(
     fun getAbilities(applicationId: UUID): Set<InstanceAbility> {
         log.debug { "Getting abilities for application $applicationId" }
         getApplicationOrThrow(applicationId)
-        return getApplicationInstances(applicationId).flatMap { instance ->
+        return getApplicationInstances(applicationId, MAX_INSTANCES_TO_CHECK).flatMap { instance ->
             instanceAbilityService.getAbilities(instance)
         }
             .filter {
@@ -126,6 +129,7 @@ class ApplicationService(
 
     companion object {
         private val log = KotlinLogging.logger { }
+        private const val MAX_INSTANCES_TO_CHECK = 5L
         private val ALLOWED_INSTANCE_ABILITIES_FOR_APP: Set<InstanceAbility> = setOf(
             InstanceAbility.CACHES,
             InstanceAbility.SHUTDOWN,
