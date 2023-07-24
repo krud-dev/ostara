@@ -15,7 +15,7 @@ class AgentDiscoveryFailedEventMessageTest {
             AgentDiscoveryFailedEventMessage.Payload(UUID.randomUUID(), null)
         )
         expect {
-            that(message.headers[WebSocketForwardingInterceptor.TOPIC]).isEqualTo(WebsocketTopics.AGENT_DISCOVERY_FAILURE)
+            that(message.headers[WebSocketForwardingInterceptor.TOPIC]).isEqualTo(WebsocketTopics.AGENT_DISCOVERY_FAILURE.value)
             that(message.headers[WebSocketForwardingInterceptor.REPLAY_GROUP]).isEqualTo(message.payload.agentId.toString())
         }
     }

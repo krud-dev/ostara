@@ -512,22 +512,6 @@ export interface InfoActuatorResponse$Git$Unknown extends InfoActuatorResponse$G
     type: string;
 }
 
-export interface AgentDiscoveryFailedEventMessage extends AbstractMessage<AgentDiscoveryFailedEventMessage$Payload> {
-    payload: AgentDiscoveryFailedEventMessage$Payload;
-}
-
-export interface AgentDiscoveryStartedEventMessage extends AbstractMessage<AgentDiscoveryStartedEventMessage$Payload> {
-    payload: AgentDiscoveryStartedEventMessage$Payload;
-}
-
-export interface AgentDiscoverySucceededEventMessage extends AbstractMessage<AgentDiscoverySucceededEventMessage$Payload> {
-    payload: AgentDiscoverySucceededEventMessage$Payload;
-}
-
-export interface AgentHealthUpdatedEventMessage extends AbstractMessage<AgentHealthUpdatedEventMessage$Payload> {
-    payload: AgentHealthUpdatedEventMessage$Payload;
-}
-
 export interface AgentHealthDTO {
     statusCode: number;
     message?: string;
@@ -552,6 +536,28 @@ export interface BackupDTO {
     tree: BackupDTO$TreeElementUnion[];
 }
 
+export interface EffectiveAuthentication {
+    authentication: Authentication;
+    sourceType: EffectiveAuthentication$SourceType;
+    sourceId: string;
+}
+
+export interface AgentDiscoveryFailedEventMessage extends AbstractMessage<AgentDiscoveryFailedEventMessage$Payload> {
+    payload: AgentDiscoveryFailedEventMessage$Payload;
+}
+
+export interface AgentDiscoveryStartedEventMessage extends AbstractMessage<AgentDiscoveryStartedEventMessage$Payload> {
+    payload: AgentDiscoveryStartedEventMessage$Payload;
+}
+
+export interface AgentDiscoverySucceededEventMessage extends AbstractMessage<AgentDiscoverySucceededEventMessage$Payload> {
+    payload: AgentDiscoverySucceededEventMessage$Payload;
+}
+
+export interface AgentHealthUpdatedEventMessage extends AbstractMessage<AgentHealthUpdatedEventMessage$Payload> {
+    payload: AgentHealthUpdatedEventMessage$Payload;
+}
+
 export interface ApplicationCreatedEventMessage extends AbstractMessage<ApplicationCreatedEventMessage$Payload> {
     payload: ApplicationCreatedEventMessage$Payload;
 }
@@ -565,23 +571,18 @@ export interface ApplicationHealthUpdatedEventMessage$Payload {
     newHealth: ApplicationHealthRO;
 }
 
+export interface ApplicationMetricRuleTriggeredMessage$InstanceIdAndValue {
+    instanceId: string;
+    value: number;
+}
+
+export interface ApplicationMetricRuleTriggeredMessage$Payload {
+    applicationMetricRule: ApplicationMetricRuleRO;
+    instanceIdsAndValues: ApplicationMetricRuleTriggeredMessage$InstanceIdAndValue[];
+}
+
 export interface ApplicationUpdatedEventMessage extends AbstractMessage<ApplicationUpdatedEventMessage$Payload> {
     payload: ApplicationUpdatedEventMessage$Payload;
-}
-
-export interface EffectiveAuthentication {
-    authentication: Authentication;
-    sourceType: EffectiveAuthentication$SourceType;
-    sourceId: string;
-}
-
-export interface InstanceHeapdumpDownloadProgressMessage$Payload {
-    referenceId: string;
-    instanceId: string;
-    bytesRead: number;
-    contentLength: number;
-    status: InstanceHeapdumpReference$Status;
-    error?: string;
 }
 
 export interface InstanceAbilitiesRefreshedEventMessage$Payload {
@@ -612,13 +613,18 @@ export interface InstanceHealthCheckPerformedEventMessage$Payload {
     newHealth: InstanceHealthRO;
 }
 
+export interface InstanceHeapdumpDownloadProgressMessage$Payload {
+    referenceId: string;
+    instanceId: string;
+    bytesRead: number;
+    contentLength: number;
+    status: InstanceHeapdumpReference$Status;
+    error?: string;
+}
+
 export interface InstanceHostnameUpdatedEventMessage$Payload {
     instanceId: string;
     hostname?: string;
-}
-
-export interface InstanceUpdatedEventMessage extends AbstractMessage<InstanceUpdatedEventMessage$Payload> {
-    payload: InstanceUpdatedEventMessage$Payload;
 }
 
 export interface InstanceMetadataRefreshedMessage$Payload {
@@ -626,14 +632,8 @@ export interface InstanceMetadataRefreshedMessage$Payload {
     metadata: InstanceMetadataDTO;
 }
 
-export interface ApplicationMetricRuleTriggeredMessage$InstanceIdAndValue {
-    instanceId: string;
-    value: number;
-}
-
-export interface ApplicationMetricRuleTriggeredMessage$Payload {
-    applicationMetricRule: ApplicationMetricRuleRO;
-    instanceIdsAndValues: ApplicationMetricRuleTriggeredMessage$InstanceIdAndValue[];
+export interface InstanceUpdatedEventMessage extends AbstractMessage<InstanceUpdatedEventMessage$Payload> {
+    payload: InstanceUpdatedEventMessage$Payload;
 }
 
 export interface ThreadProfilingProgressMessage$Payload {
@@ -961,6 +961,10 @@ export interface InfoActuatorResponse$Git$Simple$Commit {
     time?: ParsedDate;
 }
 
+export interface BackupDTO$TreeElement {
+    type: "folder" | "application" | "agent";
+}
+
 export interface AgentDiscoveryFailedEventMessage$Payload {
     agentId: string;
     error?: string;
@@ -978,10 +982,6 @@ export interface AgentHealthUpdatedEventMessage$Payload {
     agentId: string;
     oldHealth: AgentHealthDTO;
     newHealth: AgentHealthDTO;
-}
-
-export interface BackupDTO$TreeElement {
-    type: "folder" | "application" | "agent";
 }
 
 export interface ApplicationCreatedEventMessage$Payload {
@@ -1222,9 +1222,6 @@ export interface InfoActuatorResponse$Git$Full$Remote$Origin {
     url: string;
 }
 
-export interface AbstractMessage<T> extends Message<T> {
-}
-
 export interface BackupDTO$TreeElement$Folder extends BackupDTO$TreeElement {
     type: "folder";
     model: BackupDTO$TreeElement$Folder$Model;
@@ -1242,6 +1239,9 @@ export interface BackupDTO$TreeElement$Agent extends BackupDTO$TreeElement {
     type: "agent";
     model: BackupDTO$TreeElement$Agent$Model;
     children: BackupDTO$TreeElement$Application[];
+}
+
+export interface AbstractMessage<T> extends Message<T> {
 }
 
 export interface FlywayActuatorResponse$Context$FlywayBean$Migration {
@@ -1348,11 +1348,6 @@ export interface MappingsActuatorResponse$Context$Mappings$DispatcherServletOrHa
     requestMappingConditions?: MappingsActuatorResponse$Context$Mappings$DispatcherServletOrHandler$Details$RequestMappingConditions;
 }
 
-export interface Message<T> {
-    payload: T;
-    headers: { [index: string]: any };
-}
-
 export interface BackupDTO$TreeElement$Application$Instance$Model {
     alias?: string;
     actuatorUrl: string;
@@ -1360,6 +1355,11 @@ export interface BackupDTO$TreeElement$Application$Instance$Model {
     color: string;
     icon?: string;
     sort?: number;
+}
+
+export interface Message<T> {
+    payload: T;
+    headers: { [index: string]: any };
 }
 
 export interface MappingsActuatorResponse$Context$Mappings$DispatcherServletOrHandler$Details$HandlerMethod {
