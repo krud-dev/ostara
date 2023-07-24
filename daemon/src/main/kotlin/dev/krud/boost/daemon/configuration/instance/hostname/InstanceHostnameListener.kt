@@ -1,9 +1,9 @@
 package dev.krud.boost.daemon.configuration.instance.hostname
 
 import dev.krud.boost.daemon.configuration.instance.enums.InstanceHealthStatus
-import dev.krud.boost.daemon.configuration.instance.messaging.InstanceCreatedEventMessage
-import dev.krud.boost.daemon.configuration.instance.messaging.InstanceHealthChangedEventMessage
-import dev.krud.boost.daemon.configuration.instance.messaging.InstanceUpdatedEventMessage
+import dev.krud.boost.daemon.messaging.InstanceCreatedEventMessage
+import dev.krud.boost.daemon.messaging.InstanceHealthChangedEventMessage
+import dev.krud.boost.daemon.messaging.InstanceUpdatedEventMessage
 import org.springframework.integration.annotation.ServiceActivator
 import org.springframework.messaging.Message
 import org.springframework.stereotype.Component

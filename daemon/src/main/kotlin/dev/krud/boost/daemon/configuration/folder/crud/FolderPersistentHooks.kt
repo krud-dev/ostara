@@ -3,7 +3,7 @@ package dev.krud.boost.daemon.configuration.folder.crud
 import dev.krud.boost.daemon.agent.model.Agent
 import dev.krud.boost.daemon.configuration.application.entity.Application
 import dev.krud.boost.daemon.configuration.folder.entity.Folder
-import dev.krud.boost.daemon.configuration.folder.messaging.FolderAuthenticationChangedMessage
+import dev.krud.boost.daemon.messaging.FolderAuthenticationChangedMessage
 import dev.krud.boost.daemon.utils.resolve
 import dev.krud.crudframework.crud.handler.krud.Krud
 import dev.krud.crudframework.crud.hooks.interfaces.DeleteHooks

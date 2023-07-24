@@ -1,8 +1,8 @@
 package dev.krud.boost.daemon.agent
 
-import dev.krud.boost.daemon.agent.messaging.AgentDiscoveryFailedEventMessage
-import dev.krud.boost.daemon.agent.messaging.AgentDiscoveryStartedEventMessage
-import dev.krud.boost.daemon.agent.messaging.AgentDiscoverySucceededEventMessage
+import dev.krud.boost.daemon.messaging.AgentDiscoveryFailedEventMessage
+import dev.krud.boost.daemon.messaging.AgentDiscoveryStartedEventMessage
+import dev.krud.boost.daemon.messaging.AgentDiscoverySucceededEventMessage
 import dev.krud.boost.daemon.agent.model.Agent
 import dev.krud.boost.daemon.agent.model.AgentHealthDTO
 import dev.krud.boost.daemon.configuration.application.entity.Application

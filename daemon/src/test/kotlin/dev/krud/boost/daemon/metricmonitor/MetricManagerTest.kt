@@ -5,7 +5,7 @@ import dev.krud.boost.daemon.configuration.instance.InstanceActuatorClientProvid
 import dev.krud.boost.daemon.configuration.instance.InstanceService
 import dev.krud.boost.daemon.configuration.instance.TestInstanceActuatorClientProvider
 import dev.krud.boost.daemon.configuration.instance.stubInstance
-import dev.krud.boost.daemon.metricmonitor.messaging.InstanceMetricUpdatedMessage
+import dev.krud.boost.daemon.messaging.InstanceMetricUpdatedMessage
 import dev.krud.boost.daemon.utils.ParsedMetricName
 import io.micrometer.core.instrument.MeterRegistry
 import io.micrometer.core.instrument.simple.SimpleMeterRegistry

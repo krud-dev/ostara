@@ -1,5 +1,6 @@
 package dev.krud.boost.daemon.agent.messaging
 
+import dev.krud.boost.daemon.messaging.AgentDiscoveryFailedEventMessage
 import dev.krud.boost.daemon.websocket.WebsocketTopics
 import dev.krud.boost.daemon.websocket.replay.WebSocketForwardingInterceptor
 import org.junit.jupiter.api.Test

@@ -1,18 +1,18 @@
 package dev.krud.boost.daemon.metricmonitor.rule
 
 import dev.krud.boost.daemon.configuration.application.ApplicationService
-import dev.krud.boost.daemon.configuration.instance.messaging.InstanceCreatedEventMessage
-import dev.krud.boost.daemon.configuration.instance.messaging.InstanceDeletedEventMessage
-import dev.krud.boost.daemon.configuration.instance.messaging.InstanceMovedEventMessage
+import dev.krud.boost.daemon.messaging.InstanceCreatedEventMessage
+import dev.krud.boost.daemon.messaging.InstanceDeletedEventMessage
+import dev.krud.boost.daemon.messaging.InstanceMovedEventMessage
 import dev.krud.boost.daemon.metricmonitor.MetricManager
-import dev.krud.boost.daemon.metricmonitor.messaging.InstanceMetricUpdatedMessage
+import dev.krud.boost.daemon.messaging.InstanceMetricUpdatedMessage
 import dev.krud.boost.daemon.metricmonitor.rule.ApplicationMetricRuleService.RuleInstanceAssociation.Companion.isRelevant
 import dev.krud.boost.daemon.metricmonitor.rule.ApplicationMetricRuleService.RuleInstanceAssociation.Companion.updateValue
-import dev.krud.boost.daemon.metricmonitor.rule.messaging.ApplicationMetricRuleCreatedMessage
-import dev.krud.boost.daemon.metricmonitor.rule.messaging.ApplicationMetricRuleDeletedMessage
-import dev.krud.boost.daemon.metricmonitor.rule.messaging.ApplicationMetricRuleDisabledMessage
-import dev.krud.boost.daemon.metricmonitor.rule.messaging.ApplicationMetricRuleEnabledMessage
-import dev.krud.boost.daemon.metricmonitor.rule.messaging.InstanceApplicationMetricRuleTriggeredMessage
+import dev.krud.boost.daemon.messaging.ApplicationMetricRuleCreatedMessage
+import dev.krud.boost.daemon.messaging.ApplicationMetricRuleDeletedMessage
+import dev.krud.boost.daemon.messaging.ApplicationMetricRuleDisabledMessage
+import dev.krud.boost.daemon.messaging.ApplicationMetricRuleEnabledMessage
+import dev.krud.boost.daemon.messaging.InstanceApplicationMetricRuleTriggeredMessage
 import dev.krud.boost.daemon.metricmonitor.rule.model.ApplicationMetricRule
 import dev.krud.boost.daemon.metricmonitor.rule.model.ApplicationMetricRule.Companion.evaluate
 import dev.krud.boost.daemon.metricmonitor.rule.model.ApplicationMetricRule.Companion.parsedDivisorMetricName

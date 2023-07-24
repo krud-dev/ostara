@@ -1,8 +1,8 @@
 package dev.krud.boost.daemon.base.config
 
-import dev.krud.boost.daemon.configuration.instance.heapdump.messaging.InstanceHeapdumpDownloadProgressMessage
-import dev.krud.boost.daemon.metricmonitor.rule.messaging.ApplicationMetricRuleTriggeredMessage
-import dev.krud.boost.daemon.metricmonitor.rule.messaging.InstanceApplicationMetricRuleTriggeredMessage
+import dev.krud.boost.daemon.messaging.InstanceHeapdumpDownloadProgressMessage
+import dev.krud.boost.daemon.messaging.ApplicationMetricRuleTriggeredMessage
+import dev.krud.boost.daemon.messaging.InstanceApplicationMetricRuleTriggeredMessage
 import dev.krud.boost.daemon.websocket.replay.WebSocketForwardingInterceptor
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.context.annotation.Bean

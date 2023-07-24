@@ -1,9 +1,9 @@
 package dev.krud.boost.daemon.configuration.instance
 
-import dev.krud.boost.daemon.configuration.instance.messaging.InstanceCreatedEventMessage
-import dev.krud.boost.daemon.configuration.instance.messaging.InstanceHealthChangedEventMessage
-import dev.krud.boost.daemon.configuration.instance.messaging.InstanceMovedEventMessage
-import dev.krud.boost.daemon.configuration.instance.messaging.InstanceUpdatedEventMessage
+import dev.krud.boost.daemon.messaging.InstanceCreatedEventMessage
+import dev.krud.boost.daemon.messaging.InstanceHealthChangedEventMessage
+import dev.krud.boost.daemon.messaging.InstanceMovedEventMessage
+import dev.krud.boost.daemon.messaging.InstanceUpdatedEventMessage
 import dev.krud.boost.daemon.utils.resolve
 import org.springframework.cache.CacheManager
 import org.springframework.integration.annotation.ServiceActivator

@@ -4,11 +4,11 @@ import dev.krud.boost.daemon.configuration.instance.InstanceActuatorClientProvid
 import dev.krud.boost.daemon.configuration.instance.InstanceService
 import dev.krud.boost.daemon.configuration.instance.entity.Instance
 import dev.krud.boost.daemon.configuration.instance.enums.InstanceAbility
-import dev.krud.boost.daemon.configuration.instance.messaging.InstanceAbilitiesRefreshedEventMessage
-import dev.krud.boost.daemon.configuration.instance.messaging.InstanceCreatedEventMessage
-import dev.krud.boost.daemon.configuration.instance.messaging.InstanceDeletedEventMessage
-import dev.krud.boost.daemon.configuration.instance.messaging.InstanceHealthCheckPerformedEventMessage
-import dev.krud.boost.daemon.configuration.instance.messaging.InstanceUpdatedEventMessage
+import dev.krud.boost.daemon.messaging.InstanceAbilitiesRefreshedEventMessage
+import dev.krud.boost.daemon.messaging.InstanceCreatedEventMessage
+import dev.krud.boost.daemon.messaging.InstanceDeletedEventMessage
+import dev.krud.boost.daemon.messaging.InstanceHealthCheckPerformedEventMessage
+import dev.krud.boost.daemon.messaging.InstanceUpdatedEventMessage
 import dev.krud.boost.daemon.utils.resolve
 import io.github.oshai.kotlinlogging.KotlinLogging
 import org.springframework.cache.CacheManager

@@ -2,8 +2,8 @@ package dev.krud.boost.daemon.configuration.folder.listeners
 
 import dev.krud.boost.daemon.configuration.authentication.Authentication
 import dev.krud.boost.daemon.configuration.folder.entity.Folder
-import dev.krud.boost.daemon.configuration.folder.messaging.FolderAuthenticationChangedMessage
-import dev.krud.boost.daemon.configuration.folder.messaging.FolderMovedEventMessage
+import dev.krud.boost.daemon.messaging.FolderAuthenticationChangedMessage
+import dev.krud.boost.daemon.messaging.FolderMovedEventMessage
 import dev.krud.boost.daemon.utils.resolve
 import dev.krud.crudframework.crud.handler.krud.Krud
 import io.github.oshai.kotlinlogging.KotlinLogging

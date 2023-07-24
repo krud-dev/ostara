@@ -1,9 +1,9 @@
 package dev.krud.boost.daemon.configuration.instance.crud
 
 import dev.krud.boost.daemon.configuration.instance.entity.Instance
-import dev.krud.boost.daemon.configuration.instance.messaging.InstanceCreatedEventMessage
-import dev.krud.boost.daemon.configuration.instance.messaging.InstanceDeletedEventMessage
-import dev.krud.boost.daemon.configuration.instance.messaging.InstanceUpdatedEventMessage
+import dev.krud.boost.daemon.messaging.InstanceCreatedEventMessage
+import dev.krud.boost.daemon.messaging.InstanceDeletedEventMessage
+import dev.krud.boost.daemon.messaging.InstanceUpdatedEventMessage
 import dev.krud.crudframework.crud.hooks.interfaces.CreateHooks
 import dev.krud.crudframework.crud.hooks.interfaces.DeleteHooks
 import dev.krud.crudframework.crud.hooks.interfaces.UpdateHooks

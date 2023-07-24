@@ -4,7 +4,7 @@ import dev.krud.boost.daemon.configuration.instance.InstanceService
 import dev.krud.boost.daemon.configuration.instance.entity.Instance
 import dev.krud.boost.daemon.configuration.instance.hostname.model.InstanceHostname
 import dev.krud.boost.daemon.configuration.instance.hostname.resolver.InstanceHostnameResolver
-import dev.krud.boost.daemon.configuration.instance.messaging.InstanceHostnameUpdatedEventMessage
+import dev.krud.boost.daemon.messaging.InstanceHostnameUpdatedEventMessage
 import dev.krud.crudframework.crud.handler.krud.Krud
 import io.github.oshai.kotlinlogging.KotlinLogging
 import org.springframework.integration.channel.PublishSubscribeChannel

@@ -1,13 +1,13 @@
 package dev.krud.boost.daemon.configuration.application.listeners
 
-import dev.krud.boost.daemon.agent.messaging.AgentAuthenticationChangedMessage
+import dev.krud.boost.daemon.messaging.AgentAuthenticationChangedMessage
 import dev.krud.boost.daemon.configuration.application.ApplicationService
 import dev.krud.boost.daemon.configuration.application.entity.Application
-import dev.krud.boost.daemon.configuration.application.messaging.ApplicationAuthenticationChangedMessage
-import dev.krud.boost.daemon.configuration.application.messaging.ApplicationDisableSslVerificationChangedMessage
-import dev.krud.boost.daemon.configuration.application.messaging.ApplicationMovedEventMessage
+import dev.krud.boost.daemon.messaging.ApplicationAuthenticationChangedMessage
+import dev.krud.boost.daemon.messaging.ApplicationDisableSslVerificationChangedMessage
+import dev.krud.boost.daemon.messaging.ApplicationMovedEventMessage
 import dev.krud.boost.daemon.configuration.authentication.Authentication
-import dev.krud.boost.daemon.configuration.folder.messaging.FolderAuthenticationChangedMessage
+import dev.krud.boost.daemon.messaging.FolderAuthenticationChangedMessage
 import dev.krud.boost.daemon.utils.resolve
 import dev.krud.crudframework.crud.handler.krud.Krud
 import io.github.oshai.kotlinlogging.KotlinLogging
