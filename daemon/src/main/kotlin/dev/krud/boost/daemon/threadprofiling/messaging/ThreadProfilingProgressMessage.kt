@@ -3,6 +3,7 @@ package dev.krud.boost.daemon.threadprofiling.messaging
 import dev.krud.boost.daemon.base.annotations.GenerateTypescript
 import dev.krud.boost.daemon.base.messaging.AbstractMessage
 import dev.krud.boost.daemon.threadprofiling.enums.ThreadProfilingStatus
+import dev.krud.boost.daemon.websocket.WebsocketTopics
 import dev.krud.boost.daemon.websocket.replay.webSocketHeaders
 import java.util.*
 
@@ -11,7 +12,7 @@ class ThreadProfilingProgressMessage(
 ) : AbstractMessage<ThreadProfilingProgressMessage.Payload>(
     payload,
     *webSocketHeaders(
-        "/topic/instanceThreadProfilingProgress",
+        WebsocketTopics.INSTANCE_THREAD_PROFILING_PROGRESS,
         payload.requestId.toString()
     )
 ) {

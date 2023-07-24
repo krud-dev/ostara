@@ -2,6 +2,7 @@ package dev.krud.boost.daemon.configuration.application.messaging
 
 import dev.krud.boost.daemon.base.annotations.GenerateTypescript
 import dev.krud.boost.daemon.base.messaging.AbstractMessage
+import dev.krud.boost.daemon.websocket.WebsocketTopics
 import dev.krud.boost.daemon.websocket.replay.webSocketHeaders
 import java.util.*
 
@@ -9,7 +10,7 @@ import java.util.*
 class ApplicationUpdatedEventMessage(payload: Payload) : AbstractMessage<ApplicationUpdatedEventMessage.Payload>(
     payload,
     *webSocketHeaders(
-        "/topic/applicationUpdate",
+        WebsocketTopics.APPLICATION_UPDATE,
         payload.applicationId.toString()
     )
 ) {

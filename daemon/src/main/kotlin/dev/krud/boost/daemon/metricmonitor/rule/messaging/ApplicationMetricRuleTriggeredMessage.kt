@@ -3,13 +3,14 @@ package dev.krud.boost.daemon.metricmonitor.rule.messaging
 import dev.krud.boost.daemon.base.annotations.GenerateTypescript
 import dev.krud.boost.daemon.base.messaging.AbstractMessage
 import dev.krud.boost.daemon.metricmonitor.rule.ro.ApplicationMetricRuleRO
+import dev.krud.boost.daemon.websocket.WebsocketTopics
 import dev.krud.boost.daemon.websocket.replay.webSocketHeaders
 import java.util.*
 
 class ApplicationMetricRuleTriggeredMessage(payload: Payload) : AbstractMessage<ApplicationMetricRuleTriggeredMessage.Payload>(
     payload,
     *webSocketHeaders(
-        "/topic/applicationMetricRuleTriggers",
+        WebsocketTopics.APPLICATION_METRIC_RULE_TRIGGERS,
         payload.applicationMetricRule.id.toString()
     )
 ) {

@@ -1,10 +1,11 @@
 package dev.krud.boost.daemon.configuration.instance.metric
 
 import dev.krud.boost.daemon.utils.ParsedMetricName
+import dev.krud.boost.daemon.websocket.WebsocketTopics
 import java.util.*
 
 object InstanceMetricWebsocketUtil {
-    const val METRIC_TOPIC_PREFIX = "/topic/metric"
+    val METRIC_TOPIC_PREFIX = WebsocketTopics.METRIC
     val METRIC_TOPIC_TEMPLATE_REGEX = Regex("$METRIC_TOPIC_PREFIX\\/(.*)\\/(.*)")
 
     fun isValidMetricTopic(topic: String): Boolean {

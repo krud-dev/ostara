@@ -2,13 +2,17 @@ package dev.krud.boost.daemon.agent.messaging
 
 import dev.krud.boost.daemon.base.annotations.GenerateTypescript
 import dev.krud.boost.daemon.base.messaging.AbstractMessage
+import dev.krud.boost.daemon.websocket.WebsocketTopics
 import dev.krud.boost.daemon.websocket.replay.webSocketHeaders
 import java.util.*
 
 @GenerateTypescript
 class AgentDiscoveryFailedEventMessage(payload: Payload) : AbstractMessage<AgentDiscoveryFailedEventMessage.Payload>(
     payload,
-    *webSocketHeaders("/topic/agentDiscoveryFailure", payload.agentId.toString())
+    *webSocketHeaders(
+        WebsocketTopics.AGENT_DISCOVERY_FAILURE,
+        payload.agentId.toString()
+    )
 ) {
     data class Payload(
         val agentId: UUID,

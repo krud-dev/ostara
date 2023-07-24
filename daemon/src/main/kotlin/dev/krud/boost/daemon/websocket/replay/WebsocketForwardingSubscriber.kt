@@ -1,5 +1,6 @@
 package dev.krud.boost.daemon.websocket.replay
 
+import dev.krud.boost.daemon.websocket.WebsocketTopic
 import org.springframework.context.annotation.Lazy
 import org.springframework.messaging.Message
 import org.springframework.messaging.MessageChannel
@@ -8,9 +9,9 @@ import org.springframework.messaging.simp.SimpMessagingTemplate
 import org.springframework.messaging.support.ChannelInterceptor
 import org.springframework.stereotype.Component
 
-fun webSocketHeaders(topic: String, group: String, replay: Boolean = true): Array<Pair<String, String>> {
+fun webSocketHeaders(topic: WebsocketTopic, group: String, replay: Boolean = true): Array<Pair<String, Any>> {
     return listOf(
-        WebSocketForwardingInterceptor.TOPIC to topic,
+        WebSocketForwardingInterceptor.TOPIC to topic.value,
         WebSocketForwardingInterceptor.REPLAY_GROUP to group
     ).let {
         if (replay) {
