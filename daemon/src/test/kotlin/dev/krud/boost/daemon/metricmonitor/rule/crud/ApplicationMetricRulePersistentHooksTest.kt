@@ -1,10 +1,9 @@
 package dev.krud.boost.daemon.metricmonitor.rule.crud
 
-import dev.krud.boost.daemon.metricmonitor.rule.messaging.ApplicationMetricRuleCreatedMessage
-import dev.krud.boost.daemon.metricmonitor.rule.messaging.ApplicationMetricRuleDeletedMessage
-import dev.krud.boost.daemon.metricmonitor.rule.messaging.ApplicationMetricRuleDisabledMessage
-import dev.krud.boost.daemon.metricmonitor.rule.messaging.ApplicationMetricRuleEnabledMessage
-import dev.krud.boost.daemon.metricmonitor.rule.model.ApplicationMetricRule
+import dev.krud.boost.daemon.messaging.ApplicationMetricRuleCreatedMessage
+import dev.krud.boost.daemon.messaging.ApplicationMetricRuleDeletedMessage
+import dev.krud.boost.daemon.messaging.ApplicationMetricRuleDisabledMessage
+import dev.krud.boost.daemon.messaging.ApplicationMetricRuleEnabledMessage
 import dev.krud.boost.daemon.metricmonitor.rule.stubApplicationMetricRule
 import org.junit.jupiter.api.Test
 import org.mockito.kotlin.argumentCaptor

@@ -3,8 +3,8 @@ package dev.krud.boost.daemon.configuration.instance.heapdump
 import dev.krud.boost.daemon.actuator.ActuatorHttpClient
 import dev.krud.boost.daemon.configuration.instance.InstanceActuatorClientProvider
 import dev.krud.boost.daemon.configuration.instance.InstanceService
-import dev.krud.boost.daemon.configuration.instance.heapdump.messaging.InstanceHeapdumpDownloadProgressMessage
-import dev.krud.boost.daemon.configuration.instance.heapdump.messaging.InstanceHeapdumpDownloadRequestMessage
+import dev.krud.boost.daemon.messaging.InstanceHeapdumpDownloadProgressMessage
+import dev.krud.boost.daemon.messaging.InstanceHeapdumpDownloadRequestMessage
 import dev.krud.boost.daemon.configuration.instance.heapdump.model.InstanceHeapdumpReference
 import dev.krud.boost.daemon.configuration.instance.heapdump.model.InstanceHeapdumpReference.Companion.failed
 import dev.krud.boost.daemon.configuration.instance.heapdump.model.InstanceHeapdumpReference.Companion.ready

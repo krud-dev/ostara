@@ -4,11 +4,11 @@ import dev.krud.boost.daemon.actuator.model.InfoActuatorResponse
 import dev.krud.boost.daemon.configuration.instance.InstanceService
 import dev.krud.boost.daemon.configuration.instance.TestInstanceActuatorClientProvider
 import dev.krud.boost.daemon.configuration.instance.health.ro.InstanceHealthRO
-import dev.krud.boost.daemon.configuration.instance.messaging.InstanceDeletedEventMessage
-import dev.krud.boost.daemon.configuration.instance.messaging.InstanceHealthChangedEventMessage
-import dev.krud.boost.daemon.configuration.instance.messaging.InstanceUpdatedEventMessage
-import dev.krud.boost.daemon.configuration.instance.metadata.messaing.InstanceMetadataRefreshRequestMessage
-import dev.krud.boost.daemon.configuration.instance.metadata.messaing.InstanceMetadataRefreshedMessage
+import dev.krud.boost.daemon.messaging.InstanceDeletedEventMessage
+import dev.krud.boost.daemon.messaging.InstanceHealthChangedEventMessage
+import dev.krud.boost.daemon.messaging.InstanceUpdatedEventMessage
+import dev.krud.boost.daemon.messaging.InstanceMetadataRefreshRequestMessage
+import dev.krud.boost.daemon.messaging.InstanceMetadataRefreshedMessage
 import dev.krud.boost.daemon.configuration.instance.metadata.ro.InstanceMetadataDTO
 import dev.krud.boost.daemon.configuration.instance.stubInstance
 import dev.krud.boost.daemon.exception.throwNotFound

@@ -3,13 +3,13 @@ package dev.krud.boost.daemon.configuration.application
 import com.github.benmanes.caffeine.cache.Cache
 import dev.krud.boost.daemon.configuration.application.entity.Application
 import dev.krud.boost.daemon.configuration.application.enums.ApplicationHealthStatus.Companion.toApplicationHealthStatus
-import dev.krud.boost.daemon.configuration.application.messaging.ApplicationHealthUpdatedEventMessage
+import dev.krud.boost.daemon.messaging.ApplicationHealthUpdatedEventMessage
 import dev.krud.boost.daemon.configuration.application.ro.ApplicationHealthRO
 import dev.krud.boost.daemon.configuration.instance.health.InstanceHealthService
 import dev.krud.boost.daemon.configuration.instance.health.ro.InstanceHealthRO
-import dev.krud.boost.daemon.configuration.instance.messaging.InstanceDeletedEventMessage
-import dev.krud.boost.daemon.configuration.instance.messaging.InstanceHealthCheckPerformedEventMessage
-import dev.krud.boost.daemon.configuration.instance.messaging.InstanceMovedEventMessage
+import dev.krud.boost.daemon.messaging.InstanceDeletedEventMessage
+import dev.krud.boost.daemon.messaging.InstanceHealthCheckPerformedEventMessage
+import dev.krud.boost.daemon.messaging.InstanceMovedEventMessage
 import dev.krud.boost.daemon.utils.resolve
 import io.github.oshai.kotlinlogging.KotlinLogging
 import org.springframework.cache.CacheManager

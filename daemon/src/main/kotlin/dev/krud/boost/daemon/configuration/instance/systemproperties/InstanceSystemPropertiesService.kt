@@ -4,9 +4,9 @@ import dev.krud.boost.daemon.configuration.instance.InstanceActuatorClientProvid
 import dev.krud.boost.daemon.configuration.instance.InstanceService
 import dev.krud.boost.daemon.configuration.instance.ability.InstanceAbilityService
 import dev.krud.boost.daemon.configuration.instance.enums.InstanceAbility
-import dev.krud.boost.daemon.configuration.instance.messaging.InstanceDeletedEventMessage
-import dev.krud.boost.daemon.configuration.instance.messaging.InstanceHealthChangedEventMessage
-import dev.krud.boost.daemon.configuration.instance.messaging.InstanceUpdatedEventMessage
+import dev.krud.boost.daemon.messaging.InstanceDeletedEventMessage
+import dev.krud.boost.daemon.messaging.InstanceHealthChangedEventMessage
+import dev.krud.boost.daemon.messaging.InstanceUpdatedEventMessage
 import dev.krud.boost.daemon.configuration.instance.systemproperties.ro.InstanceSystemPropertiesRO
 import dev.krud.boost.daemon.exception.throwInternalServerError
 import dev.krud.boost.daemon.utils.ACTUATOR_REDACTED_STRING

@@ -1,7 +1,7 @@
 package dev.krud.boost.daemon.configuration.folder
 
 import dev.krud.boost.daemon.configuration.folder.entity.Folder
-import dev.krud.boost.daemon.configuration.folder.messaging.FolderMovedEventMessage
+import dev.krud.boost.daemon.messaging.FolderMovedEventMessage
 import dev.krud.boost.daemon.exception.throwNotFound
 import dev.krud.crudframework.crud.handler.krud.Krud
 import io.github.oshai.kotlinlogging.KotlinLogging

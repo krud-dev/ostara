@@ -1,9 +1,10 @@
 package dev.krud.boost.daemon.base.config
 
-import dev.krud.boost.daemon.configuration.instance.heapdump.messaging.InstanceHeapdumpDownloadProgressMessage
-import dev.krud.boost.daemon.metricmonitor.rule.messaging.ApplicationMetricRuleTriggeredMessage
-import dev.krud.boost.daemon.metricmonitor.rule.messaging.InstanceApplicationMetricRuleTriggeredMessage
-import dev.krud.boost.daemon.websocket.replay.WebsocketForwardingSubscriber
+import dev.krud.boost.daemon.messaging.InstanceHeapdumpDownloadProgressMessage
+import dev.krud.boost.daemon.messaging.ApplicationMetricRuleTriggeredMessage
+import dev.krud.boost.daemon.messaging.InstanceApplicationMetricRuleTriggeredMessage
+import dev.krud.boost.daemon.websocket.replay.WebSocketForwardingInterceptor
+import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 import org.springframework.integration.channel.PublishSubscribeChannel
@@ -14,14 +15,17 @@ import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor
 
 @Configuration
 class IntegrationConfig {
+    @Autowired
+    private lateinit var webSocketForwardingInterceptor: WebSocketForwardingInterceptor
+
     @Bean
     fun systemEventsChannel(): PublishSubscribeChannel {
-        return MessageChannels.publishSubscribe(systemEventsExecutor()).get()
+        return MessageChannels.publishSubscribe(systemEventsExecutor()).interceptor(webSocketForwardingInterceptor).get()
     }
 
     @Bean
     fun instanceHostnameUpdatedChannel(): PublishSubscribeChannel {
-        return MessageChannels.publishSubscribe().get()
+        return MessageChannels.publishSubscribe().interceptor(webSocketForwardingInterceptor).get()
     }
 
     @Bean
@@ -41,7 +45,7 @@ class IntegrationConfig {
 
     @Bean
     fun instanceHeapdumpDownloadProgressChannel(): PublishSubscribeChannel {
-        return MessageChannels.publishSubscribe().get()
+        return MessageChannels.publishSubscribe().interceptor(webSocketForwardingInterceptor).get()
     }
 
     @Bean
@@ -56,7 +60,7 @@ class IntegrationConfig {
 
     @Bean
     fun instanceApplicationMetricRuleTriggerChannel(): PublishSubscribeChannel {
-        return MessageChannels.publishSubscribe().get()
+        return MessageChannels.publishSubscribe().interceptor(webSocketForwardingInterceptor).get()
     }
 
     @Bean
@@ -66,15 +70,12 @@ class IntegrationConfig {
 
     @Bean
     fun agentHealthChannel(): PublishSubscribeChannel {
-        return MessageChannels.publishSubscribe().get()
+        return MessageChannels.publishSubscribe().interceptor(webSocketForwardingInterceptor).get()
     }
 
     @Bean
-    fun agentDiscoveryChannel(websocketForwardingSubscriber: WebsocketForwardingSubscriber): PublishSubscribeChannel {
-        return MessageChannels.publishSubscribe().get()
-            .also {
-                it.subscribe(websocketForwardingSubscriber)
-            }
+    fun agentDiscoveryChannel(): PublishSubscribeChannel {
+        return MessageChannels.publishSubscribe().interceptor(webSocketForwardingInterceptor).get()
     }
 
     @Bean
@@ -135,7 +136,7 @@ class IntegrationConfig {
 
     @Bean
     fun instanceThreadProfilingProgressChannel(): PublishSubscribeChannel {
-        return MessageChannels.publishSubscribe().get()
+        return MessageChannels.publishSubscribe().interceptor(webSocketForwardingInterceptor).get()
     }
 
     @Bean
@@ -145,7 +146,10 @@ class IntegrationConfig {
 
     @Bean
     fun instanceMetadataRefreshChannel(): PublishSubscribeChannel {
-        return MessageChannels.publishSubscribe().get()
+        return MessageChannels.publishSubscribe()
+            .interceptor()
+            .interceptor(webSocketForwardingInterceptor)
+            .get()
     }
 
     @Bean

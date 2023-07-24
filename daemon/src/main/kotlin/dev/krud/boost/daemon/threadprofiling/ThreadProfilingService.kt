@@ -4,7 +4,7 @@ import dev.krud.boost.daemon.configuration.instance.InstanceActuatorClientProvid
 import dev.krud.boost.daemon.configuration.instance.InstanceService
 import dev.krud.boost.daemon.exception.throwNotFound
 import dev.krud.boost.daemon.threadprofiling.enums.ThreadProfilingStatus
-import dev.krud.boost.daemon.threadprofiling.messaging.ThreadProfilingProgressMessage
+import dev.krud.boost.daemon.messaging.ThreadProfilingProgressMessage
 import dev.krud.boost.daemon.threadprofiling.model.ThreadProfilingLog
 import dev.krud.boost.daemon.threadprofiling.model.ThreadProfilingRequest
 import dev.krud.crudframework.crud.handler.krud.Krud

@@ -1,6 +1,6 @@
 package dev.krud.boost.daemon.agent
 
-import dev.krud.boost.daemon.agent.messaging.AgentHealthUpdatedEventMessage
+import dev.krud.boost.daemon.messaging.AgentHealthUpdatedEventMessage
 import dev.krud.boost.daemon.agent.model.Agent
 import dev.krud.boost.daemon.agent.model.AgentHealthDTO
 import dev.krud.boost.daemon.utils.ONE_SECOND

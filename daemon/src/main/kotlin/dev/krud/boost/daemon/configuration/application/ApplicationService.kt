@@ -1,8 +1,8 @@
 package dev.krud.boost.daemon.configuration.application
 
 import dev.krud.boost.daemon.configuration.application.entity.Application
-import dev.krud.boost.daemon.configuration.application.messaging.ApplicationDisableSslVerificationChangedMessage
-import dev.krud.boost.daemon.configuration.application.messaging.ApplicationMovedEventMessage
+import dev.krud.boost.daemon.messaging.ApplicationDisableSslVerificationChangedMessage
+import dev.krud.boost.daemon.messaging.ApplicationMovedEventMessage
 import dev.krud.boost.daemon.configuration.instance.ability.InstanceAbilityService
 import dev.krud.boost.daemon.configuration.instance.entity.Instance
 import dev.krud.boost.daemon.configuration.instance.enums.InstanceAbility

@@ -1,8 +1,8 @@
 package dev.krud.boost.daemon.configuration.application.crud
 
 import dev.krud.boost.daemon.configuration.application.entity.Application
-import dev.krud.boost.daemon.configuration.application.messaging.ApplicationAuthenticationChangedMessage
-import dev.krud.boost.daemon.configuration.application.messaging.ApplicationDisableSslVerificationChangedMessage
+import dev.krud.boost.daemon.messaging.ApplicationAuthenticationChangedMessage
+import dev.krud.boost.daemon.messaging.ApplicationDisableSslVerificationChangedMessage
 import dev.krud.boost.daemon.configuration.instance.entity.Instance
 import dev.krud.boost.daemon.metricmonitor.rule.model.ApplicationMetricRule
 import dev.krud.crudframework.crud.handler.krud.Krud

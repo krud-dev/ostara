@@ -9,10 +9,10 @@ import dev.krud.boost.daemon.configuration.instance.InstanceService
 import dev.krud.boost.daemon.configuration.instance.entity.Instance
 import dev.krud.boost.daemon.configuration.instance.health.ro.InstanceHealthRO
 import dev.krud.boost.daemon.configuration.instance.health.ro.InstanceHealthRO.Companion.isStale
-import dev.krud.boost.daemon.configuration.instance.messaging.InstanceCreatedEventMessage
-import dev.krud.boost.daemon.configuration.instance.messaging.InstanceHealthChangedEventMessage
-import dev.krud.boost.daemon.configuration.instance.messaging.InstanceHealthCheckPerformedEventMessage
-import dev.krud.boost.daemon.configuration.instance.messaging.InstanceUpdatedEventMessage
+import dev.krud.boost.daemon.messaging.InstanceCreatedEventMessage
+import dev.krud.boost.daemon.messaging.InstanceHealthChangedEventMessage
+import dev.krud.boost.daemon.messaging.InstanceHealthCheckPerformedEventMessage
+import dev.krud.boost.daemon.messaging.InstanceUpdatedEventMessage
 import dev.krud.boost.daemon.utils.resolve
 import io.github.oshai.kotlinlogging.KotlinLogging
 import kotlinx.coroutines.launch

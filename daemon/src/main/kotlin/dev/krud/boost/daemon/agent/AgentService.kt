@@ -1,6 +1,6 @@
 package dev.krud.boost.daemon.agent
 
-import dev.krud.boost.daemon.agent.messaging.AgentMovedEventMessage
+import dev.krud.boost.daemon.messaging.AgentMovedEventMessage
 import dev.krud.boost.daemon.agent.model.Agent
 import dev.krud.boost.daemon.agent.model.AgentInfoDTO
 import dev.krud.boost.daemon.exception.throwNotFound

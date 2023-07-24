@@ -1,6 +1,6 @@
 package dev.krud.boost.daemon.agent.crud
 
-import dev.krud.boost.daemon.agent.messaging.AgentAuthenticationChangedMessage
+import dev.krud.boost.daemon.messaging.AgentAuthenticationChangedMessage
 import dev.krud.boost.daemon.agent.model.Agent
 import dev.krud.boost.daemon.configuration.application.entity.Application
 import dev.krud.boost.daemon.utils.resolve

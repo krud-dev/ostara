@@ -5,7 +5,7 @@ import dev.krud.boost.daemon.configuration.instance.InstanceActuatorClientProvid
 import dev.krud.boost.daemon.configuration.instance.InstanceService
 import dev.krud.boost.daemon.configuration.instance.entity.Instance
 import dev.krud.boost.daemon.configuration.instance.metric.ro.InstanceMetricRO
-import dev.krud.boost.daemon.metricmonitor.messaging.InstanceMetricUpdatedMessage
+import dev.krud.boost.daemon.messaging.InstanceMetricUpdatedMessage
 import dev.krud.boost.daemon.utils.ParsedMetricName
 import dev.krud.boost.daemon.utils.ParsedMetricName.Companion.getRo
 import dev.krud.boost.daemon.utils.newLimitedCachedThreadPool
