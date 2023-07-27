@@ -89,7 +89,7 @@ dependencies {
     implementation("org.hibernate.orm:hibernate-community-dialects")
     implementation("org.jetbrains.kotlin:kotlin-stdlib")
     implementation("com.squareup.okhttp3:okhttp:4.11.0")
-    implementation("org.flywaydb:flyway-core:9.21.0")
+    implementation("org.flywaydb:flyway-core:9.21.1")
     implementation("dev.krud:crud-framework-core:$crudFrameworkVersion")
     implementation("dev.krud:crud-framework-hibernate5-connector:$crudFrameworkVersion")
     implementation("dev.krud:shapeshift:$shapeShiftVersion")
