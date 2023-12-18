@@ -101,7 +101,7 @@ dependencies {
     implementation("io.hypersistence:hypersistence-utils-hibernate-60:3.5.1")
     implementation("com.cobber.fta:fta-core:14.7.1")
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.7.3")
-    implementation("io.github.oshai:kotlin-logging-jvm:5.0.1")
+    implementation("io.github.oshai:kotlin-logging-jvm:5.1.4")
     implementation("com.auth0:java-jwt:4.4.0")
     implementation("io.github.openfeign:feign-core:12.4")
     implementation("io.github.openfeign:feign-jackson:12.4")
