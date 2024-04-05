@@ -12,7 +12,7 @@ plugins {
   jacoco
   id("org.sonarqube") version "4.3.0.3225"
   `maven-publish`
-  id("io.github.gradle-nexus.publish-plugin") version "2.0.0-rc-1"
+  id("io.github.gradle-nexus.publish-plugin") version "2.0.0"
   signing
   id("org.jetbrains.dokka") version "1.8.20"
 }
