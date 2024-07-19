@@ -4,7 +4,7 @@ import java.nio.file.Paths
 plugins {
     id("org.springframework.boot") version "3.1.2"
     id("io.spring.dependency-management") version "1.1.2"
-    kotlin("jvm") version "1.9.0"
+    kotlin("jvm") version "1.9.25"
     kotlin("plugin.spring") version "1.9.0"
     kotlin("plugin.jpa") version "1.9.0"
     id("cz.habarta.typescript-generator") version "3.2.1263"
